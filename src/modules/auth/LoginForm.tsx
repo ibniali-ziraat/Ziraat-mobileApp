@@ -20,15 +20,15 @@ export default function LoginForm() {
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
   const onSubmit = async (data: any) => {
-    console.log(data,"data...");
-    
+    console.log(data, "data...");
+
     try {
       const response = await loginMutate({
         mobileNumber: data.mobileNumber,
         password: data.password,
       });
-      console.log(response,"login response");
-      
+      console.log(response, "login response");
+
       if (response.success) {
         await setUserToken(response.token);
         await setUserId(response.user);
@@ -47,7 +47,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <View style={{ padding: 20, }}>
+      <View style={{ padding: 20 }}>
         <Text variant="headlineSmall">Login</Text>
         <Text variant="labelLarge">Enter your credentials below</Text>
 

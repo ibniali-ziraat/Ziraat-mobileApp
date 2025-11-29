@@ -21,7 +21,7 @@ import { licensingComplianceSchema } from "@/src/schemas/vendor/licensing.schema
 import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
 import { productPortfolioSchema } from "@/src/schemas/vendor/products.schema";
 import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
-import { router, useLocalSearchParams } from "expo-router/build";
+import { useLocalSearchParams } from "expo-router/build";
 import { FormProvider } from "react-hook-form";
 import FinancialSection from "./sections/FinancialSection";
 import LicenseSection from "./sections/LicenseSection";
@@ -104,28 +104,39 @@ export default function VendorProfileCompletionScreen() {
     financialData,
     supportData,
   ]);
+  console.log(errors, "errprs");
 
   const handleStepSubmit = async (values: any) => {
-    // setStep(step + 1);
+    console.log(values, "va;o;;");
+
     try {
       if (step === 0) {
-        await saveLicense({ ...values, vendorId });
+        await saveLicense({ ...values, supplierProfileId: vendorId });
         return setStep(1);
       }
       if (step === 1) {
-        await saveProducts({ ...values, vendorId });
+        const payload = {
+          ...values,
+          customInputList: values.customInputList?.map((item) => ({
+            productName: item.name || "",
+            stockQuantity: item.stockQuantity || "", // rename
+          })),
+          supplierProfileId: vendorId,
+        };
+
+        await saveProducts(payload);
         return setStep(2);
       }
       if (step === 2) {
-        await saveOperations({ ...values, vendorId });
+        await saveOperations({ ...values, supplierProfileId: vendorId });
         return setStep(3);
       }
       if (step === 3) {
-        await saveFinancial({ ...values, vendorId });
+        await saveFinancial({ ...values, supplierProfileId: vendorId });
         return setStep(4);
       }
       if (step === 4) {
-        await saveSupport({ ...values, vendorId });
+        await saveSupport({ ...values, supplierProfileId: vendorId });
         Alert.alert("Success", "Vendor profile completed!");
         return router.back();
       }

@@ -16,7 +16,7 @@ export default function VendorRegistration() {
     handleSubmit,
     formState: { errors },
   } = methods;
-  // console.log(errors, "errors");
+  console.log(errors, "errors");
   const { userId, setVendorId } = useAuth();
 
   const { mutateAsync: saveVendor } = useVendorProfileMutation();
