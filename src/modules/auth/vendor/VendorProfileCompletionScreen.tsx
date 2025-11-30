@@ -21,7 +21,7 @@ import { licensingComplianceSchema } from "@/src/schemas/vendor/licensing.schema
 import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
 import { productPortfolioSchema } from "@/src/schemas/vendor/products.schema";
 import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
-import { useLocalSearchParams } from "expo-router/build";
+import { router, useLocalSearchParams } from "expo-router/build";
 import { FormProvider } from "react-hook-form";
 import FinancialSection from "./sections/FinancialSection";
 import LicenseSection from "./sections/LicenseSection";
@@ -107,7 +107,7 @@ export default function VendorProfileCompletionScreen() {
   console.log(errors, "errprs");
 
   const handleStepSubmit = async (values: any) => {
-    console.log(values, "va;o;;");
+    console.log(values, "form values");
 
     try {
       if (step === 0) {
@@ -119,7 +119,7 @@ export default function VendorProfileCompletionScreen() {
           ...values,
           customInputList: values.customInputList?.map((item) => ({
             productName: item.name || "",
-            stockQuantity: item.stockQuantity || "", // rename
+            stockQuantity: item.stockQuantity || "",
           })),
           supplierProfileId: vendorId,
         };
@@ -128,7 +128,15 @@ export default function VendorProfileCompletionScreen() {
         return setStep(2);
       }
       if (step === 2) {
-        await saveOperations({ ...values, supplierProfileId: vendorId });
+        const payload = {
+          ...values,
+          companyTieups: values.companyTieups?.map((x) => x.name) || [],
+          serviceArea: values.serviceArea?.map((x) => x.name) || [],
+          supplierProfileId: vendorId,
+        };
+
+        await saveOperations(payload);
+
         return setStep(3);
       }
       if (step === 3) {

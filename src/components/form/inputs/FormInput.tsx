@@ -1,7 +1,9 @@
+import { colors } from "@/src/constants/colors";
 import { FormSectionProps } from "@/src/types/formSectionProps";
+import { Asterisk } from "lucide-react-native";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
 
 export default function FormInput({
@@ -29,7 +31,6 @@ export default function FormInput({
         fieldState: { error: fieldError },
       }) => {
         const showError = Boolean(fieldError?.message || error?.message);
-
         const resolvedKeyboard = keyboardType
           ? keyboardType
           : type === "email"
@@ -41,20 +42,26 @@ export default function FormInput({
         return (
           <View style={{ marginBottom: 20 }}>
             <TextInput
-              label={optional ? `${label} (Optional)` : label}
+              label={
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text>{label}</Text>
+                  {!optional && (
+                    <Asterisk
+                      size={12}
+                      color={colors.error}
+                      style={{ marginLeft: 2 }}
+                    />
+                  )}
+                </View>
+              }
+              placeholder={optional ? `${label}` : label}
               mode="outlined"
               value={value}
               onChangeText={(text) => {
                 const isNumericOnly =
                   resolvedKeyboard === "phone-pad" ||
                   resolvedKeyboard === "numeric";
-
-                if (isNumericOnly) {
-                  const digits = text.replace(/\D/g, "");
-                  onChange(digits);
-                } else {
-                  onChange(text);
-                }
+                onChange(isNumericOnly ? text.replace(/\D/g, "") : text);
               }}
               onBlur={onBlur}
               secureTextEntry={isSecure && !showPassword}
@@ -68,7 +75,7 @@ export default function FormInput({
                   />
                 )
               }
-              style={{ backgroundColor: "white" }}
+              style={{ backgroundColor: colors.light }}
               {...props}
             />
 
