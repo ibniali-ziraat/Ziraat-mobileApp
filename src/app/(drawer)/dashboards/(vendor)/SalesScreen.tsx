@@ -1,12 +1,11 @@
+import HeaderBar from "@/src/components/shared/HeaderBar";
+import SalesSummaryCard from "@/src/modules/vendor/components/SalesSummaryCard";
+import SalesTabs from "@/src/modules/vendor/components/SalesTabs";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import HeaderBar from "../components/shared/HeaderBar";
-import SalesSummaryCard from "../modules/vendor/components/SalesSummaryCard";
-import SalesTabs from "../modules/vendor/components/SalesTabs";
 
 const colors = {
   primary: "#2d6b06",
@@ -31,9 +30,24 @@ export default function SalesScreen() {
   };
 
   const transactions = [
-    { id: "INV-20341", client: "Client A Corp", amount: 12500, status: "Settled" },
-    { id: "INV-20342", client: "Client B Retail", amount: 9800, status: "Pending" },
-    { id: "INV-20343", client: "Client C Mart", amount: 15200, status: "Overdue" },
+    {
+      id: "INV-20341",
+      client: "Client A Corp",
+      amount: 12500,
+      status: "Settled",
+    },
+    {
+      id: "INV-20342",
+      client: "Client B Retail",
+      amount: 9800,
+      status: "Pending",
+    },
+    {
+      id: "INV-20343",
+      client: "Client C Mart",
+      amount: 15200,
+      status: "Overdue",
+    },
   ];
 
   const [tab, setTab] = useState("daily");
@@ -49,7 +63,6 @@ export default function SalesScreen() {
         contentContainerStyle={{ paddingBottom: 50 }}
         showsVerticalScrollIndicator={false}
       >
-
         {/* SALES SUMMARY */}
         <Animated.View entering={FadeInUp.delay(80)}>
           <PageTitle title="Sales Summary" />
@@ -94,22 +107,20 @@ export default function SalesScreen() {
         <Animated.View entering={FadeInUp.delay(250)}>
           <SectionHeader title="Recent Transactions" icon="reader-outline" />
 
-         <Card>
-  <View className="mt-1">
-    {transactions.map((item, index) => (
-      <TransactionRow
-        key={item.id}
-        id={item.id}
-        client={item.client}
-        amount={item.amount}
-        status={item.status}
-      />
-    ))}
-  </View>
-</Card>
-
+          <Card>
+            <View className="mt-1">
+              {transactions.map((item, index) => (
+                <TransactionRow
+                  key={item.id}
+                  id={item.id}
+                  client={item.client}
+                  amount={item.amount}
+                  status={item.status}
+                />
+              ))}
+            </View>
+          </Card>
         </Animated.View>
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -181,9 +192,7 @@ function IconRow({ label, value, icon, color, highlight }) {
           <Ionicons name={icon} size={18} color={color} />
         </View>
 
-        <Text className="text-[14px] font-medium text-gray-800">
-          {label}
-        </Text>
+        <Text className="text-[14px] font-medium text-gray-800">{label}</Text>
       </View>
 
       <Text className="text-[13px] font-semibold" style={{ color }}>

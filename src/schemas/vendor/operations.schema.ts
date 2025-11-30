@@ -6,7 +6,18 @@ export const operationalDetailsSchema = z
       .number({ invalid_type_error: "Enter a number" })
       .min(1, "Years in business is required"),
 
-    distributorTieUps: z.string().min(1, "This field is required"),
+    companyTieups: z
+      .preprocess(
+        (val) => (val === undefined || val === null ? [] : val),
+        z
+          .array(
+            z.object({
+              name: z.string().min(1, "Required Field"),
+            })
+          )
+          .optional()
+      )
+      .optional(),
 
     deliveryServiceAvailable: z.preprocess(
       (val) => (val === undefined || val === null ? "" : val),
@@ -26,7 +37,10 @@ export const operationalDetailsSchema = z
       .optional(),
   })
   .superRefine((data, ctx) => {
-    if (data.deliveryService === "yes" && data.serviceArea.length === 0) {
+    if (
+      data.deliveryServiceAvailable === "yes" &&
+      data.serviceArea.length === 0
+    ) {
       ctx.addIssue({
         path: ["serviceArea"],
         code: z.ZodIssueCode.custom,

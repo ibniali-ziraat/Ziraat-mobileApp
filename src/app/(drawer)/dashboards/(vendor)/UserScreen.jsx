@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../components/shared/HeaderBar";
+import HeaderBar from "../../../../components/shared/HeaderBar";
 
 const colors = {
   primary: "#2d6b06",
@@ -24,10 +24,34 @@ const ALL_ROLES = ["Admin", "Billing", "Stock Manager", "Delivery Manager"];
 
 export default function UserScreen() {
   const [teamMembers, setTeamMembers] = useState([
-    { id: 1, name: "Arjun Singh", role: "Admin", email: "arjun.manager@example.com", active: true },
-    { id: 2, name: "Ravi Kumar", role: "Billing", email: "ravi.billing@example.com", active: true },
-    { id: 3, name: "Neha Sharma", role: "Stock Manager", email: "neha.stock@example.com", active: false },
-    { id: 4, name: "Danish Ali", role: "Delivery Manager", email: "danish.delivery@example.com", active: true },
+    {
+      id: 1,
+      name: "Arjun Singh",
+      role: "Admin",
+      email: "arjun.manager@example.com",
+      active: true,
+    },
+    {
+      id: 2,
+      name: "Ravi Kumar",
+      role: "Billing",
+      email: "ravi.billing@example.com",
+      active: true,
+    },
+    {
+      id: 3,
+      name: "Neha Sharma",
+      role: "Stock Manager",
+      email: "neha.stock@example.com",
+      active: false,
+    },
+    {
+      id: 4,
+      name: "Danish Ali",
+      role: "Delivery Manager",
+      email: "danish.delivery@example.com",
+      active: true,
+    },
   ]);
 
   const activityLog = [
@@ -50,8 +74,8 @@ export default function UserScreen() {
     filter === "Active"
       ? teamMembers.filter((u) => u.active)
       : filter === "Disabled"
-      ? teamMembers.filter((u) => !u.active)
-      : teamMembers;
+        ? teamMembers.filter((u) => !u.active)
+        : teamMembers;
 
   const addMember = () => {
     if (!newName.trim() || !newEmail.trim()) return;
@@ -75,12 +99,10 @@ export default function UserScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
-
       {/* HEADER */}
       <HeaderBar title="User & Role Management" icon="person-circle" />
 
       <ScrollView className="px-4 pt-3 pb-24">
-
         {/* FILTER TABS – Premium */}
         <View className="flex-row mb-4">
           {["All", "Active", "Disabled"].map((item) => {
@@ -112,8 +134,6 @@ export default function UserScreen() {
           <Text className="text-gray-800 font-semibold text-base">
             Team Members
           </Text>
-
-          
         </View>
 
         {/* TEAM MEMBER CARDS */}
@@ -123,7 +143,9 @@ export default function UserScreen() {
             className="bg-white rounded-2xl p-5 mb-3 shadow"
             style={{
               borderLeftWidth: 4,
-              borderLeftColor: user.active ? colors.primary : colors.secondaryDark,
+              borderLeftColor: user.active
+                ? colors.primary
+                : colors.secondaryDark,
             }}
           >
             <View className="flex-row justify-between items-center">
@@ -133,7 +155,11 @@ export default function UserScreen() {
                   className="w-11 h-11 rounded-full items-center justify-center mr-3"
                   style={{ backgroundColor: colors.secondaryLight }}
                 >
-                  <Ionicons name="person-outline" size={22} color={colors.secondaryDark} />
+                  <Ionicons
+                    name="person-outline"
+                    size={22}
+                    color={colors.secondaryDark}
+                  />
                 </View>
 
                 <View>
@@ -186,7 +212,12 @@ export default function UserScreen() {
           {
             role: "Admin",
             desc: "Full control over billing, stock, team & settlements.",
-            perms: ["Add/Delete team", "Manage stock", "Manage billing", "View all reports"],
+            perms: [
+              "Add/Delete team",
+              "Manage stock",
+              "Manage billing",
+              "View all reports",
+            ],
             icon: "shield-checkmark-outline",
             color: colors.primaryDark,
           },
@@ -212,10 +243,7 @@ export default function UserScreen() {
             color: colors.secondaryDark,
           },
         ].map((r, i) => (
-          <View
-            key={i}
-            className="bg-white rounded-2xl p-5 mb-3 shadow"
-          >
+          <View key={i} className="bg-white rounded-2xl p-5 mb-3 shadow">
             <TouchableOpacity
               onPress={() => setOpenAccordion(openAccordion === i ? null : i)}
               className="flex-row items-center justify-between"
@@ -331,13 +359,10 @@ export default function UserScreen() {
               >
                 <Text className="text-gray-700 font-semibold">Cancel</Text>
               </TouchableOpacity>
-
-              
             </View>
           </View>
         </View>
       </Modal>
-
     </SafeAreaView>
   );
 }

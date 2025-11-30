@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { ScrollView, Text } from "react-native";
 
-import CreditAgingCard from "../modules/vendor/components/reports/CreditAgingCard";
-import DeliveryPerformanceCard from "../modules/vendor/components/reports/DeliveryPerformanceCard";
-import ProductPerformanceCard from "../modules/vendor/components/reports/ProductPerformanceCard";
-import SalesCard from "../modules/vendor/components/reports/SalesCard";
-import SalesFilters from "../modules/vendor/components/reports/SalesFilters";
-import TaxReportCard from "../modules/vendor/components/reports/TaxReportCard";
+import CreditAgingCard from "../../../../modules/vendor/components/reports/CreditAgingCard";
+import DeliveryPerformanceCard from "../../../../modules/vendor/components/reports/DeliveryPerformanceCard";
+import ProductPerformanceCard from "../../../../modules/vendor/components/reports/ProductPerformanceCard";
+import SalesCard from "../../../../modules/vendor/components/reports/SalesCard";
+import SalesFilters from "../../../../modules/vendor/components/reports/SalesFilters";
+import TaxReportCard from "../../../../modules/vendor/components/reports/TaxReportCard";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../components/shared/HeaderBar";
+import HeaderBar from "../../../../components/shared/HeaderBar";
 
 const salesFiltersData = ["Date", "Product", "Client", "Region"];
 
@@ -24,12 +24,15 @@ const productPerformance = [
   { name: "Organic Neem Oil (Pesticide)", units: 540, rating: 4.9 },
   { name: "Bio-Insecticide – Trichoderma", units: 380, rating: 4.7 },
   { name: "Herbal Pest Repellent Spray", units: 310, rating: 4.6 },
-  { name: "Fungal Control Liquid (Copper Oxychloride)", units: 270, rating: 4.5 },
+  {
+    name: "Fungal Control Liquid (Copper Oxychloride)",
+    units: 270,
+    rating: 4.5,
+  },
   { name: "Eco-Friendly Mite Killer", units: 190, rating: 4.4 },
   { name: "Larvicide – BT Formulation", units: 160, rating: 4.3 },
   { name: "Soil Pest Control Granules", units: 120, rating: 4.2 },
 ];
-
 
 const deliveryStats = {
   onTime: "92%",
@@ -42,9 +45,8 @@ export default function ReportsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
-   
-         {/* HEADER */}
-         <HeaderBar title="Reports" icon="person-circle" />
+      {/* HEADER */}
+      <HeaderBar title="Reports" icon="person-circle" />
 
       <ScrollView className="px-4 pt-3 pb-24">
         <Text className="text-gray-800 font-semibold mb-2">Sales Reports</Text>
@@ -65,10 +67,8 @@ export default function ReportsScreen() {
         {/* <Text className="text-gray-800 font-semibold mb-2">Tax Report (GST)</Text> */}
         <TaxReportCard />
 
-       
         <ProductPerformanceCard data={productPerformance} />
 
-        
         <DeliveryPerformanceCard stats={deliveryStats} />
       </ScrollView>
     </SafeAreaView>

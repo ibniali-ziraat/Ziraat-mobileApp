@@ -1,4 +1,6 @@
+import { colors } from "@/src/constants/colors";
 import { FormFieldProps } from "@/src/types/formFieldProps";
+import { Asterisk } from "lucide-react-native";
 import { useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { Text, View } from "react-native";
@@ -10,7 +12,8 @@ export default function ChipInput({
   label,
   error,
   placeholder = "Add Area",
-}: FormFieldProps) {
+  optional = false,
+}: FormFieldProps & { optional?: boolean }) {
   const [value, setValue] = useState("");
 
   const { fields, append, remove } = useFieldArray({
@@ -26,9 +29,33 @@ export default function ChipInput({
 
   return (
     <View style={{ marginTop: 15 }}>
-      <Text style={{ fontSize: 16, fontWeight: "600", marginBottom: 10 }}>
-        {label}
-      </Text>
+      <View
+        style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}
+      >
+        <Text style={{ fontSize: 16, fontWeight: "600" }}>{label}</Text>
+        {!optional && (
+          <Asterisk size={12} color={colors.error} style={{ marginLeft: 2 }} />
+        )}
+      </View>
+
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: 6,
+          marginBottom: 6,
+        }}
+      >
+        {fields.map((item, index) => (
+          <Chip
+            key={item.id}
+            onClose={() => remove(index)}
+            style={{ backgroundColor: "#E8F5E9" }}
+          >
+            {item.name}
+          </Chip>
+        ))}
+      </View>
 
       <TextInput
         mode="outlined"
@@ -43,27 +70,6 @@ export default function ChipInput({
           />
         }
       />
-
-      <View
-        style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: 6,
-          marginTop: 12,
-        }}
-      >
-        {fields.map((item, index) => (
-          <Chip
-            key={item.id}
-            onClose={() => remove(index)}
-            style={{
-              backgroundColor: "#E8F5E9",
-            }}
-          >
-            {item.name}
-          </Chip>
-        ))}
-      </View>
 
       {error && (
         <Text style={{ color: "red", marginBottom: 16 }}>{error.message}</Text>

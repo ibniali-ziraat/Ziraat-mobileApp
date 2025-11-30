@@ -1,5 +1,6 @@
+import HeaderBar from "@/src/components/shared/HeaderBar";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   ScrollView,
   Switch,
@@ -9,7 +10,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../components/shared/HeaderBar";
 
 /* ROOT BRAND COLORS */
 const colors = {
@@ -138,12 +138,13 @@ export default function CreditScreen() {
       <HeaderBar title="Credit Management" icon="person-circle" />
 
       <ScrollView className="flex-1 px-4 pt-3 pb-24">
-
         {/* TOP SUMMARY CARD */}
         <View className="bg-white rounded-xl shadow p-4 mb-3">
           <View className="flex-row justify-between items-start">
             <View className="flex-1 mr-3">
-              <Text className="text-xs text-gray-700">Total Credit Outstanding</Text>
+              <Text className="text-xs text-gray-700">
+                Total Credit Outstanding
+              </Text>
 
               <Text
                 className="text-2xl font-extrabold mt-1"
@@ -159,7 +160,9 @@ export default function CreditScreen() {
 
             {/* Available Credit */}
             <View className="items-end">
-              <Text className="text-xs text-gray-700 mb-1">Available Credit</Text>
+              <Text className="text-xs text-gray-700 mb-1">
+                Available Credit
+              </Text>
               <View
                 className="px-3 py-[6px] rounded-full"
                 style={{ backgroundColor: `${colors.primary}15` }}
@@ -179,7 +182,11 @@ export default function CreditScreen() {
             className="mt-3 rounded-xl px-3 py-2 flex-row items-center"
             style={{ backgroundColor: `${colors.secondary}10` }}
           >
-            <MaterialIcons name="access-time" size={18} color={colors.secondaryDark} />
+            <MaterialIcons
+              name="access-time"
+              size={18}
+              color={colors.secondaryDark}
+            />
             <View className="ml-2 flex-1">
               <Text
                 className="text-[11px] font-semibold"
@@ -191,7 +198,8 @@ export default function CreditScreen() {
                 className="text-[11px]"
                 style={{ color: colors.secondaryDark }}
               >
-                ₹{upcomingAmount.toLocaleString()} due from {upcomingClients} clients
+                ₹{upcomingAmount.toLocaleString()} due from {upcomingClients}{" "}
+                clients
               </Text>
             </View>
           </View>
@@ -338,8 +346,8 @@ function ClientCard({ client }) {
             {client.risk === "green"
               ? "Low Risk"
               : client.risk === "yellow"
-              ? "Medium Risk"
-              : "High Risk"}
+                ? "Medium Risk"
+                : "High Risk"}
           </Text>
         </View>
       </View>
@@ -358,9 +366,7 @@ function ClientCard({ client }) {
             className="h-2 rounded-full"
             style={{
               width: `${utilization * 100}%`,
-              backgroundColor: client.overdue
-                ? colors.secondaryDark
-                : risk.bar,
+              backgroundColor: client.overdue ? colors.secondaryDark : risk.bar,
             }}
           />
         </View>
@@ -527,10 +533,7 @@ function ReminderCard({ reminders, setReminders }) {
         className="mt-3 rounded-xl px-3 py-2"
         style={{ backgroundColor: `${colors.primary}10` }}
       >
-        <Text
-          className="text-[11px]"
-          style={{ color: colors.primaryDark }}
-        >
+        <Text className="text-[11px]" style={{ color: colors.primaryDark }}>
           View all scheduled reminders in the Credit Calendar.
         </Text>
       </View>
@@ -591,9 +594,7 @@ function BillingTab() {
 
       {/* Individual Bills */}
       <View className="border-t border-gray-200 pt-3 mt-2">
-        <Text className="text-sm text-gray-800 mb-2">
-          Individual Bills
-        </Text>
+        <Text className="text-sm text-gray-800 mb-2">Individual Bills</Text>
 
         {mockBills.map((bill) => (
           <BillRow key={bill.id} bill={bill} />

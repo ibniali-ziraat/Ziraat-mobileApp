@@ -1,13 +1,12 @@
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../components/shared/HeaderBar";
+import HeaderBar from "../../../../components/shared/HeaderBar";
 
+import DeliveryHeaderCard from "../../../../modules/vendor/components/delivery/DeliveryHeaderCard";
 
-import DeliveryHeaderCard from "../modules/vendor/components/delivery/DeliveryHeaderCard";
-
-import DeliveryOrderAssignment from "../modules/vendor/components/delivery/DeliveryOrderAssignment";
-import DeliveryProof from "../modules/vendor/components/delivery/DeliveryProof";
-import DeliveryRoute from "../modules/vendor/components/delivery/DeliveryRoute";
+import DeliveryOrderAssignment from "../../../../modules/vendor/components/delivery/DeliveryOrderAssignment";
+import DeliveryProof from "../../../../modules/vendor/components/delivery/DeliveryProof";
+import DeliveryRoute from "../../../../modules/vendor/components/delivery/DeliveryRoute";
 
 const theme = {
   primary: "#2d6b06",
@@ -23,11 +22,7 @@ export default function DeliveryScreen() {
   const deliveryOrder = {
     id: "ORD-86214",
     status: "Out for Delivery",
-    route: [
-      "Vendor Warehouse",
-      "Stop 1 - Amit Sharma",
-      "Return Route",
-    ],
+    route: ["Vendor Warehouse", "Stop 1 - Amit Sharma", "Return Route"],
   };
 
   return (

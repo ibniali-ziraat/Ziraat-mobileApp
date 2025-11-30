@@ -5,8 +5,8 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 import { Button, Divider, Snackbar, Text } from "react-native-paper";
-import { useZodForm } from "../../hooks/useZodForm";
-import { LoginSchema } from "../../schemas/shared/login.schema";
+import { useZodForm } from "../../../hooks/useZodForm";
+import { LoginSchema } from "../../../schemas/shared/login.schema";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -19,15 +19,15 @@ export default function LoginForm() {
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
   const onSubmit = async (data: any) => {
-    console.log(data,"data...");
-    
+    console.log(data, "data...");
+
     // try {
     //   const response = await loginMutate({
     //     mobileNumber: data.mobileNumber,
     //     password: data.password,
     //   });
-    //   console.log(response,"login response");
-      
+    //   console.log(response, "login response");
+
     //   if (response.success) {
     //     await setUserToken(response.token);
     //     await setUserId(response.user);
@@ -46,7 +46,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <View style={{ padding: 20, }}>
+      <View style={{ padding: 20 }}>
         <Text variant="headlineSmall">Login</Text>
         <Text variant="labelLarge">Enter your credentials below</Text>
 

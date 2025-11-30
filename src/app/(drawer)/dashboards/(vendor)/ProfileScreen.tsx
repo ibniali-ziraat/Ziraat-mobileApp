@@ -1,18 +1,14 @@
-
-
-import React, { useState } from "react";
+import BottomModal from "@/src/components/shared/BottomModal";
+import DocumentCard from "@/src/components/shared/DocumentCard";
+import HeaderBar from "@/src/components/shared/HeaderBar";
+import OverviewCard from "@/src/components/shared/OverviewCard";
+import TabBar from "@/src/components/shared/TabBar";
+import TeamCard from "@/src/components/shared/TeamCard";
+import WarehouseCard from "@/src/components/shared/WarehouseCard";
+import { useState } from "react";
 import { Modal, ScrollView } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import DocumentCard from "../components/shared/DocumentCard";
-import HeaderBar from "../components/shared/HeaderBar";
-import OverviewCard from "../components/shared/OverviewCard";
-import TabBar from "../components/shared/TabBar";
-import TeamCard from "../components/shared/TeamCard";
-import WarehouseCard from "../components/shared/WarehouseCard";
-
-import BottomModal from "../components/shared/BottomModal";
 
 const TABS = ["overview", "documents", "team", "warehouse"];
 
@@ -22,7 +18,6 @@ export default function ProfileScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
-
       {/* HEADER */}
       <HeaderBar title="Vendor Profile" icon="person-circle" />
 
@@ -30,7 +25,6 @@ export default function ProfileScreen() {
       <TabBar tabs={TABS} activeTab={tab} onChange={setTab} />
 
       <ScrollView className="px-4 pt-4 pb-28">
-
         {tab === "overview" && (
           <Animated.View entering={FadeInUp}>
             <OverviewCard onEditPress={() => setModalVisible(true)} />
@@ -56,8 +50,6 @@ export default function ProfileScreen() {
         )}
       </ScrollView>
 
-      
-
       {/* Modal */}
       <Modal transparent visible={modalVisible} animationType="fade">
         <BottomModal
@@ -65,7 +57,6 @@ export default function ProfileScreen() {
           onClose={() => setModalVisible(false)}
         />
       </Modal>
-
     </SafeAreaView>
   );
 }

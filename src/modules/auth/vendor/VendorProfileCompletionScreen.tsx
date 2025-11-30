@@ -104,28 +104,47 @@ export default function VendorProfileCompletionScreen() {
     financialData,
     supportData,
   ]);
+  console.log(errors, "errprs");
 
   const handleStepSubmit = async (values: any) => {
-    // setStep(step + 1);
+    console.log(values, "form values");
+
     try {
       if (step === 0) {
-        await saveLicense({ ...values, vendorId });
+        await saveLicense({ ...values, supplierProfileId: vendorId });
         return setStep(1);
       }
       if (step === 1) {
-        await saveProducts({ ...values, vendorId });
+        const payload = {
+          ...values,
+          customInputList: values.customInputList?.map((item) => ({
+            productName: item.name || "",
+            stockQuantity: item.stockQuantity || "",
+          })),
+          supplierProfileId: vendorId,
+        };
+
+        await saveProducts(payload);
         return setStep(2);
       }
       if (step === 2) {
-        await saveOperations({ ...values, vendorId });
+        const payload = {
+          ...values,
+          companyTieups: values.companyTieups?.map((x) => x.name) || [],
+          serviceArea: values.serviceArea?.map((x) => x.name) || [],
+          supplierProfileId: vendorId,
+        };
+
+        await saveOperations(payload);
+
         return setStep(3);
       }
       if (step === 3) {
-        await saveFinancial({ ...values, vendorId });
+        await saveFinancial({ ...values, supplierProfileId: vendorId });
         return setStep(4);
       }
       if (step === 4) {
-        await saveSupport({ ...values, vendorId });
+        await saveSupport({ ...values, supplierProfileId: vendorId });
         Alert.alert("Success", "Vendor profile completed!");
         return router.back();
       }

@@ -1,20 +1,19 @@
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../components/shared/HeaderBar";
-import BankDetailsCard from "../modules/vendor/components/financial/BankDetailsCard";
-import SummaryGrid from "../modules/vendor/components/financial/SummaryGrid";
-import WeeklySettlementCard from "../modules/vendor/components/financial/WeeklySettlementCard";
+import HeaderBar from "../../../../components/shared/HeaderBar";
+import BankDetailsCard from "../../../../modules/vendor/components/financial/BankDetailsCard";
+import SummaryGrid from "../../../../modules/vendor/components/financial/SummaryGrid";
+import WeeklySettlementCard from "../../../../modules/vendor/components/financial/WeeklySettlementCard";
 
 export default function FinancialScreen() {
   const summary = {
-  totalSales: 650000,
-  payableToVendor: 510000,
-  platformFees: 32000,
-  discounts: 18000,
-  outstanding: 120000,
-  settlementsCount: 14,
-};
-
+    totalSales: 650000,
+    payableToVendor: 510000,
+    platformFees: 32000,
+    discounts: 18000,
+    outstanding: 120000,
+    settlementsCount: 14,
+  };
 
   const weekly = [
     { week: "Nov 18–24", amount: 2870.3, status: "Settled" },
@@ -36,7 +35,7 @@ export default function FinancialScreen() {
   ];
 
   return (
-     <SafeAreaView className="flex-1 bg-gray-100">
+    <SafeAreaView className="flex-1 bg-gray-100">
       <HeaderBar title="Vendor Financials" icon="wallet-outline" />
 
       <ScrollView
@@ -49,7 +48,6 @@ export default function FinancialScreen() {
 
         <BankDetailsCard bank={bank} logs={logs} />
       </ScrollView>
-   </SafeAreaView>
+    </SafeAreaView>
   );
 }
-

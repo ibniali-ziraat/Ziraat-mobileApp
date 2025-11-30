@@ -1,10 +1,9 @@
-
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import HeaderBar from "../../../../components/shared/HeaderBar";
 
-import HeaderBar from "../components/shared/HeaderBar";
 const colors = {
   primary: "#2d6b06",
   primaryDark: "#245805",
@@ -85,18 +84,14 @@ export default function NotificationScreen() {
   ];
 
   const filtered =
-    activeTab === "all"
-      ? items
-      : items.filter((n) => n.type === activeTab);
+    activeTab === "all" ? items : items.filter((n) => n.type === activeTab);
 
   const sections = ["Today", "Yesterday", "Earlier"];
 
   return (
-     <SafeAreaView className="flex-1 bg-gray-100">
-    
-          {/* HEADER */}
-          <HeaderBar title="Notifications" icon="notifications-circle" />
-      
+    <SafeAreaView className="flex-1 bg-gray-100">
+      {/* HEADER */}
+      <HeaderBar title="Notifications" icon="notifications-circle" />
 
       {/* TOP FILTER TABS */}
       <View className="mt-3 px-2">
@@ -118,8 +113,7 @@ export default function NotificationScreen() {
                 style={{
                   fontSize: 12,
                   fontWeight: "600",
-                  color:
-                    activeTab === tab.key ? colors.secondary : "#4b5563",
+                  color: activeTab === tab.key ? colors.secondary : "#4b5563",
                 }}
               >
                 {tab.label}

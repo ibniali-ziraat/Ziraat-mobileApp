@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import { router } from "expo-router";
 import {
   Dimensions,
   Image,
@@ -168,6 +168,7 @@ const HomeScreen = () => {
 
         <View className="gap-3 mb-8">
           <TouchableOpacity
+            onPress={() => router.push("/orchard-registration")}
             className="rounded-xl flex-row justify-center items-center"
             style={{
               backgroundColor: colors.primary,

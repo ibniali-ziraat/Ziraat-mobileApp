@@ -14,6 +14,10 @@ export default function OperationalSection({ control, errors }) {
     control,
     name: "serviceArea",
   });
+  // const companyTieups = useWatch({
+  //   control,
+  //   name: "companyTieups",
+  // });
 
   return (
     <View style={{ padding: 20 }}>
@@ -25,11 +29,13 @@ export default function OperationalSection({ control, errors }) {
         error={errors?.yearsInBusiness?.message}
       />
 
-      <FormInput
+      <ChipInput
         control={control}
-        name="distributorTieUps"
-        label="Distributor / Company Tie-ups"
-        error={errors?.distributorTieUps?.message}
+        name="companyTieups"
+        label="Company Tieups (if any)"
+        placeholder="Add Company Tieups"
+        error={errors.companyTieups?.message}
+        optional
       />
 
       <SingleSelectInput
@@ -62,9 +68,10 @@ export default function OperationalSection({ control, errors }) {
       <FormInput
         control={control}
         name="avgMonthlySalesVolume"
-        label="Average Monthly Sales Volume (optional)"
+        label="Average Monthly Sales Volume"
         type="number"
         error={errors?.avgMonthlySalesVolume?.message}
+        optional
       />
     </View>
   );

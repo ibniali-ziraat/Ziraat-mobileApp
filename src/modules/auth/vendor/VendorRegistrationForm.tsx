@@ -5,6 +5,7 @@ import { useVendorProfileMutation } from "@/src/hooks/vendorQueryHooks";
 import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import BusinessSection from "./sections/BusinessSection";
 
+import BackHeader from "@/src/components/shared/BackHeader";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
@@ -16,7 +17,7 @@ export default function VendorRegistration() {
     handleSubmit,
     formState: { errors },
   } = methods;
-  // console.log(errors, "errors");
+  console.log(errors, "errors");
   const { userId, setVendorId } = useAuth();
 
   const { mutateAsync: saveVendor } = useVendorProfileMutation();
@@ -43,15 +44,14 @@ export default function VendorRegistration() {
 
   return (
     <FormProvider {...methods}>
-      <ScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={{ paddingBottom: 40 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={{ flex: 1, padding: 16 }}>
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        {/* Profile Header */}
+        <BackHeader>Supplier Registration</BackHeader>
+
+        <View className="flex-1 py-6">
           <BusinessSection control={control} errors={errors} />
 
-          <View style={{ marginTop: 20 }}>
+          <View style={{ marginTop: 10 }}>
             <Button title="Continue" onPress={handleSubmit(onSubmit)} />
           </View>
         </View>
