@@ -2,42 +2,48 @@ export const menuGroups = [
   {
     title: "Farmer Dashboard",
     routes: [
-      { label: "Orchard Profile", screen: "(farmer)/OrchardScreen" },
-      { label: "Weather & Climate", screen: "(farmer)/WeatherScreen" },
+      { label: "Orchard Profile", screen: "dashboards/(farmer)/OrchardScreen" },
+      {
+        label: "Weather & Climate",
+        screen: "dashboards/(farmer)/WeatherScreen",
+      },
       {
         label: "Nutrient Management",
-        screen: "(farmer)/NutrientScreen",
+        screen: "dashboards/(farmer)/NutrientScreen",
       },
       {
         label: "Pest & Disease",
-        screen: "(farmer)/PestDiseaseScreen",
+        screen: "dashboards/(farmer)/PestDiseaseScreen",
       },
-      { label: "Resources Usage", screen: "(farmer)/ResourcesScreen" },
-      { label: "Financial", screen: "(farmer)/FinancialScreen" },
-      { label: "Advisory", screen: "(farmer)/AdvisoryScreen" },
-      { label: "Alerts", screen: "(farmer)/AlertScreen" },
+      {
+        label: "Resources Usage",
+        screen: "dashboards/(farmer)/ResourcesScreen",
+      },
+      { label: "Financial", screen: "dashboards/(farmer)/FinancialScreen" },
+      { label: "Advisory", screen: "dashboards/(farmer)/AdvisoryScreen" },
+      { label: "Alerts", screen: "dashboards/(farmer)/AlertScreen" },
     ],
   },
 
   {
     title: "Vendor Dashboard",
     routes: [
-      { label: "Profile", screen: "(vendor)/ProfileScreen" },
-      { label: "Reports", screen: "(vendor)/ReportsScreen" },
-      { label: "Credits", screen: "(vendor)/CreditScreen" },
+      { label: "Profile", screen: "dashboards/(vendor)/ProfileScreen" },
+      { label: "Reports", screen: "dashboards/(vendor)/ReportsScreen" },
+      { label: "Credits", screen: "dashboards/(vendor)/CreditScreen" },
       {
         label: "Financial Reports",
-        screen: "(vendor)/FinancialScreen",
+        screen: "dashboards/(vendor)/FinancialScreen",
       },
       {
         label: "Notifications",
-        screen: "(vendor)/NotificationScreen",
+        screen: "dashboards/(vendor)/NotificationScreen",
       },
-      { label: "Offers", screen: "(vendor)/OffersScreen" },
-      { label: "Platform", screen: "(vendor)/PlatformScreen" },
-      { label: "Products", screen: "(vendor)/ProductsScreen" },
-      { label: "Sales", screen: "(vendor)/SalesScreen" },
-      { label: "Customers", screen: "(vendor)/UserScreen" },
+      { label: "Offers", screen: "dashboards/(vendor)/OffersScreen" },
+      { label: "Platform", screen: "dashboards/(vendor)/PlatformScreen" },
+      { label: "Products", screen: "dashboards/(vendor)/ProductsScreen" },
+      { label: "Sales", screen: "dashboards/(vendor)/SalesScreen" },
+      { label: "Customers", screen: "dashboards/(vendor)/UserScreen" },
     ],
   },
 ];

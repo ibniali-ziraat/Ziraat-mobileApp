@@ -1,13 +1,12 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 import { Button, Divider, Snackbar, Text } from "react-native-paper";
-import { useZodForm } from "../../hooks/useZodForm";
-import { LoginSchema } from "../../schemas/shared/login.schema";
+import { useZodForm } from "../../../hooks/useZodForm";
+import { LoginSchema } from "../../../schemas/shared/login.schema";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -22,26 +21,26 @@ export default function LoginForm() {
   const onSubmit = async (data: any) => {
     console.log(data, "data...");
 
-    try {
-      const response = await loginMutate({
-        mobileNumber: data.mobileNumber,
-        password: data.password,
-      });
-      console.log(response, "login response");
+    // try {
+    //   const response = await loginMutate({
+    //     mobileNumber: data.mobileNumber,
+    //     password: data.password,
+    //   });
+    //   console.log(response, "login response");
 
-      if (response.success) {
-        await setUserToken(response.token);
-        await setUserId(response.user);
-        router.replace("/");
-        showSuccessToast("logged in");
-      }
+    //   if (response.success) {
+    //     await setUserToken(response.token);
+    //     await setUserId(response.user);
+    //     router.replace("/");
+    //     showSuccessToast("logged in");
+    //   }
 
-      setShowSnack(true);
-    } catch (error: any) {
-      showErrorToast("Something went wrong try again later");
+    //   setShowSnack(true);
+    // } catch (error: any) {
+    //   showErrorToast("Something went wrong try again later");
 
-      toggleSnack();
-    }
+    //   toggleSnack();
+    // }
     router.push("/");
   };
 

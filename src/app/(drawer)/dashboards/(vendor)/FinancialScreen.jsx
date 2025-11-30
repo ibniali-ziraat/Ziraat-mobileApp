@@ -1,9 +1,9 @@
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../../../components/shared/HeaderBar";
-import BankDetailsCard from "../../../modules/vendor/components/financial/BankDetailsCard";
-import SummaryGrid from "../../../modules/vendor/components/financial/SummaryGrid";
-import WeeklySettlementCard from "../../../modules/vendor/components/financial/WeeklySettlementCard";
+import HeaderBar from "../../../../components/shared/HeaderBar";
+import BankDetailsCard from "../../../../modules/vendor/components/financial/BankDetailsCard";
+import SummaryGrid from "../../../../modules/vendor/components/financial/SummaryGrid";
+import WeeklySettlementCard from "../../../../modules/vendor/components/financial/WeeklySettlementCard";
 
 export default function FinancialScreen() {
   const summary = {

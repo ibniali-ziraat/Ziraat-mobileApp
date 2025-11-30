@@ -10,7 +10,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../../../components/shared/HeaderBar";
+import HeaderBar from "../../../../components/shared/HeaderBar";
 
 const colors = {
   primary: "#2d6b06",

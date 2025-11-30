@@ -12,15 +12,19 @@ import { showErrorToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Alert, Button, View } from "react-native";
-import { otpSchema } from "../../schemas/shared/otp.schema";
-import { profileSchema } from "../../schemas/user/profile.schema";
+import { otpSchema } from "../../../schemas/shared/otp.schema";
+import { profileSchema } from "../../../schemas/user/profile.schema";
 
 export default function UserRegistration() {
   const [step, setStep] = useState(0);
   const [profileData, setProfileData] = useState<any>(null);
-  const schemas=[profileSchema,otpSchema]
-  const methods = useZodForm(schemas[step], { mode:"onChange" });
-  const { control, handleSubmit, formState: { errors } } = methods;
+  const schemas = [profileSchema, otpSchema];
+  const methods = useZodForm(schemas[step], { mode: "onChange" });
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = methods;
 
   const { mutateAsync: signupMutate, isPending: isSignupPending } =
     useProfileMutation();

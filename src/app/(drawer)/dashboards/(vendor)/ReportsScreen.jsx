@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { ScrollView, Text } from "react-native";
 
-import CreditAgingCard from "../../../modules/vendor/components/reports/CreditAgingCard";
-import DeliveryPerformanceCard from "../../../modules/vendor/components/reports/DeliveryPerformanceCard";
-import ProductPerformanceCard from "../../../modules/vendor/components/reports/ProductPerformanceCard";
-import SalesCard from "../../../modules/vendor/components/reports/SalesCard";
-import SalesFilters from "../../../modules/vendor/components/reports/SalesFilters";
-import TaxReportCard from "../../../modules/vendor/components/reports/TaxReportCard";
+import CreditAgingCard from "../../../../modules/vendor/components/reports/CreditAgingCard";
+import DeliveryPerformanceCard from "../../../../modules/vendor/components/reports/DeliveryPerformanceCard";
+import ProductPerformanceCard from "../../../../modules/vendor/components/reports/ProductPerformanceCard";
+import SalesCard from "../../../../modules/vendor/components/reports/SalesCard";
+import SalesFilters from "../../../../modules/vendor/components/reports/SalesFilters";
+import TaxReportCard from "../../../../modules/vendor/components/reports/TaxReportCard";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../../../components/shared/HeaderBar";
+import HeaderBar from "../../../../components/shared/HeaderBar";
 
 const salesFiltersData = ["Date", "Product", "Client", "Region"];
 
