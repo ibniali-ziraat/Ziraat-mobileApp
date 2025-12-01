@@ -1,6 +1,6 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
 import { Entypo, Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Image,
     Modal,
@@ -34,8 +34,8 @@ const EnhancedCard = ({ title, value, icon, gradient }: any) => (
             </View>
 
             <View className="flex-1">
-                <Text className="text-gray-600 text-sm">{title}</Text>
-                <Text className="text-2xl font-extrabold text-gray-900">{value}</Text>
+                <Text className="text-neutral/100 text-sm">{title}</Text>
+                <Text className="text-2xl font-extrabold text-black">{value}</Text>
             </View>
         </View>
     </View>
@@ -52,7 +52,7 @@ export default function SoilWaterNutrientScreen() {
             <Text className="text-3xl font-extrabold text-black mb-2">
                 Soil, Water & Nutrient
             </Text>
-            <Text className="text-gray-500 mb-6 leading-5">
+            <Text className="text-black mb-6 leading-5">
                 Real-time insight into soil health, nutrient flow, fertigation adherence,
                 water use efficiency and overall orchard nourishment.
             </Text>
@@ -129,7 +129,7 @@ export default function SoilWaterNutrientScreen() {
                     (pH, EC & NPK line chart)
                 </Text>
             </View>
-            <Text className="text-xl font-bold mb-3 text-gray-800">
+            <Text className="text-xl font-bold mb-3 text-black">
                 Nutrient Analysis
             </Text>
 
@@ -196,12 +196,12 @@ export default function SoilWaterNutrientScreen() {
                     <Image
                         key={i}
                         source={{ uri: "https://images.pexels.com/photos/33303307/pexels-photo-33303307.jpeg" }}
-                        className="w-32 h-32 rounded-xl bg-gray-300 mr-3"
+                        className="w-32 h-32 rounded-xl bg-neutral mr-3"
                     />
                 ))}
             </ScrollView>
 
-            <Text className="text-xl font-bold mt-8 mb-2 text-gray-800">
+            <Text className="text-xl font-bold mt-8 mb-2 text-black">
                 Improvement Suggestions
             </Text>
 
@@ -215,7 +215,7 @@ export default function SoilWaterNutrientScreen() {
 
 
             <Modal visible={modalVisible} transparent>
-                <View className="flex-1 bg-black/40 justify-center items-center">
+                <View className="flex-1 bg-black justify-center items-center">
                     <View className="bg-white w-80 p-6 rounded-2xl shadow-xl">
                         <Text className="text-lg font-bold text-center mb-4">
                             Update Fertigation Compliance (%)
@@ -231,7 +231,7 @@ export default function SoilWaterNutrientScreen() {
 
                         <View className="flex-row justify-between">
                             <Pressable
-                                className="bg-gray-300 px-4 py-2 rounded-xl"
+                                className="bg-neutral/100 px-4 py-2 rounded-xl"
                                 onPress={() => setModalVisible(false)}
                             >
                                 <Text>Cancel</Text>

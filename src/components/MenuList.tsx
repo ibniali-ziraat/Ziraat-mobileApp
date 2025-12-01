@@ -7,7 +7,7 @@ export default function MenuList() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.light }}>
       <ScrollView style={{ flex: 1, padding: 16 }}>
-        {/* E-COMMERCE MAIN SECTION */}
+
         <SectionTitle title="E-Commerce" />
         <MenuItem
           label="Marketplace"

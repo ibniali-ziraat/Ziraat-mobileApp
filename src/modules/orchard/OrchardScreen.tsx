@@ -4,7 +4,7 @@ import { Text } from "react-native-paper";
 const OrchardScreen = () => {
   return (
     <View>
-      <Text>Orchard Screen</Text>
+      <Text>Orchard Screen  </Text>
     </View>
   );
 };

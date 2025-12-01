@@ -8,7 +8,6 @@ import {
     Wallet,
     Wheat
 } from "lucide-react-native";
-import React from "react";
 import {
     Dimensions,
     SafeAreaView,
@@ -67,7 +66,7 @@ export default function FinancialPerformanceScreen() {
                     </Text>
                 </View>
 
-                <Text className="text-gray-700 text-sm mb-4">
+                <Text className="text-neutral/100 text-sm mb-4">
                     Visualize earnings, expenses & yield progress for smarter decisions.
                 </Text>
 
@@ -91,7 +90,7 @@ export default function FinancialPerformanceScreen() {
                                     {item.value}
                                 </Text>
 
-                                <Text className="text-xs text-gray-600 mt-1">
+                                <Text className="text-xs text-black mt-1">
                                     {item.subtitle}
                                 </Text>
                             </View>
@@ -123,7 +122,7 @@ export default function FinancialPerformanceScreen() {
                     />
                 </View>
 
-                {/* Line Chart */}
+
                 <View className="mt-8 bg-white rounded-xl p-5 shadow-md">
                     <View className="flex-row items-center mb-3">
                         <LineChart size={24} color="#c7611f" />
@@ -148,7 +147,7 @@ export default function FinancialPerformanceScreen() {
                     />
                 </View>
 
-                {/* Recent Insights */}
+
                 <View className="mt-8 bg-white p-5 rounded-xl shadow-md">
                     <Text className="font-bold text-black text-lg mb-4">
                         Recent Financial Insights
@@ -157,22 +156,22 @@ export default function FinancialPerformanceScreen() {
                     {recentInsights.map((item) => (
                         <View
                             key={item.id}
-                            className="flex-row justify-between items-center border-b border-gray-200 pb-3 mb-3"
+                            className="flex-row justify-between items-center border-b border-white pb-3 mb-3"
                         >
-                            <Text className="font-semibold text-gray-800 w-[30%]">
+                            <Text className="font-semibold text-black w-[30%]">
                                 {item.id}
                             </Text>
 
-                            <Text className="text-gray-600 w-[45%]">
+                            <Text className="text-overlay w-[45%]">
                                 {item.type}
                             </Text>
 
                             <Text
                                 className={`w-[25%] text-right font-medium ${item.status === "Improved"
-                                    ? "text-green-700"
+                                    ? "text-primary"
                                     : item.status === "Positive"
-                                        ? "text-blue-600"
-                                        : "text-red-600"
+                                        ? "text-secondary"
+                                        : "text-error"
                                     }`}
                             >
                                 {item.status}

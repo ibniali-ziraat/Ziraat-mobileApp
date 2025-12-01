@@ -2,26 +2,26 @@ export const menuGroups = [
   {
     title: "Farmer Dashboard",
     routes: [
-      { label: "Orchard Profile", screen: "dashboards/(farmer)/OrchardScreen" },
+      { label: "Orchard Profile", screen: "dashboards/orchard-profile" },
       {
         label: "Weather & Climate",
-        screen: "dashboards/(farmer)/WeatherScreen",
+        screen: "dashboards/weather-profile",
       },
       {
         label: "Nutrient Management",
-        screen: "dashboards/(farmer)/NutrientScreen",
+        screen: "dashboards/nutrients-profile",
       },
       {
         label: "Pest & Disease",
-        screen: "dashboards/(farmer)/PestDiseaseScreen",
+        screen: "dashboards/pestdisease-profile",
       },
       {
         label: "Resources Usage",
-        screen: "dashboards/(farmer)/ResourcesScreen",
+        screen: "dashboards/resources-profile",
       },
-      { label: "Financial", screen: "dashboards/(farmer)/FinancialScreen" },
-      { label: "Advisory", screen: "dashboards/(farmer)/AdvisoryScreen" },
-      { label: "Alerts", screen: "dashboards/(farmer)/AlertScreen" },
+      { label: "Financial", screen: "dashboards/financial-profile" },
+      { label: "Advisory", screen: "dashboards/advisory-profile" },
+      { label: "Alerts", screen: "dashboards/alert-profile" },
     ],
   },
 

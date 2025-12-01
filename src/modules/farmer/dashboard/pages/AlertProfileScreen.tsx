@@ -8,7 +8,6 @@ import {
     ClipboardList,
     PieChart
 } from "lucide-react-native";
-import React from "react";
 import { SafeAreaView, ScrollView, Text, View } from "react-native";
 
 const kpiCards = [
@@ -66,7 +65,7 @@ export default function AlertsTrackingScreen() {
                         </Text>
                     </View>
                     <View className="h-40 bg-gray-200 rounded-xl items-center justify-center">
-                        <Text className="text-gray-600">Bar Chart Here</Text>
+                        <Text className="text-overlay">Bar Chart Here</Text>
                     </View>
                 </View>
                 <View className="mt-6 bg-white p-5 rounded-2xl shadow-md">
@@ -77,7 +76,7 @@ export default function AlertsTrackingScreen() {
                         </Text>
                     </View>
                     <View className="h-40 bg-gray-200 rounded-xl items-center justify-center">
-                        <Text className="text-gray-600">Pie Chart Here</Text>
+                        <Text className="text-overlay">Pie Chart Here</Text>
                     </View>
                 </View>
                 <View className="mt-6 bg-white p-5 rounded-2xl shadow-md">
@@ -87,10 +86,10 @@ export default function AlertsTrackingScreen() {
                     {recentAlerts.map((alert) => (
                         <View
                             key={alert.id}
-                            className="flex-row justify-between border-b border-gray-200 pb-3 mb-3"
+                            className="flex-row justify-between border-b border-white pb-3 mb-3"
                         >
-                            <Text className="font-semibold text-gray-800">{alert.id}</Text>
-                            <Text className="text-gray-600">{alert.type}</Text>
+                            <Text className="font-semibold text-black">{alert.id}</Text>
+                            <Text className="text-overlay">{alert.type}</Text>
                             <Text
                                 className={`${alert.status === "Resolved"
                                     ? "text-primary"

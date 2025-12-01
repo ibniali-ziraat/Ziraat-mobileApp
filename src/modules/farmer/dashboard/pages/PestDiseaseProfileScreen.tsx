@@ -1,5 +1,5 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Image,
     Modal,
@@ -12,15 +12,15 @@ import {
 
 const MetricCard = ({ title, value, footer }: any) => (
     <View className="w-full rounded-xl p-4 bg-white shadow mb-4">
-        <Text className="text-gray-600 text-sm font-medium">{title}</Text>
+        <Text className="text-neutral/100 text-sm font-medium">{title}</Text>
         <Text className="text-2xl font-bold mt-1">{value}</Text>
         {footer && (
-            <Text className="text-xs text-gray-500 mt-2">{footer}</Text>
+            <Text className="text-xs text-overlay mt-2">{footer}</Text>
         )}
     </View>
 );
 
-export default function PestDiseaseScreen() {
+export default function PestDiseaseProfile() {
     const [modalVisible, setModalVisible] = useState(false);
     const [sprayInput, setSprayInput] = useState("");
 
@@ -100,9 +100,9 @@ export default function PestDiseaseScreen() {
 
             <Text className="text-xl font-bold mt-6 mb-2">Pest & Disease Trend (Last 30 Days)</Text>
             <View className="bg-white rounded-xl p-5 shadow mb-6">
-                <Text className="text-center text-gray-500">Graph Placeholder</Text>
+                <Text className="text-center text-overlay">Graph Placeholder</Text>
                 <CustomBarChart />
-                <Text className="text-center text-xs text-gray-400 mt-1">
+                <Text className="text-center text-xs text-overlay mt-1">
                     (Integrate chart library / API later)
                 </Text>
             </View>
@@ -173,7 +173,7 @@ export default function PestDiseaseScreen() {
                     <Image
                         key={i}
                         source={{ uri: "https://images.pexels.com/photos/1119582/pexels-photo-1119582.jpeg" }}
-                        className="w-32 h-32 bg-gray-200 rounded-xl mr-3"
+                        className="w-32 h-32 bg-neutral/50 rounded-xl mr-3"
                     />
                 ))}
             </ScrollView>
@@ -182,15 +182,15 @@ export default function PestDiseaseScreen() {
             <Text className="text-xl font-bold mt-6 mb-2">Prevention & Recommendations</Text>
 
             <View className="bg-white rounded-xl p-4 shadow mb-6">
-                <Text className="text-gray-700 mb-1">• Maintain proper pruning to reduce canopy density.</Text>
-                <Text className="text-gray-700 mb-1">• Avoid repeated use of same pesticides to prevent resistance.</Text>
-                <Text className="text-gray-700 mb-1">• Improve irrigation spacing to prevent fungal infections.</Text>
-                <Text className="text-gray-700 mb-1">• Monitor humidity closely during rainy periods.</Text>
-                <Text className="text-gray-700">• Follow advisory spray schedule strictly.</Text>
+                <Text className="text-overlay mb-1">• Maintain proper pruning to reduce canopy density.</Text>
+                <Text className="text-overlay mb-1">• Avoid repeated use of same pesticides to prevent resistance.</Text>
+                <Text className="text-overlay mb-1">• Improve irrigation spacing to prevent fungal infections.</Text>
+                <Text className="text-overlay mb-1">• Monitor humidity closely during rainy periods.</Text>
+                <Text className="text-overlay">• Follow advisory spray schedule strictly.</Text>
             </View>
 
             <Modal visible={modalVisible} transparent animationType="fade">
-                <View className="flex-1 bg-black/40 justify-center items-center">
+                <View className="flex-1 bg-black justify-center items-center">
                     <View className="bg-white w-80 p-5 rounded-xl">
 
                         <Text className="text-lg font-bold text-center mb-3">
@@ -207,7 +207,7 @@ export default function PestDiseaseScreen() {
 
                         <View className="flex-row justify-between">
                             <Pressable
-                                className="bg-gray-300 px-4 py-2 rounded-lg"
+                                className="bg-white px-4 py-2 rounded-lg"
                                 onPress={() => setModalVisible(false)}
                             >
                                 <Text>Cancel</Text>
