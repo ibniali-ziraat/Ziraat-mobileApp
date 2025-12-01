@@ -1,40 +1,63 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
-import React from "react";
-import { useFieldArray } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
+import { useFieldArray, useWatch } from "react-hook-form";
+import { TouchableOpacity, View } from "react-native";
+import { Text } from "react-native-paper";
 
 export default function ProductSection({ control, errors }) {
-  const inputOptions = [
-    "Seeds",
-    "Fertilizers",
+  // Static fallback options (converted to {label, value})
+  const STATIC_INPUTS = [
     "Pesticides",
+    "Fungicides",
+    "Herbicides",
+    "Fertilizers",
+    "Biopesticides",
+    "Growth Regulators",
     "Equipment",
-    "Bio-products",
-  ];
+  ].map((x) => ({ label: x, value: x }));
 
+  const STATIC_BRANDS = ["Bayer", "UPL", "FIL", "BASF"].map((x) => ({
+    label: x,
+    value: x,
+  }));
+
+  // Watch major brands field
+  const majorBrandsStocked = useWatch({
+    control,
+    name: "majorBrandsStocked",
+  });
+
+  // Field array for optional inputs list
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "otherInputs",
+    name: "customInputList",
   });
 
   return (
     <View style={{ padding: 20 }}>
+      {/* Inputs Sold */}
       <MultiSelectInput
-        name="inputsSold"
+        name="inputTypesSold"
         control={control}
         label="Type of Inputs Sold"
-        options={inputOptions.map((i) => ({ value: i, label: i }))}
-        error={errors?.inputsSold?.message}
+        options={STATIC_INPUTS}
+        error={errors?.inputTypesSold?.message}
       />
 
-      <FormInput
+      {/* Major Brands (Multi Select) */}
+      <MultiSelectInput
+        name="majorBrandsStocked"
         control={control}
-        name="majorBrands"
-        label="Major Brands Stocked (e.g., Bayer, UPL)"
-        error={errors?.majorBrands?.message}
+        label="Major Brands Stocked"
+        options={STATIC_BRANDS}
+        error={
+          majorBrandsStocked?.length === 0
+            ? { message: "At least one brand is required." }
+            : errors.majorBrandsStocked?.message
+        }
       />
 
+      {/* Storage Capacity */}
       <FormInput
         control={control}
         optional
@@ -43,6 +66,7 @@ export default function ProductSection({ control, errors }) {
         error={errors?.storageCapacity?.message}
       />
 
+      {/* Other Inputs Section */}
       <Text
         style={{
           fontWeight: "700",
@@ -67,19 +91,19 @@ export default function ProductSection({ control, errors }) {
           <View style={{ flex: 1 }}>
             <FormInput
               control={control}
-              name={`otherInputs[${index}].name`}
+              name={`customInputList[${index}].name`}
               label="Input Name"
-              error={errors.otherInputs?.[index]?.name?.message}
+              error={errors.customInputList?.[index]?.name?.message}
             />
           </View>
 
           <View style={{ width: 80 }}>
             <FormInput
               control={control}
-              name={`otherInputs[${index}].stock`}
+              name={`customInputList[${index}].stockQuantity`}
               label="Stock"
-              type="number"
-              error={errors.otherInputs?.[index]?.stock?.message}
+              type="phone"
+              error={errors.customInputList?.[index]?.stockQuantity?.message}
             />
           </View>
 

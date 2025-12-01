@@ -5,9 +5,10 @@ export let vendorAuthToken: string | null = null;
 export const setVendorAxiosToken = (token: string | null) => {
   vendorAuthToken = token;
 };
+console.log(process.env.EXPO_PUBLIC_ZIRAAT_BASE_URL, "url");
 
 const axiosVendor = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_ZIRAAT_BASE_URL,
+  baseURL: "https://hcc9fxkw-44388.inc1.devtunnels.ms",
   headers: { "Content-Type": "application/json" },
 });
 

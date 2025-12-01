@@ -2,10 +2,9 @@ import { z } from "zod";
 
 export const licensingComplianceSchema = z.object({
   dealerLicenseNumber: z.string().min(1, "Required Field"),
-  licenseValidityStart: z.string().min(1, "Required Field"),
-  licenseValidityEnd: z.string().min(1, "Required Field"),
-
-  licenseCopy: z
+  licenseStartDate: z.string().min(1, "Required Field"),
+  licenseExpiryDate: z.string().min(1, "Required Field"),
+  licenseCopyUrl: z
     .object({
       uri: z.string(),
       name: z.string(),
@@ -14,12 +13,23 @@ export const licensingComplianceSchema = z.object({
     })
     .nullable()
     .refine((file) => file !== null, "License file is required")
-    .refine(
-      (file) =>
-        !file ||
-        ["application/pdf", "image/jpeg", "image/png"].includes(file.mimeType),
-      "Only PDF or JPEG/PNG files are allowed"
-    ),
+    .transform((file) => file?.uri ?? ""),
+
+  // licenseCopyUrl: z
+  //   .object({
+  //     uri: z.string(),
+  //     name: z.string(),
+  //     size: z.number().optional(),
+  //     mimeType: z.string().optional(),
+  //   })
+  //   .nullable()
+  //   .refine((file) => file !== null, "License file is required")
+  //   .refine(
+  //     (file) =>
+  //       !file ||
+  //       ["application/pdf", "image/jpeg", "image/png"].includes(file.mimeType),
+  //     "Only PDF or JPEG/PNG files are allowed"
+  //   ),
 
   gstNumber: z
     .string()
@@ -27,7 +37,7 @@ export const licensingComplianceSchema = z.object({
     .optional()
     .or(z.literal("")),
 
-  pan: z
+  panNumber: z
     .string()
     .regex(
       /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/,

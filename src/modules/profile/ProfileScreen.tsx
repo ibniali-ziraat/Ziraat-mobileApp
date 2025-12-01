@@ -1,5 +1,4 @@
 import { colors } from "@/src/constants/colors";
-import React from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -21,12 +20,13 @@ import {
 import ProfileHeader from "./components/ProfileHeader";
 import SectionCard from "./components/SectionCard";
 
+import BackHeader from "@/src/components/shared/BackHeader";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 
-export default function ProfileScreen() {
+export default function UserProfileScreen() {
   const { userId, userProfileId } = useAuth();
   const queryClient = useQueryClient();
 
@@ -49,7 +49,6 @@ export default function ProfileScreen() {
   const { mutateAsync: deleteEducationApi } = useEducationDeleteMutation();
   const { mutateAsync: deleteProfessionApi } = useProfessionDeleteMutation();
 
-  // 🚀 Navigate to form page with correct section
   const goToSection = (section) => {
     router.push({
       pathname: "/userProfileCompletion",
@@ -75,7 +74,7 @@ export default function ProfileScreen() {
     queryClient.invalidateQueries(["professionSection", userProfileId]);
   };
 
-  if (loading)
+  if (!loading)
     return (
       <View className="flex-1 justify-center items-center">
         <ActivityIndicator size="large" color={colors.primary} />
@@ -85,24 +84,14 @@ export default function ProfileScreen() {
   return (
     <ScrollView className="flex-1 bg-white p-5">
       {/* Profile Header */}
-      <TouchableOpacity onPress={() => router.push("/vendor/register")}>
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: "700",
-            marginBottom: 10,
-            color: colors.primary,
-          }}
-        >
-          Become a Supplier
-        </Text>
-      </TouchableOpacity>
+
+      <BackHeader>Profile</BackHeader>
+
       <ProfileHeader
         profileData={profileData}
         onEdit={() => goToSection("profile")}
       />
 
-      {/* Address Section */}
       <SectionCard
         title="Address"
         onEdit={addressData ? () => goToSection("address") : undefined}
@@ -122,7 +111,6 @@ export default function ProfileScreen() {
         )}
       </SectionCard>
 
-      {/* Education Section */}
       <SectionCard
         title="Education"
         onEdit={educationData ? () => goToSection("education") : undefined}

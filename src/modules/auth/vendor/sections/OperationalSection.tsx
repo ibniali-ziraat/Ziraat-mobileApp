@@ -1,22 +1,23 @@
-import React from "react";
 import { useWatch } from "react-hook-form";
 import { View } from "react-native";
 
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import ChipInput from "../ChipInput";
+import ChipInput from "../../../../components/form/inputs/ChipInput";
 
 export default function OperationalSection({ control, errors }) {
-  const deliveryService = useWatch({
+  const deliveryServiceAvailable = useWatch({
     control,
-    name: "deliveryService",
+    name: "deliveryServiceAvailable",
   });
   const serviceAreas = useWatch({
     control,
     name: "serviceArea",
   });
-
-  console.log(errors, "errors in operation");
+  // const companyTieups = useWatch({
+  //   control,
+  //   name: "companyTieups",
+  // });
 
   return (
     <View style={{ padding: 20 }}>
@@ -24,31 +25,32 @@ export default function OperationalSection({ control, errors }) {
         control={control}
         name="yearsInBusiness"
         label="Years in Business"
-        type="number"
+        type="phone"
         error={errors?.yearsInBusiness?.message}
       />
 
-      <FormInput
+      <ChipInput
         control={control}
-        name="distributorTieUps"
-        label="Distributor / Company Tie-ups"
-        error={errors?.distributorTieUps?.message}
+        name="companyTieups"
+        label="Company Tieups (if any)"
+        placeholder="Add Company Tieups"
+        error={errors.companyTieups?.message}
+        optional
       />
 
       <SingleSelectInput
         control={control}
-        name="deliveryService"
+        name="deliveryServiceAvailable"
         label="Delivery Service Available"
         options={[
           { value: "", label: "Select" },
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
         ]}
-        error={errors?.deliveryService}
+        error={errors?.deliveryServiceAvailable}
       />
 
-      {/* Show Chip Input Only When Yes */}
-      {deliveryService === "yes" && (
+      {deliveryServiceAvailable === "yes" && (
         <>
           <ChipInput
             control={control}
@@ -65,10 +67,11 @@ export default function OperationalSection({ control, errors }) {
 
       <FormInput
         control={control}
-        name="averageMonthlySales"
-        label="Average Monthly Sales Volume (optional)"
+        name="avgMonthlySalesVolume"
+        label="Average Monthly Sales Volume"
         type="number"
-        error={errors?.averageMonthlySales?.message}
+        error={errors?.avgMonthlySalesVolume?.message}
+        optional
       />
     </View>
   );
