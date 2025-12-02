@@ -9,7 +9,7 @@ export const menuGroups = [
       },
       {
         label: "Nutrient Management",
-        screen: "dashboards/nutrients-profile",
+        screen: "dashboards/nutrient-profile",
       },
       {
         label: "Pest & Disease",

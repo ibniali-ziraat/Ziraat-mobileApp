@@ -10,7 +10,7 @@ export default function WindCard({ speed, gust, dir }) {
     const deg = degMap[dir] ?? 0;
 
     return (
-        <View className="bg-white rounded-2xl p-5 mb-4 border border-gray-200 shadow-sm">
+        <View className="bg-white rounded-2xl p-5 mb-4 border border-neutral border-sm shadow-md">
 
 
             <Text className="text-black text-base font-semibold mb-3">Wind</Text>
@@ -32,7 +32,7 @@ export default function WindCard({ speed, gust, dir }) {
                 <View className="items-center justify-center">
 
 
-                    <View className="w-28 h-28 rounded-full border-2 border-gray-300 items-center justify-center relative">
+                    <View className="w-28 h-28 rounded-full border-2 border-secondary items-center justify-center relative">
 
                         <Text className="absolute top-1 text-[10px] text-black/60">N</Text>
                         <Text className="absolute bottom-1 text-[10px] text-black/60">S</Text>
@@ -41,7 +41,7 @@ export default function WindCard({ speed, gust, dir }) {
 
 
                         <Animated.View style={{ transform: [{ rotate: `${deg}deg` }] }}>
-                            <Wind size={42} color="black" />
+                            <Wind size={42} color="#c7611f" />
                         </Animated.View>
                     </View>
 

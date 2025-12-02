@@ -90,7 +90,7 @@ const HomeScreen = () => {
   return (
     <View className="flex-1 bg-white px-5 pt-6">
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Weather Card */}
+
         <View className="rounded-3xl overflow-hidden mb-6 shadow-md">
           <LinearGradient
             colors={["#4da82d", "#c7611f"]}
@@ -131,7 +131,7 @@ const HomeScreen = () => {
           </LinearGradient>
         </View>
 
-        {/* Forecast */}
+
         <Text className="text-lg font-semibold mb-3 p-2 text-gray-800">
           3-Day Weather Forecast
         </Text>
@@ -161,7 +161,6 @@ const HomeScreen = () => {
           ))}
         </View>
 
-        {/* Quick Actions */}
         <Text className="font-semibold text-lg mb-3 p-2 text-gray-800">
           Quick Actions
         </Text>
@@ -281,7 +280,6 @@ const HomeScreen = () => {
           </View>
         </ScrollView>
 
-        {/* Farm Management */}
         <Text className="text-lg font-semibold p-2 mb-3">Farm Management</Text>
 
         <View className="flex-row flex-wrap justify-between mb-6">
@@ -304,7 +302,6 @@ const HomeScreen = () => {
           ))}
         </View>
 
-        {/* Chart */}
         <View className="flex-row items-center mb-3 p-2">
           <Ionicons name="bar-chart-outline" size={24} color={colors.primary} />
           <Text className="font-semibold text-lg ml-2">Farm Overview</Text>
@@ -327,7 +324,6 @@ const HomeScreen = () => {
           />
         </View>
 
-        {/* Farmer Tips */}
         <Text className="text-[18px] font-semibold p-2 mb-3">
           Farmer Tips & Awareness
         </Text>
