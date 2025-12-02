@@ -1,117 +1,211 @@
-import {
-    Activity,
-    AlertTriangle,
-    BarChart2,
-    Bell,
-    Calendar,
-    CheckCircle,
-    ClipboardList,
-    PieChart
-} from "lucide-react-native";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
-
-const kpiCards = [
-    { id: 1, title: "Total Alerts Triggered", value: "128", icon: Bell },
-    { id: 2, title: "Alerts Acknowledged", value: "76%", icon: CheckCircle },
-    { id: 3, title: "Tickets Resolved", value: "64%", icon: ClipboardList },
-    { id: 4, title: "Pending Actions", value: "12", icon: AlertTriangle },
-    { id: 5, title: "Services Booked", value: "09", icon: Calendar },
-    { id: 6, title: "Avg Response Time", value: "2.1 hrs", icon: Activity },
-];
-
-const recentAlerts = [
-    { id: "A-201", type: "Weather", status: "Resolved" },
-    { id: "A-202", type: "Pest", status: "Acknowledged" },
-    { id: "A-203", type: "Nutrient Deficiency", status: "Pending" },
-    { id: "A-204", type: "Weather", status: "Pending" },
-];
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { MotiView } from "moti";
+import { Image, ScrollView, Text, View } from "react-native";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 export default function AlertsTrackingScreen() {
     return (
-        <SafeAreaView className="flex-1 bg-white">
-            <ScrollView
-                contentContainerStyle={{ paddingBottom: 50 }}
-                className="px-4 py-6"
-            >
-                <Text className="text-3xl font-bold text-black mb-4">
-                    Alerts & Notifications Tracking
+        <ScrollView className="flex-1 bg-white">
+
+
+            <View className="relative mb-6">
+                <Image
+                    source={{ uri: "https://images.pexels.com/photos/6633043/pexels-photo-6633043.jpeg" }}
+                    className="w-full h-48"
+                />
+                <View className="absolute inset-0 bg-black/30"></View>
+
+                <Text className="absolute bottom-6 left-4 text-white text-3xl font-extrabold">
+                    Alerts & Notifications
                 </Text>
-                <View className="flex flex-wrap flex-row justify-between">
-                    {kpiCards.map((item) => {
-                        const Icon = item.icon;
-                        return (
-                            <View
-                                key={item.id}
-                                className="w-[48%] bg-white p-4 mt-3 rounded-2xl shadow-lg"
-                            >
-                                <View className="flex-row items-center">
-                                    <Icon size={22} className="text-secondary" />
-                                    <Text className="ml-2 text-black font-semibold flex-1">
-                                        {item.title}
-                                    </Text>
-                                </View>
-                                <Text className="text-3xl font-extrabold text-black mt-3">
-                                    {item.value}
-                                </Text>
-                            </View>
-                        );
-                    })}
-                </View>
-                <View className="mt-6 bg-white p-5 rounded-2xl shadow-md">
-                    <View className="flex-row items-center mb-3">
-                        <BarChart2 size={24} className="text-secondary" />
-                        <Text className="ml-2 text-lg font-bold text-secondary">
-                            Alerts Trend (Last 7 Days)
+                <Text className="absolute bottom-2 left-4 text-white/90 font-medium">
+                    Real-time warnings • Risk insights • Advisory actions
+                </Text>
+            </View>
+
+
+            <Text className="text-xl font-bold px-4 mb-2">Alert Summary</Text>
+
+            <View className="px-4">
+
+                <MotiView
+                    from={{ opacity: 0, translateY: 20 }}
+                    animate={{ opacity: 1, translateY: 0 }}
+                    transition={{ delay: 80 }}
+                    className="bg-white rounded-xl shadow p-4 mb-4 flex-row items-center"
+                >
+                    <View className=" p-3 rounded-xl mr-4">
+                        <Ionicons name="alert-circle" size={28} color="#c7611f" />
+                    </View>
+
+                    <View className="flex-1">
+                        <Text className="text-sm text-neutral-600">Total Alerts Triggered</Text>
+                        <Text className="text-3xl font-extrabold">48</Text>
+                        <Text className="text-xs text-neutral-500 mt-1">Weather / Pest / Nutrient systems</Text>
+                    </View>
+                </MotiView>
+
+
+                <MotiView
+                    from={{ opacity: 0, translateY: 20 }}
+                    animate={{ opacity: 1, translateY: 0 }}
+                    transition={{ delay: 150 }}
+                    className="bg-white rounded-xl shadow p-4 mb-4 flex-row items-center"
+                >
+                    <View className=" p-3 rounded-xl mr-4">
+                        <Ionicons name="checkbox-outline" size={28} color="#c7611f" />
+                    </View>
+
+                    <View className="flex-1">
+                        <Text className="text-sm text-neutral-600">Alerts Acknowledged</Text>
+                        <Text className="text-3xl font-extrabold">86%</Text>
+                        <Text className="text-xs text-neutral-500 mt-1">Farmer response rate</Text>
+                    </View>
+                </MotiView>
+
+
+                <MotiView
+                    from={{ opacity: 0, translateY: 20 }}
+                    animate={{ opacity: 1, translateY: 0 }}
+                    transition={{ delay: 220 }}
+                    className="bg-white rounded-xl shadow p-4 mb-4 flex-row items-center"
+                >
+                    <View className=" p-3 rounded-xl mr-4">
+                        <MaterialCommunityIcons name="account-check-outline" size={28} color="#c7611f" />
+                    </View>
+
+                    <View className="flex-1">
+                        <Text className="text-sm text-neutral-600">Advisory Tickets Resolved</Text>
+                        <Text className="text-3xl font-extrabold">72%</Text>
+                        <Text className="text-xs text-neutral-500 mt-1">Expert team performance</Text>
+                    </View>
+                </MotiView>
+
+
+                <MotiView
+                    from={{ opacity: 0, translateY: 20 }}
+                    animate={{ opacity: 1, translateY: 0 }}
+                    transition={{ delay: 290 }}
+                    className="bg-white rounded-xl shadow p-4 mb-4 flex-row items-center"
+                >
+                    <View className=" p-3 rounded-xl mr-4">
+                        <Ionicons name="list" size={28} color="#c7611f" />
+                    </View>
+
+                    <View className="flex-1">
+                        <Text className="text-sm text-neutral-600">Pending Actions</Text>
+                        <Text className="text-3xl font-extrabold">14</Text>
+                        <Text className="text-xs text-neutral-500 mt-1">
+                            Fertigation • Sprays • Pruning tasks
                         </Text>
                     </View>
-                    <View className="h-40 bg-gray-200 rounded-xl items-center justify-center">
-                        <Text className="text-overlay">Bar Chart Here</Text>
+                </MotiView>
+
+
+                <MotiView
+                    from={{ opacity: 0, translateY: 20 }}
+                    animate={{ opacity: 1, translateY: 0 }}
+                    transition={{ delay: 360 }}
+                    className="bg-white rounded-xl shadow p-4 mb-4 flex-row items-center"
+                >
+                    <View className="p-3 rounded-xl mr-4">
+                        <Ionicons name="construct-outline" size={28} color="#c7611f" />
                     </View>
-                </View>
-                <View className="mt-6 bg-white p-5 rounded-2xl shadow-md">
-                    <View className="flex-row items-center mb-3">
-                        <PieChart size={24} className="text-primary" />
-                        <Text className="ml-2 text-lg font-bold text-primary">
-                            Alert Type Distribution
+
+                    <View className="flex-1">
+                        <Text className="text-sm text-neutral-600">Services Booked</Text>
+                        <Text className="text-3xl font-extrabold">09</Text>
+                        <Text className="text-xs text-neutral-500 mt-1">
+                            Orchard care / spraying / consulting
                         </Text>
                     </View>
-                    <View className="h-40 bg-gray-200 rounded-xl items-center justify-center">
-                        <Text className="text-overlay">Pie Chart Here</Text>
-                    </View>
-                </View>
-                <View className="mt-6 bg-white p-5 rounded-2xl shadow-md">
-                    <Text className="text-lg font-bold text-black mb-4">
-                        Recent Alerts
-                    </Text>
-                    {recentAlerts.map((alert) => (
-                        <View
-                            key={alert.id}
-                            className="flex-row justify-between border-b border-white pb-3 mb-3"
-                        >
-                            <Text className="font-semibold text-black">{alert.id}</Text>
-                            <Text className="text-overlay">{alert.type}</Text>
-                            <Text
-                                className={`${alert.status === "Resolved"
-                                    ? "text-primary"
-                                    : alert.status === "Acknowledged"
-                                        ? "text-neutral"
-                                        : "text-secondary"
-                                    } font-medium`}
-                            >
-                                {alert.status}
-                            </Text>
+                </MotiView>
+            </View>
+
+
+
+
+            <Text className="text-xl font-bold px-4 mt-4 mb-2">Alert Categories</Text>
+
+            <View className="px-4 mb-6">
+
+                <Animated.View
+                    entering={FadeInUp.delay(80)}
+                    className="bg-white rounded-xl shadow p-4 mb-3 flex-row items-center"
+                >
+                    <Ionicons name="rainy-outline" size={32} color="#c7611f" />
+                    <Text className="ml-3 text-lg font-semibold">Weather Alerts</Text>
+                </Animated.View>
+
+                <Animated.View
+                    entering={FadeInUp.delay(150)}
+                    className="bg-white rounded-xl shadow p-4 mb-3 flex-row items-center"
+                >
+                    <Ionicons name="bug-outline" size={32} color="#c7611f" />
+                    <Text className="ml-3 text-lg font-semibold">Pest Alerts</Text>
+                </Animated.View>
+
+                <Animated.View
+                    entering={FadeInUp.delay(220)}
+                    className="bg-white rounded-xl shadow p-4 mb-3 flex-row items-center"
+                >
+                    <MaterialCommunityIcons name="leaf-circle-outline" size={32} color="#c7611f" />
+                    <Text className="ml-3 text-lg font-semibold">Nutrient Alerts</Text>
+                </Animated.View>
+
+                <Animated.View
+                    entering={FadeInUp.delay(290)}
+                    className="bg-white rounded-xl shadow p-4 mb-3 flex-row items-center"
+                >
+                    <Ionicons name="flask-outline" size={32} color="#c7611f" />
+                    <Text className="ml-3 text-lg font-semibold">Spray Advisory Alerts</Text>
+                </Animated.View>
+            </View>
+
+
+
+            <Text className="text-xl font-bold px-4 mt-4 mb-2">Recent Alert Timeline</Text>
+
+            <View className="px-4 mb-20">
+
+                {[
+                    {
+                        time: "2 hrs ago",
+                        message: "High humidity—risk of fungal spread",
+                        icon: <Ionicons name="cloud-outline" size={28} color="#c7611f" />,
+                    },
+                    {
+                        time: "6 hrs ago",
+                        message: "Codling moth trap count rising",
+                        icon: <Ionicons name="bug-outline" size={28} color="#c7611f" />,
+                    },
+                    {
+                        time: "Yesterday",
+                        message: "Nitrogen deficiency detected in Block C",
+                        icon: <MaterialCommunityIcons name="leaf-outline" size={28} color="#c7611f" />,
+                    },
+                    {
+                        time: "2 days ago",
+                        message: "Recommended spray overdue by 3 days",
+                        icon: <Ionicons name="alert-circle-outline" size={28} color="#c7611f" />,
+                    },
+                ].map((item, i) => (
+                    <MotiView
+                        key={i}
+                        from={{ opacity: 0, translateY: 15 }}
+                        animate={{ opacity: 1, translateY: 0 }}
+                        transition={{ delay: 100 * i }}
+                        className="bg-white rounded-xl shadow p-4 flex-row items-start mb-3"
+                    >
+                        <View className="mr-4 mt-1">{item.icon}</View>
+                        <View className="flex-1">
+                            <Text className="text-base font-semibold">{item.message}</Text>
+                            <Text className="text-xs text-neutral-500 mt-1">{item.time}</Text>
                         </View>
-                    ))}
-                </View>
-                <View className="mt-6 bg-neutral/100 p-5 rounded-2xl shadow-md">
-                    <Text className="text-xl font-bold text-black mb-2">
-                        Action Required 🚜
-                    </Text>
-                    <Text className="text-black opacity-90">
-                        You have pending tasks related to fertigation, spray & pruning.
-                    </Text>
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                    </MotiView>
+                ))}
+            </View>
+
+        </ScrollView>
     );
 }
