@@ -1,6 +1,6 @@
 //@ts-nocheck
 import * as Location from "expo-location";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, StyleSheet, View } from "react-native";
 import FormInput from "../inputs/FormInput";
 import SingleSelectInput from "../inputs/SingleSelectInput";
@@ -84,7 +84,7 @@ export default function AddressSection({ control, errors }: Props) {
         control={control}
         name="village"
         label="Village"
-        error={errors.village}
+        error={errors.village?.message}
       />
 
       {/* Pincode */}
@@ -93,7 +93,7 @@ export default function AddressSection({ control, errors }: Props) {
         name="pincode"
         label="Pin Code"
         keyboardType="numeric"
-        error={errors.pincode}
+        error={errors.pincode?.message}
       />
 
       {/* Street */}

@@ -28,6 +28,14 @@ export const menuGroups = [
   {
     title: "Vendor Dashboard",
     routes: [
+      {
+        label: "Become a Supplier",
+        screen: "auth/vendor",
+      },
+      {
+        label: "Vendor Profile",
+        screen: "auth/vendor/vendor-profile-screen",
+      },
       { label: "Profile", screen: "dashboards/(vendor)/ProfileScreen" },
       { label: "Reports", screen: "dashboards/(vendor)/ReportsScreen" },
       { label: "Credits", screen: "dashboards/(vendor)/CreditScreen" },

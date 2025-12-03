@@ -1,50 +1,19 @@
-import z from "zod";
+import { z } from "zod";
 
-export const operationalDetailsSchema = z
-  .object({
-    yearsInBusiness: z.coerce
-      .number({ invalid_type_error: "Enter a number" })
-      .min(1, "Years in business is required"),
+export const operationalDetailsSchema = z.object({
+  yearsInBusiness: z.coerce
+    .number({ invalid_type_error: "Enter a number" })
+    .min(1, "Years in business is required"),
 
-    companyTieups: z
-      .preprocess(
-        (val) => (val === undefined || val === null ? [] : val),
-        z
-          .array(
-            z.object({
-              name: z.string().min(1, "Required Field"),
-            })
-          )
-          .optional()
-      )
-      .optional(),
+  deliveryServiceAvailable: z.enum(["yes", "no"], {
+    required_error: "Delivery Service selection is required",
+  }),
 
-    deliveryServiceAvailable: z.preprocess(
-      (val) => (val === undefined || val === null ? "" : val),
-      z.string().nonempty("Delivery Service selection is required")
-    ),
+  avgMonthlySalesVolume: z.coerce
+    .number({ invalid_type_error: "Enter a number" })
+    .optional(),
 
-    serviceArea: z.preprocess(
-      (val) => (val === undefined || val === null ? [] : val),
-      z.array(
-        z.object({
-          name: z.string().min(1, "Area name is required"),
-        })
-      )
-    ),
-    avgMonthlySalesVolume: z.coerce
-      .number({ invalid_type_error: "Enter a number" })
-      .optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (
-      data.deliveryServiceAvailable === "yes" &&
-      data.serviceArea.length === 0
-    ) {
-      ctx.addIssue({
-        path: ["serviceArea"],
-        code: z.ZodIssueCode.custom,
-        message: "At least one service area is required",
-      });
-    }
-  });
+  // Arrays of strings for form
+  serviceArea: z.array(z.string()).optional(),
+  companyTieups: z.array(z.string()).optional(),
+});

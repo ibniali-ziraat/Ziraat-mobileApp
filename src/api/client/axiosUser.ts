@@ -7,7 +7,7 @@ export const setUserAxiosToken = (token: string | null) => {
 };
 
 const axiosUser = axios.create({
-  baseURL: "https://hcc9fxkw-44388.inc1.devtunnels.ms",
+  baseURL: "https://j6rs4vgs-44388.inc1.devtunnels.ms",
   headers: { "Content-Type": "application/json" },
 });
 

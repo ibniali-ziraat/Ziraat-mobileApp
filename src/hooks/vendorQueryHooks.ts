@@ -31,9 +31,6 @@ import {
   updateVendorSupport,
 } from "../services/vendorService";
 
-// ----------------------------------------------------
-// 🧑‍🌾 VENDOR PROFILE (Business Info)
-// ----------------------------------------------------
 export const useVendorProfileQuery = (vendorId) =>
   useQuery({
     queryKey: ["vendorProfile", vendorId],

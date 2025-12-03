@@ -1,12 +1,10 @@
-import { colors } from "@/src/constants/colors";
-import {
-  ActivityIndicator,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import BackHeader from "@/src/components/shared/BackHeader";
+import ProfileHeader from "./components/ProfileHeader";
+import SectionCard from "./components/SectionCard";
 
+import { colors } from "@/src/constants/colors";
+
+import { useAuth } from "@/src/contexts/AuthContext";
 import {
   useAddressDeleteMutation,
   useAddressQuery,
@@ -17,74 +15,56 @@ import {
   useProfileQuery,
 } from "@/src/hooks/userQueryHooks";
 
-import ProfileHeader from "./components/ProfileHeader";
-import SectionCard from "./components/SectionCard";
-
-import BackHeader from "@/src/components/shared/BackHeader";
-import { useAuth } from "@/src/contexts/AuthContext";
 import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
+import { ScrollView, Text, TouchableOpacity } from "react-native";
+import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
+import { userRoutes } from "../auth/vendor/config/userRoutes";
 
 export default function UserProfileScreen() {
   const { userId, userProfileId } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data: profileData, isLoading: loadingProfile } =
-    useProfileQuery(userId);
+  // Queries
+  const { data: profileData } = useProfileQuery(userId);
+  const { data: addressData } = useAddressQuery(userProfileId);
+  const { data: educationData } = useEducationQuery(userProfileId);
+  const { data: professionData } = useProfessionQuery(userProfileId);
 
-  const { data: addressData, isLoading: loadingAddress } =
-    useAddressQuery(userProfileId);
-
-  const { data: educationData, isLoading: loadingEducation } =
-    useEducationQuery(userProfileId);
-
-  const { data: professionData, isLoading: loadingProfession } =
-    useProfessionQuery(userProfileId);
-
-  const loading =
-    loadingProfile || loadingAddress || loadingEducation || loadingProfession;
-
+  // Delete Mutations
   const { mutateAsync: deleteAddressApi } = useAddressDeleteMutation();
   const { mutateAsync: deleteEducationApi } = useEducationDeleteMutation();
   const { mutateAsync: deleteProfessionApi } = useProfessionDeleteMutation();
 
-  const goToSection = (section) => {
-    router.push({
-      pathname: "/userProfileCompletion",
-      params: { section },
-    });
+  // Route Navigation
+  const goToSection = (section) => router.push(userRoutes[section]);
+
+  // API Delete Map
+  const deleteActions = {
+    address: deleteAddressApi,
+    education: deleteEducationApi,
+    profession: deleteProfessionApi,
   };
 
-  const deleteAddress = async () => {
-    await deleteAddressApi(userProfileId);
-    showSuccessToast("Address deleted successfully");
-    queryClient.invalidateQueries(["addressSection", userProfileId]);
-  };
+  // Single Delete Handler (same pattern as Vendor)
+  const handleDelete = async (section) => {
+    try {
+      const config = userDeleteConfig[section];
+      const api = deleteActions[section];
 
-  const deleteEducation = async () => {
-    await deleteEducationApi(userProfileId);
-    showSuccessToast("Education deleted successfully");
-    queryClient.invalidateQueries(["educationSection", userProfileId]);
-  };
+      await api(userProfileId);
 
-  const deleteProfession = async () => {
-    await deleteProfessionApi(userProfileId);
-    showSuccessToast("Profession deleted successfully");
-    queryClient.invalidateQueries(["professionSection", userProfileId]);
-  };
+      showSuccessToast(config.success);
 
-  if (!loading)
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
+      queryClient.invalidateQueries([config.queryKey, userProfileId]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <ScrollView className="flex-1 bg-white p-5">
-      {/* Profile Header */}
-
       <BackHeader>Profile</BackHeader>
 
       <ProfileHeader
@@ -94,8 +74,11 @@ export default function UserProfileScreen() {
 
       <SectionCard
         title="Address"
-        onEdit={addressData ? () => goToSection("address") : undefined}
-        onDelete={addressData ? deleteAddress : undefined}
+        onEdit={!addressData ? () => goToSection("address") : undefined}
+        onDelete={addressData ? () => handleDelete("address") : undefined}
+        style={
+          !addressData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
       >
         {addressData ? (
           <Text>
@@ -113,8 +96,11 @@ export default function UserProfileScreen() {
 
       <SectionCard
         title="Education"
-        onEdit={educationData ? () => goToSection("education") : undefined}
-        onDelete={educationData ? deleteEducation : undefined}
+        onEdit={!educationData ? () => goToSection("education") : undefined}
+        onDelete={educationData ? () => handleDelete("education") : undefined}
+        style={
+          !educationData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
       >
         {educationData ? (
           <>
@@ -132,11 +118,14 @@ export default function UserProfileScreen() {
         )}
       </SectionCard>
 
-      {/* Profession Section */}
+      {/* PROFESSION SECTION */}
       <SectionCard
         title="Profession"
-        onEdit={professionData ? () => goToSection("profession") : undefined}
-        onDelete={professionData ? deleteProfession : undefined}
+        onEdit={!professionData ? () => goToSection("profession") : undefined}
+        onDelete={professionData ? () => handleDelete("profession") : undefined}
+        style={
+          !professionData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
       >
         {professionData ? (
           <>
