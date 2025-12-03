@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../../../../components/shared/HeaderBar";
+
 
 const colors = {
   primary: "#2d6b06",
@@ -91,7 +91,7 @@ export default function NotificationScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
       {/* HEADER */}
-      <HeaderBar title="Notifications" icon="notifications-circle" />
+      {/* <HeaderBar title="Notifications" icon="notifications-circle" /> */}
 
       {/* TOP FILTER TABS */}
       <View className="mt-3 px-2">

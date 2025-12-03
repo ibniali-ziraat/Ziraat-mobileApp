@@ -55,7 +55,7 @@ export function CustomDrawer({ navigation, menuGroups }) {
 
   return (
     <DrawerContentScrollView className="bg-light">
-      <View className="px-5 pb-6 pt-2 mb-2 border-b border-gray-200">
+      <View className="px-5 pb-6  mb-2 border-b border-gray-200">
         <Image
           source={require("../../assets/images/logo.jpeg")}
           style={{ width: "100%", height: 60 }}

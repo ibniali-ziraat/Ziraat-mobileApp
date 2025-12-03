@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { ScrollView, Text } from "react-native";
 
-import CreditAgingCard from "../../../../modules/vendor/components/reports/CreditAgingCard";
-import DeliveryPerformanceCard from "../../../../modules/vendor/components/reports/DeliveryPerformanceCard";
-import ProductPerformanceCard from "../../../../modules/vendor/components/reports/ProductPerformanceCard";
-import SalesCard from "../../../../modules/vendor/components/reports/SalesCard";
-import SalesFilters from "../../../../modules/vendor/components/reports/SalesFilters";
-import TaxReportCard from "../../../../modules/vendor/components/reports/TaxReportCard";
+import CreditAgingCard from "../../../modules/vendor/components/reports/CreditAgingCard";
+import DeliveryPerformanceCard from "../../../modules/vendor/components/reports/DeliveryPerformanceCard";
+import ProductPerformanceCard from "../../../modules/vendor/components/reports/ProductPerformanceCard";
+import SalesCard from "../../../modules/vendor/components/reports/SalesCard";
+import SalesFilters from "../../../modules/vendor/components/reports/SalesFilters";
+import TaxReportCard from "../../../modules/vendor/components/reports/TaxReportCard";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../../../../components/shared/HeaderBar";
 
 const salesFiltersData = ["Date", "Product", "Client", "Region"];
 
@@ -46,7 +45,7 @@ export default function ReportsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
       {/* HEADER */}
-      <HeaderBar title="Reports" icon="person-circle" />
+      {/* <HeaderBar title="Reports" icon="person-circle" /> */}
 
       <ScrollView className="px-4 pt-3 pb-24">
         <Text className="text-gray-800 font-semibold mb-2">Sales Reports</Text>

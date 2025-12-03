@@ -1,3 +1,4 @@
+import { colors } from "@/src/constants/colors";
 import { useRef } from "react";
 import { Pressable, View } from "react-native";
 import Animated, {
@@ -14,9 +15,13 @@ const ACTIVE_SCALE = 1.12;
 export default function TabBar({ tabs, activeTab, onChange }) {
   const indicatorX = useSharedValue(0);
   const indicatorW = useSharedValue(0);
-  const pressScale = useSharedValue(1);
+  const indicatorStretch = useSharedValue(1);
 
   const containerWidth = useRef(0);
+
+  // Shared animation store per tab
+  const tabScales = tabs.map(() => useSharedValue(1));
+  const tabOpacities = tabs.map(() => useSharedValue(0.6));
 
   const onLayout = (e) => {
     containerWidth.current = e.nativeEvent.layout.width;
@@ -26,69 +31,92 @@ export default function TabBar({ tabs, activeTab, onChange }) {
     indicatorX.value = tabWidth * tabs.indexOf(activeTab);
   };
 
+  /** Enhanced Liquid Stretch Indicator */
   const indicatorStyle = useAnimatedStyle(() => ({
+    width: indicatorW.value,
     transform: [
       { translateX: indicatorX.value },
       {
-        scaleX: interpolate(
-          pressScale.value,
-          [1, 1.07, 1],
-          [1, 1.25, 1]
-        ),
+        scaleX: interpolate(indicatorStretch.value, [1, 1.1, 1], [1, 1.18, 1]),
       },
       {
-        scaleY: interpolate(
-          pressScale.value,
-          [1, 1.07, 1],
-          [1, 0.85, 1]
-        ),
+        scaleY: interpolate(indicatorStretch.value, [1, 1.1, 1], [1, 0.9, 1]),
       },
     ],
-    width: indicatorW.value,
+    backgroundColor: colors.primary,
   }));
 
   return (
     <View
-      className="bg-white shadow-md border-b border-gray-100"
+      style={{
+        backgroundColor: colors.light,
+        borderBottomWidth: 1,
+        borderColor: colors.neutral,
+      }}
     >
-      <View className="flex-row relative" onLayout={onLayout}>
+      <View
+        style={{ flexDirection: "row", position: "relative" }}
+        onLayout={onLayout}
+      >
 
-        {/* Liquid Morphing Indicator */}
+        {/* Bottom Liquid Indicator */}
         <Animated.View
-          className="absolute bottom-0 h-[4px] bg-primary rounded-full shadow-lg"
-          style={indicatorStyle}
+          style={[
+            {
+              position: "absolute",
+              bottom: 0,
+              height: 4,
+              borderRadius: 50,
+              shadowColor: colors.cardShadow,
+              shadowOpacity: 0.3,
+              shadowRadius: 5,
+              shadowOffset: { width: 0, height: 2 },
+            },
+            indicatorStyle,
+          ]}
         />
 
         {tabs.map((t, index) => {
           const isActive = activeTab === t;
+          const scale = tabScales[index];
+          const opacity = tabOpacities[index];
 
+          /** Individual tab animation */
           const animatedText = useAnimatedStyle(() => ({
-            transform: [
-              {
-                scale: withTiming(isActive ? ACTIVE_SCALE : 1, {
-                  duration: 300,
-                }),
-              },
-            ],
-            opacity: withTiming(isActive ? 1 : 0.6, {
-              duration: 250,
-            }),
+            transform: [{ scale: scale.value }],
+            opacity: opacity.value,
           }));
 
           return (
             <Pressable
-              key={index}
-              className="flex-1 items-center py-4"
+              key={t}
+              style={{
+                flex: 1,
+                alignItems: "center",
+                paddingVertical: 16,
+              }}
               onPress={() => {
                 const tabWidth = containerWidth.current / tabs.length;
 
-                // ripple > elastic > settle effect
-                pressScale.value = withTiming(1.07, { duration: 110 });
-                setTimeout(() => {
-                  pressScale.value = withSpring(1, { damping: 10 });
-                }, 110);
+                // Reset all animations
+                tabScales.forEach((sv, i) => {
+                  sv.value = withTiming(i === index ? ACTIVE_SCALE : 1, {
+                    duration: 250,
+                  });
+                });
 
-                // indicator animation
+                tabOpacities.forEach((sv, i) => {
+                  sv.value = withTiming(i === index ? 1 : 0.5, {
+                    duration: 200,
+                  });
+                });
+
+                // Liquid stretch effect
+                indicatorStretch.value = withTiming(1.1, { duration: 120 }, () => {
+                  indicatorStretch.value = withSpring(1);
+                });
+
+                // Smooth indicator slide
                 indicatorX.value = withTiming(tabWidth * index, {
                   duration: 550,
                   easing: Easing.bezier(0.22, 1, 0.36, 1),
@@ -98,10 +126,14 @@ export default function TabBar({ tabs, activeTab, onChange }) {
               }}
             >
               <Animated.Text
-                className={`text-sm font-semibold ${
-                  isActive ? "text-primary" : "text-gray-600"
-                }`}
-                style={animatedText}
+                style={[
+                  {
+                    fontSize: 14,
+                    fontWeight: "600",
+                    color: isActive ? colors.primary : colors.dark,
+                  },
+                  animatedText,
+                ]}
               >
                 {t.toUpperCase()}
               </Animated.Text>

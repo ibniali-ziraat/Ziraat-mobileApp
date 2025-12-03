@@ -1,16 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
-  Modal,
-  ScrollView,
-  Switch,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Modal,
+    ScrollView,
+    Switch,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../../../../components/shared/HeaderBar";
 
 const colors = {
   primary: "#2d6b06",
@@ -100,7 +99,7 @@ export default function UserScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
       {/* HEADER */}
-      <HeaderBar title="User & Role Management" icon="person-circle" />
+      {/* <HeaderBar title="User & Role Management" icon="person-circle" /> */}
 
       <ScrollView className="px-4 pt-3 pb-24">
         {/* FILTER TABS – Premium */}

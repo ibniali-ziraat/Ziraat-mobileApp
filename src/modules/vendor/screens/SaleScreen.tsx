@@ -1,4 +1,3 @@
-import HeaderBar from "@/src/components/shared/HeaderBar";
 import SalesSummaryCard from "@/src/modules/vendor/components/SalesSummaryCard";
 import SalesTabs from "@/src/modules/vendor/components/SalesTabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,9 +17,7 @@ const colors = {
   error: "#f44336",
 };
 
-// =======================================================================
-// MAIN COMPONENT
-// =======================================================================
+
 
 export default function SalesScreen() {
   const summaryData = {
@@ -56,7 +53,7 @@ export default function SalesScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-[#F6F7F8]">
-      <HeaderBar title="Sales Overview" icon="bar-chart-outline" />
+      {/* <HeaderBar title="Sales Overview" icon="bar-chart-outline" /> */}
 
       <ScrollView
         className="px-4 pt-4"

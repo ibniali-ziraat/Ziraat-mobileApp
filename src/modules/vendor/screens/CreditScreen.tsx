@@ -1,13 +1,12 @@
-import HeaderBar from "@/src/components/shared/HeaderBar";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
-  ScrollView,
-  Switch,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    ScrollView,
+    Switch,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -134,8 +133,8 @@ export default function CreditScreen() {
   const upcomingClients = 3;
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
-      <HeaderBar title="Credit Management" icon="person-circle" />
+    <SafeAreaView className="flex-1 ">
+      
 
       <ScrollView className="flex-1 px-4 pt-3 pb-24">
         {/* TOP SUMMARY CARD */}

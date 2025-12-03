@@ -1,4 +1,3 @@
-import HeaderBar from "@/src/components/shared/HeaderBar";
 import FeeOverviewSection from "@/src/modules/vendor/components/platformScreen/FeeOverviewSection";
 import FeeStructureCard from "@/src/modules/vendor/components/platformScreen/FeeStructureCard.";
 import StatementBottom from "@/src/modules/vendor/components/platformScreen/StatementBottom";
@@ -82,7 +81,7 @@ export default function PlatformScreen() {
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
       {/* Header */}
-      <HeaderBar title="Platform Fee Management" icon="person-circle-outline" />
+      {/* <HeaderBar title="Platform Fee Management" icon="person-circle-outline" /> */}
 
       <ScrollView className="px-4 pt-4 pb-24">
         <FeeStructureCard colors={colors} />
