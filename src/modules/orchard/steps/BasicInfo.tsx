@@ -2,6 +2,7 @@ import FormInput from "@/src/components/form/inputs/FormInput";
 import { ScrollView, Text, View } from "react-native";
 
 export default function StepA_BasicInfo({ control, errors }) {
+  
   return (
     <ScrollView className="flex-1 w-full">
       <Text className="text-2xl font-bold mb-4 text-center text-primary">
@@ -14,13 +15,14 @@ export default function StepA_BasicInfo({ control, errors }) {
         </Text>
 
         <FormInput
+        
           control={control}
           name="orchardName"
           label="Orchard Name"
           icon="account"
           iconColor="secondary"
           iconSize={20}
-          errors={errors}
+          errors={errors?.orchardName?.message}
         />
 
         <FormInput
@@ -29,8 +31,9 @@ export default function StepA_BasicInfo({ control, errors }) {
           label="Orchard Size (Kanals & Marlas)"
           icon="square"
           iconColor="secondary"
+          type="phone"
           iconSize={20}
-          errors={errors}
+          errors={errors?.orchardSize?.message}
         />
 
         <FormInput
@@ -39,8 +42,9 @@ export default function StepA_BasicInfo({ control, errors }) {
           label="Establishment Year"
           icon="calendar"
           iconColor="secondary"
+          type="phone"
           iconSize={20}
-          errors={errors}
+          errors={errors?.establishmentYear?.message}
         />
 
         <FormInput
@@ -50,7 +54,7 @@ export default function StepA_BasicInfo({ control, errors }) {
           icon="tree"
           iconColor="secondary"
           iconSize={20}
-          errors={errors}
+          errors={errors?.plantationPattern?.message}
         />
 
         <FormInput
@@ -60,7 +64,7 @@ export default function StepA_BasicInfo({ control, errors }) {
           icon="home"
           iconColor="secondary"
           iconSize={20}
-          errors={errors}
+          errors={errors?.ownershipType?.message}
         />
 
         <FormInput
@@ -70,7 +74,7 @@ export default function StepA_BasicInfo({ control, errors }) {
           icon="map"
           iconColor="secondary"
           iconSize={20}
-          errors={errors}
+          errors={errors?.district?.message}
         />
 
         <FormInput
@@ -80,7 +84,7 @@ export default function StepA_BasicInfo({ control, errors }) {
           icon="map-marker"
           iconColor="secondary"
           iconSize={20}
-          errors={errors}
+          errors={errors?.tehsil?.message}
         />
 
         <FormInput
@@ -90,7 +94,7 @@ export default function StepA_BasicInfo({ control, errors }) {
           icon="map-marker-radius"
           iconColor="secondary"
           iconSize={20}
-          errors={errors}
+          errors={errors?.zone?.message}
         />
 
         <FormInput
@@ -99,8 +103,9 @@ export default function StepA_BasicInfo({ control, errors }) {
           label="PIN Code"
           icon="numeric"
           iconColor="secondary"
+          type="phone"
           iconSize={20}
-          errors={errors}
+          errors={errors?.pincode?.message}
         />
 
         <FormInput
@@ -109,8 +114,9 @@ export default function StepA_BasicInfo({ control, errors }) {
           label="Latitude"
           icon="crosshairs-gps"
           iconColor="secondary"
+          type="phone"
           iconSize={20}
-          errors={errors}
+          errors={errors.latitude?.message}
         />
 
         <FormInput
@@ -119,8 +125,9 @@ export default function StepA_BasicInfo({ control, errors }) {
           label="Longitude"
           icon="crosshairs"
           iconColor="secondary"
+          type="phone"
           iconSize={20}
-          errors={errors}
+          errors={errors?.longitude?.message}
         />
       </View>
     </ScrollView>

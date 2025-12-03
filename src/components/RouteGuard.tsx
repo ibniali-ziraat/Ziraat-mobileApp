@@ -12,7 +12,7 @@ export default function RouteGuard({ children }: RouteGuardProps) {
   useEffect(() => {
     if (!initialized) return;
 
-    if (!userId) {
+    if (userId) {
       router.replace("/auth/user");
     }
   }, [initialized, userId]);

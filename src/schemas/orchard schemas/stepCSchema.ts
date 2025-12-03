@@ -1,11 +1,7 @@
-// StepC_SoilWaterProfile.schema.ts
 import { z } from "zod";
 
-const currentYear = new Date().getFullYear();
+export const yesNoOptions = ["Yes", "No"] as const;
 
-/**
- * Option lists (kept in sync with your UI)
- */
 export const soilTypeOptions = [
   "Sandy Clay Loam",
   "Sandy Loam",
@@ -16,8 +12,10 @@ export const soilTypeOptions = [
   "Silt Clay",
   "Silt",
   "Silt Clay Loam",
-  "Not Getting",
+  "Not getting",
 ] as const;
+
+export const soilHealthOptions = ["Acidic", "Alkaline", "Not Known"] as const;
 
 export const waterSourceOptions = [
   "Canal",
@@ -27,113 +25,73 @@ export const waterSourceOptions = [
   "Other",
 ] as const;
 
-export const irrigationOptions = [
-  "Drip",
-  "Sprinkler",
-  "Flood",
-  "None",
-] as const;
+export const irrigationOptions = ["Drip", "Sprinkler", "Flood", "None"] as const;
 
 export const waterAvailabilityOptions = [
   "Round-the-year",
   "Seasonal",
-  "Not Available",
+  "Not available",
 ] as const;
 
-export const soilHealthOptions = ["Acidic", "Alkaline", "Not Known"] as const;
+export const stepCSoilWaterSchema = z
+  .object({
+    soilType: z.enum(soilTypeOptions),
+    soilHealth: z.enum(soilHealthOptions),
 
-export const stepCSoilWaterSchema = z.object({
+    lastSoilTestDone: z.enum(yesNoOptions),
+    lastSoilTestDate: z.string().optional().nullable(),
 
-  soilType: z.enum(soilTypeOptions, {
-    invalid_type_error: "Please choose a valid soil type.",
-    required_error: "Soil type is required.",
-  }),
+    soilTestRecordsDone: z.enum(yesNoOptions),
 
-  soilHealth: z.enum(soilHealthOptions, {
-    invalid_type_error: "Please select a valid soil health.",
-    required_error: "Soil health is required.",
-  }),
+    soilPH: z.string().optional(),
+    soilN: z.string().optional(),
+    soilP: z.string().optional(),
+    soilK: z.string().optional(),
+    soilOrganicCarbon: z.string().optional(),
+    soilMicronutrients: z.string().optional(),
 
-  waterSource: z.enum(waterSourceOptions, {
-    invalid_type_error: "Please select a valid water source.",
-    required_error: "Water source is required.",
-  }),
+    soilTestFileToggle: z.enum(yesNoOptions),
+    soilTestFile: z.any().optional(),
 
-  irrigationMethod: z.enum(irrigationOptions, {
-    invalid_type_error: "Please select irrigation method.",
-    required_error: "Irrigation method is required.",
-  }),
+    waterSource: z.enum(waterSourceOptions),
+    irrigationMethod: z.enum(irrigationOptions),
+    waterAvailability: z.enum(waterAvailabilityOptions),
+  })
 
-  waterAvailability: z.enum(waterAvailabilityOptions, {
-    invalid_type_error: "Please select water availability.",
-    required_error: "Water availability is required.",
-  }),
+  .superRefine((data, ctx) => {
+    // Last Soil Test Date Required
+    if (data.lastSoilTestDone === "Yes" && !data.lastSoilTestDate) {
+      ctx.addIssue({
+        path: ["lastSoilTestDate"],
+        message: "Please select the soil test date",
+      });
+    }
 
+    // Soil Test Records Required
+    if (data.soilTestRecordsDone === "Yes") {
+      const requiredFields = [
+        ["soilPH", "pH is required"],
+        ["soilN", "Nitrogen is required"],
+        ["soilP", "Phosphorus is required"],
+        ["soilK", "Potassium is required"],
+        ["soilOrganicCarbon", "Organic Carbon is required"],
+        ["soilMicronutrients", "Micronutrients required"],
+      ];
 
-  
-  soilPH: z.coerce
-    .number({ invalid_type_error: "Enter valid pH (0–14)." })
-    .min(0, "pH must be >= 0")
-    .max(14, "pH must be <= 14")
-    .optional()
-    .nullable(),
+      requiredFields.forEach(([path, msg]) => {
+        if (!data[path]) {
+          ctx.addIssue({ path: [path], message: msg });
+        }
+      });
+    }
 
-  soilN: z.coerce
-    .number({ invalid_type_error: "Enter valid Nitrogen value." })
-    .min(0, "Nitrogen cannot be negative")
-    .optional()
-    .nullable(),
-
-  soilP: z.coerce
-    .number({ invalid_type_error: "Enter valid Phosphorus value." })
-    .min(0, "Phosphorus cannot be negative")
-    .optional()
-    .nullable(),
-
-  soilK: z.coerce
-    .number({ invalid_type_error: "Enter valid Potassium value." })
-    .min(0, "Potassium cannot be negative")
-    .optional()
-    .nullable(),
-
-  soilOrganicCarbon: z.coerce
-    .number({ invalid_type_error: "Enter valid Organic Carbon (%)." })
-    .min(0, "Organic Carbon must be >= 0")
-    .max(100, "Organic Carbon must be <= 100")
-    .optional()
-    .nullable(),
-
-
-  /** ------------------------
-   *   OPTIONAL TEXT FIELDS
-   * -------------------------*/
-  soilMicronutrients: z
-    .string()
-    .max(500, "Too long")
-    .optional()
-    .nullable(),
-
-
-  /** ------------------------
-   *   OPTIONAL FILE
-   * -------------------------*/
-  soilTestFile: z.any().optional().nullable(),
-
-
-  /** ------------------------
-   *   OPTIONAL DATE / YEAR
-   * -------------------------*/
-  lastSoilTest: z
-    .string()
-    .optional()
-    .nullable()
-    .refine(
-      (v) =>
-        !v ||
-        /^\d{4}$/.test(v) ||          // YEAR
-        /^\d{4}-\d{2}-\d{2}$/.test(v), // YYYY-MM-DD
-      { message: "Enter a year (e.g. 2022) or YYYY-MM-DD" }
-    ),
-});
+    // File Upload Required
+    if (data.soilTestFileToggle === "Yes" && !data.soilTestFile) {
+      ctx.addIssue({
+        path: ["soilTestFile"],
+        message: "Upload Soil Test Report",
+      });
+    }
+  });
 
 export type StepCSoilWaterType = z.infer<typeof stepCSoilWaterSchema>;

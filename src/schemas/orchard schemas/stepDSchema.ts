@@ -39,15 +39,11 @@ export const stepDCropNutritionSchema = z.object({
     invalid_type_error: "Please select Yes or No.",
   }),
 
-  lastFertiliserDate: z
-    .string()
-    .optional()
-    .nullable()
-    .refine(
-      (v) =>
-        !v || /^\d{4}$/.test(v) || /^\d{4}-\d{2}-\d{2}$/.test(v),
-      { message: "Enter a valid date (YYYY or YYYY-MM-DD)." }
-    ),
+  lastFertiliserDate: z.string({
+    required_error: "Last fertilizing date is required.",
+  
+  }),
+  
 
   applicationMode: z.enum(applicationModeOptions, {
     required_error: "Application mode is required.",
