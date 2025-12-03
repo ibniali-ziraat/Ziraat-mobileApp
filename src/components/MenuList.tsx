@@ -7,7 +7,6 @@ export default function MenuList() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.light }}>
       <ScrollView style={{ flex: 1, padding: 16 }}>
-        {/* E-COMMERCE MAIN SECTION */}
         <SectionTitle title="E-Commerce" />
         <MenuItem
           label="Marketplace"
@@ -27,7 +26,6 @@ export default function MenuList() {
         />
         <MenuItem label="Support" onPress={() => router.push("/support")} />
 
-        {/* EXISTING GROUPS */}
         {menuGroups.map((group) => (
           <View key={group.title} style={{ marginTop: 28 }}>
             <SectionTitle title={group.title} />

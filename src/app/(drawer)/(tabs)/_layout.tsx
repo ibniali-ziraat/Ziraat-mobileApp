@@ -1,3 +1,4 @@
+import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
 import { Tabs } from "expo-router";
 import { Home, Menu, ShoppingBag, Trees } from "lucide-react-native";
@@ -10,16 +11,18 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarActiveTintColor: colors.secondary,
-        tabBarInactiveTintColor: colors.black,
+        tabBarInactiveTintColor: colors.dark,
+
         tabBarStyle: {
           paddingTop: 10,
           paddingBottom: 50 + insets.bottom,
-          height: insets.bottom,
-          backgroundColor: colors.white,
+          // height: 90 + insets.bottom,
+          backgroundColor: colors.light,
           borderTopWidth: 0,
           elevation: 0.5,
-          shadowColor: colors.blackHover,
+          shadowColor: colors.overlay,
           shadowOpacity: 0.1,
           shadowOffset: { width: 0, height: -2 },
           shadowRadius: 5,
@@ -30,7 +33,13 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
+          tabBarIcon: ({ color }) => (
+            <TabIcon
+              icon={<Home size={22} color={color} />}
+              label="Home"
+              color={color}
+            />
+          ),
         }}
       />
 
@@ -38,7 +47,13 @@ export default function TabLayout() {
         name="orchards"
         options={{
           title: "Crops",
-          tabBarIcon: ({ color, size }) => <Trees color={color} size={size} />,
+          tabBarIcon: ({ color }) => (
+            <TabIcon
+              icon={<Trees size={22} color={color} />}
+              label="Crops"
+              color={color}
+            />
+          ),
         }}
       />
 
@@ -46,8 +61,12 @@ export default function TabLayout() {
         name="Product"
         options={{
           title: "Products",
-          tabBarIcon: ({ color, size }) => (
-            <ShoppingBag color={color} size={size} />
+          tabBarIcon: ({ color }) => (
+            <TabIcon
+              icon={<ShoppingBag size={22} color={color} />}
+              label="Products"
+              color={color}
+            />
           ),
         }}
       />
@@ -56,7 +75,13 @@ export default function TabLayout() {
         name="menu"
         options={{
           title: "Menu",
-          tabBarIcon: ({ color, size }) => <Menu color={color} size={size} />,
+          tabBarIcon: ({ color }) => (
+            <TabIcon
+              icon={<Menu size={22} color={color} />}
+              label="Menu"
+              color={color}
+            />
+          ),
         }}
       />
     </Tabs>

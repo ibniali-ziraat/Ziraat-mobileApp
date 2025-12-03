@@ -1,5 +1,3 @@
-// src/components/charts/CustomBarChart.tsx
-import React from "react";
 import { Dimensions, Text, View } from "react-native";
 import { BarChart, LineChart, PieChart } from "react-native-chart-kit";
 
@@ -45,7 +43,9 @@ export default function CustomBarChart({
     return (
       <View>
         {title ? (
-          <Text style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>{title}</Text>
+          <Text style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>
+            {title}
+          </Text>
         ) : null}
         <PieChart
           data={pieData}
@@ -66,7 +66,9 @@ export default function CustomBarChart({
   return (
     <View>
       {title ? (
-        <Text style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>{title}</Text>
+        <Text style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>
+          {title}
+        </Text>
       ) : null}
       {type === "bar" ? (
         <BarChart

@@ -2,14 +2,14 @@
 import { useState } from "react";
 import { Button, View } from "react-native";
 import LoginForm from "./LoginForm";
-import UserRegistration from "./UserRegistration";
+import ProfileScreen from "./screens/ProfileScreen";
 
 export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "register">("register");
 
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      {mode === "login" ? <LoginForm /> : <UserRegistration />}
+      {mode === "login" ? <LoginForm /> : <ProfileScreen />}
 
       <Button
         title={mode === "login" ? "Go to Register" : "Go to Login"}

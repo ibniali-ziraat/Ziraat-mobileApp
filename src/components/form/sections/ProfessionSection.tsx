@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, View } from "react-native";
 import FormInput from "../inputs/FormInput";
 
@@ -14,21 +13,21 @@ export default function ProfessionSection({ control, errors }: Props) {
         control={control}
         name="professionType"
         label="Profession / Occupation"
-        error={errors.professionType}
+        error={errors.professionType?.message}
       />
 
       <FormInput
         control={control}
         name="organizationName"
         label="Organization / Employer Name"
-        error={errors.organizationName}
+        error={errors.organizationName?.message}
       />
 
       <FormInput
         control={control}
         name="designation"
         label="Designation / Role"
-        error={errors.designation}
+        error={errors.designation?.message}
       />
 
       <FormInput
@@ -36,14 +35,15 @@ export default function ProfessionSection({ control, errors }: Props) {
         name="experienceYears"
         label="Years of Experience"
         keyboardType="numeric"
-        error={errors.experienceYears}
+        error={errors.experienceYears?.message}
       />
 
       <FormInput
         control={control}
         name="skills"
         label="Key Skills / Expertise (Optional)"
-        error={errors.skills}
+        error={errors.skills?.message}
+        optional
       />
     </View>
   );

@@ -9,4 +9,8 @@ export const colors = {
   neutral: "#8888883b",
   overlay: "rgba(0, 0, 0, 0.5)",
   error: "#f44336",
+
+  // Added
+  warning: "#f5a623",
+  warningHover: "#d98c1c",
 };

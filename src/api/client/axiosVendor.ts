@@ -8,7 +8,7 @@ export const setVendorAxiosToken = (token: string | null) => {
 console.log(process.env.EXPO_PUBLIC_ZIRAAT_BASE_URL, "url");
 
 const axiosVendor = axios.create({
-  baseURL: "https://hcc9fxkw-44388.inc1.devtunnels.ms",
+  baseURL: "https://j6rs4vgs-44388.inc1.devtunnels.ms",
   headers: { "Content-Type": "application/json" },
 });
 
