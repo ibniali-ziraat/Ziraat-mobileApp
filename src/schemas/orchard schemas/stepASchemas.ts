@@ -7,10 +7,11 @@ export const orchardSchema = z.object({
     .string()
     .min(3, "Orchard name must be at least 3 characters"),
 
-  // Because Kanals & Marlas contain text + number format
-  orchardSize: z
-    .string()
-    .min(1, "Orchard size is required"),
+  orchardSize:  z.coerce
+    .number({
+      invalid_type_error: "Orchard size must be a number",
+    })
+    .min(1, "Year must be between 1900 and current year"),
 
   establishmentYear: z.coerce
     .number({
@@ -36,27 +37,29 @@ export const orchardSchema = z.object({
     .string()
     .min(1, "Tehsil is required"),
 
-  zone: z.string().optional(),
+  zone:  z.string()
+    .min(3, "zone is required"),
 
   pincode: z
     .string()
     .regex(/^\d{6}$/, "Pincode must be a valid 6-digit number"),
 
-  latitude: z.coerce
-    .number({
-      invalid_type_error: "Latitude must be a number",
-    })
-    .min(-90, "Latitude must be ≥ -90")
-    .max(90, "Latitude must be ≤ 90")
-    .optional(),
+  latitude: z
+    .string()
+    .min(1, "Latitude is required.")
+    .refine((val) => !isNaN(parseFloat(val)), "Latitude must be a number.")
+    .transform(Number)
+    .refine((val) => val >= -90 && val <= 90, "Latitude must be between -90 and 90."),
 
-  longitude: z.coerce
-    .number({
-      invalid_type_error: "Longitude must be a number",
-    })
-    .min(-180, "Longitude must be ≥ -180")
-    .max(180, "Longitude must be ≤ 180")
-    .optional(),
+  longitude: z
+    .string()
+    .min(1, "Longitude is required.")
+    .refine((val) => !isNaN(parseFloat(val)), "Longitude must be a number.")
+    .transform(Number)
+    .refine(
+      (val) => val >= -180 && val <= 180,
+      "Longitude must be between -180 and 180."
+    ),
 });
 
 export type OrchardSchemaType = z.infer<typeof orchardSchema>;
