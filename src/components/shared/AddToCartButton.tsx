@@ -9,7 +9,7 @@ export default function AddToCartButton({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`flex-1 py-3 mx-4 rounded-lg items-center bg-neutral`}
+      className={`flex-1 py-3 rounded-lg items-center bg-neutral`}
     >
       <Text className="font-bold text-dark text-lg text-center">
         {title}
