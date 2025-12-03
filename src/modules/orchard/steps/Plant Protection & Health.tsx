@@ -48,7 +48,7 @@ export default function StepE_PlantProtection({ control, errors }: FormSectionPr
           name="diseases"
           label="Disease History"
           options={diseaseList}
-          error={errors.diseases}
+          error={errors.diseases?.message}
         />
 
         {/* 2️⃣ Pest History */}
@@ -57,7 +57,7 @@ export default function StepE_PlantProtection({ control, errors }: FormSectionPr
           name="pests"
           label="Pest History"
           options={pestList}
-          error={errors.pests}
+          error={errors.pests?.message}
         />
 
         {/* 3️⃣ Spray Schedule */}
@@ -67,7 +67,7 @@ export default function StepE_PlantProtection({ control, errors }: FormSectionPr
           label="Spray Schedule (Optional)"
           optional={true}
           icon="calendar-clock"
-          error={errors.spraySchedule}
+          error={errors.spraySchedule?.message}
         />
 
         {/* 4️⃣ Crop Insurance */}
@@ -76,7 +76,7 @@ export default function StepE_PlantProtection({ control, errors }: FormSectionPr
           name="cropInsurance"
           label="Crop Insurance Coverage"
           options={insuranceOptions}
-          error={errors.cropInsurance}
+          error={errors.cropInsurance?.message}
         />
 
       </View>

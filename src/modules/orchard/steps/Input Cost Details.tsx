@@ -42,7 +42,7 @@ export default function StepH_InputCostDetails({ control, errors }:any) {
           name="pesticideSupplierLocation"
           label="Pesticide Supplier Location"
           options={supplierOptions}
-          error={errors.pesticideSupplierLocation}
+          error={errors.pesticideSupplierLocation?.message}
         />
 
         {/* 2️⃣ Payment Type */}
@@ -51,7 +51,7 @@ export default function StepH_InputCostDetails({ control, errors }:any) {
           name="paymentType"
           label="Payment Type"
           options={paymentOptions}
-          error={errors.paymentType}
+          error={errors.paymentType?.message}
         />
 
         {/* 3️⃣ Credit Period */}
@@ -60,7 +60,7 @@ export default function StepH_InputCostDetails({ control, errors }:any) {
           name="creditPeriod"
           label="Credit Period"
           options={creditOptions}
-          error={errors.creditPeriod}
+          error={errors.creditPeriod?.message}
         />
 
       </View>
