@@ -8,7 +8,7 @@ import {
     Tractor,
     Wallet
 } from "lucide-react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Dimensions,
     SafeAreaView,
@@ -134,8 +134,8 @@ export default function InputResourceUsageScreen() {
                         </Text>
                     </View>
 
-                    <View className="bg-gray-100 rounded-xl p-4 mt-2">
-                        <Text className="text-gray-700 font-medium">
+                    <View className="bg-white/10 rounded-xl p-4 mt-2">
+                        <Text className="text-overlay font-medium">
                             Based on current inputs:
                         </Text>
 
@@ -196,7 +196,7 @@ const InputField = ({ label, ...props }) => (
         <Text className="text-black font-medium">{label}</Text>
         <TextInput
             {...props}
-            className="bg-gray-100 mt-2 p-3 rounded-xl border border-gray-300 text-black"
+            className="bg-white/10 mt-2 p-3 rounded-xl border border-white/10 text-black"
         />
     </View>
 );
@@ -223,16 +223,16 @@ const MetricCard = ({ title, value, icon }) => (
 
 const SummaryRow = ({ label, value, bold }) => (
     <View className="flex-row justify-between py-2">
-        <Text className={`text-gray-700 ${bold ? "font-bold text-lg" : "font-medium"}`}>
+        <Text className={`text-neutral/100 ${bold ? "font-bold text-lg" : "font-medium"}`}>
             {label}
         </Text>
-        <Text className={`text-gray-900 ${bold ? "font-bold text-lg" : ""}`}>{value}</Text>
+        <Text className={`text-neutral/100 ${bold ? "font-bold text-lg" : ""}`}>{value}</Text>
     </View>
 );
 
 const EfficiencyTag = ({ label, score }) => (
-    <View className="bg-white rounded-xl p-3 mt-3 border border-gray-200">
-        <Text className="text-gray-700 font-semibold">{label}</Text>
+    <View className="bg-white rounded-xl p-3 mt-3 border border-white/20">
+        <Text className="text-neutral/100 font-semibold">{label}</Text>
         <Text className="text-black font-bold text-xl mt-1">{score || "0"}</Text>
     </View>
 );
@@ -240,6 +240,6 @@ const EfficiencyTag = ({ label, score }) => (
 const InsightItem = ({ icon: Icon, text }) => (
     <View className="flex-row items-start mb-4">
         <Icon size={22} color="#1E3A8A" />
-        <Text className="ml-2 flex-1 text-gray-700">{text}</Text>
+        <Text className="ml-2 flex-1 text-overlay">{text}</Text>
     </View>
 );

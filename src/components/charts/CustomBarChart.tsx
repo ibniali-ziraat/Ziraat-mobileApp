@@ -1,5 +1,3 @@
-// src/components/charts/CustomBarChart.tsx
-import React from "react";
 import { Dimensions, Text, View } from "react-native";
 import { BarChart, LineChart, PieChart } from "react-native-chart-kit";
 
