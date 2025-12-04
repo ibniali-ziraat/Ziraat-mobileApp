@@ -308,14 +308,14 @@ const OrchardsScreen: React.FC = () => {
             </Text>
           </View>
 
-          <View className="flex-row items-center">
+          {/* <View className="flex-row items-center">
             <TouchableOpacity className="h-9 w-9 rounded-full bg-white items-center justify-center border border-neutral mr-2">
               <Ionicons name="notifications-outline" size={18} color="#c7611f" />
             </TouchableOpacity>
             <TouchableOpacity className="h-9 w-9 rounded-full bg-white items-center justify-center border border-neutral">
               <Ionicons name="person-outline" size={18} color="#c7611f" />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         <HeroOverviewCard
           globalHealthAvg={globalHealthAvg}
@@ -325,6 +325,7 @@ const OrchardsScreen: React.FC = () => {
         />
         <View className="mt-4 mb-3">
           <SearchBar />
+
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
