@@ -26,6 +26,7 @@ export default function MenuScreen() {
         />
         <MenuItem label="Support" onPress={() => router.push("/support")} />
 
+
         {menuGroups.map((group) => (
           <View key={group.title} style={{ marginTop: 28 }}>
             <SectionTitle title={group.title} />

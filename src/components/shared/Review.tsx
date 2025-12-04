@@ -99,8 +99,8 @@ export default function Review() {
         >
           <View className="flex-row items-center justify-between mb-1">
             <View className="flex-row items-center">
-              <View className="w-10 h-10 rounded-full bg-neutral justify-center items-center mr-3 border border-neutral">
-                <User size={20} color={colors.dark} />
+              <View className="w-10 h-10 rounded-full justify-center items-center mr-3 border border-secondary">
+                <User size={20} color={colors.secondary} />
               </View>
 
               <View>
