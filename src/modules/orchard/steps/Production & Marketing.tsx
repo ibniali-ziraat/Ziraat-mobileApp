@@ -4,10 +4,10 @@ import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { ScrollView, Text, View } from "react-native";
 
+import FormDateInput from "@/src/components/form/inputs/FormDateInput";
 import { sellingPreferenceOptions } from "@/src/schemas/orchard schemas/stepGSchema";
 
-export default function StepG_ProductionMarketing({ control, errors }:any) {
-
+export default function StepG_ProductionMarketing({ control, errors }: any) {
   // Map-ready dropdown format
   const sellingOptions = sellingPreferenceOptions.map((x) => ({
     label: x,
@@ -17,14 +17,9 @@ export default function StepG_ProductionMarketing({ control, errors }:any) {
   // Dynamic form field list
   const productionFields = [
     {
-      name: "annualYield",
+      name: "",
       label: "Average Annual Yield (Boxes / Kilos)",
       icon: "chart-bar",
-    },
-    {
-      name: "peakHarvestSeason",
-      label: "Peak Harvest Season (Month / Duration)",
-      icon: "calendar-range",
     },
   ];
 
@@ -36,23 +31,26 @@ export default function StepG_ProductionMarketing({ control, errors }:any) {
       </Text>
 
       <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
-
         <Text className="text-lg font-semibold mb-3 text-primary">
           Production & Marketing Information
         </Text>
 
         {/* Repeated text inputs (Yield + Harvest Season) */}
-        {productionFields.map((item) => (
-          <FormInput
-            key={item.name}
-            control={control}
-            name={item.name}
-            label={item.label}
-            icon={item.icon}
-            iconColor="secondary"
-            error={errors[item.name]}
-          />
-        ))}
+
+        <FormInput
+          control={control}
+          name="annualYield"
+          label="Average Annual Yield (Boxes / Kilos)"
+          type="phone"
+          error={errors.annualYield?.message}
+        />
+
+        <FormDateInput
+          control={control}
+          name="peakHarvestSeason"
+          label="Peak Harvest Season (Month / Duration)"
+          error={errors.peakHarvestSeason?.message}
+        />
 
         {/* Selling Preference */}
         <SingleSelectInput
@@ -60,7 +58,7 @@ export default function StepG_ProductionMarketing({ control, errors }:any) {
           name="sellingPreference"
           label="Selling Preference"
           options={sellingOptions}
-          error={errors.sellingPreference}
+          error={errors.sellingPreference?.message}
         />
 
         {/* Buyer Details (OPTIONAL) */}

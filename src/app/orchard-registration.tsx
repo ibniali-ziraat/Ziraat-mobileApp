@@ -1,4 +1,4 @@
 import OrchardRegistrationForm from "../modules/orchard/OrchardRegistrationForm";
-export default function Notifications() {
+export default function OrchardRegistration() {
   return <OrchardRegistrationForm />;
 }

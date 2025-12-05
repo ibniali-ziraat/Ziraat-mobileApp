@@ -45,16 +45,16 @@ export default function StepB_BasicInfo({ control, errors }) {
           control={control}
           name="totalTrees"
           label="Total Number of Trees"
-          type="number"
-          error={errors.totalTrees}
+          type="phone"
+          error={errors.totalTrees?.message}
         />
 
         <FormInput
           control={control}
           name="treesPerVariety"
           label="Trees Per Variety"
-          type="number"
-          error={errors.treesPerVariety}
+          type="phone"
+          error={errors}
         />
 
         <SingleSelectInput
@@ -62,7 +62,7 @@ export default function StepB_BasicInfo({ control, errors }) {
           name="rootstock"
           label="Rootstock Used"
           options={rootstockOptions}
-          error={errors.rootstock}
+          error={errors.rootstock?.message}
         />
 
         <SingleSelectInput
@@ -70,7 +70,7 @@ export default function StepB_BasicInfo({ control, errors }) {
           name="plantDensity"
           label="Plant Density"
           options={densityOptions}
-          error={errors.plantDensity}
+          error={errors.plantDensity?.message}
         />
 
         <RadioGroup

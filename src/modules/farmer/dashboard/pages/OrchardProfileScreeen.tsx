@@ -1,7 +1,7 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
 import PrecipitationMap from "@/src/components/PrecipitationMap";
 import * as Icons from "lucide-react-native";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
     Dimensions,
     ScrollView,
@@ -35,7 +35,7 @@ const StatChip = ({ Icon, title, value, small }: any) => (
     </View>
 );
 
-export default function OrchardProfile({ orchards = [], admin = {}, weather = null }: any) {
+export default function OrchardProfileScreeen({ orchards = [], admin = {}, weather = null }: any) {
     const screenWidth = getScreenWidth();
 
     const sampleOrchards = [
@@ -133,7 +133,7 @@ export default function OrchardProfile({ orchards = [], admin = {}, weather = nu
     const Percent = Icons.Percent;
 
     return (
-        <ScrollView style={{ backgroundColor: "#F8FAFC", flex: 1, padding: 16 }}>
+        <ScrollView style={{ backgroundColor: "#ffffff", flex: 1, padding: 16 }}>
             <Text style={{ fontSize: 28, fontWeight: "800", color: "#0F172A", marginTop: 8 }}>
                 Orchard Profile
             </Text>

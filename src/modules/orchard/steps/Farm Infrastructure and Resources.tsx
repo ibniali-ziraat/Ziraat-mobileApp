@@ -32,7 +32,7 @@ export default function StepF_FarmInfrastructure({ control, errors }) {
           name="equipmentOwned"
           label="Equipment Owned"
           options={equipmentOptions}
-          error={errors.equipmentOwned}
+          error={errors.equipmentOwned?.message}
         />
 
         {/* 2️⃣ Storage Facilities (REQUIRED) */}
@@ -41,7 +41,7 @@ export default function StepF_FarmInfrastructure({ control, errors }) {
           name="storageFacility"
           label="Storage Facilities"
           options={storageOptions}
-          error={errors.storageFacility}
+          error={errors.storageFacility?.message}
         />
 
         {/* 3️⃣ Farm Labor (OPTIONAL) */}
@@ -50,7 +50,7 @@ export default function StepF_FarmInfrastructure({ control, errors }) {
           name="farmLabor"
           label="Farm Labor (Optional)"
           options={laborOptions}
-          error={errors.farmLabor}
+          error={errors.farmLabor?.message}
         />
 
         {/* 4️⃣ Other Tools (OPTIONAL) */}
@@ -60,7 +60,7 @@ export default function StepF_FarmInfrastructure({ control, errors }) {
           label="Other Tools (Pruning Shear, Ladder, Baskets, etc.)"
           optional={true}
           icon="tools"
-          error={errors.otherTools}
+          error={errors.otherTools?.message}
         />
 
       </View>

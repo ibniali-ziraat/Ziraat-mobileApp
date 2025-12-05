@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { Platform, TouchableOpacity, View } from "react-native";
 import DatePicker from "react-native-date-picker";

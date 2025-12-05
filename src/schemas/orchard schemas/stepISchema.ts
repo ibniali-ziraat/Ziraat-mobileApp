@@ -1,7 +1,7 @@
 // StepI_OptionalFutureFields.schema.ts
 import { z } from "zod";
 
-/* -------------------- OPTIONS (must match UI) -------------------- */
+/* -------------------- OPTIONS -------------------- */
 
 export const schemeOptions = [
   "Subsidy",
@@ -28,28 +28,29 @@ export const digitalToolOptions = [
   "Other",
 ] as const;
 
-/* ---------------------- SCHEMA ---------------------- */
+/* ---------------------- UPDATED SCHEMA ---------------------- */
 
 export const stepIOptionalFutureFieldsSchema = z.object({
-  /** 1️⃣ Government Schemes (Required Multi-select) */
+  
+  /** 1️⃣ Government Schemes (Required multi-select) */
   govtSchemes: z
     .array(z.enum(schemeOptions))
-    .min(1, "Please select at least one government scheme."), 
+    .min(1, "Please select at least one government scheme."),
 
-  /** 2️⃣ FPO Membership (Optional Text) */
+  /** 2️⃣ FPO Membership (Now mandatory text) */
   fpoMembership: z
-    .string()
-    .max(200, "Too long")
-    .optional()
-    .nullable(),
+    .string({
+      required_error: "FPO Membership is required.",
+    })
+    .max(200, "Too long"),
 
-  /** 3️⃣ Certifications (Single Select Required) */
+  /** 3️⃣ Certifications (Required single select) */
   certifications: z.enum(certificationOptions, {
     required_error: "Please select a certification.",
     invalid_type_error: "Invalid certification value.",
   }),
 
-  /** 4️⃣ Digital Tools (Required Multi-select) */
+  /** 4️⃣ Digital Tools (Required multi-select) */
   digitalTools: z
     .array(z.enum(digitalToolOptions))
     .min(1, "Please select at least one digital tool."),

@@ -1,18 +1,16 @@
-// StepI_OptionalFutureFields.js
 import CheckboxGroup from "@/src/components/form/inputs/Checkbox";
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { ScrollView, Text, View } from "react-native";
-// or import RadioGroup if you prefer radio buttons
+
 
 import {
   certificationOptions,
   digitalToolOptions,
   schemeOptions,
-} from "@/src/schemas/orchard schemas/stepISchema"; // adjust path if needed
+} from "@/src/schemas/orchard schemas/stepISchema";
 
 export default function StepI_OptionalFutureFields({ control, errors }:any) {
-  // map enums to {label,value}
   const schemeOpts = schemeOptions.map((x) => ({ label: x, value: x }));
   const certOpts = certificationOptions.map((x) => ({ label: x, value: x }));
   const toolOpts = digitalToolOptions.map((x) => ({ label: x, value: x }));
@@ -28,16 +26,14 @@ export default function StepI_OptionalFutureFields({ control, errors }:any) {
           Additional Optional Information
         </Text>
 
-        {/* govtSchemes (multi-select required) */}
         <CheckboxGroup
           control={control}
           name="govtSchemes"
           label="Government Schemes Availed (Multi-select)"
-          options={schemeOptions} // CheckboxGroup accepts array of strings
-          error={errors.govtSchemes}
+          options={schemeOptions} 
+          error={errors.govtSchemes?.message}
         />
 
-        {/* fpoMembership (optional text) */}
         <FormInput
           control={control}
           name="fpoMembership"
@@ -45,25 +41,23 @@ export default function StepI_OptionalFutureFields({ control, errors }:any) {
           optional={true}
           icon="account-group"
           iconColor="secondary"
-          error={errors.fpoMembership}
+          error={errors.fpoMembership?.message}
         />
 
-        {/* certifications (single-select required) -> use SingleSelectInput */}
         <SingleSelectInput
           control={control}
           name="certifications"
           label="Certifications"
           options={certOpts}
-          error={errors.certifications}
+          error={errors.certifications?.message}
         />
 
-        {/* digitalTools (multi-select required) */}
         <CheckboxGroup
           control={control}
           name="digitalTools"
           label="Digital Tools Used (Multi-select)"
           options={digitalToolOptions}
-          error={errors.digitalTools}
+          error={errors.digitalTools?.message}
         />
       </View>
     </ScrollView>
