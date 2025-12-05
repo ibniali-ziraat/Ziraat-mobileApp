@@ -1,7 +1,9 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import DetailsCard from "@/src/components/shared/DetailsCard";
+import ProgressBar from "@/src/components/shared/ProgressBar";
 import { colors } from "@/src/constants/colors";
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
+import { useProfileProgress } from "@/src/hooks/useProfileProgress";
 import {
   useVendorFinancialDeleteMutation,
   useVendorFinancialQuery,
@@ -18,23 +20,28 @@ import {
 import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
+import { useEffect } from "react";
 import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { vendorDeleteConfig } from "../auth/vendor/config/vendorDeleteConfig";
 import { vendorRoutes } from "../auth/vendor/config/vendorRoutes";
 import ProductItemCard from "./components/ProductItemCard";
-import ProfileHeader from "./components/ProfileHeader";
 import SectionCard from "./components/SectionCard";
+import VendorProfileHeader from "./VendorProfileHeader";
 
 export default function VendorProfileScreen() {
-  const { vendorId } = useAuth();
+  const { vendorData, setVendorData, userData } = useGlobalData();
   const queryClient = useQueryClient();
 
-  const { data: profileData } = useVendorProfileQuery(vendorId);
-  const { data: licenseData } = useVendorLicenseQuery(vendorId);
-  const { data: productsData } = useVendorProductsQuery(vendorId);
-  const { data: operationsData } = useVendorOperationsQuery(vendorId);
-  const { data: financialData } = useVendorFinancialQuery(vendorId);
-  const { data: supportData } = useVendorSupportQuery(vendorId);
+  const { data: profileData } = useVendorProfileQuery(userData.id);
+  console.log(profileData, "profileData...");
+
+  const { data: licenseData } = useVendorLicenseQuery(vendorData.profileId);
+  const { data: productsData } = useVendorProductsQuery(vendorData.profileId);
+  const { data: operationsData } = useVendorOperationsQuery(
+    vendorData.profileId
+  );
+  const { data: financialData } = useVendorFinancialQuery(vendorData.profileId);
+  const { data: supportData } = useVendorSupportQuery(vendorData.profileId);
 
   const { mutateAsync: deleteLicenseApi } = useVendorLicenseDeleteMutation();
   const { mutateAsync: deleteProductsApi } = useVendorProductsDeleteMutation();
@@ -43,6 +50,21 @@ export default function VendorProfileScreen() {
   const { mutateAsync: deleteFinancialApi } =
     useVendorFinancialDeleteMutation();
   const { mutateAsync: deleteSupportApi } = useVendorSupportDeleteMutation();
+  const { progress, missingSections } = useProfileProgress({
+    profile: profileData,
+    business: licenseData,
+    products: productsData,
+    bank: operationsData,
+    financial: financialData,
+    support: supportData,
+  });
+
+  useEffect(() => {
+    if (!profileData) return;
+    setVendorData({
+      profileId: profileData.id,
+    });
+  }, [profileData]);
 
   const goToSection = (section: VendorRouteKey) => {
     router.push(vendorRoutes[section]);
@@ -61,10 +83,18 @@ export default function VendorProfileScreen() {
       const config = vendorDeleteConfig[section];
       const api = deleteActions[section];
 
-      await api(vendorId);
+      // ⚡ OPTIMISTIC: Remove data instantly from cache
+      queryClient.setQueryData([config.apiKey, vendorData.profileId], null);
+
+      // 🔥 Delete on server
+      await api(vendorData.profileId);
+
       showSuccessToast(config.success);
 
-      queryClient.invalidateQueries([config.apiKey, vendorId]);
+      // 🔄 Revalidate backend state
+      await queryClient.invalidateQueries({
+        queryKey: [config.apiKey, vendorProfileId],
+      });
     } catch (err) {
       console.error(err);
     }
@@ -73,9 +103,15 @@ export default function VendorProfileScreen() {
   return (
     <ScrollView className="flex-1 bg-white p-5">
       <BackHeader>Vendor Profile</BackHeader>
+      <ProgressBar progress={progress} />
 
-      <ProfileHeader
-        profileData={profileData}
+      {missingSections.length > 0 && (
+        <Text style={{ color: "gray", marginBottom: 15 }}>
+          Missing: {missingSections.join(", ")}
+        </Text>
+      )}
+      <VendorProfileHeader
+        vendorData={profileData}
         onEdit={() => goToSection("business")}
       />
 
@@ -128,7 +164,7 @@ export default function VendorProfileScreen() {
       <SectionCard
         title="Product Portfolio"
         onEdit={productsData ? () => goToSection("products") : undefined}
-        onDelete={!productsData ? () => handleDelete("products") : undefined}
+        onDelete={productsData ? () => handleDelete("products") : undefined}
         style={
           !productsData ? { borderColor: colors.warning, borderWidth: 1 } : {}
         }
@@ -342,7 +378,7 @@ export default function VendorProfileScreen() {
 
             <DetailsCard
               title="Number of Field Staff"
-              value={supportData.numberOfStaff || "N/A"}
+              value={supportData.fieldStaffCount || "N/A"}
             />
 
             <DetailsCard
@@ -353,8 +389,8 @@ export default function VendorProfileScreen() {
             <DetailsCard
               title="Preferred Delivery Range (sq. km)"
               value={
-                supportData.preferredDeliveryAreaRangeSqKm
-                  ? `${supportData.preferredDeliveryAreaRangeSqKm} sq.km`
+                supportData.deliveryRange
+                  ? `${supportData.deliveryRange} sq.km`
                   : "N/A"
               }
             />

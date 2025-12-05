@@ -8,21 +8,21 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
   const fieldStaffAvailable = useWatch({
     control,
     name: "fieldStaffAvailable",
-    defaultValue: false,
+    defaultValue: "no",
   });
 
   return (
     <View style={{ padding: 20, gap: 12 }}>
       <SingleSelectInput
         control={control}
-        name="agronomyAdvisorySupport"
+        name="advisorySupport"
         label="Agronomy Advisory Support"
         options={[
           { value: "", label: "Select" },
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
         ]}
-        error={errors?.agronomyAdvisorySupport}
+        error={errors?.advisorySupport}
       />
 
       <SingleSelectInput
@@ -30,19 +30,20 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         name="fieldStaffAvailable"
         label="Field Staff Available"
         options={[
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { value: "", label: "Select" },
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
         ]}
         error={errors?.fieldStaffAvailable}
       />
 
-      {fieldStaffAvailable && (
+      {fieldStaffAvailable === "yes" && (
         <FormInput
           control={control}
-          name="numberOfStaff"
+          name="fieldStaffCount"
           label="Number of Field Staff"
           type="phone"
-          error={errors?.numberOfStaff?.message}
+          error={errors?.fieldStaffCount?.message}
         />
       )}
 
@@ -55,32 +56,34 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
 
       <FormInput
         control={control}
-        name="preferredDeliveryAreaRangeSqKm"
+        name="deliveryRange"
         label="Preferred Delivery Area Range (Sq. KMs)"
         type="phone"
-        error={errors?.preferredDeliveryAreaRangeSqKm?.message}
+        error={errors?.deliveryRange?.message}
       />
 
       <SingleSelectInput
         control={control}
-        name="computerFacilityAvailable"
+        name="computerAvailable"
         label="Computer/Laptop Facility Available"
         options={[
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { value: "", label: "Select" },
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
         ]}
-        error={errors?.computerFacilityAvailable}
+        error={errors?.computerAvailable}
       />
 
       <SingleSelectInput
         control={control}
-        name="deliveryVehicleAvailable"
+        name="vehicleAvailable"
         label="Vehicle for Delivery / Two Wheeler"
         options={[
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { value: "", label: "Select" },
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
         ]}
-        error={errors?.deliveryVehicleAvailable}
+        error={errors?.vehicleAvailable}
       />
     </View>
   );

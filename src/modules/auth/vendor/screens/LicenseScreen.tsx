@@ -1,4 +1,4 @@
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorLicenseMutation,
@@ -13,12 +13,12 @@ import { Alert, Button } from "react-native";
 import LicenseSection from "../sections/LicenseSection";
 
 export default function LicenseScreen() {
-  const { vendorId } = useAuth();
-  const { data } = useVendorLicenseQuery(vendorId);
+  const { userData, vendorData } = useGlobalData();
+  console.log(vendorData.profileId, "vendorprofileid");
 
+  const { data } = useVendorLicenseQuery(vendorData.profileId);
   const { mutateAsync: save } = useVendorLicenseMutation();
   const { mutateAsync: update } = useVendorLicenseUpdateMutation();
-
   const form = useZodForm(licensingComplianceSchema);
   const {
     setValue,
@@ -38,26 +38,26 @@ export default function LicenseScreen() {
   }, [data]);
 
   const onSubmit = async (values) => {
+    console.log("logged...");
+
     try {
       if (data) {
-        // Update existing license using licensingId
         const payload = {
-          licensingId: data.id, // existing license id
-          supplierProfileId: vendorId,
+          licensingId: data?.id,
+          supplierProfileId: vendorData.profileId,
           ...values,
         };
         await update(payload);
       } else {
-        // Save new license using supplierProfileId
         const payload = {
-          supplierProfileId: vendorId,
+          supplierProfileId: vendorData.profileId,
           ...values,
         };
         await save(payload);
       }
 
       Alert.alert("License Saved!");
-      router.push("/auth/vendor/vendor-profile-screen"); // navigate after saving
+      router.push("/auth/vendor/vendor-profile-screen");
     } catch (err) {
       console.error(err);
       Alert.alert("Error saving license");

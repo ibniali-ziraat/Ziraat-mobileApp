@@ -1,60 +1,23 @@
-// toastUtils.js
+import { toast } from "@backpackapp-io/react-native-toast";
 
-import { Toast } from "toastify-react-native";
+export const showSuccessToast = (msg) => {
+  toast.success(msg);
+};
 
-export const showSuccessToast = (message, description = "", options = {}) => {
-  Toast.show({
-    type: "success",
-    text1: message,
-    text2: description,
-    ...options,
+export const showErrorToast = (msg) => {
+  toast.error(msg);
+};
+
+export const showInfoToast = (msg) => {
+  toast(msg);
+};
+
+export const showWarningToast = (msg) => {
+  toast(msg, {
+    backgroundColor: "orange",
   });
 };
 
-/**
- * Show an error toast
- */
-export const showErrorToast = (message, description = "", options = {}) => {
-  Toast.show({
-    type: "error",
-    text1: message,
-    text2: description,
-    ...options,
-  });
-};
-
-/**
- * Show an info toast
- */
-export const showInfoToast = (message, description = "", options = {}) => {
-  Toast.show({
-    type: "info",
-    text1: message,
-    text2: description,
-    ...options,
-  });
-};
-
-/**
- * Show a warning toast
- */
-export const showWarningToast = (message, description = "", options = {}) => {
-  Toast.show({
-    type: "warn",
-    text1: message,
-    text2: description,
-    ...options,
-  });
-};
-
-/**
- * Show a custom toast
- */
-export const showCustomToast = (message, description = "", options = {}) => {
-  Toast.show({
-    type: "custom",
-    text1: message,
-    text2: description,
-    ...options,
-  });
+export const showCustomToast = (msg, options = {}) => {
+  toast(msg, options);
 };

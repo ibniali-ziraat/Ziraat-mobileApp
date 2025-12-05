@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { Alert, Button } from "react-native";
 
-import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorOperationsMutation,
@@ -10,27 +9,21 @@ import {
   useVendorOperationsUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
 
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
+import { router } from "expo-router";
 import OperationalSection from "../sections/OperationalSection";
 
 export default function OperationsScreen() {
-  const { vendorId } = useAuth();
-  const { data } = useVendorOperationsQuery(vendorId);
+  const { vendorData } = useGlobalData();
+  console.log(vendorData, "vendorssdata");
+
+  const { data } = useVendorOperationsQuery(vendorData.profileId);
 
   const { mutateAsync: save } = useVendorOperationsMutation();
   const { mutateAsync: update } = useVendorOperationsUpdateMutation();
 
-  // Initialize form with empty defaults
-  const form = useZodForm(operationalDetailsSchema, {
-    defaultValues: {
-      yearsInBusiness: "",
-      deliveryServiceAvailable: "",
-      avgMonthlySalesVolume: "",
-      serviceArea: [],
-      companyTieups: [],
-    },
-  });
-
+  const form = useZodForm(operationalDetailsSchema);
   const {
     setValue,
     handleSubmit,
@@ -41,7 +34,6 @@ export default function OperationsScreen() {
   // Prefill form when backend data arrives
   useEffect(() => {
     if (!data) return;
-    console.log(data, "data////");
 
     setValue("yearsInBusiness", String(data.yearsInBusiness));
     setValue(
@@ -50,31 +42,30 @@ export default function OperationsScreen() {
     );
     setValue("avgMonthlySalesVolume", String(data.avgMonthlySalesVolume));
 
-    setValue(
-      "companyTieups",
-      data.companyTieups?.map((x) => ({ name: x.name })) ?? []
-    );
+    // Prefill as string arrays
+    setValue("companyTieups", data.companyTieups?.map((x) => x.name) ?? []);
+    setValue("serviceArea", data.serviceAreas?.map((x) => x.placeName) ?? []);
+  }, [data]);
 
-    setValue(
-      "serviceArea",
-      data.serviceAreas?.map((x) => ({ name: x.placeName })) ?? []
-    );
-  }, [data, setValue]);
-
-  // Submit handler: transform strings → backend objects
   const onSubmit = async (val) => {
+    console.log("submitted: ", val);
+
     const payload = {
-      supplierProfileId: vendorId,
-      yearsInBusiness: Number(val.yearsInBusiness),
+      // operationalId: data?.id,
+      supplierProfileId: vendorData.profileId,
+      yearsInBusiness: +val.yearsInBusiness,
       deliveryServiceAvailable: val.deliveryServiceAvailable === "yes",
-      avgMonthlySalesVolume: Number(val.avgMonthlySalesVolume),
-      companyTieups: val.companyTieups.map((name) => ({ name })),
-      serviceAreas: val.serviceArea.map((placeName) => ({ placeName })),
+      serviceArea: val.deliveryServiceAvailable ? val.serviceArea : [],
+      avgMonthlySalesVolume: +val.avgMonthlySalesVolume,
+
+      companyTieups: val.companyTieups ?? [],
+      // serviceArea: val.serviceArea ?? [],
     };
 
     try {
       data ? await update(payload) : await save(payload);
       Alert.alert("Operations Saved!");
+      router.push("/auth/vendor/vendor-profile-screen");
     } catch (error) {
       Alert.alert("Error saving operations", error.message || "Unknown error");
     }

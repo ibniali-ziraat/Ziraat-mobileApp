@@ -1,6 +1,6 @@
 import ProfileSection from "@/src/components/form/sections/ProfileSection";
 import BackHeader from "@/src/components/shared/BackHeader";
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useProfileMutation,
@@ -8,14 +8,15 @@ import {
   useProfileUpdateMutation,
 } from "@/src/hooks/userQueryHooks";
 import { profileSchema } from "@/src/schemas/user/profile.schema";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { Alert, Button, ScrollView } from "react-native";
 
 export default function ProfileScreen() {
-  const { userId, setUserProfileId } = useAuth();
+  const { setUserData, userData } = useGlobalData();
 
-  const { data } = useProfileQuery(userId);
+  const { data } = useProfileQuery(userData.id);
   const { mutateAsync: save } = useProfileMutation();
   const { mutateAsync: update } = useProfileUpdateMutation();
 
@@ -31,13 +32,16 @@ export default function ProfileScreen() {
   useEffect(() => {
     if (!data) return;
     Object.entries(data).forEach(([k, v]) => setValue(k, v));
-    setUserProfileId(data.id);
+    setUserData({
+      profileId: data.id,
+    });
   }, [data]);
 
   const onSubmit = async (values) => {
-    const payload = { userId, ...values };
+    const payload = { id: data.id, userId: userData.id, ...values };
     data ? await update(payload) : await save(payload);
     Alert.alert("Success", "Profile Saved!");
+    router.replace("/user-profile");
   };
 
   return (

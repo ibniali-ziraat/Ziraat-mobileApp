@@ -63,13 +63,13 @@ export default function ProductSection({ control, errors }) {
         error={errors?.storageCapacityValue?.message}
       />
 
-      <FormInput
+      {/* <FormInput
         control={control}
         optional
         name="storageCapacityUnit"
         label="Storage Capacity Unit"
         error={errors?.storageCapacityUnit?.message}
-      />
+      /> */}
 
       {/* Custom Inputs */}
       <Text
