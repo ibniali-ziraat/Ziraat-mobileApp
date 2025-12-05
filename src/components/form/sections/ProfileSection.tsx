@@ -17,8 +17,6 @@ export default function ProfileSection({
   data,
   setValue,
 }: FormSectionProps) {
-  
-
   // Prefill inputs when API data arrives
   useEffect(() => {
     if (data) {

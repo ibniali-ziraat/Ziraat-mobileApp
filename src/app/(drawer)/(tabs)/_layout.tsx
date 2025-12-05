@@ -21,7 +21,6 @@ export default function TabLayout() {
           // height: 90 + insets.bottom,
           backgroundColor: colors.light,
           borderTopWidth: 0,
-          elevation: 0.5,
           shadowColor: colors.overlay,
           shadowOpacity: 0.1,
           shadowOffset: { width: 0, height: -2 },

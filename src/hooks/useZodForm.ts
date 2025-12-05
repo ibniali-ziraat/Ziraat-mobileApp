@@ -14,10 +14,9 @@ export function useZodForm<T extends ZodType<any>>(
   return useForm({
     resolver: zodResolver(schema),
 
-    mode: "onSubmit",          // ❗ errors appear only after submit
-    reValidateMode: "onChange", // ❗ errors disappear while typing
+    mode: "onSubmit",
+    reValidateMode: "onChange",
 
     ...options,
   });
 }
-
