@@ -1,17 +1,17 @@
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { Platform, TouchableOpacity, View } from "react-native";
-import DatePicker from "react-native-date-picker";
 import { HelperText, TextInput } from "react-native-paper";
 
-export default function FormDateInput({
+export default function FormDatePicker({
   control,
   name,
   label,
   optional = false,
   error,
 }) {
-  const [open, setOpen] = useState(false);
+  const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
 
   return (
@@ -25,86 +25,73 @@ export default function FormDateInput({
         const showError = !!(fieldError || error);
 
         return (
-          <View style={{ marginBottom: 20 }}>
-            {/* 🌐 WEB VERSION (MUI-like floating label) */}
+          <View className="mb-5">
             {isWeb ? (
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                {/* Floating Label */}
+              <View className="flex flex-col w-full">
                 <label
-                  style={{
-                    fontSize: 13,
-                    marginBottom: 4,
-                    color: showError ? "red" : "#444",
-                    fontWeight: optional ? "400" : "500",
-                  }}
+                  className={`mb-1 text-sm font-medium ${
+                    showError ? "text-error" : "text-dark"
+                  }`}
                 >
-                  {label} {!optional && <span style={{ color: "red" }}>*</span>}
+                  {label}
+                  {!optional && <span className="text-error"> *</span>}
                 </label>
 
                 <input
                   type="date"
                   value={value ? value.split("T")[0] : ""}
                   onChange={(e) => {
-                    const val = e.target.value;
-
-                    if (!val) {
-                      onChange(null);
-                      return;
-                    }
-
-                    const date = new Date(val);
-                    onChange(date.toISOString());
+                    if (!e.target.value) return onChange(null);
+                    onChange(new Date(e.target.value).toISOString());
                   }}
-                  style={{
-                    padding: 12,
-                    borderWidth: 1,
-                    borderRadius: 6,
-                    borderColor: showError ? "red" : "#ccc",
-                    width: "100%",
-                    outline: "none",
-                    fontSize: 15,
-                  }}
+                  className={`p-3 border rounded-md text-base outline-none ${
+                    showError ? "border-error" : "border-neutral"
+                  }`}
                 />
 
                 {showError && (
-                  <span style={{ fontSize: 12, color: "red", marginTop: 4 }}>
+                  <span className="text-error text-xs mt-1">
                     {(fieldError || error)?.message}
                   </span>
                 )}
-              </div>
+              </View>
             ) : (
               <>
-                {/* 📱 MOBILE VERSION (react-native-paper floating label) */}
-                <TouchableOpacity onPress={() => setOpen(true)}>
-                  <TextInput
-                    mode="outlined"
-                    label={optional ? `${label} (Optional)` : `${label} *`}
-                    value={value ? new Date(value).toDateString() : ""}
-                    editable={false}
-                    right={<TextInput.Icon icon="calendar" />}
-                    error={showError}
-                  />
+                <TouchableOpacity
+                  onPress={() => setShow(true)}
+                  activeOpacity={0.8}
+                >
+                  <View pointerEvents="none">
+                    <TextInput
+                      mode="outlined"
+                      label={optional ? `${label} (Optional)` : `${label} *`}
+                      value={value ? new Date(value).toLocaleDateString() : ""}
+                      editable={false}
+                      right={<TextInput.Icon icon="calendar" />}
+                      error={showError}
+                    />
+                  </View>
                 </TouchableOpacity>
 
-                <DatePicker
-                  modal
-                  mode="date"
-                  open={open}
-                  date={value ? new Date(value) : new Date()}
-                  onConfirm={(date) => {
-                    setOpen(false);
-                    onChange(date.toISOString());
-                  }}
-                  onCancel={() => setOpen(false)}
-                />
-              </>
-            )}
+                {show && (
+                  <DateTimePicker
+                    value={value ? new Date(value) : new Date()}
+                    mode="date"
+                    display="default"
+                    onChange={(event, selectedDate) => {
+                      setShow(false);
+                      if (event.type === "dismissed") return;
+                      onChange(selectedDate.toISOString());
+                    }}
+                  />
+                )}
 
-            {/* Error for mobile (Paper already shows built-in error styling) */}
-            {!isWeb && showError && (
-              <HelperText type="error" visible>
-                {(fieldError || error)?.message}
-              </HelperText>
+                {showError && (
+                  <HelperText type="error" visible>
+                    {(fieldError || error)?.message}
+                  </HelperText>
+                )}
+              </>
             )}
           </View>
         );

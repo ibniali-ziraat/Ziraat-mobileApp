@@ -96,7 +96,6 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
@@ -111,34 +110,34 @@ export default function LoginForm() {
   const [showSnack, setShowSnack] = useState(false);
   const toggleSnack = () => setShowSnack((p) => !p);
 
-  // ✅ Use new global data hook
   const { setUserToken, setUserData } = useGlobalData();
 
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
   const onSubmit = async (data: any) => {
-    try {
-      const response = await loginMutate({
-        mobileNumber: data.mobileNumber,
-        password: data.password,
-      });
-      console.log(response, "login response");
+    router.push("/");
+    // try {
+    //   const response = await loginMutate({
+    //     mobileNumber: data.mobileNumber,
+    //     password: data.password,
+    //   });
+    //   console.log(response, "login response");
 
-      if (response.success) {
-        await setUserToken(response.token);
-        setUserData({
-          id: response.user,
-        });
-        router.replace("/");
-        showSuccessToast("logged in");
-      }
+    //   if (response.success) {
+    //     await setUserToken(response.token);
+    //     setUserData({
+    //       id: response.user,
+    //     });
+    //     router.replace("/");
+    //     showSuccessToast("logged in");
+    //   }
 
-      setShowSnack(true);
-    } catch (error: any) {
-      showErrorToast("Something went wrong try again later");
+    //   setShowSnack(true);
+    // } catch (error: any) {
+    //   showErrorToast("Something went wrong try again later");
 
-      toggleSnack();
-    }
+    //   toggleSnack();
+    // }
   };
 
   return (
@@ -153,7 +152,7 @@ export default function LoginForm() {
           control={control}
           name="mobileNumber"
           label="Phone Number"
-          type="number"
+          type="phone"
           error={errors.mobileNumber}
         />
 

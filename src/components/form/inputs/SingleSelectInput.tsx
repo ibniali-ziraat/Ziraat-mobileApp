@@ -1,78 +1,120 @@
 import { colors } from "@/src/constants/colors";
-import { FormFieldProps } from "@/src/types/formFieldProps";
-import { Asterisk } from "lucide-react-native";
-import { Controller, useFormContext } from "react-hook-form";
-import { StyleSheet, Text, View } from "react-native";
-import { HelperText } from "react-native-paper";
-import { Dropdown } from "react-native-paper-dropdown";
+import { ChevronDown } from "lucide-react-native";
+import { useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
+import { FlatList, Modal, Text, TouchableOpacity, View } from "react-native";
+
+interface Option {
+  label: string;
+  value: string | number;
+}
+
+interface DropdownProps {
+  control: any;
+  name: string;
+  label: string;
+  options: Option[];
+  optional?: boolean;
+  error?: any;
+}
 
 export default function SingleSelectInput({
-  control: controlProp,
+  control,
   name,
   label,
   options,
-  error,
   optional = false,
-}: FormFieldProps) {
-
-  // Try to get form context (only works if wrapped with <FormProvider>)
-  let formContext;
-  try {
-    formContext = useFormContext();
-  } catch (e) {
-    formContext = null;
-  }
-
-  // Prefer controlProp if provided, else take from context
-  const controllerControl = controlProp || formContext?.control;
-
-  // clearErrors comes from form context, not from control
-  const clearErrors = formContext?.clearErrors;
+  error,
+}: DropdownProps) {
+  const [visible, setVisible] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState("");
 
   return (
     <Controller
-      control={controllerControl}
+      control={control}
       name={name}
       render={({ field: { value, onChange }, fieldState }) => {
         const liveError = fieldState?.error || error;
 
-        const handleSelect = (selectedValue) => {
-          onChange(selectedValue);
-
-          // Immediately clear error when selecting something
-          if (selectedValue && typeof clearErrors === "function") {
-            clearErrors(name);
-          }
-        };
+        // Sync selected label with value
+        useEffect(() => {
+          const match = options.find((o) => o.value === value);
+          setSelectedLabel(match ? match.label : "");
+        }, [value]);
 
         return (
-          <View style={styles.container}>
-            <View style={{ flexDirection: "row", alignItems: "center", marginTop: 20 }}>
-              <View className="flex-row items-center mb-2">
-                <Text className="text-dark text-xl font-semibold">{label}</Text>
-                {!optional && <Asterisk size={14} color={colors.error} className="ml-1" />}
-              </View>
-            </View>
+          <View className="mb-4">
+            {/* Input / Selector */}
+            <TouchableOpacity
+              className="flex-row justify-between items-center border border-neutral rounded-lg px-4 py-4 bg-light"
+              onPress={() => setVisible(true)}
+              activeOpacity={0.8}
+            >
+              <Text
+                className="text-base"
+                style={{ color: selectedLabel ? colors.dark : colors.dark }}
+              >
+                {selectedLabel || `Select ${label} `}
+                {!optional && (
+                  <Text style={{ color: colors.dark, fontSize: 16 }}> *</Text>
+                )}
+              </Text>
+              <ChevronDown size={20} color={colors.dark} />
+            </TouchableOpacity>
 
-            <Dropdown
-              placeholder={`Select ${label}`}
-              options={options}
-              value={value}
-              onSelect={handleSelect}
-            />
-
+            {/* Error */}
             {liveError && (
-              <HelperText type="error" visible>
+              <Text className="text-sm mt-1" style={{ color: colors.error }}>
                 {liveError.message}
-              </HelperText>
+              </Text>
             )}
+
+            {/* Modal */}
+            <Modal
+              visible={visible}
+              transparent
+              animationType="fade"
+              onRequestClose={() => setVisible(false)}
+            >
+              <TouchableOpacity
+                className="flex-1 justify-center items-center bg-overlay px-5"
+                activeOpacity={1}
+                onPress={() => setVisible(false)}
+              >
+                <View className="w-full bg-light rounded-xl max-h-80">
+                  <FlatList
+                    data={[{ label: "Reset", value: "" }, ...options]} // reset option
+                    keyExtractor={(item, index) =>
+                      item.value?.toString() || `reset-${index}`
+                    }
+                    renderItem={({ item }) => (
+                      <TouchableOpacity
+                        className="py-4 px-5 border-b border-neutral"
+                        onPress={() => {
+                          onChange(item.value);
+                          setVisible(false);
+                        }}
+                      >
+                        <Text
+                          className="text-base"
+                          style={{
+                            color:
+                              item.value === null
+                                ? colors.primary
+                                : colors.dark,
+                          }}
+                        >
+                          {item.label}
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  />
+                </View>
+              </TouchableOpacity>
+            </Modal>
           </View>
         );
       }}
     />
   );
 }
-
-const styles = StyleSheet.create({
-  container: { marginBottom: 15 },
-});
