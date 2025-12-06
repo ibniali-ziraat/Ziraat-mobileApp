@@ -1,17 +1,26 @@
-import React from "react";
 import { Text, View } from "react-native";
 
-type Props = {
-  icon: React.ReactNode;
-  label: string;
-  color: string;
-};
-
-export default function TabIcon({ icon, label, color }: Props) {
+export default function TabIcon({ icon, label }) {
   return (
-    <View style={{ alignItems: "center", justifyContent: "center" }}>
+    <View
+      style={{
+        alignItems: "center",
+        justifyContent: "center",
+        width: 60, // fixed width to prevent label wrapping
+      }}
+    >
       {icon}
-      <Text style={{ color, fontSize: 12, marginTop: 4 }}>{label}</Text>
+      <Text
+        style={{
+          fontSize: 12,
+          marginTop: 2,
+          textAlign: "center",
+        }}
+        numberOfLines={1}
+        ellipsizeMode="clip"
+      >
+        {label}
+      </Text>
     </View>
   );
 }

@@ -1,9 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { FormSectionProps } from "@/src/types/formSectionProps";
-import { Asterisk } from "lucide-react-native";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
 
 export default function FormInput({
@@ -21,6 +20,8 @@ export default function FormInput({
 
   const isSecure = type === "password";
 
+  const labelWithRequired = !optional ? `${label} *` : label;
+
   return (
     <Controller
       control={control}
@@ -31,6 +32,7 @@ export default function FormInput({
         fieldState: { error: fieldError },
       }) => {
         const showError = Boolean(fieldError?.message || error?.message);
+
         const resolvedKeyboard = keyboardType
           ? keyboardType
           : type === "email"
@@ -40,42 +42,32 @@ export default function FormInput({
               : "default";
 
         return (
-          <View style={{ marginBottom: 20 }}>
+          <View style={{ marginBottom: 16 }}>
             <TextInput
-              label={
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                  <Text>{label}</Text>
-                  {!optional && (
-                    <Asterisk
-                      size={12}
-                      color={colors.error}
-                      style={{ marginLeft: 2 }}
-                    />
-                  )}
-                </View>
-              }
-              placeholder={optional ? `${label}` : label}
               mode="outlined"
+              label={labelWithRequired} // <-- floating label now works!
               value={value}
+              onBlur={onBlur}
               onChangeText={(text) => {
                 const isNumericOnly =
                   resolvedKeyboard === "phone-pad" ||
                   resolvedKeyboard === "numeric";
                 onChange(isNumericOnly ? text.replace(/\D/g, "") : text);
               }}
-              onBlur={onBlur}
               secureTextEntry={isSecure && !showPassword}
               keyboardType={resolvedKeyboard}
               error={showError}
               right={
-                isSecure && (
+                isSecure ? (
                   <TextInput.Icon
                     icon={showPassword ? "eye-off" : "eye"}
                     onPress={() => setShowPassword((p) => !p)}
                   />
-                )
+                ) : undefined
               }
-              style={{ backgroundColor: colors.light }}
+              style={{
+                backgroundColor: colors.light,
+              }}
               {...props}
             />
 

@@ -11,7 +11,7 @@ import { profileSchema } from "@/src/schemas/user/profile.schema";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert, Button, ScrollView } from "react-native";
+import { Alert, Button } from "react-native";
 
 export default function ProfileScreen() {
   const { setUserData, userData } = useGlobalData();
@@ -46,11 +46,11 @@ export default function ProfileScreen() {
 
   return (
     <FormProvider {...form}>
-      <ScrollView>
-        <BackHeader>Profile</BackHeader>
-        <ProfileSection control={control} errors={errors} />
-        <Button title="Save" onPress={handleSubmit(onSubmit)} />
-      </ScrollView>
+      {/* <ScrollView> */}
+      <BackHeader>Profile</BackHeader>
+      <ProfileSection control={control} errors={errors} />
+      <Button title="Save" onPress={handleSubmit(onSubmit)} />
+      {/* </ScrollView> */}
     </FormProvider>
   );
 }
