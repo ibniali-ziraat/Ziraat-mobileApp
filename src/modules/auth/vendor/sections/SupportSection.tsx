@@ -8,21 +8,21 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
   const fieldStaffAvailable = useWatch({
     control,
     name: "fieldStaffAvailable",
-    defaultValue: "no",
+    defaultValue: false,
   });
 
   return (
     <View style={{ padding: 20, gap: 12 }}>
       <SingleSelectInput
         control={control}
-        name="advisorySupport"
+        name="agronomyAdvisorySupport"
         label="Agronomy Advisory Support"
         options={[
-          { label: "Select", value: "" },
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
+          { value: "", label: "Select" },
+          { value: "yes", label: "Yes" },
+          { value: "no", label: "No" },
         ]}
-        error={errors?.advisorySupport}
+        error={errors?.agronomyAdvisorySupport}
       />
 
       <SingleSelectInput
@@ -30,25 +30,22 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         name="fieldStaffAvailable"
         label="Field Staff Available"
         options={[
-          { label: "Select", value: "" },
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
+          { label: "Yes", value: true },
+          { label: "No", value: false },
         ]}
-        error={errors?.fieldStaffAvailable?.message}
+        error={errors?.fieldStaffAvailable}
       />
 
-      {/* Conditional Field Staff Count */}
-      {fieldStaffAvailable === "yes" && (
+      {fieldStaffAvailable && (
         <FormInput
           control={control}
-          name="fieldStaffCount"
+          name="numberOfStaff"
           label="Number of Field Staff"
           type="phone"
-          error={errors?.fieldStaffCount?.message}
+          error={errors?.numberOfStaff?.message}
         />
       )}
 
-      {/* After-Sales Service */}
       <FormInput
         control={control}
         name="afterSalesService"
@@ -56,39 +53,34 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         error={errors?.afterSalesService?.message}
       />
 
-      {/* Delivery Range */}
       <FormInput
         control={control}
-        name="deliveryRange"
+        name="preferredDeliveryAreaRangeSqKm"
         label="Preferred Delivery Area Range (Sq. KMs)"
         type="phone"
-        error={errors?.deliveryRange?.message}
+        error={errors?.preferredDeliveryAreaRangeSqKm?.message}
       />
 
-      {/* Computer/Laptop Availability */}
       <SingleSelectInput
         control={control}
-        name="computerAvailable"
+        name="computerFacilityAvailable"
         label="Computer/Laptop Facility Available"
         options={[
-          { label: "Select", value: "" },
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
+          { label: "Yes", value: true },
+          { label: "No", value: false },
         ]}
-        error={errors?.computerAvailable}
+        error={errors?.computerFacilityAvailable}
       />
 
-      {/* Delivery Vehicle Availability */}
       <SingleSelectInput
         control={control}
-        name="vehicleAvailable"
+        name="deliveryVehicleAvailable"
         label="Vehicle for Delivery / Two Wheeler"
         options={[
-          { label: "Select", value: "" },
-          { label: "Yes", value: "yes" },
-          { label: "No", value: "no" },
+          { label: "Yes", value: true },
+          { label: "No", value: false },
         ]}
-        error={errors.vehicleAvailable}
+        error={errors?.deliveryVehicleAvailable}
       />
     </View>
   );

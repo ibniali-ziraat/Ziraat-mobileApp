@@ -13,12 +13,12 @@ export const sellingPreferenceOptions = [
 /* -------------------- SCHEMA -------------------- */
 export const stepGProductionMarketingSchema = z.object({
   // Average Annual Yield — required, numeric
-  annualYield: z
-    .string()
-    .min(1, "Annual yield is required.")
-    .refine((v) => /^\d+(\.\d+)?$/.test(v), {
-      message: "Annual yield must be a valid number.",
-    }),
+  annualYield: z.coerce
+    .number({
+      invalid_type_error: "Annual yield must be a number.",
+    })
+    .positive("Annual yield must be greater than zero."),
+    
 
   // Peak Harvest Season — required
   peakHarvestSeason: z

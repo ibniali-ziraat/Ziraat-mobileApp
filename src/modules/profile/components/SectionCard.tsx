@@ -2,9 +2,15 @@ import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
 
-export default function SectionCard({ title, onEdit, onDelete, children }) {
+export default function SectionCard({
+  title,
+  onEdit,
+  onDelete,
+  children,
+  style,
+}) {
   return (
-    <View className="border border-slate-300 p-5 rounded-sm mb-5">
+    <View className="border border-slate-300 p-5 rounded-sm mb-5" style={style}>
       <View className="flex-row justify-between mb-3">
         <Text className="text-base font-semibold">{title}</Text>
 

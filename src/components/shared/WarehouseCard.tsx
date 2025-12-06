@@ -1,6 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import Animated, { FadeInLeft, FadeInUp } from "react-native-reanimated";
 
 const warehouses = [
@@ -28,19 +28,17 @@ export default function WarehouseCard() {
   return (
     <Animated.View
       entering={FadeInUp.duration(650)}
-      className="rounded-2xl p-5 mb-6"
+      className="rounded-sm p-5 "
       style={{
         backgroundColor: colors.light,
         borderWidth: 1,
         borderColor: colors.neutral,
-        shadowColor: colors.dark,
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        shadowOffset: { width: 0, height: 4 },
       }}
     >
       {/* Header */}
-      <View className="flex-row justify-between items-center pb-2">
+      <View className="flex-row justify-between items-center pb-3 border-b"
+        style={{ borderColor: colors.neutral }}
+      >
         <View>
           <Text className="text-lg font-extrabold" style={{ color: colors.dark }}>
             Warehouses & Contacts
@@ -50,7 +48,12 @@ export default function WarehouseCard() {
           </Text>
         </View>
 
-        <Ionicons name="business-outline" size={26} color={colors.primary} />
+        <View
+          className="w-10 h-10 rounded-xl items-center justify-center"
+         
+        >
+          <Ionicons name="business-outline" size={22} color={colors.primary} />
+        </View>
       </View>
 
       {/* Warehouse Cards */}
@@ -58,60 +61,47 @@ export default function WarehouseCard() {
         <Animated.View
           key={index}
           entering={FadeInLeft.delay(index * 120)}
-          className="mt-5 p-4 rounded-xl"
+          className="mt-5 p-4 rounded-xl shadow-sm"
           style={{
             backgroundColor: colors.darkHover,
-            borderColor: colors.neutral,
-            borderWidth: 1,
+           
+            
           }}
         >
           {/* Title */}
-          <Text
-            className="font-bold text-base"
-            style={{ color: colors.dark }}
-          >
+          <Text className="font-bold text-base" style={{ color: colors.dark }}>
             {w.title}
           </Text>
 
           {/* Place */}
           <Text
-            className="text-sm mt-[4px]"
-            style={{ color: colors.dark }}
+            className="text-sm mt-[3px]"
+            style={{ color: colors.secondary}}
           >
             {w.place}
           </Text>
 
+          
+
           {/* Details */}
-          <View className="mt-3">
-            {w.details.map((item, i) => (
-              <View key={i} className="flex-row items-center mt-2">
-                <Ionicons name={item.icon} size={18} color={colors.secondary} />
-                <Text className="ml-3 text-sm" style={{ color: colors.dark }}>
-                  {item.label}
-                </Text>
+          {w.details.map((item, i) => (
+            <View key={i} className="flex-row items-center mt-2">
+              <View
+                className="w-7 h-7 rounded-lg items-center justify-center"
+                
+              >
+                <Ionicons name={item.icon} size={16} color={colors.primary} />
               </View>
-            ))}
-          </View>
+
+              <Text className="ml-3 text-sm" style={{ color: colors.dark }}>
+                {item.label}
+              </Text>
+            </View>
+          ))}
         </Animated.View>
       ))}
 
-      {/* Add Warehouse BTN */}
-      <TouchableOpacity
-        activeOpacity={0.85}
-        className="mt-5 py-3 rounded-xl flex-row items-center justify-center"
-        style={{
-          backgroundColor: colors.secondary,
-          shadowColor: colors.secondary,
-          shadowOpacity: 0.15,
-          shadowRadius: 6,
-          shadowOffset: { width: 0, height: 3 },
-        }}
-      >
-        <Ionicons name="add-circle-outline" size={18} color="#fff" />
-        <Text className="text-white font-semibold text-sm ml-2">
-          Add Warehouse
-        </Text>
-      </TouchableOpacity>
+      
     </Animated.View>
   );
 }

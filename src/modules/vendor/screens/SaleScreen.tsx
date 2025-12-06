@@ -52,7 +52,7 @@ export default function SalesScreen() {
   const net = data.cash + data.credit - data.fee - data.discount;
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F6F7F8]">
+    <SafeAreaView className="flex-1 bg-white">
       {/* <HeaderBar title="Sales Overview" icon="bar-chart-outline" /> */}
 
       <ScrollView
@@ -123,9 +123,7 @@ export default function SalesScreen() {
   );
 }
 
-// =======================================================================
-// UI SUB-COMPONENTS
-// =======================================================================
+
 
 function PageTitle({ title }) {
   return (
@@ -142,10 +140,7 @@ function Card({ children }) {
       style={{
         borderColor: "#E5E7EB",
         borderWidth: 1,
-        shadowColor: "#000",
-        shadowOpacity: 0.05,
-        shadowRadius: 6,
-        elevation: 2,
+       
       }}
     >
       {children}

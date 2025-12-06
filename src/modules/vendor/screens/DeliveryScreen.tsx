@@ -26,7 +26,7 @@ export default function DeliveryScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
+    <SafeAreaView className="flex-1 bg-white">
       
 
       <ScrollView className="px-4 py-4 pb-40">

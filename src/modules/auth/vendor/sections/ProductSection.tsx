@@ -21,39 +21,36 @@ export default function ProductSection({ control, errors }) {
     value: x,
   }));
 
-  // Watch major brands field
-  const majorBrandsStocked = useWatch({
-    control,
-    name: "majorBrandsStocked",
-  });
+  // Watch major brands
+  const majorBrands = useWatch({ control, name: "majorBrands" });
 
-  // Field array for optional inputs list
+  // Field array for custom inputs
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "customInputList",
+    name: "customInputs",
   });
 
   return (
     <View style={{ padding: 20 }}>
       {/* Inputs Sold */}
       <MultiSelectInput
-        name="inputTypesSold"
+        name="inputTypes"
         control={control}
         label="Type of Inputs Sold"
         options={STATIC_INPUTS}
-        error={errors?.inputTypesSold?.message}
+        error={errors?.inputTypes?.message}
       />
 
       {/* Major Brands (Multi Select) */}
       <MultiSelectInput
-        name="majorBrandsStocked"
+        name="majorBrands"
         control={control}
         label="Major Brands Stocked"
         options={STATIC_BRANDS}
         error={
-          majorBrandsStocked?.length === 0
+          majorBrands?.length === 0
             ? { message: "At least one brand is required." }
-            : errors.majorBrandsStocked?.message
+            : errors?.majorBrands?.message
         }
       />
 
@@ -61,12 +58,20 @@ export default function ProductSection({ control, errors }) {
       <FormInput
         control={control}
         optional
-        name="storageCapacity"
-        label="Storage Capacity (MT or Litres)"
-        error={errors?.storageCapacity?.message}
+        name="storageCapacityValue"
+        label="Storage Capacity Value (MT or Litres)"
+        error={errors?.storageCapacityValue?.message}
       />
 
-      {/* Other Inputs Section */}
+      <FormInput
+        control={control}
+        optional
+        name="storageCapacityUnit"
+        label="Storage Capacity Unit"
+        error={errors?.storageCapacityUnit?.message}
+      />
+
+      {/* Custom Inputs */}
       <Text
         style={{
           fontWeight: "700",
@@ -91,19 +96,19 @@ export default function ProductSection({ control, errors }) {
           <View style={{ flex: 1 }}>
             <FormInput
               control={control}
-              name={`customInputList[${index}].name`}
+              name={`customInputs[${index}].productName`}
               label="Input Name"
-              error={errors.customInputList?.[index]?.name?.message}
+              error={errors.customInputs?.[index]?.productName?.message}
             />
           </View>
 
           <View style={{ width: 80 }}>
             <FormInput
               control={control}
-              name={`customInputList[${index}].stockQuantity`}
+              name={`customInputs[${index}].stockQuantity`}
               label="Stock"
               type="phone"
-              error={errors.customInputList?.[index]?.stockQuantity?.message}
+              error={errors.customInputs?.[index]?.stockQuantity?.message}
             />
           </View>
 
@@ -121,7 +126,9 @@ export default function ProductSection({ control, errors }) {
       ))}
 
       <TouchableOpacity
-        onPress={() => append({ name: "", stock: "" })}
+        onPress={() =>
+          append({ productName: "", stockQuantity: "", unit: null })
+        }
         style={{
           marginTop: 10,
           backgroundColor: "#4CAF50",

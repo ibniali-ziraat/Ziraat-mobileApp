@@ -3,12 +3,14 @@ import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
 import { Bell } from "lucide-react-native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AppHeader({ username = "User" }) {
   const navigation = useNavigation();
 
   return (
-    <View className="w-full bg-white border-b border-gray-200 px-4 py-3 flex-row items-center justify-between">
+    <SafeAreaView>
+      <View className="w-full bg-white border-b border-gray-200 px-4 py-3 flex-row items-center justify-between">
       {/* LEFT: Menu + Greeting */}
       <View className="flex-row items-center">
         {/* <TouchableOpacity
@@ -56,5 +58,6 @@ export default function AppHeader({ username = "User" }) {
         </TouchableOpacity>
       </View>
     </View>
+    </SafeAreaView>
   );
 }

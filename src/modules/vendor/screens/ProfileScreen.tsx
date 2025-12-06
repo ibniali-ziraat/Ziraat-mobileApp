@@ -16,17 +16,19 @@ export default function ProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <SafeAreaView className="flex-1 ">
+    <SafeAreaView className="flex-1">
       {/* HEADER */}
       {/* <HeaderBar title="Vendor Profile" icon="person-circle" /> */}
 
       {/* TABS */}
       <TabBar tabs={TABS} activeTab={tab} onChange={setTab} />
 
-      <ScrollView className="px-4 pt-4 pb-28">
+      <ScrollView >
         {tab === "overview" && (
           <Animated.View entering={FadeInUp}>
-            <OverviewCard onEditPress={() => setModalVisible(true)} />
+            <OverviewCard onEditPress={() => setModalVisible(true)} 
+                
+                />
           </Animated.View>
         )}
 

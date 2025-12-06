@@ -70,8 +70,13 @@ export function CustomDrawer({ navigation, menuGroups }) {
       />
 
       <DrawerItem
-        label="Marketplace"
+        label="Marketpssslace"
         onPress={() => navigation.navigate("marketplace")}
+        Icon={ShoppingCart}
+      />
+      <DrawerItem
+        label="Become a Supplier"
+        onPress={() => navigation.navigate("/auth/vendor")}
         Icon={ShoppingCart}
       />
 

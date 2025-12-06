@@ -80,10 +80,10 @@ export default function PlatformScreen() {
 
   return (
     <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
-      {/* Header */}
-      {/* <HeaderBar title="Platform Fee Management" icon="person-circle-outline" /> */}
+      
 
       <ScrollView className="px-4 pt-4 pb-24">
+        
         <FeeStructureCard colors={colors} />
 
         <FeeOverviewSection colors={colors} data={feeOverviewData} />

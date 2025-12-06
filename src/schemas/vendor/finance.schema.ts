@@ -17,14 +17,26 @@ export const financialPaymentSchema = z
       })
       .optional(),
 
-    upiAvailable: z.preprocess(
-      (val) => (val === undefined || val === null ? "" : val),
-      z.string().nonempty("Select if UPI/Digital Payment is available")
-    ),
-    creditFacility: z.preprocess(
-      (val) => (val === undefined || val === null ? "" : val),
-      z.string().nonempty("Select if Credit Facility is available")
-    ),
+    // upiAvailable: z.preprocess(
+    //   (val) => (val === undefined || val === null ? "" : val),
+    //   z.string().nonempty("Select if UPI/Digital Payment is available")
+    // ),
+    upiAvailable: z
+      .enum(["yes", "no"], {
+        required_error: "Required Field",
+        invalid_type_error: "Required Field",
+      })
+      .transform((val) => val === "yes"),
+    creditFacility: z
+      .enum(["yes", "no"], {
+        required_error: "Required Field",
+        invalid_type_error: "Required Field",
+      })
+      .transform((val) => val === "yes"),
+    // creditFacility: z.preprocess(
+    //   (val) => (val === undefined || val === null ? "" : val),
+    //   z.string().nonempty("Select if Credit Facility is available")
+    // ),
   })
   .superRefine((data, ctx) => {
     if (data.sellingViaZiraat) {

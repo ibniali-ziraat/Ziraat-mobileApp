@@ -9,6 +9,10 @@ export const colors = {
   neutral: "#8888883b",
   overlay: "rgba(0, 0, 0, 0.5)",
   error: "#f44336",
+
+  
+  warning: "#f5a623",
+  warningHover: "#d98c1c",
   cardShadow: 'rgba(0,0,0,0.6)',
   cardBorder: ''
 };

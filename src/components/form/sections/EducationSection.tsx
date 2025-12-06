@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet, View } from "react-native";
 import FormInput from "../inputs/FormInput";
 
@@ -37,6 +36,7 @@ export default function EducationSection({ control, errors }: Props) {
         name="specialization"
         label="Specialization / Major (Optional)"
         error={errors.specialization}
+        optional
       />
     </View>
   );

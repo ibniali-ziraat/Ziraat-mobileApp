@@ -43,13 +43,15 @@ export default function ReportsScreen() {
   const [activeFilter, setActiveFilter] = useState("Date");
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
+    <SafeAreaView className="flex-1 bg-white">
       {/* HEADER */}
       {/* <HeaderBar title="Reports" icon="person-circle" /> */}
 
-      <ScrollView className="px-4 pt-3 pb-24">
-        <Text className="text-gray-800 font-semibold mb-2">Sales Reports</Text>
-
+      <ScrollView className="px-4 ">
+        <Text className="text-black font-bold text-xl ">Sales Reports</Text>
+ <Text className="text-xs text-black">
+          Cash and Credit Sale Management
+        </Text>
         <SalesFilters
           salesFilters={salesFiltersData}
           activeFilter={activeFilter}
