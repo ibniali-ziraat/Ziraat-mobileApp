@@ -182,6 +182,7 @@ const HomeScreen = () => {
             <Text className="text-white font-semibold ml-2 text-base">
               Add New Orchard
             </Text>
+            
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -202,6 +203,7 @@ const HomeScreen = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
+          onPress={()=> router.push("/spray-registration")}
             className="rounded-xl flex-row justify-center items-center bg-[#fff8f4]"
             style={{
               paddingVertical: 14,
@@ -216,6 +218,7 @@ const HomeScreen = () => {
             >
               Add New Spray
             </Text>
+          
           </TouchableOpacity>
         </View>
 

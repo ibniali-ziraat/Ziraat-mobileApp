@@ -1,7 +1,7 @@
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { Platform, TouchableOpacity, View } from "react-native";
-import DatePicker from "react-native-date-picker";
 import { HelperText, TextInput } from "react-native-paper";
 
 export default function FormDateInput({
@@ -11,71 +11,37 @@ export default function FormDateInput({
   optional = false,
   error,
 }) {
-  const [open, setOpen] = useState(false);
+  const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
 
   return (
     <Controller
       control={control}
       name={name}
-      render={({
-        field: { onChange, value },
-        fieldState: { error: fieldError },
-      }) => {
-        const showError = !!(fieldError || error);
+      render={({ field: { onChange, value }, fieldState }) => {
+        const showError = !!(fieldState?.error || error);
 
         return (
-          <View style={{ marginBottom: 20 }}>
-            {/* 🌐 WEB VERSION (MUI-like floating label) */}
+          <View className="mb-5">
+            {/* 🌐 WEB VERSION */}
             {isWeb ? (
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                {/* Floating Label */}
-                <label
-                  style={{
-                    fontSize: 13,
-                    marginBottom: 4,
-                    color: showError ? "red" : "#444",
-                    fontWeight: optional ? "400" : "500",
-                  }}
-                >
-                  {label} {!optional && <span style={{ color: "red" }}>*</span>}
-                </label>
+              <input
+                type="date"
+                value={value ? value.split("T")[0] : ""}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (!val) return onChange("");
 
-                <input
-                  type="date"
-                  value={value ? value.split("T")[0] : ""}
-                  onChange={(e) => {
-                    const val = e.target.value;
-
-                    if (!val) {
-                      onChange(null);
-                      return;
-                    }
-
-                    const date = new Date(val);
-                    onChange(date.toISOString());
-                  }}
-                  style={{
-                    padding: 12,
-                    borderWidth: 1,
-                    borderRadius: 6,
-                    borderColor: showError ? "red" : "#ccc",
-                    width: "100%",
-                    outline: "none",
-                    fontSize: 15,
-                  }}
-                />
-
-                {showError && (
-                  <span style={{ fontSize: 12, color: "red", marginTop: 4 }}>
-                    {(fieldError || error)?.message}
-                  </span>
-                )}
-              </div>
+                  onChange(new Date(val).toISOString());
+                }}
+                className={`p-3 border rounded-md ${
+                  showError ? "border-red-500" : "border-gray-300"
+                }`}
+              />
             ) : (
               <>
-                {/* 📱 MOBILE VERSION (react-native-paper floating label) */}
-                <TouchableOpacity onPress={() => setOpen(true)}>
+                {/* 📱 MOBILE INPUT */}
+                <TouchableOpacity onPress={() => setShow(true)} activeOpacity={0.8}>
                   <TextInput
                     mode="outlined"
                     label={optional ? `${label} (Optional)` : `${label} *`}
@@ -86,24 +52,27 @@ export default function FormDateInput({
                   />
                 </TouchableOpacity>
 
-                <DatePicker
-                  modal
-                  mode="date"
-                  open={open}
-                  date={value ? new Date(value) : new Date()}
-                  onConfirm={(date) => {
-                    setOpen(false);
-                    onChange(date.toISOString());
-                  }}
-                  onCancel={() => setOpen(false)}
-                />
+                {/* ✅ SAFE NATIVE PICKER */}
+                {show && (
+                  <DateTimePicker
+                    value={value ? new Date(value) : new Date()}
+                    mode="date"
+                    display={Platform.OS === "ios" ? "spinner" : "default"}
+                    onChange={(event, selectedDate) => {
+                      setShow(false);
+
+                      if (event.type === "set" && selectedDate) {
+                        onChange(selectedDate.toISOString());
+                      }
+                    }}
+                  />
+                )}
               </>
             )}
 
-            {/* Error for mobile (Paper already shows built-in error styling) */}
             {!isWeb && showError && (
               <HelperText type="error" visible>
-                {(fieldError || error)?.message}
+                {(fieldState?.error || error)?.message}
               </HelperText>
             )}
           </View>
