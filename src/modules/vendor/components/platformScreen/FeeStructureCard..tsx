@@ -1,5 +1,4 @@
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import React from "react";
 import { Text, View } from "react-native";
 
 export default function FeeStructureCard({ colors }) {
@@ -11,36 +10,30 @@ export default function FeeStructureCard({ colors }) {
 
       <View className="flex-row justify-between">
 
-        {/* -------------------- CASH SALES -------------------- */}
+       
         <View
           className="w-[48%] p-4 rounded-2xl"
           style={{
             backgroundColor: colors.light,
             borderColor: colors.border,
             borderWidth: 1,
-            shadowColor: "#000",
-            shadowOpacity: 0.05,
-            shadowRadius: 6,
-            elevation: 2,
+           
           }}
         >
           {/* Icon Row */}
           <View className="flex-row items-center mb-2">
             <View
               className="w-9 h-9 rounded-xl items-center justify-center mr-2"
-              style={{
-               
-                backgroundColor: colors.primaryLight,
-              }}
+              
             >
               <Ionicons
                 name="cash-outline"
-                size={18}
-                color={colors.primaryDark}
+                size={22}
+                color={colors.primary}
               />
             </View>
 
-            <Text className="text-gray-700 font-semibold text-[14px]">
+            <Text className="text-black font-semibold text-[14px]">
               Cash Sales
             </Text>
           </View>
@@ -54,7 +47,7 @@ export default function FeeStructureCard({ colors }) {
           </Text>
 
           {/* Sub label */}
-          <Text className="text-[11px] text-gray-500 mt-1">
+          <Text className="text-[11px] text-black mt-1">
             Fee Scale • 3 mos
           </Text>
         </View>
@@ -66,21 +59,14 @@ export default function FeeStructureCard({ colors }) {
             backgroundColor: colors.light,
             borderColor: colors.border,
             borderWidth: 1,
-            shadowColor: "#000",
-            shadowOpacity: 0.05,
-            shadowRadius: 6,
-            elevation: 2,
+           
           }}
         >
           {/* Icon Row */}
           <View className="flex-row items-center mb-2">
             <View
               className="w-9 h-9 rounded-xl items-center justify-center mr-2"
-              style={{
-               
-                
-                backgroundColor: colors.secondaryLight,
-              }}
+             
             >
               <MaterialCommunityIcons
                 name="credit-card-outline"
@@ -89,7 +75,7 @@ export default function FeeStructureCard({ colors }) {
               />
             </View>
 
-            <Text className="text-gray-700 font-semibold text-[14px]">
+            <Text className="text-black font-semibold text-[14px]">
               Credit Sales
             </Text>
           </View>
@@ -103,7 +89,7 @@ export default function FeeStructureCard({ colors }) {
           </Text>
 
           {/* Sub label */}
-          <Text className="text-[11px] text-gray-500 mt-1">
+          <Text className="text-[11px] text-black mt-1">
             Fee Scale • 5 mos
           </Text>
         </View>

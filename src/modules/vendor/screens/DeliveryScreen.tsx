@@ -1,12 +1,12 @@
 import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../../../../components/shared/HeaderBar";
 
-import DeliveryHeaderCard from "../../../../modules/vendor/components/delivery/DeliveryHeaderCard";
 
-import DeliveryOrderAssignment from "../../../../modules/vendor/components/delivery/DeliveryOrderAssignment";
-import DeliveryProof from "../../../../modules/vendor/components/delivery/DeliveryProof";
-import DeliveryRoute from "../../../../modules/vendor/components/delivery/DeliveryRoute";
+import DeliveryHeaderCard from "../../../modules/vendor/components/delivery/DeliveryHeaderCard";
+
+import DeliveryOrderAssignment from "../../../modules/vendor/components/delivery/DeliveryOrderAssignment";
+import DeliveryProof from "../../../modules/vendor/components/delivery/DeliveryProof";
+import DeliveryRoute from "../../../modules/vendor/components/delivery/DeliveryRoute";
 
 const theme = {
   primary: "#2d6b06",
@@ -26,8 +26,8 @@ export default function DeliveryScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
-      <HeaderBar title="Delivery Management" icon="Settings" />
+    <SafeAreaView className="flex-1 bg-white">
+      
 
       <ScrollView className="px-4 py-4 pb-40">
         <DeliveryHeaderCard order={deliveryOrder} theme={theme} />

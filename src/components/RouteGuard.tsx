@@ -1,21 +1,21 @@
 import { router } from "expo-router";
 import { ReactNode, useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
+import { useGlobalData } from "../contexts/GlobalDataContext";
 
 interface RouteGuardProps {
   children: ReactNode;
 }
 
 export default function RouteGuard({ children }: RouteGuardProps) {
-  const { initialized, userId } = useAuth();
+  const { userData, initialized } = useGlobalData();
 
   useEffect(() => {
     if (!initialized) return;
 
-    if (userId) {
+    if (!userData?.id) {
       router.replace("/auth/user");
     }
-  }, [initialized, userId]);
+  }, [initialized, userData?.id]);
 
   if (!initialized) return null;
 

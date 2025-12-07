@@ -1,6 +1,6 @@
 import AddressSection from "@/src/components/form/sections/AddressSection";
 import BackHeader from "@/src/components/shared/BackHeader";
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useAddressMutation,
@@ -8,14 +8,16 @@ import {
   useAddressUpdateMutation,
 } from "@/src/hooks/userQueryHooks";
 import { addressSchema } from "@/src/schemas/user/address.schema";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert, Button, ScrollView } from "react-native";
+import { Button, ScrollView } from "react-native";
 
 export default function AddressScreen() {
-  const { userProfileId } = useAuth();
+  const { userData } = useGlobalData();
 
-  const { data } = useAddressQuery(userProfileId);
+  const { data } = useAddressQuery(userData.profileId);
   const { mutateAsync: save } = useAddressMutation();
   const { mutateAsync: update } = useAddressUpdateMutation();
 
@@ -33,9 +35,26 @@ export default function AddressScreen() {
   }, [data]);
 
   const onSubmit = async (values) => {
-    const payload = { profileId: userProfileId, ...values };
-    data ? await update(payload) : await save(payload);
-    Alert.alert("Success", "Address Saved!");
+    console.log(values, "values");
+
+    try {
+      const payload = { profileId: userData.profileId, ...values };
+
+      if (data) {
+        await update(payload);
+      } else {
+        await save(payload);
+      }
+      showSuccessToast("saved");
+      router.replace("/user-profile");
+    } catch (error) {
+      const backendError =
+        error?.response?.data?.message ||
+        error?.response?.data?.[0]?.description ||
+        "Something went wrong while saving the address";
+
+      showErrorToast(backendError);
+    }
   };
 
   return (

@@ -1,23 +1,33 @@
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 import Animated, {
-    FadeInLeft,
-    FadeInUp,
-    Layout,
+  FadeInLeft,
+  FadeInUp,
+  Layout,
 } from "react-native-reanimated";
 
+// ROLE COLOR ACCENTS
+const roleAccent = {
+  Driver: colors.primary,
+  "Delivery Helper": colors.secondary,
+  "Fleet Manager": colors.warning,
+};
 
+// ROLE ICON MAP
+const roleIcons = {
+  Driver: "car-outline",
+  "Delivery Helper": "person-outline",
+  "Fleet Manager": "briefcase-outline",
+};
+
+// SAMPLE TEAM
 const team = [
   {
     name: "Mehmet Can",
     role: "Driver",
     status: "Active",
-    vehicle: {
-      type: "Mini Truck",
-      model: "Tata Ace",
-      regNo: "MH 12 AB 4455",
-    },
+    vehicle: { type: "Mini Truck", model: "Tata Ace", regNo: "MH 12 AB 4455" },
     manpower: 1,
   },
   {
@@ -31,39 +41,34 @@ const team = [
     name: "Ali Khan",
     role: "Fleet Manager",
     status: "Active",
-    vehicle: {
-      type: "Pickup Van",
-      model: "Mahindra Bolero",
-      regNo: "DL 09 XY 2291",
-    },
+    vehicle: { type: "Pickup Van", model: "Mahindra Bolero", regNo: "DL 09 XY 2291" },
     manpower: 3,
   },
   {
     name: "Rohan Singh",
     role: "Driver",
     status: "Inactive",
-    vehicle: {
-      type: "E-Scooter",
-      model: "Ola S1",
-      regNo: "UP 14 MN 9031",
-    },
+    vehicle: { type: "E-Scooter", model: "Ola S1", regNo: "UP 14 MN 9031" },
     manpower: 0,
   },
 ];
 
-// STATUS BADGE
+// STATUS BADGE (with online dot)
 function StatusBadge({ status }) {
   const isActive = status === "Active";
 
   return (
     <View className="flex-row items-center">
-      <Ionicons
-        name={isActive ? "checkmark-circle" : "close-circle"}
-        size={16}
-        color={isActive ? colors.primary : colors.error}
+      {/* ONLINE DOT */}
+      <View
+        className="w-2 h-2 rounded-full mr-1"
+        style={{
+          backgroundColor: isActive ? colors.primary : colors.error,
+        }}
       />
+
       <Text
-        className="ml-1 text-[11px] font-semibold"
+        className="text-[11px] font-semibold"
         style={{
           color: isActive ? colors.primary : colors.error,
         }}
@@ -74,13 +79,31 @@ function StatusBadge({ status }) {
   );
 }
 
-// ROLE ICON MAP
-const roleIcons = {
-  Driver: "car-outline",
-  "Delivery Helper": "person-outline",
-  "Fleet Manager": "briefcase-outline",
-};
+// AVATAR INITIALS
+function Avatar({ name, color }) {
+  const initials = name
+    .split(" ")
+    .map((i) => i[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
+  return (
+    <View
+      className="w-12 h-12 rounded-full items-center justify-center"
+      style={{ backgroundColor: color + "22" }}
+    >
+      <Text
+        className="font-bold text-base"
+        style={{ color }}
+      >
+        {initials}
+      </Text>
+    </View>
+  );
+}
+
+// MAIN COMPONENT
 export default function TeamCard() {
   return (
     <Animated.View
@@ -91,26 +114,16 @@ export default function TeamCard() {
         backgroundColor: colors.light,
         borderColor: colors.neutral,
         borderWidth: 1,
-        shadowColor: colors.dark,
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        shadowOffset: { width: 0, height: 4 },
       }}
     >
-      
+      {/* HEADER */}
       <View className="flex-row items-center justify-between">
         <View>
-          <Text
-            className="text-lg font-extrabold"
-            style={{ color: colors.dark }}
-          >
+          <Text className="text-lg font-extrabold" style={{ color: colors.dark }}>
             Delivery Team Overview
           </Text>
-          <Text
-            className="text-[11px] mt-[2px]"
-            style={{ color: colors.dark }}
-          >
-            Drivers • Helpers • Fleet & Assignments
+          <Text className="text-[11px] mt-[2px]" style={{ color: colors.dark }}>
+            Team • Roles • Fleet Assignments
           </Text>
         </View>
 
@@ -121,90 +134,67 @@ export default function TeamCard() {
       <View className="mt-5">
         {team.map((member, index) => {
           const isActive = member.status === "Active";
+          const accent = roleAccent[member.role] || colors.primary;
 
           return (
             <Animated.View
               key={index}
-              entering={FadeInLeft.delay(120 * index)}
+              entering={FadeInLeft.delay(index * 120)}
+              layout={Layout.springify()}
               className="p-4 rounded-xl mb-3"
               style={{
                 backgroundColor: colors.darkHover,
-                borderColor: colors.neutral,
-                borderWidth: 1,
+               
+                borderColor: accent,
               }}
             >
-              {/* ROW 1 — BASIC PROFILE */}
+              {/* TOP ROW — Avatar + Name + Status */}
               <View className="flex-row justify-between items-center">
                 <View className="flex-row items-center">
-                  <View
-                    className="w-11 h-11 rounded-full items-center justify-center mr-3"
-                    style={{
-                      backgroundColor: isActive
-                        ? colors.primary + "20"
-                        : colors.error + "20",
-                    }}
-                  >
-                    <Ionicons
-                      name={roleIcons[member.role] || "person-circle-outline"}
-                      size={22}
-                      color={isActive ? colors.primary : colors.error}
-                    />
-                  </View>
+                  <Avatar name={member.name} color={accent} />
 
-                  <View>
-                    <Text
-                      className="font-semibold text-sm"
-                      style={{ color: colors.dark }}
-                    >
+                  <View className="ml-3">
+                    <Text className="font-semibold text-sm" style={{ color: colors.dark }}>
                       {member.name}
                     </Text>
-                    <Text
-                      className="text-[11px] mt-[2px]"
-                      style={{ color: colors.darkHover }}
-                    >
-                      {member.role}
-                    </Text>
+                    <View className="flex-row items-center mt-[1px]">
+                      <Ionicons
+                        name={roleIcons[member.role]}
+                        size={16}
+                        color={accent}
+                      />
+                      <Text className="ml-1 text-[11px]" style={{ color: colors.dark }}>
+                        {member.role}
+                      </Text>
+                    </View>
                   </View>
                 </View>
 
                 <StatusBadge status={member.status} />
               </View>
 
-              {/* ROW 2 — ASSIGNMENTS (Vehicles + Manpower) */}
+              {/* DETAILS SECTION */}
               <View className="mt-3 ml-1">
+
                 {/* VEHICLE DETAILS */}
                 {member.vehicle && (
-                  <View className="flex-row items-center mt-1">
-                    <Ionicons
-                      name="car-sport-outline"
-                      size={16}
-                      color={colors.secondary}
-                    />
-                    <Text
-                      className="ml-2 text-xs"
-                      style={{ color: colors.dark }}
-                    >
-                      {member.vehicle.type} — {member.vehicle.model}
+                  <>
+                    <View className="flex-row items-center mt-1">
+                      <Ionicons name="car-sport-outline" size={16} color={colors.secondary} />
+                      <Text className="ml-2 text-xs" style={{ color: colors.dark }}>
+                        {member.vehicle.type} — {member.vehicle.model}
+                      </Text>
+                    </View>
+
+                    <Text className="ml-8 text-[11px]" style={{ color: colors.dark }}>
+                      Reg No: {member.vehicle.regNo}
                     </Text>
-                  </View>
+                  </>
                 )}
 
-                {member.vehicle && (
-                  <Text
-                    className="ml-8 text-[11px]"
-                    style={{ color: colors.darkHover }}
-                  >
-                    Reg No: {member.vehicle.regNo}
-                  </Text>
-                )}
-
-                {/* MANPOWER DETAILS */}
+                {/* MANPOWER */}
                 <View className="flex-row items-center mt-2">
-                  <Ionicons
-                    name="people-outline"
-                    size={16}
-                    color={colors.primary}
-                  />
+                  <Ionicons name="people-outline" size={16} color={colors.primary} />
                   <Text className="ml-2 text-xs" style={{ color: colors.dark }}>
                     Assigned Manpower: {member.manpower}
                   </Text>
@@ -214,24 +204,6 @@ export default function TeamCard() {
           );
         })}
       </View>
-
-      {/* ADD MEMBER BTN */}
-      <TouchableOpacity
-        activeOpacity={0.85}
-        className="mt-4 py-3 rounded-xl flex-row items-center justify-center"
-        style={{
-          backgroundColor: colors.secondary,
-          shadowColor: colors.secondary,
-          shadowOpacity: 0.2,
-          shadowRadius: 8,
-          shadowOffset: { width: 0, height: 4 },
-        }}
-      >
-        <Ionicons name="person-add-outline" size={18} color="#fff" />
-        <Text className="text-white font-semibold text-sm ml-2">
-          Add Member
-        </Text>
-      </TouchableOpacity>
     </Animated.View>
   );
 }

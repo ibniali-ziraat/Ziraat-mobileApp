@@ -17,9 +17,9 @@ export default function ExpandableTransactionRow({ tx, colors }) {
     >
       {/* Main Row */}
       <View className="flex-row items-center">
-        <Text className="w-[25%] text-[13px] text-gray-900">{tx.id}</Text>
-        <Text className="w-[20%] text-[13px] text-gray-700">{tx.type}</Text>
-        <Text className="w-[25%] text-[13px] text-gray-800">{tx.amount}</Text>
+        <Text className="w-[25%] text-[13px] text-black">{tx.id}</Text>
+        <Text className="w-[20%] text-[13px] text-black">{tx.type}</Text>
+        <Text className="w-[25%] text-[13px] text-black">{tx.amount}</Text>
 
         <View className="w-[30%] flex-row items-center justify-between">
           <Text className="text-[13px] font-medium text-gray-900">

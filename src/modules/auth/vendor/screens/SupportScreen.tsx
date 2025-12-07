@@ -1,4 +1,4 @@
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorSupportMutation,
@@ -6,14 +6,15 @@ import {
   useVendorSupportUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
 import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { Alert, Button, ScrollView } from "react-native";
 import SupportSection from "../sections/SupportSection";
 
 export default function SupportScreen() {
-  const { vendorId } = useAuth();
-  const { data } = useVendorSupportQuery(vendorId);
+  const { vendorData } = useGlobalData();
+  const { data } = useVendorSupportQuery(vendorData.profileId);
 
   const { mutateAsync: save } = useVendorSupportMutation();
   const { mutateAsync: update } = useVendorSupportUpdateMutation();
@@ -29,28 +30,33 @@ export default function SupportScreen() {
   useEffect(() => {
     if (!data) return;
 
-    setValue(
-      "agronomyAdvisorySupport",
-      data.agronomyAdvisorySupport ? "yes" : "no"
-    );
-    setValue("fieldStaffAvailable", data.fieldStaffAvailable);
-    setValue("numberOfStaff", data.numberOfStaff);
-    setValue("afterSalesService", data.afterSalesService);
-    setValue(
-      "preferredDeliveryAreaRangeSqKm",
-      data.preferredDeliveryAreaRangeSqKm
-    );
-    setValue("computerFacilityAvailable", data.computerFacilityAvailable);
-    setValue("deliveryVehicleAvailable", data.deliveryVehicleAvailable);
+    setValue("advisorySupport", data.advisorySupport ? "yes" : "no");
+    setValue("fieldStaffAvailable", data.fieldStaffAvailable ? "yes" : "no");
+    setValue("fieldStaffCount", data.fieldStaffCount ?? "");
+    setValue("afterSalesService", data.afterSalesService ?? "");
+    setValue("deliveryRange", String(data.deliveryRange ?? ""));
+    setValue("computerAvailable", data.computerAvailable ? "yes" : "no");
+    setValue("vehicleAvailable", data.vehicleAvailable ? "yes" : "no");
   }, [data]);
 
   const onSubmit = async (values) => {
     const payload = {
-      supplierProfileId: vendorId,
+      supplierProfileId: vendorData.profileId,
       ...values,
+      fieldStaffAvailable: values.fieldStaffAvailable,
+      fieldStaffCount: values.fieldStaffAvailable
+        ? Number(values.fieldStaffCount)
+        : null,
+      deliveryRange: Number(values.deliveryRange),
     };
-    data ? await update(payload) : await save(payload);
-    Alert.alert("Support Info Saved!");
+
+    try {
+      data ? await update(payload) : await save(payload);
+      Alert.alert("Support Info Saved!");
+      router.push("/auth/vendor/vendor-profile-screen");
+    } catch (err) {
+      Alert.alert("Error saving data", err.message || "Unknown error");
+    }
   };
 
   return (

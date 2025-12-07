@@ -1,4 +1,4 @@
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorFinancialMutation,
@@ -6,14 +6,16 @@ import {
   useVendorFinancialUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
 import { financialPaymentSchema } from "@/src/schemas/vendor/finance.schema";
+import { showErrorToast } from "@/src/utils/toast";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { Alert, Button } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import FinancialPaymentSection from "../sections/FinancialSection";
 export default function FinancialScreen() {
-  const { vendorId } = useAuth();
-  const { data } = useVendorFinancialQuery(vendorId);
+  const { vendorData } = useGlobalData();
+  const { data } = useVendorFinancialQuery(vendorData.profileId);
 
   const { mutateAsync: save } = useVendorFinancialMutation();
   const { mutateAsync: update } = useVendorFinancialUpdateMutation();
@@ -29,11 +31,9 @@ export default function FinancialScreen() {
   useEffect(() => {
     if (!data) return;
 
-    // Transform boolean values into "yes"/"no" for SingleSelectInput
     setValue("upiAvailable", data.upiAvailable ? "yes" : "no");
     setValue("creditFacility", data.creditFacility ? "yes" : "no");
 
-    // Prefill nested bankDetails object
     if (data.bankDetails) {
       setValue("bankDetails", {
         accountHolder: data.bankDetails.accountHolderName || "",
@@ -48,13 +48,29 @@ export default function FinancialScreen() {
   }, [data]);
 
   const onSubmit = async (values) => {
-    const payload = {
-      supplierProfileId: vendorId,
-      ...values,
-    };
+    try {
+      const payload = {
+        supplierProfileId: vendorData.profileId,
+        upiAvailable: values.upiAvailable === "yes",
+        creditFacility: values.creditFacility === "yes",
+        sellingViaZiraat: values.sellingViaZiraat,
+        bankDetails: values.sellingViaZiraat ? values.bankDetails : null,
+      };
 
-    data ? await update(payload) : await save(payload);
-    Alert.alert("Financial Info Saved!");
+      if (data) {
+        await update(payload);
+      } else {
+        await save(payload);
+      }
+
+      Alert.alert("Financial Info Saved!");
+      router.push("/auth/vendor/vendor-profile-screen");
+    } catch (error) {
+      console.error("Error saving financial info:", error);
+      showErrorToast(
+        error?.message || "Something went wrong. Please try again."
+      );
+    }
   };
 
   return (

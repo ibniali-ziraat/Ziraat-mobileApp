@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import HeaderBar from "../../../../components/shared/HeaderBar";
+
 
 const colors = {
   primary: "#2d6b06",
@@ -89,11 +89,18 @@ export default function NotificationScreen() {
   const sections = ["Today", "Yesterday", "Earlier"];
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
-      {/* HEADER */}
-      <HeaderBar title="Notifications" icon="notifications-circle" />
-
-      {/* TOP FILTER TABS */}
+    <SafeAreaView className="flex-1 bg-white">
+     <ScrollView className="px-2 pt-2">
+        
+        
+        <View className="mb-4 mt-1">
+          <Text className="text-[22px] font-extrabold text-gray-900">
+            Notification
+          </Text>
+          <Text className="text-[12px] text-black mt-1">
+            Sales, settlements & payout insights
+          </Text>
+        </View>
       <View className="mt-3 px-2">
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {tabs.map((tab) => (
@@ -131,7 +138,7 @@ export default function NotificationScreen() {
 
           return (
             <View key={sec} className="mb-4">
-              <Text className="text-gray-700 font-bold mb-2">{sec}</Text>
+              <Text className="text-black text-lg font-bold mb-2">{sec}</Text>
 
               {secItems.map((n) => (
                 <View
@@ -139,10 +146,7 @@ export default function NotificationScreen() {
                   className="bg-white rounded-2xl p-4 mb-3 flex-row items-center border"
                   style={{
                     borderColor: n.read ? "#e5e7eb" : "#cbd5e1",
-                    shadowColor: "#000",
-                    shadowOpacity: 0.07,
-                    shadowRadius: 4,
-                    shadowOffset: { width: 0, height: 1 },
+                  
                   }}
                 >
                   {/* ICON */}
@@ -151,7 +155,7 @@ export default function NotificationScreen() {
                       width: 46,
                       height: 46,
                       borderRadius: 12,
-                      backgroundColor: `${n.color}15`,
+                     
                       alignItems: "center",
                       justifyContent: "center",
                     }}
@@ -162,18 +166,18 @@ export default function NotificationScreen() {
                   {/* TEXT */}
                   <View className="ml-3 flex-1">
                     <Text
-                      className={`text-sm font-semibold ${
-                        n.read ? "text-gray-700" : "text-black"
+                      className={`text-lg font-semibold ${
+                        n.read ? "text-black" : "text-black"
                       }`}
                     >
                       {n.title}
                     </Text>
 
-                    <Text className="text-xs text-gray-600 mt-[2px]">
+                    <Text className="text-sm text-black mt-[2px]">
                       {n.message}
                     </Text>
 
-                    <Text className="text-[10px] text-gray-400 mt-1">
+                    <Text className="text-[10px] text-black mt-1">
                       {n.time}
                     </Text>
                   </View>
@@ -187,6 +191,7 @@ export default function NotificationScreen() {
             </View>
           );
         })}
+      </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );

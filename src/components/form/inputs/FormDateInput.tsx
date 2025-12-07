@@ -4,7 +4,7 @@ import { Controller } from "react-hook-form";
 import { Platform, TouchableOpacity, View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
 
-export default function FormDateInput({
+export default function FormDatePicker({
   control,
   name,
   label,

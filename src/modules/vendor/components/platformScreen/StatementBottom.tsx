@@ -2,10 +2,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Animated, {
-    Easing,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 export default function StatementBottom({ visible, onClose, statements, colors }) {
@@ -49,15 +49,7 @@ export default function StatementBottom({ visible, onClose, statements, colors }
       {/* BOTTOM SHEET */}
       <Animated.View
         className="rounded-t-3xl px-4 pt-5 pb-8 bg-white"
-        style={[
-          sheetStyle,
-          {
-            shadowColor: "#000",
-            shadowOpacity: 0.15,
-            shadowRadius: 12,
-            elevation: 10,
-          },
-        ]}
+        
       >
         {/* HANDLE BAR */}
         <View className="items-center mb-4">
@@ -91,10 +83,7 @@ export default function StatementBottom({ visible, onClose, statements, colors }
                 backgroundColor: colors.light,
                 borderColor: colors.border,
                 borderWidth: 1,
-                shadowColor: "#000",
-                shadowOpacity: 0.04,
-                shadowRadius: 4,
-                elevation: 2,
+               
               }}
             >
               {/* LEFT SIDE */}
@@ -102,25 +91,21 @@ export default function StatementBottom({ visible, onClose, statements, colors }
                 {/* Icon bubble */}
                 <View
                   className="w-10 h-10 rounded-xl items-center justify-center"
-                  style={{
-                    backgroundColor: `${colors.primaryLight}80`,
-                    borderColor: colors.primary,
-                    borderWidth: 1,
-                  }}
+                  
                 >
                   <Ionicons
                     name="calendar-outline"
                     size={20}
-                    color={colors.primaryDark}
+                    color={colors.primary}
                   />
                 </View>
 
                 {/* Texts */}
                 <View className="ml-3">
-                  <Text className="text-[15px] font-semibold text-gray-900">
+                  <Text className="text-[15px] font-semibold text-black">
                     {s.week}
                   </Text>
-                  <Text className="text-[12px] text-gray-500 mt-[2px]">
+                  <Text className="text-[12px] text-black mt-[2px]">
                     PDF Statement
                   </Text>
                 </View>
@@ -129,16 +114,12 @@ export default function StatementBottom({ visible, onClose, statements, colors }
               {/* Download Button */}
               <View
                 className="w-10 h-10 rounded-xl items-center justify-center"
-                style={{
-                  backgroundColor: `${colors.primaryLight}90`,
-                  borderColor: colors.primary,
-                  borderWidth: 1,
-                }}
+                
               >
                 <Ionicons
                   name="download-outline"
-                  size={20}
-                  color={colors.primaryDark}
+                  size={22}
+                  color={colors.primary}
                 />
               </View>
             </View>

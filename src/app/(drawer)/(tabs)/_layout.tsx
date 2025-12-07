@@ -14,31 +14,28 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.secondary,
         tabBarInactiveTintColor: colors.dark,
-
         tabBarStyle: {
-          paddingTop: 10,
-          paddingBottom: 50 + insets.bottom,
-          // height: 90 + insets.bottom,
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: 0,
+          paddingTop: 12,
           backgroundColor: colors.light,
           borderTopWidth: 0,
-          elevation: 0.5,
           shadowColor: colors.overlay,
           shadowOpacity: 0.1,
           shadowOffset: { width: 0, height: -2 },
           shadowRadius: 5,
+          elevation: 10, // Android shadow
         },
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
           tabBarIcon: ({ color }) => (
-            <TabIcon
-              icon={<Home size={22} color={color} />}
-              label="Home"
-              color={color}
-            />
+            <TabIcon icon={<Home size={22} color={color} />} label="Home" />
           ),
         }}
       />
@@ -46,13 +43,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="orchards"
         options={{
-          title: "Crops",
           tabBarIcon: ({ color }) => (
-            <TabIcon
-              icon={<Trees size={22} color={color} />}
-              label="Crops"
-              color={color}
-            />
+            <TabIcon icon={<Trees size={22} color={color} />} label="Crops" />
           ),
         }}
       />
@@ -60,12 +52,10 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Product"
         options={{
-          title: "Products",
           tabBarIcon: ({ color }) => (
             <TabIcon
               icon={<ShoppingBag size={22} color={color} />}
               label="Products"
-              color={color}
             />
           ),
         }}
@@ -74,13 +64,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="menu"
         options={{
-          title: "Menu",
           tabBarIcon: ({ color }) => (
-            <TabIcon
-              icon={<Menu size={22} color={color} />}
-              label="Menu"
-              color={color}
-            />
+            <TabIcon icon={<Menu size={22} color={color} />} label="Menu" />
           ),
         }}
       />

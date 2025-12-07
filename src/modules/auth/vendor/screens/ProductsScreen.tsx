@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { Alert, Button } from "react-native";
 
-import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorProductsMutation,
@@ -10,14 +9,16 @@ import {
   useVendorProductsUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
 
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { productPortfolioSchema } from "@/src/schemas/vendor/products.schema";
+import { router } from "expo-router";
 import ProductSection from "../sections/ProductSection";
 
 export default function ProductsScreen() {
-  const { vendorId } = useAuth();
+  const { vendorData } = useGlobalData();
 
   // Fetch existing vendor products
-  const { data } = useVendorProductsQuery(vendorId);
+  const { data } = useVendorProductsQuery(vendorData.profileId);
 
   const { mutateAsync: save } = useVendorProductsMutation();
   const { mutateAsync: update } = useVendorProductsUpdateMutation();
@@ -37,7 +38,7 @@ export default function ProductsScreen() {
     if (!data) return;
 
     setValue("storageCapacityValue", data.storageCapacityValue);
-    setValue("storageCapacityUnit", data.storageCapacityUnit);
+    // setValue("storageCapacityUnit", data.storageCapacityUnit);
 
     setValue("inputTypes", data.inputTypes?.map((i) => i.inputType) ?? []);
     setValue("majorBrands", data.majorBrands?.map((b) => b.brandName) ?? []);
@@ -57,26 +58,26 @@ export default function ProductsScreen() {
     console.log(values, "values...");
 
     const payload = {
-      id: data.id,
-      supplierProfileId: vendorId,
+      id: data?.id,
+      supplierProfileId: vendorData.profileId,
 
-      storageCapacityValue: values.storageCapacityValue,
-      storageCapacityUnit: values.storageCapacityUnit,
+      storageCapacity: `${values.storageCapacityValue}`,
 
-      // Convert string arrays back to backend objects
-      inputTypes: values.inputTypes.map((name) => ({ inputType: name })),
-      majorBrands: values.majorBrands.map((name) => ({ brandName: name })),
+      inputTypes: values.inputTypes, // <--- FIXED
+      majorBrands: values.majorBrands, // <--- FIXED
 
       customInputs: values.customInputs.map((c) => ({
+        id: c.id || 0,
         productName: c.productName,
         stockQuantity: c.stockQuantity,
-        unit: c.unit,
+        // unit: c.unit,
       })),
     };
 
     try {
       data ? await update(payload) : await save(payload);
       Alert.alert("Products Saved!");
+      router.push("/auth/vendor/vendor-profile-screen"); // navigate after saving
     } catch (error) {
       Alert.alert("Error saving products", error.message || "Unknown error");
     }

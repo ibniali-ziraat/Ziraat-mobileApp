@@ -1,4 +1,3 @@
-import HeaderBar from "@/src/components/shared/HeaderBar";
 import SalesSummaryCard from "@/src/modules/vendor/components/SalesSummaryCard";
 import SalesTabs from "@/src/modules/vendor/components/SalesTabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,9 +17,7 @@ const colors = {
   error: "#f44336",
 };
 
-// =======================================================================
-// MAIN COMPONENT
-// =======================================================================
+
 
 export default function SalesScreen() {
   const summaryData = {
@@ -55,8 +52,8 @@ export default function SalesScreen() {
   const net = data.cash + data.credit - data.fee - data.discount;
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F6F7F8]">
-      <HeaderBar title="Sales Overview" icon="bar-chart-outline" />
+    <SafeAreaView className="flex-1 bg-white">
+      {/* <HeaderBar title="Sales Overview" icon="bar-chart-outline" /> */}
 
       <ScrollView
         className="px-4 pt-4"
@@ -126,9 +123,7 @@ export default function SalesScreen() {
   );
 }
 
-// =======================================================================
-// UI SUB-COMPONENTS
-// =======================================================================
+
 
 function PageTitle({ title }) {
   return (
@@ -145,10 +140,7 @@ function Card({ children }) {
       style={{
         borderColor: "#E5E7EB",
         borderWidth: 1,
-        shadowColor: "#000",
-        shadowOpacity: 0.05,
-        shadowRadius: 6,
-        elevation: 2,
+       
       }}
     >
       {children}
