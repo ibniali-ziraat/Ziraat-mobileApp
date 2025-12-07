@@ -1,4 +1,3 @@
-
 import SearchBar from "@/src/components/shared/SearchBar";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { AnimatePresence, MotiView } from "moti";
@@ -9,7 +8,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 
 type OrchardHealth = "healthy" | "at-risk" | "attention";
@@ -126,7 +125,6 @@ const OrchardsScreen: React.FC = () => {
       if (filter === "high-priority" && orchard.priority !== "high")
         return false;
 
-
       if (!search.trim()) return true;
       const q = search.toLowerCase();
       return (
@@ -139,18 +137,12 @@ const OrchardsScreen: React.FC = () => {
   }, [filter, search]);
 
   const globalHealthAvg = useMemo(() => {
-    const totalScore = MOCK_ORCHARDS.reduce(
-      (sum, o) => sum + o.healthScore,
-      0
-    );
+    const totalScore = MOCK_ORCHARDS.reduce((sum, o) => sum + o.healthScore, 0);
     return Math.round(totalScore / MOCK_ORCHARDS.length);
   }, []);
 
   const overallYieldDelta = useMemo(() => {
-    const totalDelta = MOCK_ORCHARDS.reduce(
-      (sum, o) => sum + o.yieldDelta,
-      0
-    );
+    const totalDelta = MOCK_ORCHARDS.reduce((sum, o) => sum + o.yieldDelta, 0);
     return Math.round(totalDelta / MOCK_ORCHARDS.length);
   }, []);
 
@@ -163,7 +155,13 @@ const OrchardsScreen: React.FC = () => {
     []
   );
 
-  const renderOrchardCard = ({ item, index }: { item: Orchard; index: number }) => {
+  const renderOrchardCard = ({
+    item,
+    index,
+  }: {
+    item: Orchard;
+    index: number;
+  }) => {
     return (
       <MotiView
         from={{ opacity: 0, translateY: 16 }}
@@ -171,10 +169,9 @@ const OrchardsScreen: React.FC = () => {
         transition={{ delay: index * 80, damping: 16 }}
       >
         <TouchableOpacity
-          className="mb-4 rounded-3xl bg-white p-4 border border-neutral shadow-lg shadow-neutral"
+          className="mb-4 rounded-3xl bg-white py-4 border border-neutral shadow-lg shadow-neutral"
           activeOpacity={0.92}
-          onPress={() => {
-          }}
+          onPress={() => {}}
         >
           <View className="flex-row items-center justify-between mb-2">
             <View className="flex-row items-center flex-1 pr-2">
@@ -193,9 +190,7 @@ const OrchardsScreen: React.FC = () => {
           <View className="flex-row items-center mt-2">
             <View className="flex-row items-center flex-1">
               <Ionicons name="location-outline" size={16} color="#c7611f" />
-              <Text className="ml-1 text-xs text-black">
-                {item.location}
-              </Text>
+              <Text className="ml-1 text-xs text-black">{item.location}</Text>
             </View>
             <View className="flex-row items-center">
               <MaterialCommunityIcons
@@ -211,9 +206,7 @@ const OrchardsScreen: React.FC = () => {
           <View className="mt-3 flex-row items-center">
             <View className="flex-1 mr-3">
               <View className="flex-row justify-between items-center mb-1.5">
-                <Text className="text-[11px] text-black">
-                  Health score
-                </Text>
+                <Text className="text-[11px] text-black">Health score</Text>
                 <Text className="text-xs font-semibold text-black">
                   {item.healthScore}%
                 </Text>
@@ -251,15 +244,18 @@ const OrchardsScreen: React.FC = () => {
           <View className="mt-3 flex-row items-center justify-between">
             <View className="flex-row items-center">
               <Ionicons
-                name={item.yieldDelta >= 0 ? "trending-up-outline" : "trending-down-outline"}
+                name={
+                  item.yieldDelta >= 0
+                    ? "trending-up-outline"
+                    : "trending-down-outline"
+                }
                 size={16}
                 color={item.yieldDelta >= 0 ? "#c7611f" : "#c7611f"}
               />
               <Text
-                className={`ml-1 text-xs font-medium ${item.yieldDelta >= 0
-                  ? "text-black"
-                  : "text-black"
-                  }`}
+                className={`ml-1 text-xs font-medium ${
+                  item.yieldDelta >= 0 ? "text-black" : "text-black"
+                }`}
               >
                 {item.yieldDelta >= 0 ? "+" : ""}
                 {item.yieldDelta}% yield forecast
@@ -275,10 +271,7 @@ const OrchardsScreen: React.FC = () => {
                 size={16}
                 color="#c7611f"
               />
-              <Text
-                className="ml-1 text-xs text-black"
-                numberOfLines={1}
-              >
+              <Text className="ml-1 text-xs text-black" numberOfLines={1}>
                 {item.nextAction}
               </Text>
             </View>
@@ -302,7 +295,6 @@ const OrchardsScreen: React.FC = () => {
       <View className="flex-1 px-4 pt-2 pb-4">
         <View className="flex-row items-center justify-between mb-3">
           <View>
-
             <Text className="mt-0.5 text-3xl font-bold text-black">
               Orchards
             </Text>
@@ -433,9 +425,7 @@ const OrchardsScreen: React.FC = () => {
           <TouchableOpacity
             className="h-12 w-12 rounded-full bg-white items-center justify-center shadow-lg shadow-neutral"
             activeOpacity={0.9}
-            onPress={() => {
-
-            }}
+            onPress={() => {}}
           >
             <Ionicons name="add" size={24} color="#c7611f" />
           </TouchableOpacity>
@@ -461,10 +451,11 @@ const FilterChip: React.FC<FilterChipProps> = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`mr-2 flex-row items-center rounded-full border px-3 py-1.5 ${active
-        ? "bg-white border border-neutral"
-        : "bg-white border border-neutral"
-        }`}
+      className={`mr-2 flex-row items-center rounded-full border px-3 py-1.5 ${
+        active
+          ? "bg-white border border-neutral"
+          : "bg-white border border-neutral"
+      }`}
       activeOpacity={0.9}
     >
       {icon && (
@@ -475,8 +466,9 @@ const FilterChip: React.FC<FilterChipProps> = ({
         />
       )}
       <Text
-        className={`ml-1.5 text-xs font-medium ${active ? "text-black" : "text-black"
-          }`}
+        className={`ml-1.5 text-xs font-medium ${
+          active ? "text-black" : "text-black"
+        }`}
       >
         {label}
       </Text>
@@ -509,8 +501,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
           />
         </View>
         <Text
-          className={`text-[11px] ${isWarning ? "text-black" : "text-black"
-            }`}
+          className={`text-[11px] ${isWarning ? "text-black" : "text-black"}`}
         >
           {label}
         </Text>
@@ -637,7 +628,9 @@ const RiskBadge: React.FC<{
   }
 
   return (
-    <View className={`flex-row items-center justify-between px-2.5 py-1.5 rounded-2xl ${bg}`}>
+    <View
+      className={`flex-row items-center justify-between px-2.5 py-1.5 rounded-2xl ${bg}`}
+    >
       <View className="flex-row items-center">
         <View className={`h-1.5 w-1.5 rounded-full ${dot} mr-1.5`} />
         <Text className={`text-[11px] ${text}`}>{label}</Text>
@@ -658,102 +651,91 @@ const HeroOverviewCard: React.FC<{
   highWeatherRisk,
   highPestRisk,
 }) => {
-    return (
-      <MotiView
-        from={{ opacity: 0, translateY: -10 }}
-        animate={{ opacity: 1, translateY: 0 }}
-        className="rounded-3xl bg-white border border-neutral px-4 py-3.5"
-      >
-        <View className="flex-row justify-between items-start mb-3">
-          <View className="flex-1 pr-4">
-            <Text className="text-xs text-black">
-              Today&apos;s orchard health
+  return (
+    <MotiView
+      from={{ opacity: 0, translateY: -10 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      className="rounded-3xl bg-white border border-neutral px-4 py-3.5"
+    >
+      <View className="flex-row justify-between items-start mb-3">
+        <View className="flex-1 pr-4">
+          <Text className="text-xs text-black">
+            Today&apos;s orchard health
+          </Text>
+          <View className="flex-row items-baseline mt-1">
+            <Text className="text-3xl font-bold text-black">
+              {globalHealthAvg}%
             </Text>
-            <View className="flex-row items-baseline mt-1">
-              <Text className="text-3xl font-bold text-black">
-                {globalHealthAvg}%
-              </Text>
-              <Text className="ml-1 text-[11px] text-black">
-                overall score
-              </Text>
-            </View>
-            <View className="mt-1.5 flex-row items-center">
-              <Ionicons
-                name={
-                  overallYieldDelta >= 0
-                    ? "trending-up-outline"
-                    : "trending-down-outline"
-                }
-                size={14}
-                color={overallYieldDelta >= 0 ? "#c7611f" : "#c7611f"}
-              />
-              <Text
-                className={`ml-1 text-[11px] ${overallYieldDelta >= 0
-                  ? "text-black"
-                  : "text-secondary"
-                  }`}
-              >
-                {overallYieldDelta >= 0 ? "+" : ""}
-                {overallYieldDelta}% yield vs last season
-              </Text>
-            </View>
+            <Text className="ml-1 text-[11px] text-black">overall score</Text>
           </View>
-
-          <View className="items-end">
-            <View className="flex-row items-center mb-1">
-              <MaterialCommunityIcons
-                name="weather-partly-rainy"
-                size={18}
-                color="#c7611f"
-              />
-              <Text className="ml-1 text-[11px] text-neutral">
-                {highWeatherRisk} orchards high weather risk
-              </Text>
-            </View>
-            <View className="flex-row items-center">
-              <MaterialCommunityIcons
-                name="ladybug"
-                size={18}
-                color="#c7611f"
-              />
-              <Text className="ml-1 text-[11px] text-secondary">
-                {highPestRisk} orchards high pest risk
-              </Text>
-            </View>
+          <View className="mt-1.5 flex-row items-center">
+            <Ionicons
+              name={
+                overallYieldDelta >= 0
+                  ? "trending-up-outline"
+                  : "trending-down-outline"
+              }
+              size={14}
+              color={overallYieldDelta >= 0 ? "#c7611f" : "#c7611f"}
+            />
+            <Text
+              className={`ml-1 text-[11px] ${
+                overallYieldDelta >= 0 ? "text-black" : "text-secondary"
+              }`}
+            >
+              {overallYieldDelta >= 0 ? "+" : ""}
+              {overallYieldDelta}% yield vs last season
+            </Text>
           </View>
         </View>
 
-        <View className="mt-1 flex-row justify-between">
-          <View className="flex-1 mr-2">
-            <Text className="text-[11px] text-black mb-1">
-              NDVI trend
+        <View className="items-end">
+          <View className="flex-row items-center mb-1">
+            <MaterialCommunityIcons
+              name="weather-partly-rainy"
+              size={18}
+              color="#c7611f"
+            />
+            <Text className="ml-1 text-[11px] text-neutral">
+              {highWeatherRisk} orchards high weather risk
             </Text>
-            <View className="flex-row h-5 items-end">
-              {[70, 74, 76, 78, 80].map((v, idx) => (
-                <View
-                  key={v + idx}
-                  className="flex-1 mx-[0.5px] rounded-full bg-white"
-                  style={{ height: 6 + (idx + 1) * 4 }}
-                />
-              ))}
-            </View>
           </View>
-          <View className="flex-1 ml-2">
-            <Text className="text-[11px] text-black mb-1">
-              Irrigation window
+          <View className="flex-row items-center">
+            <MaterialCommunityIcons name="ladybug" size={18} color="#c7611f" />
+            <Text className="ml-1 text-[11px] text-secondary">
+              {highPestRisk} orchards high pest risk
             </Text>
-            <View className="flex-row items-center">
-              <View className="h-1.5 flex-1 rounded-full bg-white overflow-hidden">
-                <View className="h-full w-[60%] rounded-full bg-secondary" />
-              </View>
-              <Text className="ml-2 text-[11px] text-black">
-                Good next 2 days
-              </Text>
-            </View>
           </View>
         </View>
-      </MotiView>
-    );
-  };
+      </View>
+
+      <View className="mt-1 flex-row justify-between">
+        <View className="flex-1 mr-2">
+          <Text className="text-[11px] text-black mb-1">NDVI trend</Text>
+          <View className="flex-row h-5 items-end">
+            {[70, 74, 76, 78, 80].map((v, idx) => (
+              <View
+                key={v + idx}
+                className="flex-1 mx-[0.5px] rounded-full bg-white"
+                style={{ height: 6 + (idx + 1) * 4 }}
+              />
+            ))}
+          </View>
+        </View>
+        <View className="flex-1 ml-2">
+          <Text className="text-[11px] text-black mb-1">Irrigation window</Text>
+          <View className="flex-row items-center">
+            <View className="h-1.5 flex-1 rounded-full bg-white overflow-hidden">
+              <View className="h-full w-[60%] rounded-full bg-secondary" />
+            </View>
+            <Text className="ml-2 text-[11px] text-black">
+              Good next 2 days
+            </Text>
+          </View>
+        </View>
+      </View>
+    </MotiView>
+  );
+};
 
 export default OrchardsScreen;

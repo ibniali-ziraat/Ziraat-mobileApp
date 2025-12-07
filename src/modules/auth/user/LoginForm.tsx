@@ -141,40 +141,38 @@ export default function LoginForm() {
   };
 
   return (
-    <>
-      <View style={{ padding: 20 }}>
-        <Text variant="headlineSmall">Login</Text>
-        <Text variant="labelLarge">Enter your credentials below</Text>
+    <View className="bg-light">
+      <Text variant="headlineSmall">Login</Text>
+      <Text variant="labelLarge">Enter your credentials below</Text>
 
-        <Divider style={{ marginVertical: 10 }} />
+      <Divider style={{ marginVertical: 10 }} />
 
-        <FormInput
-          control={control}
-          name="mobileNumber"
-          label="Phone Number"
-          type="phone"
-          error={errors.mobileNumber}
-        />
+      <FormInput
+        control={control}
+        name="mobileNumber"
+        label="Phone Number"
+        type="phone"
+        error={errors.mobileNumber}
+      />
 
-        <FormInput
-          control={control}
-          name="password"
-          label="Password"
-          type="password"
-          error={errors.password}
-        />
+      <FormInput
+        control={control}
+        name="password"
+        label="Password"
+        type="password"
+        error={errors.password}
+      />
 
-        <Button
-          style={{ marginTop: 15 }}
-          icon="login"
-          mode="contained"
-          onPress={handleSubmit(onSubmit)}
-          loading={isPending}
-          disabled={isPending}
-        >
-          Login
-        </Button>
-      </View>
+      <Button
+        style={{ marginTop: 15 }}
+        icon="login"
+        mode="contained"
+        onPress={handleSubmit(onSubmit)}
+        loading={isPending}
+        disabled={isPending}
+      >
+        Login
+      </Button>
 
       <Snackbar
         visible={showSnack}
@@ -187,6 +185,6 @@ export default function LoginForm() {
       >
         {isPending ? "Logging in..." : "Login successful!"}
       </Snackbar>
-    </>
+    </View>
   );
 }

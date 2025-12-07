@@ -1,5 +1,5 @@
 import { colors } from "@/src/constants/colors";
-import { menuGroups } from "@/src/navigation/menuGroups";
+import { menuGroups } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 

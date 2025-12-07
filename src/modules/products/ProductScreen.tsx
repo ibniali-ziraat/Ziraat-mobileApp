@@ -16,7 +16,7 @@ export default function ProductScreen() {
   ];
 
   return (
-    <ScrollView className="p-4 bg-light">
+    <ScrollView className="py-4 bg-light">
       {sections.map((section, index) => (
         <View key={index}>
           <View className="flex-row items-center mt-6 mb-4">

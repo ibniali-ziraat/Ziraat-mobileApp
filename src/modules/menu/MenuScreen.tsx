@@ -1,35 +1,26 @@
-import { colors } from "@/src/constants/colors";
-import { menuGroups } from "@/src/navigation/menuGroups";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
+import { MenuLinks } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
+import { Repeat } from "lucide-react-native";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function MenuScreen() {
+  const { roleMode, updateRoleMode } = useGlobalData();
+
+  const toggleRole = () => {
+    const newRole = roleMode === "farmer" ? "supplier" : "farmer";
+    updateRoleMode(newRole);
+  };
+
+  // Show menu based on role only
+  const menuGroupsToShow =
+    roleMode === "farmer" ? MenuLinks.farmer : MenuLinks.supplier;
+
   return (
-    <View style={{ flex: 1, backgroundColor: colors.light }}>
-      <ScrollView style={{ flex: 1, padding: 16 }}>
-        <SectionTitle title="E-Commerce" />
-        <MenuItem
-          label="Marketplace"
-          onPress={() => router.push("/marketplace")}
-        />
-        <MenuItem label="My Orders" onPress={() => router.push("/orders")} />
-        <MenuItem label="My Cart" onPress={() => router.push("/cart")} />
-        <MenuItem label="Wishlist" onPress={() => router.push("/wishlist")} />
-        <MenuItem label="Profile" onPress={() => router.push("/profile")} />
-        <MenuItem
-          label="Saved Addresses"
-          onPress={() => router.push("/addresses")}
-        />
-        <MenuItem
-          label="Payment Methods"
-          onPress={() => router.push("/payments")}
-        />
-        <MenuItem label="Support" onPress={() => router.push("/support")} />
-
-
-        {menuGroups.map((group) => (
-          <View key={group.title} style={{ marginTop: 28 }}>
-            <SectionTitle title={group.title} />
+    <View className="flex-1 bg-white">
+      <ScrollView className="flex-1">
+        {menuGroupsToShow.map((group) => (
+          <View key={group.title} className="">
             {group.routes.map((route) => (
               <MenuItem
                 key={route.screen}
@@ -40,26 +31,17 @@ export default function MenuScreen() {
           </View>
         ))}
       </ScrollView>
+
+      <TouchableOpacity
+        onPress={toggleRole}
+        className="absolute bottom-6 right-6 bg-dark rounded-full flex-row items-center px-4 py-2"
+      >
+        <Repeat size={20} color="white" />
+        <Text className="text-white font-medium ml-2">
+          {roleMode === "farmer" ? "Switch to Supplier" : "Switch to Farmer"}
+        </Text>
+      </TouchableOpacity>
     </View>
-  );
-}
-
-/* ---------- COMPONENTS ---------- */
-
-function SectionTitle({ title }) {
-  return (
-    <Text
-      style={{
-        color: colors.secondary,
-        fontSize: 14,
-        fontWeight: "700",
-        marginBottom: 10,
-        textTransform: "uppercase",
-        letterSpacing: 0.8,
-      }}
-    >
-      {title}
-    </Text>
   );
 }
 
@@ -67,14 +49,9 @@ function MenuItem({ label, onPress }) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={{
-        paddingVertical: 14,
-        backgroundColor: colors.light,
-        borderBottomColor: colors.neutral,
-        borderBottomWidth: 1,
-      }}
+      className="py-3 border-b border-gray-200"
     >
-      <Text style={{ fontSize: 16, color: colors.dark }}>{label}</Text>
+      <Text className="text-base text-gray-900">{label}</Text>
     </TouchableOpacity>
   );
 }

@@ -68,6 +68,7 @@
 //     </ScrollView>
 //   );
 // }
+import BackHeader from "@/src/components/shared/BackHeader";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -140,6 +141,10 @@ export default function BusinessScreen() {
 
   return (
     <ScrollView>
+      <BackHeader
+        title="Supplier Onboarding"
+        desc="Start selling to farmers today."
+      />
       <FormProvider {...form}>
         <BusinessSection errors={errors} control={control} />
         <Button title="Save" onPress={handleSubmit(onSubmit)} />

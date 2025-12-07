@@ -33,13 +33,13 @@ export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "register">("register");
 
   return (
-    <ScrollView>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
+    >
       <View
         style={{
-          flex: 1,
           backgroundColor: colors.light,
-          padding: 20,
-          justifyContent: "center",
         }}
       >
         {/* Logo */}

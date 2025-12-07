@@ -34,6 +34,8 @@ interface GlobalDataContextType {
   setVendorData: (data: Partial<VendorDataType>) => void;
 
   logout: () => Promise<void>;
+  roleMode: "farmer" | "supplier";
+  updateRoleMode: (mode: "farmer" | "supplier") => Promise<void>;
 }
 
 const GlobalDataContext = createContext<GlobalDataContextType | undefined>(
@@ -45,6 +47,7 @@ export const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [userToken, setUserTokenState] = useState<string | null>(null);
   const [vendorToken, setVendorTokenState] = useState<string | null>(null);
+  const [roleMode, setRoleMode] = useState<"farmer" | "supplier">("farmer");
 
   const [userData, setUserDataState] = useState<UserDataType>({
     id: null,
@@ -57,6 +60,14 @@ export const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const [initialized, setInitialized] = useState(false);
+  useEffect(() => {
+    (async () => {
+      const storedRole = await load("role_mode");
+      if (storedRole === "supplier" || storedRole === "farmer") {
+        setRoleMode(storedRole);
+      }
+    })();
+  }, []);
 
   // =========================
   // Load from storage on app start
@@ -83,6 +94,12 @@ export const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({
   // =========================
   // Set User Token
   // =========================
+
+  const updateRoleMode = async (mode: "farmer" | "supplier") => {
+    setRoleMode(mode);
+    await save("role_mode", mode);
+  };
+
   const setUserToken = async (token: string | null) => {
     if (token) await save("user_token", token);
     else await clear("user_token");
@@ -144,6 +161,8 @@ export const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({
         setUserData,
         setVendorData,
         logout,
+        roleMode,
+        updateRoleMode,
       }}
     >
       {children}

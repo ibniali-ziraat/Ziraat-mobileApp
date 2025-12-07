@@ -14,66 +14,92 @@ export default function FormDatePicker({
   const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
 
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <Controller
       control={control}
       name={name}
-      render={({ field: { onChange, value }, fieldState }) => {
-        const showError = !!(fieldState?.error || error);
+      render={({
+        field: { onChange, value },
+        fieldState: { error: fieldError },
+      }) => {
+        const showError = !!(fieldError || error);
 
         return (
           <View className="mb-5">
-            {/* 🌐 WEB VERSION */}
             {isWeb ? (
-              <input
-                type="date"
-                value={value ? value.split("T")[0] : ""}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  if (!val) return onChange("");
+              <View className="flex flex-col w-full">
+                <label
+                  className={`mb-1 text-sm font-medium ${
+                    showError ? "text-error" : "text-dark"
+                  }`}
+                >
+                  {label}
+                  {!optional && <span className="text-error"> *</span>}
+                </label>
 
-                  onChange(new Date(val).toISOString());
-                }}
-                className={`p-3 border rounded-md ${
-                  showError ? "border-red-500" : "border-gray-300"
-                }`}
-              />
+                <input
+                  type="date"
+                  value={value ? value : ""}
+                  onChange={(e) => {
+                    if (!e.target.value) return onChange(null);
+                    onChange(e.target.value); // just send "YYYY-MM-DD"
+                  }}
+                  className={`p-3 border rounded-md text-base outline-none ${
+                    showError ? "border-error" : "border-neutral"
+                  }`}
+                />
+
+                {showError && (
+                  <span className="text-error text-xs mt-1">
+                    {(fieldError || error)?.message}
+                  </span>
+                )}
+              </View>
             ) : (
               <>
-                {/* 📱 MOBILE INPUT */}
-                <TouchableOpacity onPress={() => setShow(true)} activeOpacity={0.8}>
-                  <TextInput
-                    mode="outlined"
-                    label={optional ? `${label} (Optional)` : `${label} *`}
-                    value={value ? new Date(value).toDateString() : ""}
-                    editable={false}
-                    right={<TextInput.Icon icon="calendar" />}
-                    error={showError}
-                  />
+                <TouchableOpacity
+                  onPress={() => setShow(true)}
+                  activeOpacity={0.8}
+                >
+                  <View pointerEvents="none">
+                    <TextInput
+                      mode="outlined"
+                      label={optional ? `${label} (Optional)` : `${label} *`}
+                      value={value ? formatDate(value) : ""}
+                      editable={false}
+                      right={<TextInput.Icon icon="calendar" />}
+                      error={showError}
+                    />
+                  </View>
                 </TouchableOpacity>
 
-                {/* ✅ SAFE NATIVE PICKER */}
                 {show && (
                   <DateTimePicker
                     value={value ? new Date(value) : new Date()}
                     mode="date"
-                    display={Platform.OS === "ios" ? "spinner" : "default"}
+                    display="default"
                     onChange={(event, selectedDate) => {
                       setShow(false);
-
-                      if (event.type === "set" && selectedDate) {
-                        onChange(selectedDate.toISOString());
-                      }
+                      if (event.type === "dismissed") return;
+                      onChange(formatDate(selectedDate)); // send "YYYY-MM-DD"
                     }}
                   />
                 )}
-              </>
-            )}
 
-            {!isWeb && showError && (
-              <HelperText type="error" visible>
-                {(fieldState?.error || error)?.message}
-              </HelperText>
+                {showError && (
+                  <HelperText type="error" visible>
+                    {(fieldError || error)?.message}
+                  </HelperText>
+                )}
+              </>
             )}
           </View>
         );

@@ -102,7 +102,8 @@ export default function VendorProfileScreen() {
 
   return (
     <ScrollView className="flex-1 bg-white p-5">
-      <BackHeader>Vendor Profile</BackHeader>
+      <BackHeader title="Profile" />
+
       <ProgressBar progress={progress} />
 
       {missingSections.length > 0 && (

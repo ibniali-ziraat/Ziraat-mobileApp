@@ -6,7 +6,7 @@ export default function TabIcon({ icon, label }) {
       style={{
         alignItems: "center",
         justifyContent: "center",
-        width: 60, // fixed width to prevent label wrapping
+        width: 100, // fixed width to prevent label wrapping
       }}
     >
       {icon}

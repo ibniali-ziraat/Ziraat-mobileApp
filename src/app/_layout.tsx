@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";
@@ -25,8 +25,9 @@ export default function RootLayout() {
           <SafeAreaView
             style={{
               flex: 1,
-              paddingTop: insets.top, // only top inset
-              paddingBottom: insets.bottom, // bottom handled by tabs
+              paddingTop: insets.top,
+              backgroundColor: "white",
+              paddingBottom: insets.bottom,
             }}
           >
             <KeyboardAvoidingView
@@ -34,7 +35,17 @@ export default function RootLayout() {
               behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
               <PaperProvider>
-                <Stack screenOptions={{ headerShown: false }} />
+                <View
+                  style={{
+                    flex: 1,
+                    paddingHorizontal: 20, // <— your global padding
+                    backgroundColor: "white",
+                  }}
+                >
+                  <Stack screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name="(tabs)/_layout" />
+                  </Stack>
+                </View>
               </PaperProvider>
             </KeyboardAvoidingView>
           </SafeAreaView>

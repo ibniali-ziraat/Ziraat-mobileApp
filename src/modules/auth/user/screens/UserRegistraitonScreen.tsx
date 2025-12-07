@@ -106,17 +106,11 @@ export default function UserRegistrationScreen() {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       {step === 0 && <ProfileSection control={control} errors={errors} />}
       {step === 1 && <OTPSection control={control} errors={errors} />}
 
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          margin: 20,
-        }}
-      >
+      <View>
         {step > 0 && (
           <Button title="Back" onPress={prevStep} disabled={isLoading} />
         )}

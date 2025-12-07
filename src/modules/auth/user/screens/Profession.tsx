@@ -59,7 +59,8 @@ export default function ProfessionScreen() {
   return (
     <FormProvider {...form}>
       <ScrollView>
-        <BackHeader>Profession</BackHeader>
+        <BackHeader title="Profession" />
+
         <ProfessionSection control={control} errors={errors} />
         <Button title="Save" onPress={handleSubmit(onSubmit)} />
       </ScrollView>

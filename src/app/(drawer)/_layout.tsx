@@ -1,35 +1,24 @@
-import AppHeader from "@/src/components/shared/AppHeader";
-import { CustomDrawer } from "@/src/navigation/CustomDrawer";
-import { menuGroups } from "@/src/navigation/menuGroups";
-import { useSegments } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Layout() {
-  const segments = useSegments();
-  const isMenu = segments.includes("menu"); // 🔥 detects /menu tab
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
         screenOptions={{
-          header: isMenu ? undefined : () => <AppHeader />, // hide header for menu
-          headerShown: !isMenu,
-          headerLeft: () => null,
+          headerShown: false, // We handle headers per tab
         }}
-        drawerContent={(props) => (
-          <CustomDrawer {...props} menuGroups={menuGroups} />
-        )}
+        // drawerContent={(props) => (
+        //   <CustomDrawer {...props} menuGroups={menuGroups} />
+        // )}
       >
+        {/* Main Tabs */}
         <Drawer.Screen
           name="(drawer)/(tabs)"
-          options={{
-            drawerLabel: "Home",
-            headerShown: false,
-          }}
+          options={{ drawerLabel: "Home" }}
         />
 
-        {/* FARMER PAGES */}
+        {/* FARMER PAGES - hidden from drawer */}
         <Drawer.Screen
           name="(drawer)/(farmer)/OrchardScreen"
           options={{ drawerItemStyle: { height: 0 } }}
@@ -63,7 +52,7 @@ export default function Layout() {
           options={{ drawerItemStyle: { height: 0 } }}
         />
 
-        {/* VENDOR PAGES */}
+        {/* VENDOR PAGES - hidden from drawer */}
         <Drawer.Screen
           name="(drawer)/(vendor)/ProfileScreen"
           options={{ drawerItemStyle: { height: 0 } }}
@@ -108,9 +97,7 @@ export default function Layout() {
         {/* SETTINGS */}
         <Drawer.Screen
           name="(drawer)/settings"
-          options={{
-            drawerLabel: "Settings",
-          }}
+          options={{ drawerLabel: "Settings" }}
         />
       </Drawer>
     </GestureHandlerRootView>

@@ -34,8 +34,7 @@ export default function NotificationScreen() {
       className="flex-1 p-5"
       style={{ backgroundColor: colors.light }}
     >
-      {/* Header */}
-      <BackHeader>Notifications</BackHeader>
+      <BackHeader title="Notifications" />
 
       {/* Notifications List */}
       <ScrollView className="p-4" contentContainerStyle={{ paddingBottom: 20 }}>
