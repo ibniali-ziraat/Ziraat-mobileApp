@@ -18,80 +18,62 @@ export default function FormDatePicker({
     <Controller
       control={control}
       name={name}
-      render={({
-        field: { onChange, value },
-        fieldState: { error: fieldError },
-      }) => {
-        const showError = !!(fieldError || error);
+      render={({ field: { onChange, value }, fieldState }) => {
+        const showError = !!(fieldState?.error || error);
 
         return (
           <View className="mb-5">
+            {/* 🌐 WEB VERSION */}
             {isWeb ? (
-              <View className="flex flex-col w-full">
-                <label
-                  className={`mb-1 text-sm font-medium ${
-                    showError ? "text-error" : "text-dark"
-                  }`}
-                >
-                  {label}
-                  {!optional && <span className="text-error"> *</span>}
-                </label>
+              <input
+                type="date"
+                value={value ? value.split("T")[0] : ""}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (!val) return onChange("");
 
-                <input
-                  type="date"
-                  value={value ? value.split("T")[0] : ""}
-                  onChange={(e) => {
-                    if (!e.target.value) return onChange(null);
-                    onChange(new Date(e.target.value).toISOString());
-                  }}
-                  className={`p-3 border rounded-md text-base outline-none ${
-                    showError ? "border-error" : "border-neutral"
-                  }`}
-                />
-
-                {showError && (
-                  <span className="text-error text-xs mt-1">
-                    {(fieldError || error)?.message}
-                  </span>
-                )}
-              </View>
+                  onChange(new Date(val).toISOString());
+                }}
+                className={`p-3 border rounded-md ${
+                  showError ? "border-red-500" : "border-gray-300"
+                }`}
+              />
             ) : (
               <>
-                <TouchableOpacity
-                  onPress={() => setShow(true)}
-                  activeOpacity={0.8}
-                >
-                  <View pointerEvents="none">
-                    <TextInput
-                      mode="outlined"
-                      label={optional ? `${label} (Optional)` : `${label} *`}
-                      value={value ? new Date(value).toLocaleDateString() : ""}
-                      editable={false}
-                      right={<TextInput.Icon icon="calendar" />}
-                      error={showError}
-                    />
-                  </View>
+                {/* 📱 MOBILE INPUT */}
+                <TouchableOpacity onPress={() => setShow(true)} activeOpacity={0.8}>
+                  <TextInput
+                    mode="outlined"
+                    label={optional ? `${label} (Optional)` : `${label} *`}
+                    value={value ? new Date(value).toDateString() : ""}
+                    editable={false}
+                    right={<TextInput.Icon icon="calendar" />}
+                    error={showError}
+                  />
                 </TouchableOpacity>
 
+                {/* ✅ SAFE NATIVE PICKER */}
                 {show && (
                   <DateTimePicker
                     value={value ? new Date(value) : new Date()}
                     mode="date"
-                    display="default"
+                    display={Platform.OS === "ios" ? "spinner" : "default"}
                     onChange={(event, selectedDate) => {
                       setShow(false);
-                      if (event.type === "dismissed") return;
-                      onChange(selectedDate.toISOString());
+
+                      if (event.type === "set" && selectedDate) {
+                        onChange(selectedDate.toISOString());
+                      }
                     }}
                   />
                 )}
-
-                {showError && (
-                  <HelperText type="error" visible>
-                    {(fieldError || error)?.message}
-                  </HelperText>
-                )}
               </>
+            )}
+
+            {!isWeb && showError && (
+              <HelperText type="error" visible>
+                {(fieldState?.error || error)?.message}
+              </HelperText>
             )}
           </View>
         );

@@ -23,7 +23,7 @@ import StepC from "./steps/Soil and Water profile";
 import StepB from "./steps/Variety & Planting Details ";
 
 export default function OrchardRegistrationForm() {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(0);
 
   const schemas = [
     orchardSchema,
@@ -39,6 +39,9 @@ export default function OrchardRegistrationForm() {
   ];
 
   const methods = useZodForm(schemas[step]);
+
+ 
+  
 
   const {
     control,
