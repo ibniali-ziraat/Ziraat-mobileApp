@@ -28,30 +28,23 @@ export const menuGroups = [
   {
     title: "Vendor Dashboard",
     routes: [
+      { label: "Profile", screen: "dashboards/(vendor)/vendor-profile" },
+      { label: "User", screen: "dashboards/(vendor)/vendor-user-details" },
+      { label: "Reports", screen: "dashboards/(vendor)/vendor-reports" },
+      { label: "Credits", screen: "dashboards/(vendor)/vendor-credits" },
       {
-        label: "Become a Supplier",
-        screen: "auth/vendor",
-      },
-      {
-        label: "Vendor Profile",
-        screen: "auth/vendor/vendor-profile-screen",
-      },
-      { label: "Profile", screen: "dashboards/(vendor)/ProfileScreen" },
-      { label: "Reports", screen: "dashboards/(vendor)/ReportsScreen" },
-      { label: "Credits", screen: "dashboards/(vendor)/CreditScreen" },
-      {
-        label: "Financial Reports",
-        screen: "dashboards/(vendor)/FinancialScreen",
+        label: "Financial",
+        screen: "dashboards/(vendor)/vendor-financial",
       },
       {
         label: "Notifications",
-        screen: "dashboards/(vendor)/NotificationScreen",
+        screen: "dashboards/(vendor)/vendor-notification",
       },
-      { label: "Offers", screen: "dashboards/(vendor)/OffersScreen" },
-      { label: "Platform", screen: "dashboards/(vendor)/PlatformScreen" },
-      { label: "Products", screen: "dashboards/(vendor)/ProductsScreen" },
-      { label: "Sales", screen: "dashboards/(vendor)/SalesScreen" },
-      { label: "Customers", screen: "dashboards/(vendor)/UserScreen" },
+      { label: "Offers", screen: "dashboards/(vendor)/vendor-offers" },
+      { label: "Platform", screen: "dashboards/(vendor)/vendor-platform" },
+      { label: "Products", screen: "dashboards/(vendor)/vendor-products" },
+      { label: "Sales", screen: "dashboards/(vendor)/vendor-sales" },
+      { label: "Delivery", screen: "dashboards/(vendor)/vendor-delivery" },
     ],
   },
 ];

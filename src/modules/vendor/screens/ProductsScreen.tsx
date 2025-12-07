@@ -1,4 +1,3 @@
-import HeaderBar from "@/src/components/shared/HeaderBar";
 import Searchandfilter from "@/src/components/shared/SearchandfilterBar";
 import AddProductModal from "@/src/modules/vendor/components/AddProductModal";
 import ProductTableHeader from "@/src/modules/vendor/components/ProductTableHeader";
@@ -40,7 +39,7 @@ export default function ProductsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-gray-100">
       {/* HEADER */}
-      <HeaderBar title="Vendor Profile" icon="person-circle" />
+      {/* <HeaderBar title="Vendor Profile" icon="person-circle" /> */}
       {/* Search + Filters */}
       <Searchandfilter />
 

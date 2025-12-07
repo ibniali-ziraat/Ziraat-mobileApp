@@ -1,6 +1,5 @@
 import BottomModal from "@/src/components/shared/BottomModal";
 import DocumentCard from "@/src/components/shared/DocumentCard";
-import HeaderBar from "@/src/components/shared/HeaderBar";
 import OverviewCard from "@/src/components/shared/OverviewCard";
 import TabBar from "@/src/components/shared/TabBar";
 import TeamCard from "@/src/components/shared/TeamCard";
@@ -17,17 +16,19 @@ export default function ProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-100">
+    <SafeAreaView className="flex-1">
       {/* HEADER */}
-      <HeaderBar title="Vendor Profile" icon="person-circle" />
+      {/* <HeaderBar title="Vendor Profile" icon="person-circle" /> */}
 
       {/* TABS */}
       <TabBar tabs={TABS} activeTab={tab} onChange={setTab} />
 
-      <ScrollView className="px-4 pt-4 pb-28">
+      <ScrollView >
         {tab === "overview" && (
           <Animated.View entering={FadeInUp}>
-            <OverviewCard onEditPress={() => setModalVisible(true)} />
+            <OverviewCard onEditPress={() => setModalVisible(true)} 
+                
+                />
           </Animated.View>
         )}
 

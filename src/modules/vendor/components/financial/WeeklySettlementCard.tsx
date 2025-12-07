@@ -68,47 +68,119 @@
 //   );
 // }
 
-
 import { colors } from "@/src/constants/colors";
+import { Ionicons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function WeeklySettlementCard({ weekly }) {
   return (
-    <View className="mt-4">
-      <Text className=" font-semibold text-lg mb-3">
+    <View className="mt-5">
+      <Text className="font-extrabold text-[20px] text-gray-900 mb-4">
         Weekly Settlements
       </Text>
 
       {weekly.map((item, i) => (
         <View
           key={i}
-          className="bg-[#ffffff] p-4 rounded-2xl mb-4 border"
-          style={{ borderColor: colors.neutral }}
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: 20,
+            padding: 18,
+            marginBottom: 14,
+            borderWidth: 1,
+            borderColor: "#f0f0f0",
+            shadowColor: "#000",
+            shadowOpacity: 0.06,
+            shadowRadius: 10,
+            shadowOffset: { width: 0, height: 4 },
+            elevation: 3,
+          }}
         >
+          {/* TOP SECTION */}
           <View className="flex-row justify-between items-center">
-            <Text className=" font-semibold text-base">
-              {item.week}
-            </Text>
+            {/* LEFT: Week + icon */}
+            <View className="flex-row items-center">
+              <View
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 12,
+                  
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginRight: 10,
+                }}
+              >
+                <Ionicons
+                  name="calendar-outline"
+                  size={22}
+                  color={colors.secondary}
+                />
+              </View>
 
+              <Text className="text-[15px] font-semibold text-gray-900">
+                {item.week}
+              </Text>
+            </View>
+
+            {/* STATUS BADGE */}
             <View
-              className="px-3 py-[3px] rounded-full"
-              style={{ backgroundColor: `${colors.primary}25` }}
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 4,
+                borderRadius: 50,
+                backgroundColor:
+                  item.status === "Settled"
+                    ? `${colors.primary}20`
+                    : `${colors.error}20`,
+                borderWidth: 1,
+                borderColor:
+                  item.status === "Settled"
+                    ? `${colors.primary}50`
+                    : `${colors.error}35`,
+              }}
             >
-              <Text style={{ color: colors.primary }} className="text-[11px] font-semibold">
+              <Text
+                className="text-[11px] font-bold"
+                style={{
+                  color:
+                    item.status === "Settled"
+                      ? colors.primary
+                      : colors.error,
+                }}
+              >
                 {item.status}
               </Text>
             </View>
           </View>
 
-          <Text className="mt-2  font-bold text-xl">
-            ₹{item.amount.toLocaleString()}
-          </Text>
+          {/* AMOUNT */}
+          <View className="mt-4">
+            <Text
+              className="text-[26px] font-extrabold"
+              style={{ color: colors.primary }}
+            >
+              ₹{item.amount.toLocaleString()}
+            </Text>
+            <Text className="text-[11px] text-gray-500 mt-1">
+              Amount transferred to your bank
+            </Text>
+          </View>
 
+          {/* ACTION BUTTON */}
           <TouchableOpacity
-            className="mt-3 px-4 py-2 rounded-lg"
-            style={{ backgroundColor: colors.primary }}
+            className="mt-5 flex-row items-center justify-center py-3 rounded-xl"
+            style={{
+              
+              shadowColor: colors.primary,
+              shadowOpacity: 0.25,
+              shadowRadius: 4,
+              shadowOffset: { width: 0, height: 2 },
+              elevation: 2,
+            }}
           >
-            <Text className="text-white text-center font-semibold text-sm">
+            <Ionicons name="download-outline" size={22} color="#2d6b06" />
+            <Text className="text-primary ml-2 font-semibold text-[13px]">
               Download PDF
             </Text>
           </TouchableOpacity>
