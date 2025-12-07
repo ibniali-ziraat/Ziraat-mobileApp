@@ -1,134 +1,124 @@
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
 import { Text, View } from "react-native";
 
 export default function DeliveryPerformanceCard({ stats }) {
   return (
     <View
-      className="p-5 rounded-2xl shadow mb-6"
+      className="p-5 rounded-2xl mb-6"
       style={{
-        backgroundColor: "rgba(255,255,255,0.85)",
-        shadowColor: "#000",
-        shadowOpacity: 0.08,
+       
+        shadowOpacity: 0.06,
         shadowRadius: 10,
+        shadowOffset: { width: 0, height: 3 },
       }}
     >
-      {/* Title */}
-      <Text className="text-lg font-semibold text-gray-900 mb-5">
+      {/* TITLE */}
+      <Text className="text-lg font-bold text-gray-900 mb-5">
         Delivery Performance
       </Text>
 
-      {/* On-Time Deliveries */}
-      <View
-        className="flex-row items-center justify-between p-4 rounded-xl mb-3"
-        style={{
-          backgroundColor: colors.darkHover,
-          borderLeftWidth: 5,
-          borderLeftColor: colors.primary,
-          shadowColor: "#000",
-          shadowOpacity: 0.05,
-          shadowRadius: 4,
-        }}
-      >
-        <View className="flex-row items-center">
-          <Ionicons
-            name="checkmark-circle-outline"
-            size={24}
-            color={colors.primary}
-            style={{ marginRight: 12 }}
-          />
-          <View>
-            <Text className="text-gray-900 font-semibold text-sm">
-              On-Time Deliveries
-            </Text>
-            <Text className="text-xs text-gray-500 mt-1">
-              Successful & punctual drops
+      {/* EACH METRIC CARD */}
+      {[
+        {
+          label: "On-Time Deliveries",
+          sub: "Successful & punctual drops",
+          value: stats.onTime,
+          color: colors.primary,
+          icon: "checkmark-circle",
+          barColor: colors.primary,
+        },
+        {
+          label: "Delayed Deliveries",
+          sub: "Overdue or late arrivals",
+          value: stats.delayed,
+          color: colors.secondary,
+          icon: "alert-circle",
+          barColor: colors.secondary,
+        },
+        {
+          label: "Avg Delivery Time",
+          sub: "Calculated per completed trip",
+          value: stats.avgTime,
+          color: colors.dark,
+          icon: "time",
+          barColor: colors.dark,
+        },
+      ].map((item, i) => (
+        <View
+          key={i}
+          className="p-4 rounded-2xl mb-4"
+          style={{
+            backgroundColor: "#fafafa",
+            borderWidth: 1,
+            borderColor: "#e8e8e8",
+            shadowColor: "#000",
+            shadowOpacity: 0.04,
+            shadowRadius: 5,
+            shadowOffset: { width: 0, height: 2 },
+          }}
+        >
+          <View className="flex-row items-center justify-between">
+            {/* LEFT SIDE */}
+            <View className="flex-row items-center flex-1">
+              {/* Accent strip */}
+              <View
+                style={{
+                  width: 6,
+                  height: "90%",
+                  backgroundColor: item.color,
+                  borderRadius: 6,
+                  marginRight: 14,
+                }}
+              />
+
+              {/* Icon bubble */}
+              <View
+                className="w-10 h-10 rounded-xl items-center justify-center mr-3"
+                
+              >
+                <Ionicons name={item.icon} size={22} color={item.color} />
+              </View>
+
+              {/* Text */}
+              <View>
+                <Text className="text-gray-900 font-semibold text-sm">
+                  {item.label}
+                </Text>
+                <Text className="text-xs text-gray-500 mt-1">{item.sub}</Text>
+              </View>
+            </View>
+
+            {/* VALUE */}
+            <Text
+              className="text-xl font-bold"
+              style={{ color: item.color }}
+            >
+              {item.value}
             </Text>
           </View>
-        </View>
 
-        <Text
-          className="text-xl font-bold"
-          style={{ color: colors.primary }}
-        >
-          {stats.onTime}
-        </Text>
-      </View>
-
-      {/* Delayed Deliveries */}
-      <View
-        className="flex-row items-center justify-between p-4 rounded-xl mb-3"
-        style={{
-          backgroundColor: colors.darkHover,
-          borderLeftWidth: 5,
-          borderLeftColor: colors.secondary,
-          shadowColor: "#000",
-          shadowOpacity: 0.05,
-          shadowRadius: 4,
-        }}
-      >
-        <View className="flex-row items-center">
-          <Ionicons
-            name="alert-circle-outline"
-            size={24}
-            color={colors.secondary}
-            style={{ marginRight: 12 }}
-          />
-          <View>
-            <Text className="text-gray-900 font-semibold text-sm">
-              Delayed Deliveries
-            </Text>
-            <Text className="text-xs text-gray-500 mt-1">
-              Overdue or late arrivals
-            </Text>
+          {/* MINI PROGRESS BAR */}
+          <View className="mt-4">
+            <View
+              className="h-1 rounded-full bg-gray-200"
+              style={{ overflow: "hidden" }}
+            >
+              <View
+                className="h-1 rounded-full"
+                style={{
+                  width: `${
+                    item.value > 100
+                      ? 100
+                      : Math.max(10, (item.value / 120) * 100)
+                  }%`,
+                  backgroundColor: item.barColor,
+                }}
+              />
+            </View>
           </View>
         </View>
-
-        <Text
-          className="text-xl font-bold"
-          style={{ color: colors.secondary }}
-        >
-          {stats.delayed}
-        </Text>
-      </View>
-
-      {/* Average Delivery Time */}
-      <View
-        className="flex-row items-center justify-between p-4 rounded-xl"
-        style={{
-          backgroundColor: colors.darkHover,
-          borderLeftWidth: 5,
-          borderLeftColor: colors.primaryHover,
-          shadowColor: "#000",
-          shadowOpacity: 0.05,
-          shadowRadius: 4,
-        }}
-      >
-        <View className="flex-row items-center">
-          <Ionicons
-            name="time-outline"
-            size={24}
-            color={colors.primaryHover}
-            style={{ marginRight: 12 }}
-          />
-          <View>
-            <Text className="text-gray-900 font-semibold text-sm">
-              Avg Delivery Time
-            </Text>
-            <Text className="text-xs text-gray-500 mt-1">
-              Calculated per completed trip
-            </Text>
-          </View>
-        </View>
-
-        <Text
-          className="text-xl font-bold"
-          style={{ color: colors.dark }}
-        >
-          {stats.avgTime}
-        </Text>
-      </View>
+      ))}
     </View>
   );
 }

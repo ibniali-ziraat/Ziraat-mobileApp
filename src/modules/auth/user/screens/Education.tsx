@@ -59,7 +59,8 @@ export default function EducationScreen() {
   return (
     <FormProvider {...form}>
       <ScrollView>
-        <BackHeader>Education</BackHeader>
+        <BackHeader title="Education" />
+
         <EducationSection control={control} errors={errors} />
         <Button title="Save" onPress={handleSubmit(onSubmit)} />
       </ScrollView>

@@ -47,7 +47,8 @@ export default function ProfileScreen() {
   return (
     <FormProvider {...form}>
       {/* <ScrollView> */}
-      <BackHeader>Profile</BackHeader>
+      <BackHeader title="Profile" />
+
       <ProfileSection control={control} errors={errors} />
       <Button title="Save" onPress={handleSubmit(onSubmit)} />
       {/* </ScrollView> */}

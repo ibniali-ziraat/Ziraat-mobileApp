@@ -1,12 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import { router } from "expo-router";
-import {
-  BarChart2,
-  CloudRain,
-  PhoneCall,
-  Store,
-  User,
-} from "lucide-react-native";
+import { BarChart2, PhoneCall, Store, User } from "lucide-react-native";
 import { Text, TouchableOpacity, View } from "react-native";
 
 interface MenuHeaderProps {
@@ -39,12 +33,16 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
             <TouchableOpacity
               className="p-2 rounded-full bg-white border"
               style={{ borderColor: colors.neutral }}
-              onPress={() => console.log("Supplier Dashboard")}
+              onPress={() =>
+                router.push({
+                  pathname: "/DashboardPage",
+                  params: { role: "supplier" },
+                })
+              }
             >
               <Store color={colors.primary} size={20} />
             </TouchableOpacity>
 
-            {/* Supplier Profile */}
             <TouchableOpacity
               className="p-2 rounded-full bg-white border"
               style={{ borderColor: colors.neutral }}
@@ -68,19 +66,24 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
             <TouchableOpacity
               className="p-2 rounded-full bg-white border"
               style={{ borderColor: colors.neutral }}
-              onPress={() => console.log("View Analytics")}
+              onPress={() =>
+                router.push({
+                  pathname: "/DashboardPage",
+                  params: { role: "farmer" },
+                })
+              }
             >
               <BarChart2 color={colors.secondary} size={20} />
             </TouchableOpacity>
 
             {/* Weather Alerts */}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               className="p-2 rounded-full bg-white border"
               style={{ borderColor: colors.neutral }}
               onPress={() => console.log("Weather Alerts")}
             >
               <CloudRain color={colors.primary} size={20} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </>
         )}
       </View>

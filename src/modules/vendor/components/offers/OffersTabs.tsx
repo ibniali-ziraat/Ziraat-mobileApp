@@ -1,30 +1,38 @@
-    import { colors } from "@/src/constants/colors";
+import { colors } from "@/src/constants/colors";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function OffersTabs({ tab, setTab }) {
   return (
-    <View
-      className="flex-row p-1 rounded-3xl shadow"
-      style={{ backgroundColor: colors.neutral }}
-    >
-      {["vendor", "platform"].map((key) => {
-        const active = tab === key;
+    <View className="flex-row p-1 rounded-3xl">
+      {[
+        { key: "vendor", label: "Vendor Offers", border: colors.primary },
+        { key: "platform", label: "Ziraat Offers", border: colors.secondary },
+      ].map((item, index) => {
+        const active = tab === item.key;
+
         return (
           <TouchableOpacity
-            key={key}
+            key={item.key}
             className="flex-1 py-3 rounded-2xl"
-            onPress={() => setTab(key)}
+            onPress={() => setTab(item.key)}
             style={{
-              backgroundColor: active ? colors.primary : "transparent",
+              borderWidth: 1,
+              borderColor: item.border,
+             
+
+              
+              marginRight: index === 0 ? 16 : 0, 
             }}
           >
             <Text
-              className="text-center font-semibold"
+              className="text-center"
               style={{
-                color: active ? colors.light : colors.dark,
+                fontWeight: active ? "700" : "500",
+                color: item.border,
+                fontSize: 14,
               }}
             >
-              {key === "vendor" ? "Vendor Offers" : "Ziraat Offers"}
+              {item.label}
             </Text>
           </TouchableOpacity>
         );

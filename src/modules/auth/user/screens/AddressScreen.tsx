@@ -60,7 +60,7 @@ export default function AddressScreen() {
   return (
     <FormProvider {...form}>
       <ScrollView>
-        <BackHeader>Address</BackHeader>
+        <BackHeader title="Address" />
         <AddressSection control={control} errors={errors} />
         <Button title="Save" onPress={handleSubmit(onSubmit)} />
       </ScrollView>

@@ -7,7 +7,7 @@ export default function BusinessSection({
   errors,
 }: BusinessSectionProps) {
   return (
-    <View style={{ padding: 20 }}>
+    <View style={{ paddingHorizontal: 20 }} className="bg-light">
       <FormInput
         control={control}
         name="shopName"

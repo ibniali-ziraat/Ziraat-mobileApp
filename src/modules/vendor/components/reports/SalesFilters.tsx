@@ -1,5 +1,4 @@
 import { colors } from "@/src/constants/colors";
-import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function SalesFilters({
@@ -8,7 +7,7 @@ export default function SalesFilters({
   setActiveFilter,
 }) {
   return (
-    <View className="mb-4">
+    <View className="mb-2 mt-4">
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -24,9 +23,7 @@ export default function SalesFilters({
               activeOpacity={0.8}
               className="mr-2 rounded-full px-5 py-2"
               style={{
-                backgroundColor: isActive
-                  ? colors.secondaryHover + "22"
-                  : colors.darkHover,
+               
                 shadowColor: isActive ? colors.secondary : "transparent",
                 shadowOpacity: isActive ? 0.15 : 0,
                 shadowRadius: isActive ? 6 : 0,

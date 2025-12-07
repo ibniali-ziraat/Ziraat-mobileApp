@@ -22,15 +22,13 @@ export default function StatementCard({ item, colors }) {
           <View
             className="w-10 h-10 rounded-xl items-center justify-center"
             style={{
-              backgroundColor: `${colors.primaryLight}70`,
-              borderColor: colors.primary,
-              borderWidth: 1,
+              
             }}
           >
             <Ionicons
               name="document-text-outline"
-              size={20}
-              color={colors.primaryDark}
+              size={22}
+              color={colors.primary}
             />
           </View>
 
@@ -48,16 +46,12 @@ export default function StatementCard({ item, colors }) {
         {/* DOWNLOAD BUTTON */}
         <View
           className="w-10 h-10 rounded-xl items-center justify-center"
-          style={{
-            backgroundColor: `${colors.primaryLight}90`,
-            borderColor: colors.primary,
-            borderWidth: 1,
-          }}
+         
         >
           <Ionicons
             name="download-outline"
-            size={20}
-            color={colors.primaryDark}
+            size={22}
+            color={colors.primary}
           />
         </View>
       </View>

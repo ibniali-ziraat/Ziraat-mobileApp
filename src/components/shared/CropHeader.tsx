@@ -2,13 +2,23 @@ import { colors } from "@/src/constants/colors";
 import { Filter, Search } from "lucide-react-native";
 import { Text, TouchableOpacity, View } from "react-native";
 
-export default function CropsHeader() {
+interface CropsHeaderProps {
+  role?: "farmer" | "supplier"; // optional role prop
+}
+
+export default function CropsHeader({ role = "farmer" }: CropsHeaderProps) {
   return (
     <View className="flex-row items-center justify-between h-16 px-4 bg-white">
-      {/* Title */}
-      <Text className="text-lg font-bold" style={{ color: colors.dark }}>
-        Crops
-      </Text>
+      {/* Title & Subtitle */}
+      <View>
+        <Text className="text-lg font-bold" style={{ color: colors.dark }}>
+          Crops
+        </Text>
+
+        <Text className="text-sm" style={{ color: colors.neutral }}>
+          Manage Your Orchards & Fields
+        </Text>
+      </View>
 
       {/* Actions */}
       <View className="flex-row items-center space-x-3">

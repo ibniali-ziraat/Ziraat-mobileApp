@@ -1,5 +1,5 @@
-import VendorAuthForm from "@/src/modules/auth/vendor/VendorAuthForm";
+import BusinessScreen from "@/src/modules/auth/vendor/screens/BusinessScreen";
 import React from "react";
 export default function AuthScreen() {
-  return React.createElement(VendorAuthForm, null);
+  return React.createElement(BusinessScreen, null);
 }

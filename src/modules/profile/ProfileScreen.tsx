@@ -81,7 +81,8 @@ export default function UserProfileScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <BackHeader>Profile</BackHeader>
+        <BackHeader title="Profile" />
+
         <ProgressBar progress={progress} />
 
         {missingSections.length > 0 && (

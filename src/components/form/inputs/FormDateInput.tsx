@@ -14,6 +14,15 @@ export default function FormDatePicker({
   const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
 
+  // Utility to format date as "YYYY-MM-DD"
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   return (
     <Controller
       control={control}
@@ -39,10 +48,10 @@ export default function FormDatePicker({
 
                 <input
                   type="date"
-                  value={value ? value.split("T")[0] : ""}
+                  value={value ? value : ""}
                   onChange={(e) => {
                     if (!e.target.value) return onChange(null);
-                    onChange(new Date(e.target.value).toISOString());
+                    onChange(e.target.value); // just send "YYYY-MM-DD"
                   }}
                   className={`p-3 border rounded-md text-base outline-none ${
                     showError ? "border-error" : "border-neutral"
@@ -65,7 +74,7 @@ export default function FormDatePicker({
                     <TextInput
                       mode="outlined"
                       label={optional ? `${label} (Optional)` : `${label} *`}
-                      value={value ? new Date(value).toLocaleDateString() : ""}
+                      value={value ? formatDate(value) : ""}
                       editable={false}
                       right={<TextInput.Icon icon="calendar" />}
                       error={showError}
@@ -81,7 +90,7 @@ export default function FormDatePicker({
                     onChange={(event, selectedDate) => {
                       setShow(false);
                       if (event.type === "dismissed") return;
-                      onChange(selectedDate.toISOString());
+                      onChange(formatDate(selectedDate)); // send "YYYY-MM-DD"
                     }}
                   />
                 )}

@@ -1,5 +1,5 @@
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
-import { roleMenuGroups } from "@/src/navigation/menuGroups"; // <-- use roleMenuGroups
+import { MenuLinks } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
 import { Repeat } from "lucide-react-native";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -14,7 +14,7 @@ export default function MenuScreen() {
 
   // Show menu based on role only
   const menuGroupsToShow =
-    roleMode === "farmer" ? roleMenuGroups.farmer : roleMenuGroups.supplier;
+    roleMode === "farmer" ? MenuLinks.farmer : MenuLinks.supplier;
 
   return (
     <View className="flex-1 bg-white">
@@ -34,9 +34,12 @@ export default function MenuScreen() {
 
       <TouchableOpacity
         onPress={toggleRole}
-        className="absolute bottom-6 right-6 bg-dark w-10 h-10 rounded-full flex items-center justify-center"
+        className="absolute bottom-6 right-6 bg-dark rounded-full flex-row items-center px-4 py-2"
       >
         <Repeat size={20} color="white" />
+        <Text className="text-white font-medium ml-2">
+          {roleMode === "farmer" ? "Switch to Supplier" : "Switch to Farmer"}
+        </Text>
       </TouchableOpacity>
     </View>
   );

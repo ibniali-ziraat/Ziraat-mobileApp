@@ -1,13 +1,18 @@
-import HeaderBar from "@/src/components/shared/HeaderBar";
-import FeeOverviewSection from "@/src/modules/vendor/components/platformScreen/FeeOverviewSection";
-import FeeStructureCard from "@/src/modules/vendor/components/platformScreen/FeeStructureCard.";
-import StatementBottom from "@/src/modules/vendor/components/platformScreen/StatementBottom";
-import StatementCard from "@/src/modules/vendor/components/platformScreen/StatementCard";
-import TransactionsSection from "@/src/modules/vendor/components/platformScreen/TransactionsSection";
-import WeeklyTrendChart from "@/src/modules/vendor/components/platformScreen/WeeklyTrendChart";
 import { useState } from "react";
 import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+
+import HeaderBar from "../components/shared/HeaderBar";
+
+
+import FeeOverviewSection from "../modules/vendor/components/platformScreen/FeeOverviewSection";
+import FeeStructureCard from "../modules/vendor/components/platformScreen/FeeStructureCard.";
+import StatementBottom from "../modules/vendor/components/platformScreen/StatementBottom";
+import StatementCard from "../modules/vendor/components/platformScreen/StatementCard";
+import TransactionsSection from "../modules/vendor/components/platformScreen/TransactionsSection";
+import WeeklyTrendChart from "../modules/vendor/components/platformScreen/WeeklyTrendChart";
+
+
 
 const colors = {
   primary: "#2d6b06",
@@ -48,10 +53,10 @@ export default function PlatformScreen() {
       color: colors.secondaryDark,
     },
   ];
-  const feeOverviewData = {
-    totalFee: "₹2,850.75",
-    pending: "₹2,070.55",
-  };
+const feeOverviewData = {
+  totalFee: "₹2,850.75",
+  pending: "₹2,070.55",
+};
   const weeklyTrend = [3200, 3900, 4100, 4280, 3960, 4560];
 
   const feeTransactions = [
@@ -80,31 +85,34 @@ export default function PlatformScreen() {
   ];
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
+    <SafeAreaView className="flex-1 bg-white">
       {/* Header */}
       <HeaderBar title="Platform Fee Management" icon="person-circle-outline" />
 
       <ScrollView className="px-4 pt-4 pb-24">
+
+       
         <FeeStructureCard colors={colors} />
 
+       
         <FeeOverviewSection colors={colors} data={feeOverviewData} />
 
         <WeeklyTrendChart data={weeklyTrend} colors={colors} />
 
-        {/*        
+{/*        
         <Text className="mt-4 mb-2 font-semibold text-gray-800">Test Progress Bar</Text>
         <AnimatedProgressBar value={50} maxValue={100} color={colors.primary} />  */}
 
+       
         <TransactionsSection transactions={feeTransactions} colors={colors} />
 
+     
         <TouchableOpacity
           className="mt-5 rounded-xl flex-row items-center justify-center p-4"
           style={{ backgroundColor: colors.primary }}
           onPress={() => setSheetVisible(true)}
         >
-          <Text className="text-white font-semibold">
-            Download Weekly Statement
-          </Text>
+          <Text className="text-white font-semibold">Download Weekly Statement</Text>
         </TouchableOpacity>
 
         {/* Statements Preview */}
@@ -115,6 +123,7 @@ export default function PlatformScreen() {
         {statements.slice(0, 2).map((s, i) => (
           <StatementCard key={i} item={s} colors={colors} />
         ))}
+
       </ScrollView>
 
       {/* Bottom Sheet */}

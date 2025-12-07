@@ -22,10 +22,7 @@ export default function TransactionsSection({ transactions, colors }) {
           backgroundColor: colors.light,
           borderColor: colors.border,
           borderWidth: 1,
-          shadowColor: "#000",
-          shadowOpacity: 0.06,
-          shadowRadius: 8,
-          elevation: 2,
+          
         }}
       >
         {/* Table Header */}
@@ -33,16 +30,16 @@ export default function TransactionsSection({ transactions, colors }) {
           className="flex-row pb-2 mb-1 border-b"
           style={{ borderColor: colors.border }}
         >
-          <Text className="w-[25%] text-[12px] font-semibold text-gray-600">
+          <Text className="w-[25%] text-[12px] font-semibold text-black">
             Order
           </Text>
-          <Text className="w-[20%] text-[12px] font-semibold text-gray-600">
+          <Text className="w-[20%] text-[12px] font-semibold text-black">
             Type
           </Text>
-          <Text className="w-[25%] text-[12px] font-semibold text-gray-600">
+          <Text className="w-[25%] text-[12px] font-semibold ttext-black">
             Amount
           </Text>
-          <Text className="w-[30%] text-[12px] font-semibold text-gray-600">
+          <Text className="w-[30%] text-[12px] font-semibold text-black">
             Fee
           </Text>
         </View>
