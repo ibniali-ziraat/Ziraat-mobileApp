@@ -34,7 +34,10 @@ export default function RootLayout() {
               behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
               <PaperProvider>
-                <Stack screenOptions={{ headerShown: false }} />
+                <Stack screenOptions={{ headerShown: false }}>
+                  {/* This will render all tabs and nested stacks */}
+                  <Stack.Screen name="(tabs)/_layout" />
+                </Stack>
               </PaperProvider>
             </KeyboardAvoidingView>
           </SafeAreaView>

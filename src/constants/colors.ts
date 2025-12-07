@@ -10,9 +10,8 @@ export const colors = {
   overlay: "rgba(0, 0, 0, 0.5)",
   error: "#f44336",
 
-  
   warning: "#f5a623",
   warningHover: "#d98c1c",
-  cardShadow: 'rgba(0,0,0,0.6)',
-  cardBorder: ''
+  cardShadow: "rgba(0,0,0,0.6)",
+  cardBorder: "",
 };

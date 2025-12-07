@@ -1,0 +1,33 @@
+import { colors } from "@/src/constants/colors";
+import { Filter, Search } from "lucide-react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+
+export default function CropsHeader() {
+  return (
+    <View className="flex-row items-center justify-between h-16 px-4 bg-white">
+      {/* Title */}
+      <Text className="text-lg font-bold" style={{ color: colors.dark }}>
+        Crops
+      </Text>
+
+      {/* Actions */}
+      <View className="flex-row items-center space-x-3">
+        {/* Search */}
+        <TouchableOpacity
+          className="p-2 rounded-full bg-white border"
+          style={{ borderColor: colors.neutral }}
+        >
+          <Search color={colors.primary} size={20} />
+        </TouchableOpacity>
+
+        {/* Filter */}
+        <TouchableOpacity
+          className="p-2 rounded-full bg-white border"
+          style={{ borderColor: colors.neutral }}
+        >
+          <Filter color={colors.secondary} size={20} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
