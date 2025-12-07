@@ -30,7 +30,7 @@ export default function ProfileSection({
   }, [data]);
 
   return (
-    <View style={{ padding: 20 }}>
+    <View>
       <FormInput
         control={control}
         name="fullName"

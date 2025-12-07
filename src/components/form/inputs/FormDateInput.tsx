@@ -14,7 +14,6 @@ export default function FormDatePicker({
   const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
 
-  // Utility to format date as "YYYY-MM-DD"
   const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();

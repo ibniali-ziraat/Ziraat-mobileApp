@@ -88,9 +88,8 @@ const HomeScreen = () => {
   };
 
   return (
-    <View className="flex-1 bg-white px-5 pt-6">
+    <View className="flex-1 bg-white pt-6">
       <ScrollView showsVerticalScrollIndicator={false}>
-
         <View className="rounded-3xl overflow-hidden mb-6 shadow-md">
           <LinearGradient
             colors={["#4da82d", "#c7611f"]}
@@ -130,7 +129,6 @@ const HomeScreen = () => {
             </View>
           </LinearGradient>
         </View>
-
 
         <Text className="text-lg font-semibold mb-3 p-2 text-gray-800">
           3-Day Weather Forecast
@@ -202,6 +200,7 @@ const HomeScreen = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
+            onPress={() => router.push("/spray-registration")}
             className="rounded-xl flex-row justify-center items-center bg-[#fff8f4]"
             style={{
               paddingVertical: 14,

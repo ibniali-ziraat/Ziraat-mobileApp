@@ -18,7 +18,7 @@ export default function MenuScreen() {
 
   return (
     <View className="flex-1 bg-white">
-      <ScrollView className="flex-1 px-4">
+      <ScrollView className="flex-1">
         {menuGroupsToShow.map((group) => (
           <View key={group.title} className="">
             {group.routes.map((route) => (

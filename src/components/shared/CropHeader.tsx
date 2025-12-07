@@ -8,7 +8,7 @@ interface CropsHeaderProps {
 
 export default function CropsHeader({ role = "farmer" }: CropsHeaderProps) {
   return (
-    <View className="flex-row items-center justify-between h-16 px-4 bg-white">
+    <View className="flex-row items-center justify-between h-16 bg-white">
       {/* Title & Subtitle */}
       <View>
         <Text className="text-lg font-bold" style={{ color: colors.dark }}>
@@ -24,7 +24,7 @@ export default function CropsHeader({ role = "farmer" }: CropsHeaderProps) {
       <View className="flex-row items-center space-x-3">
         {/* Search */}
         <TouchableOpacity
-          className="p-2 rounded-full bg-white border"
+          className="p-2 rounded-full bg-white border mr-2"
           style={{ borderColor: colors.neutral }}
         >
           <Search color={colors.primary} size={20} />

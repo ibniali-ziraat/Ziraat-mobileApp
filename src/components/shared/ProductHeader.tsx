@@ -4,7 +4,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 export default function ProductHeader() {
   return (
-    <View className="flex-row items-center justify-between h-16 px-4 bg-white">
+    <View className="flex-row items-center justify-between h-16 bg-white">
       {/* Title & Subtitle */}
       <View>
         <Text className="text-lg font-bold" style={{ color: colors.dark }}>
@@ -28,7 +28,7 @@ export default function ProductHeader() {
 
         {/* Wishlist */}
         <TouchableOpacity
-          className="p-2 rounded-full bg-white border"
+          className="p-2 rounded-full bg-white border mr-2"
           style={{ borderColor: colors.neutral }}
         >
           <Heart color={colors.secondary} size={20} />

@@ -10,7 +10,7 @@ interface HomeHeaderProps {
 export default function HomeHeader({ title = "Farmer" }: HomeHeaderProps) {
   return (
     <View
-      className="w-full bg-white border-b px-4 py-3 flex-row items-center justify-between"
+      className="w-full bg-white flex-row items-center justify-between"
       style={{ borderBottomColor: colors.neutral }}
     >
       {/* LEFT: Greeting */}

@@ -10,7 +10,7 @@ interface MenuHeaderProps {
 
 export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
   return (
-    <View className="flex-row items-center justify-between h-16 px-4 bg-white">
+    <View className="flex-row items-center justify-between h-16 bg-white">
       {/* Title & Subtitle */}
       <View>
         <Text className="text-lg font-bold" style={{ color: colors.dark }}>
@@ -31,7 +31,7 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
           <>
             {/* Supplier Dashboard */}
             <TouchableOpacity
-              className="p-2 rounded-full bg-white border"
+              className="p-2 rounded-full bg-white border mr-2"
               style={{ borderColor: colors.neutral }}
               onPress={() =>
                 router.push({
@@ -55,7 +55,7 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
           <>
             {/* Expert Call */}
             <TouchableOpacity
-              className="p-2 rounded-full bg-white border"
+              className="p-2 rounded-full bg-white border mr-2"
               style={{ borderColor: colors.neutral }}
               onPress={() => console.log("Call Expert")}
             >

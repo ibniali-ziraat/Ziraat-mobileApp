@@ -1,5 +1,7 @@
 import { router } from "expo-router";
+
 import { ReactNode, useEffect } from "react";
+import { View } from "react-native";
 import { useGlobalData } from "../contexts/GlobalDataContext";
 
 interface RouteGuardProps {
@@ -19,5 +21,14 @@ export default function RouteGuard({ children }: RouteGuardProps) {
 
   if (!initialized) return null;
 
-  return <>{children}</>;
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+      }}
+    >
+      {children}
+    </View>
+  );
 }
