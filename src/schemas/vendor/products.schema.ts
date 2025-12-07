@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const productPortfolioSchema = z.object({
   storageCapacityValue: z.string().optional(),
-  storageCapacityUnit: z.string().nullable().optional(),
+  // storageCapacityUnit: z.string().nullable().optional(),
 
   inputTypes: z.preprocess(
     (val) => val ?? [],

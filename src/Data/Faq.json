@@ -1,0 +1,32 @@
+{
+  "faq": [
+    {
+      "question": "Are your products organic or naturally grown?",
+      "answer": "We use sustainable and eco-friendly farming practices. While not all products are officially certified organic, details about each product's farming method are mentioned on the product page."
+    },
+    {
+      "question": "How do I place an order?",
+      "answer": "Browse products, add them to your cart, and complete your purchase through the checkout process."
+    },
+    {
+      "question": "What payment methods do you accept?",
+      "answer": "We accept UPI, credit cards, debit cards, and Cash on Delivery on selected orders."
+    },
+    {
+      "question": "Is it safe to make online payments?",
+      "answer": "Yes, all online payments are fully secure and encrypted."
+    },
+    {
+      "question": "How long does delivery take and can I track my order?",
+      "answer": "Once shipped, you’ll receive a tracking link by SMS or email to follow your delivery status."
+    },
+    {
+      "question": "What if I receive a damaged product?",
+      "answer": "If your product is damaged, contact customer support within 48 hours with images. We’ll arrange a replacement or refund."
+    },
+    {
+      "question": "How should I store the products?",
+      "answer": "Storage instructions are mentioned on each product label. Most items should be kept in a cool, dry place."
+    }
+  ]
+}

@@ -13,7 +13,7 @@ export const operationalDetailsSchema = z.object({
     .number({ invalid_type_error: "Enter a number" })
     .optional(),
 
-  // Arrays of strings for form
+  // Arrays of strings
   serviceArea: z.array(z.string()).optional(),
   companyTieups: z.array(z.string()).optional(),
 });

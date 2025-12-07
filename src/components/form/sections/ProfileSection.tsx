@@ -17,8 +17,6 @@ export default function ProfileSection({
   data,
   setValue,
 }: FormSectionProps) {
-  
-
   // Prefill inputs when API data arrives
   useEffect(() => {
     if (data) {
@@ -71,7 +69,6 @@ export default function ProfileSection({
         options={[
           { label: "Male", value: "male" },
           { label: "Female", value: "female" },
-          { label: "Other", value: "other" },
         ]}
         error={errors.gender}
       />

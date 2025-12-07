@@ -1,8 +1,5 @@
-import { colors } from "@/src/constants/colors";
-import { FormFieldProps } from "@/src/types/formFieldProps";
-import { Asterisk } from "lucide-react-native";
 import { useState } from "react";
-import { useFieldArray } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { Text, View } from "react-native";
 import { Chip, TextInput } from "react-native-paper";
 
@@ -11,69 +8,57 @@ export default function ChipInput({
   name,
   label,
   error,
-  placeholder = "Add Area",
-  optional = false,
-}: FormFieldProps & { optional?: boolean }) {
-  const [value, setValue] = useState("");
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name,
-  });
-
-  const handleAdd = () => {
-    if (!value.trim()) return;
-    append({ name: value.trim() });
-    setValue("");
-  };
+  placeholder = "Add",
+}) {
+  const [input, setInput] = useState("");
 
   return (
-    <View style={{ marginTop: 15 }}>
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginBottom: 10 }}
-      >
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>{label}</Text>
-        {!optional && (
-          <Asterisk size={12} color={colors.error} style={{ marginLeft: 2 }} />
-        )}
-      </View>
+    <Controller
+      control={control}
+      name={name}
+      defaultValue={[]}
+      render={({ field: { value, onChange } }) => {
+        const handleAdd = () => {
+          const trimmed = input.trim();
+          if (!trimmed) return;
+          onChange([...value, trimmed]);
+          setInput("");
+        };
 
-      <View
-        style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: 6,
-          marginBottom: 6,
-        }}
-      >
-        {fields.map((item, index) => (
-          <Chip
-            key={item.id}
-            onClose={() => remove(index)}
-            style={{ backgroundColor: "#E8F5E9" }}
-          >
-            {item.name}
-          </Chip>
-        ))}
-      </View>
+        const handleRemove = (index) => {
+          const filtered = value.filter((_, i) => i !== index);
+          onChange(filtered);
+        };
 
-      <TextInput
-        mode="outlined"
-        placeholder={placeholder}
-        value={value}
-        onChangeText={setValue}
-        right={
-          <TextInput.Icon
-            icon="plus"
-            onPress={handleAdd}
-            forceTextInputFocus={false}
-          />
-        }
-      />
+        return (
+          <View style={{ marginTop: 15 }}>
+            <Text>{label}</Text>
 
-      {error && (
-        <Text style={{ color: "red", marginBottom: 16 }}>{error.message}</Text>
-      )}
-    </View>
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
+              {value?.map((item, index) => (
+                <Chip key={item + index} onClose={() => handleRemove(index)}>
+                  {item}
+                </Chip>
+              ))}
+            </View>
+
+            <TextInput
+              placeholder={placeholder}
+              value={input}
+              onChangeText={setInput}
+              right={
+                <TextInput.Icon
+                  icon="plus"
+                  onPress={handleAdd}
+                  forceTextInputFocus={false}
+                />
+              }
+            />
+
+            {error && <Text style={{ color: "red" }}>{error.message}</Text>}
+          </View>
+        );
+      }}
+    />
   );
 }
