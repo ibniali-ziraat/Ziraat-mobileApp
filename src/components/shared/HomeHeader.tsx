@@ -16,7 +16,7 @@ export default function HomeHeader({ title = "Farmer" }: HomeHeaderProps) {
       {/* LEFT: Greeting */}
       <View className="flex-row items-center">
         <View>
-          <Text className="text-xs" style={{ color: colors.neutral }}>
+          <Text className="text-xs" style={{ color: colors.dark }}>
             Welcome
           </Text>
           <Text

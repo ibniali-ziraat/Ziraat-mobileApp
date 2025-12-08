@@ -6,6 +6,7 @@ import {
   useProfileMutation,
 } from "@/src/hooks/userQueryHooks";
 
+import FormActions from "@/src/components/shared/FormActions";
 import Button from "@/src/components/ui/Button";
 import Loader from "@/src/components/ui/Loader";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
@@ -115,9 +116,10 @@ export default function UserRegistrationScreen() {
           <Button title="Back" onPress={prevStep} disabled={isLoading} />
         )}
 
-        <Button
-          title={step === 1 ? "Submit" : "Next"}
-          onPress={handleSubmit(onSubmit)}
+        <FormActions
+          cancelLabel={step > 0 ? "Back" : ""}
+          submitLabel={step === 1 ? "Submit" : "Next"}
+          onSubmit={handleSubmit(onSubmit)}
           disabled={isLoading}
         />
       </View>

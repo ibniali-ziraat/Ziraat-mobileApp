@@ -31,7 +31,7 @@ export default function ProductSection({ control, errors }) {
   });
 
   return (
-    <View style={{ padding: 20 }}>
+    <View>
       {/* Inputs Sold */}
       <MultiSelectInput
         name="inputTypes"

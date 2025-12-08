@@ -17,8 +17,6 @@ const colors = {
   error: "#f44336",
 };
 
-
-
 export default function SalesScreen() {
   const summaryData = {
     daily: { cash: 12000, credit: 9500, fee: 900, discount: 600 },
@@ -123,8 +121,6 @@ export default function SalesScreen() {
   );
 }
 
-
-
 function PageTitle({ title }) {
   return (
     <Text className="text-[17px] font-semibold text-gray-900 mb-2">
@@ -140,7 +136,6 @@ function Card({ children }) {
       style={{
         borderColor: "#E5E7EB",
         borderWidth: 1,
-       
       }}
     >
       {children}

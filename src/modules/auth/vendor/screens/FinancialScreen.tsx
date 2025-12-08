@@ -1,3 +1,6 @@
+import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -10,15 +13,16 @@ import { showErrorToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert, Button } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { Alert } from "react-native";
 import FinancialPaymentSection from "../sections/FinancialSection";
 export default function FinancialScreen() {
   const { vendorData } = useGlobalData();
   const { data } = useVendorFinancialQuery(vendorData.profileId);
 
-  const { mutateAsync: save } = useVendorFinancialMutation();
-  const { mutateAsync: update } = useVendorFinancialUpdateMutation();
+  const { mutateAsync: save, isPending: isSaving } =
+    useVendorFinancialMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useVendorFinancialUpdateMutation();
 
   const form = useZodForm(financialPaymentSchema);
   const {
@@ -74,11 +78,17 @@ export default function FinancialScreen() {
   };
 
   return (
-    <ScrollView>
+    <ScreenLayout>
+      <BackHeader title="Financial & Payment Details" />
       <FormProvider {...form}>
         <FinancialPaymentSection errors={errors} control={control} />
-        <Button title="Save" onPress={handleSubmit(onSubmit)} />
+        <FormActions
+          cancelLabel={"Cancel"}
+          submitLabel={"Next"}
+          onSubmit={handleSubmit(onSubmit)}
+          disabled={isSaving || isUpdating}
+        />
       </FormProvider>
-    </ScrollView>
+    </ScreenLayout>
   );
 }

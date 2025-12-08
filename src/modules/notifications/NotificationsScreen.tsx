@@ -30,20 +30,19 @@ export default function NotificationScreen() {
   ];
 
   return (
-    <ScrollView
-      className="flex-1 p-5"
-      style={{ backgroundColor: colors.light }}
-    >
+    <ScrollView className="flex-1" style={{ backgroundColor: colors.light }}>
       <BackHeader title="Notifications" />
 
-      {/* Notifications List */}
-      <ScrollView className="p-4" contentContainerStyle={{ paddingBottom: 20 }}>
+      <ScrollView
+        className="py-4"
+        contentContainerStyle={{ paddingBottom: 20 }}
+      >
         {notifications.length === 0 ? (
           <View className="flex-1 justify-center items-center mt-20">
-            <Bell color={colors.gray} size={48} />
+            <Bell color={colors.dark} size={48} />
             <Text
               className="mt-4 text-lg font-medium"
-              style={{ color: colors.gray }}
+              style={{ color: colors.dark }}
             >
               No new notifications
             </Text>
@@ -53,17 +52,17 @@ export default function NotificationScreen() {
             <View
               key={item.id}
               className="flex-row items-center py-2 mb-3 rounded-xl"
-              style={{ backgroundColor: colors.blackHover }}
+              style={{ backgroundColor: colors.light }}
             >
               <View className="mr-4">{item.icon}</View>
               <View className="flex-1">
                 <Text
                   className="text-base font-medium"
-                  style={{ color: colors.black }}
+                  style={{ color: colors.dark }}
                 >
                   {item.message}
                 </Text>
-                <Text className="text-sm mt-1" style={{ color: colors.gray }}>
+                <Text className="text-sm mt-1" style={{ color: colors.dark }}>
                   {item.time}
                 </Text>
               </View>
