@@ -1,7 +1,7 @@
 //@ts-nocheck
 import * as Location from "expo-location";
 import { useState } from "react";
-import { Button, StyleSheet, View } from "react-native";
+import { Button, View } from "react-native";
 import FormInput from "../inputs/FormInput";
 import SingleSelectInput from "../inputs/SingleSelectInput";
 
@@ -37,7 +37,7 @@ export default function AddressSection({ control, errors }: Props) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={{ gap: 12 }}>
       {/* State */}
       <SingleSelectInput
         control={control}
@@ -125,10 +125,3 @@ export default function AddressSection({ control, errors }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    gap: 12,
-  },
-});

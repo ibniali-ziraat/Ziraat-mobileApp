@@ -1,3 +1,6 @@
+import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -9,7 +12,7 @@ import { licensingComplianceSchema } from "@/src/schemas/vendor/licensing.schema
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert, Button } from "react-native";
+import { Alert } from "react-native";
 import LicenseSection from "../sections/LicenseSection";
 
 export default function LicenseScreen() {
@@ -17,8 +20,9 @@ export default function LicenseScreen() {
   console.log(vendorData.profileId, "vendorprofileid");
 
   const { data } = useVendorLicenseQuery(vendorData.profileId);
-  const { mutateAsync: save } = useVendorLicenseMutation();
-  const { mutateAsync: update } = useVendorLicenseUpdateMutation();
+  const { mutateAsync: save, isPending: isSaving } = useVendorLicenseMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useVendorLicenseUpdateMutation();
   const form = useZodForm(licensingComplianceSchema);
   const {
     setValue,
@@ -65,9 +69,17 @@ export default function LicenseScreen() {
   };
 
   return (
-    <FormProvider {...form}>
-      <LicenseSection errors={errors} control={control} />
-      <Button title="Save" onPress={handleSubmit(onSubmit)} />
-    </FormProvider>
+    <ScreenLayout>
+      <BackHeader title="Licensing & Compliance" />
+      <FormProvider {...form}>
+        <LicenseSection errors={errors} control={control} />
+        <FormActions
+          cancelLabel={"Cancel"}
+          submitLabel={"Next"}
+          onSubmit={handleSubmit(onSubmit)}
+          disabled={isSaving || isUpdating}
+        />
+      </FormProvider>
+    </ScreenLayout>
   );
 }

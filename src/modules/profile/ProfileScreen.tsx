@@ -1,5 +1,4 @@
 import { ScrollView, Text, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import ProfileHeader from "./components/ProfileHeader";
@@ -79,121 +78,108 @@ export default function UserProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
-      <ScrollView contentContainerStyle={{ padding: 20 }}>
-        <BackHeader title="Profile" />
+    <ScrollView style={{ flex: 1, backgroundColor: colors.light }}>
+      <BackHeader title="Profile" />
 
-        <ProgressBar progress={progress} />
+      <ProgressBar progress={progress} />
 
-        {missingSections.length > 0 && (
-          <Text style={{ color: "gray", marginBottom: 15 }}>
-            Missing: {missingSections.join(", ")}
+      {missingSections.length > 0 && (
+        <Text style={{ color: "gray", marginBottom: 15 }}>
+          Missing: {missingSections.join(", ")}
+        </Text>
+      )}
+
+      <ProfileHeader data={profileData} onEdit={() => goToSection("profile")} />
+
+      {/* ADDRESS SECTION */}
+      <SectionCard
+        title="Address"
+        onEdit={addressData ? () => goToSection("address") : undefined}
+        onDelete={addressData ? () => handleDelete("address") : undefined}
+        style={
+          !addressData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
+      >
+        {addressData ? (
+          <Text>
+            {addressData.village}, {addressData.tehsil}, {addressData.district},{" "}
+            {addressData.state} - {addressData.pincode}
           </Text>
-        )}
-
-        {/* PROFILE HEADER */}
-        <ProfileHeader
-          profileData={profileData}
-          onEdit={() => goToSection("profile")}
-        />
-
-        {/* ADDRESS SECTION */}
-        <SectionCard
-          title="Address"
-          onEdit={addressData ? () => goToSection("address") : undefined}
-          onDelete={addressData ? () => handleDelete("address") : undefined}
-          style={
-            !addressData ? { borderColor: colors.warning, borderWidth: 1 } : {}
-          }
-        >
-          {addressData ? (
-            <Text>
-              {addressData.village}, {addressData.tehsil},{" "}
-              {addressData.district}, {addressData.state} -{" "}
-              {addressData.pincode}
+        ) : (
+          <TouchableOpacity onPress={() => goToSection("address")}>
+            <Text style={{ color: colors.primary, fontWeight: "600" }}>
+              + Add Address
             </Text>
-          ) : (
-            <TouchableOpacity onPress={() => goToSection("address")}>
-              <Text style={{ color: colors.primary, fontWeight: "600" }}>
-                + Add Address
-              </Text>
-            </TouchableOpacity>
-          )}
-        </SectionCard>
+          </TouchableOpacity>
+        )}
+      </SectionCard>
 
-        {/* EDUCATION SECTION */}
-        <SectionCard
-          title="Education"
-          onEdit={educationData ? () => goToSection("education") : undefined}
-          onDelete={educationData ? () => handleDelete("education") : undefined}
-          style={
-            !educationData
-              ? { borderColor: colors.warning, borderWidth: 1 }
-              : {}
-          }
-        >
-          {educationData ? (
-            <>
-              <Text>{educationData.highestQualification}</Text>
-              <Text>{educationData.instituteName}</Text>
-              <Text>{educationData.passingYear}</Text>
-              <Text>{educationData.specialization}</Text>
-            </>
-          ) : (
-            <TouchableOpacity onPress={() => goToSection("education")}>
-              <Text style={{ color: colors.primary, fontWeight: "600" }}>
-                + Add Education
-              </Text>
-            </TouchableOpacity>
-          )}
-        </SectionCard>
+      {/* EDUCATION SECTION */}
+      <SectionCard
+        title="Education"
+        onEdit={educationData ? () => goToSection("education") : undefined}
+        onDelete={educationData ? () => handleDelete("education") : undefined}
+        style={
+          !educationData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
+      >
+        {educationData ? (
+          <>
+            <Text>{educationData.highestQualification}</Text>
+            <Text>{educationData.instituteName}</Text>
+            <Text>{educationData.passingYear}</Text>
+            <Text>{educationData.specialization}</Text>
+          </>
+        ) : (
+          <TouchableOpacity onPress={() => goToSection("education")}>
+            <Text style={{ color: colors.primary, fontWeight: "600" }}>
+              + Add Education
+            </Text>
+          </TouchableOpacity>
+        )}
+      </SectionCard>
 
-        {/* PROFESSION SECTION */}
-        <SectionCard
-          title="Profession"
-          onEdit={professionData ? () => goToSection("profession") : undefined}
-          onDelete={
-            professionData ? () => handleDelete("profession") : undefined
-          }
-          style={
-            !professionData
-              ? { borderColor: colors.warning, borderWidth: 1 }
-              : {}
-          }
-        >
-          {professionData ? (
-            <>
-              <Text>{professionData.organizationName}</Text>
-              <Text>{professionData.designation}</Text>
-              <Text>{professionData.experienceYears}</Text>
-            </>
-          ) : (
-            <TouchableOpacity onPress={() => goToSection("profession")}>
-              <Text style={{ color: colors.primary, fontWeight: "600" }}>
-                + Add Profession
-              </Text>
-            </TouchableOpacity>
-          )}
-        </SectionCard>
+      {/* PROFESSION SECTION */}
+      <SectionCard
+        title="Profession"
+        onEdit={professionData ? () => goToSection("profession") : undefined}
+        onDelete={professionData ? () => handleDelete("profession") : undefined}
+        style={
+          !professionData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
+      >
+        {professionData ? (
+          <>
+            <Text>{professionData.organizationName}</Text>
+            <Text>{professionData.designation}</Text>
+            <Text>{professionData.experienceYears}</Text>
+          </>
+        ) : (
+          <TouchableOpacity onPress={() => goToSection("profession")}>
+            <Text style={{ color: colors.primary, fontWeight: "600" }}>
+              + Add Profession
+            </Text>
+          </TouchableOpacity>
+        )}
+      </SectionCard>
 
-        {/* LOGOUT BUTTON */}
-        <TouchableOpacity
-          onPress={async () => {
-            await logout();
-          }}
-          style={{
-            marginTop: 40,
-            backgroundColor: colors.error,
-            paddingVertical: 15,
-            borderRadius: 12,
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>
-            Logout
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </SafeAreaView>
+      {/* LOGOUT BUTTON */}
+      <TouchableOpacity
+        onPress={async () => {
+          await logout();
+        }}
+        style={{
+          marginTop: 40,
+          backgroundColor: colors.error,
+          paddingVertical: 15,
+          borderRadius: 12,
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>
+          Logout
+        </Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }

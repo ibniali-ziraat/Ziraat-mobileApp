@@ -25,8 +25,8 @@ import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { vendorDeleteConfig } from "../auth/vendor/config/vendorDeleteConfig";
 import { vendorRoutes } from "../auth/vendor/config/vendorRoutes";
 import ProductItemCard from "./components/ProductItemCard";
+import ProfileHeader from "./components/ProfileHeader";
 import SectionCard from "./components/SectionCard";
-import VendorProfileHeader from "./VendorProfileHeader";
 
 export default function VendorProfileScreen() {
   const { vendorData, setVendorData, userData } = useGlobalData();
@@ -101,7 +101,11 @@ export default function VendorProfileScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-white p-5">
+    <ScrollView
+      className="flex-1 bg-white py-5 bg-light"
+      contentContainerStyle={{ paddingBottom: 40 }}
+      showsVerticalScrollIndicator={false}
+    >
       <BackHeader title="Profile" />
 
       <ProgressBar progress={progress} />
@@ -111,8 +115,8 @@ export default function VendorProfileScreen() {
           Missing: {missingSections.join(", ")}
         </Text>
       )}
-      <VendorProfileHeader
-        vendorData={profileData}
+      <ProfileHeader
+        data={profileData}
         onEdit={() => goToSection("business")}
       />
 

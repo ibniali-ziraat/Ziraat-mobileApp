@@ -1,3 +1,6 @@
+import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -9,15 +12,16 @@ import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert, Button, ScrollView } from "react-native";
+import { Alert } from "react-native";
 import SupportSection from "../sections/SupportSection";
 
 export default function SupportScreen() {
   const { vendorData } = useGlobalData();
   const { data } = useVendorSupportQuery(vendorData.profileId);
 
-  const { mutateAsync: save } = useVendorSupportMutation();
-  const { mutateAsync: update } = useVendorSupportUpdateMutation();
+  const { mutateAsync: save, isPending: isSaving } = useVendorSupportMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useVendorSupportUpdateMutation();
 
   const form = useZodForm(supportServicesSchema);
   const {
@@ -60,11 +64,17 @@ export default function SupportScreen() {
   };
 
   return (
-    <ScrollView>
+    <ScreenLayout>
+      <BackHeader title="Support Services" />
       <FormProvider {...form}>
         <SupportSection errors={errors} control={control} />
-        <Button title="Save" onPress={handleSubmit(onSubmit)} />
+        <FormActions
+          cancelLabel={"Cancel"}
+          submitLabel={"Next"}
+          onSubmit={handleSubmit(onSubmit)}
+          disabled={isSaving || isUpdating}
+        />
       </FormProvider>
-    </ScrollView>
+    </ScreenLayout>
   );
 }

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import FormInput from "../inputs/FormInput";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 
 export default function EducationSection({ control, errors }: Props) {
   return (
-    <View style={styles.container}>
+    <View>
       <FormInput
         control={control}
         name="highestQualification"
@@ -41,10 +41,3 @@ export default function EducationSection({ control, errors }: Props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20,
-    gap: 14,
-  },
-});

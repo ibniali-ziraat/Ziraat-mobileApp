@@ -1,8 +1,22 @@
 import { useState } from "react";
-import { Dimensions, Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, Text, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import { imageMapper } from "../../../Data/imageMapper";
 const { width } = Dimensions.get("window");
-export default function ProductDetailCarousel({ photos = [], label }: { photos: string[]; label?: string }) {
+export default function ProductDetailCarousel({
+  photos = [],
+  label,
+}: {
+  photos: string[];
+  label?: string;
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -12,7 +26,6 @@ export default function ProductDetailCarousel({ photos = [], label }: { photos: 
 
   return (
     <View className="relative mt-12">
-
       <ScrollView
         horizontal
         pagingEnabled
@@ -24,16 +37,23 @@ export default function ProductDetailCarousel({ photos = [], label }: { photos: 
           const imgSource = imageMapper[photoKey];
           if (!imgSource) return null;
 
-          const source = typeof imgSource === "string" ? { uri: imgSource } : imgSource;
+          const source =
+            typeof imgSource === "string" ? { uri: imgSource } : imgSource;
 
           return (
             <View key={index} className="justify-center items-center w-screen">
               <View className="rounded-xl overflow-hidden mx-5 h-[400px] w-[90%]">
-                <Image source={source} resizeMode="cover" className="w-full h-full" />
+                <Image
+                  source={source}
+                  resizeMode="cover"
+                  className="w-full h-full"
+                />
 
                 {label && (
                   <View className="absolute bottom-3 left-3 bg-primary px-3 py-1 rounded-full">
-                    <Text className="text-light font-semibold text-sm">{label}</Text>
+                    <Text className="text-light font-semibold text-sm">
+                      {label}
+                    </Text>
                   </View>
                 )}
               </View>
@@ -42,7 +62,6 @@ export default function ProductDetailCarousel({ photos = [], label }: { photos: 
         })}
       </ScrollView>
 
-   
       <View className="absolute bottom-4 w-full flex-row justify-center items-center">
         {photos.map((_, i) => (
           <View

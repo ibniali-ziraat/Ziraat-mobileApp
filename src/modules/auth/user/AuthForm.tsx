@@ -2,7 +2,6 @@
 import { colors } from "@/src/constants/colors";
 import { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import LoginForm from "./LoginForm";
 import UserRegistrationScreen from "./screens/UserRegistraitonScreen";
 
@@ -33,46 +32,33 @@ export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "register">("register");
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
+    <View
+      style={{
+        backgroundColor: colors.light,
+        flex: 1,
+        minHeight: "100%",
+      }}
     >
-      <View
-        style={{
-          backgroundColor: colors.light,
-        }}
-      >
-        {/* Logo */}
-        <View style={{ alignItems: "center", marginBottom: 30 }}>
-          <Image
-            source={require("@/assets/images/logo.jpeg")} // replace with your logo path
-            style={{ width: 120, height: 120, resizeMode: "contain" }}
-          />
-          <Text
-            style={{
-              color: colors.dark,
-              fontSize: 22,
-              fontWeight: "700",
-              marginTop: 10,
-            }}
-          >
-            Welcome
-          </Text>
-        </View>
-
-        {/* Form */}
-        {mode === "login" ? <LoginForm /> : <UserRegistrationScreen />}
-
-        {/* Toggle Mode */}
-        <ModeButton
-          title={
-            mode === "login"
-              ? "Don't have an account? Register"
-              : "Already have an account? Login"
-          }
-          onPress={() => setMode(mode === "login" ? "register" : "login")}
+      {/* Logo */}
+      <View style={{ alignItems: "center", marginBottom: 30 }}>
+        <Image
+          source={require("@/assets/images/logo.jpeg")} // replace with your logo path
+          style={{ width: 120, height: 120, resizeMode: "contain" }}
         />
       </View>
-    </ScrollView>
+
+      <View>
+        {mode === "login" ? <LoginForm /> : <UserRegistrationScreen />}
+      </View>
+      {/* Toggle Mode */}
+      <ModeButton
+        title={
+          mode === "login"
+            ? "Don't have an account? Register"
+            : "Already have an account? Login"
+        }
+        onPress={() => setMode(mode === "login" ? "register" : "login")}
+      />
+    </View>
   );
 }

@@ -24,7 +24,7 @@ export default function FinancialPaymentSection({
   }, [sellingViaZiraat]);
 
   return (
-    <View style={{ padding: 20 }}>
+    <View>
       <View
         style={{
           borderWidth: 1,

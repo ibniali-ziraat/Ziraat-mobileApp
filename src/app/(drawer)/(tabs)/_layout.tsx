@@ -21,14 +21,11 @@ export default function TabLayout() {
         tabBarInactiveTintColor: colors.dark,
         tabBarStyle: {
           paddingTop: 10,
-          paddingBottom: 50 + insets.bottom,
-          backgroundColor: colors.light,
-          borderTopWidth: 0,
           elevation: 0.5,
           height: 0,
+          paddingBottom: insets.bottom,
           shadowColor: colors.overlay,
           shadowOpacity: 0.1,
-          shadowOffset: { width: 0, height: -2 },
           shadowRadius: 5,
         },
       }}
