@@ -1,19 +1,43 @@
-import { AddToCartButtonProps } from "@/src/types/cart.type";
-import React from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { colors } from "@/src/constants/colors";
+import { ShoppingCart } from "lucide-react-native";
+import { useState } from "react";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
-export default function AddToCartButton({
-  onPress,
-  title = "Add to Cart",
-} :AddToCartButtonProps) {
+export default function AddToCartButton({ title = "Add to Cart", onPress }) {
+  const [loading, setLoading] = useState(false);
+
+  const handlePress = () => {
+    if (loading) return;
+    setLoading(true);
+
+
+    setTimeout(() => {
+      setLoading(false);
+      onPress?.();
+    }, 300);
+  };
+
   return (
     <TouchableOpacity
-      onPress={onPress}
-      className={`flex-1 py-3 rounded-lg items-center bg-neutral`}
+      onPress={handlePress}
+      disabled={loading}
+      activeOpacity={0.8}
+      className="w-full bg-neutral py-3 rounded-lg flex-row justify-center items-center"
     >
-      <Text className="font-bold text-dark text-lg text-center">
-        {title}
-      </Text>
+      {loading ? (
+        <ActivityIndicator color="white" />
+      ) : (
+        <View className="flex-row justify-center items-center w-full">
+          <ShoppingCart size={20} color={colors.dark} />
+          <Text
+            className="text-dark font-semibold text-lg flex-shrink ml-2"
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {title}
+          </Text>
+        </View>
+      )}
     </TouchableOpacity>
   );
 }
