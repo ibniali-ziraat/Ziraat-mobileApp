@@ -1,11 +1,11 @@
 // StepH_InputCostDetails.js
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import { creditPeriodOptions, paymentTypeOptions, supplierLocationOptions } from "@/src/schemas/orchard schemas/stepHScema";
+import { creditPeriodOptions, paymentTypeOptions, supplierLocationOptions } from "@/src/schemas/orchard schemas/InputCostDetailsSchema";
 import { ScrollView, Text, View } from "react-native";
 
 
 
-export default function StepH_InputCostDetails({ control, errors }:any) {
+export default function InputCostDetails({ control, errors }:any) {
 
   const supplierOptions = supplierLocationOptions.map((x) => ({
     label: x,

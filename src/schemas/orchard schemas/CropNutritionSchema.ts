@@ -16,7 +16,7 @@ export const applicationModeOptions = [
 ] as const;
 
 /* ------------------ SCHEMA ------------------ */
-export const stepDCropNutritionSchema = z.object({
+export const CropNutritionSchema = z.object({
   
   fertilizerPractice: z.enum(fertilizerOptions, {
     required_error: "Fertilizer practice is required.",

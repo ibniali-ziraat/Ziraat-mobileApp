@@ -5,9 +5,9 @@ import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { ScrollView, Text, View } from "react-native";
 
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
-import { sellingPreferenceOptions } from "@/src/schemas/orchard schemas/stepGSchema";
+import { sellingPreferenceOptions } from "@/src/schemas/orchard schemas/ProductionMarketingSchema";
 
-export default function StepG_ProductionMarketing({ control, errors }: any) {
+export default function ProductionMarketing({ control, errors }: any) {
   // Map-ready dropdown format
   const sellingOptions = sellingPreferenceOptions.map((x) => ({
     label: x,

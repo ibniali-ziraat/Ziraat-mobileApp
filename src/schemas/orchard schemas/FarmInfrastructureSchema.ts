@@ -29,7 +29,7 @@ export const laborOptions = [
 ] as const;
 
 /* -------------------- SCHEMA -------------------- */
-export const stepFFarmInfrastructureSchema = z.object({
+export const FarmInfrastructureSchema = z.object({
   /* REQUIRED: Equipment Owned (at least 1) */
   equipmentOwned: z
     .array(z.enum(equipmentOptions))

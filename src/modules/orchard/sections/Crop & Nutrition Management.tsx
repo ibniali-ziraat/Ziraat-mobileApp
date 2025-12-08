@@ -4,7 +4,7 @@ import RadioGroup from "@/src/components/form/inputs/RadioButton";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { ScrollView, Text, View } from "react-native";
 
-export default function StepD_CropNutrition({ control, errors }) {
+export default function CropNutrition({ control, errors }) {
   const fertilizerOptions = ["Organic", "Chemical", "Integrated"];
 
   const yesNoOptions = ["Yes", "No"];
