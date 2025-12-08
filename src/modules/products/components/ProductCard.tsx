@@ -1,16 +1,13 @@
-
 import { colors } from "@/src/constants/colors";
 import { imageMapper } from "@/src/Data/imageMapper";
-import { IndianRupee } from "lucide-react-native";
-import React from "react";
-import { Image, Text, View } from "react-native";
+import { IndianRupee, X } from "lucide-react-native";
+import { Image, Pressable, Text, View } from "react-native";
 
-
-
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onRemove }: any) {
   return (
-    <View className="bg-light p-4 rounded-2xl shadow border border-neutral mb-4 mt-10">
+    <View className="bg-light p-4 rounded-2xl shadow border border-neutral mb-4">
       <View className="flex-row">
+      
         <View className="w-32 h-32 rounded-xl overflow-hidden mr-3 bg-neutral">
           <Image
             source={imageMapper[product.photos[0]]}
@@ -20,10 +17,21 @@ export default function ProductCard({ product }) {
         </View>
 
         <View className="flex-1">
-          <Text className="text-2xl font-bold text-dark">{product.title}</Text>
-          <Text className="text-lg text-dark mt-1">
-            Category: {product.category}
-          </Text>
+        
+          <View className="flex-row justify-between items-start">
+            <Text className="text-2xl font-bold text-dark flex-1">{product.title}</Text>
+
+            {onRemove && (
+              <Pressable
+                onPress={() => onRemove(product._id)}
+                className="ml-2 p-1 rounded-full bg-neutral"
+              >
+                <X size={18} color={colors.dark} />
+              </Pressable>
+            )}
+          </View>
+
+          <Text className="text-lg text-dark mt-1">Category: {product.category}</Text>
 
           <View className="flex-row items-center mt-3">
             <IndianRupee size={18} color={colors.dark} />
@@ -36,9 +44,9 @@ export default function ProductCard({ product }) {
             </Text>
 
             {product.discountPrice && (
-              <View className="flex-row items-center">
-                <IndianRupee size={22} color={colors.dark} />
-                <Text className="text-3xl font-bold text-dark">
+              <View className="flex-row items-center ml-2">
+                <IndianRupee size={18} color={colors.dark} />
+                <Text className="text-2xl font-bold text-dark">
                   {product.discountPrice}
                 </Text>
               </View>

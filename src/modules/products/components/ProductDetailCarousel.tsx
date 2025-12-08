@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Dimensions, Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, Text, View } from "react-native";
 import { imageMapper } from "../../../Data/imageMapper";
 const { width } = Dimensions.get("window");
