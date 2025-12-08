@@ -1,5 +1,4 @@
 import SHIPPING_OPTIONS from "@/src/Data/shippingOptions.json";
-import React from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 export default function ShippingOptionList({
@@ -16,7 +15,7 @@ export default function ShippingOptionList({
         return (
           <TouchableOpacity
             onPress={() => setSelectedOption(item)}
-            className="p-4 mb-3 rounded-xl border border-neutral"
+            className="p-4 mb-1 mt-3 rounded-xl border border-neutral"
           >
             <View className="flex-row justify-between items-center">
           

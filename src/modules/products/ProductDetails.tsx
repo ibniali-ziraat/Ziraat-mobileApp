@@ -8,7 +8,6 @@ import ProductDetailCarousel from "@/src/modules/products/components/ProductDeta
 import { router, useLocalSearchParams } from "expo-router";
 import { IndianRupee, Package } from "lucide-react-native";
 import { ScrollView, Text, View } from "react-native";
-
 import faqData from "../../Data/Faq.json";
 import products from "../../Data/products.json";
 
@@ -76,7 +75,7 @@ export default function ProductDetails() {
 
             <Text
               className={`text-sm px-2 py-1 bg-primary rounded-xl ml-3 ${
-                product.inStock ? "text-light" : "text-error"
+                product.inStock ? "text-light" : "text-primary"
               }`}
             >
               {product.inStock ? "In Stock" : "Out of Stock"}
