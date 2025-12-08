@@ -65,7 +65,7 @@ const Wishlist = () => {
           Empty Wishlist
         </Text>
 
-        <Text className="text-center text-light mb-6 px-8">
+        <Text className="text-center text-dark mb-6 px-8">
           Add your favorite products to view them here.
         </Text>
 
