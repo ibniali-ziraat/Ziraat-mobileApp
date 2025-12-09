@@ -2,7 +2,7 @@
 
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import { ScrollView, Text, View } from "react-native";
+import { View } from "react-native";
 
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
 import { sellingPreferenceOptions } from "@/src/schemas/orchard schemas/ProductionMarketingSchema";
@@ -24,16 +24,16 @@ export default function ProductionMarketing({ control, errors }: any) {
   ];
 
   return (
-    <ScrollView className="flex-1 w-full">
+    <View className="flex-1 w-full">
       {/* Page Heading */}
-      <Text className="text-2xl font-bold mb-4 text-center text-primary">
+      {/* <Text className="text-2xl font-bold mb-4 text-center text-primary">
         Production & Marketing
-      </Text>
+      </Text> */}
 
-      <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
-        <Text className="text-lg font-semibold mb-3 text-primary">
+      <View className="bg-light w-full">
+        {/* <Text className="text-lg font-semibold mb-3 text-primary">
           Production & Marketing Information
-        </Text>
+        </Text> */}
 
         {/* Repeated text inputs (Yield + Harvest Season) */}
 
@@ -72,6 +72,6 @@ export default function ProductionMarketing({ control, errors }: any) {
           error={errors.buyerDetails}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 }
