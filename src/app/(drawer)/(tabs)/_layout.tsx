@@ -23,7 +23,7 @@ export default function TabLayout() {
           paddingTop: 10,
           elevation: 0.5,
           height: 0,
-          paddingBottom: insets.bottom,
+          paddingBottom: insets.bottom + 10,
           shadowColor: colors.overlay,
           shadowOpacity: 0.1,
           shadowRadius: 5,
