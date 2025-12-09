@@ -90,18 +90,11 @@ export default function NotificationScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-     <ScrollView className="px-2 pt-2">
+     <ScrollView className="">
         
         
-        <View className="mb-4 mt-1">
-          <Text className="text-[22px] font-extrabold text-gray-900">
-            Notification
-          </Text>
-          <Text className="text-[12px] text-black mt-1">
-            Sales, settlements & payout insights
-          </Text>
-        </View>
-      <View className="mt-3 px-2">
+      
+      <View className="mt-3 ">
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {tabs.map((tab) => (
             <Pressable
@@ -131,7 +124,7 @@ export default function NotificationScreen() {
       </View>
 
       {/* NOTIFICATION LIST */}
-      <ScrollView className="px-4 mt-3 pb-20">
+      <ScrollView className=" mt-3 pb-20">
         {sections.map((sec) => {
           const secItems = filtered.filter((n) => n.section === sec);
           if (!secItems.length) return null;

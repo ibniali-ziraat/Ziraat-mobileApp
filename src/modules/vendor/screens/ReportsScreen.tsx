@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ScrollView, Text } from "react-native";
+import { ScrollView } from "react-native";
 
 import CreditAgingCard from "../../../modules/vendor/components/reports/CreditAgingCard";
 import DeliveryPerformanceCard from "../../../modules/vendor/components/reports/DeliveryPerformanceCard";
@@ -44,14 +44,10 @@ export default function ReportsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      {/* HEADER */}
-      {/* <HeaderBar title="Reports" icon="person-circle" /> */}
+    
 
-      <ScrollView className="px-4 ">
-        <Text className="text-black font-bold text-xl ">Sales Reports</Text>
- <Text className="text-xs text-black">
-          Cash and Credit Sale Management
-        </Text>
+      <ScrollView className=" ">
+       
         <SalesFilters
           salesFilters={salesFiltersData}
           activeFilter={activeFilter}

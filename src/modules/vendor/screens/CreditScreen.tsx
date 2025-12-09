@@ -2,6 +2,7 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
+  Platform,
   ScrollView,
   StyleSheet,
   Switch,
@@ -23,7 +24,7 @@ const colors = {
   neutralText: "#374151",
 };
 
-/* RISK / STATUS MAPS (keep the small alpha suffix usage) */
+/* RISK / STATUS MAPS */
 const RISK_MAP = {
   green: {
     bg: `${colors.primary}15`,
@@ -61,73 +62,27 @@ const STATUS_MAP = {
    MOCK DATA
    --------------------------- */
 const mockClients = [
-  {
-    id: 1,
-    name: "Client A Corp",
-    code: "CLT-A-102",
-    creditLimit: 5000,
-    validity: "Dec 31, 2024",
-    outstanding: 1800,
-    risk: "green",
-  },
-  {
-    id: 2,
-    name: "Client B Retail",
-    code: "CLT-B-204",
-    creditLimit: 3000,
-    validity: "Jun 30, 2024",
-    outstanding: 1280,
-    overdue: true,
-    risk: "yellow",
-  },
-  {
-    id: 3,
-    name: "Client C Mart",
-    code: "CLT-C-309",
-    creditLimit: 8000,
-    validity: "Dec 31, 2025",
-    outstanding: 0,
-    risk: "red",
-  },
+  { id: 1, name: "Client A Corp", code: "CLT-A-102", creditLimit: 5000, validity: "Dec 31, 2024", outstanding: 1800, risk: "green" },
+  { id: 2, name: "Client B Retail", code: "CLT-B-204", creditLimit: 3000, validity: "Jun 30, 2024", outstanding: 1280, overdue: true, risk: "yellow" },
+  { id: 3, name: "Client C Mart", code: "CLT-C-309", creditLimit: 8000, validity: "Dec 31, 2025", outstanding: 0, risk: "red" },
 ];
 
 const mockBills = [
-  {
-    id: "INV-1024",
-    client: "Client A Corp",
-    period: "Dec 01–07, 2024",
-    amount: 1200,
-    status: "Due in 3 days",
-    statusType: "warning",
-  },
-  {
-    id: "INV-1021",
-    client: "Client B Retail",
-    period: "Nov 01–30, 2024",
-    amount: 1280,
-    status: "Overdue",
-    statusType: "danger",
-  },
-  {
-    id: "INV-1018",
-    client: "Client C Mart",
-    period: "Oct 01–31, 2024",
-    amount: 0,
-    status: "Settled",
-    statusType: "success",
-  },
+  { id: "INV-1024", client: "Client A Corp", period: "Dec 01–07, 2024", amount: 1200, status: "Due in 3 days", statusType: "warning" },
+  { id: "INV-1021", client: "Client B Retail", period: "Nov 01–30, 2024", amount: 1280, status: "Overdue", statusType: "danger" },
+  { id: "INV-1018", client: "Client C Mart", period: "Oct 01–31, 2024", amount: 0, status: "Settled", statusType: "success" },
 ];
 
 /* ---------------------------
-   CARD STYLE (shared)
+   SHARED CARD STYLE
    --------------------------- */
 const CARD_STYLE = {
   backgroundColor: "#fff",
-  borderRadius: 14,
+  borderRadius: 16,
   padding: 16,
   shadowColor: "#000",
-  shadowOpacity: 0.06,
-  shadowRadius: 6,
+  shadowOpacity: Platform.OS === "ios" ? 0.08 : 0.1,
+  shadowRadius: 8,
   shadowOffset: { width: 0, height: 3 },
   elevation: 3,
 };
@@ -147,7 +102,6 @@ export default function CreditScreen() {
     overdue: true,
   });
 
-  // Summary metrics
   const totalOutstanding = mockClients.reduce((s, c) => s + (c.outstanding || 0), 0);
   const totalLimit = mockClients.reduce((s, c) => s + (c.creditLimit || 0), 0);
   const availableCredit = totalLimit - totalOutstanding;
@@ -157,37 +111,41 @@ export default function CreditScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <ScrollView className="px-4 py-4">
-        {/* Header */}
-        <View className="mb-3">
-          <Text className="text-[22px] font-extrabold" style={{ color: colors.primaryDark }}>
-            Credit Overview
-          </Text>
-          <Text className="text-[12px] mt-1" style={{ color: "#6b7280" }}>
-            Cash & Credit Sale Management Dashboard
-          </Text>
-        </View>
-
-        {/* Summary Card */}
-        <View style={CARD_STYLE} className="mb-4">
+      <ScrollView
+        contentContainerStyle={{
+         
+          paddingBottom: 90,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* SUMMARY CARD */}
+        <View style={CARD_STYLE} className="mb-5">
           <View className="flex-row justify-between items-start">
             <View className="flex-1 mr-3">
-              <Text className="text-xs text-black">Total Credit Outstanding</Text>
+              <Text className="text-xs text-black opacity-70">
+                Total Credit Outstanding
+              </Text>
 
-              <Text className="text-[26px] font-extrabold mt-1" style={{ color: colors.primaryDark }}>
+              <Text
+                className="text-[26px] font-extrabold mt-1"
+                style={{ color: colors.primaryDark }}
+              >
                 ₹{totalOutstanding.toLocaleString()}
               </Text>
 
-              <Text className="text-[11px] mt-1 text-black">Total Limit: ₹{totalLimit.toLocaleString()}</Text>
+              <Text className="text-[11px] mt-1 text-black opacity-70">
+                Total Limit: ₹{totalLimit.toLocaleString()}
+              </Text>
             </View>
 
             {/* Available Credit */}
             <View className="items-end">
-              <Text className="text-xs text-black mb-1">Available Credit</Text>
+              <Text className="text-xs text-black opacity-70 mb-1">
+                Available Credit
+              </Text>
               <View
-                className="px-4 py-[6px] rounded-full"
+                className="py-[6px] px-3 rounded-full"
                 style={{
-                  
                   borderColor: colors.primary,
                   borderWidth: 1,
                 }}
@@ -202,42 +160,52 @@ export default function CreditScreen() {
           {/* Upcoming Payments */}
           <View
             className="mt-4 flex-row items-center rounded-xl"
-            style={{
-             
-              padding: 12,
+            style={
               
-             
+              {
+              padding: 12,
+              backgroundColor: colors.secondary + "10",
             }}
           >
             <MaterialIcons name="access-time" size={20} color={colors.secondary} />
             <View className="ml-3 flex-1">
-              <Text className="text-[12px] font-semibold" style={{ color: colors.secondary }}>
+              <Text className="text-[12px] font-semibold" style={{ color: colors.secondaryDark }}>
                 Upcoming Payments (7 Days)
               </Text>
-              <Text className="text-[12px]" style={{ color: colors.secondary }}>
+              <Text className="text-[12px]" style={{ color: colors.secondaryDark }}>
                 ₹{upcomingAmount.toLocaleString()} due from {upcomingClients} clients
               </Text>
             </View>
             <TouchableOpacity
               className="px-3 py-2 rounded-full"
-              style={{
-                backgroundColor: colors.secondary,
-              }}
+              style={{ backgroundColor: colors.secondary }}
             >
               <Text className="text-xs text-white font-semibold">View Calendar</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Tabs */}
-        <View className="flex-row p-1 mb-4">
-          <TabButton label="Credit Client List" active={activeTab === "clients"} onPress={() => setActiveTab("clients")} activeColor={colors.primary} />
-          <TabButton label="Billing & Statements" active={activeTab === "billing"} onPress={() => setActiveTab("billing")} activeColor={colors.secondary} />
+        {/* TABS */}
+        <View className="flex-row mb-4">
+          <TabButton
+            label="Credit Client List"
+            active={activeTab === "clients"}
+            onPress={() => setActiveTab("clients")}
+            activeColor={colors.primary}
+          />
+          <TabButton
+            label="Billing & Statements"
+            active={activeTab === "billing"}
+            onPress={() => setActiveTab("billing")}
+            activeColor={colors.secondary}
+          />
         </View>
 
         {activeTab === "clients" ? (
           <>
-            <Text className="text-lg text-gray-800 mb-4">{mockClients.length} credit-approved clients</Text>
+            <Text className="text-lg text-gray-800 mb-4">
+              {mockClients.length} credit-approved clients
+            </Text>
 
             {mockClients.map((client) => (
               <ClientCard key={client.id} client={client} />
@@ -260,23 +228,28 @@ export default function CreditScreen() {
   );
 }
 
-
+/* ---------------------------
+   TAB BUTTON
+   --------------------------- */
 function TabButton({ label, active, onPress, activeColor }) {
   return (
     <TouchableOpacity
       onPress={onPress}
       className="flex-1 mx-1 py-2 rounded-full"
       style={{
-        // backgroundColor: active ? `${activeColor}20` : "#f8f8f8",
-        borderWidth: active ? 1.2 : 1,
+        borderWidth: active ? 1.3 : 1,
         borderColor: active ? activeColor : "#e5e7eb",
+        backgroundColor: active ? activeColor + "10" : "#fafafa",
         shadowColor: active ? activeColor : "transparent",
-        shadowOpacity: active ? 0.18 : 0,
-        shadowRadius: active ? 6 : 0,
+        shadowOpacity: active ? 0.15 : 0,
+        shadowRadius: active ? 5 : 0,
         elevation: active ? 2 : 0,
       }}
     >
-      <Text className="text-xs font-semibold text-center" style={{ color: active ? activeColor : "#666" }}>
+      <Text
+        className="text-xs font-semibold text-center"
+        style={{ color: active ? activeColor : "#666" }}
+      >
         {label}
       </Text>
     </TouchableOpacity>
@@ -289,26 +262,26 @@ function ClientCard({ client }) {
   const utilization = client.creditLimit > 0 ? Math.min(client.outstanding / client.creditLimit, 1) : 0;
 
   return (
-    <View style={CARD_STYLE} className="mb-4">
-      {/* Header */}
+    <View style={CARD_STYLE} className="mb-4 px-4 py-5">
       <View className="flex-row justify-between items-start">
-        <View className="flex-1 pr-3">
-          <Text className="font-semibold text-[15px]" style={{ color: colors.secondaryDark }}>
+        <View className="flex-1">
+          <Text
+            className="font-semibold text-[15px]"
+            style={{ color: colors.secondaryDark,
+              
+             }}
+          >
             {client.name}
           </Text>
 
-          <Text className="text-[13px] text-black mt-[3px]">Code: {client.code}</Text>
-          <Text className="text-[13px] text-black mt-[3px]">Credit Limit: ₹{client.creditLimit.toLocaleString()}</Text>
-          <Text className="text-[13px] text-black mt-[3px]">Valid Thru: {client.validity}</Text>
+          <Text className="text-[13px] text-gray-700 mt-[3px]">Code: {client.code}</Text>
+          <Text className="text-[13px] text-gray-700 mt-[3px]">Credit Limit: ₹{client.creditLimit.toLocaleString()}</Text>
+          <Text className="text-[13px] text-gray-700 mt-[3px]">Valid Thru: {client.validity}</Text>
         </View>
 
-        {/* Risk Tag */}
         <View
           className="px-2 py-[4px] rounded-full flex-row items-center"
-          style={{
-            
-            
-          }}
+          style={{ backgroundColor: risk.bg }}
         >
           <View style={{ width: 7, height: 7, borderRadius: 99, backgroundColor: risk.text }} />
           <Text className="ml-2 text-[11px] font-semibold" style={{ color: risk.text }}>
@@ -317,23 +290,21 @@ function ClientCard({ client }) {
         </View>
       </View>
 
-      {/* Utilization */}
+      {/* Utilization Bar */}
       <View className="mt-4">
         <View className="flex-row justify-between mb-[4px]">
-          <Text className="text-[12px] text-black">Credit Utilisation</Text>
-          <Text className="text-[11px] text-gray-700 font-medium">{Math.round(utilization * 100)}%</Text>
+          <Text className="text-lg text-gray-800">Credit Utilisation</Text>
+          <Text className="text-[11px] text-gray-700 font-medium">
+            {Math.round(utilization * 100)}%
+          </Text>
         </View>
 
-        <View className="h-1 rounded-full overflow-hidden" style={{ backgroundColor: "#e5e7eb" }}>
+        <View className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#e5e7eb" }}>
           <View
-            className="h-1 rounded-full"
+            className="h-full rounded-full"
             style={{
               width: `${utilization * 100}%`,
               backgroundColor: client.overdue ? colors.secondaryDark : risk.bar,
-              shadowColor: client.overdue ? colors.secondaryDark : risk.bar,
-              shadowOpacity: 0.2,
-              shadowRadius: 3,
-              elevation: 1,
             }}
           />
         </View>
@@ -342,7 +313,7 @@ function ClientCard({ client }) {
       {/* Footer */}
       <View className="flex-row justify-between items-center mt-4">
         <View>
-          <Text className="text-[11px] text-black">Outstanding</Text>
+          <Text className="text-[11px] text-gray-700">Outstanding</Text>
           <Text
             className="text-sm font-semibold"
             style={{ color: client.overdue ? colors.secondaryDark : colors.primaryDark }}
@@ -353,7 +324,7 @@ function ClientCard({ client }) {
         </View>
 
         <View className="flex-row items-center">
-          <TouchableOpacity className="px-3 py-2 rounded-full mr-2" >
+          <TouchableOpacity className="px-3 py-2 rounded-full mr-2">
             <Text className="text-primary text-[11px] font-semibold">View Bills</Text>
           </TouchableOpacity>
 
@@ -369,27 +340,21 @@ function ClientCard({ client }) {
 }
 
 /* ---------------------------
-   Settlement Card (enhanced)
+   Settlement Card
    --------------------------- */
 function SettlementCard({ discountPercent, setDiscountPercent, discountValidity, setDiscountValidity }) {
   return (
-    <View
-      style={[CARD_STYLE, { paddingVertical: 20, paddingHorizontal: 18 }]}
-      className="mb-5"
-    >
-      {/* HEADER */}
+    <View style={[CARD_STYLE, { paddingVertical: 20 }]} className="mb-5 px-5">
       <Text className="text-[16px] font-semibold text-gray-800 mb-1">
         Settlement Discount Controls
       </Text>
 
       <Text className="text-[12px] text-gray-500 mb-4 leading-4">
-        Automatically apply settlement discounts when customers pay within the
-        configured window.
+        Automatically apply settlement discounts when customers pay within the configured window.
       </Text>
 
-      {/* INPUT ROW */}
+      {/* Inputs */}
       <View className="flex-row gap-x-4">
-        {/* DISCOUNT % */}
         <View className="flex-1">
           <Text className="text-[12px] font-medium text-gray-700 mb-1">
             Discount %
@@ -414,7 +379,6 @@ function SettlementCard({ discountPercent, setDiscountPercent, discountValidity,
           </View>
         </View>
 
-        {/* VALIDITY */}
         <View className="flex-1">
           <Text className="text-[12px] font-medium text-gray-700 mb-1">
             Validity
@@ -439,7 +403,7 @@ function SettlementCard({ discountPercent, setDiscountPercent, discountValidity,
         </View>
       </View>
 
-      {/* INFO BANNER */}
+      {/* Info Banner */}
       <View
         className="mt-4 flex-row items-center px-3 py-3 rounded-xl"
         style={{
@@ -448,11 +412,7 @@ function SettlementCard({ discountPercent, setDiscountPercent, discountValidity,
           borderColor: `${colors.secondaryDark}30`,
         }}
       >
-        <Ionicons
-          name="information-circle-outline"
-          size={20}
-          color={colors.secondaryDark}
-        />
+        <Ionicons name="information-circle-outline" size={20} color={colors.secondaryDark} />
         <Text className="ml-2 text-[12px] text-gray-700 leading-4 flex-1">
           The discount will be automatically applied during the settlement workflow.
         </Text>
@@ -461,41 +421,50 @@ function SettlementCard({ discountPercent, setDiscountPercent, discountValidity,
   );
 }
 
-
 /* ---------------------------
-   Reminder Controls (enhanced)
+   Reminder Card
    --------------------------- */
 function ReminderCard({ reminders, setReminders }) {
-  const toggleAll = (v) =>
+  const toggleAll = (value) =>
     setReminders({
-      dayOfPurchase: v,
-      beforeDue: v,
-      onDueDate: v,
-      overdue: v,
+      dayOfPurchase: value,
+      beforeDue: value,
+      onDueDate: value,
+      overdue: value,
     });
 
   return (
-    <View style={CARD_STYLE} className="mb-6">
-      <View className="flex-row justify-between items-center mb-3">
+    <View style={CARD_STYLE} className="mb-6 px-5 py-5">
+      <View className="flex-row justify-between items-center mb-4">
         <View>
-          <Text className="text-[15px] font-semibold text-gray-800">Payment Reminders</Text>
-          <Text className="text-[12px] text-gray-500">Automated notifications for clients</Text>
+          <Text className="text-[15px] font-semibold text-gray-800">
+            Payment Reminders
+          </Text>
+          <Text className="text-[12px] text-gray-500">
+            Automated notifications for clients
+          </Text>
         </View>
 
         <Switch
-          value={reminders.dayOfPurchase || reminders.beforeDue || reminders.onDueDate || reminders.overdue}
-          onValueChange={(val) => toggleAll(val)}
+          value={
+            reminders.dayOfPurchase ||
+            reminders.beforeDue ||
+            reminders.onDueDate ||
+            reminders.overdue
+          }
+          onValueChange={toggleAll}
           trackColor={{ false: "#d1d5db", true: colors.primary }}
           thumbColor="#fff"
         />
       </View>
 
+      {/* Rows */}
       <ReminderRow label="Day of Purchase" value={reminders.dayOfPurchase} onChange={(v) => setReminders((r) => ({ ...r, dayOfPurchase: v }))} />
       <ReminderRow label="3 Days Before Due" value={reminders.beforeDue} onChange={(v) => setReminders((r) => ({ ...r, beforeDue: v }))} />
       <ReminderRow label="On Due Date" value={reminders.onDueDate} onChange={(v) => setReminders((r) => ({ ...r, onDueDate: v }))} />
       <ReminderRow label="Overdue + Penalty" value={reminders.overdue} onChange={(v) => setReminders((r) => ({ ...r, overdue: v }))} />
 
-      <View className="mt-3 rounded-xl px-3 py-2" style={{ backgroundColor: `${colors.primary}10` }}>
+      <View className="mt-4 rounded-xl px-3 py-2" style={{ backgroundColor: `${colors.primary}10` }}>
         <Text className="text-[11px]" style={{ color: colors.primaryDark }}>
           View all scheduled reminders in the Credit Calendar.
         </Text>
@@ -512,32 +481,33 @@ function ReminderRow({ label, value, onChange }) {
         <Text className="text-sm text-gray-700">{label}</Text>
       </View>
 
-      <Switch value={value} onValueChange={onChange} trackColor={{ false: "#d1d5db", true: colors.primary }} thumbColor="#fff" />
+      <Switch
+        value={value}
+        onValueChange={onChange}
+        trackColor={{ false: "#d1d5db", true: colors.primary }}
+        thumbColor="#fff"
+      />
     </View>
   );
 }
 
 /* ---------------------------
-   Billing Tab (enhanced)
+   Billing Tab
    --------------------------- */
 function BillingTab() {
   return (
-    <View
-      style={[CARD_STYLE, { paddingVertical: 20, paddingHorizontal: 18 }]}
-      className="mt-2 mb-6"
-    >
+    <View style={[CARD_STYLE, { paddingVertical: 20 }]} className="mt-2 mb-6 px-5">
       {/* HEADER */}
       <Text className="text-[18px] font-bold text-gray-800 mb-4">
         Billing & Statements
       </Text>
 
-      {/* CONSOLIDATED STATEMENTS */}
+      {/* Consolidated Statements */}
       <View className="mb-6">
         <Text className="text-[14px] font-semibold text-gray-800 mb-3">
           Consolidated Statements
         </Text>
 
-        {/* FILTER CHIPS */}
         <View className="flex-row gap-x-3 mb-3">
           <FilterChip label="Daily" active />
           <FilterChip label="Weekly" />
@@ -545,12 +515,11 @@ function BillingTab() {
         </View>
 
         <Text className="text-[12px] text-gray-500 leading-4">
-          Generate, download or share a complete summary of all invoices within
-          the selected period.
+          Generate, download or share summaries for all invoices.
         </Text>
       </View>
 
-      {/* INDIVIDUAL INVOICES */}
+      {/* Individual Bills */}
       <View className="border-t border-gray-100 pt-4">
         <Text className="text-[14px] font-semibold text-gray-800 mb-4">
           Individual Bills
@@ -567,7 +536,7 @@ function BillingTab() {
           Invoice Actions
         </Text>
 
-        <View className="flex-row flex-wrap gap-3 mt-1">
+        <View className="flex-row flex-wrap gap-3">
           <ActionPillEnhanced icon="print-outline" label="Print / PDF" />
           <ActionPillEnhanced icon="download-outline" label="Download PDF" />
           <ActionPillEnhanced icon="logo-whatsapp" label="Send via WhatsApp" />
@@ -580,9 +549,8 @@ function BillingTab() {
   );
 }
 
-
 /* ---------------------------
-   Small UI pieces
+   Small UI Elements
    --------------------------- */
 function FilterChip({ label, active }) {
   return (
@@ -608,7 +576,6 @@ function FilterChip({ label, active }) {
     </TouchableOpacity>
   );
 }
-
 
 function ActionPillEnhanced({ icon, label }) {
   return (
@@ -636,9 +603,8 @@ function ActionPillEnhanced({ icon, label }) {
   );
 }
 
-
 /* ---------------------------
-   Bill Row
+   BILL ROW
    --------------------------- */
 function BillRowEnhanced({ bill }) {
   const style = STATUS_MAP[bill.statusType];
@@ -647,19 +613,18 @@ function BillRowEnhanced({ bill }) {
     <View
       style={{
         backgroundColor: "#fff",
-        borderRadius: 12,
+        borderRadius: 14,
         padding: 16,
         marginBottom: 12,
         shadowColor: "#000",
         shadowOpacity: 0.05,
         shadowRadius: 6,
-        shadowOffset: { width: 0, height: 2 },
         elevation: 2,
       }}
     >
       <View className="flex-row justify-between items-start">
         {/* LEFT */}
-        <View className="flex-1 pr-3">
+        <View className="flex-1 pr-4">
           <Text className="text-[14px] font-semibold text-gray-800">
             {bill.client}
           </Text>
@@ -673,15 +638,16 @@ function BillRowEnhanced({ bill }) {
           </Text>
         </View>
 
-        {/* STATUS TAG + BUTTON */}
+        {/* STATUS + ACTION */}
         <View className="items-end">
           <View
             style={{
               paddingHorizontal: 10,
               paddingVertical: 4,
-              
-              
+              backgroundColor: style.bg,
+              borderRadius: 10,
               borderColor: style.text + "30",
+              borderWidth: 1,
             }}
           >
             <Text style={{ fontSize: 11, fontWeight: "700", color: style.text }}>
@@ -693,7 +659,7 @@ function BillRowEnhanced({ bill }) {
             className="mt-3 px-4 py-2 rounded-full"
             style={{ backgroundColor: colors.primary }}
           >
-            <Text className="text-[9px] text-white font-semibold">
+            <Text className="text-[10px] text-white font-semibold">
               View Bill
             </Text>
           </TouchableOpacity>
@@ -703,9 +669,8 @@ function BillRowEnhanced({ bill }) {
   );
 }
 
-
 /* ---------------------------
-   STYLESHEET (shared)
+   Styles (Shared)
    --------------------------- */
 const styles = StyleSheet.create({
   billRowContainer: {

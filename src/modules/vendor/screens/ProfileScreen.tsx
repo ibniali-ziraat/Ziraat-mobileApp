@@ -16,9 +16,8 @@ export default function ProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <SafeAreaView className="flex-1">
-      {/* HEADER */}
-      {/* <HeaderBar title="Vendor Profile" icon="person-circle" /> */}
+    <SafeAreaView className="flex-1 bg-white ">
+      
 
       {/* TABS */}
       <TabBar tabs={TABS} activeTab={tab} onChange={setTab} />

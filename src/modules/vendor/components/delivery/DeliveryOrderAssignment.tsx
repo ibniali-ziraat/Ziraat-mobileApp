@@ -11,19 +11,11 @@ export default function DeliveryOrderAssignment({ order, theme }) {
 
   return (
     <View
-      className="rounded-2xl p-5 mb-6"
-      style={{
-        backgroundColor: "#fff",
-        borderColor: "#e5e7eb",
-        borderWidth: 1,
-        shadowColor: "#000",
-        shadowOpacity: 0.05,
-        shadowRadius: 6,
-        elevation: 3,
-      }}
+      className="rounded-2xl mt-4 "
+      
     >
       {/* HEADER */}
-      <Text className="text-lg font-bold text-gray-900 mb-4">
+      <Text className="text-lg font-bold text-black mb-4">
         Delivery Order Assignment
       </Text>
 
@@ -81,28 +73,32 @@ export default function DeliveryOrderAssignment({ order, theme }) {
         activeOpacity={0.8}
         className="flex-row items-center p-4 rounded-xl mb-3"
         style={{
-          backgroundColor: "#f9fafb",
+          backgroundColor: "#ffffff",
           borderColor: "#e5e7eb",
           borderWidth: 1,
+          shadowColor:"#0000",
+          shadowOpacity:0.05,
+          borderRadius: 6,
+         
         }}
       >
         <View
           className="w-10 h-10 rounded-lg items-center justify-center"
-          style={{ backgroundColor: `${theme.secondary}18` }}
+         
         >
           <Ionicons
             name="person-add-outline"
-            size={20}
+            size={22}
             color={theme.secondary}
           />
         </View>
 
-        <Text className="ml-3 font-semibold text-gray-800 text-[14px]">
+        <Text className="ml-3 font-semibold text-black text-[14px]">
           Assign Delivery Agent
         </Text>
 
         <View className="flex-1 items-end">
-          <Ionicons name="chevron-forward" size={20} color="#9ca3af" />
+          <Ionicons name="chevron-forward" size={22} color="#9ca3af" />
         </View>
       </TouchableOpacity>
 
@@ -111,19 +107,23 @@ export default function DeliveryOrderAssignment({ order, theme }) {
         activeOpacity={0.8}
         className="flex-row items-center p-4 rounded-xl"
         style={{
-          backgroundColor: "#f9fafb",
+          backgroundColor: "#ffffff",
           borderColor: "#e5e7eb",
           borderWidth: 1,
+          shadowColor:"#000",
+          shadowOpacity:0.05,
+          borderRadius: 6,
+         
         }}
       >
         <View
           className="w-10 h-10 rounded-lg items-center justify-center"
-          style={{ backgroundColor: `${theme.primary}18` }}
+         
         >
-          <Ionicons name="repeat-outline" size={20} color={theme.primary} />
+          <Ionicons name="repeat-outline" size={22} color={theme.primary} />
         </View>
 
-        <Text className="ml-3 font-semibold text-gray-800 text-[14px]">
+        <Text className="ml-3 font-semibold text-black text-[14px]">
           Change Delivery Status
         </Text>
 

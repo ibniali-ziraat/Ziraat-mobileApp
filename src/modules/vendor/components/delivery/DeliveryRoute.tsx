@@ -4,19 +4,11 @@ import { Text, TouchableOpacity, View } from "react-native";
 export default function DeliveryRouteView({ order, theme }) {
   return (
     <View
-      className="rounded-3xl p-5 mb-6"
-      style={{
-        backgroundColor: "#fff",
-        borderColor: "#e5e7eb",
-        borderWidth: 1,
-        shadowColor: "#000",
-        shadowOpacity: 0.06,
-        shadowRadius: 10,
-        elevation: 3,
-      }}
+      className=" mb-6 mt-5"
+      
     >
       {/* HEADER */}
-      <Text className="text-lg font-bold text-gray-900 mb-4">
+      <Text className="text-lg font-bold text-gray-900 mb-4 ">
         Delivery Route View
       </Text>
 
@@ -34,7 +26,7 @@ export default function DeliveryRouteView({ order, theme }) {
       </View>
 
       {/* ROUTE TITLE */}
-      <Text className="text-[15px] font-semibold text-gray-900 mb-3">
+      <Text className="text-lg font-semibold text-black mb-3">
         Delivery Route (Sequence)
       </Text>
 
@@ -52,7 +44,7 @@ export default function DeliveryRouteView({ order, theme }) {
 
             {/* DOT */}
             <View
-              className="w-5 h-5 rounded-full items-center justify-center"
+              className="w-8 h-8 rounded-full items-center justify-center"
               style={{
                 backgroundColor:
                   index === 0
@@ -77,7 +69,7 @@ export default function DeliveryRouteView({ order, theme }) {
                     ? "return-down-back-outline"
                     : "location-outline"
                 }
-                size={12}
+                size={16}
                 color={
                   index === 0
                     ? theme.primary

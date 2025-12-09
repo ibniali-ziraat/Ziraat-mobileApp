@@ -79,10 +79,10 @@ export default function PlatformScreen() {
   ];
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
+    <SafeAreaView className="flex-1 bg-white">
       
 
-      <ScrollView className="px-4 pt-4 pb-24">
+      <ScrollView className="">
         
         <FeeStructureCard colors={colors} />
 

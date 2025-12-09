@@ -15,7 +15,7 @@ export default function RouteGuard({ children }: RouteGuardProps) {
     if (!initialized) return;
 
     if (!userData?.id) {
-      router.replace("/auth/user");
+      router.replace("/");
     }
   }, [initialized, userData?.id]);
 

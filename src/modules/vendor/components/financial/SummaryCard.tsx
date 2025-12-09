@@ -84,7 +84,7 @@ export default function VendorFinancialSummary({ data }) {
     >
       {/* HEADER */}
       <View className="flex-row items-center mb-4">
-        <Ionicons name="stats-chart-outline" size={23} color={colors.secondary} />
+        <Ionicons name="stats-chart-outline" size={22} color={colors.secondary} />
         <Text className="ml-2 text-[18px] font-bold text-black">
           Vendor Financial Overview
         </Text>
@@ -160,7 +160,7 @@ function MetricCard({ metric, onPress }) {
 
       {/* VALUE */}
       <Text
-        className="text-[2px] font-extrabold"
+        className="text-[14px] font-extrabold"
         style={{ color: metric.color }}
       >
         {metric.isText ? metric.value : `₹${metric.value.toLocaleString()}`}

@@ -2,7 +2,12 @@ import SalesSummaryCard from "@/src/modules/vendor/components/SalesSummaryCard";
 import SalesTabs from "@/src/modules/vendor/components/SalesTabs";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import {
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -17,8 +22,6 @@ const colors = {
   error: "#f44336",
 };
 
-
-
 export default function SalesScreen() {
   const summaryData = {
     daily: { cash: 12000, credit: 9500, fee: 900, discount: 600 },
@@ -27,24 +30,9 @@ export default function SalesScreen() {
   };
 
   const transactions = [
-    {
-      id: "INV-20341",
-      client: "Client A Corp",
-      amount: 12500,
-      status: "Settled",
-    },
-    {
-      id: "INV-20342",
-      client: "Client B Retail",
-      amount: 9800,
-      status: "Pending",
-    },
-    {
-      id: "INV-20343",
-      client: "Client C Mart",
-      amount: 15200,
-      status: "Overdue",
-    },
+    { id: "INV-20341", client: "Client A Corp", amount: 12500, status: "Settled" },
+    { id: "INV-20342", client: "Client B Retail", amount: 9800, status: "Pending" },
+    { id: "INV-20343", client: "Client C Mart", amount: 15200, status: "Overdue" },
   ];
 
   const [tab, setTab] = useState("daily");
@@ -53,11 +41,9 @@ export default function SalesScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      {/* <HeaderBar title="Sales Overview" icon="bar-chart-outline" /> */}
-
       <ScrollView
         className="px-4 pt-4"
-        contentContainerStyle={{ paddingBottom: 50 }}
+        contentContainerStyle={{ paddingBottom: 60 }}
         showsVerticalScrollIndicator={false}
       >
         {/* SALES SUMMARY */}
@@ -95,7 +81,7 @@ export default function SalesScreen() {
               label="Platform Fee"
               value="Auto-calculated"
               icon="settings-outline"
-              color={colors.primaryHover}
+              color={colors.primary}
             />
           </Card>
         </Animated.View>
@@ -106,7 +92,7 @@ export default function SalesScreen() {
 
           <Card>
             <View className="mt-1">
-              {transactions.map((item, index) => (
+              {transactions.map((item) => (
                 <TransactionRow
                   key={item.id}
                   id={item.id}
@@ -123,11 +109,12 @@ export default function SalesScreen() {
   );
 }
 
-
-
+/* ------------------------
+   SMALL COMPONENTS
+   ------------------------ */
 function PageTitle({ title }) {
   return (
-    <Text className="text-[17px] font-semibold text-gray-900 mb-2">
+    <Text className="text-[18px] font-semibold text-gray-900 mb-3">
       {title}
     </Text>
   );
@@ -140,7 +127,11 @@ function Card({ children }) {
       style={{
         borderColor: "#E5E7EB",
         borderWidth: 1,
+        shadowColor: "#000",
        
+        shadowRadius: 6,
+        
+        elevation: 3,
       }}
     >
       {children}
@@ -150,14 +141,12 @@ function Card({ children }) {
 
 function SectionHeader({ title, icon }) {
   return (
-    <View className="flex-row items-center mt-7 mb-3">
+    <View className="flex-row items-center mt-8 mb-4">
       <View
-        className="w-9 h-9 rounded-xl items-center justify-center mr-3"
-        style={{
-          backgroundColor: "#EDEDED",
-        }}
+        className="w-10 h-10 rounded-xl items-center justify-center mr-3"
+        style={{ backgroundColor: "#EFEFEF" }}
       >
-        <Ionicons name={icon} size={18} color="#333" />
+        <Ionicons name={icon} size={18} color="#444" />
       </View>
 
       <Text className="text-[16px] font-semibold text-gray-900">{title}</Text>
@@ -166,20 +155,23 @@ function SectionHeader({ title, icon }) {
 }
 
 function Divider() {
-  return <View className="border-b my-3" style={{ borderColor: "#E5E5E5" }} />;
+  return <View className="border-b my-3" style={{ borderColor: "#E5E7EB" }} />;
 }
 
 function IconRow({ label, value, icon, color, highlight }) {
   return (
     <View
-      className={`flex-row justify-between items-center py-3 rounded-xl ${
+      className={`flex-row justify-between items-center py-3 px-1 rounded-xl ${
         highlight ? "bg-gray-100" : ""
       }`}
+      style={{
+        borderRadius: 14,
+      }}
     >
       <View className="flex-row items-center">
         <View
-          className="w-8 h-8 rounded-xl items-center justify-center mr-3"
-          style={{ backgroundColor: `${color}20` }}
+          className="w-9 h-9 rounded-xl items-center justify-center mr-3"
+          style={{ backgroundColor: `${color}22` }}
         >
           <Ionicons name={icon} size={18} color={color} />
         </View>
@@ -193,6 +185,7 @@ function IconRow({ label, value, icon, color, highlight }) {
     </View>
   );
 }
+
 function TransactionRow({ id, client, amount, status }) {
   const statusColor = {
     Settled: colors.primary,
@@ -213,9 +206,14 @@ function TransactionRow({ id, client, amount, status }) {
         backgroundColor: "#FAFAFA",
         borderColor: "#E6E6E6",
         borderWidth: 1,
+        shadowColor: "#000",
+        shadowOpacity: Platform.OS === "ios" ? 0.05 : 0.08,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
+        elevation: 2,
       }}
     >
-      {/* TOP ROW — INVOICE + AMOUNT */}
+      {/* TOP ROW */}
       <View className="flex-row justify-between items-center">
         <Text className="text-[15px] font-semibold text-gray-900">{id}</Text>
 
@@ -224,26 +222,17 @@ function TransactionRow({ id, client, amount, status }) {
         </Text>
       </View>
 
-      {/* BOTTOM ROW — CLIENT + STATUS */}
+      {/* BOTTOM ROW */}
       <View className="flex-row justify-between items-center mt-2">
         <Text className="text-[12px] text-gray-600">{client}</Text>
 
         <View
-          className="flex-row items-center px-3 py-[3px] rounded-full"
-          style={{
-            backgroundColor: `${statusColor}20`,
-          }}
+          className="flex-row items-center px-3 py-[4px] rounded-full"
+          style={{ backgroundColor: `${statusColor}20` }}
         >
-          <Ionicons
-            name={statusIcon}
-            size={14}
-            color={statusColor}
-            style={{ marginRight: 4 }}
-          />
-          <Text
-            className="text-[11px] font-semibold"
-            style={{ color: statusColor }}
-          >
+          <Ionicons name={statusIcon} size={14} color={statusColor} style={{ marginRight: 4 }} />
+
+          <Text className="text-[11px] font-semibold" style={{ color: statusColor }}>
             {status}
           </Text>
         </View>

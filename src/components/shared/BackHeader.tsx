@@ -2,7 +2,6 @@ import { colors } from "@/src/constants/colors";
 import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface BackHeaderProps {
   title: string; // main title
@@ -13,7 +12,6 @@ export default function BackHeader({ title, desc }: BackHeaderProps) {
   const router = useRouter();
 
   return (
-    <SafeAreaView className="bg-light">
       <View className="py-5 px-2" style={{ borderBottomColor: colors.neutral }}>
         <View className="flex-row">
           {/* Arrow */}
@@ -39,7 +37,7 @@ export default function BackHeader({ title, desc }: BackHeaderProps) {
             {desc && (
               <Text
                 className="text-sm mt-1"
-                style={{ color: colors.neutral }}
+                style={{ color: colors.dark }}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
@@ -49,6 +47,5 @@ export default function BackHeader({ title, desc }: BackHeaderProps) {
           </View>
         </View>
       </View>
-    </SafeAreaView>
   );
 }

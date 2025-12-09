@@ -29,7 +29,7 @@ export default function DeliveryScreen() {
     <SafeAreaView className="flex-1 bg-white">
       
 
-      <ScrollView className="px-4 py-4 pb-40">
+      <ScrollView className="">
         <DeliveryHeaderCard order={deliveryOrder} theme={theme} />
         <DeliveryOrderAssignment order={deliveryOrder} theme={theme} />
         <DeliveryRoute order={deliveryOrder} theme={theme} />

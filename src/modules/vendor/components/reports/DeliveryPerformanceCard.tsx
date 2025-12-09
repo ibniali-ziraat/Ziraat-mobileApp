@@ -5,7 +5,7 @@ import { Text, View } from "react-native";
 export default function DeliveryPerformanceCard({ stats }) {
   return (
     <View
-      className="p-5 rounded-2xl mb-6"
+      className="rounded-2xl mb-6"
       style={{
        
         shadowOpacity: 0.06,
@@ -49,7 +49,7 @@ export default function DeliveryPerformanceCard({ stats }) {
           key={i}
           className="p-4 rounded-2xl mb-4"
           style={{
-            backgroundColor: "#fafafa",
+            backgroundColor: "#fff",
             borderWidth: 1,
             borderColor: "#e8e8e8",
             shadowColor: "#000",

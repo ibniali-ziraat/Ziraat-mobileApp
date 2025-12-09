@@ -5,7 +5,7 @@ import {
   PanResponder,
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 import Animated, {
@@ -24,7 +24,6 @@ import Animated, {
 
 const primary = "#2d6b06";
 const secondary = "#c7611f";
-
 
 const vendor = {
   name: "GreenField Agro Distributors",
@@ -79,15 +78,7 @@ const vendor = {
       "Active Clients: 84 Retailers | 11 Distributors",
     ],
   },
-
-  metrics: {
-    totalOrders: 1289,
-    successRate: "96.4%",
-    avgDeliveryTime: "4.2 hrs",
-    monthlyGrowth: "12%",
-  },
 };
-
 
 function ProgressRing({ percent }) {
   const progress = useSharedValue(0);
@@ -103,14 +94,22 @@ function ProgressRing({ percent }) {
 
   return (
     <Animated.View
-      className="w-16 h-16 rounded-full bg-primary/10 items-center justify-center"
-      style={animatedCircle}
+      className="w-16 h-16 rounded-full items-center justify-center"
+      style={[
+        animatedCircle,
+        {
+          backgroundColor: primary + "15",
+          shadowColor: primary,
+          shadowOpacity: 0.18,
+          shadowRadius: 4,
+          elevation: 3,
+        },
+      ]}
     >
       <Text className="font-extrabold text-lg text-primary">{percent}%</Text>
     </Animated.View>
   );
 }
-
 
 function useParallax() {
   const tiltX = useSharedValue(0);
@@ -139,7 +138,6 @@ function useParallax() {
   return { responder, animated };
 }
 
-
 export default function OverviewCard() {
   const [expanded, setExpanded] = useState(true);
   const { responder, animated } = useParallax();
@@ -149,8 +147,16 @@ export default function OverviewCard() {
       {...responder.panHandlers}
       entering={FadeInUp.duration(750)}
       layout={Layout.springify()}
-      className="bg-white p-5 "
-      style={animated}
+      className="bg-white p-3 mt-4 rounded-2xl"
+      style={[
+        animated,
+        {
+          shadowColor: "#000",
+          shadowOpacity: 0.08,
+          shadowRadius: 6,
+          elevation: 3,
+        },
+      ]}
     >
       {/* HEADER */}
       <View className="flex-row justify-between items-center">
@@ -158,7 +164,7 @@ export default function OverviewCard() {
           <Text className="text-lg font-extrabold text-black">
             Onboarding Status
           </Text>
-          <Text className="text-[11px] text-black mt-[2px]">
+          <Text className="text-[11px] text-gray-700 mt-[2px]">
             Vendor KYC + Document Verification
           </Text>
         </View>
@@ -176,64 +182,64 @@ export default function OverviewCard() {
       </View>
 
       {/* PROGRESS SECTION */}
-      {/* PROGRESS SECTION */}
-<Animated.View
-  entering={FadeInDown.delay(50)}
-  className="bg-gray-50 p-4 mt-4 rounded-xl border border-gray-200"
->
-  <View className="flex-row items-center">
+      <Animated.View
+        entering={FadeInDown.delay(50)}
+        className="bg-gray-50 p-4 mt-4 rounded-xl border border-gray-200"
+      >
+        <View className="flex-row items-center">
+          {/* Progress Ring */}
+          <ProgressRing percent={vendor.completion} />
 
-    {/* Progress Ring */}
-    <ProgressRing percent={vendor.completion} />
+          {/* Text */}
+          <View className="ml-4 flex-1">
+            <Text className="font-semibold text-black text-sm">
+              Completion Progress
+            </Text>
+            <Text className="text-xs text-gray-700 mt-[2px]">
+              {vendor.completion}% onboarding complete
+            </Text>
+          </View>
+        </View>
 
-    {/* Text */}
-    <View className="ml-4 flex-1">
-      <Text className="font-semibold text-black text-sm">
-        Completion Progress
-      </Text>
-      <Text className="text-xs text-black mt-[2px]">
-        {vendor.completion}% onboarding complete
-      </Text>
-    </View>
-  </View>
+        {/* Slim modern progress bar */}
+        <View className="h-1.5 bg-gray-200 rounded-full mt-4 overflow-hidden">
+          <Animated.View
+            entering={FadeInRight.delay(120)}
+            style={{
+              width: `${vendor.completion}%`,
+              backgroundColor: secondary,
+            }}
+            className="h-full rounded-full"
+          />
+        </View>
 
-  {/* Slim modern progress bar */}
-  <View className="h-2.5  rounded-full mt-4 overflow-hidden">
-    <Animated.View
-      entering={FadeInRight.delay(120)}
-      style={{
-        width: `${vendor.completion}%`,
-        backgroundColor: secondary,
-      }}
-      className="h-full rounded-full"
-    />
-  </View>
-
-  {/* Status text row */}
-  <View className="flex-row justify-between mt-2">
-    <Text className="text-[9px] text-black">Started</Text>
-    <Text className="text-[9px] text-black">Almost Done</Text>
-  </View>
-</Animated.View>
-
+        {/* Status text row */}
+        <View className="flex-row justify-between mt-2">
+          <Text className="text-[10px] text-gray-600">Started</Text>
+          <Text className="text-[10px] text-gray-600">Almost Done</Text>
+        </View>
+      </Animated.View>
 
       {/* COLLAPSIBLE */}
       {expanded && (
-        <Animated.View layout={Layout.springify()} entering={FadeInUp.delay(100)}>
+        <Animated.View
+          layout={Layout.springify()}
+          entering={FadeInUp.delay(100)}
+        >
           {/* NEXT TASK */}
           <Animated.View
             entering={FadeInLeft.duration(600)}
             className="bg-secondary/10 p-4 rounded-xl mt-4 flex-row items-center"
           >
             <Ionicons name="alert-circle" size={22} color={secondary} />
-            <View className="ml-3">
+            <View className="ml-3 flex-1">
               <Text className="text-secondary font-semibold">Next Step</Text>
-              <Text className="text-xs text-black">{vendor.nextTask}</Text>
+              <Text className="text-xs text-gray-700">{vendor.nextTask}</Text>
             </View>
           </Animated.View>
 
           {/* VERIFICATION TIMELINE */}
-          <Text className="font-semibold text-lg text-gray-900 mt-6 mb-3 ">
+          <Text className="font-semibold text-lg text-gray-900 mt-6 mb-3">
             Verification Timeline
           </Text>
 
@@ -244,9 +250,8 @@ export default function OverviewCard() {
               className="flex-row items-start mb-5"
             >
               <View
-                className={`w-11 h-11 rounded-xl items-center justify-center shadow-sm ${
-                  step.ok ? "" : ""
-                }`}
+                className="w-11 h-11 rounded-xl items-center justify-center bg-white shadow-sm"
+                style={{ elevation: 2 }}
               >
                 <Ionicons
                   name={step.ok ? "checkmark-circle" : "time-outline"}
@@ -264,13 +269,13 @@ export default function OverviewCard() {
                   {step.label}
                 </Text>
 
-                <Text className="text-[11px] text-black  mt-[3px]">
+                <Text className="text-[11px] text-gray-700 mt-[3px]">
                   {step.details}
                 </Text>
 
                 <View className="flex-row items-center mt-2">
                   <Ionicons name="calendar-outline" size={12} color="#777" />
-                  <Text className="text-[10px] text-black ml-1">
+                  <Text className="text-[10px] text-gray-600 ml-1">
                     {step.timestamp}
                   </Text>
                 </View>
@@ -284,61 +289,66 @@ export default function OverviewCard() {
 
           {/* VENDOR CODE */}
           <Animated.View
-  entering={FadeInUp.delay(450)}
-  className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/20"
->
-  {/* Header */}
-  <View className="flex-row items-center mb-1">
-    <Ionicons name="shield-checkmark" size={16} color={primary} />
-    <Text className="text-primary font-semibold text-sm ml-2">
-      Vendor Code
-    </Text>
-  </View>
+            entering={FadeInUp.delay(450)}
+            className="mt-6 p-4 rounded-xl bg-primary/5 border border-primary/20"
+          >
+            <View className="flex-row items-center mb-1">
+              <Ionicons name="shield-checkmark" size={16} color={primary} />
+              <Text className="text-primary font-semibold text-sm ml-2">
+                Vendor Code
+              </Text>
+            </View>
 
-  {/* Code */}
-  <Text className="text-2xl font-extrabold text-primary tracking-wide">
-    {vendor.vendorCode}
-  </Text>
+            <Text className="text-2xl font-extrabold text-primary tracking-wide">
+              {vendor.vendorCode}
+            </Text>
 
-  {/* Line separator */}
-  <View className="h-[1px] bg-primary/20 mt-3 mb-2" />
+            <View className="h-[1px] bg-primary/20 mt-3 mb-2" />
 
-  {/* Subtext */}
-  <Text className="text-[11px] text-gray-600 leading-4">
-    Used for ZIRAAT mapping and credit approvals.
-  </Text>
-</Animated.View>
-
+            <Text className="text-[11px] text-gray-600 leading-4">
+              Used for ZIRAAT mapping and credit approvals.
+            </Text>
+          </Animated.View>
 
           {/* ZONE DETAILS */}
-         <Animated.View
-  entering={FadeInUp.delay(650)}
-  className="mt-6 p-4 rounded-xl border border-primary/20 bg-light"
->
-  {/* Header Row */}
-  <View className="flex-row items-center mb-2">
-    <View className="w-8 h-8 rounded-lg  items-center justify-center">
-      <Ionicons name="location-outline" size={18} color={primary} />
-    </View>
+          <Animated.View
+            entering={FadeInUp.delay(650)}
+            className="mt-6 p-5 rounded-xl bg-white"
+            style={{
+              borderWidth: 1,
+              borderColor: "#e0e0e0",
+              shadowColor: "#000",
+              shadowOpacity: 0.05,
+              shadowRadius: 4,
+              elevation: 2,
+            }}
+          >
+            <View className="flex-row items-center mb-3">
+              <Ionicons name="location-outline" size={22} color={secondary} />
+              <Text className="ml-3 text-black font-semibold text-lg">
+                {vendor.zone.title}
+              </Text>
+            </View>
 
-    <Text className="ml-3 text-dark font-semibold text-base">
-      {vendor.zone.title}
-    </Text>
-  </View>
+            {vendor.zone.items.map((item, index) => (
+              <Animated.View
+                key={index}
+                entering={FadeInLeft.delay(700 + index * 120)}
+                className="flex-row items-start py-2"
+              >
+                <Ionicons
+                  name="ellipse"
+                  size={7}
+                  color={primary}
+                  style={{ marginTop: 6 }}
+                />
 
-  {/* Bullet Items */}
-  {vendor.zone.items.map((z, i) => (
-    <Animated.View
-      key={i}
-      entering={FadeInLeft.delay(700 + i * 120)}
-      className="flex-row items-start mt-1"
-    >
-      <Text className="text-primary text-base mr-2">•</Text>
-      <Text className="text-black text-sm flex-1">{z}</Text>
-    </Animated.View>
-  ))}
-</Animated.View>
-
+                <Text className="text-gray-800 text-sm flex-1 ml-2 leading-5">
+                  {item}
+                </Text>
+              </Animated.View>
+            ))}
+          </Animated.View>
         </Animated.View>
       )}
     </Animated.View>
