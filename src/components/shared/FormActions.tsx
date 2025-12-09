@@ -7,6 +7,7 @@ interface FormActionsProps {
   cancelLabel?: string;
   submitLabel?: string;
   onSubmit: () => void;
+  onCancel?: () => void; // new prop
   disabled?: boolean;
 }
 
@@ -14,31 +15,28 @@ export default function FormActions({
   cancelLabel,
   submitLabel = "Submit",
   onSubmit,
+  onCancel,
   disabled = false,
 }: FormActionsProps) {
-  const showCancel = !!cancelLabel;
+  const showCancel = !!cancelLabel && !!onCancel;
 
   return (
     <View
-      className={`w-full mt-6 gap-6 bg-light ${
-        showCancel ? "flex-row" : "items-center"
-      }`}
+      className={`w-full mt-6 gap-6 bg-light ${showCancel ? "flex-row" : "items-center"}`}
     >
-      {/* Cancel Button */}
       {showCancel && (
         <Button
           mode="outlined"
           textColor={colors.dark}
           style={{ borderColor: colors.dark }}
           className="flex-1 rounded-lg"
-          onPress={() => router.back()}
+          onPress={onCancel} // <-- call the passed function
           disabled={disabled}
         >
           {cancelLabel}
         </Button>
       )}
 
-      {/* Submit Button */}
       <Button
         mode="contained"
         buttonColor={colors.primary}

@@ -23,7 +23,7 @@ export default function TabLayout() {
           paddingTop: 10,
           elevation: 0.5,
           height: 0,
-          paddingBottom: insets.bottom,
+          paddingBottom: insets.bottom + 50,
           shadowColor: colors.overlay,
           shadowOpacity: 0.1,
           shadowRadius: 5,
@@ -35,7 +35,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          header: () => <HomeHeader title="Welcome, Farmer" />,
+          header: () => <HomeHeader title="Naik Ummar Mukhtar" />,
           tabBarIcon: ({ color }) => (
             <TabIcon
               icon={<Home size={22} color={color} />}
