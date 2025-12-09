@@ -4,7 +4,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 import {
-  SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
@@ -14,31 +13,30 @@ import AppProvider from "../contexts/AppProvider";
 
 registerTranslation("en-GB", enGB);
 
-export default function RootLayout() {
-  const insets = useSafeAreaInsets();
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
+export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <AppProvider>
-        <RouteGuard>
-          <SafeAreaView
-            style={{
-              flex: 1,
-              paddingTop: insets.top,
-              backgroundColor: "white",
-              paddingHorizontal: 20,
-            }}
-          >
-            <PaperProvider>
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="(tabs)/_layout" />
-              </Stack>
-            </PaperProvider>
-          </SafeAreaView>
-        </RouteGuard>
-      </AppProvider>
+      <SafeAreaProvider>
+        <AppProvider>
+          <RouteGuard>
+            <SafeAreaView
+              style={{ flex: 1, backgroundColor: "white", paddingHorizontal: 20 }}
+              edges={["top", "right", "left"]}
+            >
+              <PaperProvider>
+                <Stack screenOptions={{ headerShown: false }}>
+                  <Stack.Screen name="(tabs)/_layout" />
+                </Stack>
+              </PaperProvider>
+            </SafeAreaView>
+          </RouteGuard>
+        </AppProvider>
 
-      <Toasts />
+        <Toasts />
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
+
