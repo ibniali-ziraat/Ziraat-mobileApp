@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert, Button } from "react-native";
+import { Alert } from "react-native";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -9,6 +9,9 @@ import {
   useVendorProductsUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
 
+import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { productPortfolioSchema } from "@/src/schemas/vendor/products.schema";
 import { router } from "expo-router";
@@ -20,8 +23,10 @@ export default function ProductsScreen() {
   // Fetch existing vendor products
   const { data } = useVendorProductsQuery(vendorData.profileId);
 
-  const { mutateAsync: save } = useVendorProductsMutation();
-  const { mutateAsync: update } = useVendorProductsUpdateMutation();
+  const { mutateAsync: save, isPending: isSaving } =
+    useVendorProductsMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useVendorProductsUpdateMutation();
 
   // Initialize form with empty defaults
   const form = useZodForm(productPortfolioSchema);
@@ -84,9 +89,17 @@ export default function ProductsScreen() {
   };
 
   return (
-    <FormProvider {...form}>
-      <ProductSection errors={errors} control={control} />
-      <Button title="Save" onPress={handleSubmit(onSubmit)} />
-    </FormProvider>
+    <ScreenLayout>
+      <BackHeader title="Products & Services" />
+      <FormProvider {...form}>
+        <ProductSection errors={errors} control={control} />
+        <FormActions
+          cancelLabel={"Cancel"}
+          submitLabel={"Next"}
+          onSubmit={handleSubmit(onSubmit)}
+          disabled={isSaving || isUpdating}
+        />
+      </FormProvider>
+    </ScreenLayout>
   );
 }

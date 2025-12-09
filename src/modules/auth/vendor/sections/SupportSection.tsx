@@ -12,7 +12,7 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
   });
 
   return (
-    <View style={{ padding: 20, gap: 12 }}>
+    <View style={{ gap: 12 }}>
       <SingleSelectInput
         control={control}
         name="advisorySupport"

@@ -5,17 +5,20 @@ import ProductCard from "@/src/modules/products/components/ProductCard";
 import ShippingOptionList from "@/src/modules/products/components/ShippingOptionList";
 import SummaryCard from "@/src/modules/products/components/SummaryCard";
 import { useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Alert, ScrollView, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import products from "../../Data/products.json";
 
 export default function Shipping() {
   const { productId } = useLocalSearchParams();
   const product = products.find((p) => p._id === productId);
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  const insets = useSafeAreaInsets(); // ✅ SAFE AREA FIX
+
+  const [selectedOption, setSelectedOption] = useState<any>(null);
   const [quantity, setQuantity] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState<any>(null);
 
   const getFinalPrice = () => {
     const unitPrice = product?.discountPrice
@@ -61,15 +64,24 @@ export default function Shipping() {
   const isButtonEnabled = !!selectedOption && !!paymentMethod;
 
   return (
-    <View className="flex-1 bg-light">
-      <ScrollView contentContainerStyle={{ padding: 16, paddingBottom: 32 }}>
+    <View
+      className="flex-1 bg-light"
+      style={{ paddingTop: insets.top }} // ✅ STATUS BAR FIX
+    >
+      <ScrollView
+        contentContainerStyle={{ padding: 16, paddingBottom: 32 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* ✅ Product Card */}
         <ProductCard product={product} />
 
+        {/* ✅ Shipping */}
         <ShippingOptionList
           selectedOption={selectedOption}
           setSelectedOption={setSelectedOption}
         />
 
+        {/* ✅ Summary */}
         <SummaryCard
           quantity={quantity}
           setQuantity={setQuantity}
@@ -77,12 +89,14 @@ export default function Shipping() {
           selectedShipping={selectedOption}
         />
 
+        {/* ✅ Payment */}
         <PaymentSelector
           selectedOption={selectedOption}
           paymentMethod={paymentMethod}
           setPaymentMethod={setPaymentMethod}
         />
 
+        {/* ✅ Buttons */}
         <View className="mt-4">
           <AddToCartButton title="Add to Cart" onPress={handleAddToCart} />
 

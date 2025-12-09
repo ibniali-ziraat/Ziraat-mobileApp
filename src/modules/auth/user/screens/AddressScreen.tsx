@@ -1,5 +1,7 @@
 import AddressSection from "@/src/components/form/sections/AddressSection";
 import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -12,14 +14,15 @@ import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Button, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 
 export default function AddressScreen() {
   const { userData } = useGlobalData();
 
   const { data } = useAddressQuery(userData.profileId);
-  const { mutateAsync: save } = useAddressMutation();
-  const { mutateAsync: update } = useAddressUpdateMutation();
+  const { mutateAsync: save, isPending: isSaving } = useAddressMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useAddressUpdateMutation();
 
   const form = useZodForm(addressSchema);
   const {
@@ -58,12 +61,19 @@ export default function AddressScreen() {
   };
 
   return (
-    <FormProvider {...form}>
-      <ScrollView>
-        <BackHeader title="Address" />
-        <AddressSection control={control} errors={errors} />
-        <Button title="Save" onPress={handleSubmit(onSubmit)} />
-      </ScrollView>
-    </FormProvider>
+    <ScreenLayout>
+      <FormProvider {...form}>
+        <ScrollView>
+          <BackHeader title="Address" />
+          <AddressSection control={control} errors={errors} />
+          <FormActions
+            cancelLabel={"Cancel"}
+            submitLabel={data ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+          />
+        </ScrollView>
+      </FormProvider>
+    </ScreenLayout>
   );
 }

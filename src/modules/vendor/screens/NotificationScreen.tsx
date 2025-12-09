@@ -1,7 +1,7 @@
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 
 const colors = {
@@ -89,7 +89,7 @@ export default function NotificationScreen() {
   const sections = ["Today", "Yesterday", "Earlier"];
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <ScreenLayout>
      <ScrollView className="">
         
         
@@ -186,6 +186,6 @@ export default function NotificationScreen() {
         })}
       </ScrollView>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }

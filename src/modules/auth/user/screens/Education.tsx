@@ -1,5 +1,7 @@
 import EducationSection from "@/src/components/form/sections/EducationSection";
 import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -12,14 +14,15 @@ import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Button, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 
 export default function EducationScreen() {
   const { userData } = useGlobalData();
 
   const { data } = useEducationQuery(userData.profileId);
-  const { mutateAsync: save } = useEducationMutation();
-  const { mutateAsync: update } = useEducationUpdateMutation();
+  const { mutateAsync: save, isPending: isSaving } = useEducationMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useEducationUpdateMutation();
 
   const form = useZodForm(educationSchema);
   const {
@@ -57,13 +60,20 @@ export default function EducationScreen() {
   };
 
   return (
-    <FormProvider {...form}>
-      <ScrollView>
-        <BackHeader title="Education" />
+    <ScreenLayout>
+      <FormProvider {...form}>
+        <ScrollView>
+          <BackHeader title="Education" />
 
-        <EducationSection control={control} errors={errors} />
-        <Button title="Save" onPress={handleSubmit(onSubmit)} />
-      </ScrollView>
-    </FormProvider>
+          <EducationSection control={control} errors={errors} />
+          <FormActions
+            cancelLabel={"Cancel"}
+            submitLabel={data ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+          />
+        </ScrollView>
+      </FormProvider>
+    </ScreenLayout>
   );
 }

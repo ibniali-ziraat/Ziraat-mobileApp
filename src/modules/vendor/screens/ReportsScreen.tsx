@@ -5,10 +5,9 @@ import CreditAgingCard from "../../../modules/vendor/components/reports/CreditAg
 import DeliveryPerformanceCard from "../../../modules/vendor/components/reports/DeliveryPerformanceCard";
 import ProductPerformanceCard from "../../../modules/vendor/components/reports/ProductPerformanceCard";
 import SalesCard from "../../../modules/vendor/components/reports/SalesCard";
-import SalesFilters from "../../../modules/vendor/components/reports/SalesFilters";
 import TaxReportCard from "../../../modules/vendor/components/reports/TaxReportCard";
 
-import { SafeAreaView } from "react-native-safe-area-context";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 const salesFiltersData = ["Date", "Product", "Client", "Region"];
 
@@ -40,19 +39,15 @@ const deliveryStats = {
 };
 
 export default function ReportsScreen() {
-  const [activeFilter, setActiveFilter] = useState("Date");
+  const [activeFilter, setActiveFilter] = useState("");
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <ScreenLayout>
     
 
       <ScrollView className=" ">
        
-        <SalesFilters
-          salesFilters={salesFiltersData}
-          activeFilter={activeFilter}
-          setActiveFilter={setActiveFilter}
-        />
+       
 
         <SalesCard activeFilter={activeFilter} />
 
@@ -68,6 +63,6 @@ export default function ReportsScreen() {
 
         <DeliveryPerformanceCard stats={deliveryStats} />
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }

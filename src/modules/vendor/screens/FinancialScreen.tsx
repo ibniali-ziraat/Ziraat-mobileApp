@@ -1,6 +1,6 @@
 import { ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import BankDetailsCard from "../../../modules/vendor/components/financial/BankDetailsCard";
 import WeeklySettlementCard from "../../../modules/vendor/components/financial/WeeklySettlementCard";
 import SummaryCard from "../components/financial/SummaryCard";
@@ -35,7 +35,7 @@ export default function FinancialScreen() {
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <ScreenLayout >
       <ScrollView className="">
         
         
@@ -67,6 +67,6 @@ export default function FinancialScreen() {
        
         <BankDetailsCard bank={bank} logs={logs} />
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }

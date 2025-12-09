@@ -1,3 +1,4 @@
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SalesSummaryCard from "@/src/modules/vendor/components/SalesSummaryCard";
 import SalesTabs from "@/src/modules/vendor/components/SalesTabs";
 import { Ionicons } from "@expo/vector-icons";
@@ -9,7 +10,6 @@ import {
   View,
 } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const colors = {
   primary: "#2d6b06",
@@ -40,7 +40,7 @@ export default function SalesScreen() {
   const net = data.cash + data.credit - data.fee - data.discount;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <ScreenLayout >
       <ScrollView
         className="px-4 pt-4"
         contentContainerStyle={{ paddingBottom: 60 }}
@@ -105,7 +105,7 @@ export default function SalesScreen() {
           </Card>
         </Animated.View>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }
 

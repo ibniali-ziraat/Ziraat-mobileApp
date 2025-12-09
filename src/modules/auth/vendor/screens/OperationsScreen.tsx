@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert, Button } from "react-native";
+import { Alert } from "react-native";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -9,6 +9,9 @@ import {
   useVendorOperationsUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
 
+import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
 import { router } from "expo-router";
@@ -20,8 +23,10 @@ export default function OperationsScreen() {
 
   const { data } = useVendorOperationsQuery(vendorData.profileId);
 
-  const { mutateAsync: save } = useVendorOperationsMutation();
-  const { mutateAsync: update } = useVendorOperationsUpdateMutation();
+  const { mutateAsync: save, isPending: isSaving } =
+    useVendorOperationsMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useVendorOperationsUpdateMutation();
 
   const form = useZodForm(operationalDetailsSchema);
   const {
@@ -72,9 +77,17 @@ export default function OperationsScreen() {
   };
 
   return (
-    <FormProvider {...form}>
-      <OperationalSection control={control} errors={errors} />
-      <Button title="Save" onPress={handleSubmit(onSubmit)} />
-    </FormProvider>
+    <ScreenLayout>
+      <BackHeader title="Operational Details" />
+      <FormProvider {...form}>
+        <OperationalSection control={control} errors={errors} />
+        <FormActions
+          cancelLabel={"Cancel"}
+          submitLabel={"Next"}
+          onSubmit={handleSubmit(onSubmit)}
+          disabled={isSaving || isUpdating}
+        />
+      </FormProvider>
+    </ScreenLayout>
   );
 }

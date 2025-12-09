@@ -10,9 +10,9 @@ import {
   equipmentOptions,
   laborOptions,
   storageOptions,
-} from "@/src/schemas/orchard schemas/stepFSchema";
+} from "@/src/schemas/orchard schemas/FarmInfrastructureSchema";
 
-export default function StepF_FarmInfrastructure({ control, errors }) {
+export default function FarmInfrastructure({ control, errors }) {
   return (
     <ScrollView className="flex-1 w-full">
 

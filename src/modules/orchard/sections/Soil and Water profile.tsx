@@ -15,9 +15,9 @@ import {
   waterAvailabilityOptions,
   waterSourceOptions,
   yesNoOptions,
-} from "@/src/schemas/orchard schemas/stepCSchema";
+} from "@/src/schemas/orchard schemas/SoilWaterProfileSchema";
 
-export default function StepC({ control, errors }) {
+export default function SoilAndWaterProfile({ control, errors }) {
   const lastSoilTestDone = useWatch({ control, name: "lastSoilTestDone", defaultValue: "No" });
   const soilTestRecordsDone = useWatch({ control, name: "soilTestRecordsDone", defaultValue: "No" });
   const soilTestFileToggle = useWatch({ control, name: "soilTestFileToggle", defaultValue: "No" });

@@ -69,6 +69,8 @@
 //   );
 // }
 import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -81,8 +83,6 @@ import { showErrorToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Button } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import BusinessSection from "../sections/BusinessSection";
 
 export default function BusinessScreen() {
@@ -92,8 +92,9 @@ export default function BusinessScreen() {
   // console.log(userProfileData, "userprofiledata");
 
   const { data } = useVendorProfileQuery(userData.id);
-  const { mutateAsync: save } = useVendorProfileMutation();
-  const { mutateAsync: update } = useVendorProfileUpdateMutation();
+  const { mutateAsync: save, isPending: isSaving } = useVendorProfileMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useVendorProfileUpdateMutation();
 
   const form = useZodForm(businessInformationSchema);
   const {
@@ -140,15 +141,20 @@ export default function BusinessScreen() {
   };
 
   return (
-    <ScrollView>
+    <ScreenLayout>
       <BackHeader
         title="Supplier Onboarding"
         desc="Start selling to farmers today."
       />
       <FormProvider {...form}>
         <BusinessSection errors={errors} control={control} />
-        <Button title="Save" onPress={handleSubmit(onSubmit)} />
+        <FormActions
+          cancelLabel={"Cancel"}
+          submitLabel={"Next"}
+          onSubmit={handleSubmit(onSubmit)}
+          disabled={isSaving || isUpdating}
+        />
       </FormProvider>
-    </ScrollView>
+    </ScreenLayout>
   );
 }

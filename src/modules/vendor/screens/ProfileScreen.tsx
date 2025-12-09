@@ -1,13 +1,13 @@
 import BottomModal from "@/src/components/shared/BottomModal";
 import DocumentCard from "@/src/components/shared/DocumentCard";
 import OverviewCard from "@/src/components/shared/OverviewCard";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import TabBar from "@/src/components/shared/TabBar";
 import TeamCard from "@/src/components/shared/TeamCard";
 import WarehouseCard from "@/src/components/shared/WarehouseCard";
 import { useState } from "react";
 import { Modal, ScrollView } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const TABS = ["overview", "documents", "team", "warehouse"];
 
@@ -16,13 +16,19 @@ export default function ProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <SafeAreaView className="flex-1 bg-white ">
+    <ScreenLayout >
       
 
       {/* TABS */}
       <TabBar tabs={TABS} activeTab={tab} onChange={setTab} />
 
-      <ScrollView >
+      <ScrollView 
+      showsVerticalScrollIndicator={false}
+  persistentScrollbar={false}
+  style={{ overflow: "hidden" }}   
+     
+  
+>
         {tab === "overview" && (
           <Animated.View entering={FadeInUp}>
             <OverviewCard onEditPress={() => setModalVisible(true)} 
@@ -57,6 +63,6 @@ export default function ProfileScreen() {
           onClose={() => setModalVisible(false)}
         />
       </Modal>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }

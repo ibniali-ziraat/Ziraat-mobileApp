@@ -1,4 +1,5 @@
 // CreditScreen.js
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
@@ -11,7 +12,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 /* ---------------------------
    COLORS & THEME
@@ -110,7 +110,7 @@ export default function CreditScreen() {
   const upcomingClients = 3;
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <ScreenLayout>
       <ScrollView
         contentContainerStyle={{
          
@@ -224,7 +224,7 @@ export default function CreditScreen() {
           <BillingTab />
         )}
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }
 

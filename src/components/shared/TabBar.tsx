@@ -48,11 +48,7 @@ export default function TabBar({ tabs, activeTab, onChange }) {
 
   return (
     <View
-      style={{
-        backgroundColor: colors.light,
-        borderBottomWidth: 1,
-        borderColor: colors.neutral,
-      }}
+    
     >
       <View
         style={{ flexDirection: "row", position: "relative" }}
@@ -65,7 +61,7 @@ export default function TabBar({ tabs, activeTab, onChange }) {
             {
               position: "absolute",
               bottom: 0,
-              height: 4,
+              height: 2,
               borderRadius: 50,
              
             },
@@ -125,7 +121,7 @@ export default function TabBar({ tabs, activeTab, onChange }) {
               <Animated.Text
                 style={[
                   {
-                    fontSize: 14,
+                    fontSize: 13,
                     fontWeight: "600",
                     color: isActive ? colors.primary : colors.dark,
                   },

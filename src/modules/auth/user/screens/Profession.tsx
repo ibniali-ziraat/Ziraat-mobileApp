@@ -1,5 +1,7 @@
 import ProfessionSection from "@/src/components/form/sections/ProfessionSection";
 import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -12,14 +14,15 @@ import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Button, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 
 export default function ProfessionScreen() {
   const { userData } = useGlobalData();
 
   const { data } = useProfessionQuery(userData.profileId);
-  const { mutateAsync: save } = useProfessionMutation();
-  const { mutateAsync: update } = useProfessionUpdateMutation();
+  const { mutateAsync: save, isPending: isSaving } = useProfessionMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useProfessionUpdateMutation();
 
   const form = useZodForm(professionSchema);
   const {
@@ -57,13 +60,20 @@ export default function ProfessionScreen() {
   };
 
   return (
-    <FormProvider {...form}>
-      <ScrollView>
-        <BackHeader title="Profession" />
+    <ScreenLayout>
+      <FormProvider {...form}>
+        <ScrollView>
+          <BackHeader title="Profession" />
 
-        <ProfessionSection control={control} errors={errors} />
-        <Button title="Save" onPress={handleSubmit(onSubmit)} />
-      </ScrollView>
-    </FormProvider>
+          <ProfessionSection control={control} errors={errors} />
+          <FormActions
+            cancelLabel={"Cancel"}
+            submitLabel={data ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+          />
+        </ScrollView>
+      </FormProvider>
+    </ScreenLayout>
   );
 }

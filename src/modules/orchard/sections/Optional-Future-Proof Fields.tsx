@@ -8,9 +8,9 @@ import {
   certificationOptions,
   digitalToolOptions,
   schemeOptions,
-} from "@/src/schemas/orchard schemas/stepISchema";
+} from "@/src/schemas/orchard schemas/OptionalFutureFieldsSchema";
 
-export default function StepI_OptionalFutureFields({ control, errors }:any) {
+export default function OptionalFutureFields({ control, errors }:any) {
   const schemeOpts = schemeOptions.map((x) => ({ label: x, value: x }));
   const certOpts = certificationOptions.map((x) => ({ label: x, value: x }));
   const toolOpts = digitalToolOptions.map((x) => ({ label: x, value: x }));

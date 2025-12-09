@@ -6,7 +6,7 @@ import FormInput from "@/src/components/form/inputs/FormInput";
 import RadioGroup from "@/src/components/form/inputs/RadioButton";
 import { FormSectionProps } from "@/src/types/formSectionProps";
 
-export default function StepE_PlantProtection({ control, errors }: FormSectionProps) {
+export default function PlantProtection({ control, errors }: FormSectionProps) {
   const diseaseList = [
     "Scab",
     "Alternaria",

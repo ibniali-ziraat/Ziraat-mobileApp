@@ -8,7 +8,7 @@ export default function LicenseSection({ control, errors }: FormSectionProps) {
   console.log(errors, "errors,");
 
   return (
-    <View style={{ padding: 20, gap: 12 }}>
+    <View>
       <FormInput
         control={control}
         name="dealerLicenseNumber"

@@ -22,7 +22,7 @@ export default function OperationalSection({ control, errors }) {
   }, [deliveryServiceAvailable]);
 
   return (
-    <View style={{ padding: 20, gap: 12 }}>
+    <View>
       <FormInput
         control={control}
         name="yearsInBusiness"
@@ -31,14 +31,16 @@ export default function OperationalSection({ control, errors }) {
         error={errors?.yearsInBusiness?.message}
       />
 
-      <ChipInput
-        control={control}
-        name="companyTieups"
-        label="Company Tieups (if any)"
-        placeholder="Add Company Tieups"
-        error={errors?.companyTieups}
-        optional
-      />
+      <View className="mb-6">
+        <ChipInput
+          control={control}
+          name="companyTieups"
+          label="Company Tieups (if any)"
+          placeholder="Add Company Tieups"
+          error={errors?.companyTieups}
+          optional
+        />
+      </View>
 
       <SingleSelectInput
         control={control}
