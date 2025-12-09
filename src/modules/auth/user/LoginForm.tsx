@@ -102,6 +102,7 @@ import { View } from "react-native";
 import { Button, Divider, Snackbar, Text } from "react-native-paper";
 import { useZodForm } from "../../../hooks/useZodForm";
 import { LoginSchema } from "../../../schemas/shared/login.schema";
+import FormActions from "@/src/components/shared/FormActions";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -163,7 +164,7 @@ export default function LoginForm() {
         error={errors.password}
       />
 
-      <Button
+      {/* <Button
         style={{ marginTop: 15 }}
         icon="login"
         mode="contained"
@@ -172,7 +173,13 @@ export default function LoginForm() {
         disabled={isPending}
       >
         Login
-      </Button>
+      </Button> */}
+
+      <FormActions
+        submitLabel={"Login"}
+        onSubmit={handleSubmit(onSubmit)}
+        disabled={isPending}
+      />
 
       <Snackbar
         visible={showSnack}
