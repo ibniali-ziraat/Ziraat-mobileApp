@@ -50,6 +50,7 @@ export default function DashboardPage() {
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 140 }}
+         showsHorizontalScrollIndicator={false}
       >
         <BackHeader
           title={tabs[activeTab]?.label}
@@ -69,19 +70,21 @@ export default function DashboardPage() {
       </ScrollView>
 
       {/* Bottom Tabs */}
-      <View
-        className="absolute bottom-5 left-1/2"
-        style={{ transform: [{ translateX: -containerWidth / 2 }] }}
-      >
+      <View className="absolute bottom-5 left-0 right-0">
         <View
-          className="bg-light border rounded-full"
-          style={{ width: containerWidth, borderColor: colors.neutral }}
+          className="bg-light border rounded-full mx-3"
+          style={{ borderColor: colors.neutral }}
         >
           <ScrollView
             horizontal
             ref={scrollRef}
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{ alignItems: "center", px: 2 }}
+            contentContainerStyle={{
+              flexGrow: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 8,
+            }}
           >
             {tabs.map((tab, index) => {
               const Icon = tab.icon ?? (() => null);
@@ -94,22 +97,20 @@ export default function DashboardPage() {
                   style={{
                     width: tabWidth,
                     paddingVertical: 6,
-                    backgroundColor: isActive
-                      ? colors.primary + "1A"
-                      : colors.light,
+                   
                   }}
                   onPress={() => setActiveTab(index)}
                 >
                   {Icon && (
                     <Icon
-                      size={20}
+                      size={22}
                       color={isActive ? colors.primary : colors.dark}
                     />
                   )}
+
                   <Text
-                    className={`text-[10px] mt-1 text-center ${
-                      isActive ? "text-primary font-semibold" : "text-dark"
-                    }`}
+                    className={`text-[10px] mt-1 text-center ${isActive ? "text-primary font-semibold" : "text-dark"
+                      }`}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
@@ -119,22 +120,23 @@ export default function DashboardPage() {
               );
             })}
 
-            {/* Animated Underline */}
-            <Animated.View
-              style={{
-                position: "absolute",
-                bottom: 0,
-                left: 8,
-                width: tabWidth,
-                height: 2,
-                borderRadius: 1,
-                backgroundColor: colors.primary,
-                transform: [{ translateX: underlineAnim }],
-              }}
-            />
+<Animated.View
+  style={{
+    position: "absolute",
+    bottom: 0,
+    left: 16,
+    width: tabWidth * 0.8, // <<< FIXED WIDTH
+    height: 2,
+    borderRadius: 1,
+    backgroundColor: colors.primary,
+    transform: [{ translateX: underlineAnim }],
+  }}
+/>
+
           </ScrollView>
         </View>
       </View>
+
     </View>
   );
 }

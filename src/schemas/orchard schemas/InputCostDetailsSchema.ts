@@ -24,7 +24,7 @@ export const creditPeriodOptions = [
 
 /* -------------------- SCHEMA (ALL MANDATORY) -------------------- */
 
-export const stepHInputCostDetailsSchema = z.object({
+export const InputCostDetailsSchema = z.object({
   
   pesticideSupplierLocation: z.enum(supplierLocationOptions, {
     required_error: "Please select pesticide supplier location.",

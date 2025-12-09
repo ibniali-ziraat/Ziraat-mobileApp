@@ -35,7 +35,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          header: () => <HomeHeader title="Welcome, Farmer" />,
+          header: () => <HomeHeader title="Naik Ummar Mukhtar" />,
           tabBarIcon: ({ color }) => (
             <TabIcon
               icon={<Home size={22} color={color} />}

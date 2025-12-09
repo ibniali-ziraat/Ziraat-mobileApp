@@ -19,7 +19,8 @@ function ModeButton({ title, onPress }: ModeButtonProps) {
         paddingVertical: 12,
         paddingHorizontal: 20,
         alignSelf: "center",
-        marginTop: 20,
+        marginTop: 10,
+        marginBottom: 20,
       }}
     >
       <Text style={{ color: colors.primary, fontWeight: "600", fontSize: 16 }}>
@@ -38,7 +39,8 @@ export default function AuthForm() {
         style={{
           backgroundColor: colors.light,
           flex: 1,
-          minHeight: "100%",
+          minHeight: "80%",
+          justifyContent: "center"
         }}
       >
         {/* Logo */}

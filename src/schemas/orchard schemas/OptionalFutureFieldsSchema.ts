@@ -30,7 +30,7 @@ export const digitalToolOptions = [
 
 /* ---------------------- UPDATED SCHEMA ---------------------- */
 
-export const stepIOptionalFutureFieldsSchema = z.object({
+export const OptionalFutureFieldsSchema = z.object({
   
   /** 1️⃣ Government Schemes (Required multi-select) */
   govtSchemes: z

@@ -1,7 +1,7 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import { ScrollView, Text, View } from "react-native";
 
-export default function StepA_BasicInfo({ control, errors }) {
+export default function BasicInfo({ control, errors }) {
   
   return (
     <ScrollView className="flex-1 w-full">

@@ -44,8 +44,10 @@ export default function FormInput({
         return (
           <View style={{ marginBottom: 16 }}>
             <TextInput
+              contentStyle={{ color: colors.dark }}
               mode="outlined"
               label={labelWithRequired} // <-- floating label now works!
+
               value={value}
               onBlur={onBlur}
               onChangeText={(text) => {
