@@ -5,7 +5,7 @@ import RadioGroup from "@/src/components/form/inputs/RadioButton";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { ScrollView, View } from "react-native";
 
-export default function StepB_BasicInfo({ control, errors }) {
+export default function VarietAndPlatingDetails({ control, errors }) {
 
   const varietiesList = [
     "Red Delicious", "Golden Delicious", "Gala", "Fuji",

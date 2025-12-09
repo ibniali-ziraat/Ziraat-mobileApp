@@ -11,7 +11,7 @@ export const sellingPreferenceOptions = [
 ] as const;
 
 /* -------------------- SCHEMA -------------------- */
-export const stepGProductionMarketingSchema = z.object({
+export const ProductionMarketingSchema = z.object({
   // Average Annual Yield — required, numeric
   annualYield: z.coerce
     .number({

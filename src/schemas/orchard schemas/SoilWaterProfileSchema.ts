@@ -33,7 +33,7 @@ export const waterAvailabilityOptions = [
   "Not available",
 ] as const;
 
-export const stepCSoilWaterSchema = z
+export const SoilWaterProfileSchema = z
   .object({
     soilType: z.enum(soilTypeOptions),
     soilHealth: z.enum(soilHealthOptions),
