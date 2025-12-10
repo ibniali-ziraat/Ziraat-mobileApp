@@ -1,21 +1,11 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
-import { ScrollView, Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function BasicInfo({ control, errors }) {
-  
   return (
-    <ScrollView className="flex-1 w-full">
-      <Text className="text-2xl font-bold mb-4 text-center text-primary">
-        Orchard Registration
-      </Text>
-
-      <View className="bg-light rounded-2xl px-4 shadow-md shadow-neutral w-full">
-        <Text className="text-lg font-semibold mb-3 text-primary">
-          Basic / Mandatory Information
-        </Text>
-
+    <View className="flex-1 w-full">
+      <View className="bg-light w-full">
         <FormInput
-        
           control={control}
           name="orchardName"
           label="Orchard Name"
@@ -130,6 +120,6 @@ export default function BasicInfo({ control, errors }) {
           errors={errors?.longitude?.message}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 }

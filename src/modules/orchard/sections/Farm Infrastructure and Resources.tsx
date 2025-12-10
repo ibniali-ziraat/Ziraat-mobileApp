@@ -1,6 +1,6 @@
 // StepF_FarmInfrastructure.js
 
-import { ScrollView, Text, View } from "react-native";
+import { View } from "react-native";
 
 import CheckboxGroup from "@/src/components/form/inputs/Checkbox";
 import FormInput from "@/src/components/form/inputs/FormInput";
@@ -14,17 +14,11 @@ import {
 
 export default function FarmInfrastructure({ control, errors }) {
   return (
-    <ScrollView className="flex-1 w-full">
-
-      <Text className="text-2xl font-bold mb-4 text-center text-primary">
-        Farm Infrastructure & Resources
-      </Text>
-
-      <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
-
-        <Text className="text-lg font-semibold mb-3 text-primary">
+    <View className="flex-1 w-full">
+      <View className="bg-light w-full">
+        {/* <Text className="text-lg font-semibold mb-3 text-primary">
           Farm Infrastructure and Resources
-        </Text>
+        </Text> */}
 
         {/* 1️⃣ Equipment Owned (REQUIRED) */}
         <CheckboxGroup
@@ -62,8 +56,7 @@ export default function FarmInfrastructure({ control, errors }) {
           icon="tools"
           error={errors.otherTools?.message}
         />
-
       </View>
-    </ScrollView>
+    </View>
   );
 }

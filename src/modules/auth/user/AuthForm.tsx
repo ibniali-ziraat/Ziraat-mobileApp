@@ -1,4 +1,5 @@
 // src/components/auth/AuthForm.tsx
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
