@@ -63,7 +63,7 @@ export default function CreditAgingCard({ items }) {
 
   return (
     <View
-      className="p-5 rounded-2xl mb-2"
+      className=" rounded-2xl mb-2"
       style={{
        
         shadowOpacity: 0.06,
@@ -86,9 +86,9 @@ export default function CreditAgingCard({ items }) {
               <View
                 className="flex-row items-center p-4 rounded-2xl"
                 style={{
-                  backgroundColor: "#fafafa",
+                  backgroundColor: "#fff",
                   borderWidth: 1,
-                  borderColor: "#e8e8e8",
+                  borderColor: "#e5e7eb",
                   shadowColor: "#000",
                   shadowOpacity: 0.03,
                   shadowRadius: 6,

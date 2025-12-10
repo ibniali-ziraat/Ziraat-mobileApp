@@ -10,6 +10,7 @@ import {
 
 import "../../styles/global.css";
 import RouteGuard from "../components/RouteGuard";
+import { colors } from "../constants/colors";
 import AppProvider from "../contexts/AppProvider";
 
 registerTranslation("en-GB", enGB);
@@ -25,7 +26,7 @@ export default function RootLayout() {
             style={{
               flex: 1,
               paddingTop: insets.top,
-              backgroundColor: "white",
+              backgroundColor: colors.bgColor,
               paddingHorizontal: 20,
             }}
           >

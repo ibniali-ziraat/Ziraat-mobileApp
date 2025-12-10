@@ -75,7 +75,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 export default function WeeklySettlementCard({ weekly }) {
   return (
     <View className="mt-5">
-      <Text className="font-extrabold text-[20px] text-gray-900 mb-4">
+      <Text className="font-bold text-lg text-gray-900 mb-4">
         Weekly Settlements
       </Text>
 

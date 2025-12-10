@@ -17,6 +17,7 @@ import { showErrorToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Alert, View } from "react-native";
+import Heading from "@/src/components/shared/Heading";
 
 export default function UserRegistrationScreen() {
   const [step, setStep] = useState(0);
@@ -108,20 +109,24 @@ export default function UserRegistrationScreen() {
 
   return (
     <View>
+
+
       {step === 0 && <ProfileSection control={control} errors={errors} />}
       {step === 1 && <OTPSection control={control} errors={errors} />}
 
       <View>
-        {step > 0 && (
+        {/* {step > 0 && (
           <Button title="Back" onPress={prevStep} disabled={isLoading} />
-        )}
+        )} */}
 
         <FormActions
-          cancelLabel={step > 0 ? "Back" : ""}
+          cancelLabel={step > 0 ? "Back" : undefined} // only show if step > 0
+          onCancel={prevStep} // <-- pass the step back function
           submitLabel={step === 1 ? "Submit" : "Next"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isLoading}
         />
+
       </View>
     </View>
   );

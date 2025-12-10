@@ -33,9 +33,10 @@ export default function TaxReportCard() {
     <>
       {/* MAIN CARD */}
       <View
-        className="p-5 rounded-2xl mb-4"
+        className=" rounded-2xl mb-4"
         style={{
          
+
           shadowOpacity: 0.06,
           shadowRadius: 10,
           shadowOffset: { width: 0, height: 4 },

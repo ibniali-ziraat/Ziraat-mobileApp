@@ -4,19 +4,11 @@ import { Text, TouchableOpacity, View } from "react-native";
 export default function DeliveryProof({ theme }) {
   return (
     <View
-      className="rounded-3xl p-5 mb-6"
-      style={{
-        backgroundColor: "#fff",
-        borderColor: "#e5e7eb",
-        borderWidth: 1,
-        shadowColor: "#000",
-        shadowOpacity: 0.06,
-        shadowRadius: 10,
-        elevation: 4,
-      }}
+      className="rounded-3xl  mb-6"
+      
     >
       {/* HEADER */}
-      <Text className="text-lg font-extrabold text-gray-900 mb-4">
+      <Text className="text-lg font-bold text-black mb-4">
         Delivery Proof
       </Text>
 
