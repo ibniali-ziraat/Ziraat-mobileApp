@@ -1,7 +1,7 @@
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 
 const colors = {
@@ -89,19 +89,12 @@ export default function NotificationScreen() {
   const sections = ["Today", "Yesterday", "Earlier"];
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-     <ScrollView className="px-2 pt-2">
+    <ScreenLayout>
+     <ScrollView className="">
         
         
-        <View className="mb-4 mt-1">
-          <Text className="text-[22px] font-extrabold text-gray-900">
-            Notification
-          </Text>
-          <Text className="text-[12px] text-black mt-1">
-            Sales, settlements & payout insights
-          </Text>
-        </View>
-      <View className="mt-3 px-2">
+      
+      <View className="mt-3 ">
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {tabs.map((tab) => (
             <Pressable
@@ -131,7 +124,7 @@ export default function NotificationScreen() {
       </View>
 
       {/* NOTIFICATION LIST */}
-      <ScrollView className="px-4 mt-3 pb-20">
+      <ScrollView className=" mt-3 pb-20">
         {sections.map((sec) => {
           const secItems = filtered.filter((n) => n.section === sec);
           if (!secItems.length) return null;
@@ -193,6 +186,6 @@ export default function NotificationScreen() {
         })}
       </ScrollView>
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }

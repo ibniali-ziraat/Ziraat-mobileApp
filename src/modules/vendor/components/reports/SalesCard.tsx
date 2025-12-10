@@ -87,14 +87,7 @@ export default function SalesCard({ activeFilter }) {
           <Ionicons name="trending-up" size={26} color={colors.primary} />
         </View>
 
-        <View
-          className="px-3 py-1 rounded-full"
-          style={{ backgroundColor: "#f3f3f3", borderWidth: 1, borderColor: "#e1e1e1" }}
-        >
-          <Text className="text-[11px] text-gray-700 font-semibold">
-            {activeFilter ? `Filter: ${activeFilter}` : "No Filter"}
-          </Text>
-        </View>
+       
       </View>
 
       {/* RANGE SELECTOR */}

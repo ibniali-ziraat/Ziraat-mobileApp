@@ -1,8 +1,9 @@
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { colors } from "@/src/constants/colors"; // Import root colors
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { Platform, TouchableOpacity, View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function FormDatePicker({
   control,
@@ -14,6 +15,7 @@ export default function FormDatePicker({
   const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
 
+  // Format the date to YYYY-MM-DD
   const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
@@ -33,42 +35,49 @@ export default function FormDatePicker({
         const showError = !!(fieldError || error);
 
         return (
-          <View className="mb-5">
+          <View style={{ marginBottom: 16 }}>
             {isWeb ? (
-              <View className="flex flex-col w-full">
+              // Web-specific input
+              <View style={{ flexDirection: "column", width: "100%" }}>
                 <label
-                  className={`mb-1 text-sm font-medium ${
-                    showError ? "text-error" : "text-dark"
-                  }`}
+                  style={{
+                    marginBottom: 8,
+                    fontSize: 14,
+                    fontWeight: "500",
+                    color: showError ? colors.error : colors.dark,
+                  }}
                 >
                   {label}
-                  {!optional && <span className="text-error"> *</span>}
+                  {!optional && <span style={{ color: colors.error }}> *</span>}
                 </label>
 
                 <input
                   type="date"
-                  value={value ? value : ""}
+                  value={value || ""}
                   onChange={(e) => {
                     if (!e.target.value) return onChange(null);
-                    onChange(e.target.value); // just send "YYYY-MM-DD"
+                    onChange(e.target.value); // Just send "YYYY-MM-DD"
                   }}
-                  className={`p-3 border rounded-md text-base outline-none ${
-                    showError ? "border-error" : "border-neutral"
-                  }`}
+                  style={{
+                    padding: "10px",
+                    borderRadius: "8px",
+                    border: `1px solid ${showError ? colors.error : colors.neutral}`,
+                    fontSize: "16px",
+                    outline: "none",
+                    backgroundColor: colors.light, // White background
+                  }}
                 />
 
                 {showError && (
-                  <span className="text-error text-xs mt-1">
+                  <span style={{ color: colors.error, fontSize: "12px", marginTop: 4 }}>
                     {(fieldError || error)?.message}
                   </span>
                 )}
               </View>
             ) : (
+              // Mobile-specific input
               <>
-                <TouchableOpacity
-                  onPress={() => setShow(true)}
-                  activeOpacity={0.8}
-                >
+                <TouchableOpacity onPress={() => setShow(true)} activeOpacity={0.8}>
                   <View pointerEvents="none">
                     <TextInput
                       mode="outlined"
@@ -77,6 +86,17 @@ export default function FormDatePicker({
                       editable={false}
                       right={<TextInput.Icon icon="calendar" />}
                       error={showError}
+                      style={{
+                        backgroundColor: colors.light, // White background
+                      }}
+                      theme={{
+                        colors: {
+                          primary: colors.primary, // Outline color
+                          placeholder: colors.neutral, // Placeholder text color
+                          text: colors.dark, // Input text color
+                          error: colors.error, // Error text color
+                        },
+                      }}
                     />
                   </View>
                 </TouchableOpacity>
@@ -89,7 +109,7 @@ export default function FormDatePicker({
                     onChange={(event, selectedDate) => {
                       setShow(false);
                       if (event.type === "dismissed") return;
-                      onChange(formatDate(selectedDate)); // send "YYYY-MM-DD"
+                      onChange(formatDate(selectedDate)); // Send "YYYY-MM-DD"
                     }}
                   />
                 )}

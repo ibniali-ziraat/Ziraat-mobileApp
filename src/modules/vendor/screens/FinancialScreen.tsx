@@ -1,6 +1,6 @@
-import { ScrollView, Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ScrollView } from "react-native";
 
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import BankDetailsCard from "../../../modules/vendor/components/financial/BankDetailsCard";
 import WeeklySettlementCard from "../../../modules/vendor/components/financial/WeeklySettlementCard";
 import SummaryCard from "../components/financial/SummaryCard";
@@ -35,18 +35,18 @@ export default function FinancialScreen() {
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView className="px-4 pt-2">
+    <ScreenLayout >
+      <ScrollView className="">
         
         
-        <View className="mb-4 mt-1">
+        {/* <View className="mb-4 mt-1">
           <Text className="text-[22px] font-extrabold text-gray-900">
             Financial Overview
           </Text>
           <Text className="text-[12px] text-gray-500 mt-1">
             Sales, settlements & payout insights
           </Text>
-        </View>
+        </View> */}
 
        
         {/* <SummaryGrid summary={summary} /> */}
@@ -67,6 +67,6 @@ export default function FinancialScreen() {
        
         <BankDetailsCard bank={bank} logs={logs} />
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }
