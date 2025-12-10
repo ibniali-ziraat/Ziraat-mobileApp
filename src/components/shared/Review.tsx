@@ -95,7 +95,7 @@ export default function Review() {
       {sortedReviews.map((r) => (
         <View
           key={r.id}
-          className="mb-4 pb-4 p-4 rounded-2xl border border-neutral shadow-lg bg-white "
+          className="mb-4 pb-4 p-4 shadow-sm rounded-2xl  border border-neutral  bg-white "
         >
           <View className="flex-row items-center justify-between mb-1">
             <View className="flex-row items-center">

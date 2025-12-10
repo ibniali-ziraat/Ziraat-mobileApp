@@ -1,4 +1,5 @@
 // src/components/auth/AuthForm.tsx
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -32,7 +33,8 @@ export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "register">("register");
 
   return (
-    <View
+ <ScreenLayout>
+     <View
       style={{
         backgroundColor: colors.light,
         flex: 1,
@@ -60,5 +62,6 @@ export default function AuthForm() {
         onPress={() => setMode(mode === "login" ? "register" : "login")}
       />
     </View>
+ </ScreenLayout>
   );
 }

@@ -14,7 +14,7 @@ export default function SummaryCard({
   const finalAmount = productTotal + shippingPrice;
 
   return (
-    <View className="bg-white p-4 rounded-2xl shadow border border-neutral mt-4 mb-4">
+    <View className="bg-white p-4 rounded-2xl border border-neutral  mb-4">
 
   
       <View className="flex-row items-center justify-between">
