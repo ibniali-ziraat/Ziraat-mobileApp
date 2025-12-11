@@ -50,7 +50,7 @@ const WishlistItem = ({ item, onRemove }) => {
                 {item.title}
               </Text>
               <Pressable
-                className="rounded-full bg-neutral"
+                className="rounded-full"
                 onPress={() => onRemove(item._id)}
               >
                 <X size={22} color={colors.dark} />

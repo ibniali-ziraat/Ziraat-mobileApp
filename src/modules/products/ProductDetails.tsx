@@ -1,4 +1,5 @@
 import AddToCartButton from "@/src/components/shared/AddToCartButton";
+import BackHeader from "@/src/components/shared/BackHeader";
 import BuyNowButton from "@/src/components/shared/BuyNowButton";
 import ProductFaq from "@/src/components/shared/ProductFaq";
 import RatingStars from "@/src/components/shared/RatingStars";
@@ -16,7 +17,7 @@ export default function ProductDetails() {
 
   if (!productId) {
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 justify-center items-center bg-light">
         <Text className="text-lg text-dark">Please provide a product ID</Text>
       </View>
     );
@@ -26,7 +27,7 @@ export default function ProductDetails() {
 
   if (!product) {
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 justify-center items-center bg-light">
         <Text className="text-lg text-dark">Product not found</Text>
       </View>
     );
@@ -34,10 +35,12 @@ export default function ProductDetails() {
 
   return (
     <View className="flex-1 bg-light">
+      <BackHeader title={product.title} desc={product.category} />
+
       <ScrollView>
         <ProductDetailCarousel photos={product.photos} label={product.label} />
 
-        <View className=" mt-8 items-start">
+        <View className="mt-8 px-4"> 
           <Text className="text-4xl font-bold text-dark mb-2">
             {product.title}
           </Text>
@@ -57,7 +60,7 @@ export default function ProductDetails() {
               <IndianRupee size={16} color={colors.dark} />
               <Text
                 className={`text-xl text-dark ${
-                  product.discountPrice ? "line-through text-dark" : ""
+                  product.discountPrice ? "line-through" : ""
                 }`}
               >
                 {product.price}
@@ -92,31 +95,29 @@ export default function ProductDetails() {
 
           {Array.isArray(product.description) ? (
             product.description.map((desc, index) => (
-              <Text key={index} className="text-dark text-[15px] mb-2">
+              <Text key={index} className="text-dark text-[15px] mb-2 text-justify">
                 {desc}
               </Text>
             ))
           ) : (
-            <Text className="text-dark text-[15px]">{product.description}</Text>
+            <Text className="text-dark text-[15px] text-justify">
+              {product.description}
+            </Text>
           )}
 
           {product.dosage && (
-            <Text className="text-[15px] text-dark mb-4">
+            <Text className="text-[15px] text-dark mb-4 text-justify">
               <Text className="text-xl font-semibold text-dark">Dosage: </Text>
               {product.dosage}
             </Text>
           )}
 
           {product.packaging && (
-            <>
-              <View className="flex-row items-center mb-2 mt-4">
-                <Text className="font-semibold text-xl ">Packaging:</Text>
-              </View>
-
+            <View className="mt-4">
+              <Text className="font-semibold text-xl mb-2">Packaging:</Text>
               {product.packaging.map((pack, index) => (
                 <View key={index} className="flex-row items-center mb-1">
                   <Package size={18} color={colors.secondary} />
-
                   <Text className="text-dark text-[15px] ml-2">
                     {pack.type}: {pack.size}
                     {pack.weight ? ` (${pack.weight})` : ""}
@@ -124,7 +125,7 @@ export default function ProductDetails() {
                   </Text>
                 </View>
               ))}
-            </>
+            </View>
           )}
 
           {product.tag && (
@@ -135,16 +136,16 @@ export default function ProductDetails() {
           )}
         </View>
 
-        <View className="px-6 mt-6">
+        <View className="mt-6 px-4">
           <Review />
         </View>
 
-        <View className="px-6 mt-2">
+        <View className="mt-2 px-4 pb-8">
           <ProductFaq data={faqData} />
         </View>
       </ScrollView>
 
-      <View className="flex-row p-4 my-6">
+      <View className="flex-row p-4 mb-6">
         <View className="flex-1 mr-2 h-12">
           <BuyNowButton
             onPress={() =>

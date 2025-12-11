@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Dimensions,
+  FlatList,
   Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  ScrollView,
   Text,
   View,
 } from "react-native";
 import { imageMapper } from "../../../Data/imageMapper";
+
 const { width } = Dimensions.get("window");
+const ITEM_WIDTH = width * 1;
+const SIDE_SPACING = (width - ITEM_WIDTH) / 2;
+
+
 export default function ProductDetailCarousel({
   photos = [],
   label,
@@ -18,55 +23,58 @@ export default function ProductDetailCarousel({
   label?: string;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const flatListRef = useRef<FlatList>(null);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / width);
+    console.log(index, "index");
+    
     setCurrentIndex(index);
+    console.log();
+    
+  };
+
+  const renderItem = ({ item }: { item: string }) => {
+    const imgSource = imageMapper[item];
+    if (!imgSource) return null;
+
+    const source = typeof imgSource === "string" ? { uri: imgSource } : imgSource;
+
+    return (
+      <View style={{ width :ITEM_WIDTH }}>
+        <View className="w-[90%] aspect-[4/5] rounded-xl overflow-hidden">
+          <Image source={source} resizeMode="cover" className="w-full h-full" />
+
+          {label && (
+            <View className="absolute top-3 left-2 bg-primary px-3 py-1 rounded-full">
+              <Text className="text-light font-semibold text-sm">{label}</Text>
+            </View>
+          )}
+        </View>
+      </View>
+    );
   };
 
   return (
-    <View className="relative mt-12">
-      <ScrollView
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-      >
-        {photos.map((photoKey, index) => {
-          const imgSource = imageMapper[photoKey];
-          if (!imgSource) return null;
+    <View>
+     <FlatList
+  data={photos}
+  horizontal
+  showsHorizontalScrollIndicator={false}
+  snapToInterval={ITEM_WIDTH}
+  decelerationRate="fast"
+  contentContainerStyle={{ paddingHorizontal: SIDE_SPACING }}
+  renderItem={renderItem}
+/>
 
-          const source =
-            typeof imgSource === "string" ? { uri: imgSource } : imgSource;
 
-          return (
-            <View key={index} className="justify-center items-center w-screen">
-              <View className="rounded-xl overflow-hidden mx-5 h-[400px] w-[90%]">
-                <Image
-                  source={source}
-                  resizeMode="cover"
-                  className="w-full h-full"
-                />
-
-                {label && (
-                  <View className="absolute bottom-3 left-3 bg-primary px-3 py-1 rounded-full">
-                    <Text className="text-light font-semibold text-sm">
-                      {label}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </View>
-          );
-        })}
-      </ScrollView>
-
-      <View className="absolute bottom-4 w-full flex-row justify-center items-center">
+      <View className="absolute bottom-4 w-full flex-row justify-center">
         {photos.map((_, i) => (
           <View
             key={i}
-            className={`w-3 h-3 rounded-full mx-1 ${currentIndex === i ? "bg-neutral" : "bg-dark"}`}
+            className={`w-3 h-3 rounded-full mx-1 ${
+              currentIndex === i ? "bg-neutral" : "bg-dark"
+            }`}
           />
         ))}
       </View>

@@ -28,10 +28,7 @@ export default function ProductFaq({ data }) {
           <View
             key={index}
             className="
-              mb-4 rounded-2xl border border-neutral bg-white p-4
-              shadow-lg shadow-neutral-200
-              elevation-6
-            "
+              mb-4   rounded-2xl border border-neutral bg-white p-4"
           >
             <TouchableOpacity
               onPress={() => toggleFAQ(index)}
