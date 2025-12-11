@@ -84,6 +84,7 @@ import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import BusinessSection from "../sections/BusinessSection";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function BusinessScreen() {
   const { vendorData, setVendorData, userData } = useGlobalData();
@@ -133,7 +134,7 @@ export default function BusinessScreen() {
         });
       }
 
-      router.push("/auth/vendor/vendor-profile-screen");
+      router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       showErrorToast("Something went wrong");
       console.error(err);

@@ -2,6 +2,7 @@ import ProfileSection from "@/src/components/form/sections/ProfileSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -55,7 +56,7 @@ export default function ProfileScreen() {
         await save(payload);
         showSuccessToast("Profile Saved");
       }
-      router.replace("/user-profile");
+      router.replace(ROUTES.USER.PROFILE);
     } catch (error) {
       console.error("Profile submission error:", error);
       showSuccessToast("Something went wrong. Please try again.");

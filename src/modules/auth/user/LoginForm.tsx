@@ -106,15 +106,15 @@ import FormActions from "@/src/components/shared/FormActions";
 import { colors } from "@/src/constants/colors";
 import Heading from "@/src/components/shared/Heading";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
   const { errors } = formState;
 
-  const [showSnack, setShowSnack] = useState(false);
-  const toggleSnack = () => setShowSnack((p) => !p);
 
-  const { setUserToken, setUserData } = useGlobalData();
+  // const { setUserToken, setUserData } = useGlobalData();
+  const { setUserToken, setUserId } = useAuth()
 
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
@@ -130,15 +130,12 @@ export default function LoginForm() {
       if (response.success) {
         console.log(response, "response..");
 
-        await setUserToken(response.token);
-        setUserData({
-          id: response.user,
-        });
+        await setUserToken(response?.token);
+        await setUserId(response?.user)
+
         router.replace("/");
         showSuccessToast("logged in");
       }
-      if (response.stat)
-        setShowSnack(true);
     } catch (error: any) {
       if (error?.response?.status === 401) {
         showErrorToast("Invalid credentials.");

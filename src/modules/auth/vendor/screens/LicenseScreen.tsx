@@ -15,12 +15,16 @@ import { FormProvider } from "react-hook-form";
 import { Alert } from "react-native";
 import LicenseSection from "../sections/LicenseSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function LicenseScreen() {
-  const { userData, vendorData } = useGlobalData();
-  console.log(vendorData.profileId, "vendorprofileid");
 
-  const { data } = useVendorLicenseQuery(vendorData.profileId);
+  const { vendorProfileId } = useAuth()
+
+
+
+  const { data } = useVendorLicenseQuery(vendorProfileId);
   const { mutateAsync: save, isPending: isSaving } = useVendorLicenseMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useVendorLicenseUpdateMutation();
@@ -49,20 +53,20 @@ export default function LicenseScreen() {
       if (data) {
         const payload = {
           licensingId: data?.id,
-          supplierProfileId: vendorData.profileId,
+          supplierProfileId: vendorProfileId,
           ...values,
         };
         await update(payload);
       } else {
         const payload = {
-          supplierProfileId: vendorData.profileId,
+          supplierProfileId: vendorProfileId,
           ...values,
         };
         await save(payload);
       }
 
       showSuccessToast("License Saved!");
-      router.push("/auth/vendor/vendor-profile-screen");
+      router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       console.error(err);
       showErrorToast("Error saving license");

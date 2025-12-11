@@ -21,6 +21,7 @@ import { useState } from "react";
 import { Alert, View } from "react-native";
 import Heading from "@/src/components/shared/Heading";
 import Loader from "@/src/components/shared/Loader";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function UserRegistrationScreen() {
   const [step, setStep] = useState(0);
@@ -114,7 +115,7 @@ export default function UserRegistrationScreen() {
         await setUserToken(loginRes.token);
         setUserData({ id: loginRes.user });
 
-        router.replace("/");
+        router.push(ROUTES.USER.HOME);
         showSuccessToast("Logged in Successfully")
       } catch (error: any) {
         const backendError =
