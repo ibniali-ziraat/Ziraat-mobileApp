@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { Alert } from "react-native";
 import LicenseSection from "../sections/LicenseSection";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 export default function LicenseScreen() {
   const { userData, vendorData } = useGlobalData();
@@ -60,11 +61,11 @@ export default function LicenseScreen() {
         await save(payload);
       }
 
-      Alert.alert("License Saved!");
+      showSuccessToast("License Saved!");
       router.push("/auth/vendor/vendor-profile-screen");
     } catch (err) {
       console.error(err);
-      Alert.alert("Error saving license");
+      showErrorToast("Error saving license");
     }
   };
 
@@ -75,9 +76,12 @@ export default function LicenseScreen() {
         <LicenseSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          submitLabel={data ? "Update" : "Next"}
+
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
+          onCancel={() => router.back()}
         />
       </FormProvider>
     </ScreenLayout>

@@ -29,18 +29,28 @@ import ProfileHeader from "./components/ProfileHeader";
 import SectionCard from "./components/SectionCard";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import Loader from "@/src/components/shared/Loader";
+import VendorProfileHeader from "@/src/components/shared/VendorProfileHeader";
+import VendorProfileDetails from "@/src/components/shared/VendorProfileDetails";
+import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
 
 export default function VendorProfileScreen() {
   const { vendorData, setVendorData, userData } = useGlobalData();
+  console.log(userData, "userdata....");
+
   const queryClient = useQueryClient();
 
   const { data: profileData, isPending: loadingVendorProfile } = useVendorProfileQuery(userData.id);
+  console.log(profileData, "profileData");
+
 
   const { data: licenseData } = useVendorLicenseQuery(vendorData.profileId);
   const { data: productsData } = useVendorProductsQuery(vendorData.profileId);
   const { data: operationsData } = useVendorOperationsQuery(
     vendorData.profileId
   );
+
+  console.log(operationsData, "o dta");
+
   const { data: financialData } = useVendorFinancialQuery(vendorData.profileId);
   const { data: supportData } = useVendorSupportQuery(vendorData.profileId);
 
@@ -52,10 +62,10 @@ export default function VendorProfileScreen() {
     useVendorFinancialDeleteMutation();
   const { mutateAsync: deleteSupportApi } = useVendorSupportDeleteMutation();
   const { progress, missingSections } = useProfileProgress({
-    profile: profileData,
-    business: licenseData,
+    business: profileData,
+    license: licenseData,
     products: productsData,
-    bank: operationsData,
+    operations: operationsData,
     financial: financialData,
     support: supportData,
   });
@@ -93,11 +103,11 @@ export default function VendorProfileScreen() {
       showSuccessToast(config.success);
 
       // 🔄 Revalidate backend state
-      await queryClient.invalidateQueries({
-        queryKey: [config.apiKey, vendorProfileId],
-      });
+      // await queryClient.invalidateQueries({
+      //   queryKey: [config.apiKey, vendorProfileId],
+      // });
     } catch (err) {
-      console.error(err);
+      // console.error(err);
     }
   };
 
@@ -108,7 +118,23 @@ export default function VendorProfileScreen() {
     <ScreenLayout>
       <BackHeader title="Profile" />
 
-      <ProgressBar progress={progress} />
+      <VendorProfileHeader data={profileData}
+        onEdit={() => goToSection("business")}
+      />
+
+      {progress < 100 && (
+        <ProfileProgressBar
+          progress={progress}
+          missingSections={missingSections}
+          completedSections={["Business", "License", "Products", "Operations", "Financial", "Support"].filter(
+            (s) => !missingSections.includes(s.toLowerCase())
+          )}
+        />
+      )}
+
+      <VendorProfileDetails data={profileData} />
+
+      {/* <ProgressBar progress={progress} />
 
       {missingSections.length > 0 && (
         <Text style={{ color: "gray", marginBottom: 15 }}>
@@ -118,7 +144,7 @@ export default function VendorProfileScreen() {
       <ProfileHeader
         data={profileData}
         onEdit={() => goToSection("business")}
-      />
+      /> */}
 
       <SectionCard
         title="License & Compliance"

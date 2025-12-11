@@ -9,7 +9,7 @@ import {
   useVendorFinancialUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
 import { financialPaymentSchema } from "@/src/schemas/vendor/finance.schema";
-import { showErrorToast } from "@/src/utils/toast";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
@@ -67,7 +67,7 @@ export default function FinancialScreen() {
         await save(payload);
       }
 
-      Alert.alert("Financial Info Saved!");
+      showSuccessToast("Financial Info Saved!");
       router.push("/auth/vendor/vendor-profile-screen");
     } catch (error) {
       console.error("Error saving financial info:", error);
@@ -85,6 +85,7 @@ export default function FinancialScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           submitLabel={"Next"}
+          onCancel={() => router.back()}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
         />

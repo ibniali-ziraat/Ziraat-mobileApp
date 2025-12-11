@@ -16,6 +16,7 @@ import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { productPortfolioSchema } from "@/src/schemas/vendor/products.schema";
 import { router } from "expo-router";
 import ProductSection from "../sections/ProductSection";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 export default function ProductsScreen() {
   const { vendorData } = useGlobalData();
@@ -81,10 +82,10 @@ export default function ProductsScreen() {
 
     try {
       data ? await update(payload) : await save(payload);
-      Alert.alert("Products Saved!");
+      showSuccessToast("Products Saved!");
       router.push("/auth/vendor/vendor-profile-screen"); // navigate after saving
     } catch (error) {
-      Alert.alert("Error saving products", error.message || "Unknown error");
+      showErrorToast("Error saving products", error.message || "Unknown error");
     }
   };
 

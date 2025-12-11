@@ -1,4 +1,6 @@
 import { colors } from "@/src/constants/colors";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
+import { useVendorProfileQuery } from "@/src/hooks/vendorQueryHooks";
 import { router } from "expo-router";
 import { BarChart2, PhoneCall, Store, User } from "lucide-react-native";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -9,6 +11,11 @@ interface MenuHeaderProps {
 }
 
 export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
+  const { vendorData, setVendorData, userData } = useGlobalData();
+  const { data: profileData, isPending: loadingVendorProfile } = useVendorProfileQuery(userData.id);
+
+  const showBecomeSupplier = role === "supplier" && !profileData; // Show button if no vendor profile
+
   return (
     <View className="flex-row items-center justify-between h-16 bg-white">
       {/* Title & Subtitle */}
@@ -24,10 +31,7 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
 
       {/* Right Actions */}
       <View className="flex-row items-center space-x-3">
-        {/* ROLE SWITCH BUTTON */}
-
-        {/* Action Buttons Based on Role */}
-        {role === "supplier" ? (
+        {role === "supplier" && profileData ? (
           <>
             {/* Supplier Dashboard */}
             <TouchableOpacity
@@ -43,6 +47,7 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
               <Store color={colors.primary} size={20} />
             </TouchableOpacity>
 
+            {/* Supplier Profile */}
             <TouchableOpacity
               className="p-2 rounded-full bg-white border"
               style={{ borderColor: colors.neutral }}
@@ -51,9 +56,18 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
               <User color={colors.secondary} size={20} />
             </TouchableOpacity>
           </>
-        ) : (
+        ) : showBecomeSupplier ? (
+          // Show Become a Supplier button if no vendor data
+          <TouchableOpacity
+            className="p-2 rounded-full bg-white border"
+            style={{ borderColor: colors.neutral }}
+            onPress={() => router.push("/auth/vendor")}
+          >
+            <Text style={{ color: colors.primary }}>Become a Supplier</Text>
+          </TouchableOpacity>
+        ) : role === "farmer" ? (
           <>
-            {/* Expert Call */}
+            {/* Farmer Actions */}
             <TouchableOpacity
               className="p-2 rounded-full bg-white border mr-2"
               style={{ borderColor: colors.neutral }}
@@ -62,7 +76,6 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
               <PhoneCall color={colors.primary} size={20} />
             </TouchableOpacity>
 
-            {/* Analytics */}
             <TouchableOpacity
               className="p-2 rounded-full bg-white border"
               style={{ borderColor: colors.neutral }}
@@ -75,17 +88,8 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
             >
               <BarChart2 color={colors.secondary} size={20} />
             </TouchableOpacity>
-
-            {/* Weather Alerts */}
-            {/* <TouchableOpacity
-              className="p-2 rounded-full bg-white border"
-              style={{ borderColor: colors.neutral }}
-              onPress={() => console.log("Weather Alerts")}
-            >
-              <CloudRain color={colors.primary} size={20} />
-            </TouchableOpacity> */}
           </>
-        )}
+        ) : null}
       </View>
     </View>
   );

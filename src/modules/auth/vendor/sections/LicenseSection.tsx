@@ -13,6 +13,7 @@ export default function LicenseSection({ control, errors }: FormSectionProps) {
         control={control}
         name="dealerLicenseNumber"
         label="Dealer License Number"
+        type="phone"
         error={errors?.dealerLicenseNumber?.message}
       />
 
@@ -34,6 +35,8 @@ export default function LicenseSection({ control, errors }: FormSectionProps) {
         control={control}
         name="gstNumber"
         label="GST Number"
+        type="phone"
+
         optional
         error={errors?.gstNumber?.message}
       />

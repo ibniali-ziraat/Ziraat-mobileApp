@@ -122,7 +122,7 @@ export default function BusinessScreen() {
   const onSubmit = async (val: any) => {
     try {
       if (data) {
-        const payload = { id: vendorData.id, ...val };
+        const payload = { id: data.id, ...val, userId: userData.id };
         await update(payload);
       } else {
         const payload = { userId: userData.id, ...val };
@@ -150,9 +150,10 @@ export default function BusinessScreen() {
         <BusinessSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          submitLabel={data ? "Update" : "Next"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

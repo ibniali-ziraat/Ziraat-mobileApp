@@ -76,7 +76,7 @@ export default function SingleSelectInput({
 
             {liveError && (
               <Text style={{ fontSize: 12, marginTop: 4, color: colors.error }}>
-                {liveError.message || "Required Field"}
+                {"Required Field"}
               </Text>
             )}
 
