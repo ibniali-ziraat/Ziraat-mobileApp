@@ -5,14 +5,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function ScreenLayout({ children }) {
   return (
     <KeyboardAvoidingView
-      className="flex-1 bg-light"
+      style={{ flex: 1, backgroundColor: "white" }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <View className="flex-1 bg-light ">
-        <SafeAreaView
-          edges={["bottom"]}
-        >
+      <View style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }} edges={["bottom", "top"]}>
           <ScrollView
+            contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+            style={{ flex: 1 }}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
@@ -21,5 +21,6 @@ export default function ScreenLayout({ children }) {
         </SafeAreaView>
       </View>
     </KeyboardAvoidingView>
+
   );
 }

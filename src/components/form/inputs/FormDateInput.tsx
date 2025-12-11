@@ -15,7 +15,13 @@ export default function FormDatePicker({
   const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
 
-  // Format the date to YYYY-MM-DD
+  // Normalize backend dates: "2025-12-10T00:00:00" → "2025-12-10"
+  const normalizeDate = (date) => {
+    if (!date) return "";
+    return date.includes("T") ? date.split("T")[0] : date;
+  };
+
+  // Format selected date into "YYYY-MM-DD"
   const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
@@ -33,11 +39,12 @@ export default function FormDatePicker({
         fieldState: { error: fieldError },
       }) => {
         const showError = !!(fieldError || error);
+        const normalizedValue = normalizeDate(value);
 
         return (
           <View style={{ marginBottom: 16 }}>
             {isWeb ? (
-              // Web-specific input
+              // --------------------- WEB INPUT ---------------------
               <View style={{ flexDirection: "column", width: "100%" }}>
                 <label
                   style={{
@@ -53,10 +60,11 @@ export default function FormDatePicker({
 
                 <input
                   type="date"
-                  value={value || ""}
+                  value={normalizedValue}
                   onChange={(e) => {
-                    if (!e.target.value) return onChange(null);
-                    onChange(e.target.value); // Just send "YYYY-MM-DD"
+                    const v = e.target.value;
+                    if (!v) return onChange("");
+                    onChange(v); // Always "YYYY-MM-DD"
                   }}
                   style={{
                     padding: "10px",
@@ -64,7 +72,7 @@ export default function FormDatePicker({
                     border: `1px solid ${showError ? colors.error : colors.neutral}`,
                     fontSize: "16px",
                     outline: "none",
-                    backgroundColor: colors.light, // White background
+                    backgroundColor: colors.light,
                   }}
                 />
 
@@ -75,26 +83,26 @@ export default function FormDatePicker({
                 )}
               </View>
             ) : (
-              // Mobile-specific input
+              // --------------------- MOBILE INPUT ---------------------
               <>
                 <TouchableOpacity onPress={() => setShow(true)} activeOpacity={0.8}>
                   <View pointerEvents="none">
                     <TextInput
                       mode="outlined"
                       label={optional ? `${label} (Optional)` : `${label} *`}
-                      value={value ? formatDate(value) : ""}
+                      value={normalizedValue}
                       editable={false}
                       right={<TextInput.Icon icon="calendar" />}
                       error={showError}
                       style={{
-                        backgroundColor: colors.light, // White background
+                        backgroundColor: colors.light,
                       }}
                       theme={{
                         colors: {
-                          primary: colors.primary, // Outline color
-                          placeholder: colors.neutral, // Placeholder text color
-                          text: colors.dark, // Input text color
-                          error: colors.error, // Error text color
+                          primary: colors.primary,
+                          placeholder: colors.neutral,
+                          text: colors.dark,
+                          error: colors.error,
                         },
                       }}
                     />
@@ -103,13 +111,13 @@ export default function FormDatePicker({
 
                 {show && (
                   <DateTimePicker
-                    value={value ? new Date(value) : new Date()}
+                    value={normalizedValue ? new Date(normalizedValue) : new Date()}
                     mode="date"
                     display="default"
                     onChange={(event, selectedDate) => {
                       setShow(false);
                       if (event.type === "dismissed") return;
-                      onChange(formatDate(selectedDate)); // Send "YYYY-MM-DD"
+                      onChange(formatDate(selectedDate)); // Always "YYYY-MM-DD"
                     }}
                   />
                 )}

@@ -10,6 +10,7 @@ import {
   useProfileUpdateMutation,
 } from "@/src/hooks/userQueryHooks";
 import { profileSchema } from "@/src/schemas/user/profile.schema";
+import { showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
@@ -31,34 +32,55 @@ export default function ProfileScreen() {
     formState: { errors },
   } = form;
 
-  // Prefill
   useEffect(() => {
     if (!data) return;
-    Object.entries(data).forEach(([k, v]) => setValue(k, v));
+
+    Object.entries(data).forEach(([k, v]) => {
+      setValue(k, v != null ? String(v) : ""); // convert numbers to strings
+    });
+
     setUserData({
       profileId: data.id,
     });
   }, [data]);
 
+
   const onSubmit = async (values) => {
-    const payload = { id: data.id, userId: userData.id, ...values };
-    data ? await update(payload) : await save(payload);
-    Alert.alert("Success", "Profile Saved!");
-    router.replace("/user-profile");
+    try {
+      const payload = { id: data?.id, userId: userData.id, ...values };
+      if (data) {
+        await update(payload);
+        showSuccessToast("Profile Updated");
+      } else {
+        await save(payload);
+        showSuccessToast("Profile Saved");
+      }
+      router.replace("/user-profile");
+    } catch (error) {
+      console.error("Profile submission error:", error);
+      showSuccessToast("Something went wrong. Please try again.");
+    }
   };
+
 
   return (
     <ScreenLayout>
-      <BackHeader title="Profile" />
+      <BackHeader
+        title="Profile"
+        desc={data ? "Update your profile details" : "Add your profile information"}
+      />
+
       <FormProvider {...form}>
         {/* <ScrollView> */}
 
-        <ProfileSection control={control} errors={errors} />
+        <ProfileSection control={control} errors={errors} data={data} />
         <FormActions
           cancelLabel={"Cancel"}
+          onCancel={() => router.back()}
           submitLabel={data ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
         />
         {/* </ScrollView> */}
       </FormProvider>

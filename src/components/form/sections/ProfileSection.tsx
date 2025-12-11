@@ -3,14 +3,6 @@ import { useEffect } from "react";
 import { View } from "react-native";
 import FormInput from "../inputs/FormInput";
 import SingleSelectInput from "../inputs/SingleSelectInput";
-import Heading from "../../shared/Heading";
-
-interface Props {
-  control: any;
-  errors: any;
-  data?: any; // <-- add data prop
-  setValue?: any; // <-- add setValue to allow prefill
-}
 
 export default function ProfileSection({
   control,
@@ -18,24 +10,18 @@ export default function ProfileSection({
   data,
   setValue,
 }: FormSectionProps) {
-  // Prefill inputs when API data arrives
   useEffect(() => {
-    if (data) {
-      // Matching API keys to form field names
+    if (data && setValue) {
       setValue("fullName", data.fullName || "");
       setValue("email", data.email || "");
       setValue("phone", data.phone || "");
-      setValue("age", String(data.age || ""));
+      setValue("age", data.age != null ? String(data.age) : ""); // convert number to string
       setValue("gender", data.gender || "");
     }
-  }, [data]);
+  }, [data, setValue]);
 
   return (
     <View>
-      <Heading
-        title="Sign Up"
-        subtitle="Create your account to get started"
-      />
       <FormInput
         control={control}
         name="fullName"
@@ -78,20 +64,25 @@ export default function ProfileSection({
         error={errors.gender}
       />
 
-      <FormInput
-        control={control}
-        name="password"
-        label="Password"
-        error={errors.password?.message}
-        type="password"
-      />
-      <FormInput
-        control={control}
-        name="confirmPassword"
-        label="Confirm Password"
-        error={errors.confirmPassword}
-        type="password"
-      />
+      {/* Show password fields only if creating a new profile */}
+      {!data && (
+        <>
+          <FormInput
+            control={control}
+            name="password"
+            label="Password"
+            error={errors.password?.message}
+            type="password"
+          />
+          <FormInput
+            control={control}
+            name="confirmPassword"
+            label="Confirm Password"
+            error={errors.confirmPassword?.message}
+            type="password"
+          />
+        </>
+      )}
     </View>
   );
 }

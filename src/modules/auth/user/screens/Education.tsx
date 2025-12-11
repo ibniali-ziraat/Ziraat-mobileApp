@@ -34,7 +34,9 @@ export default function EducationScreen() {
 
   useEffect(() => {
     if (!data) return;
-    Object.entries(data).forEach(([k, v]) => setValue(k, v));
+    Object.entries(data).forEach(([k, v]) => {
+      setValue(k, v != null ? String(v) : ""); // convert numbers to strings
+    });
   }, [data]);
 
   const onSubmit = async (values) => {
@@ -68,9 +70,13 @@ export default function EducationScreen() {
           <EducationSection control={control} errors={errors} />
           <FormActions
             cancelLabel={"Cancel"}
+            onCancel={() => router.back()}
+
             submitLabel={data ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+
           />
         </ScrollView>
       </FormProvider>
