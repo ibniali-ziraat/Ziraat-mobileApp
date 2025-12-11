@@ -2,7 +2,7 @@
 
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Image,
     ScrollView,
@@ -14,7 +14,7 @@ import Animated, {
     useAnimatedStyle,
     useSharedValue,
     withRepeat,
-    withTiming
+    withTiming,
 } from "react-native-reanimated";
 
 // ---------------- Skeleton Loader ----------------
@@ -44,30 +44,7 @@ function Skeleton({ width, height, radius = 8 }) {
   );
 }
 
-// ---------------- Badge Component ----------------
-function Badge({ label, color }) {
-  return (
-    <View
-      style={{
-        position: "absolute",
-        top: 10,
-        left: 10,
-      
-        paddingVertical: 4,
-        paddingHorizontal: 8,
-        borderRadius: 12,
-        zIndex: 999,
-        shadowColor: color,
-        shadowOpacity: 0.4,
-        shadowRadius: 6,
-      }}
-    >
-      <Text className="text-[10px] font-bold text-white">{label}</Text>
-    </View>
-  );
-}
-
-// ---------------- PRODUCT CARD ----------------
+// ---------------- Product Card ----------------
 function ProductCard({ product }) {
   const scale = useSharedValue(1);
   const fadeIn = useSharedValue(0);
@@ -84,7 +61,6 @@ function ProductCard({ product }) {
     setTimeout(() => setLoading(false), 1000);
   }, []);
 
-  // Determine product icon
   const productIcon =
     product.tag?.toLowerCase() === "organic"
       ? "leaf-outline"
@@ -101,7 +77,6 @@ function ProductCard({ product }) {
           padding: 16,
           borderWidth: 1,
           borderColor: "rgba(0,0,0,0.06)",
-         
         },
       ]}
       onTouchStart={() => (scale.value = withTiming(0.94))}
@@ -129,20 +104,7 @@ function ProductCard({ product }) {
               resizeMode="cover"
             />
 
-            {/* Bottom gradient overlay */}
-            <View
-              style={{
-                position: "absolute",
-                bottom: 0,
-                height: "40%",
-                width: "100%",
-                backgroundColor: "rgba(0,0,0,0.18)",
-              }}
-            />
-
            
-
-            {/* Product type icon */}
             <View
               style={{
                 position: "absolute",

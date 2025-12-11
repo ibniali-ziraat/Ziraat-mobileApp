@@ -1,55 +1,164 @@
 // components/home/FarmerTipsCard.tsx
-import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { Text, View } from "react-native";
+import { colors } from "@/src/constants/colors";
+import {
+    ChevronRight,
+    Droplets,
+    Leaf,
+    ShieldCheck,
+    Sun
+} from "lucide-react-native";
+import { useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
+import Animated, {
+    useAnimatedStyle,
+    useSharedValue,
+    withTiming,
+} from "react-native-reanimated";
+
+// Weather-based warnings
+function getWeatherWarning(title: string) {
+  if (title.includes("Spray")) return "Avoid spraying during rain or strong winds.";
+  if (title.includes("Irrigate")) return " Best done early morning or late evening.";
+  return null;
+}
 
 const tips = [
   {
-    icon: "shield-checkmark-outline",
+    icon: ShieldCheck,
     title: "Always Wear Protective Gear",
     desc: "Use gloves, masks, and eyewear while spraying pesticides.",
   },
   {
-    icon: "water-outline",
+    icon: Droplets,
     title: "Irrigate During Early Hours",
-    desc: "Reduces evaporation & improves water efficiency.",
+    desc: "Reduces evaporation and ensures deeper soil penetration.",
   },
   {
-    icon: "leaf-outline",
+    icon: Leaf,
     title: "Use Organic Fertilizers",
-    desc: "Improves soil health naturally.",
+    desc: "Improves soil health naturally and enhances crop quality.",
   },
   {
-    icon: "sunny-outline",
+    icon: Sun,
     title: "Check Weather Before Spraying",
-    desc: "Avoid windy or rainy days.",
+    desc: "Avoid windy or rainy conditions to prevent chemical drift.",
   },
 ];
 
 export default function FarmerTipsCard() {
-  return (
-    <View className="rounded-2xl overflow-hidden border border-[#e1f1dd] bg-[#f6faf4] mb-12">
-      <LinearGradient
-        colors={["#4da82d", "#e57b3a"]}
-        className="p-4 flex-row items-center"
-      >
-        <Ionicons name="bulb-outline" size={26} color="#fff" />
-        <Text className="text-white font-semibold text-lg ml-2">
-          Smart Farming Tips
-        </Text>
-      </LinearGradient>
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  
+  const tipOfDayIndex = 0; 
 
-      <View className="p-4 space-y-4">
-        {tips.map((tip, i) => (
-          <View key={i} className="flex-row items-start">
-            <Ionicons name={tip.icon} size={20} color="#2d6b06" />
-            <View className="ml-3 flex-1">
-              <Text className="font-semibold text-gray-800">{tip.title}</Text>
-              <Text className="text-xs text-gray-600 mt-1">{tip.desc}</Text>
+  return (
+    <View
+      className="rounded-2xl mb-8"
+      style={{
+        backgroundColor: "#fff",
+        borderWidth: 1,
+        borderColor: "rgba(0,0,0,0.06)",
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 10,
+        elevation: 2,
+      }}
+    >
+     
+
+      <View className="px-4 pb-4">
+        {tips.map((tip, index) => {
+          const IconComponent = tip.icon;
+          const isOpen = openIndex === index;
+          
+          const warning = getWeatherWarning(tip.title);
+
+          // Accordion animations
+          const rotate = useSharedValue(isOpen ? 90 : 0);
+          const expand = useSharedValue(isOpen ? 1 : 0);
+
+          const arrowStyle = useAnimatedStyle(() => ({
+            transform: [{ rotateZ: `${rotate.value}deg` }],
+          }));
+
+          const contentStyle = useAnimatedStyle(() => ({
+            opacity: expand.value,
+            height: expand.value === 0 ? 0 : "auto",
+          }));
+
+          const toggle = () => {
+            const open = !isOpen;
+            setOpenIndex(open ? index : null);
+
+            rotate.value = withTiming(open ? 90 : 0, { duration: 200 });
+            expand.value = withTiming(open ? 1 : 0, { duration: 220 });
+          };
+
+         
+
+          return (
+            <View
+              key={index}
+              
+            >
+              
+
+              {/* Header Row */}
+              <TouchableOpacity
+                onPress={toggle}
+                activeOpacity={0.7}
+                className="flex-row items-center justify-between py-3"
+              >
+                <View className="flex-row items-center">
+                  {/* Icon bubble */}
+                  <View
+                    style={{
+                      
+                      padding: 8,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <IconComponent size={22} color={colors.primary} />
+                  </View>
+
+                  <Text className="ml-3 font-semibold text-black text-[15px]">
+                    {tip.title}
+                  </Text>
+                </View>
+
+                <Animated.View style={arrowStyle}>
+                  <ChevronRight size={22} color="#777" />
+                </Animated.View>
+              </TouchableOpacity>
+
+              {/* Expanded Content */}
+              <Animated.View style={[contentStyle, { overflow: "hidden" }]}>
+                <View className="ml-14 mb-4">
+                  <Text className="text-sm text-gray-700 leading-5">
+                    {tip.desc}
+                  </Text>
+
+                  {/* Weather Warning */}
+                  {warning && (
+                    <Text className="text-xs text-red-600 mt-2">{warning}</Text>
+                  )}
+
+                  
+                </View>
+              </Animated.View>
+
+              {/* Divider */}
+              {index !== tips.length - 1 && (
+                <View
+                  style={{
+                    height: 1,
+                    backgroundColor: "rgba(0,0,0,0.06)",
+                    marginVertical: 10,
+                  }}
+                />
+              )}
             </View>
-          </View>
-        ))}
+          );
+        })}
       </View>
     </View>
   );

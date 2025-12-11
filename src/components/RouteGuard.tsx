@@ -1,27 +1,34 @@
-import React, { useEffect } from "react";
-import { useAuth } from "../contexts/AuthContext";
-// import { router } from "expo-router"; // comment out if not redirecting
+import { router } from "expo-router";
 
-export default function RouteGuard({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { user, initialized } = useAuth();
+import { ReactNode, useEffect } from "react";
+import { View } from "react-native";
+import { useGlobalData } from "../contexts/GlobalDataContext";
 
-  const isClient = typeof window !== "undefined";
+interface RouteGuardProps {
+  children: ReactNode;
+}
+
+export default function RouteGuard({ children }: RouteGuardProps) {
+  const { userData, initialized } = useGlobalData();
 
   useEffect(() => {
-    if (!isClient) return; // skip SSR
+    if (!initialized) return;
 
-    // ❌ Skip auth page for now
-    // if (initialized && user === null) {
-    //   router.replace("/auth"); // temporarily comment redirect
-    // }
-  }, [user, initialized, isClient]);
+    if (!userData?.id) {
+      router.replace("/auth/user");
+    }
+  }, [initialized, userData?.id]);
 
-  // render nothing until auth is initialized
-  if (!isClient || !initialized) return null;
+  if (!initialized) return null;
 
-  return <>{children}</>;
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+      }}
+    >
+      {children}
+    </View>
+  );
 }

@@ -1,8 +1,8 @@
 // src/components/form/sections/OTPSection.tsx
-import React from "react";
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import FormInput from "../inputs/FormInput";
+import Heading from "../../shared/Heading";
 
 interface Props {
   control: any;
@@ -12,20 +12,19 @@ interface Props {
 
 export default function OTPSection({ control, errors, onResend }: Props) {
   return (
-    <View style={{ padding: 20 }}>
-      <Text variant="headlineSmall" style={{ marginBottom: 10 }}>
-        OTP Verification
-      </Text>
-      <Text style={{ marginBottom: 10 }}>
-        Enter the 6-digit OTP sent to your mobile number.
-      </Text>
+    <View >
+      <Heading
+        title="OTP Verification"
+        subtitle="Enter the 6-digit OTP sent to your mobile number. "
+      />
+
 
       <FormInput
         control={control}
         name="otp"
         label="Enter OTP"
-        error={errors?.otp}
-        keyboardType="number-pad"
+        error={errors?.otp?.message}
+        type="phone"
       />
 
       {onResend && (

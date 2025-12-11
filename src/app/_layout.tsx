@@ -1,35 +1,45 @@
+import { Toasts } from "@backpackapp-io/react-native-toast";
 import { Stack } from "expo-router";
-import React from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
+import { enGB, registerTranslation } from "react-native-paper-dates";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+
 import "../../styles/global.css";
-import { theme } from "../constants/theme";
+import RouteGuard from "../components/RouteGuard";
 import AppProvider from "../contexts/AppProvider";
 
-function RouteGuard({ children }: { children: React.ReactNode }) {
-  // const { user, loading } = useAuth();
-  // console.log(user, "user...");
-
-  // useEffect(() => {
-  //   if (!loading && !user) {
-  //     router.replace("/auth");
-  //   }
-  // }, [user, loading]);
-
-  // if (loading) return null;
-
-  return <>{children}</>;
-}
+registerTranslation("en-GB", enGB);
 
 export default function RootLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <AppProvider>
-      {/* <RouteGuard> */}
-      <PaperProvider theme={theme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
-        </Stack>
-      </PaperProvider>
-      {/* </RouteGuard> */}
-    </AppProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AppProvider>
+        <RouteGuard>
+          <SafeAreaView
+            edges={['top', 'left', 'right',]}
+            style={{
+              flex: 1,
+              paddingTop: 10,
+              backgroundColor: "white",
+              paddingHorizontal: 20,
+            }}
+          >
+            <PaperProvider>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="(tabs)/_layout" />
+              </Stack>
+            </PaperProvider>
+          </SafeAreaView>
+        </RouteGuard>
+      </AppProvider>
+
+      <Toasts />
+    </GestureHandlerRootView>
   );
 }

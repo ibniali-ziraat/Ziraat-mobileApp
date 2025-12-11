@@ -1,9 +1,8 @@
+import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
 import { useRouter } from "expo-router";
-import { ArrowLeft, Bell, Droplet, Leaf } from "lucide-react-native";
-import React from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Bell, Droplet, Leaf } from "lucide-react-native";
+import { ScrollView, Text, View } from "react-native";
 
 export default function NotificationScreen() {
   const router = useRouter();
@@ -31,30 +30,19 @@ export default function NotificationScreen() {
   ];
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: colors.white }}>
-      {/* Header */}
-      <View
-        className="flex-row items-center py-5 px-4 border-b"
-        style={{ borderBottomColor: colors.gray }}
+    <ScrollView className="flex-1" style={{ backgroundColor: colors.light }}>
+      <BackHeader title="Notifications" />
+
+      <ScrollView
+        className="py-4"
+        contentContainerStyle={{ paddingBottom: 20 }}
       >
-        {/* Back Button */}
-        <TouchableOpacity onPress={() => router.back()} className="mr-4">
-          <ArrowLeft color={colors.black} size={28} />
-        </TouchableOpacity>
-
-        <Text className="text-2xl font-bold" style={{ color: colors.black }}>
-          Notifications
-        </Text>
-      </View>
-
-      {/* Notifications List */}
-      <ScrollView className="p-4" contentContainerStyle={{ paddingBottom: 20 }}>
         {notifications.length === 0 ? (
           <View className="flex-1 justify-center items-center mt-20">
-            <Bell color={colors.gray} size={48} />
+            <Bell color={colors.dark} size={48} />
             <Text
               className="mt-4 text-lg font-medium"
-              style={{ color: colors.gray }}
+              style={{ color: colors.dark }}
             >
               No new notifications
             </Text>
@@ -63,18 +51,18 @@ export default function NotificationScreen() {
           notifications.map((item) => (
             <View
               key={item.id}
-              className="flex-row items-center p-4 mb-3 rounded-xl"
-              style={{ backgroundColor: colors.blackHover }}
+              className="flex-row items-center py-2 mb-3 rounded-xl"
+              style={{ backgroundColor: colors.light }}
             >
               <View className="mr-4">{item.icon}</View>
               <View className="flex-1">
                 <Text
                   className="text-base font-medium"
-                  style={{ color: colors.black }}
+                  style={{ color: colors.dark }}
                 >
                   {item.message}
                 </Text>
-                <Text className="text-sm mt-1" style={{ color: colors.gray }}>
+                <Text className="text-sm mt-1" style={{ color: colors.dark }}>
                   {item.time}
                 </Text>
               </View>
@@ -82,6 +70,6 @@ export default function NotificationScreen() {
           ))
         )}
       </ScrollView>
-    </SafeAreaView>
+    </ScrollView>
   );
 }

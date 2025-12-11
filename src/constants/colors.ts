@@ -6,7 +6,12 @@ export const colors = {
   dark: "#222222",
   darkHover: "#f7f7f7",
   light: "#ffffff",
-  neutral: "#8888883b",
+  neutral: "#333333",
   overlay: "rgba(0, 0, 0, 0.5)",
   error: "#f44336",
+
+  warning: "#f5a623",
+  warningHover: "#d98c1c",
+  cardShadow: "rgba(0,0,0,0.6)",
+  cardBorder: "",
 };

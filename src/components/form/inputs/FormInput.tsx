@@ -1,5 +1,6 @@
-// app/components/form/RNPaperFormInput.tsx
-import React, { useState } from "react";
+import { colors } from "@/src/constants/colors"; // Importing colors from root
+import { FormSectionProps } from "@/src/types/formSectionProps";
+import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
@@ -8,14 +9,18 @@ export default function FormInput({
   control,
   name,
   label,
-  secure = false,
-  optional = false, // <-- NEW
-  icon,
-  onPressIcon,
+  type = "text",
+  optional = false,
   defaultValue = "",
+  error,
+  keyboardType,
   ...props
-}: any) {
+}: FormSectionProps) {
   const [showPassword, setShowPassword] = useState(false);
+
+  const isSecure = type === "password";
+
+  const labelWithRequired = !optional ? `${label} *` : label;
 
   return (
     <Controller
@@ -24,38 +29,62 @@ export default function FormInput({
       defaultValue={defaultValue}
       render={({
         field: { onChange, value, onBlur },
-        fieldState: { error },
+        fieldState: { error: fieldError },
       }) => {
-        // 👇 IF optional, do NOT show errors
-        const showError = !optional && !!error;
+        const showError = Boolean(fieldError?.message || error?.message);
+
+        const resolvedKeyboard = keyboardType
+          ? keyboardType
+          : type === "email"
+            ? "email-address"
+            : type === "phone"
+              ? "phone-pad"
+              : "default";
 
         return (
-          <View style={{ marginBottom: 20 }}>
+          <View style={{ marginBottom: 16 }}>
             <TextInput
-              label={optional ? `${label} (Optional)` : label}
+              contentStyle={{ color: colors.dark }} // Use dark color for input text
               mode="outlined"
+              label={labelWithRequired} // Use label with required asterisk
               value={value}
-              onChangeText={onChange}
               onBlur={onBlur}
-              secureTextEntry={secure && !showPassword}
+              onChangeText={(text) => {
+                const isNumericOnly =
+                  resolvedKeyboard === "phone-pad" ||
+                  resolvedKeyboard === "numeric";
+                onChange(isNumericOnly ? text.replace(/\D/g, "") : text);
+              }}
+              secureTextEntry={isSecure && !showPassword}
+              keyboardType={resolvedKeyboard}
               error={showError}
               right={
-                secure ? (
+                isSecure ? (
                   <TextInput.Icon
                     icon={showPassword ? "eye-off" : "eye"}
                     onPress={() => setShowPassword((p) => !p)}
                   />
-                ) : icon ? (
-                  <TextInput.Icon icon={icon} onPress={onPressIcon} />
                 ) : undefined
               }
-              style={{ backgroundColor: "white" }}
+              style={{
+                backgroundColor: colors.light, // Use light color for background
+                borderColor: colors.primary,  // Set border color to primary
+              }}
+              theme={{
+                colors: {
+                  primary: colors.primary, // Set primary color for outline
+                  placeholder: colors.neutral, // Placeholder text color
+                  text: colors.dark, // Input text color
+                  error: colors.error, // Error color
+                },
+              }}
               {...props}
             />
 
             {showError && (
-              <HelperText type="error" visible>
-                {error.message}
+              <HelperText type="error" visible style={{ color: colors.error }}>
+                {/* {(fieldError || error)?.message} */}
+                Required Field
               </HelperText>
             )}
           </View>

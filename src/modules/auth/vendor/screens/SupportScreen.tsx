@@ -1,0 +1,80 @@
+import BackHeader from "@/src/components/shared/BackHeader";
+import FormActions from "@/src/components/shared/FormActions";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
+import { useZodForm } from "@/src/hooks/useZodForm";
+import {
+  useVendorSupportMutation,
+  useVendorSupportQuery,
+  useVendorSupportUpdateMutation,
+} from "@/src/hooks/vendorQueryHooks";
+import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
+import { router } from "expo-router";
+import { useEffect } from "react";
+import { FormProvider } from "react-hook-form";
+import { Alert } from "react-native";
+import SupportSection from "../sections/SupportSection";
+
+export default function SupportScreen() {
+  const { vendorData } = useGlobalData();
+  const { data } = useVendorSupportQuery(vendorData.profileId);
+
+  const { mutateAsync: save, isPending: isSaving } = useVendorSupportMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useVendorSupportUpdateMutation();
+
+  const form = useZodForm(supportServicesSchema);
+  const {
+    setValue,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = form;
+
+  useEffect(() => {
+    if (!data) return;
+
+    setValue("advisorySupport", data.advisorySupport ? "yes" : "no");
+    setValue("fieldStaffAvailable", data.fieldStaffAvailable ? "yes" : "no");
+    setValue("fieldStaffCount", data.fieldStaffCount ?? "");
+    setValue("afterSalesService", data.afterSalesService ?? "");
+    setValue("deliveryRange", String(data.deliveryRange ?? ""));
+    setValue("computerAvailable", data.computerAvailable ? "yes" : "no");
+    setValue("vehicleAvailable", data.vehicleAvailable ? "yes" : "no");
+  }, [data]);
+
+  const onSubmit = async (values) => {
+    const payload = {
+      supplierProfileId: vendorData.profileId,
+      ...values,
+      fieldStaffAvailable: values.fieldStaffAvailable,
+      fieldStaffCount: values.fieldStaffAvailable
+        ? Number(values.fieldStaffCount)
+        : null,
+      deliveryRange: Number(values.deliveryRange),
+    };
+
+    try {
+      data ? await update(payload) : await save(payload);
+      Alert.alert("Support Info Saved!");
+      router.push("/auth/vendor/vendor-profile-screen");
+    } catch (err) {
+      Alert.alert("Error saving data", err.message || "Unknown error");
+    }
+  };
+
+  return (
+    <ScreenLayout>
+      <BackHeader title="Support Services" />
+      <FormProvider {...form}>
+        <SupportSection errors={errors} control={control} />
+        <FormActions
+          cancelLabel={"Cancel"}
+          submitLabel={"Next"}
+          onSubmit={handleSubmit(onSubmit)}
+          disabled={isSaving || isUpdating}
+        />
+      </FormProvider>
+    </ScreenLayout>
+  );
+}

@@ -1,144 +1,185 @@
+import { ScrollView, Text, TouchableOpacity } from "react-native";
+
+import BackHeader from "@/src/components/shared/BackHeader";
+import ProfileHeader from "./components/ProfileHeader";
+import SectionCard from "./components/SectionCard";
+
 import { colors } from "@/src/constants/colors";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-export default function ProfileScreen() {
+import {
+  useAddressDeleteMutation,
+  useAddressQuery,
+  useEducationDeleteMutation,
+  useEducationQuery,
+  useProfessionDeleteMutation,
+  useProfessionQuery,
+  useProfileQuery,
+} from "@/src/hooks/userQueryHooks";
+
+import { showSuccessToast } from "@/src/utils/toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { router } from "expo-router";
+
+import ProgressBar from "@/src/components/shared/ProgressBar";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
+import { useProfileProgress } from "@/src/hooks/useProfileProgress";
+import { useEffect } from "react";
+import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
+import { userRoutes } from "../auth/vendor/config/userRoutes";
+
+export default function UserProfileScreen() {
+  // const { userId, userProfileId, logoutUser, setUserProfileId } = useAuth();
+  const { userData, setUserData, logout } = useGlobalData();
+  const queryClient = useQueryClient();
+
+  const { data: profileData } = useProfileQuery(userData.id);
+  const { data: addressData } = useAddressQuery(userData.profileId);
+  const { data: educationData } = useEducationQuery(userData.profileId);
+  const { data: professionData } = useProfessionQuery(userData.profileId);
+
+  const { mutateAsync: deleteAddressApi } = useAddressDeleteMutation();
+  const { mutateAsync: deleteEducationApi } = useEducationDeleteMutation();
+  const { mutateAsync: deleteProfessionApi } = useProfessionDeleteMutation();
+  const { progress, missingSections } = useProfileProgress({
+    profile: profileData,
+    address: addressData,
+    education: educationData,
+    profession: professionData,
+  });
+
+  useEffect(() => {
+    if (profileData?.id) {
+      setUserData({ profileId: profileData.id });
+    }
+  }, [profileData]);
+
+  console.log();
+
+  const goToSection = (section) => router.push(userRoutes[section]);
+
+  const deleteActions = {
+    address: deleteAddressApi,
+    education: deleteEducationApi,
+    profession: deleteProfessionApi,
+  };
+
+  const handleDelete = async (section: string) => {
+    try {
+      const config = userDeleteConfig[section];
+      const api = deleteActions[section];
+
+      await api(userData.profileId!);
+
+      showSuccessToast(config.success);
+      queryClient.invalidateQueries([config.queryKey, userData.profileId]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <ScrollView className="flex-1 bg-lightGreen p-5 bg-white">
-      {/* Profile Section */}
-      <View className="items-center  rounded-sm p-5  mb-5">
-        <View className="relative mb-3">
-          <Image
-            source={{
-              uri: "https://plus.unsplash.com/premium_photo-1689977927774-401b12d137d6?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG1hbnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
-            }}
-            className="w-24 h-24 rounded-full"
-          />
-          {/* Camera Icon */}
-          <TouchableOpacity className="absolute bottom-0 right-0 bg-primary p-2 rounded-full">
-            <Ionicons name="camera-outline" size={16} color="#fff" />
-          </TouchableOpacity>
-        </View>
+    <ScrollView style={{ flex: 1, backgroundColor: colors.light }}>
+      <BackHeader title="Profile" />
 
-        <Text className="text-lg font-semibold color={colors.primary}">
-          Tansha Ashraf
+      <ProgressBar progress={progress} />
+
+      {missingSections.length > 0 && (
+        <Text style={{ color: "gray", marginBottom: 15 }}>
+          Missing: {missingSections.join(", ")}
         </Text>
+      )}
 
-        <View className="flex-row items-center mt-1">
-          <Ionicons name="location-outline" size={16} color={colors.primary} />
-          <Text className="text-grayText ml-1" >Srinagar</Text>
-        </View>
+      <ProfileHeader data={profileData} onEdit={() => goToSection("profile")} />
 
-        <View className="bg-[#E0F2F1] px-4 py-1 rounded-full mt-3">
-          <Text className=" font-semibold text-sm" style={{ color: colors.primary }} >
-            Kashmir Approved
+      {/* ADDRESS SECTION */}
+      <SectionCard
+        title="Address"
+        onEdit={addressData ? () => goToSection("address") : undefined}
+        onDelete={addressData ? () => handleDelete("address") : undefined}
+        style={
+          !addressData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
+      >
+        {addressData ? (
+          <Text>
+            {addressData.village}, {addressData.tehsil}, {addressData.district},{" "}
+            {addressData.state} - {addressData.pincode}
           </Text>
-        </View>
-      </View>
-
-
-      <View className=" rounded-sm border border-slate-300 p-5 mb-5 ">
-
-        <View className="flex-row justify-between items-center mb-4">
-          <Text className="text-base font-semibold ">
-            Contact Information
-          </Text>
-          <Feather name="edit-3" size={18} color={colors.primary} />
-        </View>
-
-
-        <View className="flex-row items-center py-4 ">
-          <Ionicons name="call-outline" size={20} color={colors.primary} />
-          <View className="ml-3 flex-1">
-            <Text className="text-[12px] text-grayText mb-[2px]">Phone</Text>
-            <Text className="text-[14px] font-medium ">7051500009</Text>
-          </View>
-        </View>
-
-
-        <View className="flex-row items-center py-4  ">
-          <MaterialIcons name="email" size={20} color={colors.primary} />
-          <View className="ml-3 flex-1">
-            <Text className="text-[12px] text-grayText mb-[2px]">Email</Text>
-            <Text className="text-[14px] font-medium ">
-              tanshaashraf@gmail.com
+        ) : (
+          <TouchableOpacity onPress={() => goToSection("address")}>
+            <Text style={{ color: colors.primary, fontWeight: "600" }}>
+              + Add Address
             </Text>
-          </View>
-        </View>
+          </TouchableOpacity>
+        )}
+      </SectionCard>
 
-
-        <View className="flex-row items-center py-4  ">
-          <Ionicons name="location-outline" size={20} color={colors.primary} />
-          <View className="ml-3 flex-1">
-            <Text className="text-[12px] text-grayText mb-[2px]">Address</Text>
-            <Text className="text-[14px] font-medium ">PULWAMA</Text>
-          </View>
-        </View>
-
-
-        <View className="flex-row items-center py-4">
-          <Ionicons name="calendar-outline" size={20} color={colors.primary} />
-          <View className="ml-3 flex-1">
-            <Text className="text-[12px] text-grayText mb-[2px]">Member Since</Text>
-            <Text className="text-[14px] font-medium ">
-              05-September-2025
+      {/* EDUCATION SECTION */}
+      <SectionCard
+        title="Education"
+        onEdit={educationData ? () => goToSection("education") : undefined}
+        onDelete={educationData ? () => handleDelete("education") : undefined}
+        style={
+          !educationData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
+      >
+        {educationData ? (
+          <>
+            <Text>{educationData.highestQualification}</Text>
+            <Text>{educationData.instituteName}</Text>
+            <Text>{educationData.passingYear}</Text>
+            <Text>{educationData.specialization}</Text>
+          </>
+        ) : (
+          <TouchableOpacity onPress={() => goToSection("education")}>
+            <Text style={{ color: colors.primary, fontWeight: "600" }}>
+              + Add Education
             </Text>
-          </View>
-        </View>
-      </View>
+          </TouchableOpacity>
+        )}
+      </SectionCard>
 
+      {/* PROFESSION SECTION */}
+      <SectionCard
+        title="Profession"
+        onEdit={professionData ? () => goToSection("profession") : undefined}
+        onDelete={professionData ? () => handleDelete("profession") : undefined}
+        style={
+          !professionData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
+      >
+        {professionData ? (
+          <>
+            <Text>{professionData.organizationName}</Text>
+            <Text>{professionData.designation}</Text>
+            <Text>{professionData.experienceYears}</Text>
+          </>
+        ) : (
+          <TouchableOpacity onPress={() => goToSection("profession")}>
+            <Text style={{ color: colors.primary, fontWeight: "600" }}>
+              + Add Profession
+            </Text>
+          </TouchableOpacity>
+        )}
+      </SectionCard>
 
-
-      <View className=" rounded-sm  border border-slate-300 p-5 mb-8">
-        <Text className="text-base font-semibold  mb-3">Account</Text>
-
-
-        <TouchableOpacity className="flex-row items-center py-3">
-          <Ionicons name="lock-closed-outline" size={22} color={colors.primary} />
-          <View className="ml-3 flex-1 border-b border-slate-200 pb-2">
-            <Text className="text-base font-medium ">Change Password</Text>
-          </View>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity className="flex-row items-center py-3">
-          <Ionicons name="document-text-outline" size={22} color={colors.primary} />
-          <View className="ml-3 flex-1 border-b border-slate-200 pb-2">
-            <Text className="text-base font-medium">Terms & Conditions</Text>
-          </View>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity className="flex-row items-center py-3">
-          <Ionicons name="help-circle-outline" size={22} color={colors.primary} />
-          <View className="ml-3 flex-1 border-b border-slate-200 pb-2">
-            <Text className="text-base font-medium ">Help & Support</Text>
-          </View>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity className="flex-row items-center py-3">
-          <Ionicons name="shield-checkmark-outline" size={22} color={colors.primary} />
-          <View className="ml-3 flex-1 border-b border-slate-200 pb-2">
-            <Text className="text-base font-medium ">Privacy Policy</Text>
-          </View>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity className="flex-row items-center py-3">
-          <Ionicons name="information-circle-outline" size={22} color={colors.primary} />
-          <View className="ml-3 flex-1 border-b border-slate-200 pb-2">
-            <Text className="text-base font-medium ">About Us</Text>
-          </View>
-        </TouchableOpacity>
-
-
-        <TouchableOpacity className="flex-row items-center py-3 mt-3">
-          <Ionicons name="log-out-outline" size={22} color="#E53935" />
-          <Text className="ml-3 text-base font-semibold text-[#E53935]">Logout</Text>
-        </TouchableOpacity>
-      </View>
-
+      {/* LOGOUT BUTTON */}
+      <TouchableOpacity
+        onPress={async () => {
+          await logout();
+        }}
+        style={{
+          marginTop: 40,
+          backgroundColor: colors.error,
+          paddingVertical: 15,
+          borderRadius: 12,
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>
+          Logout
+        </Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }

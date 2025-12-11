@@ -1,0 +1,75 @@
+import { colors } from "@/src/constants/colors";
+import {
+  ChevronDown,
+  ChevronUp,
+  CircleHelp,
+  Sparkles,
+} from "lucide-react-native";
+import { useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+
+export default function ProductFaq({ data }) {
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const toggleFAQ = (index: number) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
+
+  return (
+    <ScrollView className="p-1 bg-white">
+      <Text className="text-2xl font-bold mb-4 ms-2 text-dark">
+        Frequently Asked Questions
+      </Text>
+
+      {data.faq.map((q, index) => {
+        const isOpen = activeIndex === index;
+
+        return (
+          <View
+            key={index}
+            className="
+              mb-4 rounded-2xl border border-neutral bg-white p-4
+              shadow-lg shadow-neutral-200
+              elevation-6
+            "
+          >
+            <TouchableOpacity
+              onPress={() => toggleFAQ(index)}
+              className="flex-row items-center justify-between"
+              activeOpacity={0.8}
+            >
+              <View className="flex-row items-center gap-3 flex-1">
+                <View className="p-2">
+                  <CircleHelp size={18} color={colors.secondary} />
+                </View>
+
+                <Text className="text-[16px] text-dark flex-1">
+                  {q.question}
+                </Text>
+              </View>
+
+              {isOpen ? (
+                <ChevronUp size={22} color={colors.dark} />
+              ) : (
+                <ChevronDown size={22} color={colors.dark} />
+              )}
+            </TouchableOpacity>
+
+         
+            {isOpen && (
+              <View className="flex-row mt-2 gap-3 items-start">
+                <View className="p-2">
+                  <Sparkles size={18} color={colors.secondary} />
+                </View>
+
+                <Text className="text-[15px] text-dark flex-1">
+                  {q.answer}
+                </Text>
+              </View>
+            )}
+          </View>
+        );
+      })}
+    </ScrollView>
+  );
+}
