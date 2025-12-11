@@ -105,6 +105,7 @@ import { LoginSchema } from "../../../schemas/shared/login.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import { colors } from "@/src/constants/colors";
 import Heading from "@/src/components/shared/Heading";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -118,29 +119,33 @@ export default function LoginForm() {
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
   const onSubmit = async (data: any) => {
-    router.push("/");
-    // try {
-    //   const response = await loginMutate({
-    //     mobileNumber: data.mobileNumber,
-    //     password: data.password,
-    //   });
-    //   console.log(response, "login response");
+    // router.push("/");
+    try {
+      const response = await loginMutate({
+        mobileNumber: data.mobileNumber,
+        password: data.password,
+      });
+      console.log(response, "login response");
 
-    //   if (response.success) {
-    //     await setUserToken(response.token);
-    //     setUserData({
-    //       id: response.user,
-    //     });
-    //     router.replace("/");
-    //     showSuccessToast("logged in");
-    //   }
+      if (response.success) {
+        console.log(response, "response..");
 
-    //   setShowSnack(true);
-    // } catch (error: any) {
-    //   showErrorToast("Something went wrong try again later");
-
-    //   toggleSnack();
-    // }
+        await setUserToken(response.token);
+        setUserData({
+          id: response.user,
+        });
+        router.replace("/");
+        showSuccessToast("logged in");
+      }
+      if (response.stat)
+        setShowSnack(true);
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        showErrorToast("Invalid credentials.");
+      } else {
+        showErrorToast("Something went wrong. Please try again later.");
+      }
+    }
   };
 
   return (
@@ -169,34 +174,16 @@ export default function LoginForm() {
         error={errors.password}
       />
 
-      {/* <Button
-        style={{ marginTop: 15 }}
-        icon="login"
-        mode="contained"
-        onPress={handleSubmit(onSubmit)}
-        loading={isPending}
-        disabled={isPending}
-      >
-        Login
-      </Button> */}
 
       <FormActions
         submitLabel={"Login"}
         onSubmit={handleSubmit(onSubmit)}
         disabled={isPending}
+        loading={isPending}
+
       />
 
-      <Snackbar
-        visible={showSnack}
-        onDismiss={toggleSnack}
-        action={{
-          label: "Dismiss",
-          onPress: toggleSnack,
-        }}
-        duration={Snackbar.DURATION_LONG}
-      >
-        {isPending ? "Logging in..." : "Login successful!"}
-      </Snackbar>
+
     </View>
   );
 }

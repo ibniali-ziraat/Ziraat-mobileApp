@@ -46,8 +46,6 @@ export default function AddressSection({ control, errors }: Props) {
         options={[
           { label: "Jammu & Kashmir", value: "jammu_kashmir" },
           { label: "Ladakh", value: "ladakh" },
-          { label: "Punjab", value: "punjab" },
-          { label: "Haryana", value: "haryana" },
         ]}
         error={errors.state}
       />
@@ -58,17 +56,34 @@ export default function AddressSection({ control, errors }: Props) {
         name="district"
         label="District"
         options={[
-          { label: "Srinagar", value: "srinagar" },
-          { label: "Jammu", value: "jammu" },
           { label: "Leh", value: "leh" },
-          { label: "Amritsar", value: "amritsar" },
-          { label: "Ludhiana", value: "ludhiana" },
+          { label: "Kargil", value: "kargil" },
+          { label: "Anantnag", value: "anantnag" },
+          { label: "Bandipora", value: "bandipora" },
+          { label: "Baramulla", value: "baramulla" },
+          { label: "Budgam", value: "budgam" },
+          { label: "Doda", value: "doda" },
+          { label: "Ganderbal", value: "ganderbal" },
+          { label: "Jammu", value: "jammu" },
+          { label: "Kathua", value: "kathua" },
+          { label: "Kishtwar", value: "kishtwar" },
+          { label: "Kulgam", value: "kulgam" },
+          { label: "Kupwara", value: "kupwara" },
+          { label: "Poonch", value: "poonch" },
+          { label: "Pulwama", value: "pulwama" },
+          { label: "Rajouri", value: "rajouri" },
+          { label: "Ramban", value: "ramban" },
+          { label: "Reasi", value: "reasi" },
+          { label: "Samba", value: "samba" },
+          { label: "Shopian", value: "shopian" },
+          { label: "Srinagar", value: "srinagar" },
+          { label: "Udhampur", value: "udhampur" },
         ]}
         error={errors.district}
       />
 
       {/* Tehsil */}
-      <SingleSelectInput
+      {/* <SingleSelectInput
         control={control}
         name="tehsil"
         label="Tehsil"
@@ -79,6 +94,13 @@ export default function AddressSection({ control, errors }: Props) {
           { label: "Tehsil D", value: "tehsil_d" },
         ]}
         error={errors.tehsil}
+      /> */}
+
+      <FormInput
+        control={control}
+        name="tehsil"
+        label="Tehsil"
+        error={errors.tehsil?.message}
       />
       <FormInput
         control={control}
@@ -97,20 +119,18 @@ export default function AddressSection({ control, errors }: Props) {
       />
 
       {/* Street */}
-      <FormInput
+      {/* <FormInput
         control={control}
         name="street"
         label="Street / Locality"
         error={errors.street}
-      />
-
-      {/* GPS Button */}
+      /> */}
+      {/* 
       <Button
         title={loading ? "Fetching Location..." : "Use Current Location"}
         onPress={fetchLocation}
       />
 
-      {/* GPS Value */}
       {coords && (
         <View style={{ marginTop: 10 }}>
           <FormInput
@@ -121,7 +141,7 @@ export default function AddressSection({ control, errors }: Props) {
             editable={false}
           />
         </View>
-      )}
+      )} */}
     </View>
   );
 }

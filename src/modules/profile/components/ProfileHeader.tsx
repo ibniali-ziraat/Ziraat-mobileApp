@@ -5,7 +5,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 
 export default function ProfileHeader({ data, onEdit }) {
   return (
-    <View className="items-center mb-6 px-4">
+    <View className="items-center mb-6">
       {/* Profile Image */}
       <View className="relative mb-4">
         <Image
@@ -23,11 +23,10 @@ export default function ProfileHeader({ data, onEdit }) {
           }}
         />
       </View>
-
       {/* Full Name with Edit */}
       <View className="flex-row items-center gap-2">
         <Text className="text-xl font-bold" style={{ color: colors.primary }}>
-          {data?.fullName || "Naik Ummar Mukhtar"}
+          {data?.fullName || "N/A"}
         </Text>
         {onEdit && (
           <TouchableOpacity onPress={onEdit}>
@@ -40,9 +39,9 @@ export default function ProfileHeader({ data, onEdit }) {
       <View className="mt-5 w-full space-y-3">
         <DetailCard title="Email" value={data?.email} />
         <DetailCard title="Phone" value={data?.phone} />
-        <DetailCard title="Age" value={String(data?.age)} />
+        <DetailCard title="Age" value={(data?.age)} />
         <DetailCard title="Gender" value={data?.gender} />
-        <DetailCard title="User Since" value={data?.createdOn} />
+        <DetailCard title="User Since" value={data?.createdOn?.split("T")[0]} />
       </View>
     </View>
   );

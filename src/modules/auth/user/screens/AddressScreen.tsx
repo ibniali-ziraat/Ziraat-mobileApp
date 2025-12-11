@@ -68,9 +68,12 @@ export default function AddressScreen() {
           <AddressSection control={control} errors={errors} />
           <FormActions
             cancelLabel={"Cancel"}
+            onCancel={() => router.back()}
+
             submitLabel={data ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
           />
         </ScrollView>
       </FormProvider>

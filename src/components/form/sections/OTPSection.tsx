@@ -13,10 +13,7 @@ interface Props {
 export default function OTPSection({ control, errors, onResend }: Props) {
   return (
     <View >
-      <Heading
-        title="OTP Verification"
-        subtitle="Enter the 6-digit OTP sent to your mobile number. "
-      />
+
 
 
       <FormInput

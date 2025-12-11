@@ -34,7 +34,7 @@ export default function NotificationScreen() {
       <BackHeader title="Notifications" />
 
       <ScrollView
-        className="py-4"
+        className=""
         contentContainerStyle={{ paddingBottom: 20 }}
       >
         {notifications.length === 0 ? (

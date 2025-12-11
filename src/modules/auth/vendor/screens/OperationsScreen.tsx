@@ -16,6 +16,7 @@ import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
 import { router } from "expo-router";
 import OperationalSection from "../sections/OperationalSection";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 export default function OperationsScreen() {
   const { vendorData } = useGlobalData();
@@ -69,10 +70,10 @@ export default function OperationsScreen() {
 
     try {
       data ? await update(payload) : await save(payload);
-      Alert.alert("Operations Saved!");
+      showSuccessToast("Operations Saved!");
       router.push("/auth/vendor/vendor-profile-screen");
     } catch (error) {
-      Alert.alert("Error saving operations", error.message || "Unknown error");
+      showErrorToast("Error saving operations", error.message || "Unknown error");
     }
   };
 

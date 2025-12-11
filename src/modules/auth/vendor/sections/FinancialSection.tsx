@@ -38,7 +38,6 @@ export default function FinancialPaymentSection({
           name="upiAvailable"
           label="UPI / Digital Payment Options"
           options={[
-            { value: "", label: "Select" },
             { value: "yes", label: "Yes" },
             { value: "no", label: "No" },
           ]}
@@ -50,7 +49,6 @@ export default function FinancialPaymentSection({
           name="creditFacility"
           label="Credit Facility to Farmers"
           options={[
-            { value: "", label: "Select" },
             { value: "yes", label: "Yes" },
             { value: "no", label: "No" },
           ]}

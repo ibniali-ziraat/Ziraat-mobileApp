@@ -13,7 +13,7 @@ export default function BackHeader({ title, desc }: BackHeaderProps) {
 
   return (
     <View
-      className="bg-light"
+      className=" bg-light mb-4"
       style={{ borderBottomColor: colors.neutral }}
     >
       <View className="flex-row">

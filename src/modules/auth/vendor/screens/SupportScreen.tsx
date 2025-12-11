@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { Alert } from "react-native";
 import SupportSection from "../sections/SupportSection";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 export default function SupportScreen() {
   const { vendorData } = useGlobalData();
@@ -36,7 +37,7 @@ export default function SupportScreen() {
 
     setValue("advisorySupport", data.advisorySupport ? "yes" : "no");
     setValue("fieldStaffAvailable", data.fieldStaffAvailable ? "yes" : "no");
-    setValue("fieldStaffCount", data.fieldStaffCount ?? "");
+    setValue("fieldStaffCount", data.fieldStaffCount?.toString() ?? "");
     setValue("afterSalesService", data.afterSalesService ?? "");
     setValue("deliveryRange", String(data.deliveryRange ?? ""));
     setValue("computerAvailable", data.computerAvailable ? "yes" : "no");
@@ -56,10 +57,10 @@ export default function SupportScreen() {
 
     try {
       data ? await update(payload) : await save(payload);
-      Alert.alert("Support Info Saved!");
+      showSuccessToast("Support Info Saved!");
       router.push("/auth/vendor/vendor-profile-screen");
     } catch (err) {
-      Alert.alert("Error saving data", err.message || "Unknown error");
+      showErrorToast("Error saving data", err.message || "Unknown error");
     }
   };
 

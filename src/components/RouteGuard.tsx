@@ -9,15 +9,15 @@ interface RouteGuardProps {
 }
 
 export default function RouteGuard({ children }: RouteGuardProps) {
-  const { userData, initialized } = useGlobalData();
+  const { userToken, initialized } = useGlobalData();
 
   useEffect(() => {
     if (!initialized) return;
 
-    if (!userData?.id) {
+    if (!userToken) {
       router.replace("/auth/user");
     }
-  }, [initialized, userData?.id]);
+  }, [initialized, userToken]);
 
   if (!initialized) return null;
 

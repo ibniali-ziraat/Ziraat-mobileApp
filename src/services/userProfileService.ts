@@ -55,6 +55,13 @@ export const verifyUserOtp = async (data) => {
   return response.data;
 };
 
+
+export const sendUserOtp = async (phoneNumber: string) => {
+  const response = await axiosInstance.post("/api/core/otpverification/send", { phoneNumber });
+  return response.data;
+};
+
+
 // ----------------------------------------------------
 // 🏠 ADDRESS SECTION
 // ----------------------------------------------------
@@ -140,3 +147,17 @@ export const getProfessionSection = async (profileId) =>
       `/api/core/professional-profile/GetByProfileId?profileId=${profileId}`
     )
   );
+
+
+
+
+
+
+export const userExists = async (user) => {
+  const { data } = await axiosInstance.post(
+    `/api/core/userProfile/CheckExistingEmailandPhoneNumber/`, user
+
+  );
+  return data;
+};
+

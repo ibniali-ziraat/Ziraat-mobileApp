@@ -33,6 +33,7 @@ export default function SingleSelectInput({
     <Controller
       control={control}
       name={name}
+      defaultValue="" // ensures initial prefill works
       render={({ field: { value, onChange }, fieldState }) => {
         const liveError = fieldState?.error || error;
 
@@ -40,7 +41,7 @@ export default function SingleSelectInput({
         useEffect(() => {
           const match = options.find((o) => o.value === value);
           setSelectedLabel(match ? match.label : "");
-        }, [value]);
+        }, [value, options]);
 
         return (
           <View style={{ marginBottom: 16 }}>
@@ -51,7 +52,7 @@ export default function SingleSelectInput({
                 justifyContent: "space-between",
                 alignItems: "center",
                 borderWidth: 1,
-                borderColor: colors.neutral,
+                borderColor: liveError ? colors.error : colors.neutral,
                 borderRadius: 8,
                 paddingHorizontal: 16,
                 paddingVertical: 12,
@@ -63,21 +64,19 @@ export default function SingleSelectInput({
               <Text
                 style={{
                   fontSize: 16,
-                  color: selectedLabel ? colors.dark : colors.dark,
+                  color: selectedLabel ? colors.dark : colors.gray, // placeholder gray
                 }}
               >
-                {selectedLabel || `Select ${label} `}
-                {!optional && (
-                  <Text style={{ color: colors.error, fontSize: 16 }}> *</Text>
+                {selectedLabel || `Select ${label}`}
+                {!optional && !selectedLabel && (
+                  <Text style={{ color: colors.error }}> *</Text>
                 )}
               </Text>
-              <ChevronDown size={20} color={colors.dark} />
             </TouchableOpacity>
 
-            {/* Error */}
             {liveError && (
               <Text style={{ fontSize: 12, marginTop: 4, color: colors.error }}>
-                Required Field
+                {"Required Field"}
               </Text>
 
             )}
@@ -87,11 +86,7 @@ export default function SingleSelectInput({
 
 
             {/* Modal */}
-            <Modal
-              visible={visible}
-              transparent
-              animationType="fade"
-            >
+            <Modal visible={visible} transparent animationType="fade">
               <TouchableOpacity
                 style={{
                   flex: 1,
@@ -102,7 +97,6 @@ export default function SingleSelectInput({
                 activeOpacity={1}
                 onPress={() => setVisible(false)}
               >
-                {/* Custom Modal Container */}
                 <View
                   style={{
                     width: "80%",
@@ -115,7 +109,7 @@ export default function SingleSelectInput({
                     elevation: 5,
                   }}
                 >
-                  {/* Header with Reset Icon */}
+                  {/* Header */}
                   <View
                     style={{
                       padding: 16,
@@ -126,18 +120,11 @@ export default function SingleSelectInput({
                       alignItems: "center",
                     }}
                   >
-                    <Text
-                      style={{
-                        fontSize: 18,
-                        fontWeight: "600",
-                        color: colors.dark,
-                      }}
-                    >
-                      {`Select `}
+                    <Text style={{ fontSize: 18, fontWeight: "600", color: colors.dark }}>
+                      Select
                     </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        onChange(""); // Reset value
                         setVisible(false);
                       }}
                     >
@@ -145,12 +132,9 @@ export default function SingleSelectInput({
                     </TouchableOpacity>
                   </View>
 
-                  {/* FlatList for Options */}
                   <FlatList
-                    data={[...options]} // Add Reset option at the top
-                    keyExtractor={(item, index) =>
-                      item.value?.toString() || `reset-${index}`
-                    }
+                    data={options}
+                    keyExtractor={(item) => item.value.toString()}
                     renderItem={({ item }) => (
                       <TouchableOpacity
                         style={{
@@ -167,7 +151,7 @@ export default function SingleSelectInput({
                         <Text
                           style={{
                             fontSize: 16,
-                            color: item.value === "" ? colors.primary : colors.dark,
+                            color: item.value === value ? colors.primary : colors.dark,
                           }}
                         >
                           {item.label}
@@ -184,3 +168,4 @@ export default function SingleSelectInput({
     />
   );
 }
+
