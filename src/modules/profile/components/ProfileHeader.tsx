@@ -23,7 +23,6 @@ export default function ProfileHeader({ data, onEdit }) {
           }}
         />
       </View>
-      herroooooooo
       {/* Full Name with Edit */}
       <View className="flex-row items-center gap-2">
         <Text className="text-xl font-bold" style={{ color: colors.primary }}>

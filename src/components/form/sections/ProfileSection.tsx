@@ -37,13 +37,14 @@ export default function ProfileSection({
         type="email"
       />
 
-      <FormInput
-        control={control}
-        name="phone"
-        label="Mobile Number"
-        error={errors.phone?.message}
-        type="phone"
-      />
+      {!data &&
+        <FormInput
+          control={control}
+          name="phone"
+          label="Mobile Number"
+          error={errors.phone?.message}
+          type="phone"
+        />}
 
       <FormInput
         control={control}

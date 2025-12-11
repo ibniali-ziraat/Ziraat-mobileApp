@@ -28,10 +28,6 @@ export default function TabLayout() {
 
   }
 
-
-
-
-
   return (
     <Tabs
       screenOptions={{
@@ -54,7 +50,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          header: () => <HomeHeader title={data.fullName} />,
+          header: () => <HomeHeader title={data?.fullName} />,
           tabBarIcon: ({ color }) => (
             <TabIcon
               icon={<Home size={22} color={color} />}

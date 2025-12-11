@@ -83,8 +83,8 @@ export default function FormInput({
 
             {showError && (
               <HelperText type="error" visible style={{ color: colors.error }}>
-                {/* {(fieldError || error)?.message} */}
-                Required Field
+                {(fieldError || error)?.message}
+                {/* Required Field */}
               </HelperText>
             )}
           </View>

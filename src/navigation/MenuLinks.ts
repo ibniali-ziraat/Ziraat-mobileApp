@@ -13,10 +13,10 @@ export const MenuLinks = {
   ],
 
   supplier: [
-    {
-      title: "Vendor Actions",
-      routes: [{ label: "Become a Supplier", screen: "auth/vendor" }],
-    },
+    // {
+    //   title: "Vendor Actions",
+    //   routes: [{ label: "Become a Supplier", screen: "auth/vendor" }],
+    // },
     {
       title: "Vendor Settings",
       routes: [
