@@ -13,19 +13,22 @@ interface AuthContextType {
   userProfileId: number | null;
   vendorProfileId: number | null;
 
+  roleMode: "farmer" | "supplier";
   initialized: boolean;
 
   setUserToken: (v: string | null) => Promise<void>;
-  setVendorToken: (v: string | null) => Promise<void>;
+  setVendorToken: (v: string | null) => void; // no storage
 
   setUserId: (v: number | null) => Promise<void>;
-  setVendorId: (v: number | null) => Promise<void>;
+  setVendorId: (v: number | null) => void; // no storage
 
-  setUserProfileId: (v: number | null) => Promise<void>;
-  setVendorProfileId: (v: number | null) => Promise<void>;
+  setUserProfileId: (v: number | null) => void;
+  setVendorProfileId: (v: number | null) => void;
+
+  setRoleMode: (mode: "farmer" | "supplier") => void;
 
   logoutUser: () => Promise<void>;
-  logoutVendor: () => Promise<void>;
+  logoutVendor: () => void;
   logoutAll: () => Promise<void>;
 }
 
@@ -39,97 +42,84 @@ export const AuthProvider = ({ children }: any) => {
   const [vendorId, setVendorIdState] = useState<number | null>(null);
 
   const [userProfileId, setUserProfileIdState] = useState<number | null>(null);
-  const [vendorProfileId, setVendorProfileIdState] = useState<number | null>(
-    null
-  );
+  const [vendorProfileId, setVendorProfileIdState] = useState<number | null>(null);
 
+  const [roleMode, setRoleModeState] = useState<"farmer" | "supplier">("farmer");
   const [initialized, setInitialized] = useState(false);
 
   // Load on app start
   useEffect(() => {
     (async () => {
-      const uToken = await load("user_token");
-      const vToken = await load("vendor_token");
+      const storedToken = await load("user_token");
+      const storedUserId = await load("user_id");
 
-      setUserTokenState(uToken);
-      setVendorTokenState(vToken);
+      // Only these two come from storage
+      setUserTokenState(storedToken);
+      setUserIdState(storedUserId ? Number(storedUserId) : null);
 
-      setUserAxiosToken(uToken);
-      setVendorAxiosToken(vToken);
+      // Apply axios auth token
+      setUserAxiosToken(storedToken);
 
-      setUserIdState(Number(await load("user_id")) || null);
-      setVendorIdState(Number(await load("vendor_id")) || null);
-
-      setUserProfileIdState(Number(await load("user_profileId")) || null);
-      setVendorProfileIdState(Number(await load("vendor_profileId")) || null);
-
+      // Others are NOT stored, so remain null/default
       setInitialized(true);
     })();
   }, []);
 
   // ---------------- SIMPLE SETTERS ----------------
-
+  // Stored
   const setUserToken = async (token: string | null) => {
-    await save("user_token", token);
+    if (token) await save("user_token", token);
+    else await clear("user_token");
+
     setUserTokenState(token);
     setUserAxiosToken(token);
   };
 
-  const setVendorToken = async (token: string | null) => {
-    await save("vendor_token", token);
+  const setUserId = async (v: number | null) => {
+    if (v !== null) await save("user_id", String(v));
+    else await clear("user_id");
+
+    setUserIdState(v);
+  };
+
+  // Not stored
+  const setVendorToken = (token: string | null) => {
     setVendorTokenState(token);
     setVendorAxiosToken(token);
   };
 
-  const setUserId = async (v: number | null) => {
-    await save("user_id", v);
-    setUserIdState(v);
-  };
-
-  const setVendorId = async (v: number | null) => {
-    await save("vendor_id", v);
+  const setVendorId = (v: number | null) => {
     setVendorIdState(v);
   };
 
-  const setUserProfileId = async (v: number | null) => {
-    await save("user_profileId", v);
-    setUserProfileIdState(v);
-  };
+  const setUserProfileId = (v: number | null) => setUserProfileIdState(v);
+  const setVendorProfileId = (v: number | null) => setVendorProfileIdState(v);
 
-  const setVendorProfileId = async (v: number | null) => {
-    await save("vendor_profileId", v);
-    setVendorProfileIdState(v);
-  };
+  const setRoleMode = (mode: "farmer" | "supplier") => setRoleModeState(mode);
 
   // ---------------- LOGOUT ----------------
-
   const logoutUser = async () => {
     await clear("user_token");
     await clear("user_id");
-    await clear("user_profileId");
 
     setUserTokenState(null);
     setUserIdState(null);
-    setUserProfileIdState(null);
-
     setUserAxiosToken(null);
+
+    // Non-stored fields also reset
+    setUserProfileIdState(null);
   };
 
-  const logoutVendor = async () => {
-    await clear("vendor_token");
-    await clear("vendor_id");
-    await clear("vendor_profileId");
-
+  const logoutVendor = () => {
     setVendorTokenState(null);
     setVendorIdState(null);
     setVendorProfileIdState(null);
-
     setVendorAxiosToken(null);
   };
 
   const logoutAll = async () => {
     await logoutUser();
-    await logoutVendor();
+    logoutVendor();
   };
 
   return (
@@ -141,6 +131,7 @@ export const AuthProvider = ({ children }: any) => {
         vendorId,
         userProfileId,
         vendorProfileId,
+        roleMode,
         initialized,
         setUserToken,
         setVendorToken,
@@ -148,6 +139,7 @@ export const AuthProvider = ({ children }: any) => {
         setVendorId,
         setUserProfileId,
         setVendorProfileId,
+        setRoleMode,
         logoutUser,
         logoutVendor,
         logoutAll,
@@ -158,4 +150,8 @@ export const AuthProvider = ({ children }: any) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  return ctx;
+};

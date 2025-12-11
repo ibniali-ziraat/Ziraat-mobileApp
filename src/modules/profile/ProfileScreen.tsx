@@ -33,16 +33,19 @@ import LogoutButton from "@/src/components/ui/LogoutButton";
 import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
 import ProfileTopHeader from "@/src/components/shared/ProfileTopHeader";
 import ProfileDetails from "@/src/components/shared/ProfileDetails";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function UserProfileScreen() {
-  const { userData, setUserData, logout } = useGlobalData();
+  // const { userData, setUserData, logout } = useGlobalData();
+  const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth()
+
   const queryClient = useQueryClient();
 
 
-  const { data: profileData } = useProfileQuery(userData?.id);
-  const { data: addressData } = useAddressQuery(userData.profileId);
-  const { data: educationData } = useEducationQuery(userData.profileId);
-  const { data: professionData } = useProfessionQuery(userData.profileId);
+  const { data: profileData } = useProfileQuery(userId);
+  const { data: addressData } = useAddressQuery(userProfileId);
+  const { data: educationData } = useEducationQuery(userProfileId);
+  const { data: professionData } = useProfessionQuery(userProfileId);
 
   const { mutateAsync: deleteAddressApi } = useAddressDeleteMutation();
   const { mutateAsync: deleteEducationApi } = useEducationDeleteMutation();
@@ -56,7 +59,7 @@ export default function UserProfileScreen() {
 
   useEffect(() => {
     if (profileData?.id) {
-      setUserData({ profileId: profileData.id });
+      setUserProfileId(profileData?.id)
     }
   }, [profileData]);
 
@@ -75,10 +78,10 @@ export default function UserProfileScreen() {
       const config = userDeleteConfig[section];
       const api = deleteActions[section];
 
-      await api(userData.profileId!);
+      await api(userProfileId!);
 
       showSuccessToast(config.success);
-      queryClient.invalidateQueries([config.queryKey, userData.profileId]);
+      queryClient.invalidateQueries([config.queryKey, userProfileId]);
     } catch (err) {
       console.error(err);
     }
@@ -189,7 +192,7 @@ export default function UserProfileScreen() {
       </SectionCard>
 
       {/* LOGOUT BUTTON */}
-      <LogoutButton onPress={async () => await logout()} />
+      <LogoutButton onPress={async () => await logoutUser()} />
 
     </ScreenLayout>
   );

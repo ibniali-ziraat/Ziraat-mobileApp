@@ -15,10 +15,14 @@ import { FormProvider } from "react-hook-form";
 import { Alert } from "react-native";
 import SupportSection from "../sections/SupportSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function SupportScreen() {
-  const { vendorData } = useGlobalData();
-  const { data } = useVendorSupportQuery(vendorData.profileId);
+  // const { vendorData } = useGlobalData();
+  const { vendorProfileId, userId } = useAuth()
+
+  const { data } = useVendorSupportQuery(vendorProfileId);
 
   const { mutateAsync: save, isPending: isSaving } = useVendorSupportMutation();
   const { mutateAsync: update, isPending: isUpdating } =
@@ -46,7 +50,7 @@ export default function SupportScreen() {
 
   const onSubmit = async (values) => {
     const payload = {
-      supplierProfileId: vendorData.profileId,
+      supplierProfileId: vendorProfileId,
       ...values,
       fieldStaffAvailable: values.fieldStaffAvailable,
       fieldStaffCount: values.fieldStaffAvailable
@@ -58,7 +62,7 @@ export default function SupportScreen() {
     try {
       data ? await update(payload) : await save(payload);
       showSuccessToast("Support Info Saved!");
-      router.push("/auth/vendor/vendor-profile-screen");
+      router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       showErrorToast("Error saving data", err.message || "Unknown error");
     }

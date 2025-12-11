@@ -32,27 +32,26 @@ import Loader from "@/src/components/shared/Loader";
 import VendorProfileHeader from "@/src/components/shared/VendorProfileHeader";
 import VendorProfileDetails from "@/src/components/shared/VendorProfileDetails";
 import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function VendorProfileScreen() {
-  const { vendorData, setVendorData, userData } = useGlobalData();
-  console.log(userData, "userdata....");
+  // const { vendorData, setVendorData } = useGlobalData();
+  const { userId, setVendorProfileId, vendorProfileId } = useAuth()
+  console.log(vendorProfileId, "vendorproifleidddd");
+
+
 
   const queryClient = useQueryClient();
 
-  const { data: profileData, isPending: loadingVendorProfile } = useVendorProfileQuery(userData.id);
-  console.log(profileData, "profileData");
-
-
-  const { data: licenseData } = useVendorLicenseQuery(vendorData.profileId);
-  const { data: productsData } = useVendorProductsQuery(vendorData.profileId);
+  const { data: profileData, isPending: loadingVendorProfile } = useVendorProfileQuery(userId);
+  const { data: licenseData } = useVendorLicenseQuery(vendorProfileId);
+  const { data: productsData } = useVendorProductsQuery(vendorProfileId);
   const { data: operationsData } = useVendorOperationsQuery(
-    vendorData.profileId
+    vendorProfileId
   );
 
-  console.log(operationsData, "o dta");
-
-  const { data: financialData } = useVendorFinancialQuery(vendorData.profileId);
-  const { data: supportData } = useVendorSupportQuery(vendorData.profileId);
+  const { data: financialData } = useVendorFinancialQuery(vendorProfileId);
+  const { data: supportData } = useVendorSupportQuery(vendorProfileId);
 
   const { mutateAsync: deleteLicenseApi } = useVendorLicenseDeleteMutation();
   const { mutateAsync: deleteProductsApi } = useVendorProductsDeleteMutation();
@@ -72,9 +71,7 @@ export default function VendorProfileScreen() {
 
   useEffect(() => {
     if (!profileData) return;
-    setVendorData({
-      profileId: profileData.id,
-    });
+    setVendorProfileId(profileData?.id)
   }, [profileData]);
 
   const goToSection = (section: VendorRouteKey) => {
@@ -95,10 +92,10 @@ export default function VendorProfileScreen() {
       const api = deleteActions[section];
 
       // ⚡ OPTIMISTIC: Remove data instantly from cache
-      queryClient.setQueryData([config.apiKey, vendorData.profileId], null);
+      queryClient.setQueryData([config.apiKey, vendorProfileId], null);
 
       // 🔥 Delete on server
-      await api(vendorData.profileId);
+      await api(vendorProfileId);
 
       showSuccessToast(config.success);
 

@@ -1,3 +1,4 @@
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { MenuLinks } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
@@ -5,11 +6,14 @@ import { Repeat } from "lucide-react-native";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 export default function MenuScreen() {
-  const { roleMode, updateRoleMode } = useGlobalData();
+  // const { roleMode, updateRoleMode } = useGlobalData();
+  const { roleMode, setRoleMode } = useAuth()
+
+
 
   const toggleRole = () => {
     const newRole = roleMode === "farmer" ? "supplier" : "farmer";
-    updateRoleMode(newRole);
+    setRoleMode(newRole);
   };
 
   // Show menu based on role only

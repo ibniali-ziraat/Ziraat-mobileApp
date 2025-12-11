@@ -31,7 +31,7 @@ function ModeButton({ title, onPress }: ModeButtonProps) {
 }
 
 export default function AuthForm() {
-  const [mode, setMode] = useState<"login" | "register">("register");
+  const [mode, setMode] = useState<"login" | "register">("login");
 
   return (
     <ScreenLayout>

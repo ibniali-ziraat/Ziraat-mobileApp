@@ -5,6 +5,7 @@ import MenuHeader from "@/src/components/shared/MenuHeader";
 import ProductHeader from "@/src/components/shared/ProductHeader";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { Tabs } from "expo-router";
@@ -18,12 +19,14 @@ export default function TabLayout() {
 
 
   const insets = useSafeAreaInsets();
-  const { roleMode, userData } = useGlobalData();
-  const { data } = useProfileQuery(userData.id);
+  // const { roleMode, userData } = useGlobalData();
+  const { userId, roleMode } = useAuth()
+
+  const { data } = useProfileQuery(userId);
 
   console.log(data, "user profile data...");
 
-  if (!userData || !data) {
+  if (!userId || !data) {
     return <Loader />
 
   }
