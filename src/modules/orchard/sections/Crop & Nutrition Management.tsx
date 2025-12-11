@@ -2,7 +2,7 @@ import FormDateInput from "@/src/components/form/inputs/FormDateInput";
 import FormInput from "@/src/components/form/inputs/FormInput";
 import RadioGroup from "@/src/components/form/inputs/RadioButton";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import { ScrollView, Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function CropNutrition({ control, errors }) {
   const fertilizerOptions = ["Organic", "Chemical", "Integrated"];
@@ -12,12 +12,8 @@ export default function CropNutrition({ control, errors }) {
   const applicationModeOptions = ["Soil Application", "Foliar Application"];
 
   return (
-    <ScrollView className="flex-1 w-full">
-      <Text className="text-2xl font-bold mb-4 text-center text-primary">
-        Crop & Nutrition Management
-      </Text>
-
-      <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
+    <View className="flex-1 w-full">
+      <View className="bg-light w-full">
         {/* 1️⃣ Fertilizer Practice */}
         <SingleSelectInput
           control={control}
@@ -72,6 +68,6 @@ export default function CropNutrition({ control, errors }) {
           error={errors.applicationMode?.message}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 }

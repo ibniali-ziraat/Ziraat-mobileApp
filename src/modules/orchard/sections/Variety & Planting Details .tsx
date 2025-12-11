@@ -3,7 +3,7 @@ import FormInput from "@/src/components/form/inputs/FormInput";
 import RadioGroup from "@/src/components/form/inputs/RadioButton";
 
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 
 export default function VarietAndPlatingDetails({ control, errors }) {
 
@@ -30,7 +30,6 @@ export default function VarietAndPlatingDetails({ control, errors }) {
   ];
 
   return (
-    <ScrollView>
       <View style={{ padding: 20 }}>
 
         <CheckboxGroup
@@ -82,6 +81,5 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         />
 
       </View>
-    </ScrollView>
   );
 }
