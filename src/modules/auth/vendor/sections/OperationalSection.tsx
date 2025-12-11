@@ -47,7 +47,6 @@ export default function OperationalSection({ control, errors }) {
         name="deliveryServiceAvailable"
         label="Delivery Service Available"
         options={[
-          { value: "", label: "Select" },
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
         ]}

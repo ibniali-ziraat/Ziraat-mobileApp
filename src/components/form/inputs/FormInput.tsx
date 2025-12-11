@@ -1,4 +1,4 @@
-import { colors } from "@/src/constants/colors";
+import { colors } from "@/src/constants/colors"; // Importing colors from root
 import { FormSectionProps } from "@/src/types/formSectionProps";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
@@ -44,8 +44,9 @@ export default function FormInput({
         return (
           <View style={{ marginBottom: 16 }}>
             <TextInput
+              contentStyle={{ color: colors.dark }} // Use dark color for input text
               mode="outlined"
-              label={labelWithRequired} // <-- floating label now works!
+              label={labelWithRequired} // Use label with required asterisk
               value={value}
               onBlur={onBlur}
               onChangeText={(text) => {
@@ -66,14 +67,24 @@ export default function FormInput({
                 ) : undefined
               }
               style={{
-                backgroundColor: colors.light,
+                backgroundColor: colors.light, // Use light color for background
+                borderColor: colors.primary,  // Set border color to primary
+              }}
+              theme={{
+                colors: {
+                  primary: colors.primary, // Set primary color for outline
+                  placeholder: colors.neutral, // Placeholder text color
+                  text: colors.dark, // Input text color
+                  error: colors.error, // Error color
+                },
               }}
               {...props}
             />
 
             {showError && (
-              <HelperText type="error" visible>
+              <HelperText type="error" visible style={{ color: colors.error }}>
                 {(fieldError || error)?.message}
+                {/* Required Field */}
               </HelperText>
             )}
           </View>

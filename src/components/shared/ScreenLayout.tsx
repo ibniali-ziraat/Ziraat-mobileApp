@@ -1,20 +1,28 @@
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function ScreenLayout({ children }) {
+interface ScreenLayoutProps {
+  children: React.ReactNode;
+  keyboardOffset?: number;
+}
+
+export default function ScreenLayout({ children, keyboardOffset = 80 }: ScreenLayoutProps) {
   return (
     <KeyboardAvoidingView
-      className="flex-1"
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={{ flex: 1, backgroundColor: "white" }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={keyboardOffset} // important
     >
-      <View className="flex-1 bg-light ">
+      <SafeAreaView style={{ flex: 1 }}>
         <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          {children}
+          <View style={{ flex: 1 }}>{children}</View>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 }

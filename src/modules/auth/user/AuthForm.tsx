@@ -19,7 +19,8 @@ function ModeButton({ title, onPress }: ModeButtonProps) {
         paddingVertical: 12,
         paddingHorizontal: 20,
         alignSelf: "center",
-        marginTop: 20,
+        marginTop: 10,
+        marginBottom: 20,
       }}
     >
       <Text style={{ color: colors.primary, fontWeight: "600", fontSize: 16 }}>
@@ -33,35 +34,36 @@ export default function AuthForm() {
   const [mode, setMode] = useState<"login" | "register">("register");
 
   return (
- <ScreenLayout>
-     <View
-      style={{
-        backgroundColor: colors.light,
-        flex: 1,
-        minHeight: "100%",
-      }}
-    >
-      {/* Logo */}
-      <View style={{ alignItems: "center", marginBottom: 30 }}>
-        <Image
-          source={require("@/assets/images/logo.jpeg")} // replace with your logo path
-          style={{ width: 120, height: 120, resizeMode: "contain" }}
+    <ScreenLayout>
+      <View
+        style={{
+          backgroundColor: colors.light,
+          flex: 1,
+          minHeight: "80%",
+          justifyContent: "center",
+        }}
+      >
+        {/* Logo */}
+        <View style={{ alignItems: "center", marginBottom: 20 }}>
+          <Image
+            source={require("@/assets/images/logo.jpeg")} // replace with your logo path
+            style={{ width: 120, height: 120, resizeMode: "contain" }}
+          />
+        </View>
+
+        <View>
+          {mode === "login" ? <LoginForm /> : <UserRegistrationScreen />}
+        </View>
+        {/* Toggle Mode */}
+        <ModeButton
+          title={
+            mode === "login"
+              ? "Don't have an account? Register"
+              : "Already have an account? Login"
+          }
+          onPress={() => setMode(mode === "login" ? "register" : "login")}
         />
       </View>
-
-      <View>
-        {mode === "login" ? <LoginForm /> : <UserRegistrationScreen />}
-      </View>
-      {/* Toggle Mode */}
-      <ModeButton
-        title={
-          mode === "login"
-            ? "Don't have an account? Register"
-            : "Already have an account? Login"
-        }
-        onPress={() => setMode(mode === "login" ? "register" : "login")}
-      />
-    </View>
- </ScreenLayout>
+    </ScreenLayout>
   );
 }

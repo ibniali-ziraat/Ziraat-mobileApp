@@ -2,9 +2,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-import HeaderBar from "../components/shared/HeaderBar";
+import ScreenLayout from "../components/shared/ScreenLayout";
 import SalesSummaryCard from "../modules/vendor/components/SalesSummaryCard";
 import SalesTabs from "../modules/vendor/components/SalesTabs";
 
@@ -39,11 +38,11 @@ export default function SalesScreen() {
   const net = data.cash + data.credit - data.fee - data.discount;
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F6F7F8]">
-      <HeaderBar title="Sales Overview" icon="bar-chart-outline" />
-
+    <ScreenLayout>
+      
+        
       <ScrollView
-        className="px-4 pt-4"
+        className=" pt-4"
         contentContainerStyle={{ paddingBottom: 50 }}
         showsVerticalScrollIndicator={false}
       >
@@ -109,13 +108,11 @@ export default function SalesScreen() {
         </Animated.View>
 
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }
 
-// =======================================================================
-// UI SUB-COMPONENTS
-// =======================================================================
+
 
 function PageTitle({ title }) {
   return (

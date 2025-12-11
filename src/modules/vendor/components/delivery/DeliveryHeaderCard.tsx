@@ -4,16 +4,8 @@ import { Text, View } from "react-native";
 export default function DeliveryHeaderCard({ order, theme }) {
   return (
     <View
-      className="rounded-3xl p-5 mb-6"
-      style={{
-        backgroundColor: "#ffffff",
-        borderColor: `${theme.primary}25`,
-        borderWidth: 1,
-        shadowColor: "#000",
-        shadowOpacity: 0.08,
-        shadowRadius: 10,
-        elevation: 4,
-      }}
+      className="rounded-3xl  mb-6"
+      
     >
       {/* TOP ACCENT LINE */}
       <View
@@ -27,7 +19,7 @@ export default function DeliveryHeaderCard({ order, theme }) {
       />
 
       {/* ORDER ID */}
-      <Text className="text-xl font-extrabold text-gray-900 tracking-wide">
+      <Text className="text-xl font-extrabold text-black tracking-wide">
         {order.id}
       </Text>
 
@@ -38,11 +30,7 @@ export default function DeliveryHeaderCard({ order, theme }) {
       {/* STATUS CHIP */}
       <View
         className="flex-row items-center mt-4 px-3 py-[6px] rounded-full self-start"
-        style={{
-          backgroundColor: `${theme.primary}18`,
-          borderWidth: 1,
-          borderColor: `${theme.primary}50`,
-        }}
+        
       >
         <Ionicons
           name={
@@ -54,13 +42,13 @@ export default function DeliveryHeaderCard({ order, theme }) {
               ? "time-outline"
               : "alert-circle-outline"
           }
-          size={14}
-          color={theme.primaryDark}
+          size={22}
+          color={theme.secondary}
         />
 
         <Text
-          className="ml-2 text-xs font-semibold"
-          style={{ color: theme.primaryDark }}
+          className="ml-2 text-sm font-semibold"
+          style={{ color: theme.secondary }}
         >
           {order.status}
         </Text>
@@ -79,7 +67,7 @@ export default function DeliveryHeaderCard({ order, theme }) {
           <Text className="text-[12px] text-gray-500">Status</Text>
           <Text
             className="text-[13px] font-semibold"
-            style={{ color: theme.primaryDark }}
+            style={{ color: theme.primary }}
           >
             {order.status}
           </Text>

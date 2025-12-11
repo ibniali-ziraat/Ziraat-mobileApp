@@ -7,3 +7,4 @@ export const save = (key: string, value: any) =>
 export const load = async (key: string) => await getItem(key);
 
 export const clear = async (key: string) => await deleteItem(key);
+

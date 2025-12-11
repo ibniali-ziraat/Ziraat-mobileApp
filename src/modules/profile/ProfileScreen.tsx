@@ -26,13 +26,20 @@ import { useProfileProgress } from "@/src/hooks/useProfileProgress";
 import { useEffect } from "react";
 import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
 import { userRoutes } from "../auth/vendor/config/userRoutes";
+import { ActivityIndicator } from "react-native-paper";
+import Loader from "@/src/components/shared/Loader";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import LogoutButton from "@/src/components/ui/LogoutButton";
+import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
+import ProfileTopHeader from "@/src/components/shared/ProfileTopHeader";
+import ProfileDetails from "@/src/components/shared/ProfileDetails";
 
 export default function UserProfileScreen() {
-  // const { userId, userProfileId, logoutUser, setUserProfileId } = useAuth();
   const { userData, setUserData, logout } = useGlobalData();
   const queryClient = useQueryClient();
 
-  const { data: profileData } = useProfileQuery(userData.id);
+
+  const { data: profileData } = useProfileQuery(userData?.id);
   const { data: addressData } = useAddressQuery(userData.profileId);
   const { data: educationData } = useEducationQuery(userData.profileId);
   const { data: professionData } = useProfessionQuery(userData.profileId);
@@ -77,21 +84,39 @@ export default function UserProfileScreen() {
     }
   };
 
+  if (!profileData) {
+    return <Loader />
+  }
+
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: colors.light }}>
+    <ScreenLayout>
       <BackHeader title="Profile" />
+      <ProfileTopHeader
+        profilePic={profileData?.profilePic}
+        fullName={profileData?.fullName}
+        onEdit={() => goToSection("profile")}
+      />
 
-      <ProgressBar progress={progress} />
-
-      {missingSections.length > 0 && (
-        <Text style={{ color: "gray", marginBottom: 15 }}>
-          Missing: {missingSections.join(", ")}
-        </Text>
+      {/* Progress bar */}
+      {progress < 100 && (
+        <ProfileProgressBar
+          progress={progress}
+          missingSections={missingSections}
+          completedSections={["Profile", "Address", "Education", "Profession"].filter(
+            (s) => !missingSections.includes(s.toLowerCase())
+          )}
+        />
       )}
 
-      <ProfileHeader data={profileData} onEdit={() => goToSection("profile")} />
+      {/* Details section */}
+      <ProfileDetails
+        email={profileData?.email}
+        phone={profileData?.phone}
+        age={profileData?.age}
+        gender={profileData?.gender}
+        createdOn={profileData?.createdOn}
+      />
 
-      {/* ADDRESS SECTION */}
       <SectionCard
         title="Address"
         onEdit={addressData ? () => goToSection("address") : undefined}
@@ -164,22 +189,8 @@ export default function UserProfileScreen() {
       </SectionCard>
 
       {/* LOGOUT BUTTON */}
-      <TouchableOpacity
-        onPress={async () => {
-          await logout();
-        }}
-        style={{
-          marginTop: 40,
-          backgroundColor: colors.error,
-          paddingVertical: 15,
-          borderRadius: 12,
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ color: "white", fontSize: 16, fontWeight: "700" }}>
-          Logout
-        </Text>
-      </TouchableOpacity>
-    </ScrollView>
+      <LogoutButton onPress={async () => await logout()} />
+
+    </ScreenLayout>
   );
 }

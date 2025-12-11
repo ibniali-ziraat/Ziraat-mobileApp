@@ -5,11 +5,12 @@ import { Text, View } from "react-native";
 export default function ProductPerformanceCard({ data }) {
   return (
     <View
-      className="p-5 rounded-2xl mb-4"
+      className=" rounded-2xl mb-4"
       style={{
-       
-        shadowRadius: 12,
-        shadowOffset: { width: 0, height: 3 },
+      
+
+        shadowRadius: 6,
+        
       }}
     >
       {/* TITLE */}
@@ -44,9 +45,9 @@ export default function ProductPerformanceCard({ data }) {
             key={i}
             className="p-4 rounded-2xl mb-4"
             style={{
-              backgroundColor: "#f7f7f7",
-              borderWidth: 1,
-              borderColor: "#e5e5e5",
+              backgroundColor:"#fff",
+       borderColor:"#e5e7eb",
+       borderWidth:1,
             }}
           >
             <View className="flex-row items-center justify-between">

@@ -109,12 +109,8 @@ export default function TeamCard() {
     <Animated.View
       entering={FadeInUp.duration(600)}
       layout={Layout.springify()}
-      className="rounded-2xl p-5 mb-6"
-      style={{
-        backgroundColor: colors.light,
-        borderColor: colors.neutral,
-        borderWidth: 1,
-      }}
+      className="mt-4"
+     
     >
       {/* HEADER */}
       <View className="flex-row items-center justify-between">
@@ -142,12 +138,15 @@ export default function TeamCard() {
               entering={FadeInLeft.delay(index * 120)}
               layout={Layout.springify()}
               className="p-4 rounded-xl mb-3"
-              style={{
-                backgroundColor: colors.darkHover,
-               
-                borderColor: accent,
-              }}
-            >
+                 style={{
+        backgroundColor: "#fff",
+        borderColor: "#e5e7eb",
+        borderWidth: 1,
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+        elevation: 3,
+         }}   >
               {/* TOP ROW — Avatar + Name + Status */}
               <View className="flex-row justify-between items-center">
                 <View className="flex-row items-center">

@@ -111,16 +111,8 @@ export default function UserScreen() {
   return (
     <View className="flex-1 bg-white">
 
-       <ScrollView className="px-4 py-4">
-              {/* Header */}
-              <View className="mb-3">
-                <Text className="text-[22px] font-extrabold" style={{ color: colors.primaryDark }}>
-                users Overview
-                </Text>
-                <Text className="text-[12px] mt-1" style={{ color: "#6b7280" }}>
-                  Cash & Credit Sale Management Dashboard
-                </Text>
-              </View>
+       <ScrollView className="">
+              
 
         {/* FILTER TABS */}
         <View className="flex-row mb-4 mt-1">
@@ -170,10 +162,10 @@ export default function UserScreen() {
                 </View>
 
                 <View>
-                  <Text className="font-semibold text-gray-900 text-sm">
+                  <Text className="font-semibold text-black text-sm">
                     {user.name}
                   </Text>
-                  <Text className="text-xs text-gray-500">{user.email}</Text>
+                  <Text className="text-xs text-black">{user.email}</Text>
                 </View>
               </View>
 
@@ -277,7 +269,7 @@ export default function UserScreen() {
             {openAccordion === i && (
               <View className="mt-3 pl-1">
                 {r.perms.map((p, idx) => (
-                  <Text key={idx} className="text-xs text-gray-700 mb-1">
+                  <Text key={idx} className="text-sm text-black mb-1">
                     • {p}
                   </Text>
                 ))}
@@ -292,7 +284,7 @@ export default function UserScreen() {
         {Object.keys(groupedLogs).map((date) => (
           <View key={date} className="mb-4">
 
-            <Text className="text-xs text-gray-500 mb-2">{date}</Text>
+            <Text className="text-xs text-black mb-2">{date}</Text>
 
             <View className="bg-white rounded-xl border border-gray-200 overflow-hidden">
               {groupedLogs[date].map((l, index) => (

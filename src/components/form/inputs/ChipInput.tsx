@@ -1,15 +1,24 @@
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import { Text, View } from "react-native";
-import { Chip, TextInput } from "react-native-paper";
+import { Text, TextInput, View, TouchableOpacity } from "react-native";
+import { X, Plus } from "lucide-react-native"; // Lucide icons
+import { colors } from "@/src/constants/colors";
+
+interface ChipInputProps {
+  control: any;
+  name: string;
+  label: string;
+  placeholder?: string;
+  error?: any;
+}
 
 export default function ChipInput({
   control,
   name,
   label,
-  error,
   placeholder = "Add",
-}) {
+  error,
+}: ChipInputProps) {
   const [input, setInput] = useState("");
 
   return (
@@ -25,37 +34,51 @@ export default function ChipInput({
           setInput("");
         };
 
-        const handleRemove = (index) => {
-          const filtered = value.filter((_, i) => i !== index);
+        const handleRemove = (index: number) => {
+          const filtered = value.filter((_: any, i: number) => i !== index);
           onChange(filtered);
         };
 
         return (
-          <View style={{ marginTop: 15 }}>
-            <Text>{label}</Text>
+          <View className="mt-4">
+            <Text className="text-dark text-base font-semibold mb-2">{label}</Text>
 
-            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 6 }}>
-              {value?.map((item, index) => (
-                <Chip key={item + index} onClose={() => handleRemove(index)}>
-                  {item}
-                </Chip>
+            {/* Chips */}
+            <View className="flex-row flex-wrap gap-2 mb-2">
+              {value?.map((item: string, index: number) => (
+                <View
+                  key={item + index}
+                  className="flex-row items-center bg-white border border-neutral px-3 py-1 rounded-full"
+                >
+                  <Text className="text-dark text-sm">{item}</Text>
+                  <TouchableOpacity
+                    className="ml-2"
+                    onPress={() => handleRemove(index)}
+                  >
+                    <X size={14} color={colors.error} />
+                  </TouchableOpacity>
+                </View>
               ))}
             </View>
 
-            <TextInput
-              placeholder={placeholder}
-              value={input}
-              onChangeText={setInput}
-              right={
-                <TextInput.Icon
-                  icon="plus"
-                  onPress={handleAdd}
-                  forceTextInputFocus={false}
-                />
-              }
-            />
+            {/* Input */}
+            <View className="flex-row items-center border border-neutral rounded-md bg-white px-3 py-4">
+              <TextInput
+                className="flex-1 text-dark text-base p-0 m-0"
+                placeholder={placeholder}
+                placeholderTextColor={colors.neutral}
+                value={input}
+                onChangeText={setInput}
+              />
+              <TouchableOpacity onPress={handleAdd} className="ml-2">
+                <Plus size={24} color={colors.primary} />
+              </TouchableOpacity>
+            </View>
 
-            {error && <Text style={{ color: "red" }}>{error.message}</Text>}
+            {/* Error */}
+            {error && (
+              <Text className="text-error text-sm mt-1">{error.message}</Text>
+            )}
           </View>
         );
       }}

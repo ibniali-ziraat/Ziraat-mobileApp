@@ -16,10 +16,12 @@ import {
   saveEducationSection,
   saveProfessionSection,
   saveProfileSection,
+  sendUserOtp,
   updateAddressSection,
   updateEducationSection,
   updateProfessionSection,
   updateProfileSection,
+  userExists,
   verifyUserOtp,
 } from "../services/userProfileService";
 
@@ -27,6 +29,9 @@ import {
 // 🔐 LOGIN
 // ----------------------------------------------------
 export const useLoginMutation = () => useMutation({ mutationFn: login });
+
+export const useSendOtpMutation = () =>
+  useMutation({ mutationFn: sendUserOtp });
 
 export const useOtpVerifyMutation = () =>
   useMutation({ mutationFn: verifyUserOtp });
@@ -106,3 +111,9 @@ export const useProfessionUpdateMutation = () =>
 
 export const useProfessionDeleteMutation = () =>
   useMutation({ mutationFn: deleteProfessionSection });
+
+
+
+
+export const useCheckUserExists = () =>
+  useMutation({ mutationFn: userExists });

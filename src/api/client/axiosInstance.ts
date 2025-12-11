@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getItem } from "@/src/utils/universalSecureToken";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -11,7 +11,8 @@ console.log(process.env.EXPO_PUBLIC_ZIRAAT_BASE_URL, "url");
 
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const token = await AsyncStorage.getItem("user_token");
+    const token = await getItem("user_token");
+
 
     if (token) {
       config.headers = config.headers || {};
