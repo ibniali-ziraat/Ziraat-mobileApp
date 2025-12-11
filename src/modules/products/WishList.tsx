@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const Wishlist = () => {
   const router = useRouter();
@@ -41,14 +40,13 @@ const Wishlist = () => {
     }
   };
 
-  const handleStartShopping = () => {
-    router.push("/Product");
-  };
+  const handleStartShopping = () => router.push("/Product");
 
   if (wishlistItems.length === 0) {
+
     return (
-      <SafeAreaView className="flex-1 bg-white">
-        <BackHeader title="Wishlist" desc="Your saved items" />
+      <View className="flex-1 bg-white"> 
+        <BackHeader title="My Wishlist" desc="Your selected items" />
 
         <View className="flex-1 justify-center items-center px-6">
           <Image
@@ -56,7 +54,6 @@ const Wishlist = () => {
             className="w-56 h-56 mb-6"
             resizeMode="contain"
           />
-
           <Text className="text-2xl font-semibold text-dark mb-2">
             Empty Wishlist
           </Text>
@@ -74,12 +71,13 @@ const Wishlist = () => {
             </Text>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+
+    <View className="flex-1 bg-white"> 
       <BackHeader
         title="My Wishlist"
         desc={`${wishlistItems.length} ${
@@ -94,20 +92,21 @@ const Wishlist = () => {
         contentContainerStyle={{ paddingBottom: 20 }}
         ItemSeparatorComponent={() => <View/>}
         renderItem={({ item }) => (
-          <View className="bg-white">
+         
+          <View className="bg-light px-4 "> 
             <WishlistItem item={item} onRemove={handleRemove} />
           </View>
         )}
         ListFooterComponent={
-          <View className="mt-6 mb-4">
+          <View className="mt-6 mb-4 px-4">
             <Text className="text-center text-dark text-sm">
-              You've reached the end of your wishlist.
+              You have reached the end of your wishlist.
             </Text>
           </View>
         }
       />
-    </SafeAreaView>
+    </View>
   );
-};
+}
 
 export default Wishlist;

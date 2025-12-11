@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { View } from "react-native";
 import FormInput from "../inputs/FormInput";
 import SingleSelectInput from "../inputs/SingleSelectInput";
+import Heading from "../../shared/Heading";
 
 export default function ProfileSection({
   control,
@@ -22,6 +23,10 @@ export default function ProfileSection({
 
   return (
     <View>
+      <Heading
+        title="Sign Up"
+        subtitle="Create your account to get started"
+      />
       <FormInput
         control={control}
         name="fullName"

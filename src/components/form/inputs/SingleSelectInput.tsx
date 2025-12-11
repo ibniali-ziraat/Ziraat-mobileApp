@@ -78,7 +78,12 @@ export default function SingleSelectInput({
               <Text style={{ fontSize: 12, marginTop: 4, color: colors.error }}>
                 {"Required Field"}
               </Text>
+
             )}
+
+
+
+
 
             {/* Modal */}
             <Modal visible={visible} transparent animationType="fade">
