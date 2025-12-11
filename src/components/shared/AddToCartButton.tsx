@@ -10,7 +10,6 @@ export default function AddToCartButton({ title = "Add to Cart", onPress }) {
     if (loading) return;
     setLoading(true);
 
-
     setTimeout(() => {
       setLoading(false);
       onPress?.();
@@ -22,19 +21,18 @@ export default function AddToCartButton({ title = "Add to Cart", onPress }) {
       onPress={handlePress}
       disabled={loading}
       activeOpacity={0.8}
-      className="w-full border border-neutral  py-3 rounded-lg flex-row justify-center items-center">
-     (
-        <View className="flex-row justify-center items-center w-full">
-          <ShoppingCart size={20} color={colors.dark} />
-          <Text
-            className="text-dark font-semibold text-lg flex-shrink ml-2"
-            numberOfLines={1}
-      
-          >
-            {title}
-          </Text>
-        </View>
-      )
+      className="w-full border border-neutral py-3 rounded-lg flex-row justify-center items-center"
+    >
+     
+      <View className="flex-row justify-center items-center w-full">
+        <ShoppingCart size={20} color={colors.dark} />
+        <Text
+          className="text-dark font-semibold text-lg flex-shrink ml-2"
+          numberOfLines={1}
+        >
+          {title}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 }

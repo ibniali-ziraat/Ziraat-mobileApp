@@ -1,30 +1,30 @@
 import CheckboxGroup from "@/src/components/form/inputs/Checkbox";
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import { ScrollView, Text, View } from "react-native";
+import { View } from "react-native";
 
 
 import {
   certificationOptions,
   digitalToolOptions,
   schemeOptions,
-} from "@/src/schemas/orchard schemas/stepISchema";
+} from "@/src/schemas/orchard schemas/OptionalFutureFieldsSchema";
 
-export default function StepI_OptionalFutureFields({ control, errors }:any) {
+export default function OptionalFutureFields({ control, errors }:any) {
   const schemeOpts = schemeOptions.map((x) => ({ label: x, value: x }));
   const certOpts = certificationOptions.map((x) => ({ label: x, value: x }));
   const toolOpts = digitalToolOptions.map((x) => ({ label: x, value: x }));
 
   return (
-    <ScrollView className="flex-1 w-full">
-      <Text className="text-2xl font-bold mb-4 text-center text-primary">
+    <View className="flex-1 w-full">
+      {/* <Text className="text-2xl font-bold mb-4 text-center text-primary">
         Optional / Future-Proof Fields
-      </Text>
+      </Text> */}
 
-      <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
-        <Text className="text-lg font-semibold mb-3 text-primary">
+      <View className="bg-light w-full">
+        {/* <Text className="text-lg font-semibold mb-3 text-primary">
           Additional Optional Information
-        </Text>
+        </Text> */}
 
         <CheckboxGroup
           control={control}
@@ -60,6 +60,6 @@ export default function StepI_OptionalFutureFields({ control, errors }:any) {
           error={errors.digitalTools?.message}
         />
       </View>
-    </ScrollView>
+    </View>
   );
 }

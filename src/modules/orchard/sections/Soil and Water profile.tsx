@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useWatch } from "react-hook-form";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
 import FormFileInput from "@/src/components/form/inputs/FormFileInput";
@@ -15,9 +15,9 @@ import {
   waterAvailabilityOptions,
   waterSourceOptions,
   yesNoOptions,
-} from "@/src/schemas/orchard schemas/stepCSchema";
+} from "@/src/schemas/orchard schemas/SoilWaterProfileSchema";
 
-export default function StepC({ control, errors }) {
+export default function SoilAndWaterProfile({ control, errors }) {
   const lastSoilTestDone = useWatch({ control, name: "lastSoilTestDone", defaultValue: "No" });
   const soilTestRecordsDone = useWatch({ control, name: "soilTestRecordsDone", defaultValue: "No" });
   const soilTestFileToggle = useWatch({ control, name: "soilTestFileToggle", defaultValue: "No" });
@@ -25,18 +25,18 @@ export default function StepC({ control, errors }) {
   const [open, setOpen] = useState(true);
 
   return (
-    <ScrollView className="flex-1 w-full p-4">
+    <View className="flex-1 w-full p-4">
 
       {/* ---- Title ---- */}
-      <Text className="text-2xl font-bold mb-6 text-center text-primary">
+      {/* <Text className="text-2xl font-bold mb-6 text-center text-primary">
         Soil & Water Profile
-      </Text>
+      </Text> */}
 
     
-      <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
-        <Text className="text-lg font-semibold mb-3 text-gray-800">
+      <View className="bg-white ">
+        {/* <Text className="text-lg font-semibold mb-3 text-gray-800">
           Soil Information
-        </Text>
+        </Text> */}
 
         <SingleSelectInput
           control={control}
@@ -166,6 +166,6 @@ export default function StepC({ control, errors }) {
         />
       </View>
 
-    </ScrollView>
+    </View>
   );
 }

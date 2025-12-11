@@ -1,9 +1,9 @@
 import { ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 
 import DeliveryHeaderCard from "../../../modules/vendor/components/delivery/DeliveryHeaderCard";
 
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import DeliveryOrderAssignment from "../../../modules/vendor/components/delivery/DeliveryOrderAssignment";
 import DeliveryProof from "../../../modules/vendor/components/delivery/DeliveryProof";
 import DeliveryRoute from "../../../modules/vendor/components/delivery/DeliveryRoute";
@@ -26,15 +26,15 @@ export default function DeliveryScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <ScreenLayout>
       
 
-      <ScrollView className="px-4 py-4 pb-40">
+      <ScrollView className="">
         <DeliveryHeaderCard order={deliveryOrder} theme={theme} />
         <DeliveryOrderAssignment order={deliveryOrder} theme={theme} />
         <DeliveryRoute order={deliveryOrder} theme={theme} />
         <DeliveryProof theme={theme} />
       </ScrollView>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }

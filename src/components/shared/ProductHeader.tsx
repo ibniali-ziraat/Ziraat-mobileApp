@@ -31,6 +31,7 @@ export default function ProductHeader() {
 
       
         <TouchableOpacity
+        onPress={() => router.push("/cartlist")}
           className="p-2 rounded-full bg-white border"
           style={{ borderColor: colors.neutral }}
         >

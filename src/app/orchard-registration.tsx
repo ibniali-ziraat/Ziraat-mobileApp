@@ -1,4 +1,5 @@
-import OrchardRegistrationForm from "../modules/orchard/OrchardRegistrationForm";
+// import OrchardRegistrationForm from "../modules/orchard/OrchardRegistrationForm";
+import BasicInfoScreen from "../modules/orchard/screens/BasicInfoScreen";
 export default function OrchardRegistration() {
-  return <OrchardRegistrationForm />;
+  return <BasicInfoScreen />;
 }

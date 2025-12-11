@@ -31,7 +31,7 @@ export const insuranceOptions = ["Yes", "No"] as const;
    SCHEMA
 -------------------------------------------- */
 
-export const stepEPlantProtectionSchema = z.object({
+export const PlantProtectionSchema = z.object({
   /**  
    * 🌿 Diseases (multi-select)
    * - Must be an array

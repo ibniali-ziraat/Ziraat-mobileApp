@@ -90,6 +90,46 @@ export const DashboardTabs = {
   },
 
   // Vendor
+  vendorProfile: {
+    name: "vendorProfile",
+    component: Profile,
+    icon: Lucide.User,
+    label: "Profile",
+    link: "dashboards/vendor-profile",
+    role: "supplier",
+  },
+  vendorSales: {
+    name: "vendorSales",
+    component: SalesScreen,
+    icon: Lucide.ShoppingCart,
+    label: "Sales",
+    link: "dashboards/vendor-sales",
+    role: "supplier",
+  },
+  vendorNotification: {
+    name: "vendorNotification",
+    component: NotificationScreen,
+    icon: Lucide.Bell,
+    label: "Notifications",
+    link: "dashboards/vendor-notification",
+    role: "supplier",
+  },
+  vendorUserDetails: {
+    name: "vendorUserDetails",
+    component: UserScreen,
+    icon: Lucide.Users,
+    label: "Customers",
+    link: "dashboards/vendor-user-details",
+    role: "supplier",
+  },
+  vendorDelivery: {
+    name: "vendorDelivery",
+    component: Delivery,
+    icon: Lucide.Truck,
+    label: "Delivery",
+    link: "dashboards/vendor-delivery",
+    role: "supplier",
+  },
   vendorCredits: {
     name: "vendorCredits",
     component: CreditScreen,
@@ -114,14 +154,7 @@ export const DashboardTabs = {
     link: "dashboards/vendor-financial",
     role: "supplier",
   },
-  vendorNotification: {
-    name: "vendorNotification",
-    component: NotificationScreen,
-    icon: Lucide.Bell,
-    label: "Notifications",
-    link: "dashboards/vendor-notification",
-    role: "supplier",
-  },
+  
   vendorOffers: {
     name: "vendorOffers",
     component: OffersScreen,
@@ -146,36 +179,7 @@ export const DashboardTabs = {
     link: "dashboards/vendor-products",
     role: "supplier",
   },
-  vendorSales: {
-    name: "vendorSales",
-    component: SalesScreen,
-    icon: Lucide.ShoppingCart,
-    label: "Sales",
-    link: "dashboards/vendor-sales",
-    role: "supplier",
-  },
-  vendorUserDetails: {
-    name: "vendorUserDetails",
-    component: UserScreen,
-    icon: Lucide.Users,
-    label: "Customers",
-    link: "dashboards/vendor-user-details",
-    role: "supplier",
-  },
-  vendorDelivery: {
-    name: "vendorDelivery",
-    component: Delivery,
-    icon: Lucide.Truck,
-    label: "Delivery",
-    link: "dashboards/vendor-delivery",
-    role: "supplier",
-  },
-  vendorProfile: {
-    name: "vendorProfile",
-    component: Profile,
-    icon: Lucide.User,
-    label: "Profile",
-    link: "dashboards/vendor-profile",
-    role: "supplier",
-  },
+  
+  
+  
 };

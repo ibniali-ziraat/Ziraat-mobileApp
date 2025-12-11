@@ -25,7 +25,7 @@ export const treeAgeOptions = [
   "10+ years",
 ] as const;
 
-export const stepBBasicInfoSchema = z.object({
+export const VarietyAndPlatingDetailsSchema = z.object({
   varieties: z
     .array(z.enum(varietiesList))
     .min(1, "Please select at least one variety."),

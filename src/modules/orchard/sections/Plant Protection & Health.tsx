@@ -1,12 +1,12 @@
 // StepE_PlantProtection.js
-import { ScrollView, Text, View } from "react-native";
+import { View } from "react-native";
 
 import CheckboxGroup from "@/src/components/form/inputs/Checkbox";
 import FormInput from "@/src/components/form/inputs/FormInput";
 import RadioGroup from "@/src/components/form/inputs/RadioButton";
 import { FormSectionProps } from "@/src/types/formSectionProps";
 
-export default function StepE_PlantProtection({ control, errors }: FormSectionProps) {
+export default function PlantProtection({ control, errors }: FormSectionProps) {
   const diseaseList = [
     "Scab",
     "Alternaria",
@@ -28,19 +28,19 @@ export default function StepE_PlantProtection({ control, errors }: FormSectionPr
   const insuranceOptions = ["Yes", "No"];
 
   return (
-    <ScrollView className="flex-1 w-full">
+    <View className="flex-1 w-full">
 
       {/* PAGE HEADING */}
-      <Text className="text-2xl font-bold mb-4 text-center text-primary">
+      {/* <Text className="text-2xl font-bold mb-4 text-center text-primary">
         Plant Protection & Health
-      </Text>
+      </Text> */}
 
       {/* CARD */}
-      <View className="bg-light rounded-2xl p-5 shadow-md shadow-neutral w-full">
+      <View className="bg-light w-full">
 
-        <Text className="text-lg font-semibold mb-3 text-primary">
+        {/* <Text className="text-lg font-semibold mb-3 text-primary">
           Plant Protection & Health
-        </Text>
+        </Text> */}
 
         {/* 1️⃣ Disease History */}
         <CheckboxGroup
@@ -81,6 +81,6 @@ export default function StepE_PlantProtection({ control, errors }: FormSectionPr
 
       </View>
 
-    </ScrollView>
+    </View>
   );
 }

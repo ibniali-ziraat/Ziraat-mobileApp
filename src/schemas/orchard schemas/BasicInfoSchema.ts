@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const currentYear = new Date().getFullYear();
 
-export const orchardSchema = z.object({
+export const BasicInfoSchema = z.object({
   orchardName: z
     .string()
     .min(3, "Orchard name must be at least 3 characters"),

@@ -28,16 +28,12 @@ export default function WarehouseCard() {
   return (
     <Animated.View
       entering={FadeInUp.duration(650)}
-      className="rounded-sm p-5 "
-      style={{
-        backgroundColor: colors.light,
-        borderWidth: 1,
-        borderColor: colors.neutral,
-      }}
+      className="mt-4 "
+      
     >
       {/* Header */}
-      <View className="flex-row justify-between items-center pb-3 border-b"
-        style={{ borderColor: colors.neutral }}
+      <View className="flex-row justify-between items-center "
+        
       >
         <View>
           <Text className="text-lg font-extrabold" style={{ color: colors.dark }}>
@@ -61,12 +57,16 @@ export default function WarehouseCard() {
         <Animated.View
           key={index}
           entering={FadeInLeft.delay(index * 120)}
-          className="mt-5 p-4 rounded-xl shadow-sm"
-          style={{
-            backgroundColor: colors.darkHover,
-           
-            
-          }}
+          className="mt-5 p-4  rounded-xl mb-3 "
+             style={{
+        backgroundColor: "#fff",
+        borderColor: "#e5e7eb",
+        borderWidth: 1,
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+        elevation: 3,
+         }} 
         >
           {/* Title */}
           <Text className="font-bold text-base" style={{ color: colors.dark }}>
@@ -76,7 +76,7 @@ export default function WarehouseCard() {
           {/* Place */}
           <Text
             className="text-sm mt-[3px]"
-            style={{ color: colors.secondary}}
+            style={{ color: colors.primary}}
           >
             {w.place}
           </Text>
@@ -90,7 +90,7 @@ export default function WarehouseCard() {
                 className="w-7 h-7 rounded-lg items-center justify-center"
                 
               >
-                <Ionicons name={item.icon} size={16} color={colors.primary} />
+                <Ionicons name={item.icon} size={16} color={colors.secondary} />
               </View>
 
               <Text className="ml-3 text-sm" style={{ color: colors.dark }}>

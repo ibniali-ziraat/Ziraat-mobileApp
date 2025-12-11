@@ -7,7 +7,7 @@ function AppProvider({ children }) {
     <AppQueryClientProvider>
       <GlobalDataProvider>
         <AuthProvider>{children}</AuthProvider>
-      </GlobalDataProvider>{" "}
+      </GlobalDataProvider>
     </AppQueryClientProvider>
   );
 }

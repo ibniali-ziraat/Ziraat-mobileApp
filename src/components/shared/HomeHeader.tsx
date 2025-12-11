@@ -7,7 +7,7 @@ interface HomeHeaderProps {
   title?: string;
 }
 
-export default function HomeHeader({ title = "Farmer" }: HomeHeaderProps) {
+export default function HomeHeader({ title = "Naik Ummar Mukhtar" }: HomeHeaderProps) {
   return (
     <View
       className="w-full bg-white flex-row items-center justify-between"
@@ -16,7 +16,7 @@ export default function HomeHeader({ title = "Farmer" }: HomeHeaderProps) {
       {/* LEFT: Greeting */}
       <View className="flex-row items-center">
         <View>
-          <Text className="text-xs" style={{ color: colors.dark }}>
+          <Text className="text-md" style={{ color: colors.dark }}>
             Welcome
           </Text>
           <Text

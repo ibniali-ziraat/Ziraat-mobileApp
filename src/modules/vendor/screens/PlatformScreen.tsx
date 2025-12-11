@@ -1,3 +1,4 @@
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import FeeOverviewSection from "@/src/modules/vendor/components/platformScreen/FeeOverviewSection";
 import FeeStructureCard from "@/src/modules/vendor/components/platformScreen/FeeStructureCard.";
 import StatementBottom from "@/src/modules/vendor/components/platformScreen/StatementBottom";
@@ -6,7 +7,6 @@ import TransactionsSection from "@/src/modules/vendor/components/platformScreen/
 import WeeklyTrendChart from "@/src/modules/vendor/components/platformScreen/WeeklyTrendChart";
 import { useState } from "react";
 import { ScrollView, Text, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const colors = {
   primary: "#2d6b06",
@@ -79,10 +79,10 @@ export default function PlatformScreen() {
   ];
 
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: colors.bg }}>
+    <ScreenLayout>
       
 
-      <ScrollView className="px-4 pt-4 pb-24">
+      <ScrollView className="">
         
         <FeeStructureCard colors={colors} />
 
@@ -123,6 +123,6 @@ export default function PlatformScreen() {
         statements={statements}
         colors={colors}
       />
-    </SafeAreaView>
+    </ScreenLayout>
   );
 }
