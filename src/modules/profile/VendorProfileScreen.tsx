@@ -27,13 +27,14 @@ import { vendorRoutes } from "../auth/vendor/config/vendorRoutes";
 import ProductItemCard from "./components/ProductItemCard";
 import ProfileHeader from "./components/ProfileHeader";
 import SectionCard from "./components/SectionCard";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import Loader from "@/src/components/shared/Loader";
 
 export default function VendorProfileScreen() {
   const { vendorData, setVendorData, userData } = useGlobalData();
   const queryClient = useQueryClient();
 
-  const { data: profileData } = useVendorProfileQuery(userData.id);
-  console.log(profileData, "profileData...");
+  const { data: profileData, isPending: loadingVendorProfile } = useVendorProfileQuery(userData.id);
 
   const { data: licenseData } = useVendorLicenseQuery(vendorData.profileId);
   const { data: productsData } = useVendorProductsQuery(vendorData.profileId);
@@ -100,12 +101,11 @@ export default function VendorProfileScreen() {
     }
   };
 
+  if (loadingVendorProfile) return <Loader />
+
   return (
-    <ScrollView
-      className="flex-1 bg-white py-5 bg-light"
-      contentContainerStyle={{ paddingBottom: 40 }}
-      showsVerticalScrollIndicator={false}
-    >
+
+    <ScreenLayout>
       <BackHeader title="Profile" />
 
       <ProgressBar progress={progress} />
@@ -152,10 +152,7 @@ export default function VendorProfileScreen() {
               value={licenseData.licenseCopyUrl}
             />
             <DetailsCard title="PAN Number" value={licenseData.panNumber} />
-            <DetailsCard
-              title="Supplier Profile ID"
-              value={licenseData.supplierProfileId}
-            />
+
           </>
         ) : (
           <TouchableOpacity onPress={() => goToSection("license")}>
@@ -180,9 +177,8 @@ export default function VendorProfileScreen() {
             <DetailsCard
               title="Storage Capacity"
               value={
-                `${productsData.storageCapacityValue || ""} ${
-                  productsData.storageCapacityUnit || ""
-                }`.trim() || "N/A"
+                `${productsData.storageCapacityValue || ""} ${productsData.storageCapacityUnit || ""
+                  }`.trim() || "N/A"
               }
             />
 
@@ -418,6 +414,6 @@ export default function VendorProfileScreen() {
           </TouchableOpacity>
         )}
       </SectionCard>
-    </ScrollView>
+    </ScreenLayout>
   );
 }

@@ -27,7 +27,7 @@ export default function EducationSection({ control, errors }: Props) {
         control={control}
         name="passingYear"
         label="Year of Passing"
-        type="number"
+        type="phone"
         error={errors.passingYear}
       />
 

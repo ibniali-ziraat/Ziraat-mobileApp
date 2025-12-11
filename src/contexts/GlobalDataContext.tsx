@@ -1,37 +1,27 @@
-// GlobalDataContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { setUserAxiosToken } from "../api/client/axiosUser";
-import { setVendorAxiosToken } from "../api/client/axiosVendor";
-import { clear, load, save } from "../utils/authStorage";
+import { save, load, clear } from "../utils/authStorage";
 
 // =========================
 // Types
 // =========================
-
 export interface UserDataType {
   id: number | null;
   profileId: number | null;
-}
-
-export interface VendorDataType {
-  id: number | null;
+}export interface VendorDataType {
+  vendorData: number | null;
   profileId: number | null;
 }
 
 interface GlobalDataContextType {
   userToken: string | null;
-  vendorToken: string | null;
-
   userData: UserDataType;
-  vendorData: VendorDataType;
-
   initialized: boolean;
 
   setUserToken: (token: string | null) => Promise<void>;
-  setVendorToken: (token: string | null) => Promise<void>;
-
   setUserData: (data: Partial<UserDataType>) => void;
   setVendorData: (data: Partial<VendorDataType>) => void;
+  vendorData: VendorDataType
 
   logout: () => Promise<void>;
   roleMode: "farmer" | "supplier";
@@ -46,60 +36,46 @@ export const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [userToken, setUserTokenState] = useState<string | null>(null);
-  const [vendorToken, setVendorTokenState] = useState<string | null>(null);
-  const [roleMode, setRoleMode] = useState<"farmer" | "supplier">("farmer");
-
   const [userData, setUserDataState] = useState<UserDataType>({
     id: null,
     profileId: null,
   });
-
   const [vendorData, setVendorDataState] = useState<VendorDataType>({
     id: null,
     profileId: null,
   });
 
+  const [roleMode, setRoleMode] = useState<"farmer" | "supplier">("farmer");
   const [initialized, setInitialized] = useState(false);
-  useEffect(() => {
-    (async () => {
-      const storedRole = await load("role_mode");
-      if (storedRole === "supplier" || storedRole === "farmer") {
-        setRoleMode(storedRole);
-      }
-    })();
-  }, []);
 
-  // =========================
-  // Load from storage on app start
-  // =========================
+  // Load token, userId, profileId, roleMode on app start
   useEffect(() => {
     (async () => {
       const uTok = await load("user_token");
-      const vTok = await load("vendor_token");
+      const storedId = await load("user_id");
+      const storedProfileId = await load("profile_id");
+      const storedRole = await load("role_mode");
 
-      if (uTok) {
-        setUserTokenState(uTok);
-        setUserAxiosToken(uTok);
-      }
+      if (uTok) setUserTokenState(uTok);
+      if (storedId) setUserDataState(prev => ({ ...prev, id: Number(storedId) }));
+      if (storedProfileId)
+        setUserDataState(prev => ({ ...prev, profileId: Number(storedProfileId) }));
+      if (storedRole === "farmer" || storedRole === "supplier") setRoleMode(storedRole);
 
-      if (vTok) {
-        setVendorTokenState(vTok);
-        setVendorAxiosToken(vTok);
-      }
-
+      setUserAxiosToken(uTok || null);
       setInitialized(true);
     })();
   }, []);
 
   // =========================
-  // Set User Token
-  // =========================
-
+  // Update role mode
   const updateRoleMode = async (mode: "farmer" | "supplier") => {
     setRoleMode(mode);
     await save("role_mode", mode);
   };
 
+  // =========================
+  // Set user token
   const setUserToken = async (token: string | null) => {
     if (token) await save("user_token", token);
     else await clear("user_token");
@@ -109,60 +85,44 @@ export const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({
 
     if (!token) setUserDataState({ id: null, profileId: null });
   };
-
-  // =========================
-  // Set Vendor Token
-  // =========================
-  const setVendorToken = async (token: string | null) => {
-    if (token) await save("vendor_token", token);
-    else await clear("vendor_token");
-
-    setVendorTokenState(token);
-    setVendorAxiosToken(token);
-
-    if (!token) setVendorDataState({ id: null, profileId: null });
-  };
-
-  // =========================
-  // Merge User Data
-  // =========================
-  const setUserData = (data: Partial<UserDataType>) => {
-    setUserDataState((prev) => ({ ...prev, ...data }));
-  };
-
-  // =========================
-  // Merge Vendor Data
-  // =========================
   const setVendorData = (data: Partial<VendorDataType>) => {
     setVendorDataState((prev) => ({ ...prev, ...data }));
   };
+  // =========================
+  // Set user data and persist
+  const setUserData = (data: Partial<UserDataType>) => {
+    setUserDataState(prev => {
+      const updated = { ...prev, ...data };
+
+      if (data.id != null) save("user_id", String(data.id));
+      if (data.profileId != null) save("profile_id", String(data.profileId));
+
+      return updated;
+    });
+  };
 
   // =========================
-  // Logout (clears both)
-  // =========================
+  // Logout clears all
   const logout = async () => {
     await setUserToken(null);
-    await setVendorToken(null);
+    await clear("user_id");
+    await clear("profile_id");
+    setUserDataState({ id: null, profileId: null });
   };
 
   return (
     <GlobalDataContext.Provider
       value={{
         userToken,
-        vendorToken,
-
         userData,
-        vendorData,
-
         initialized,
-
         setUserToken,
-        setVendorToken,
         setUserData,
-        setVendorData,
         logout,
         roleMode,
         updateRoleMode,
+        vendorData,
+        setVendorData,
       }}
     >
       {children}
@@ -171,12 +131,9 @@ export const GlobalDataProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 // =========================
-// Export Hook
-// =========================
+// Hook
 export const useGlobalData = (): GlobalDataContextType => {
   const ctx = useContext(GlobalDataContext);
-  if (!ctx)
-    throw new Error("useGlobalData must be used within GlobalDataProvider");
-
+  if (!ctx) throw new Error("useGlobalData must be used within GlobalDataProvider");
   return ctx;
 };
