@@ -5,7 +5,6 @@ import { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import LoginForm from "./LoginForm";
 import UserRegistrationScreen from "./screens/UserRegistraitonScreen";
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 interface ModeButtonProps {
   title: string;
