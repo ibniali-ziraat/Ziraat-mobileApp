@@ -1,58 +1,121 @@
 import { Platform, Pressable, StyleSheet, View } from "react-native";
 
-export default function ProfileCard({
+export default function ZiraatCard({
   children,
+  className = "",
 
-  // Global shorthand
- 
-
-  // Individual padding controls
+  // padding props
   paddingTop,
   paddingBottom,
   paddingLeft,
   paddingRight,
+  paddingHorizontal,
+  paddingVertical,
 
-  // Individual margin controls
-  marginTop,
-  marginBottom,
-  marginLeft,
-  marginRight,
+  // margin props
+  marginTop = 0.625,
+  marginBottom = 0.625,
+  marginLeft = 0.625,
+  marginRight = 0.625,
+  marginHorizontal,
+  marginVertical,
 
-  width = "90%",
-  height = 200,
-  backgroundColor = "white",
+  // required
+  width,
+  height,
+
+  // border (static unless overridden)
+  borderWidth = 0.25,
+  borderColor = "#CCCCCC",
+  borderRadius = 12,
+
+  backgroundColor = "#FFFFFF",
+
   style,
-  onPress, // OPTIONAL
+  onPress,
 }) {
-  const platformShadow =
-    Platform.OS === "ios"
-      ? styles.iosShadow
-      : { elevation: 7 };
+  const REM = 16;
 
-  const CardContent = (
+  if (!width || !height) {
+    throw new Error("ZiraatCard requires width and height props.");
+  }
+
+  // PADDING
+  const computedPadding = {
+    paddingTop:
+      paddingVertical !== undefined
+        ? paddingVertical * REM
+        : paddingTop
+        ? paddingTop * REM
+        : 0,
+
+    paddingBottom:
+      paddingVertical !== undefined
+        ? paddingVertical * REM
+        : paddingBottom
+        ? paddingBottom * REM
+        : 0,
+
+    paddingLeft:
+      paddingHorizontal !== undefined
+        ? paddingHorizontal * REM
+        : paddingLeft
+        ? paddingLeft * REM
+        : 0,
+
+    paddingRight:
+      paddingHorizontal !== undefined
+        ? paddingHorizontal * REM
+        : paddingRight
+        ? paddingRight * REM
+        : 0,
+  };
+
+  // MARGIN
+  const computedMargin = {
+    marginTop:
+      marginVertical !== undefined ? marginVertical * REM : marginTop * REM,
+    marginBottom:
+      marginVertical !== undefined ? marginVertical * REM : marginBottom * REM,
+    marginLeft:
+      marginHorizontal !== undefined ? marginHorizontal * REM : marginLeft * REM,
+    marginRight:
+      marginHorizontal !== undefined
+        ? marginHorizontal * REM
+        : marginRight * REM,
+  };
+
+  // SHADOW WRAPPER (STATIC PER PLATFORM)
+  const ShadowWrapper = ({ children }) => (
     <View
-      className="rounded-2xl items-center justify-center"
       style={[
+        styles.shadowWrapper,
         {
           width,
           height,
-          backgroundColor,
-
-          // Global padding
-        //   padding,
-          paddingTop,
-          paddingBottom,
-          paddingLeft,
-          paddingRight,
-
-          // Global margin
-        //   margin,
-          marginTop,
-          marginBottom,
-          marginLeft,
-          marginRight,
+          borderRadius,
+          ...computedMargin,
         },
-        platformShadow,
+      ]}
+    >
+      {children}
+    </View>
+  );
+
+  // INNER CARD (NO SHADOW)
+  const CardInner = (
+    <View
+      className={`overflow-hidden ${className}`}
+      style={[
+        {
+          width: "100%",
+          height: "100%",
+          borderRadius,
+          backgroundColor,
+          borderWidth,
+          borderColor,
+          ...computedPadding,
+        },
         style,
       ]}
     >
@@ -60,65 +123,42 @@ export default function ProfileCard({
     </View>
   );
 
-  if (!onPress) return CardContent;
-
-  return <Pressable onPress={onPress}>{CardContent}</Pressable>;
+  return (
+    <ShadowWrapper>
+      {onPress ? <Pressable onPress={onPress}>{CardInner}</Pressable> : CardInner}
+    </ShadowWrapper>
+  );
 }
 
 const styles = StyleSheet.create({
-  iosShadow: {
-    shadowColor: "#FCFCFC",
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.45,
-    shadowRadius: 12,
+  shadowWrapper: {
+    backgroundColor: "#FFFFFF",
+
+    borderRadius: 24,
+
+    /* ----------------------------------------
+       ⚡ STATIC iOS SHADOW
+    ----------------------------------------- */
+    ...(Platform.OS === "ios" && {
+      shadowColor: "#000000",
+      shadowOpacity: 0.12,
+      shadowRadius: 16,
+      shadowOffset: { width: 0, height: 8 },
+    }),
+
+    /* ----------------------------------------
+       ⚡ STATIC ANDROID SHADOW
+    ----------------------------------------- */
+    ...(Platform.OS === "android" && {
+      elevation: 15,
+      shadowColor: "gray",
+    }),
+
+    /* ----------------------------------------
+       ⚡ STATIC WEB SHADOW
+    ----------------------------------------- */
+    ...(Platform.OS === "web" && {
+      boxShadow: "0px 8px 22px rgba(0,0,0,0.12)",
+    }),
   },
 });
-
-
-//    <ProfileCard
-//        marginLeft={5}
-//        marginRight={5}
-//        width="full" >
-
-//  <LinearGradient
-//             colors={["#4da82d", "#c7611f"]}
-//             start={{ x: 0, y: 0 }}
-//             end={{ x: 1, y: 1 }}
-//             className="p-5 w-full h-full "
-//             style={{
-//               borderRadius: 14,
-
-//             }}
-//           >
-//               <View>
-//                 <Text className="text-white text-4xl font-extrabold">28°C</Text>
-//                 <Text className="text-white text-base opacity-90 mt-1">
-//                   Sunny
-//                 </Text>
-
-//                 <View className="mt-4 space-y-2">
-//                   <View className="flex-row items-center">
-//                     <Ionicons name="water-outline" size={18} color="#fff" />
-//                     <Text className="text-white text-sm opacity-90 ml-2">
-//                       Humidity: 65%
-//                     </Text>
-//                   </View>
-//                   <View className="flex-row items-center mt-2">
-//                     <Ionicons name="rainy-outline" size={18} color="#fff" />
-//                     <Text className="text-white text-sm opacity-90 ml-2">
-//                       Rain: 0mm
-//                     </Text>
-//                   </View>
-//                    <View className="flex">
-//                 <Ionicons name="sunny" size={70} color="#fff" />
-//                 <Text className="text-white text-xs mt-2 opacity-90">
-//                   Clear Sky
-//                 </Text>
-//               </View>
-//                 </View>
-                
-//               </View>
-
-              
-//               </LinearGradient>
-//         </ProfileCard>
