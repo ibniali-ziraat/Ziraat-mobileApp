@@ -94,18 +94,16 @@
 //   );
 // }
 import FormInput from "@/src/components/form/inputs/FormInput";
+import FormActions from "@/src/components/shared/FormActions";
+import Heading from "@/src/components/shared/Heading";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { Button, Divider, Snackbar, Text } from "react-native-paper";
+import { Divider } from "react-native-paper";
 import { useZodForm } from "../../../hooks/useZodForm";
 import { LoginSchema } from "../../../schemas/shared/login.schema";
-import FormActions from "@/src/components/shared/FormActions";
-import { colors } from "@/src/constants/colors";
-import Heading from "@/src/components/shared/Heading";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -119,33 +117,33 @@ export default function LoginForm() {
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
   const onSubmit = async (data: any) => {
-    // router.push("/");
-    try {
-      const response = await loginMutate({
-        mobileNumber: data.mobileNumber,
-        password: data.password,
-      });
-      console.log(response, "login response");
+    router.push("/");
+    // try {
+    //   const response = await loginMutate({
+    //     mobileNumber: data.mobileNumber,
+    //     password: data.password,
+    //   });
+    //   console.log(response, "login response");
 
-      if (response.success) {
-        console.log(response, "response..");
+    //   if (response.success) {
+    //     console.log(response, "response..");
 
-        await setUserToken(response.token);
-        setUserData({
-          id: response.user,
-        });
-        router.replace("/");
-        showSuccessToast("logged in");
-      }
-      if (response.stat)
-        setShowSnack(true);
-    } catch (error: any) {
-      if (error?.response?.status === 401) {
-        showErrorToast("Invalid credentials.");
-      } else {
-        showErrorToast("Something went wrong. Please try again later.");
-      }
-    }
+    //     await setUserToken(response.token);
+    //     setUserData({
+    //       id: response.user,
+    //     });
+    //     router.replace("/");
+    //     showSuccessToast("logged in");
+    //   }
+    //   if (response.stat)
+    //     setShowSnack(true);
+    // } catch (error: any) {
+    //   if (error?.response?.status === 401) {
+    //     showErrorToast("Invalid credentials.");
+    //   } else {
+    //     showErrorToast("Something went wrong. Please try again later.");
+    //   }
+    // }
   };
 
   return (
