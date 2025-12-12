@@ -67,7 +67,7 @@ export default function OperationalSection({ control, errors }) {
         control={control}
         name="avgMonthlySalesVolume"
         label="Average Monthly Sales Volume"
-        type="number"
+        type="phone"
         error={errors?.avgMonthlySalesVolume?.message}
         optional
       />

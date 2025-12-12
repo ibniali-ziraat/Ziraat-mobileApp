@@ -8,35 +8,36 @@ export default function SummaryCard({
   setQuantity,
   total, 
   selectedShipping, 
+  hideQuantitySelector = false,   // 👈 this will control visibility
 }) {
+  const numericTotal = Number(total);
   const shippingPrice = Number(selectedShipping?.price) || 0;
-  const productTotal = total * quantity;
-  const finalAmount = productTotal + shippingPrice;
+  const finalAmount = numericTotal + shippingPrice;
 
   return (
-    <View className="bg-white p-4 rounded-2xl shadow border border-neutral mt-4 mb-4">
-
-  
+    <View className="bg-white p-4 rounded-2xl border border-neutral mb-4">
       <View className="flex-row items-center justify-between">
         <Text className="text-lg font-semibold text-dark">
-         Selected items: {quantity}{quantity > 1 ? " items" : ""}
+          Selected items: {quantity}{quantity > 1 ? " items" : ""}
         </Text>
-        <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
+
+        {!hideQuantitySelector && (
+          <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
+        )}
       </View>
+
       <View className="mt-4 space-y-2">
-      <View className="flex-row justify-between items-center">
-          <Text className="text-base text-dark">
-            Product price: ({quantity} × <IndianRupee size={12} color={colors.dark} /> {total})
-          </Text>
+        <View className="flex-row justify-between items-center">
+          <Text className="text-base text-dark">Product price</Text>
           <Text className="text-base text-dark font-semibold">
-            <IndianRupee size={12} color={colors.dark} /> {productTotal}
+            <IndianRupee size={12} color={colors.dark} /> {numericTotal}
           </Text>
         </View>
 
         {selectedShipping && (
           <View className="flex-row justify-between items-center">
             <Text className="text-base text-dark">
-              Shipping price:{selectedShipping.name}
+              Shipping: {selectedShipping.name}
             </Text>
             <Text className="text-base text-dark font-semibold">
               <IndianRupee size={12} color={colors.dark} /> {shippingPrice}
@@ -44,6 +45,7 @@ export default function SummaryCard({
           </View>
         )}
       </View>
+
       <View className="flex-row items-center justify-between mt-5 border-t pt-3">
         <Text className="text-lg text-dark font-semibold">Final Amount:</Text>
         <View className="flex-row items-center">

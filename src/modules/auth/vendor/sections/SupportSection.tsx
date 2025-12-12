@@ -18,7 +18,6 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         name="advisorySupport"
         label="Agronomy Advisory Support"
         options={[
-          { value: "", label: "Select" },
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
         ]}
@@ -30,7 +29,6 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         name="fieldStaffAvailable"
         label="Field Staff Available"
         options={[
-          { value: "", label: "Select" },
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
         ]}
@@ -67,7 +65,6 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         name="computerAvailable"
         label="Computer/Laptop Facility Available"
         options={[
-          { value: "", label: "Select" },
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
         ]}
@@ -79,7 +76,6 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         name="vehicleAvailable"
         label="Vehicle for Delivery / Two Wheeler"
         options={[
-          { value: "", label: "Select" },
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
         ]}

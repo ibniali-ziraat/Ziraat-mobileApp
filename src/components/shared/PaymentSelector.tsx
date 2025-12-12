@@ -23,7 +23,7 @@ export default function PaymentSelector({
       {/* Selector Button */}
       <TouchableOpacity
         onPress={() => setOpenDropdown(!openDropdown)}
-        className="flex-row items-center justify-between px-4 py-3 rounded-xl border border-dark bg-white shadow-md"
+        className="flex-row items-center justify-between px-4 py-3 rounded-xl border border-dark bg-white"
       >
         <Text className="text-dark font-semibold text-lg">
           {paymentMethod

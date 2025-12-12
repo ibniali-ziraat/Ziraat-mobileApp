@@ -4,7 +4,7 @@ import MenuHeader from "@/src/components/shared/MenuHeader";
 import ProductHeader from "@/src/components/shared/ProductHeader";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { Tabs } from "expo-router";
 import { Home, Menu, ShoppingBag, Trees } from "lucide-react-native";
@@ -14,8 +14,10 @@ export default function TabLayout() {
 
 
   const insets = useSafeAreaInsets();
-  const { roleMode, userData } = useGlobalData();
-  const { data } = useProfileQuery(userData.id);
+  // const { roleMode, userData } = useGlobalData();
+  const { userId, roleMode } = useAuth()
+
+  const { data } = useProfileQuery(userId);
 
   console.log(data, "user profile data...");
 
@@ -23,10 +25,6 @@ export default function TabLayout() {
   //   return <Loader />
 
   // }
-
-
-
-
 
   return (
     <Tabs

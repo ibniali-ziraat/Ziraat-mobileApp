@@ -1,5 +1,5 @@
 import { colors } from "@/src/constants/colors";
-import { ChevronDown, XCircle } from "lucide-react-native"; // Reset icon
+import { ChevronDown, RefreshCcw, RefreshCcwDot, XCircle } from "lucide-react-native"; // Reset icon
 import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { FlatList, Modal, Text, TouchableOpacity, View } from "react-native";
@@ -45,6 +45,17 @@ export default function SingleSelectInput({
 
         return (
           <View style={{ marginBottom: 16 }}>
+
+            <Text
+              style={{
+                marginBottom: 6,
+                fontSize: 14,
+                fontWeight: "500",
+                color: colors.dark,
+              }}
+            >
+              {label} {!optional && <Text style={{ color: colors.error }}> *</Text>}
+            </Text>
             {/* Input / Selector */}
             <TouchableOpacity
               style={{
@@ -64,7 +75,7 @@ export default function SingleSelectInput({
               <Text
                 style={{
                   fontSize: 16,
-                  color: selectedLabel ? colors.dark : colors.gray, // placeholder gray
+                  color: selectedLabel ? colors.dark : colors.dark, // placeholder gray
                 }}
               >
                 {selectedLabel || `Select ${label}`}
@@ -76,9 +87,14 @@ export default function SingleSelectInput({
 
             {liveError && (
               <Text style={{ fontSize: 12, marginTop: 4, color: colors.error }}>
-                {liveError.message || "Required Field"}
+                {"Required Field"}
               </Text>
+
             )}
+
+
+
+
 
             {/* Modal */}
             <Modal visible={visible} transparent animationType="fade">
@@ -107,25 +123,66 @@ export default function SingleSelectInput({
                   {/* Header */}
                   <View
                     style={{
-                      padding: 16,
+                      paddingHorizontal: 16,
+                      paddingVertical: 12,
                       borderBottomWidth: 1,
                       borderBottomColor: colors.neutral,
                       flexDirection: "row",
                       justifyContent: "space-between",
+                      gap: 2,
                       alignItems: "center",
                     }}
                   >
-                    <Text style={{ fontSize: 18, fontWeight: "600", color: colors.dark }}>
-                      Select
-                    </Text>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setVisible(false);
+                    {/* Title */}
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: "600",
+                        color: colors.dark,
                       }}
                     >
-                      <XCircle size={24} color={colors.error} />
-                    </TouchableOpacity>
+                      Select                    </Text>
+
+                    {/* RIGHT ICONS */}
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+
+                      {/* RESET (refresh) */}
+                      <TouchableOpacity
+                        onPress={() => {
+                          onChange("");
+                          setSelectedLabel("");
+                          setVisible(false);
+                        }}
+                        style={{
+                          padding: 6,            // better hit area
+                          marginRight: 6,
+                        }}
+                      >
+                        <RefreshCcw size={20} color={colors.primary} />
+                      </TouchableOpacity>
+
+                      {/* Vertical divider */}
+                      <View
+                        style={{
+                          width: 1,
+                          height: 20,
+                          backgroundColor: colors.neutral,
+                          marginHorizontal: 6,
+                        }}
+                      />
+
+                      {/* CLOSE */}
+                      <TouchableOpacity
+                        onPress={() => setVisible(false)}
+                        style={{ padding: 6 }}   // better hit area
+                      >
+                        <XCircle size={20} color={colors.error} />
+                      </TouchableOpacity>
+
+                    </View>
                   </View>
+
+
 
                   <FlatList
                     data={options}

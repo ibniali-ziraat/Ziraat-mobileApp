@@ -5,7 +5,7 @@ import { Image, Pressable, Text, View } from "react-native";
 
 export default function ProductCard({ product, onRemove }: any) {
   return (
-    <View className="bg-light p-4 rounded-2xl shadow border border-neutral mb-4">
+    <View className="bg-light p-2 rounded-2xl mb-2">
       <View className="flex-row">
       
         <View className="w-32 h-32 rounded-xl overflow-hidden mr-3 bg-neutral">

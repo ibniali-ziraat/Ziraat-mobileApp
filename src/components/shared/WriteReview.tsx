@@ -1,7 +1,7 @@
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
 import { WriteReviewProps } from "@/src/types/write-review.type";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function WriteReview({ onSubmit }:WriteReviewProps) {

@@ -16,12 +16,16 @@ import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
 import { router } from "expo-router";
 import OperationalSection from "../sections/OperationalSection";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function OperationsScreen() {
   const { vendorData } = useGlobalData();
+  const { vendorProfileId } = useAuth()
   console.log(vendorData, "vendorssdata");
 
-  const { data } = useVendorOperationsQuery(vendorData.profileId);
+  const { data } = useVendorOperationsQuery(vendorProfileId);
 
   const { mutateAsync: save, isPending: isSaving } =
     useVendorOperationsMutation();
@@ -57,7 +61,7 @@ export default function OperationsScreen() {
 
     const payload = {
       // operationalId: data?.id,
-      supplierProfileId: vendorData.profileId,
+      supplierProfileId: vendorProfileId,
       yearsInBusiness: +val.yearsInBusiness,
       deliveryServiceAvailable: val.deliveryServiceAvailable === "yes",
       serviceArea: val.deliveryServiceAvailable ? val.serviceArea : [],
@@ -69,10 +73,11 @@ export default function OperationsScreen() {
 
     try {
       data ? await update(payload) : await save(payload);
-      Alert.alert("Operations Saved!");
-      router.push("/auth/vendor/vendor-profile-screen");
+      showSuccessToast("Operations Saved!");
+      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+
     } catch (error) {
-      Alert.alert("Error saving operations", error.message || "Unknown error");
+      showErrorToast("Error saving operations", error.message || "Unknown error");
     }
   };
 

@@ -10,23 +10,25 @@ import {
 
 import FormActions from "@/src/components/shared/FormActions";
 import Button from "@/src/components/ui/Button";
-import Loader from "@/src/components/ui/Loader";
+
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { otpSchema } from "@/src/schemas/shared/otp.schema";
 import { profileSchema } from "@/src/schemas/user/profile.schema";
-import { showErrorToast } from "@/src/utils/toast";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Alert, View } from "react-native";
 import Heading from "@/src/components/shared/Heading";
+import Loader from "@/src/components/shared/Loader";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function UserRegistrationScreen() {
   const [step, setStep] = useState(0);
   const [profileData, setProfileData] = useState<any>(null);
 
   const schemas = [profileSchema, otpSchema];
-  const methods = useZodForm(schemas[step], { mode: "onChange" });
+  const methods = useZodForm(schemas[step]);
   const {
     control,
     handleSubmit,
@@ -113,8 +115,8 @@ export default function UserRegistrationScreen() {
         await setUserToken(loginRes.token);
         setUserData({ id: loginRes.user });
 
-        router.replace("/");
-        Alert.alert("Success", "Registration and login successful.");
+        router.push(ROUTES.USER.HOME);
+        showSuccessToast("Logged in Successfully")
       } catch (error: any) {
         const backendError =
           error?.response?.data?.[0]?.description ||
@@ -128,7 +130,7 @@ export default function UserRegistrationScreen() {
 
   const isLoading = isSignupPending || isOtpPending;
   if (isLoading) {
-    return <Loader visible={isLoading} />;
+    return <Loader />
   }
 
   return (
@@ -157,7 +159,8 @@ export default function UserRegistrationScreen() {
           submitLabel={step === 1 ? "Submit" : "Next"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isLoading}
-          loading={isLoading}
+          loading={isUserExistsPending}
+
         />
 
 

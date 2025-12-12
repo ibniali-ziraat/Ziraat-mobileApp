@@ -2,6 +2,8 @@ import ProfessionSection from "@/src/components/form/sections/ProfessionSection"
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -17,9 +19,11 @@ import { FormProvider } from "react-hook-form";
 import { ScrollView } from "react-native";
 
 export default function ProfessionScreen() {
-  const { userData } = useGlobalData();
+  // const { userData } = useGlobalData();
+  const { userProfileId } = useAuth()
 
-  const { data } = useProfessionQuery(userData.profileId);
+
+  const { data } = useProfessionQuery(userProfileId);
   const { mutateAsync: save, isPending: isSaving } = useProfessionMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useProfessionUpdateMutation();
@@ -41,7 +45,7 @@ export default function ProfessionScreen() {
 
   const onSubmit = async (values) => {
     try {
-      const payload = { profileId: userData.profileId, ...values };
+      const payload = { profileId: userProfileId, ...values };
 
       if (data) {
         await update(payload);
@@ -50,7 +54,7 @@ export default function ProfessionScreen() {
       }
 
       showSuccessToast("Profession saved successfully");
-      router.replace("/user-profile");
+      router.replace(ROUTES.USER.PROFILE);
     } catch (error) {
       const backendError =
         error?.response?.data?.message ||

@@ -84,6 +84,7 @@ import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import BusinessSection from "../sections/BusinessSection";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function BusinessScreen() {
   const { vendorData, setVendorData, userData } = useGlobalData();
@@ -122,7 +123,7 @@ export default function BusinessScreen() {
   const onSubmit = async (val: any) => {
     try {
       if (data) {
-        const payload = { id: vendorData.id, ...val };
+        const payload = { id: data.id, ...val, userId: userData.id };
         await update(payload);
       } else {
         const payload = { userId: userData.id, ...val };
@@ -133,7 +134,7 @@ export default function BusinessScreen() {
         });
       }
 
-      router.push("/auth/vendor/vendor-profile-screen");
+      router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       showErrorToast("Something went wrong");
       console.error(err);
@@ -150,9 +151,10 @@ export default function BusinessScreen() {
         <BusinessSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          submitLabel={data ? "Update" : "Next"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

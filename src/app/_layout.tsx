@@ -23,11 +23,12 @@ export default function RootLayout() {
       <AppProvider>
         <RouteGuard>
           <SafeAreaView
+            edges={['top', 'left', 'right',]}
             style={{
               flex: 1,
               paddingTop: insets.top,
               backgroundColor: colors.bgColor,
-              paddingHorizontal: 12,
+              paddingHorizontal: "10%",
             }}
           >
             <PaperProvider>

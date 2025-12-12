@@ -6,7 +6,7 @@ import {
   Sparkles,
 } from "lucide-react-native";
 import { useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function ProductFaq({ data }) {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -16,7 +16,7 @@ export default function ProductFaq({ data }) {
   };
 
   return (
-    <ScrollView className="p-1 bg-white">
+    <View className="p-1 bg-white"> 
       <Text className="text-2xl font-bold mb-4 ms-2 text-dark">
         Frequently Asked Questions
       </Text>
@@ -28,10 +28,7 @@ export default function ProductFaq({ data }) {
           <View
             key={index}
             className="
-              mb-4 rounded-2xl border border-neutral bg-white p-4
-              shadow-lg shadow-neutral-200
-              elevation-6
-            "
+              mb-4  rounded-2xl border border-neutral bg-white p-4"
           >
             <TouchableOpacity
               onPress={() => toggleFAQ(index)}
@@ -55,7 +52,6 @@ export default function ProductFaq({ data }) {
               )}
             </TouchableOpacity>
 
-         
             {isOpen && (
               <View className="flex-row mt-2 gap-3 items-start">
                 <View className="p-2">
@@ -70,6 +66,6 @@ export default function ProductFaq({ data }) {
           </View>
         );
       })}
-    </ScrollView>
+    </View>
   );
 }

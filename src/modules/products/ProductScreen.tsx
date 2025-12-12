@@ -1,5 +1,6 @@
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ChevronRight } from "lucide-react-native";
-import { ScrollView, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { imageMapper } from "../../Data/imageMapper";
 import products from "../../Data/products.json";
 import ProductCarousel from "../../components/shared/ProductCarousel";
@@ -16,7 +17,7 @@ export default function ProductScreen() {
   ];
 
   return (
-    <ScrollView className="py-4 bg-light">
+    <ScreenLayout className="py-4 bg-light">
       {sections.map((section, index) => (
         <View key={index}>
           <View className="flex-row items-center mt-6 mb-4">
@@ -30,6 +31,6 @@ export default function ProductScreen() {
           />
         </View>
       ))}
-    </ScrollView>
+    </ScreenLayout>
   );
 }

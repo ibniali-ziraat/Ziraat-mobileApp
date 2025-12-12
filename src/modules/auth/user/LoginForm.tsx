@@ -96,10 +96,9 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import FormActions from "@/src/components/shared/FormActions";
 import Heading from "@/src/components/shared/Heading";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
-import { useState } from "react";
 import { View } from "react-native";
 import { Divider } from "react-native-paper";
 import { useZodForm } from "../../../hooks/useZodForm";
@@ -109,10 +108,9 @@ export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
   const { errors } = formState;
 
-  const [showSnack, setShowSnack] = useState(false);
-  const toggleSnack = () => setShowSnack((p) => !p);
 
-  const { setUserToken, setUserData } = useGlobalData();
+  // const { setUserToken, setUserData } = useGlobalData();
+  const { setUserToken, setUserId } = useAuth()
 
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 

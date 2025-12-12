@@ -1,5 +1,4 @@
 import { FilterProps } from "@/src/types/filter.type";
-import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export const FILTERS = {
@@ -16,7 +15,7 @@ export default function Filter({ filter, setFilter }: FilterProps) {
         <TouchableOpacity
           key={f}
           onPress={() => setFilter(f)}
-          className={`px-3 py-2 rounded-xl mr-2 mb-2 shadow rounded border border-neutral ${
+          className={`px-3 py-2 rounded-xl mr-2 mb-2 shadow-sm rounded border border-neutral ${
             filter === f ? "bg-secondary": "bg-white"
           }`}
         >

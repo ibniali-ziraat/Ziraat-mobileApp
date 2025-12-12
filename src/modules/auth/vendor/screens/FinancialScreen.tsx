@@ -9,15 +9,19 @@ import {
   useVendorFinancialUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
 import { financialPaymentSchema } from "@/src/schemas/vendor/finance.schema";
-import { showErrorToast } from "@/src/utils/toast";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { Alert } from "react-native";
 import FinancialPaymentSection from "../sections/FinancialSection";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
 export default function FinancialScreen() {
-  const { vendorData } = useGlobalData();
-  const { data } = useVendorFinancialQuery(vendorData.profileId);
+  // const { vendorData } = useGlobalData();
+  const { vendorProfileId, userId } = useAuth()
+
+  const { data } = useVendorFinancialQuery(vendorProfileId);
 
   const { mutateAsync: save, isPending: isSaving } =
     useVendorFinancialMutation();
@@ -54,7 +58,7 @@ export default function FinancialScreen() {
   const onSubmit = async (values) => {
     try {
       const payload = {
-        supplierProfileId: vendorData.profileId,
+        supplierProfileId: vendorProfileId,
         upiAvailable: values.upiAvailable === "yes",
         creditFacility: values.creditFacility === "yes",
         sellingViaZiraat: values.sellingViaZiraat,
@@ -67,8 +71,8 @@ export default function FinancialScreen() {
         await save(payload);
       }
 
-      Alert.alert("Financial Info Saved!");
-      router.push("/auth/vendor/vendor-profile-screen");
+      showSuccessToast("Financial Info Saved!");
+      router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
       console.error("Error saving financial info:", error);
       showErrorToast(
@@ -85,6 +89,7 @@ export default function FinancialScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           submitLabel={"Next"}
+          onCancel={() => router.back()}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
         />
