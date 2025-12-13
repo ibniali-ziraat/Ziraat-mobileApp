@@ -16,20 +16,18 @@ import { ActivityIndicator } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
-
-
   const insets = useSafeAreaInsets();
   // const { roleMode, userData } = useGlobalData();
-  const { userId, roleMode } = useAuth()
+  const { userId, roleMode } = useAuth();
 
   const { data } = useProfileQuery(userId);
 
   console.log(data, "user profile data...");
 
-  if (!userId || !data) {
-    return <Loader />
+  // if (!userId || !data) {
+  //   return <Loader />
 
-  }
+  // }
 
   return (
     <Tabs
@@ -37,8 +35,8 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.secondary,
         tabBarInactiveTintColor: colors.dark,
+
         tabBarStyle: {
-          paddingTop: 10,
           elevation: 0.5,
           height: 0,
           paddingBottom: insets.bottom + 50,
@@ -46,6 +44,7 @@ export default function TabLayout() {
           shadowOpacity: 0.1,
           shadowRadius: 5,
         },
+        lazy: true, // load screens only when they are focused
       }}
     >
       {/* Home Tab */}

@@ -1,4 +1,4 @@
-import ProfessionSection from "@/src/components/form/sections/ProfessionSection";
+import ProfessionSection from "@/src/modules/auth/user/sections/ProfessionSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -20,8 +20,7 @@ import { ScrollView } from "react-native";
 
 export default function ProfessionScreen() {
   // const { userData } = useGlobalData();
-  const { userProfileId } = useAuth()
-
+  const { userProfileId } = useAuth();
 
   const { data } = useProfessionQuery(userProfileId);
   const { mutateAsync: save, isPending: isSaving } = useProfessionMutation();
@@ -69,14 +68,16 @@ export default function ProfessionScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <ScrollView>
-          <BackHeader title="Profession" />
+          <BackHeader
+            title="Profession"
+            onPress={() => router.push(ROUTES.USER.PROFILE)}
+          />
 
           <ProfessionSection control={control} errors={errors} />
           <FormActions
             cancelLabel={"Cancel"}
-            onCancel={() => router.back()}
-
-            submitLabel={data ? "Update" : "Save"}
+            onCancel={() => router.push(ROUTES.USER.PROFILE)}
+            submitLabel={data ? "Update Profession" : "Add Profession"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

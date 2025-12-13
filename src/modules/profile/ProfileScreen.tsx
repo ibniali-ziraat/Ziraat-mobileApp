@@ -34,13 +34,13 @@ import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
 import ProfileTopHeader from "@/src/components/shared/ProfileTopHeader";
 import ProfileDetails from "@/src/components/shared/ProfileDetails";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function UserProfileScreen() {
   // const { userData, setUserData, logout } = useGlobalData();
-  const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth()
+  const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
 
   const queryClient = useQueryClient();
-
 
   const { data: profileData } = useProfileQuery(userId);
   const { data: addressData } = useAddressQuery(userProfileId);
@@ -59,7 +59,7 @@ export default function UserProfileScreen() {
 
   useEffect(() => {
     if (profileData?.id) {
-      setUserProfileId(profileData?.id)
+      setUserProfileId(profileData?.id);
     }
   }, [profileData]);
 
@@ -87,13 +87,16 @@ export default function UserProfileScreen() {
     }
   };
 
-  if (!profileData) {
-    return <Loader />
-  }
+  // if (!profileData) {
+  //   return <Loader />;
+  // }
 
   return (
     <ScreenLayout>
-      <BackHeader title="Profile" />
+      <BackHeader
+        title="Profile"
+        onPress={() => router.replace(ROUTES.USER.HOME)}
+      />
       <ProfileTopHeader
         profilePic={profileData?.profilePic}
         fullName={profileData?.fullName}
@@ -105,9 +108,12 @@ export default function UserProfileScreen() {
         <ProfileProgressBar
           progress={progress}
           missingSections={missingSections}
-          completedSections={["Profile", "Address", "Education", "Profession"].filter(
-            (s) => !missingSections.includes(s.toLowerCase())
-          )}
+          completedSections={[
+            "Profile",
+            "Address",
+            "Education",
+            "Profession",
+          ].filter((s) => !missingSections.includes(s.toLowerCase()))}
         />
       )}
 
@@ -193,7 +199,6 @@ export default function UserProfileScreen() {
 
       {/* LOGOUT BUTTON */}
       <LogoutButton onPress={async () => await logoutUser()} />
-
     </ScreenLayout>
   );
 }

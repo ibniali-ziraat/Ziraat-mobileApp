@@ -23,7 +23,7 @@ export default function RootLayout() {
       <AppProvider>
         <RouteGuard>
           <SafeAreaView
-            edges={['top', 'left', 'right',]}
+            edges={["top", "left", "right"]}
             style={{
               flex: 1,
               paddingTop: insets.top,
@@ -32,7 +32,13 @@ export default function RootLayout() {
             }}
           >
             <PaperProvider>
-              <Stack screenOptions={{ headerShown: false }}>
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  animation: "slide_from_right", // ✅ global animation
+                  animationDuration: 280,
+                }}
+              >
                 <Stack.Screen name="(tabs)/_layout" />
               </Stack>
             </PaperProvider>

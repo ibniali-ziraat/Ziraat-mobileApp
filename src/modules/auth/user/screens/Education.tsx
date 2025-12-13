@@ -1,4 +1,4 @@
-import EducationSection from "@/src/components/form/sections/EducationSection";
+import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -20,8 +20,7 @@ import { ScrollView } from "react-native";
 
 export default function EducationScreen() {
   // const { userData } = useGlobalData();
-  const { userProfileId } = useAuth()
-
+  const { userProfileId } = useAuth();
 
   const { data } = useEducationQuery(userProfileId);
   const { mutateAsync: save, isPending: isSaving } = useEducationMutation();
@@ -49,11 +48,12 @@ export default function EducationScreen() {
 
       if (data) {
         await update(payload);
+        showSuccessToast("Education Updated");
       } else {
         await save(payload);
+        showSuccessToast("Education Saved");
       }
 
-      showSuccessToast("Education saved successfully");
       router.replace(ROUTES.USER.PROFILE);
     } catch (error) {
       const backendError =
@@ -69,18 +69,19 @@ export default function EducationScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <ScrollView>
-          <BackHeader title="Education" />
+          <BackHeader
+            title="Education"
+            onPress={() => router.push(ROUTES.USER.PROFILE)}
+          />
 
           <EducationSection control={control} errors={errors} />
           <FormActions
             cancelLabel={"Cancel"}
-            onCancel={() => router.back()}
-
-            submitLabel={data ? "Update" : "Save"}
+            onCancel={() => router.push(ROUTES.USER.PROFILE)}
+            submitLabel={data ? "Update Education" : "Add Education"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}
-
           />
         </ScrollView>
       </FormProvider>

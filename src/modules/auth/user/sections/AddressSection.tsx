@@ -2,8 +2,8 @@
 import * as Location from "expo-location";
 import { useState } from "react";
 import { Button, View } from "react-native";
-import FormInput from "../inputs/FormInput";
-import SingleSelectInput from "../inputs/SingleSelectInput";
+import FormInput from "../../../../components/form/inputs/FormInput";
+import SingleSelectInput from "../../../../components/form/inputs/SingleSelectInput";
 
 interface Props {
   control: any;
@@ -41,6 +41,7 @@ export default function AddressSection({ control, errors }: Props) {
       {/* State */}
       <SingleSelectInput
         control={control}
+        modalLabel="State"
         name="state"
         label="State"
         options={[
@@ -53,6 +54,7 @@ export default function AddressSection({ control, errors }: Props) {
       {/* District */}
       <SingleSelectInput
         control={control}
+        modalLabel="District"
         name="district"
         label="District"
         options={[

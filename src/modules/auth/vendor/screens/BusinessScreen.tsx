@@ -146,12 +146,15 @@ export default function BusinessScreen() {
       <BackHeader
         title="Supplier Onboarding"
         desc="Start selling to farmers today."
+        // onPress={() => router.replace(ROUTES.VENDOR.PROFILE)}
+        onPress={() => router.replace("/(tabs)/menu")}
       />
       <FormProvider {...form}>
         <BusinessSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Next"}
+          onCancel={() => router.back()}
+          submitLabel={data ? "Update Profile" : "Submit"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

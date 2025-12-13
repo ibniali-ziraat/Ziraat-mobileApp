@@ -83,7 +83,9 @@ export default function FinancialScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Financial & Payment Details" />
+      <BackHeader title="Financial & Payment Details"
+        onPress={() => router.push(ROUTES.VENDOR.PROFILE)}
+      />
       <FormProvider {...form}>
         <FinancialPaymentSection errors={errors} control={control} />
         <FormActions

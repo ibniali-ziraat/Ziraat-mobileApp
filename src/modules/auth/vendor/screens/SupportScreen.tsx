@@ -70,7 +70,9 @@ export default function SupportScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Support Services" />
+      <BackHeader title="Support Services"
+        onPress={() => router.push(ROUTES.VENDOR.PROFILE)}
+      />
       <FormProvider {...form}>
         <SupportSection errors={errors} control={control} />
         <FormActions

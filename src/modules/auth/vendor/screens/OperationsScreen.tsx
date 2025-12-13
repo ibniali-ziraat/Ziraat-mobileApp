@@ -83,7 +83,9 @@ export default function OperationsScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Operational Details" />
+      <BackHeader title="Operational Details"
+        onPress={() => router.push(ROUTES.VENDOR.PROFILE)}
+      />
       <FormProvider {...form}>
         <OperationalSection control={control} errors={errors} />
         <FormActions

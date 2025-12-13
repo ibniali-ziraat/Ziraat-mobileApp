@@ -12,7 +12,8 @@ interface MenuHeaderProps {
 
 export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
   const { vendorData, setVendorData, userData } = useGlobalData();
-  const { data: profileData, isPending: loadingVendorProfile } = useVendorProfileQuery(userData.id);
+  const { data: profileData, isPending: loadingVendorProfile } =
+    useVendorProfileQuery(userData.id);
 
   const showBecomeSupplier = role === "supplier" && !profileData; // Show button if no vendor profile
 

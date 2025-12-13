@@ -103,7 +103,9 @@ export default function ProductsScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Products & Services" />
+      <BackHeader title="Products & Services"
+        onPress={() => router.push(ROUTES.VENDOR.PROFILE)}
+      />
       <FormProvider {...form}>
         <ProductSection errors={errors} control={control} />
         <FormActions

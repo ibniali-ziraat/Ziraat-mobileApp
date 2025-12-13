@@ -1,4 +1,4 @@
-import ProfileSection from "@/src/components/form/sections/ProfileSection";
+import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -45,7 +45,6 @@ export default function ProfileScreen() {
     });
   }, [data]);
 
-
   const onSubmit = async (values) => {
     try {
       const payload = { id: data?.id, userId: userData.id, ...values };
@@ -63,12 +62,14 @@ export default function ProfileScreen() {
     }
   };
 
-
   return (
     <ScreenLayout>
       <BackHeader
         title="Profile"
-        desc={data ? "Update your profile details" : "Add your profile information"}
+        desc={
+          data ? "Update your profile details" : "Add your profile information"
+        }
+        onPress={() => router.push(ROUTES.USER.PROFILE)}
       />
 
       <FormProvider {...form}>
@@ -77,7 +78,7 @@ export default function ProfileScreen() {
         <ProfileSection control={control} errors={errors} data={data} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.back()}
+          onCancel={() => router.push(ROUTES.USER.PROFILE)}
           submitLabel={data ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}

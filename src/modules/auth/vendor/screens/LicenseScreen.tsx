@@ -75,7 +75,9 @@ export default function LicenseScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Licensing & Compliance" />
+      <BackHeader title="Licensing & Compliance"
+        onPress={() => router.push(ROUTES.VENDOR.PROFILE)}
+      />
       <FormProvider {...form}>
         <LicenseSection errors={errors} control={control} />
         <FormActions

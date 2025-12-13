@@ -107,6 +107,7 @@ import { colors } from "@/src/constants/colors";
 import Heading from "@/src/components/shared/Heading";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -133,7 +134,7 @@ export default function LoginForm() {
         await setUserToken(response?.token);
         await setUserId(response?.user)
 
-        router.replace("/");
+        router.replace(ROUTES.USER.HOME);
         showSuccessToast("logged in");
       }
     } catch (error: any) {

@@ -33,6 +33,7 @@ import VendorProfileHeader from "@/src/components/shared/VendorProfileHeader";
 import VendorProfileDetails from "@/src/components/shared/VendorProfileDetails";
 import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
 
 export default function VendorProfileScreen() {
   // const { vendorData, setVendorData } = useGlobalData();
@@ -113,7 +114,7 @@ export default function VendorProfileScreen() {
   return (
 
     <ScreenLayout>
-      <BackHeader title="Profile" />
+      <BackHeader title="Profile" onPress={() => router.push(ROUTES.VENDOR.PROFILE)} />
 
       <VendorProfileHeader data={profileData}
         onEdit={() => goToSection("business")}
