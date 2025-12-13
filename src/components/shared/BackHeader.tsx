@@ -14,32 +14,29 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
 
   return (
     <View className="bg-light pb-4">
-
       {/* Row */}
       <View className="flex-row items-center">
-
         {/* Back Button */}
         <TouchableOpacity
           onPress={onPress ? onPress : () => router.back()}
           className="p-2 mr-3 rounded-full"
           activeOpacity={0.7}
         >
-          <ArrowLeft size={24} color={colors.dark} />
+          <ArrowLeft size={26} color={colors.dark} />
         </TouchableOpacity>
 
         {/* Title + Description */}
         <View className="flex-1">
-          <Text className="text-dark font-bold text-lg" numberOfLines={1}>
+          <Text className="text-dark font-bold text-2xl" numberOfLines={1}>
             {title}
           </Text>
 
           {desc && (
-            <Text className="text-neutral text-sm mt-0.5" numberOfLines={2}>
+            <Text className="text-neutral text-md mt-0.5" numberOfLines={2}>
               {desc}
             </Text>
           )}
         </View>
-
       </View>
     </View>
   );

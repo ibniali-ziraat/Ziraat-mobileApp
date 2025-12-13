@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Button, View } from "react-native";
 import FormInput from "../../../../components/form/inputs/FormInput";
 import SingleSelectInput from "../../../../components/form/inputs/SingleSelectInput";
+import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 
 interface Props {
   control: any;
@@ -13,6 +14,9 @@ interface Props {
 export default function AddressSection({ control, errors }: Props) {
   const [coords, setCoords] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const { states, districts, tehsils, setSelectedState, setSelectedDistrict } =
+    useCascadingLocation();
 
   async function fetchLocation() {
     try {
@@ -37,17 +41,18 @@ export default function AddressSection({ control, errors }: Props) {
   }
 
   return (
-    <View style={{ gap: 12 }}>
+    <View style={{ gap: 6 }}>
       {/* State */}
       <SingleSelectInput
         control={control}
         modalLabel="State"
         name="state"
         label="State"
-        options={[
-          { label: "Jammu & Kashmir", value: "jammu_kashmir" },
-          { label: "Ladakh", value: "ladakh" },
-        ]}
+        options={states.map((s) => ({ label: s, value: s }))}
+        onValueChange={(value) => {
+          setSelectedState(value as string);
+          setSelectedDistrict(null);
+        }}
         error={errors.state}
       />
 
@@ -57,53 +62,25 @@ export default function AddressSection({ control, errors }: Props) {
         modalLabel="District"
         name="district"
         label="District"
-        options={[
-          { label: "Leh", value: "leh" },
-          { label: "Kargil", value: "kargil" },
-          { label: "Anantnag", value: "anantnag" },
-          { label: "Bandipora", value: "bandipora" },
-          { label: "Baramulla", value: "baramulla" },
-          { label: "Budgam", value: "budgam" },
-          { label: "Doda", value: "doda" },
-          { label: "Ganderbal", value: "ganderbal" },
-          { label: "Jammu", value: "jammu" },
-          { label: "Kathua", value: "kathua" },
-          { label: "Kishtwar", value: "kishtwar" },
-          { label: "Kulgam", value: "kulgam" },
-          { label: "Kupwara", value: "kupwara" },
-          { label: "Poonch", value: "poonch" },
-          { label: "Pulwama", value: "pulwama" },
-          { label: "Rajouri", value: "rajouri" },
-          { label: "Ramban", value: "ramban" },
-          { label: "Reasi", value: "reasi" },
-          { label: "Samba", value: "samba" },
-          { label: "Shopian", value: "shopian" },
-          { label: "Srinagar", value: "srinagar" },
-          { label: "Udhampur", value: "udhampur" },
-        ]}
+        searchable
+        options={districts.map((d) => ({ label: d, value: d }))}
+        onValueChange={(value) => setSelectedDistrict(value as string)}
+        disabled={!districts.length}
         error={errors.district}
       />
 
       {/* Tehsil */}
-      {/* <SingleSelectInput
+      <SingleSelectInput
         control={control}
+        modalLabel="Tehsil"
         name="tehsil"
         label="Tehsil"
-        options={[
-          { label: "Tehsil A", value: "tehsil_a" },
-          { label: "Tehsil B", value: "tehsil_b" },
-          { label: "Tehsil C", value: "tehsil_c" },
-          { label: "Tehsil D", value: "tehsil_d" },
-        ]}
+        searchable
+        options={tehsils.map((t) => ({ label: t, value: t }))}
+        disabled={!tehsils.length}
         error={errors.tehsil}
-      /> */}
-
-      <FormInput
-        control={control}
-        name="tehsil"
-        label="Tehsil"
-        error={errors.tehsil?.message}
       />
+
       <FormInput
         control={control}
         name="village"
@@ -120,13 +97,7 @@ export default function AddressSection({ control, errors }: Props) {
         error={errors.pincode?.message}
       />
 
-      {/* Street */}
-      {/* <FormInput
-        control={control}
-        name="street"
-        label="Street / Locality"
-        error={errors.street}
-      /> */}
+      {/* GPS (UNCHANGED, still available) */}
       {/* 
       <Button
         title={loading ? "Fetching Location..." : "Use Current Location"}
@@ -143,7 +114,8 @@ export default function AddressSection({ control, errors }: Props) {
             editable={false}
           />
         </View>
-      )} */}
+      )} 
+      */}
     </View>
   );
 }

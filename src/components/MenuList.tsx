@@ -43,7 +43,6 @@ export default function MenuList() {
   );
 }
 
-
 function SectionTitle({ title }) {
   return (
     <Text

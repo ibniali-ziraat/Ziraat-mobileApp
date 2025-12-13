@@ -107,15 +107,13 @@ import { colors } from "@/src/constants/colors";
 import Heading from "@/src/components/shared/Heading";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
   const { errors } = formState;
 
-
   // const { setUserToken, setUserData } = useGlobalData();
-  const { setUserToken, setUserId } = useAuth()
+  const { setUserToken, setUserId } = useAuth();
 
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
@@ -132,9 +130,9 @@ export default function LoginForm() {
         console.log(response, "response..");
 
         await setUserToken(response?.token);
-        await setUserId(response?.user)
+        await setUserId(response?.user);
 
-        router.replace(ROUTES.USER.HOME);
+        router.replace("/");
         showSuccessToast("logged in");
       }
     } catch (error: any) {
@@ -148,11 +146,7 @@ export default function LoginForm() {
 
   return (
     <View className="bg-light">
-      <Heading
-        title="Login"
-        subtitle="Enter your credentials below"
-      />
-
+      <Heading title="Login" subtitle="Enter your credentials below" />
 
       <Divider style={{ marginVertical: 10 }} />
 
@@ -172,16 +166,12 @@ export default function LoginForm() {
         error={errors.password}
       />
 
-
       <FormActions
         submitLabel={"Login"}
         onSubmit={handleSubmit(onSubmit)}
         disabled={isPending}
         loading={isPending}
-
       />
-
-
     </View>
   );
 }

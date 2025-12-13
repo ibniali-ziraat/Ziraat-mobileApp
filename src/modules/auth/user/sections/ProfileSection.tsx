@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { View } from "react-native";
 import FormInput from "../../../../components/form/inputs/FormInput";
 import SingleSelectInput from "../../../../components/form/inputs/SingleSelectInput";
-import Heading from "../../../../components/shared/Heading";
 
 export default function ProfileSection({
   control,

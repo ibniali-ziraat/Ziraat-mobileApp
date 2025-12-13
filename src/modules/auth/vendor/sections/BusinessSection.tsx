@@ -1,24 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { BusinessSectionProps } from "@/src/types/BusinessSection.types";
-import locations from "@/src/Data/locations.json";
 import { colors } from "@/src/constants/colors";
+import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 
 export default function BusinessSection({
   control,
   errors,
 }: BusinessSectionProps) {
-  const [selectedState, setSelectedState] = useState<string | null>(null);
-  const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
-
-  const states = Object.keys(locations);
-  const districts = selectedState ? Object.keys(locations[selectedState]) : [];
-  const tehsils =
-    selectedState && selectedDistrict
-      ? locations[selectedState][selectedDistrict]
-      : [];
+  const { states, districts, tehsils, setSelectedState, setSelectedDistrict } =
+    useCascadingLocation();
 
   return (
     <View className="bg-light" style={{ padding: 16 }}>
@@ -82,7 +75,7 @@ export default function BusinessSection({
         Business Address
       </Text>
 
-      {/* Cascading dropdowns */}
+      {/* State */}
       <SingleSelectInput
         control={control}
         name="state"
@@ -96,30 +89,31 @@ export default function BusinessSection({
         error={errors?.state}
       />
 
+      {/* District */}
       <SingleSelectInput
         control={control}
         name="district"
         label="District"
         searchable
+        modalLabel="District"
         options={districts.map((d) => ({ label: d, value: d }))}
         onValueChange={(value) => setSelectedDistrict(value as string)}
+        disabled={!districts.length}
         error={errors?.district}
-        modalLabel="District"
-        optional={false}
-        disabled={!selectedState}
       />
 
+      {/* Tehsil */}
       <SingleSelectInput
         control={control}
         name="tehsil"
         label="Tehsil"
         searchable
-        options={tehsils.map((t) => ({ label: t, value: t }))}
-        error={errors?.tehsil}
-        optional={false}
         modalLabel="Tehsil"
-        disabled={!selectedDistrict}
+        options={tehsils.map((t) => ({ label: t, value: t }))}
+        disabled={!tehsils.length}
+        error={errors?.tehsil}
       />
+
       <FormInput
         control={control}
         name="village"
@@ -131,7 +125,7 @@ export default function BusinessSection({
         name="pincode"
         label="Pincode"
         type="phone"
-        error={errors?.pincode}
+        error={errors?.pincode?.message}
       />
     </View>
   );

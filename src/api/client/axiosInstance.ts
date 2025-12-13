@@ -7,12 +7,10 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
-console.log(process.env.EXPO_PUBLIC_ZIRAAT_BASE_URL, "url");
 
 axiosInstance.interceptors.request.use(
   async (config) => {
     const token = await getItem("user_token");
-
 
     if (token) {
       config.headers = config.headers || {};

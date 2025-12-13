@@ -21,7 +21,7 @@ export default function MenuScreen() {
 
   return (
     <AnimatedTabContent>
-      <View className="flex-1 bg-white">
+      <View className="flex-1 bg-light">
         <ScrollView className="flex-1">
           {menuGroupsToShow.map((group) => (
             <View key={group.title} className="">
@@ -56,7 +56,7 @@ function MenuItem({ label, onPress }) {
       onPress={onPress}
       className="py-3 border-b border-gray-200"
     >
-      <Text className="text-base text-gray-900">{label}</Text>
+      <Text className="text-lg text-gray-900">{label}</Text>
     </TouchableOpacity>
   );
 }

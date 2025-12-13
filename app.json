@@ -14,7 +14,8 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/ziraaticon.png"
+        "foregroundImage": "./assets/images/ziraaticon.png",
+        "softwareKeyboardLayoutMode": "pan"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,

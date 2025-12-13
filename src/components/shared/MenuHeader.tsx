@@ -1,8 +1,10 @@
 import { colors } from "@/src/constants/colors";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useVendorProfileQuery } from "@/src/hooks/vendorQueryHooks";
 import { router } from "expo-router";
 import { BarChart2, PhoneCall, Store, User } from "lucide-react-native";
+import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 interface MenuHeaderProps {
@@ -10,10 +12,11 @@ interface MenuHeaderProps {
   onToggleRole: () => void; // parent controls role state
 }
 
-export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
-  const { vendorData, setVendorData, userData } = useGlobalData();
+const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
+  // const { vendorData, setVendorData, userData } = useGlobalData();
+  const { userId } = useAuth();
   const { data: profileData, isPending: loadingVendorProfile } =
-    useVendorProfileQuery(userData.id);
+    useVendorProfileQuery(userId);
 
   const showBecomeSupplier = role === "supplier" && !profileData; // Show button if no vendor profile
 
@@ -21,11 +24,11 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
     <View className="flex-row items-center justify-between h-16 bg-white">
       {/* Title & Subtitle */}
       <View>
-        <Text className="text-lg font-bold" style={{ color: colors.dark }}>
+        <Text className="text-xl font-bold" style={{ color: colors.dark }}>
           Menu
         </Text>
 
-        <Text className="text-sm" style={{ color: colors.neutral }}>
+        <Text className="text-md" style={{ color: colors.neutral }}>
           {role === "supplier" ? "Supplier Dashboard" : "Farmer Dashboard"}
         </Text>
       </View>
@@ -94,4 +97,6 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
       </View>
     </View>
   );
-}
+};
+
+export default React.memo(MenuHeader);

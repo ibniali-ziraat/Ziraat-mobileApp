@@ -1,30 +1,48 @@
-import { ScrollView, View } from "react-native";
-import FarmOverviewChart from "./components/FarmOverviewChart";
+import { ScrollView, View, Text } from "react-native";
+import { ChevronRight } from "lucide-react-native";
 
+import FarmOverviewChart from "./components/FarmOverviewChart";
 import FarmerTipsCard from "./components/FarmerTipsCard";
-import FeaturedPesticides from "./components/FeaturedPesticides";
 import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
-
 import WeatherCard from "./components/weatherCard";
+
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
+import ProductCarousel from "@/src/components/shared/ProductCarousel";
+
+import products from "@/src/Data/products.json";
+import { imageMapper } from "@/src/Data/imageMapper";
+import { colors } from "@/src/constants/colors";
 
 export default function HomeScreen() {
+  const sections = [
+    { title: "Top Pesticides for Healthy Crop Growth", slice: [0, 8] },
+  ];
+
   return (
     <AnimatedTabContent>
-      <View className="flex-1 bg-white pt-8">
+      <View className="flex-1 bg-white pt-4">
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* Weather */}
           <SectionTitle title="Today's Weather" icon="sunny-outline" />
           <WeatherCard />
 
           {/* Quick Actions */}
-          <SectionTitle title="Quick Actions" icon="flash-outline" />
+          {/* <SectionTitle title="Quick Actions" icon="flash-outline" /> */}
           <QuickActions />
 
           {/* Featured Pesticides */}
-          <SectionTitle title="Featured Pesticides" icon="flask-outline" />
-          <FeaturedPesticides />
+
+          {sections.map((section, index) => (
+            <View key={index} className="mb-6">
+              <SectionTitle title={section.title} icon="flask-outline" />
+
+              <ProductCarousel
+                items={products.slice(...section.slice)}
+                imageMapper={imageMapper}
+              />
+            </View>
+          ))}
 
           {/* Farm Overview */}
           <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
