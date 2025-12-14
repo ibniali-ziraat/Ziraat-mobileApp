@@ -113,6 +113,7 @@ export default function ProductsScreen() {
           onSubmit={handleSubmit(onSubmit)}
           onCancel={() => router.back()}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

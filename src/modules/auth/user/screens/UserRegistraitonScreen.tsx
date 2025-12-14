@@ -26,7 +26,7 @@ import OtpHeading from "@/src/components/shared/OtpHeading";
 import AnimatedStepWrapper from "@/src/components/shared/AnimatedStepWrapper";
 
 export default function UserRegistrationScreen() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const [profileData, setProfileData] = useState<any>(null);
 
   const schemas = [profileSchema, otpSchema];
