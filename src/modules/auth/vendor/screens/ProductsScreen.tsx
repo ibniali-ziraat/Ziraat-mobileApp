@@ -22,12 +22,10 @@ import { ROUTES } from "@/src/constants/routes";
 
 export default function ProductsScreen() {
   // const { vendorData } = useGlobalData();
-  const { vendorProfileId, userId } = useAuth()
-
+  const { vendorProfileId, userId } = useAuth();
 
   // Fetch existing vendor products
   const { data } = useVendorProductsQuery(vendorProfileId);
-
 
   const { mutateAsync: save, isPending: isSaving } =
     useVendorProductsMutation();
@@ -69,8 +67,6 @@ export default function ProductsScreen() {
     console.log(values, "values...");
 
     const payload = {
-
-
       storageCapacity: `${values.storageCapacityValue}`,
 
       inputTypes: values.inputTypes, // <--- FIXED
@@ -85,15 +81,17 @@ export default function ProductsScreen() {
     };
 
     try {
-      data ? await update({
-        ...payload, id: data?.id,
-        supplierProfileId: vendorProfileId,
-      }) : await save({
-        ...payload,
-        supplierProfileId: vendorProfileId,
-        // id: userId,
-
-      });
+      data
+        ? await update({
+            ...payload,
+            id: data?.id,
+            supplierProfileId: vendorProfileId,
+          })
+        : await save({
+            ...payload,
+            supplierProfileId: vendorProfileId,
+            // id: userId,
+          });
       showSuccessToast("Products Saved!");
       router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
@@ -103,13 +101,17 @@ export default function ProductsScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Products & Services" />
+      <BackHeader
+        title="Products & Services"
+        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+      />
       <FormProvider {...form}>
         <ProductSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          submitLabel={data ? "Update" : "Add Products"}
           onSubmit={handleSubmit(onSubmit)}
+          onCancel={() => router.back()}
           disabled={isSaving || isUpdating}
         />
       </FormProvider>

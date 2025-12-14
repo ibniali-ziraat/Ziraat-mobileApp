@@ -20,7 +20,7 @@ import { ROUTES } from "@/src/constants/routes";
 
 export default function SupportScreen() {
   // const { vendorData } = useGlobalData();
-  const { vendorProfileId, userId } = useAuth()
+  const { vendorProfileId, userId } = useAuth();
 
   const { data } = useVendorSupportQuery(vendorProfileId);
 
@@ -70,12 +70,16 @@ export default function SupportScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Support Services" />
+      <BackHeader
+        title="Support Services"
+        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+      />
       <FormProvider {...form}>
         <SupportSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          onCancel={() => router.back()}
+          submitLabel={data ? "Update" : "Add Support Info"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
         />

@@ -20,7 +20,7 @@ import {
 import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { vendorDeleteConfig } from "../auth/vendor/config/vendorDeleteConfig";
 import { vendorRoutes } from "../auth/vendor/config/vendorRoutes";
@@ -33,28 +33,35 @@ import VendorProfileHeader from "@/src/components/shared/VendorProfileHeader";
 import VendorProfileDetails from "@/src/components/shared/VendorProfileDetails";
 import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
+import { maskValue } from "@/src/utils/mask";
+import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 
 export default function VendorProfileScreen() {
   // const { vendorData, setVendorData } = useGlobalData();
-  const { userId, setVendorProfileId, vendorProfileId } = useAuth()
+  const { userId, setVendorProfileId, vendorProfileId } = useAuth();
   console.log(vendorProfileId, "vendorproifleidddd");
-
-
 
   const queryClient = useQueryClient();
 
-  const { data: profileData, isPending: loadingVendorProfile } = useVendorProfileQuery(userId);
-  const { data: licenseData } = useVendorLicenseQuery(vendorProfileId);
-  const { data: productsData } = useVendorProductsQuery(vendorProfileId);
-  const { data: operationsData } = useVendorOperationsQuery(
-    vendorProfileId
-  );
-
-  const { data: financialData } = useVendorFinancialQuery(vendorProfileId);
-  const { data: supportData } = useVendorSupportQuery(vendorProfileId);
+  const { data: profileData, isPending: loadingVendorProfile } =
+    useVendorProfileQuery(userId);
+  const { data: licenseData, isPending: loadingLicense } =
+    useVendorLicenseQuery(vendorProfileId);
+  const { data: productsData, isPending: loadingProducts } =
+    useVendorProductsQuery(vendorProfileId);
+  const { data: operationsData, isPending: loadingOperations } =
+    useVendorOperationsQuery(vendorProfileId);
+  const { data: financialData, isPending: loadingFinancial } =
+    useVendorFinancialQuery(vendorProfileId);
+  const { data: supportData, isPending: loadingSupport } =
+    useVendorSupportQuery(vendorProfileId);
 
   const { mutateAsync: deleteLicenseApi } = useVendorLicenseDeleteMutation();
   const { mutateAsync: deleteProductsApi } = useVendorProductsDeleteMutation();
+
+  const [deleteSection, setDeleteSection] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const { mutateAsync: deleteOperationsApi } =
     useVendorOperationsDeleteMutation();
   const { mutateAsync: deleteFinancialApi } =
@@ -71,7 +78,7 @@ export default function VendorProfileScreen() {
 
   useEffect(() => {
     if (!profileData) return;
-    setVendorProfileId(profileData?.id)
+    setVendorProfileId(profileData?.id);
   }, [profileData]);
 
   const goToSection = (section: VendorRouteKey) => {
@@ -108,14 +115,29 @@ export default function VendorProfileScreen() {
     }
   };
 
-  if (loadingVendorProfile) return <Loader />
+  const confirmDelete = async () => {
+    if (!deleteSection) return;
+
+    try {
+      setDeleting(true);
+      await handleDelete(deleteSection);
+      setDeleteSection(null);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  if (!profileData || deleting) return <Loader />;
 
   return (
-
     <ScreenLayout>
-      <BackHeader title="Profile" />
+      <BackHeader
+        title="Profile"
+        onPress={() => router.push(ROUTES.TABS.MENU)}
+      />
 
-      <VendorProfileHeader data={profileData}
+      <VendorProfileHeader
+        data={profileData}
         onEdit={() => goToSection("business")}
       />
 
@@ -123,9 +145,14 @@ export default function VendorProfileScreen() {
         <ProfileProgressBar
           progress={progress}
           missingSections={missingSections}
-          completedSections={["Business", "License", "Products", "Operations", "Financial", "Support"].filter(
-            (s) => !missingSections.includes(s.toLowerCase())
-          )}
+          completedSections={[
+            "Business",
+            "License",
+            "Products",
+            "Operations",
+            "Financial",
+            "Support",
+          ].filter((s) => !missingSections.includes(s.toLowerCase()))}
         />
       )}
 
@@ -146,17 +173,20 @@ export default function VendorProfileScreen() {
       <SectionCard
         title="License & Compliance"
         onEdit={licenseData ? () => goToSection("license") : undefined}
-        onDelete={licenseData ? () => handleDelete("license") : undefined}
+        onDelete={licenseData ? () => setDeleteSection("license") : undefined}
         style={
           !licenseData ? { borderColor: colors.warning, borderWidth: 1 } : {}
         }
       >
         {licenseData ? (
           <>
-            <DetailsCard title="GST" value={licenseData.gstNumber} />
+            <DetailsCard
+              title="GST"
+              value={maskValue(licenseData.gstNumber, 2, 3)}
+            />
             <DetailsCard
               title="License No."
-              value={licenseData.dealerLicenseNumber}
+              value={maskValue(licenseData.dealerLicenseNumber, 0, 4)}
             />
             <DetailsCard
               title="License Start Date"
@@ -170,12 +200,14 @@ export default function VendorProfileScreen() {
                 licenseData.licenseExpiryDate
               ).toLocaleDateString()}
             />
-            <DetailsCard
+            {/* <DetailsCard
               title="License Copy URL"
               value={licenseData.licenseCopyUrl}
+            /> */}
+            <DetailsCard
+              title="PAN Number"
+              value={maskValue(licenseData.panNumber, 2, 2)}
             />
-            <DetailsCard title="PAN Number" value={licenseData.panNumber} />
-
           </>
         ) : (
           <TouchableOpacity onPress={() => goToSection("license")}>
@@ -189,7 +221,7 @@ export default function VendorProfileScreen() {
       <SectionCard
         title="Product Portfolio"
         onEdit={productsData ? () => goToSection("products") : undefined}
-        onDelete={productsData ? () => handleDelete("products") : undefined}
+        onDelete={productsData ? () => setDeleteSection("products") : undefined}
         style={
           !productsData ? { borderColor: colors.warning, borderWidth: 1 } : {}
         }
@@ -200,8 +232,9 @@ export default function VendorProfileScreen() {
             <DetailsCard
               title="Storage Capacity"
               value={
-                `${productsData.storageCapacityValue || ""} ${productsData.storageCapacityUnit || ""
-                  }`.trim() || "N/A"
+                `${productsData.storageCapacityValue || ""} ${
+                  productsData.storageCapacityUnit || ""
+                }`.trim() || "N/A"
               }
             />
 
@@ -224,29 +257,33 @@ export default function VendorProfileScreen() {
             />
 
             {/* PRODUCT LIST */}
-            <Text className="font-semibold text-gray-700 mt-5 mb-2 text-base">
-              Products
-            </Text>
 
             {/* --- Input Types as Product Items --- */}
-            {productsData.inputTypes.map((item) => (
+            {/* {productsData.inputTypes.map((item) => (
               <ProductItemCard
                 key={`type-${item.id}`}
                 name={item.inputType}
                 stock="Category"
                 unit=""
               />
-            ))}
+            ))} */}
 
             {/* --- Custom Inputs as Product Items --- */}
-            {productsData.customInputs.map((item) => (
-              <ProductItemCard
-                key={`custom-${item.id}`}
-                name={item.productName}
-                stock={item.stockQuantity || "Not Provided"}
-                unit={item.unit || ""}
-              />
-            ))}
+            {productsData.customInputs.length > 0 && (
+              <>
+                <Text className="font-semibold text-gray-700 mt-5 mb-2 text-base">
+                  Other Inputs
+                </Text>
+                {productsData.customInputs.map((item) => (
+                  <ProductItemCard
+                    key={`custom-${item.id}`}
+                    name={item.productName}
+                    stock={item.stockQuantity || "Not Provided"}
+                    unit={item.unit || ""}
+                  />
+                ))}
+              </>
+            )}
           </>
         ) : (
           <TouchableOpacity onPress={() => goToSection("products")}>
@@ -260,7 +297,9 @@ export default function VendorProfileScreen() {
       <SectionCard
         title="Operations"
         onEdit={operationsData ? () => goToSection("operations") : undefined}
-        onDelete={operationsData ? () => handleDelete("operations") : undefined}
+        onDelete={
+          operationsData ? () => setDeleteSection("operations") : undefined
+        }
         style={
           !operationsData ? { borderColor: colors.warning, borderWidth: 1 } : {}
         }
@@ -316,7 +355,9 @@ export default function VendorProfileScreen() {
       <SectionCard
         title="Financial Info"
         onEdit={financialData ? () => goToSection("financial") : undefined}
-        onDelete={financialData ? () => handleDelete("financial") : undefined}
+        onDelete={
+          financialData ? () => setDeleteSection("financial") : undefined
+        }
         style={
           !financialData ? { borderColor: colors.warning, borderWidth: 1 } : {}
         }
@@ -336,40 +377,50 @@ export default function VendorProfileScreen() {
             />
 
             {/* SELLING VIA ZIRAAT */}
-            <DetailsCard
-              title="Selling via Ziraat"
-              value={financialData.sellingViaZiraat ? "Yes" : "No"}
-            />
+            {financialData.sellingViaZiraat && (
+              <>
+                <DetailsCard
+                  title="Selling via Ziraat"
+                  value={financialData.sellingViaZiraat ? "Yes" : "No"}
+                />
 
-            {/* BANK DETAILS */}
-            <Text className="font-semibold text-gray-700 mt-4 mb-2 text-base">
-              Bank Details
-            </Text>
+                {/* BANK DETAILS */}
+                <Text className="font-semibold text-gray-700 mt-4 mb-2 text-base">
+                  Bank Details
+                </Text>
 
-            <DetailsCard
-              title="Account Holder Name"
-              value={financialData.bankDetails?.accountHolderName || "N/A"}
-            />
+                <DetailsCard
+                  title="Account Holder Name"
+                  value={financialData.bankDetails?.accountHolderName || "N/A"}
+                />
 
-            <DetailsCard
-              title="Account Number"
-              value={financialData.bankDetails?.accountNumber || "N/A"}
-            />
+                <DetailsCard
+                  title="Account Number"
+                  value={
+                    maskValue(financialData.bankDetails?.accountNumber, 3, 4) ||
+                    "N/A"
+                  }
+                />
 
-            <DetailsCard
-              title="IFSC Code"
-              value={financialData.bankDetails?.ifscCode || "N/A"}
-            />
+                <DetailsCard
+                  title="IFSC Code"
+                  value={
+                    maskValue(financialData.bankDetails?.ifscCode, 4, 1) ||
+                    "N/A"
+                  }
+                />
 
-            <DetailsCard
-              title="Bank Name"
-              value={financialData.bankDetails?.bankName || "N/A"}
-            />
+                <DetailsCard
+                  title="Bank Name"
+                  value={financialData.bankDetails?.bankName || "N/A"}
+                />
 
-            <DetailsCard
-              title="Branch Name"
-              value={financialData.bankDetails?.branchName || "N/A"}
-            />
+                <DetailsCard
+                  title="Branch Name"
+                  value={financialData.bankDetails?.branchName || "N/A"}
+                />
+              </>
+            )}
           </>
         ) : (
           <TouchableOpacity onPress={() => goToSection("financial")}>
@@ -383,7 +434,7 @@ export default function VendorProfileScreen() {
       <SectionCard
         title="Support Services"
         onEdit={supportData ? () => goToSection("support") : undefined}
-        onDelete={supportData ? () => handleDelete("support") : undefined}
+        onDelete={supportData ? () => setDeleteSection("support") : undefined}
         style={
           !supportData ? { borderColor: colors.warning, borderWidth: 1 } : {}
         }
@@ -437,6 +488,15 @@ export default function VendorProfileScreen() {
           </TouchableOpacity>
         )}
       </SectionCard>
+
+      <ConfirmDeleteModal
+        visible={!!deleteSection}
+        title="Confirm deletion"
+        description="Are you sure you want to delete this information?"
+        onCancel={() => setDeleteSection(null)}
+        onConfirm={confirmDelete}
+        loading={deleting}
+      />
     </ScreenLayout>
   );
 }

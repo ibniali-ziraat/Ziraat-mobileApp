@@ -94,63 +94,67 @@
 //   );
 // }
 import FormInput from "@/src/components/form/inputs/FormInput";
-import FormActions from "@/src/components/shared/FormActions";
-import Heading from "@/src/components/shared/Heading";
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
+import { useState } from "react";
 import { View } from "react-native";
-import { Divider } from "react-native-paper";
+import { Button, Divider, Snackbar, Text } from "react-native-paper";
 import { useZodForm } from "../../../hooks/useZodForm";
 import { LoginSchema } from "../../../schemas/shared/login.schema";
+import FormActions from "@/src/components/shared/FormActions";
+import { colors } from "@/src/constants/colors";
+import Heading from "@/src/components/shared/Heading";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+import { useAuth } from "@/src/contexts/AuthContext";
+import Loader from "@/src/components/shared/Loader";
+import { set } from "react-hook-form";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
   const { errors } = formState;
 
-
   // const { setUserToken, setUserData } = useGlobalData();
-  const { setUserToken, setUserId } = useAuth()
+  const { setUserToken, setUserId } = useAuth();
 
-  const { mutateAsync: loginMutate, isPending } = useLoginMutation();
+  const { mutateAsync: loginMutate } = useLoginMutation();
+  const [isPending, setIsPending] = useState(false);
 
   const onSubmit = async (data: any) => {
-    router.push("/");
-    // try {
-    //   const response = await loginMutate({
-    //     mobileNumber: data.mobileNumber,
-    //     password: data.password,
-    //   });
-    //   console.log(response, "login response");
+    setIsPending(true);
+    // router.push("/");
+    try {
+      const response = await loginMutate({
+        mobileNumber: data.mobileNumber,
+        password: data.password,
+      });
+      console.log(response, "login response");
 
-    //   if (response.success) {
-    //     console.log(response, "response..");
+      if (response.success) {
+        console.log(response, "response..");
 
-    //     await setUserToken(response.token);
-    //     setUserData({
-    //       id: response.user,
-    //     });
-    //     router.replace("/");
-    //     showSuccessToast("logged in");
-    //   }
-    //   if (response.stat)
-    //     setShowSnack(true);
-    // } catch (error: any) {
-    //   if (error?.response?.status === 401) {
-    //     showErrorToast("Invalid credentials.");
-    //   } else {
-    //     showErrorToast("Something went wrong. Please try again later.");
-    //   }
-    // }
+        await setUserToken(response?.token);
+        await setUserId(response?.user);
+
+        router.replace("/");
+        setIsPending(false);
+        showSuccessToast("logged in");
+      }
+    } catch (error: any) {
+      if (error?.response?.status === 401) {
+        setIsPending(false);
+        showErrorToast("Invalid credentials.");
+      } else {
+        showErrorToast("Something went wrong. Please try again later.");
+      }
+    }
   };
+
+  if (isPending) return <Loader />;
 
   return (
     <View className="bg-light">
-      <Heading
-        title="Login"
-        subtitle="Enter your credentials below"
-      />
-
+      <Heading title="Login" subtitle="Enter your credentials below" />
 
       <Divider style={{ marginVertical: 10 }} />
 
@@ -170,16 +174,12 @@ export default function LoginForm() {
         error={errors.password}
       />
 
-
       <FormActions
         submitLabel={"Login"}
         onSubmit={handleSubmit(onSubmit)}
         disabled={isPending}
         loading={isPending}
-
       />
-
-
     </View>
   );
 }

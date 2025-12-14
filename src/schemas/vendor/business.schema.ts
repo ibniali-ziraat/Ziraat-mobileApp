@@ -24,11 +24,10 @@ export const businessInformationSchema = z.object({
   district: z.string().min(1, "Required Field"),
   state: z.string().min(1, "Required Field"),
 
-  pincode: z.coerce
-    .number()
-    .min(1, "Required Field")
-    .min(100000, "PIN must be 6 digits")
-    .max(999999, "PIN must be 6 digits"),
+  pincode: z
+    .string()
+    .nonempty("Required Field") // 1️⃣ Empty check first
+    .regex(/^[1-9][0-9]{5}$/, "Enter a valid 6 digit pincode"),
 
   gps: z.string().min(1, "GPS location is required").optional(),
 });

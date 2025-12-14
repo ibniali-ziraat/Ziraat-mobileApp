@@ -1,16 +1,17 @@
 import { colors } from "@/src/constants/colors";
 import { router } from "expo-router";
 import { Bell } from "lucide-react-native";
+import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 interface HomeHeaderProps {
   title?: string;
 }
 
-export default function HomeHeader({ title = "Naik Ummar Mukhtar" }: HomeHeaderProps) {
+const HomeHeader = ({ title = "Naik Ummar Mukhtar" }: HomeHeaderProps) => {
   return (
     <View
-      className="w-full bg-white flex-row items-center justify-between"
+      className="w-full bg-white flex-row items-center justify-between pt-4"
       style={{ borderBottomColor: colors.neutral }}
     >
       {/* LEFT: Greeting */}
@@ -65,4 +66,6 @@ export default function HomeHeader({ title = "Naik Ummar Mukhtar" }: HomeHeaderP
       </View>
     </View>
   );
-}
+};
+
+export default React.memo(HomeHeader);
