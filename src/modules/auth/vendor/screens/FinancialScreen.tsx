@@ -1,7 +1,6 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorFinancialMutation,
@@ -18,7 +17,6 @@ import FinancialPaymentSection from "../sections/FinancialSection";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { ROUTES } from "@/src/constants/routes";
 export default function FinancialScreen() {
-  // const { vendorData } = useGlobalData();
   const { vendorProfileId, userId } = useAuth();
 
   const { data } = useVendorFinancialQuery(vendorProfileId);
@@ -67,8 +65,10 @@ export default function FinancialScreen() {
 
       if (data) {
         await update(payload);
+        showSuccessToast("Financial Info Updated");
       } else {
         await save(payload);
+        showSuccessToast("Financial Info Added ");
       }
 
       showSuccessToast("Financial Info Saved!");

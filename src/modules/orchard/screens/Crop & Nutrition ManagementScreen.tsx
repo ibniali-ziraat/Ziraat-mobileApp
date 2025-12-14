@@ -8,8 +8,6 @@ import { FormProvider } from "react-hook-form";
 import CropNutrition from "../sections/Crop & Nutrition Management";
 
 export default function CropandNutritionScreen() {
-  //   const { vendorData, setVendorData, userData } = useGlobalData();
-
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 

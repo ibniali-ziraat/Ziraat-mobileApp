@@ -10,7 +10,7 @@ export const supportServicesSchema = z
 
     fieldStaffCount: z.coerce.number().int().positive().optional(),
 
-    afterSalesService: z.string().min(1),
+    afterSalesService: z.string().min(1, "Required Field"),
 
     deliveryRange: z.coerce.number().int().positive(),
 

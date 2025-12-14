@@ -2,7 +2,6 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import DetailsCard from "@/src/components/shared/DetailsCard";
 import ProgressBar from "@/src/components/shared/ProgressBar";
 import { colors } from "@/src/constants/colors";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
 import {
   useVendorFinancialDeleteMutation,
@@ -38,7 +37,6 @@ import { maskValue } from "@/src/utils/mask";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 
 export default function VendorProfileScreen() {
-  // const { vendorData, setVendorData } = useGlobalData();
   const { userId, setVendorProfileId, vendorProfileId } = useAuth();
   console.log(vendorProfileId, "vendorproifleidddd");
 
@@ -319,29 +317,37 @@ export default function VendorProfileScreen() {
             />
 
             {/* MONTHLY SALES */}
+
+            {/* SERVICE AREAS */}
+            {operationsData?.deliveryServiceAvailable && (
+              <>
+                <DetailsCard
+                  title="Service Areas"
+                  value={
+                    operationsData.serviceAreas
+                      ?.map((i) => i.placeName)
+                      .join(", ") || "N/A"
+                  }
+                />
+              </>
+            )}
             <DetailsCard
               title="Avg. Monthly Sales Volume"
               value={operationsData.avgMonthlySalesVolume || "N/A"}
             />
 
-            {/* SERVICE AREAS */}
-            <DetailsCard
-              title="Service Areas"
-              value={
-                operationsData.serviceAreas
-                  ?.map((i) => i.placeName)
-                  .join(", ") || "N/A"
-              }
-            />
-
             {/* COMPANY TIEUPS */}
-            <Text className="font-semibold text-gray-700 mt-4 mb-2 text-base">
-              Company Tie-ups
-            </Text>
+            {operationsData?.companyTieups.length > 0 && (
+              <>
+                <Text className="font-semibold text-gray-700 mt-4 mb-2 text-base">
+                  Company Tie-ups
+                </Text>
 
-            {operationsData.companyTieups?.map((tie) => (
-              <DetailsCard key={tie.id} title="Company" value={tie.name} />
-            ))}
+                {operationsData.companyTieups?.map((tie) => (
+                  <DetailsCard key={tie.id} title="Company" value={tie.name} />
+                ))}
+              </>
+            )}
           </>
         ) : (
           <TouchableOpacity onPress={() => goToSection("operations")}>
@@ -443,7 +449,7 @@ export default function VendorProfileScreen() {
           <>
             <DetailsCard
               title="Agronomy Advisory Support"
-              value={supportData.agronomyAdvisorySupport ? "Yes" : "No"}
+              value={supportData.advisorySupport ? "Yes" : "No"}
             />
 
             <DetailsCard
@@ -451,10 +457,14 @@ export default function VendorProfileScreen() {
               value={supportData.fieldStaffAvailable ? "Yes" : "No"}
             />
 
-            <DetailsCard
-              title="Number of Field Staff"
-              value={supportData.fieldStaffCount || "N/A"}
-            />
+            {supportData?.fieldStaffAvailable && (
+              <>
+                <DetailsCard
+                  title="Number of Field Staff"
+                  value={supportData.fieldStaffCount || "N/A"}
+                />
+              </>
+            )}
 
             <DetailsCard
               title="After Sales Service"
@@ -472,12 +482,12 @@ export default function VendorProfileScreen() {
 
             <DetailsCard
               title="Computer Facility Available"
-              value={supportData.computerFacilityAvailable ? "Yes" : "No"}
+              value={supportData.computerAvailable ? "Yes" : "No"}
             />
 
             <DetailsCard
               title="Delivery Vehicle Available"
-              value={supportData.deliveryVehicleAvailable ? "Yes" : "No"}
+              value={supportData.vehicleAvailable ? "Yes" : "No"}
             />
           </>
         ) : (

@@ -11,7 +11,6 @@ import {
 import FormActions from "@/src/components/shared/FormActions";
 import Button from "@/src/components/ui/Button";
 
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { otpSchema } from "@/src/schemas/shared/otp.schema";
 import { profileSchema } from "@/src/schemas/user/profile.schema";
@@ -155,10 +154,11 @@ export default function UserRegistrationScreen() {
     }
   };
 
-  const isLoading = isSignupPending || isOtpPending || isUserExistsPending;
-  if (isLoading) {
-    return <Loader />;
-  }
+  const isLoading =
+    isSignupPending || isOtpPending || isUserExistsPending || isSendingOtp;
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
   return (
     <View>
@@ -174,6 +174,7 @@ export default function UserRegistrationScreen() {
           title="Verify your phone"
           phone={profileData?.phone}
           onResend={handleResendOtp}
+          disabled={isSendingOtp}
         />
       )}
 
@@ -193,7 +194,7 @@ export default function UserRegistrationScreen() {
           submitLabel={step === 1 ? "Signup" : "Next"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isLoading}
-          loading={isUserExistsPending}
+          loading={isLoading}
         />
       </View>
     </View>

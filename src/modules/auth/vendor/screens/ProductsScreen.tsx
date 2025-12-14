@@ -12,7 +12,6 @@ import {
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { productPortfolioSchema } from "@/src/schemas/vendor/products.schema";
 import { router } from "expo-router";
 import ProductSection from "../sections/ProductSection";
@@ -21,7 +20,6 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { ROUTES } from "@/src/constants/routes";
 
 export default function ProductsScreen() {
-  // const { vendorData } = useGlobalData();
   const { vendorProfileId, userId } = useAuth();
 
   // Fetch existing vendor products
@@ -81,18 +79,21 @@ export default function ProductsScreen() {
     };
 
     try {
-      data
-        ? await update({
-            ...payload,
-            id: data?.id,
-            supplierProfileId: vendorProfileId,
-          })
-        : await save({
-            ...payload,
-            supplierProfileId: vendorProfileId,
-            // id: userId,
-          });
-      showSuccessToast("Products Saved!");
+      if (data) {
+        await update({
+          ...payload,
+          id: data.id,
+          supplierProfileId: vendorProfileId,
+        });
+        showSuccessToast("Products Updated");
+      } else {
+        await save({
+          ...payload,
+          supplierProfileId: vendorProfileId,
+        });
+        showSuccessToast("Products Added");
+      }
+
       router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
       showErrorToast("Error saving products", error.message || "Unknown error");

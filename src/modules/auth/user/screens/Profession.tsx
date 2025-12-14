@@ -4,7 +4,6 @@ import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useProfessionMutation,
@@ -19,7 +18,6 @@ import { FormProvider } from "react-hook-form";
 import { ScrollView } from "react-native";
 
 export default function ProfessionScreen() {
-  // const { userData } = useGlobalData();
   const { userProfileId } = useAuth();
 
   const { data } = useProfessionQuery(userProfileId);
@@ -48,11 +46,12 @@ export default function ProfessionScreen() {
 
       if (data) {
         await update(payload);
+        showSuccessToast("Profession Updated");
       } else {
         await save(payload);
+        showSuccessToast("Profession Info Saved");
       }
 
-      showSuccessToast("Profession saved successfully");
       router.replace(ROUTES.USER.PROFILE);
     } catch (error) {
       const backendError =
@@ -67,22 +66,20 @@ export default function ProfessionScreen() {
   return (
     <ScreenLayout>
       <FormProvider {...form}>
-        <ScrollView>
-          <BackHeader
-            title="Profession"
-            onPress={() => router.push(ROUTES.USER.PROFILE)}
-          />
+        <BackHeader
+          title="Profession"
+          onPress={() => router.push(ROUTES.USER.PROFILE)}
+        />
 
-          <ProfessionSection control={control} errors={errors} />
-          <FormActions
-            cancelLabel={"Cancel"}
-            onCancel={() => router.push(ROUTES.USER.PROFILE)}
-            submitLabel={data ? "Update Profession" : "Add Profession"}
-            onSubmit={handleSubmit(onSubmit)}
-            disabled={isSaving || isUpdating}
-            loading={isSaving || isUpdating}
-          />
-        </ScrollView>
+        <ProfessionSection control={control} errors={errors} />
+        <FormActions
+          cancelLabel={"Cancel"}
+          onCancel={() => router.push(ROUTES.USER.PROFILE)}
+          submitLabel={data ? "Update Profession" : "Add Profession Info"}
+          onSubmit={handleSubmit(onSubmit)}
+          disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
+        />
       </FormProvider>
     </ScreenLayout>
   );

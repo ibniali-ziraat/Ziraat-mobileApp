@@ -20,8 +20,6 @@ import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 
-import ProgressBar from "@/src/components/shared/ProgressBar";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
 import { useEffect, useState } from "react";
 import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
@@ -38,7 +36,6 @@ import { ROUTES } from "@/src/constants/routes";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 
 export default function UserProfileScreen() {
-  // const { userData, setUserData, logout } = useGlobalData();
   const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
   const [deleteSection, setDeleteSection] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -46,6 +43,8 @@ export default function UserProfileScreen() {
   const queryClient = useQueryClient();
 
   const { data: profileData } = useProfileQuery(userId);
+  console.log(profileData, "profileData......");
+
   const { data: addressData } = useAddressQuery(userProfileId);
   const { data: educationData } = useEducationQuery(userProfileId);
   const { data: professionData } = useProfessionQuery(userProfileId);

@@ -3,7 +3,6 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useProfileMutation,
@@ -16,11 +15,12 @@ import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import { Alert } from "react-native";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function ProfileScreen() {
-  const { setUserData, userData } = useGlobalData();
+  const { setUserProfileId, userId } = useAuth();
 
-  const { data } = useProfileQuery(userData.id);
+  const { data } = useProfileQuery(userId);
   const { mutateAsync: save, isPending: isSaving } = useProfileMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useProfileUpdateMutation();
@@ -40,14 +40,12 @@ export default function ProfileScreen() {
       setValue(k, v != null ? String(v) : ""); // convert numbers to strings
     });
 
-    setUserData({
-      profileId: data.id,
-    });
+    setUserProfileId(data?.id);
   }, [data]);
 
   const onSubmit = async (values) => {
     try {
-      const payload = { id: data?.id, userId: userData.id, ...values };
+      const payload = { id: data?.id, userId: userId, ...values };
       if (data) {
         await update(payload);
         showSuccessToast("Profile Updated");
@@ -79,7 +77,7 @@ export default function ProfileScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.push(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update" : "Save"}
+          submitLabel={data ? "Update Profile" : "Submit"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}
