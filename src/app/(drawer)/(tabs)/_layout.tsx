@@ -17,8 +17,9 @@ export default function TabLayout() {
   const { userId, roleMode } = useAuth();
 
   const { data } = useProfileQuery(userId);
+  console.log(userId, data);
 
-  console.log(data, "user profile data...");
+  console.log("user profile data...");
 
   if (!userId || !data) {
     return <Loader />;

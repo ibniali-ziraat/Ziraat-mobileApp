@@ -24,9 +24,12 @@ import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
 import OtpHeading from "@/src/components/shared/OtpHeading";
 import AnimatedStepWrapper from "@/src/components/shared/AnimatedStepWrapper";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function UserRegistrationScreen() {
   const [step, setStep] = useState(0);
+  const { setUserId, setUserToken } = useAuth();
+
   const [profileData, setProfileData] = useState<any>(null);
 
   const schemas = [profileSchema, otpSchema];
@@ -42,7 +45,6 @@ export default function UserRegistrationScreen() {
   const { mutateAsync: verifyOtpMutate, isPending: isOtpPending } =
     useOtpVerifyMutation();
   const { mutateAsync: loginMutate } = useLoginMutation();
-  const { setUserToken, setUserData } = useGlobalData();
 
   const { mutateAsync: verifyUserExists, isPending: isUserExistsPending } =
     useCheckUserExists();
@@ -118,8 +120,8 @@ export default function UserRegistrationScreen() {
           return;
         }
 
-        await setUserToken(loginRes.token);
-        setUserData({ id: loginRes.user });
+        await setUserToken(loginRes?.token);
+        await setUserId(loginRes?.user);
 
         router.push(ROUTES.USER.HOME);
         showSuccessToast("Logged in Successfully");
