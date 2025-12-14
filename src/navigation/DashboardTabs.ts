@@ -154,7 +154,7 @@ export const DashboardTabs = {
     link: "dashboards/vendor-financial",
     role: "supplier",
   },
-  
+
   vendorOffers: {
     name: "vendorOffers",
     component: OffersScreen,
@@ -179,7 +179,7 @@ export const DashboardTabs = {
     link: "dashboards/vendor-products",
     role: "supplier",
   },
-  
-  
-  
+
+
+
 };

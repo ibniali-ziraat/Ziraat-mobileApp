@@ -16,17 +16,17 @@ export default function SearchBar({ search, setSearch }: Props) {
                 bg-white
                 rounded-full
                 px-4 py-2
-                shadow-md 
-                border border-gray-200
+                shadow-sm 
+                border border-neutral
                  mb-6
             "
             style={{ height: 48 }}
         >
-            <Search size={20} color="#c7611f" strokeWidth={2} />
+            <Search size={22} color="#c7611f" strokeWidth={2} />
 
             <TextInput
                 placeholder="Search..."
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor="#fffffff"
                 value={search}
                 onChangeText={setSearch}
                 className="

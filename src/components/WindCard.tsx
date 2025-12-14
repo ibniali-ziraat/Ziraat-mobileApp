@@ -1,56 +1,108 @@
 import { Wind } from "lucide-react-native";
 import { Animated, Text, View } from "react-native";
+import ZiratCard from "./shared/ZiratCard";
 
 export default function WindCard({ speed, gust, dir }) {
-    const degMap: Record<string, number> = {
-        N: 0, NE: 45, E: 90, SE: 135,
-        S: 180, SW: 225, W: 270, NW: 315
+    const degMap = {
+        N: 0,
+        NE: 45,
+        E: 90,
+        SE: 135,
+        S: 180,
+        SW: 225,
+        W: 270,
+        NW: 315,
     };
 
     const deg = degMap[dir] ?? 0;
 
     return (
-        <View className="bg-white rounded-2xl p-5 mb-4 border border-neutral border-sm shadow-md">
+        <ZiratCard
+            title="Wind"
+            subtitle="Speed, gusts & direction"
+            leftIcon={<Wind size={20} color="#c7611f" />}
+        >
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
 
+                {/* LEFT: Wind details */}
+                <View style={{ gap: 10 }}>
+                    {/* Speed */}
+                    <View>
+                        <Text style={{ fontSize: 12, color: "#6B7280" }}>
+                            Wind Speed
+                        </Text>
+                        <Text
+                            style={{
+                                fontSize: 28,
+                                fontWeight: "700",
+                                color: "#111827",
+                            }}
+                        >
+                            {speed} kph
+                        </Text>
+                    </View>
 
-            <Text className="text-black text-base font-semibold mb-3">Wind</Text>
+                    {/* Gusts */}
+                    <View>
+                        <Text style={{ fontSize: 12, color: "#6B7280" }}>
+                            Gusts
+                        </Text>
+                        <Text style={{ fontSize: 16, fontWeight: "600" }}>
+                            {gust} kph
+                        </Text>
+                    </View>
 
-            <View className="flex-row justify-between items-center">
-
-                <View>
-                    <Text className="text-black text-3xl font-bold">{speed} kph</Text>
-
-                    <Text className="text-black/60 mt-1 text-sm">
-                        Gusts: {gust} kph
-                    </Text>
-
-                    <Text className="text-black/60 mt-1 text-sm">
-                        Direction: {dir} ({deg}°)
-                    </Text>
+                    {/* Direction */}
+                    <View>
+                        <Text style={{ fontSize: 12, color: "#6B7280" }}>
+                            Direction
+                        </Text>
+                        <Text style={{ fontSize: 16, fontWeight: "600" }}>
+                            {dir} ({deg}°)
+                        </Text>
+                    </View>
                 </View>
 
-                <View className="items-center justify-center">
+                {/* RIGHT: Compass */}
+                <View style={{ alignItems: "center", justifyContent: "center" }}>
+                    <View
+                        style={{
+                            width: 110,
+                            height: 110,
+                            borderRadius: 55,
+                            borderWidth: 2,
+                            borderColor: "#c7611f",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        {/* Cardinal points */}
+                        <Text style={{ position: "absolute", top: 6, fontSize: 10, color: "#6B7280" }}>N</Text>
+                        <Text style={{ position: "absolute", bottom: 6, fontSize: 10, color: "#6B7280" }}>S</Text>
+                        <Text style={{ position: "absolute", left: 6, fontSize: 10, color: "#6B7280" }}>W</Text>
+                        <Text style={{ position: "absolute", right: 6, fontSize: 10, color: "#6B7280" }}>E</Text>
 
-
-                    <View className="w-28 h-28 rounded-full border-2 border-secondary items-center justify-center relative">
-
-                        <Text className="absolute top-1 text-[10px] text-black/60">N</Text>
-                        <Text className="absolute bottom-1 text-[10px] text-black/60">S</Text>
-                        <Text className="absolute left-1 text-[10px] text-black/60">W</Text>
-                        <Text className="absolute right-1 text-[10px] text-black/60">E</Text>
-
-
-                        <Animated.View style={{ transform: [{ rotate: `${deg}deg` }] }}>
+                        {/* Rotating wind icon */}
+                        <Animated.View
+                            style={{
+                                transform: [{ rotate: `${deg}deg` }],
+                            }}
+                        >
                             <Wind size={42} color="#c7611f" />
                         </Animated.View>
                     </View>
 
-
-                    <Text className="text-black/70 text-xs mt-2">
+                    <Text
+                        style={{
+                            marginTop: 6,
+                            fontSize: 12,
+                            color: "#6B7280",
+                        }}
+                    >
                         {speed} kph • {dir}
                     </Text>
                 </View>
             </View>
-        </View>
+        </ZiratCard>
     );
 }

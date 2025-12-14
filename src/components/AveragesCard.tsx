@@ -1,11 +1,42 @@
-import { Text, View } from "react-native";
+import { View, Text } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import ZiratCard from "./shared/ZiratCard";
 
 export default function AveragesCard() {
     return (
-        <View className="bg-white rounded-2xl p-4 w-[48%] mb-4 border border-neutral border-sm shadow-md">
-            <Text className="text-black text-md font-semibold mb-2">Averages</Text>
-            <Text className="text-black text-2xl font-semibold">+1°</Text>
-            <Text className="text-black/60 mt-2 text-xs">Above daily high</Text>
-        </View>
+        <ZiratCard
+            style={{ width: "48%" }}
+            title="Averages"
+            subtitle="Today’s temperature average"
+            leftIcon={
+                <Ionicons
+                    name="analytics-outline"
+                    size={22}
+                    color="#c7611f"
+                />
+            }
+        >
+            <View>
+                <Text
+                    style={{
+                        fontSize: 28,
+                        fontWeight: "700",
+                        color: "#111827",
+                    }}
+                >
+                    +1°
+                </Text>
+
+                <Text
+                    style={{
+                        marginTop: 6,
+                        fontSize: 12,
+                        color: "#6B7280",
+                    }}
+                >
+                    Above today’s high
+                </Text>
+            </View>
+        </ZiratCard>
     );
 }

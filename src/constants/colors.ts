@@ -9,7 +9,7 @@ export const colors = {
   neutral: "#333333",
   overlay: "rgba(0, 0, 0, 0.5)",
   error: "#f44336",
-  bgColor:"#FCFCFC",
+  bgColor: "#FCFCFC",
 
   warning: "#f5a623",
   warningHover: "#d98c1c",

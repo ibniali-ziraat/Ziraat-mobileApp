@@ -1,5 +1,6 @@
 import {
   ScrollView,
+  TouchableOpacity,
   View
 } from "react-native";
 import FarmOverviewChart from "./components/FarmOverviewChart";
@@ -10,6 +11,7 @@ import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 
 import WeatherCard from "./components/weatherCard";
+import { router } from "expo-router";
 
 export default function HomeScreen() {
   return (
@@ -18,8 +20,19 @@ export default function HomeScreen() {
 
         {/* Weather */}
         <SectionTitle title="Today's Weather" icon="sunny-outline" />
-        <WeatherCard />
+        <TouchableOpacity onPress={() => router.push("/dashboards/(farmer)/weather-profile")}>
+          <WeatherCard
+            current={{
+              tempC: 27,
+              feelsLikeC: 29,
+              condition: "Partly cloudy",
+              humidity: 62,
+              windKph: 14,
+              windDir: "NE"
+            }}
+          />
 
+        </TouchableOpacity>
         {/* Quick Actions */}
         <SectionTitle title="Quick Actions" icon="flash-outline" />
         <QuickActions />
@@ -28,7 +41,7 @@ export default function HomeScreen() {
         <SectionTitle title="Featured Pesticides" icon="flask-outline" />
         <FeaturedPesticides />
 
-       
+
 
         {/* Farm Overview */}
         <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
