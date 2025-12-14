@@ -4,7 +4,6 @@ import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useEducationMutation,
@@ -19,7 +18,6 @@ import { FormProvider } from "react-hook-form";
 import { ScrollView } from "react-native";
 
 export default function EducationScreen() {
-  // const { userData } = useGlobalData();
   const { userProfileId } = useAuth();
 
   const { data } = useEducationQuery(userProfileId);
@@ -68,22 +66,20 @@ export default function EducationScreen() {
   return (
     <ScreenLayout>
       <FormProvider {...form}>
-        <ScrollView>
-          <BackHeader
-            title="Education"
-            onPress={() => router.push(ROUTES.USER.PROFILE)}
-          />
+        <BackHeader
+          title="Education"
+          onPress={() => router.push(ROUTES.USER.PROFILE)}
+        />
 
-          <EducationSection control={control} errors={errors} />
-          <FormActions
-            cancelLabel={"Cancel"}
-            onCancel={() => router.push(ROUTES.USER.PROFILE)}
-            submitLabel={data ? "Update Education" : "Add Education"}
-            onSubmit={handleSubmit(onSubmit)}
-            disabled={isSaving || isUpdating}
-            loading={isSaving || isUpdating}
-          />
-        </ScrollView>
+        <EducationSection control={control} errors={errors} />
+        <FormActions
+          cancelLabel={"Cancel"}
+          onCancel={() => router.push(ROUTES.USER.PROFILE)}
+          submitLabel={data ? "Update Education" : "Add Education"}
+          onSubmit={handleSubmit(onSubmit)}
+          disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
+        />
       </FormProvider>
     </ScreenLayout>
   );

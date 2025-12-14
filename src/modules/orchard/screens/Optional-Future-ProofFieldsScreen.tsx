@@ -8,8 +8,6 @@ import { FormProvider } from "react-hook-form";
 import OptionalFutureFields from "../sections/Optional-Future-Proof Fields";
 
 export default function OptionalFutureFieldsScreen() {
-  //   const { vendorData, setVendorData, userData } = useGlobalData();
-
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 

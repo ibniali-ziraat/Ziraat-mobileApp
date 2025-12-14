@@ -50,7 +50,7 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
       <FormInput
         control={control}
         name="afterSalesService"
-        label="After-Sales Service (Warranty / Return / Replacement policy)"
+        label="After-Sales Service Policy"
         error={errors?.afterSalesService?.message}
       />
 

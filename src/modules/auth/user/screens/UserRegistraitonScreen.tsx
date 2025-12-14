@@ -11,7 +11,6 @@ import {
 import FormActions from "@/src/components/shared/FormActions";
 import Button from "@/src/components/ui/Button";
 
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { otpSchema } from "@/src/schemas/shared/otp.schema";
 import { profileSchema } from "@/src/schemas/user/profile.schema";
@@ -24,9 +23,12 @@ import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
 import OtpHeading from "@/src/components/shared/OtpHeading";
 import AnimatedStepWrapper from "@/src/components/shared/AnimatedStepWrapper";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function UserRegistrationScreen() {
   const [step, setStep] = useState(0);
+  const { setUserId, setUserToken } = useAuth();
+
   const [profileData, setProfileData] = useState<any>(null);
 
   const schemas = [profileSchema, otpSchema];
@@ -42,7 +44,6 @@ export default function UserRegistrationScreen() {
   const { mutateAsync: verifyOtpMutate, isPending: isOtpPending } =
     useOtpVerifyMutation();
   const { mutateAsync: loginMutate } = useLoginMutation();
-  const { setUserToken, setUserData } = useGlobalData();
 
   const { mutateAsync: verifyUserExists, isPending: isUserExistsPending } =
     useCheckUserExists();
@@ -118,8 +119,8 @@ export default function UserRegistrationScreen() {
           return;
         }
 
-        await setUserToken(loginRes.token);
-        setUserData({ id: loginRes.user });
+        await setUserToken(loginRes?.token);
+        await setUserId(loginRes?.user);
 
         router.push(ROUTES.USER.HOME);
         showSuccessToast("Logged in Successfully");
@@ -153,10 +154,11 @@ export default function UserRegistrationScreen() {
     }
   };
 
-  const isLoading = isSignupPending || isOtpPending || isUserExistsPending;
-  if (isLoading) {
-    return <Loader />;
-  }
+  const isLoading =
+    isSignupPending || isOtpPending || isUserExistsPending || isSendingOtp;
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
   return (
     <View>
@@ -172,6 +174,7 @@ export default function UserRegistrationScreen() {
           title="Verify your phone"
           phone={profileData?.phone}
           onResend={handleResendOtp}
+          disabled={isSendingOtp}
         />
       )}
 
@@ -191,7 +194,7 @@ export default function UserRegistrationScreen() {
           submitLabel={step === 1 ? "Signup" : "Next"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isLoading}
-          loading={isUserExistsPending}
+          loading={isLoading}
         />
       </View>
     </View>

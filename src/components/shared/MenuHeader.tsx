@@ -1,6 +1,6 @@
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useVendorProfileQuery } from "@/src/hooks/vendorQueryHooks";
 import { router } from "expo-router";
 import { BarChart2, PhoneCall, Store, User } from "lucide-react-native";
@@ -13,7 +13,6 @@ interface MenuHeaderProps {
 }
 
 const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
-  // const { vendorData, setVendorData, userData } = useGlobalData();
   const { userId } = useAuth();
   const { data: profileData, isPending: loadingVendorProfile } =
     useVendorProfileQuery(userId);
@@ -63,11 +62,27 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
         ) : showBecomeSupplier ? (
           // Show Become a Supplier button if no vendor data
           <TouchableOpacity
-            className="p-2 rounded-full bg-white border"
-            style={{ borderColor: colors.neutral }}
-            onPress={() => router.push("/auth/vendor")}
+            onPress={() => router.push(ROUTES.AUTH.VENDOR_ONBOARD)}
+            activeOpacity={0.85}
+            style={{
+              paddingVertical: 6,
+              paddingHorizontal: 14,
+              borderRadius: 999, // pill style (Airbnb-like)
+              backgroundColor: colors.light,
+              borderWidth: 1,
+              borderColor: colors.neutral,
+              alignSelf: "flex-start",
+            }}
           >
-            <Text style={{ color: colors.primary }}>Become a Supplier</Text>
+            <Text
+              style={{
+                color: colors.primary,
+                fontSize: 14,
+                fontWeight: "600",
+              }}
+            >
+              Become a Supplier
+            </Text>
           </TouchableOpacity>
         ) : role === "farmer" ? (
           <>

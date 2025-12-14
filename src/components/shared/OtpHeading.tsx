@@ -9,6 +9,7 @@ interface OtpHeadingProps {
   resendLabel?: string;
   onResend?: () => void;
   initialTimer?: number;
+  disabled?: boolean;
 }
 
 export default function OtpHeading({
@@ -16,7 +17,8 @@ export default function OtpHeading({
   phone,
   resendLabel = "Resend OTP",
   onResend,
-  initialTimer = 300,
+  initialTimer = 60,
+  disabled,
 }: OtpHeadingProps) {
   const [timeLeft, setTimeLeft] = useState(initialTimer);
 
@@ -31,6 +33,13 @@ export default function OtpHeading({
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
   const isExpired = timeLeft === 0;
+
+  const handleResend = () => {
+    if (disabled) return;
+
+    setTimeLeft(initialTimer);
+    onResend?.();
+  };
 
   return (
     <View style={{ marginBottom: 24 }}>
@@ -77,7 +86,7 @@ export default function OtpHeading({
           <Text style={{ fontSize: 13, color: colors.neutral }}>
             Didn’t receive the code?{" "}
           </Text>
-          <Pressable onPress={onResend}>
+          <Pressable onPress={handleResend}>
             <Text
               style={{
                 fontSize: 13,

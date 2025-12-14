@@ -1,7 +1,6 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorSupportMutation,
@@ -19,7 +18,6 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { ROUTES } from "@/src/constants/routes";
 
 export default function SupportScreen() {
-  // const { vendorData } = useGlobalData();
   const { vendorProfileId, userId } = useAuth();
 
   const { data } = useVendorSupportQuery(vendorProfileId);
@@ -60,8 +58,14 @@ export default function SupportScreen() {
     };
 
     try {
-      data ? await update(payload) : await save(payload);
-      showSuccessToast("Support Info Saved!");
+      if (data) {
+        await update(payload);
+        showSuccessToast("Support info updated ");
+      } else {
+        await save(payload);
+        showSuccessToast("Support info added ");
+      }
+
       router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       showErrorToast("Error saving data", err.message || "Unknown error");

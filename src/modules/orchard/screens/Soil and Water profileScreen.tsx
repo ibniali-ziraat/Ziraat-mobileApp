@@ -8,8 +8,6 @@ import { FormProvider } from "react-hook-form";
 import SoilAndWaterProfile from "../sections/Soil and Water profile";
 
 export default function SoilAndWaterProfileScreen() {
-  //   const { vendorData, setVendorData, userData } = useGlobalData();
-
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
@@ -65,10 +63,7 @@ export default function SoilAndWaterProfileScreen() {
   };
   return (
     <ScreenLayout>
-      <BackHeader
-        title="Orchard Registration"
-        desc="Soil and Water Profile"
-      />
+      <BackHeader title="Orchard Registration" desc="Soil and Water Profile" />
       <FormProvider {...form}>
         <SoilAndWaterProfile errors={errors} control={control} />
         <FormActions

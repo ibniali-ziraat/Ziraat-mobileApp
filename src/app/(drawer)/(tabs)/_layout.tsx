@@ -13,12 +13,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  // const { roleMode, userData } = useGlobalData();
   const { userId, roleMode } = useAuth();
 
   const { data } = useProfileQuery(userId);
+  console.log(userId, data);
 
-  console.log(data, "user profile data...");
+  console.log("user profile data...");
 
   if (!userId || !data) {
     return <Loader />;

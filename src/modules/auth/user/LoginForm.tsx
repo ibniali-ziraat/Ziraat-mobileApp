@@ -1,5 +1,4 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -19,7 +18,6 @@ export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
   const { errors } = formState;
 
-  // const { setUserToken, setUserData } = useGlobalData();
   const { setUserToken, setUserId } = useAuth();
 
   const { mutateAsync: loginMutate } = useLoginMutation();

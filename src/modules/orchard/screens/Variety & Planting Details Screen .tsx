@@ -8,8 +8,6 @@ import { FormProvider } from "react-hook-form";
 import VarietAndPlatingDetails from "../sections/Variety & Planting Details ";
 
 export default function VarietyAndPlatingDetailsScreen() {
-  //   const { vendorData, setVendorData, userData } = useGlobalData();
-
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
