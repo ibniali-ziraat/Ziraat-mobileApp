@@ -1,6 +1,6 @@
 //@ts-nocheck
 import * as Location from "expo-location";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, View } from "react-native";
 import FormInput from "../../../../components/form/inputs/FormInput";
 import SingleSelectInput from "../../../../components/form/inputs/SingleSelectInput";
@@ -11,12 +11,22 @@ interface Props {
   errors: any;
 }
 
-export default function AddressSection({ control, errors }: Props) {
+export default function AddressSection({ control, errors, data }: Props) {
   const [coords, setCoords] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const { states, districts, tehsils, setSelectedState, setSelectedDistrict } =
     useCascadingLocation();
+
+  useEffect(() => {
+    if (data?.state) {
+      setSelectedState(data.state);
+    }
+
+    if (data?.district) {
+      setSelectedDistrict(data.district);
+    }
+  }, [data]);
 
   async function fetchLocation() {
     try {

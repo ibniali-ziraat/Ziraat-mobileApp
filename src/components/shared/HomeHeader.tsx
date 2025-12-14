@@ -11,7 +11,7 @@ interface HomeHeaderProps {
 const HomeHeader = ({ title = "Naik Ummar Mukhtar" }: HomeHeaderProps) => {
   return (
     <View
-      className="w-full bg-white flex-row items-center justify-between"
+      className="w-full bg-white flex-row items-center justify-between pt-4"
       style={{ borderBottomColor: colors.neutral }}
     >
       {/* LEFT: Greeting */}

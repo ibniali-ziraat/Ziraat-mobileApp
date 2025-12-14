@@ -85,14 +85,16 @@ import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import BusinessSection from "../sections/BusinessSection";
 import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function BusinessScreen() {
   const { vendorData, setVendorData, userData } = useGlobalData();
+  const { setVendorProfileId, userId } = useAuth();
 
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
-  const { data } = useVendorProfileQuery(userData.id);
+  const { data } = useVendorProfileQuery(userId);
   const { mutateAsync: save, isPending: isSaving } = useVendorProfileMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useVendorProfileUpdateMutation();
@@ -120,6 +122,8 @@ export default function BusinessScreen() {
     });
   }, [data]);
 
+  console.log(data, "businessdata");
+
   const onSubmit = async (val: any) => {
     try {
       if (data) {
@@ -129,9 +133,7 @@ export default function BusinessScreen() {
         const payload = { userId: userData.id, ...val };
         const res = await save(payload);
 
-        setVendorData({
-          profileId: res.id,
-        });
+        setVendorProfileId(res.id);
       }
 
       router.push(ROUTES.AUTH.VENDOR_PROFILE);
@@ -146,11 +148,10 @@ export default function BusinessScreen() {
       <BackHeader
         title="Supplier Onboarding"
         desc="Start selling to farmers today."
-        // onPress={() => router.replace(ROUTES.VENDOR.PROFILE)}
-        onPress={() => router.replace("/(tabs)/menu")}
+        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
-        <BusinessSection errors={errors} control={control} />
+        <BusinessSection errors={errors} control={control} data={data} />
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.back()}

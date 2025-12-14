@@ -40,6 +40,7 @@ export default function SingleSelectInput({
   optional = false,
   error,
   modalLabel = "",
+  showInputLabel = true,
   onValueChange,
   disabled = false,
   searchable = false,
@@ -88,7 +89,7 @@ export default function SingleSelectInput({
         return (
           <View style={{ marginBottom: 16 }}>
             {/* Label */}
-            {(!modalLabel || modalLabel === "") && (
+            {showInputLabel && (
               <Text
                 style={{
                   marginBottom: 6,
@@ -158,165 +159,167 @@ export default function SingleSelectInput({
 
             {/* Modal */}
             {!disabled && (
-              <Portal>
-                <Modal visible={visible} transparent animationType="slide">
-                  <Pressable
+              <Modal visible={visible} transparent animationType="slide">
+                <Pressable
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    backgroundColor: colors.overlay, // semi-transparent backdrop
+                  }}
+                  onPress={() => {
+                    setVisible(false);
+                    hideSearchBar();
+                  }}
+                >
+                  <View
                     style={{
-                      flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      backgroundColor: colors.overlay,
-                    }}
-                    onPress={() => {
-                      setVisible(false);
-                      hideSearchBar();
+                      width: "80%",
+                      backgroundColor: colors.light,
+                      borderRadius: 16,
+                      maxHeight: 400,
+                      shadowOffset: { width: 0, height: 2 },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 4,
+                      elevation: 5,
+                      paddingBottom: 12,
                     }}
                   >
+                    {/* Header */}
                     <View
                       style={{
-                        width: "80%",
-                        backgroundColor: colors.light,
-                        borderRadius: 16,
-                        maxHeight: 400,
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 4,
-                        elevation: 5,
-                        paddingBottom: 12,
+                        paddingHorizontal: 16,
+                        paddingVertical: 12,
+                        borderBottomColor: colors.neutral,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
                       }}
                     >
-                      {/* Header */}
-                      <View
+                      <Text
                         style={{
-                          paddingHorizontal: 16,
-                          paddingVertical: 12,
-                          borderBottomColor: colors.neutral,
-                          flexDirection: "row",
-                          justifyContent: "space-between",
-                          alignItems: "center",
+                          fontSize: 18,
+                          fontWeight: "600",
+                          color: colors.dark,
                         }}
                       >
-                        <Text
-                          style={{
-                            fontSize: 18,
-                            fontWeight: "600",
-                            color: colors.dark,
+                        {modalLabel}
+                      </Text>
+
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <TouchableOpacity
+                          onPress={() => {
+                            onChange("");
+                            if (onValueChange) onValueChange("");
+                            setSelectedLabel("");
+                            setVisible(false);
+                            hideSearchBar();
                           }}
+                          style={{ padding: 6, marginRight: 6 }}
                         >
-                          {modalLabel ? label : ""}
-                        </Text>
+                          <RefreshCcw size={20} color={colors.primary} />
+                        </TouchableOpacity>
 
                         <View
-                          style={{ flexDirection: "row", alignItems: "center" }}
-                        >
-                          <TouchableOpacity
-                            onPress={() => {
-                              onChange("");
-                              if (onValueChange) onValueChange("");
-                              setSelectedLabel("");
-                              setVisible(false);
-                              hideSearchBar();
-                            }}
-                            style={{ padding: 6, marginRight: 6 }}
-                          >
-                            <RefreshCcw size={20} color={colors.primary} />
-                          </TouchableOpacity>
+                          style={{
+                            width: 1,
+                            height: 20,
+                            backgroundColor: colors.neutral,
+                            marginHorizontal: 6,
+                          }}
+                        />
 
-                          <View
+                        <TouchableOpacity
+                          onPress={() => {
+                            setVisible(false);
+                            hideSearchBar();
+                          }}
+                          style={{ padding: 6 }}
+                        >
+                          <XCircle size={20} color={colors.error} />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+                    {/* Search Bar */}
+                    {searchable && (
+                      <Animated.View style={{ opacity: fadeAnim }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            margin: 12,
+                            borderWidth: 1,
+                            borderColor: colors.neutral,
+                            borderRadius: 8,
+                            backgroundColor: colors.light,
+                            paddingHorizontal: 8,
+                          }}
+                        >
+                          <Search size={20} color={colors.neutral} />
+                          <TextInput
+                            value={searchText}
+                            onChangeText={setSearchText}
+                            placeholder={`Search ${label}`}
                             style={{
-                              width: 1,
-                              height: 20,
-                              backgroundColor: colors.neutral,
-                              marginHorizontal: 6,
+                              flex: 1,
+                              paddingVertical: 8,
+                              paddingHorizontal: 8,
+                              fontSize: 16,
+                              color: colors.dark,
                             }}
                           />
-
-                          <TouchableOpacity
-                            onPress={() => {
-                              setVisible(false);
-                              hideSearchBar();
-                            }}
-                            style={{ padding: 6 }}
-                          >
-                            <XCircle size={20} color={colors.error} />
-                          </TouchableOpacity>
                         </View>
-                      </View>
+                      </Animated.View>
+                    )}
 
-                      {/* Search Bar */}
-                      {searchable && (
-                        <Animated.View style={{ opacity: fadeAnim }}>
-                          <View
+                    {/* Options List */}
+                    <FlatList
+                      data={filteredOptions}
+                      keyExtractor={(item) => item.value.toString()}
+                      keyboardShouldPersistTaps="handled" // <--- KEY FIX
+                      renderItem={({ item, index }) => (
+                        <TouchableOpacity
+                          style={{
+                            paddingTop:
+                              index === filteredOptions.length - 1 ? 16 : 16,
+                            paddingBottom:
+                              index === filteredOptions.length - 1 ? 8 : 16,
+                            paddingHorizontal: 20,
+                            borderBottomWidth:
+                              index === filteredOptions.length - 1 ? 0 : 1,
+                            borderBottomColor: colors.neutral,
+                          }}
+                          onPress={() => {
+                            onChange(item.value);
+                            if (onValueChange) onValueChange(item.value);
+                            setVisible(false);
+                            hideSearchBar();
+                          }}
+                        >
+                          <Text
                             style={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                              margin: 12,
-                              borderWidth: 1,
-                              borderColor: colors.neutral,
-                              borderRadius: 8,
-                              backgroundColor: colors.light,
-                              paddingHorizontal: 8,
+                              fontSize: 16,
+                              color:
+                                item.value === value
+                                  ? colors.primary
+                                  : colors.dark,
                             }}
                           >
-                            <Search size={20} color={colors.neutral} />
-                            <TextInput
-                              value={searchText}
-                              onChangeText={setSearchText}
-                              placeholder={`Search ${label}`}
-                              style={{
-                                flex: 1,
-                                paddingVertical: 8,
-                                paddingHorizontal: 8,
-                                fontSize: 16,
-                                color: colors.dark,
-                              }}
-                            />
-                          </View>
-                        </Animated.View>
+                            {item.label}
+                          </Text>
+                        </TouchableOpacity>
                       )}
-
-                      {/* Options List */}
-                      <FlatList
-                        data={filteredOptions}
-                        keyExtractor={(item) => item.value.toString()}
-                        keyboardShouldPersistTaps="handled" // <--- KEY FIX
-                        renderItem={({ item, index }) => (
-                          <TouchableOpacity
-                            style={{
-                              paddingTop:
-                                index === filteredOptions.length - 1 ? 16 : 16,
-                              paddingBottom:
-                                index === filteredOptions.length - 1 ? 8 : 16,
-                              paddingHorizontal: 20,
-                              borderBottomWidth:
-                                index === filteredOptions.length - 1 ? 0 : 1,
-                              borderBottomColor: colors.neutral,
-                            }}
-                            onPress={() => {
-                              onChange(item.value);
-                              if (onValueChange) onValueChange(item.value);
-                              setVisible(false);
-                              hideSearchBar();
-                            }}
-                          >
-                            <Text
-                              style={{
-                                fontSize: 16,
-                                color:
-                                  item.value === value
-                                    ? colors.primary
-                                    : colors.dark,
-                              }}
-                            >
-                              {item.label}
-                            </Text>
-                          </TouchableOpacity>
-                        )}
-                      />
-                    </View>
-                  </Pressable>
-                </Modal>
-              </Portal>
+                    />
+                  </View>
+                </Pressable>
+              </Modal>
             )}
           </View>
         );

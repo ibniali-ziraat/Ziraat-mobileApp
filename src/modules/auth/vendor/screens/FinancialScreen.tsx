@@ -19,7 +19,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { ROUTES } from "@/src/constants/routes";
 export default function FinancialScreen() {
   // const { vendorData } = useGlobalData();
-  const { vendorProfileId, userId } = useAuth()
+  const { vendorProfileId, userId } = useAuth();
 
   const { data } = useVendorFinancialQuery(vendorProfileId);
 
@@ -59,8 +59,8 @@ export default function FinancialScreen() {
     try {
       const payload = {
         supplierProfileId: vendorProfileId,
-        upiAvailable: values.upiAvailable === "yes",
-        creditFacility: values.creditFacility === "yes",
+        upiAvailable: values.upiAvailable,
+        creditFacility: values.creditFacility,
         sellingViaZiraat: values.sellingViaZiraat,
         bankDetails: values.sellingViaZiraat ? values.bankDetails : null,
       };
@@ -83,14 +83,15 @@ export default function FinancialScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Financial & Payment Details"
-        onPress={() => router.push(ROUTES.VENDOR.PROFILE)}
+      <BackHeader
+        title="Financial & Payment Details"
+        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <FinancialPaymentSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          submitLabel={data ? "Update" : "Add Financial Info"}
           onCancel={() => router.back()}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}

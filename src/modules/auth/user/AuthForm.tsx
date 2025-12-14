@@ -39,12 +39,12 @@ export default function AuthForm() {
         style={{
           backgroundColor: colors.light,
           flex: 1,
-          minHeight: "80%",
+          minHeight: "100%",
           justifyContent: "center",
         }}
       >
         {/* Logo */}
-        <View style={{ alignItems: "center", marginBottom: 20 }}>
+        <View style={{ alignItems: "center", marginBottom: 10 }}>
           <Image
             source={require("@/assets/images/logo.jpeg")} // replace with your logo path
             style={{ width: 120, height: 120, resizeMode: "contain" }}

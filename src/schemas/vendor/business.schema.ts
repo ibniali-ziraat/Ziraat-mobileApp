@@ -26,7 +26,7 @@ export const businessInformationSchema = z.object({
 
   pincode: z
     .string()
-    .nonempty("Pincode is required") // 1️⃣ Empty check first
+    .nonempty("Required Field") // 1️⃣ Empty check first
     .regex(/^[1-9][0-9]{5}$/, "Enter a valid 6 digit pincode"),
 
   gps: z.string().min(1, "GPS location is required").optional(),

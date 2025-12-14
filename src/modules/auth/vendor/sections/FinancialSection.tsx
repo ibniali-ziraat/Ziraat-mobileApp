@@ -36,6 +36,7 @@ export default function FinancialPaymentSection({
         <SingleSelectInput
           control={control}
           name="upiAvailable"
+          modalLabel="Digital Payment Available"
           label="UPI / Digital Payment Options"
           options={[
             { value: "yes", label: "Yes" },
@@ -47,6 +48,7 @@ export default function FinancialPaymentSection({
         <SingleSelectInput
           control={control}
           name="creditFacility"
+          modalLabel="Credit Facility to Farmers"
           label="Credit Facility to Farmers"
           options={[
             { value: "yes", label: "Yes" },
@@ -112,7 +114,7 @@ export default function FinancialPaymentSection({
               control={control}
               name="bankDetails.accountNumber"
               label="Account Number"
-              type="numeric"
+              type="phone"
               error={errors.bankDetails?.accountNumber}
             />
 

@@ -107,6 +107,8 @@ import { colors } from "@/src/constants/colors";
 import Heading from "@/src/components/shared/Heading";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { useAuth } from "@/src/contexts/AuthContext";
+import Loader from "@/src/components/shared/Loader";
+import { set } from "react-hook-form";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -115,9 +117,11 @@ export default function LoginForm() {
   // const { setUserToken, setUserData } = useGlobalData();
   const { setUserToken, setUserId } = useAuth();
 
-  const { mutateAsync: loginMutate, isPending } = useLoginMutation();
+  const { mutateAsync: loginMutate } = useLoginMutation();
+  const [isPending, setIsPending] = useState(false);
 
   const onSubmit = async (data: any) => {
+    setIsPending(true);
     // router.push("/");
     try {
       const response = await loginMutate({
@@ -133,16 +137,20 @@ export default function LoginForm() {
         await setUserId(response?.user);
 
         router.replace("/");
+        setIsPending(false);
         showSuccessToast("logged in");
       }
     } catch (error: any) {
       if (error?.response?.status === 401) {
+        setIsPending(false);
         showErrorToast("Invalid credentials.");
       } else {
         showErrorToast("Something went wrong. Please try again later.");
       }
     }
   };
+
+  if (isPending) return <Loader />;
 
   return (
     <View className="bg-light">

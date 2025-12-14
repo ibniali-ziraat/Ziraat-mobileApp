@@ -1,4 +1,4 @@
-import { Toasts } from "@backpackapp-io/react-native-toast";
+import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
@@ -47,7 +47,7 @@ export default function RootLayout() {
             style={{
               flex: 1,
               backgroundColor: colors.bgColor,
-              paddingTop: insets.top - 20,
+              // paddingTop: insets.top - 20,
               paddingHorizontal: 10,
             }}
           >
@@ -66,7 +66,7 @@ export default function RootLayout() {
         </RouteGuard>
       </AppProvider>
 
-      <Toasts />
+      <Toasts defaultPosition={ToastPosition.TOP} />
     </GestureHandlerRootView>
   );
 }

@@ -72,7 +72,7 @@ export default function AddressScreen() {
             title="Address"
             onPress={() => router.push(ROUTES.USER.PROFILE)}
           />
-          <AddressSection control={control} errors={errors} />
+          <AddressSection control={control} errors={errors} data={data} />
           <FormActions
             cancelLabel={"Cancel"}
             onCancel={() => router.push(ROUTES.USER.PROFILE)}

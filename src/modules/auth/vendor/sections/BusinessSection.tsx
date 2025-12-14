@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
@@ -9,9 +9,20 @@ import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 export default function BusinessSection({
   control,
   errors,
+  data,
 }: BusinessSectionProps) {
   const { states, districts, tehsils, setSelectedState, setSelectedDistrict } =
     useCascadingLocation();
+
+  useEffect(() => {
+    if (data?.state) {
+      setSelectedState(data.state);
+    }
+
+    if (data?.district) {
+      setSelectedDistrict(data.district);
+    }
+  }, [data]);
 
   return (
     <View className="bg-light" style={{ padding: 16 }}>
@@ -98,7 +109,7 @@ export default function BusinessSection({
         modalLabel="District"
         options={districts.map((d) => ({ label: d, value: d }))}
         onValueChange={(value) => setSelectedDistrict(value as string)}
-        disabled={!districts.length}
+        disabled={!districts.length && !data?.district}
         error={errors?.district}
       />
 

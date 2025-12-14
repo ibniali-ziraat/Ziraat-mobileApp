@@ -26,7 +26,7 @@ import OtpHeading from "@/src/components/shared/OtpHeading";
 import AnimatedStepWrapper from "@/src/components/shared/AnimatedStepWrapper";
 
 export default function UserRegistrationScreen() {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const [profileData, setProfileData] = useState<any>(null);
 
   const schemas = [profileSchema, otpSchema];
@@ -170,7 +170,7 @@ export default function UserRegistrationScreen() {
       {step === 1 && (
         <OtpHeading
           title="Verify your phone"
-          subtitle={`Enter the 6-digit code sent to ${profileData?.phone}`}
+          phone={profileData?.phone}
           onResend={handleResendOtp}
         />
       )}
@@ -188,7 +188,7 @@ export default function UserRegistrationScreen() {
         <FormActions
           cancelLabel={step > 0 ? "Back" : undefined}
           onCancel={prevStep}
-          submitLabel={step === 1 ? "Submit" : "Next"}
+          submitLabel={step === 1 ? "Signup" : "Next"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isLoading}
           loading={isUserExistsPending}

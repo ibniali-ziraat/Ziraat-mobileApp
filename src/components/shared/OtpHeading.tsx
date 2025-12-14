@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import { colors } from "@/src/constants/colors";
+import { maskValue } from "@/src/utils/mask";
 
 interface OtpHeadingProps {
   title?: string;
-  subtitle?: string;
+  phone?: string;
   resendLabel?: string;
   onResend?: () => void;
   initialTimer?: number;
@@ -12,7 +13,7 @@ interface OtpHeadingProps {
 
 export default function OtpHeading({
   title = "Confirm your number",
-  subtitle = "Enter the 6-digit code we sent to your phone",
+  phone,
   resendLabel = "Resend OTP",
   onResend,
   initialTimer = 300,
@@ -21,62 +22,74 @@ export default function OtpHeading({
 
   useEffect(() => {
     if (timeLeft === 0) return;
-
     const interval = setInterval(() => {
       setTimeLeft((prev) => prev - 1);
     }, 1000);
-
     return () => clearInterval(interval);
   }, [timeLeft]);
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-
   const isExpired = timeLeft === 0;
 
   return (
-    <View className="mb-6">
+    <View style={{ marginBottom: 24 }}>
       {/* Title */}
-      <Text className="text-2xl font-semibold" style={{ color: colors.dark }}>
+      <Text
+        style={{
+          fontSize: 22,
+          fontWeight: "600",
+          color: colors.dark,
+        }}
+      >
         {title}
       </Text>
 
-      {/* Subtitle */}
-      <Text
-        className="mt-2 text-md leading-5"
-        style={{ color: colors.neutral }}
-      >
-        {subtitle}
-      </Text>
+      {/* Subtitle with masked number */}
+      {phone && (
+        <Text
+          style={{
+            marginTop: 6,
+            fontSize: 14,
+            color: colors.neutral,
+          }}
+        >
+          Enter the 6-digit code sent to {maskValue(phone, 2, 3)}
+        </Text>
+      )}
 
       {/* Timer / Resend */}
-      <View className="mt-4 flex-row items-center justify-between">
-        {!isExpired ? (
-          /* Expiry Timer */
-          <Text className="text-sm" style={{ color: colors.neutral }}>
-            Code expires in{" "}
-            <Text style={{ color: colors.primary, fontWeight: "600" }}>
-              {minutes}:{seconds.toString().padStart(2, "0")}
-            </Text>
+      {!isExpired ? (
+        <Text
+          style={{
+            marginTop: 12,
+            fontSize: 13,
+            color: colors.darkHover,
+          }}
+        >
+          Code expires in{" "}
+          <Text style={{ fontWeight: "600", color: colors.dark }}>
+            {minutes}:{seconds.toString().padStart(2, "0")}
           </Text>
-        ) : (
-          /* Resend CTA */
-          <View className="flex-row items-center">
-            <Text className="text-sm mr-2" style={{ color: colors.neutral }}>
-              Didn’t receive the code?
+        </Text>
+      ) : (
+        <View style={{ marginTop: 12, flexDirection: "row" }}>
+          <Text style={{ fontSize: 13, color: colors.neutral }}>
+            Didn’t receive the code?{" "}
+          </Text>
+          <Pressable onPress={onResend}>
+            <Text
+              style={{
+                fontSize: 13,
+                fontWeight: "600",
+                color: colors.primary,
+              }}
+            >
+              {resendLabel}
             </Text>
-
-            <Pressable onPress={onResend}>
-              <Text
-                className="text-sm font-medium"
-                style={{ color: colors.primary }}
-              >
-                {resendLabel}
-              </Text>
-            </Pressable>
-          </View>
-        )}
-      </View>
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 }

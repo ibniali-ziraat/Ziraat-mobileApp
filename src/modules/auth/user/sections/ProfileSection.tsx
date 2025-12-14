@@ -61,6 +61,7 @@ export default function ProfileSection({
         name="gender"
         label="Gender"
         modalLabel="Gender"
+        showInputLabel={false}
         options={[
           { label: "Male", value: "male" },
           { label: "Female", value: "female" },

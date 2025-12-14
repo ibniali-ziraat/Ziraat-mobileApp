@@ -20,10 +20,9 @@ export default function TabLayout() {
 
   console.log(data, "user profile data...");
 
-  // if (!userId || !data) {
-  //   return <Loader />
-
-  // }
+  if (!userId || !data) {
+    return <Loader />;
+  }
 
   return (
     <Tabs

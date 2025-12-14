@@ -21,7 +21,7 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
   const showBecomeSupplier = role === "supplier" && !profileData; // Show button if no vendor profile
 
   return (
-    <View className="flex-row items-center justify-between h-16 bg-white">
+    <View className="flex-row items-center justify-between bg-light py-4">
       {/* Title & Subtitle */}
       <View>
         <Text className="text-xl font-bold" style={{ color: colors.dark }}>

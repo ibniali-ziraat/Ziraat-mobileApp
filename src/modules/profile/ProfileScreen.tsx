@@ -23,7 +23,7 @@ import { router } from "expo-router";
 import ProgressBar from "@/src/components/shared/ProgressBar";
 import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
 import { userRoutes } from "../auth/vendor/config/userRoutes";
 import { ActivityIndicator } from "react-native-paper";
@@ -35,10 +35,13 @@ import ProfileTopHeader from "@/src/components/shared/ProfileTopHeader";
 import ProfileDetails from "@/src/components/shared/ProfileDetails";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { ROUTES } from "@/src/constants/routes";
+import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 
 export default function UserProfileScreen() {
   // const { userData, setUserData, logout } = useGlobalData();
   const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
+  const [deleteSection, setDeleteSection] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -87,9 +90,21 @@ export default function UserProfileScreen() {
     }
   };
 
-  // if (!profileData) {
-  //   return <Loader />;
-  // }
+  const confirmDelete = async () => {
+    if (!deleteSection) return;
+
+    try {
+      setDeleting(true);
+      await handleDelete(deleteSection);
+      setDeleteSection(null);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  if (!profileData || deleting) {
+    return <Loader />;
+  }
 
   return (
     <ScreenLayout>
@@ -129,7 +144,7 @@ export default function UserProfileScreen() {
       <SectionCard
         title="Address"
         onEdit={addressData ? () => goToSection("address") : undefined}
-        onDelete={addressData ? () => handleDelete("address") : undefined}
+        onDelete={addressData ? () => setDeleteSection("address") : undefined}
         style={
           !addressData ? { borderColor: colors.warning, borderWidth: 1 } : {}
         }
@@ -152,7 +167,9 @@ export default function UserProfileScreen() {
       <SectionCard
         title="Education"
         onEdit={educationData ? () => goToSection("education") : undefined}
-        onDelete={educationData ? () => handleDelete("education") : undefined}
+        onDelete={
+          educationData ? () => setDeleteSection("education") : undefined
+        }
         style={
           !educationData ? { borderColor: colors.warning, borderWidth: 1 } : {}
         }
@@ -177,7 +194,9 @@ export default function UserProfileScreen() {
       <SectionCard
         title="Profession"
         onEdit={professionData ? () => goToSection("profession") : undefined}
-        onDelete={professionData ? () => handleDelete("profession") : undefined}
+        onDelete={
+          professionData ? () => setDeleteSection("profession") : undefined
+        }
         style={
           !professionData ? { borderColor: colors.warning, borderWidth: 1 } : {}
         }
@@ -199,6 +218,14 @@ export default function UserProfileScreen() {
 
       {/* LOGOUT BUTTON */}
       <LogoutButton onPress={async () => await logoutUser()} />
+      <ConfirmDeleteModal
+        visible={!!deleteSection}
+        title="Confirm deletion"
+        description="Are you sure you want to delete this information?"
+        onCancel={() => setDeleteSection(null)}
+        onConfirm={confirmDelete}
+        loading={deleting}
+      />
     </ScreenLayout>
   );
 }

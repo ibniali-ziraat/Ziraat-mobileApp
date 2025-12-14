@@ -22,7 +22,7 @@ import { ROUTES } from "@/src/constants/routes";
 
 export default function OperationsScreen() {
   const { vendorData } = useGlobalData();
-  const { vendorProfileId } = useAuth()
+  const { vendorProfileId } = useAuth();
   console.log(vendorData, "vendorssdata");
 
   const { data } = useVendorOperationsQuery(vendorProfileId);
@@ -75,16 +75,19 @@ export default function OperationsScreen() {
       data ? await update(payload) : await save(payload);
       showSuccessToast("Operations Saved!");
       router.push(ROUTES.AUTH.VENDOR_PROFILE);
-
     } catch (error) {
-      showErrorToast("Error saving operations", error.message || "Unknown error");
+      showErrorToast(
+        "Error saving operations",
+        error.message || "Unknown error"
+      );
     }
   };
 
   return (
     <ScreenLayout>
-      <BackHeader title="Operational Details"
-        onPress={() => router.push(ROUTES.VENDOR.PROFILE)}
+      <BackHeader
+        title="Operational Details"
+        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <OperationalSection control={control} errors={errors} />
