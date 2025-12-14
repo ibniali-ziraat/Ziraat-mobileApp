@@ -93,9 +93,11 @@ export default function OperationsScreen() {
         <OperationalSection control={control} errors={errors} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          onCancel={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+          submitLabel={data ? "Update Operations" : "Save Operations"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

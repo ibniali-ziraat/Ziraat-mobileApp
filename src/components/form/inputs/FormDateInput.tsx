@@ -77,7 +77,13 @@ export default function FormDatePicker({
                 />
 
                 {showError && (
-                  <span style={{ color: colors.error, fontSize: "12px", marginTop: 4 }}>
+                  <span
+                    style={{
+                      color: colors.error,
+                      fontSize: "12px",
+                      marginTop: 4,
+                    }}
+                  >
                     {(fieldError || error)?.message}
                   </span>
                 )}
@@ -85,7 +91,10 @@ export default function FormDatePicker({
             ) : (
               // --------------------- MOBILE INPUT ---------------------
               <>
-                <TouchableOpacity onPress={() => setShow(true)} activeOpacity={0.8}>
+                <TouchableOpacity
+                  onPress={() => setShow(true)}
+                  activeOpacity={0.8}
+                >
                   <View pointerEvents="none">
                     <TextInput
                       mode="outlined"
@@ -111,7 +120,9 @@ export default function FormDatePicker({
 
                 {show && (
                   <DateTimePicker
-                    value={normalizedValue ? new Date(normalizedValue) : new Date()}
+                    value={
+                      normalizedValue ? new Date(normalizedValue) : new Date()
+                    }
                     mode="date"
                     display="default"
                     onChange={(event, selectedDate) => {
@@ -123,8 +134,18 @@ export default function FormDatePicker({
                 )}
 
                 {showError && (
-                  <HelperText type="error" visible>
-                    {(fieldError || error)?.message}
+                  <HelperText
+                    type="error"
+                    visible
+                    style={{
+                      color: colors.error,
+                      paddingVertical: 0,
+                      paddingBottom: 0,
+                      marginTop: 2,
+                      marginBottom: 0,
+                    }}
+                  >
+                    Required Field
                   </HelperText>
                 )}
               </>

@@ -134,10 +134,13 @@ export default function SingleSelectInput({
                   color: disabled ? colors.neutral + "88" : colors.dark,
                 }}
               >
-                {selectedLabel || `Select ${label}`}
-                {!optional && !selectedLabel && !disabled && (
-                  <Text style={{ color: colors.error }}> *</Text>
-                )}
+                {selectedLabel || `${label}`}
+                {!optional &&
+                  !selectedLabel &&
+                  !disabled &&
+                  !showInputLabel && (
+                    <Text style={{ color: colors.error }}> *</Text>
+                  )}
               </Text>
             </TouchableOpacity>
 

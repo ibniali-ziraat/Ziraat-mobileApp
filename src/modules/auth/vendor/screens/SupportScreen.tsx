@@ -82,6 +82,7 @@ export default function SupportScreen() {
           submitLabel={data ? "Update" : "Add Support Info"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>
