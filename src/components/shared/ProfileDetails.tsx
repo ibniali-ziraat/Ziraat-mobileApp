@@ -1,3 +1,4 @@
+
 import { colors } from "@/src/constants/colors";
 import {
     Calendar,
@@ -7,7 +8,8 @@ import {
     User,
     VenetianMask,
 } from "lucide-react-native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, Text, TouchableOpacity, View } from "react-native";
+import ZiraatCard from "./ZiraatProfileCard";
 
 interface ProfileDetailsProps {
     email?: string;
@@ -26,6 +28,10 @@ export default function ProfileDetails({
     createdOn,
     onEdit,
 }: ProfileDetailsProps) {
+
+    const screenWidth = Dimensions.get("window").width;
+    const cardWidth = screenWidth - 32; 
+
     const fields = [
         { title: "Email", value: email, icon: <Mail size={22} color={colors.primary} /> },
         { title: "Phone", value: phone, icon: <Phone size={22} color={colors.primary} /> },
@@ -39,21 +45,16 @@ export default function ProfileDetails({
     ];
 
     return (
-        <View
-            style={{
-                width: "100%",
-                marginTop: 20,
-                padding: 20,
-                borderRadius: 24,
-                backgroundColor: "#fff",
-                shadowColor: "#000",
-                shadowOpacity: 0.10,
-                shadowRadius: 12,
-                shadowOffset: { width: 0, height: 4 },
-                elevation: 2,
-                borderColor: "#f0f0f0",
-                borderWidth: 1,
-            }}
+        <ZiraatCard
+            width="100%"
+            height={fields.length * 80 + 140} 
+            paddingHorizontal={1.4}
+            paddingVertical={1.4}
+            marginVertical={1}
+            borderRadius={24}
+            backgroundColor="#FFFFFF"
+            borderWidth={1}
+            borderColor="#f0f0f0"
         >
             {/* Header Row */}
             <View
@@ -80,7 +81,6 @@ export default function ProfileDetails({
                     style={{
                         padding: 8,
                         paddingHorizontal: 12,
-                       
                         borderRadius: 14,
                         shadowColor: "#000",
                         shadowOpacity: 0.15,
@@ -176,6 +176,6 @@ export default function ProfileDetails({
                     </View>
                 ))}
             </View>
-        </View>
+        </ZiraatCard>
     );
 }

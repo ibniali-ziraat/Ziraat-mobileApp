@@ -37,7 +37,12 @@ export default function FormFileInput({
   const previewFile = (fileUri) => {
     if (!fileUri) return;
     const fileExtension = fileUri.split(".").pop()?.toLowerCase();
-    if (fileExtension === "jpg" || fileExtension === "jpeg" || fileExtension === "png" || fileExtension === "gif") {
+    if (
+      fileExtension === "jpg" ||
+      fileExtension === "jpeg" ||
+      fileExtension === "png" ||
+      fileExtension === "gif"
+    ) {
       setImageUri(fileUri); // Set the image URI to show in modal
       setIsModalVisible(true); // Show modal
     } else {
@@ -98,7 +103,10 @@ export default function FormFileInput({
               <View style={{ flexDirection: "row", gap: 14 }}>
                 {hasFile ? (
                   <View style={{ flexDirection: "row" }}>
-                    <TouchableOpacity onPress={() => previewFile(value.uri)} style={{ marginRight: 14 }}>
+                    <TouchableOpacity
+                      onPress={() => previewFile(value.uri)}
+                      style={{ marginRight: 14 }}
+                    >
                       <Eye size={22} color={colors.primary} />
                     </TouchableOpacity>
 
@@ -116,13 +124,22 @@ export default function FormFileInput({
                   </TouchableOpacity>
                 )}
               </View>
-
             </View>
 
             {/* ERROR TEXT (only if required) */}
             {showError && (
-              <HelperText type="error" visible>
-                {(fieldError || error)?.message}
+              <HelperText
+                type="error"
+                visible
+                style={{
+                  color: colors.error,
+                  paddingVertical: 0,
+                  paddingBottom: 0,
+                  marginTop: 2,
+                  marginBottom: 0,
+                }}
+              >
+                Required Field
               </HelperText>
             )}
 

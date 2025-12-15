@@ -49,7 +49,7 @@ export default function SectionCard({
 }) {
   return (
     <View
-      className=" p-5 rounded-sm mb-5 mt-5"
+      className="  rounded-sm mb-5 mt-5"
       style={style}
     >
       <View className="flex-row justify-between mb-3">

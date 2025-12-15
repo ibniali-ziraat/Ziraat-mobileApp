@@ -8,9 +8,6 @@ import { FormProvider } from "react-hook-form";
 import FarmInfrastructure from "../sections/Farm Infrastructure and Resources";
 
 export default function FarmInfrastuctureScreen() {
-  //   const { vendorData, setVendorData, userData } = useGlobalData();
-
-  // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
   //   const { data } = useVendorProfileQuery(userData.id);

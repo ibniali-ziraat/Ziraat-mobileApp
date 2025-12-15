@@ -223,10 +223,10 @@
 //     );
 // }
 
-
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
+import ZiraatCard from "./ZiraatProfileCard";
 
 interface ProfileTopHeaderProps {
     profilePic?: string;
@@ -234,10 +234,7 @@ interface ProfileTopHeaderProps {
     onEdit?: () => void;
 }
 
-const defaultAvatar =
-    "https://cdn-icons-png.flaticon.com/512/847/847969.png";
-
-export default function ProfileTopHeader({ profilePic, fullName, onEdit }: ProfileTopHeaderProps) {
+export default function ProfileTopHeader({ fullName, onEdit }: ProfileTopHeaderProps) {
     const initials = fullName
         ? fullName
               .split(" ")
@@ -248,84 +245,103 @@ export default function ProfileTopHeader({ profilePic, fullName, onEdit }: Profi
         : "TA";
 
     return (
-        <View className="items-center mb-6">
+        <ZiraatCard
+            width="100%"
+            height="15%"
+            paddingHorizontal={1}
+            paddingVertical={1}
+        >
+            <View style={{ alignItems: "center", marginTop: 10 }}>
 
-            {/* Avatar Container */}
-            <TouchableOpacity activeOpacity={0.9} className="relative mb-4">
+                {/* Initials Avatar */}
+                <TouchableOpacity activeOpacity={0.9} style={{ position: "relative" }}>
+                    
+                    <View
+                        style={{
+                            width: 110,
+                            height: 110,
+                            borderRadius: 65,
+                            backgroundColor: colors.primary + "22",
+                            borderWidth: 4,
+                            borderColor: colors.primary,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            shadowColor: "#000",
+                            shadowOffset: { width: 0, height: 4 },
+                            
+                            shadowRadius: 6,
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 48,
+                                fontWeight: "700",
+                                color: colors.primary,
+                            }}
+                        >
+                            {initials}
+                        </Text>
+                    </View>
 
-                {/* Profile Image OR Default Avatar */}
-                <Image
-                    source={{ uri: profilePic || defaultAvatar }}
-                    className="w-32 h-32 rounded-full"
-                    style={{
-                        borderWidth: 4,
-                        borderColor: colors.primary,
-                        shadowColor: "#000",
-                        shadowOffset: { width: 0, height: 4 },
-                        shadowOpacity: 0.3,
-                        shadowRadius: 6,
-                        backgroundColor: colors.primary + "22",
-                    }}
-                />
+                    {/* Edit Button */}
+                    {onEdit && (
+                        <TouchableOpacity
+                            onPress={onEdit}
+                            style={{
+                                position: "absolute",
+                                top: -6,
+                                right: -6,
+                                padding: 6,
+                                backgroundColor: "#fff",
+                                borderRadius: 50,
+                                shadowColor: "#000",
+                                shadowOpacity: 0.2,
+                                shadowOffset: { width: 0, height: 2 },
+                                shadowRadius: 3,
+                                elevation: 3,
+                            }}
+                        >
+                            <Feather name="edit-3" size={16} color={colors.primary} />
+                        </TouchableOpacity>
+                    )}
 
-                {/* TOP-RIGHT Edit Icon */}
-                {onEdit && (
-                    <TouchableOpacity
-                        onPress={onEdit}
+                    {/* Camera Icon */}
+                    <View
                         style={{
                             position: "absolute",
-                            top: -8,
-                            right:-70,
+                            bottom: 0,
+                            right: 0,
                             padding: 6,
-                            backgroundColor: "#fff",
+                            backgroundColor: colors.primary,
                             borderRadius: 50,
                             shadowColor: "#000",
-                            shadowOpacity: 0.2,
+                            shadowOpacity: 0.3,
                             shadowOffset: { width: 0, height: 2 },
-                            shadowRadius: 3,
-                            elevation: 3,
+                            shadowRadius: 4,
+                            elevation: 4,
+                            borderWidth: 2,
+                            borderColor: "#fff",
                         }}
                     >
-                        <Feather name="edit-3" size={16} color={colors.primary} />
-                    </TouchableOpacity>
-                )}
+                        <Feather name="camera" size={18} color="#fff" />
+                    </View>
+                </TouchableOpacity>
 
-                {/* BOTTOM-RIGHT Camera Icon */}
-                <View
-                    className="absolute bottom-1 right-1 rounded-full p-2"
+                {/* Full Name */}
+                <Text
                     style={{
-                        backgroundColor: colors.primary,
-                        shadowColor: "#000",
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowOpacity: 0.3,
-                        shadowRadius: 4,
-                        elevation: 4,
-                        borderWidth: 2,
-                        borderColor: "#fff",
+                        marginTop: 12,
+                        fontSize: 24,
+                        fontWeight: "700",
+                        color: colors.primary,
+                        textTransform: "capitalize",
+                        letterSpacing: 0.4,
                     }}
                 >
-                    <Feather name="camera" size={18} color="#fff" />
-                </View>
-            </TouchableOpacity>
+                    {fullName || "Tansha Ashraf"}
+                </Text>
 
-            {/* Full Name + Underline */}
-            <View className="items-center mt-2">
-                <View className="flex-row items-center gap-3">
-                    <Text
-                        className="font-bold"
-                        style={{
-                            fontSize: 24,
-                            color: colors.primary,
-                            textTransform: "capitalize",
-                            letterSpacing: 0.5,
-                        }}
-                    >
-                        {fullName || "Tansha ashraf"}
-                    </Text>
-                </View>
-
-               
             </View>
-        </View>
+        </ZiraatCard>
     );
 }

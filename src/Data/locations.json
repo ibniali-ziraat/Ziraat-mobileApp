@@ -1,0 +1,99 @@
+{
+  "Jammu and Kashmir": {
+    "Ganderbal": [
+      "Kangan",
+      "Ganderbal",
+      "Gund",
+      "Tullamulla",
+      "Wakoora",
+      "Lar"
+    ],
+    "Samba": ["Samba"],
+    "Kupwara": ["Kupwara", "Handwara", "Karnah"],
+    "Baramullah": [
+      "Gurez",
+      "Bandipore",
+      "Sonawari",
+      "Sopore",
+      "Pattan",
+      "Baramula",
+      "Uri",
+      "Gulmarg"
+    ],
+    "Srinagar": ["Kangan", "Ganderbal", "Srinagar"],
+    "Budgam": ["Beerwah", "Badgam", "Chadura"],
+    "Pulwama": [
+      "Pampore",
+      "Tral",
+      "Pulwama",
+      "Shupiyan",
+      "Litter",
+      "Awantipora",
+      "Rajpora",
+      "Aripal",
+      "Kakapora"
+    ],
+    "Anantnag": [
+      "Pahalgam",
+      "Bijbehara",
+      "Anantnag",
+      "Kulgam",
+      "Duru",
+      "Shahabad"
+    ],
+    "Doda": [
+      "Banihal",
+      "Ramban",
+      "Doda",
+      "Kishtwar",
+      "Thathri",
+      "Bhalessa (Gandoh)",
+      "Bhaderwah",
+      "Gool"
+    ],
+    "Udhampur": ["Gool Gulab Garh", "Reasi", "Udhampur", "Chenani", "Ramnagar"],
+    "Poonch": ["Haveli", "Mendhar", "Surankote"],
+    "Rajouri": [
+      "Thanamandi",
+      "Rajauri",
+      "Budhal",
+      "Kalakote",
+      "Nowshehra",
+      "Sunderbani"
+    ],
+    "Jammu": [
+      "Akhnoor",
+      "Jammu",
+      "Ranbirsinghpora",
+      "Bishna",
+      "Samba",
+      "Jammu Khas",
+      "Jammu North",
+      "Jammu West",
+      "Bahu",
+      "Trikuta Nagar",
+      "Gadi Ghar",
+      "RS Pura"
+    ],
+    "Kathua": ["Billawar", "Bashohli", "Kathua", "Hiranagar"],
+    "Kulgam": ["Damhal Hanjipora", "Kulgam"],
+    "Shopian": ["Keegam", "Shopian", "Chitragam"],
+    "Kishtwar": [
+      "Kishtwar",
+      "Paddar",
+      "Chattroo",
+      "Marwah",
+      "Warwan",
+      "Dachhan",
+      "Drabshalla",
+      "Nagseni",
+      "Bonjwah",
+      "Machail",
+      "Mughal Maidan"
+    ]
+  },
+  "Ladakh": {
+    "Leh": ["Leh"],
+    "Kargil": ["Kargil", "Zanskar"]
+  }
+}

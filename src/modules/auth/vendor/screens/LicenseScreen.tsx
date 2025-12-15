@@ -1,7 +1,6 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorLicenseMutation,
@@ -19,10 +18,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { ROUTES } from "@/src/constants/routes";
 
 export default function LicenseScreen() {
-
-  const { vendorProfileId } = useAuth()
-
-
+  const { vendorProfileId } = useAuth();
 
   const { data } = useVendorLicenseQuery(vendorProfileId);
   const { mutateAsync: save, isPending: isSaving } = useVendorLicenseMutation();
@@ -40,9 +36,20 @@ export default function LicenseScreen() {
     if (!data) return;
 
     Object.entries(data).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        setValue(key, value);
+      if (value === null || value === undefined) return;
+
+      // 👇 SPECIAL HANDLING FOR FILE
+      if (key === "licenseCopyUrl" && typeof value === "string") {
+        setValue("licenseCopyUrl", {
+          uri: value,
+          name: value.split("/").pop() || "License File",
+          type: "application/octet-stream",
+          isRemote: true, // 👈 custom flag
+        });
+        return;
       }
+
+      setValue(key as any, value);
     });
   }, [data]);
 
@@ -57,15 +64,16 @@ export default function LicenseScreen() {
           ...values,
         };
         await update(payload);
+        showSuccessToast("License Updated");
       } else {
         const payload = {
           supplierProfileId: vendorProfileId,
           ...values,
         };
         await save(payload);
+        showSuccessToast("License Saved!");
       }
 
-      showSuccessToast("License Saved!");
       router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       console.error(err);
@@ -75,13 +83,15 @@ export default function LicenseScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Licensing & Compliance" />
+      <BackHeader
+        title="Licensing & Compliance"
+        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+      />
       <FormProvider {...form}>
         <LicenseSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Next"}
-
+          submitLabel={data ? "Update" : "Add License Info"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}
