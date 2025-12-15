@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import FormInput from "../inputs/FormInput";
+import FormInput from "../../../../components/form/inputs/FormInput";
 
 interface Props {
   control: any;

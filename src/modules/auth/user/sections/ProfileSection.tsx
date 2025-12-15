@@ -1,9 +1,8 @@
 import { FormSectionProps } from "@/src/types/formSectionProps";
 import { useEffect } from "react";
 import { View } from "react-native";
-import FormInput from "../inputs/FormInput";
-import SingleSelectInput from "../inputs/SingleSelectInput";
-import Heading from "../../shared/Heading";
+import FormInput from "../../../../components/form/inputs/FormInput";
+import SingleSelectInput from "../../../../components/form/inputs/SingleSelectInput";
 
 export default function ProfileSection({
   control,
@@ -23,10 +22,6 @@ export default function ProfileSection({
 
   return (
     <View>
-      <Heading
-        title="Sign Up"
-        subtitle="Create your account to get started"
-      />
       <FormInput
         control={control}
         name="fullName"
@@ -37,19 +32,21 @@ export default function ProfileSection({
       <FormInput
         control={control}
         name="email"
-        label="Email"
-        error={errors.email?.message}
+        label="Email (Optional)"
+        error={errors.email}
+        optional
         type="email"
       />
 
-      {!data &&
+      {!data && (
         <FormInput
           control={control}
           name="phone"
           label="Mobile Number"
           error={errors.phone?.message}
           type="phone"
-        />}
+        />
+      )}
 
       <FormInput
         control={control}
@@ -63,6 +60,8 @@ export default function ProfileSection({
         control={control}
         name="gender"
         label="Gender"
+        modalLabel="Gender"
+        showInputLabel={false}
         options={[
           { label: "Male", value: "male" },
           { label: "Female", value: "female" },
@@ -70,7 +69,6 @@ export default function ProfileSection({
         error={errors.gender}
       />
 
-      {/* Show password fields only if creating a new profile */}
       {!data && (
         <>
           <FormInput

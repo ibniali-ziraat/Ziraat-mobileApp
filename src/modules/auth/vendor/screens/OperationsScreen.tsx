@@ -12,7 +12,6 @@ import {
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
 import { router } from "expo-router";
 import OperationalSection from "../sections/OperationalSection";
@@ -21,9 +20,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { ROUTES } from "@/src/constants/routes";
 
 export default function OperationsScreen() {
-  const { vendorData } = useGlobalData();
-  const { vendorProfileId } = useAuth()
-  console.log(vendorData, "vendorssdata");
+  const { vendorProfileId } = useAuth();
 
   const { data } = useVendorOperationsQuery(vendorProfileId);
 
@@ -72,25 +69,38 @@ export default function OperationsScreen() {
     };
 
     try {
-      data ? await update(payload) : await save(payload);
-      showSuccessToast("Operations Saved!");
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      if (data) {
+        await update(payload);
+        showSuccessToast("Changes updated ");
+      } else {
+        await save(payload);
+        showSuccessToast("Changes saved ");
+      }
 
+      router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
-      showErrorToast("Error saving operations", error.message || "Unknown error");
+      showErrorToast(
+        "Error saving operations",
+        error.message || "Unknown error"
+      );
     }
   };
 
   return (
     <ScreenLayout>
-      <BackHeader title="Operational Details" />
+      <BackHeader
+        title="Operational Details"
+        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+      />
       <FormProvider {...form}>
         <OperationalSection control={control} errors={errors} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          onCancel={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+          submitLabel={data ? "Update Operations" : "Save Operations"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

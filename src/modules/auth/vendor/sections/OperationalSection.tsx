@@ -31,21 +31,19 @@ export default function OperationalSection({ control, errors }) {
         error={errors?.yearsInBusiness?.message}
       />
 
-      <View className="mb-6">
-        <ChipInput
-          control={control}
-          name="companyTieups"
-          label="Company Tieups (if any)"
-          placeholder="Add Company Tieups"
-          error={errors?.companyTieups}
-          optional
-        />
-      </View>
+      <ChipInput
+        control={control}
+        name="companyTieups"
+        label="Company Tieups (if any)"
+        placeholder="Add Company Tieups"
+        error={errors?.companyTieups}
+      />
 
       <SingleSelectInput
         control={control}
         name="deliveryServiceAvailable"
         label="Delivery Service Available"
+        modalLabel="Delivery Service Available"
         options={[
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
@@ -60,6 +58,7 @@ export default function OperationalSection({ control, errors }) {
           label="Service Areas"
           placeholder="Add Service Areas"
           error={errors?.serviceArea}
+          required
         />
       )}
 

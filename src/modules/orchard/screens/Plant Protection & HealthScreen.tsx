@@ -8,8 +8,6 @@ import { FormProvider } from "react-hook-form";
 import PlantProtection from "../sections/Plant Protection & Health";
 
 export default function PlantProtectionScreen() {
-  //   const { vendorData, setVendorData, userData } = useGlobalData();
-
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 

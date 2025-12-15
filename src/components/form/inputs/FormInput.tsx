@@ -68,7 +68,7 @@ export default function FormInput({
               }
               style={{
                 backgroundColor: colors.light, // Use light color for background
-                borderColor: colors.primary,  // Set border color to primary
+                borderColor: colors.primary, // Set border color to primary
               }}
               theme={{
                 colors: {
@@ -81,10 +81,25 @@ export default function FormInput({
               {...props}
             />
 
-            {showError && (
+            {/* {showError && (
               <HelperText type="error" visible style={{ color: colors.error }}>
                 {(fieldError || error)?.message}
-                {/* Required Field */}
+              </HelperText>
+            )} */}
+
+            {showError && (
+              <HelperText
+                type="error"
+                visible
+                style={{
+                  color: colors.error,
+                  paddingVertical: 0,
+                  paddingBottom: 0,
+                  marginTop: 2,
+                  marginBottom: 0,
+                }}
+              >
+                {(fieldError || error)?.message}
               </HelperText>
             )}
           </View>

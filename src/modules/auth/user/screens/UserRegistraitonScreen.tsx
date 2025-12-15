@@ -1,5 +1,5 @@
-import OTPSection from "@/src/components/form/sections/OTPSection";
-import ProfileSection from "@/src/components/form/sections/ProfileSection";
+import OTPSection from "@/src/modules/auth/user/sections/OTPSection";
+import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 import {
   useCheckUserExists,
   useLoginMutation,
@@ -11,7 +11,6 @@ import {
 import FormActions from "@/src/components/shared/FormActions";
 import Button from "@/src/components/ui/Button";
 
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { otpSchema } from "@/src/schemas/shared/otp.schema";
 import { profileSchema } from "@/src/schemas/user/profile.schema";
@@ -22,9 +21,14 @@ import { Alert, View } from "react-native";
 import Heading from "@/src/components/shared/Heading";
 import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
+import OtpHeading from "@/src/components/shared/OtpHeading";
+import AnimatedStepWrapper from "@/src/components/shared/AnimatedStepWrapper";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function UserRegistrationScreen() {
   const [step, setStep] = useState(0);
+  const { setUserId, setUserToken } = useAuth();
+
   const [profileData, setProfileData] = useState<any>(null);
 
   const schemas = [profileSchema, otpSchema];
@@ -40,14 +44,14 @@ export default function UserRegistrationScreen() {
   const { mutateAsync: verifyOtpMutate, isPending: isOtpPending } =
     useOtpVerifyMutation();
   const { mutateAsync: loginMutate } = useLoginMutation();
-  const { setUserToken, setUserData } = useGlobalData();
 
   const { mutateAsync: verifyUserExists, isPending: isUserExistsPending } =
     useCheckUserExists();
 
   const nextStep = () => setStep((s) => s + 1);
   const prevStep = () => setStep((s) => s - 1);
-  const { mutateAsync: sendOtpMutate, isPending: isSendingOtp } = useSendOtpMutation();
+  const { mutateAsync: sendOtpMutate, isPending: isSendingOtp } =
+    useSendOtpMutation();
 
   const onSubmit = async (data: any) => {
     if (step === 0) {
@@ -60,7 +64,6 @@ export default function UserRegistrationScreen() {
         });
 
         console.log(existsRes, "existsres.");
-
 
         if (existsRes?.success === false) {
           showErrorToast(existsRes.message);
@@ -79,8 +82,9 @@ export default function UserRegistrationScreen() {
       } catch (error) {
         console.log(error, "error");
 
-
-        showErrorToast(error.response.data.message || "Something went wrong try again later");
+        showErrorToast(
+          error.response.data.message || "Something went wrong try again later"
+        );
       }
     }
 
@@ -91,7 +95,10 @@ export default function UserRegistrationScreen() {
           otp: data.otp,
         });
 
-        if (!otpRes?.success && otpRes?.message !== "OTP verified successfully.") {
+        if (
+          !otpRes?.success &&
+          otpRes?.message !== "OTP verified successfully."
+        ) {
           showErrorToast(otpRes?.message || "Invalid OTP");
           return;
         }
@@ -112,11 +119,11 @@ export default function UserRegistrationScreen() {
           return;
         }
 
-        await setUserToken(loginRes.token);
-        setUserData({ id: loginRes.user });
+        await setUserToken(loginRes?.token);
+        await setUserId(loginRes?.user);
 
         router.push(ROUTES.USER.HOME);
-        showSuccessToast("Logged in Successfully")
+        showSuccessToast("Logged in Successfully");
       } catch (error: any) {
         const backendError =
           error?.response?.data?.[0]?.description ||
@@ -127,26 +134,54 @@ export default function UserRegistrationScreen() {
     }
   };
 
+  const handleResendOtp = async () => {
+    if (!profileData?.phone) {
+      showErrorToast("Phone number not found");
+      return;
+    }
 
-  const isLoading = isSignupPending || isOtpPending;
-  if (isLoading) {
-    return <Loader />
-  }
+    try {
+      const otpRes = await sendOtpMutate(profileData.phone);
+
+      if (!otpRes?.success) {
+        showErrorToast(otpRes?.message || "Failed to resend OTP");
+        return;
+      }
+
+      showSuccessToast("OTP sent successfully");
+    } catch (error: any) {
+      showErrorToast(error?.response?.data?.message || "Failed to resend OTP");
+    }
+  };
+
+  const isLoading =
+    isSignupPending || isOtpPending || isUserExistsPending || isSendingOtp;
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
   return (
     <View>
-      <Heading
-        title={step === 0 ? "Sign Up" : "Verify Code"}
-        subtitle={
-          step === 0
-            ? "Create your account to get started"
-            : "Enter the OTP sent to your phone"
-        }
-      />
+      {step === 0 && (
+        <Heading
+          title="Sign Up"
+          subtitle="Create your account to get started"
+        />
+      )}
 
+      {step === 1 && (
+        <OtpHeading
+          title="Verify your phone"
+          phone={profileData?.phone}
+          onResend={handleResendOtp}
+          disabled={isSendingOtp}
+        />
+      )}
 
-      {step === 0 && <ProfileSection control={control} errors={errors} />}
-      {step === 1 && <OTPSection control={control} errors={errors} />}
+      <AnimatedStepWrapper trigger={step}>
+        {step === 0 && <ProfileSection control={control} errors={errors} />}
+        {step === 1 && <OTPSection control={control} errors={errors} />}
+      </AnimatedStepWrapper>
 
       <View>
         {/* {step > 0 && (
@@ -156,14 +191,11 @@ export default function UserRegistrationScreen() {
         <FormActions
           cancelLabel={step > 0 ? "Back" : undefined}
           onCancel={prevStep}
-          submitLabel={step === 1 ? "Submit" : "Next"}
+          submitLabel={step === 1 ? "Signup" : "Next"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isLoading}
-          loading={isUserExistsPending}
-
+          loading={isLoading}
         />
-
-
       </View>
     </View>
   );
