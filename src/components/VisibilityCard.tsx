@@ -1,11 +1,56 @@
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
-export default function VisibilityCard({ visibility }) {
+type Props = {
+    visibility?: number;
+};
+
+export default function VisibilityCard({
+    visibility = 10,
+}: Props) {
     return (
-        <View className="bg-white rounded-2xl p-4 w-[48%] mb-4 border border-neutral border-sm shadow-md">
-            <Text className="text-black text-md font-semibold mb-2">Visibility</Text>
-            <Text className="text-black text-2xl font-semibold">{visibility} km</Text>
-            <Text className="text-black/60 mt-2 text-xs">Clear conditions</Text>
-        </View>
+        <ZiraatCard
+            width="48%"
+            height="25%"
+            padding={0}
+            paddingHorizontal={1}
+            paddingVertical={1}
+            marginBottom={1}
+        >
+            <View style={styles.container}>
+                <Text style={styles.title}>Visibility</Text>
+
+                <Text style={styles.value}>
+                    {visibility} km
+                </Text>
+
+                <Text style={styles.note}>
+                    Clear conditions
+                </Text>
+            </View>
+        </ZiraatCard>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+    },
+    title: {
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#111827",
+        marginBottom: 6,
+    },
+    value: {
+        fontSize: 24,
+        fontWeight: "700",
+        color: "#111827",
+    },
+    note: {
+        marginTop: 6,
+        fontSize: 12,
+        color: "#6B7280",
+    },
+});

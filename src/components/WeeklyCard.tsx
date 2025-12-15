@@ -1,5 +1,4 @@
 import { View, Text } from "react-native";
-import ZiratCard from "./shared/ZiratCard";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 export default function WeeklyCard() {
@@ -15,6 +14,8 @@ export default function WeeklyCard() {
     return (
         <ZiraatCard
 
+            width="100%"
+            height="11%"
         >
             {days.map((item, i) => (
                 <View

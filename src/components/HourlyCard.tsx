@@ -1,7 +1,19 @@
 import { View, Text, ScrollView } from "react-native";
-import ZiratCard from "./shared/ZiratCard";
+import { Cloud, CloudRain, CloudLightning } from "lucide-react-native";
 import TempLineChart from "./charts/TempLineChart";
 import ZiraatCard from "./shared/ZiraatProfileCard";
+
+// helper to choose icon
+const getWeatherIcon = (icon: string) => {
+    switch (icon) {
+        case "thunderstorm-outline":
+            return <CloudLightning size={18} color="#c7611f" />;
+        case "rain-outline":
+            return <CloudRain size={18} color="#2222222" />;
+        default:
+            return <Cloud size={18} color="#c7611f" />;
+    }
+};
 
 export default function HourlyCard() {
     const data = [
@@ -16,12 +28,14 @@ export default function HourlyCard() {
 
     return (
         <ZiraatCard
-            title="Hourly Forecast"
-            subtitle="Thunderstorms. Highs 20–22°C, lows 16–18°C"
-            badge="Today"
+            width="100%"
+            height="7%"
+            paddingHorizontal={1}
+            paddingVertical={1}
         >
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View>
+
                     <View style={{ flexDirection: "row" }}>
                         {data.map((item, index) => (
                             <View
@@ -32,13 +46,21 @@ export default function HourlyCard() {
                                     width: 80,
                                 }}
                             >
+
                                 <Text style={{ fontSize: 12, color: "#6B7280" }}>
                                     {item.time}
                                 </Text>
 
+
+                                <View style={{ marginVertical: 4 }}>
+                                    {getWeatherIcon(item.icon)}
+                                </View>
+
+
                                 <Text style={{ fontSize: 16, fontWeight: "700" }}>
                                     {item.temp}°
                                 </Text>
+
 
                                 <Text style={{ fontSize: 11, color: "#6B7280" }}>
                                     {item.rain}
@@ -46,6 +68,8 @@ export default function HourlyCard() {
                             </View>
                         ))}
                     </View>
+
+
                     <TempLineChart data={data} />
                 </View>
             </ScrollView>

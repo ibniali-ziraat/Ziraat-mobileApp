@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet } from "react-native";
+import { Text, View } from "react-native";
 import { Droplets } from "lucide-react-native";
-import ZiratCard from "./shared/ZiratCard";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -8,35 +7,41 @@ type Props = {
     note?: string;
 };
 
-export default function Precipitation({
+export function Precipitation({
     amount = `0"`,
     note = "None expected in next 10 days.",
 }: Props) {
     return (
         <ZiraatCard
-            width={250}
-            height={150}
+            width="48%"
+            height="9%"
+            paddingHorizontal={1}
+            paddingVertical={1}
+            marginBottom={1}
+            className="justify-between"
         >
-            <Text style={styles.amount}>{amount}</Text>
-            <Text style={styles.subtext}>in last 24 hours</Text>
-            <Text style={styles.note}>{note}</Text>
+            {/* Header */}
+            <View className="flex-row items-center mb-1">
+                <Droplets size={16} color="#c7611f" />
+                <Text className="ml-2 text-xs font-bold tracking-wide text-neutral-500">
+                    PRECIPITATION
+                </Text>
+            </View>
+
+            {/* Amount */}
+            <Text className="text-3xl font-bold text-neutral-900">
+                {amount}
+            </Text>
+
+            {/* Subtext */}
+            <Text className="text-sm text-neutral-500 mb-1">
+                in last 24 hours
+            </Text>
+
+            {/* Note */}
+            <Text className="text-xs text-neutral-500">
+                {note}
+            </Text>
         </ZiraatCard>
     );
 }
-
-const styles = StyleSheet.create({
-    amount: {
-        fontSize: 30,
-        fontWeight: "700",
-        color: "#111827",
-    },
-    subtext: {
-        fontSize: 14,
-        color: "#6B7280",
-        marginBottom: 6,
-    },
-    note: {
-        fontSize: 12,
-        color: "#6B7280",
-    },
-});

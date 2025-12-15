@@ -17,8 +17,8 @@ export default function WindCard({
 }: Props) {
     return (
         <ZiraatCard
-            width={250}
-            height={120}
+            width="100%"
+            height="6%"
         >
             <View style={styles.row}>
                 {/* LEFT INFO */}

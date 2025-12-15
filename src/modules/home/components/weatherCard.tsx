@@ -3,7 +3,7 @@ import { Droplets, Wind, CloudLightning, Sun } from "lucide-react-native";
 
 export default function WeatherCard({ current }) {
   return (
-    <View className="mt-6 rounded-3xl overflow-hidden shadow-lg">
+    <View className="my-6 rounded-3xl overflow-hidden shadow-lg">
       <ImageBackground
         source={require("@/assets/images/weatherBg.png")}
         resizeMode="cover"

@@ -1,13 +1,12 @@
 
 import ZiraatCard from "./shared/ZiraatProfileCard";
-
 import PrecipitationMap from "./PrecipitationMap";
 
 export default function PrecipitationCard() {
     return (
         <ZiraatCard
-            width={120}
-            height={100}
+            width="99%"
+            height="12%"
 
             style={{
                 paddingHorizontal: 12,

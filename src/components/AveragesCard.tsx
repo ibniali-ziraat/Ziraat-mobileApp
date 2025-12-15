@@ -5,8 +5,8 @@ import ZiraatCard from "./shared/ZiraatProfileCard";
 export default function AveragesCard() {
     return (
         <ZiraatCard
-            width={250}
-            height={150}
+            width="100%"
+            height="25%"
 
         >
             <View>

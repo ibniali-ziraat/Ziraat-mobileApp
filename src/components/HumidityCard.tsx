@@ -1,11 +1,55 @@
-import { Text, View } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
-export default function HumidityCard({ humidity }) {
+type Props = {
+    humidity?: number;
+};
+
+export default function HumidityCard({
+    humidity = 62,
+}: Props) {
     return (
-        <View className="bg-white rounded-2xl p-4 w-[48%] mb-4 border border-neutral border-sm shadow-md">
-            <Text className="text-black text-md font-semibold mb-2">Humidity</Text>
-            <Text className="text-black text-2xl font-semibold">{humidity}%</Text>
-            <Text className="text-black/60 mt-2 text-xs">Dew point −6°</Text>
-        </View>
+        <ZiraatCard
+            width="48%"
+            height={140}
+            paddingHorizontal={1}
+            paddingVertical={1}
+            marginBottom={1}
+        >
+            <View style={styles.container}>
+                <Text style={styles.title}>Humidity</Text>
+
+                <Text style={styles.value}>
+                    {humidity}%
+                </Text>
+
+                <Text style={styles.note}>
+                    Dew point −6°
+                </Text>
+            </View>
+        </ZiraatCard>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+    },
+    title: {
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#111827",
+        marginBottom: 6,
+    },
+    value: {
+        fontSize: 24,
+        fontWeight: "700",
+        color: "#111827",
+    },
+    note: {
+        marginTop: 6,
+        fontSize: 12,
+        color: "#6B7280",
+    },
+});

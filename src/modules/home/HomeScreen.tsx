@@ -27,12 +27,10 @@ export default function HomeScreen() {
     <AnimatedTabContent>
       <View className="flex-1 bg-white pt-4">
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Weather */}
-          <SectionTitle title="Today's Weather" icon="sunny-outline" />
-          <WeatherCard />
+
 
           {/* Weather */}
-          <SectionTitle title="Today's Weather" icon="sunny-outline" />
+          <SectionTitle title="Today's Weatherfghjk" icon="sunny-outline" />
           <TouchableOpacity onPress={() => router.push("/dashboards/(farmer)/weather-profile")}>
             <WeatherCard
               current={{
