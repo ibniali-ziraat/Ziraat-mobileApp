@@ -26,7 +26,8 @@ export default function OrchardStatsSection({ orchards, admin, weather }: any) {
   const avgTreeAgeYears = admin?.avgTreeAgeYears ?? 4;
 
   return (
-    <View>
+    <View className=" w-full bg-red-900 px-1"
+    >
       {/* Stats Row */}
       <View className="flex-row flex-wrap justify-between">
         <StatChip
