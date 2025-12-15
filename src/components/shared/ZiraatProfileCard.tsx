@@ -13,10 +13,10 @@ export default function ZiraatCard({
   paddingVertical,
 
   // margin props
-  marginTop = 0.625,
-  marginBottom = 0.625,
-  marginLeft = 0.625,
-  marginRight = 0.625,
+  marginTop,
+  marginBottom,
+  marginLeft,
+  marginRight,
   marginHorizontal,
   marginVertical,
 
@@ -133,7 +133,6 @@ export default function ZiraatCard({
 const styles = StyleSheet.create({
   shadowWrapper: {
     backgroundColor: "#FFFFFF",
-
     borderRadius: 24,
 
     /* ----------------------------------------
