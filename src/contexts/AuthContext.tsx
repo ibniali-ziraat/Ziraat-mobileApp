@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { clear, load, save } from "../utils/authStorage";
+import { router } from "expo-router";
 
 interface AuthContextType {
   userToken: string | null;
@@ -103,6 +104,7 @@ export const AuthProvider = ({ children }: any) => {
   const logoutUser = async () => {
     await clear("user_token");
     await clear("user_id");
+    router.replace("/auth/user");
 
     setUserTokenState(null);
     setUserIdState(null);
