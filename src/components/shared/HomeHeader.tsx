@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import { Bell } from "lucide-react-native";
 import React from "react";
@@ -55,7 +56,7 @@ const HomeHeader = ({ title = "Naik Ummar Mukhtar" }: HomeHeaderProps) => {
 
         {/* Avatar */}
         <TouchableOpacity
-          onPress={() => router.push("/user-profile")}
+          onPress={() => router.push(ROUTES.USER.PROFILE)}
           className="p-1"
         >
           <Image

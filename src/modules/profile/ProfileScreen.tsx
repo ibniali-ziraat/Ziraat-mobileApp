@@ -26,15 +26,18 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import LogoutButton from "@/src/components/ui/LogoutButton";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
 import { userRoutes } from "../auth/vendor/config/userRoutes";
 
 // Icons
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { Briefcase, GraduationCap, MapPin } from "lucide-react-native";
+import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 
 export default function UserProfileScreen() {
+  const [deleteSection, setDeleteSection] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
   const queryClient = useQueryClient();
 
@@ -69,7 +72,6 @@ export default function UserProfileScreen() {
     education: deleteEducationApi,
     profession: deleteProfessionApi,
   };
-
   const handleDelete = async (section: string) => {
     try {
       const config = userDeleteConfig[section];
@@ -84,166 +86,161 @@ export default function UserProfileScreen() {
     }
   };
 
+  const confirmDelete = async () => {
+    if (!deleteSection) return;
+
+    try {
+      setDeleting(true);
+      await handleDelete(deleteSection);
+      setDeleteSection(null);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
-   <View className="w-full h-full"
-   style={{backgroundColor: colors.error}}>
- <ScreenLayout  >
-      <BackHeader title="Profile" />
+    <View className="w-full h-full" style={{ backgroundColor: colors.error }}>
+      <ScreenLayout>
+        <BackHeader title="Profile" />
 
-      <ProfileTopHeader
-        profilePic={profileData?.profilePic}
-        fullName={profileData?.fullName}
-        onEdit={() => goToSection("profile")}
-      />
-
-      {progress < 100 && (
-        <ProfileProgressBar
-          progress={progress}
-          missingSections={missingSections}
-          completedSections={[
-            "Profile",
-            "Address",
-            "Education",
-            "Profession",
-          ].filter((s) => !missingSections.includes(s.toLowerCase()))}
+        <ProfileTopHeader
+          profilePic={profileData?.profilePic}
+          fullName={profileData?.fullName}
+          onEdit={() => goToSection("profile")}
         />
-      )}
 
-      <ProfileDetails
-        email={profileData?.email}
-        phone={profileData?.phone}
-        age={profileData?.age}
-        gender={profileData?.gender}
-        createdOn={profileData?.createdOn}
-      />
-
-      <ZiraatCard
-     
-
-     width="100%"
-     height="7%"
-     marginBottom={1}
-     paddingHorizontal={1}
-     
-     >
-      <SectionCard
-        title="Address"
-        icon={<MapPin size={22} color={colors.primary} />}
-        onEdit={addressData ? () => goToSection("address") : undefined}
-        onDelete={addressData ? () => handleDelete("address") : undefined}
-        
-      >
-        {addressData ? (
-          <Text>
-            {addressData.village}, {addressData.tehsil}, {addressData.district},{" "}
-            {addressData.state} - {addressData.pincode}
-          </Text>
-        ) : (
-          <TouchableOpacity onPress={() => goToSection("address")}>
-            <Text style={{ color: colors.primary, fontWeight: "500",  }}>
-              + Add Address
-            </Text>
-          </TouchableOpacity>
+        {progress < 100 && (
+          <ProfileProgressBar
+            progress={progress}
+            missingSections={missingSections}
+            completedSections={[
+              "Profile",
+              "Address",
+              "Education",
+              "Profession",
+            ].filter((s) => !missingSections.includes(s.toLowerCase()))}
+          />
         )}
-      </SectionCard>
-</ZiraatCard>
-  <ZiraatCard
-     
 
-     width="100%"
-     height="7%"
-     marginBottom={1}
-     paddingHorizontal={1}
-     
-     >
+        <ProfileDetails
+          email={profileData?.email}
+          phone={profileData?.phone}
+          age={profileData?.age}
+          gender={profileData?.gender}
+          createdOn={profileData?.createdOn}
+        />
 
- <SectionCard
-        title="Education"
-        icon={<GraduationCap size={22} color={colors.primary} />}
-        onEdit={educationData ? () => goToSection("education") : undefined}
-        onDelete={educationData ? () => handleDelete("education") : undefined}
-       
-      >
-        {educationData ? (
-          <>
-            <Text>{educationData.highestQualification}</Text>
-            <Text>{educationData.instituteName}</Text>
-            <Text>{educationData.passingYear}</Text>
-            <Text>{educationData.specialization}</Text>
-          </>
-        ) : (
-          <TouchableOpacity onPress={() => goToSection("education")}>
-            <Text style={{ color: colors.primary, fontWeight: "500" }}>
-              + Add Education
-            </Text>
-          </TouchableOpacity>
-        )}
-      </SectionCard>
+        <ZiraatCard
+          width="100%"
+          height="7%"
+          marginBottom={1}
+          paddingHorizontal={1}
+        >
+          <SectionCard
+            title="Address"
+            icon={<MapPin size={22} color={colors.primary} />}
+            onEdit={addressData ? () => goToSection("address") : undefined}
+            onDelete={
+              addressData ? () => setDeleteSection("address") : undefined
+            }
+          >
+            {addressData ? (
+              <Text>
+                {addressData.village}, {addressData.tehsil},{" "}
+                {addressData.district}, {addressData.state} -{" "}
+                {addressData.pincode}
+              </Text>
+            ) : (
+              <TouchableOpacity onPress={() => goToSection("address")}>
+                <Text style={{ color: colors.primary, fontWeight: "500" }}>
+                  + Add Address
+                </Text>
+              </TouchableOpacity>
+            )}
+          </SectionCard>
+        </ZiraatCard>
+        <ZiraatCard
+          width="100%"
+          height="7%"
+          marginBottom={1}
+          paddingHorizontal={1}
+        >
+          <SectionCard
+            title="Education"
+            icon={<GraduationCap size={22} color={colors.primary} />}
+            onEdit={educationData ? () => goToSection("education") : undefined}
+            onDelete={
+              educationData ? () => setDeleteSection("education") : undefined
+            }
+          >
+            {educationData ? (
+              <>
+                <Text>{educationData.highestQualification}</Text>
+                <Text>{educationData.instituteName}</Text>
+                <Text>{educationData.passingYear}</Text>
+                <Text>{educationData.specialization}</Text>
+              </>
+            ) : (
+              <TouchableOpacity onPress={() => goToSection("education")}>
+                <Text style={{ color: colors.primary, fontWeight: "500" }}>
+                  + Add Education
+                </Text>
+              </TouchableOpacity>
+            )}
+          </SectionCard>
+        </ZiraatCard>
 
-     </ZiraatCard>
+        {/* EDUCATION SECTION */}
 
+        <ZiraatCard
+          width="100%"
+          height="7%"
+          marginBottom={1}
+          paddingHorizontal={1}
+        >
+          {/* PROFESSION SECTION */}
+          <SectionCard
+            title="Profession"
+            icon={<Briefcase size={22} color={colors.primary} />}
+            onEdit={
+              professionData ? () => goToSection("profession") : undefined
+            }
+            onDelete={
+              professionData ? () => setDeleteSection("profession") : undefined
+            }
+          >
+            {professionData ? (
+              <>
+                <Text>{professionData.organizationName}</Text>
+                <Text>{professionData.designation}</Text>
+                <Text>{professionData.experienceYears}</Text>
+              </>
+            ) : (
+              <TouchableOpacity onPress={() => goToSection("profession")}>
+                <Text style={{ color: colors.primary, fontWeight: "500" }}>
+                  + Add Profession
+                </Text>
+              </TouchableOpacity>
+            )}
+          </SectionCard>
+        </ZiraatCard>
 
-      {/* EDUCATION SECTION */}
-     
-
-     <ZiraatCard
-     
-
-     width="100%"
-     height="7%"
-     marginBottom={1}
-     paddingHorizontal={1}
-     
-     
-     >
-       {/* PROFESSION SECTION */}
-      <SectionCard
-        title="Profession"
-        icon={<Briefcase size={22} color={colors.primary} />}
-        onEdit={professionData ? () => goToSection("profession") : undefined}
-        onDelete={professionData ? () => handleDelete("profession") : undefined}
-      
-      >
-        {professionData ? (
-          <>
-            <Text>{professionData.organizationName}</Text>
-            <Text>{professionData.designation}</Text>
-            <Text>{professionData.experienceYears}</Text>
-          </>
-        ) : (
-          <TouchableOpacity onPress={() => goToSection("profession")}>
-            <Text style={{ color: colors.primary, fontWeight: "500" }}>
-              + Add Profession
-            </Text>
-          </TouchableOpacity>
-        )}
-      </SectionCard>
-      
-     </ZiraatCard>
-
-<<<<<<< HEAD
-      <LogoutButton onPress={async () => await logoutUser()} />
-=======
-      {/* LOGOUT BUTTON */}
-      <LogoutButton
-        onPress={async () => {
-          await logoutUser();
-          router.replace("/auth/user");
-        }}
-      />
-      <ConfirmDeleteModal
-        visible={!!deleteSection}
-        title="Confirm deletion"
-        description="Are you sure you want to delete this information?"
-        onCancel={() => setDeleteSection(null)}
-        onConfirm={confirmDelete}
-        loading={deleting}
-      />
->>>>>>> 8c83eebc4225ab7c2d319dfe62ac77d0e1743022
-    </ScreenLayout>
-   </View>
+        {/* LOGOUT BUTTON */}
+        <LogoutButton
+          onPress={async () => {
+            await logoutUser();
+            router.replace("/auth/user");
+          }}
+        />
+        <ConfirmDeleteModal
+          visible={!!deleteSection}
+          title="Confirm deletion"
+          description="Are you sure you want to delete this information?"
+          onCancel={() => setDeleteSection(null)}
+          onConfirm={confirmDelete}
+          loading={deleting}
+        />
+      </ScreenLayout>
+    </View>
   );
 }
-
-
-
