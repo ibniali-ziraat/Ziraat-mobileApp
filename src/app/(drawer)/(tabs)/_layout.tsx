@@ -1,28 +1,41 @@
+import CropHeader from "@/src/components/shared/CropHeader";
+import HomeHeader from "@/src/components/shared/HomeHeader";
+import Loader from "@/src/components/shared/Loader";
+import MenuHeader from "@/src/components/shared/MenuHeader";
+import ProductHeader from "@/src/components/shared/ProductHeader";
+import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { Tabs } from "expo-router";
-import { Home, ShoppingBag, Trees, TrendingUpIcon, User } from "lucide-react-native";
+import { Home, Menu, ShoppingBag, Trees } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
+  const { userId, roleMode } = useAuth();
+
+  const { data } = useProfileQuery(userId);
+  console.log(userId, data);
+
+  console.log("user profile data...");
+
+  if (!userId || !data) {
+    return <Loader />;
+  }
 
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
+        tabBarShowLabel: false,
         tabBarActiveTintColor: colors.secondary,
-        tabBarInactiveTintColor: colors.black,
+        tabBarInactiveTintColor: colors.dark,
         tabBarStyle: {
-          paddingTop: 10,
-          paddingBottom: 50 + insets.bottom,
-          height: insets.bottom,
-          backgroundColor: colors.white,
-          borderTopWidth: 0,
-          elevation: 5,
-          shadowColor: colors.blackHover,
+          paddingTop: 12,
+          shadowColor: colors.overlay,
           shadowOpacity: 0.1,
-          shadowOffset: { width: 0, height: -2 },
           shadowRadius: 5,
+          paddingBottom: insets.bottom + 50,
         },
       }}
     >
@@ -30,43 +43,56 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color, size }) => <Home color={color} size={size} />,
+          header: () => <HomeHeader title={data?.fullName} />,
+          tabBarIcon: ({ size, color }) => (
+            <TabIcon icon={<Home size={size} color={color} />} label="Home" />
+          ),
         }}
       />
 
+      {/* Crops Tab */}
       <Tabs.Screen
-        name="Crops"
+        name="orchards"
         options={{
-          title: "Crops",
-          tabBarIcon: ({ color, size }) => <Trees color={color} size={size} />,
+          title: "Orchards",
+          headerShown: false,
+          header: () => <CropHeader />,
+          tabBarIcon: ({ size, color }) => (
+            <TabIcon
+              icon={<Trees size={size} color={color} />}
+              label="Orchards"
+            />
+          ),
         }}
       />
 
+      {/* Products Tab */}
       <Tabs.Screen
         name="Product"
         options={{
           title: "Products",
-          tabBarIcon: ({ color, size }) => (
-            <ShoppingBag color={color} size={size} />
+          headerShown: false,
+
+          header: () => <ProductHeader />,
+          tabBarIcon: ({ size, color }) => (
+            <TabIcon
+              icon={<ShoppingBag size={size} color={color} />}
+              label="Products"
+            />
           ),
         }}
       />
 
+      {/* Menu Tab */}
       <Tabs.Screen
-        name="Market"
+        name="menu"
         options={{
-          title: "Market",
-          tabBarIcon: ({ color, size }) => (
-            <TrendingUpIcon color={color} size={size} />
-          ),
-        }}
-      />
+          title: "Menu",
+          header: () => <MenuHeader role={roleMode} />,
 
-      <Tabs.Screen
-        name="Profile"
-        options={{
-          title: "Profile",
-          tabBarIcon: ({ color, size }) => <User color={color} size={size} />,
+          tabBarIcon: ({ size, color }) => (
+            <TabIcon icon={<Menu size={size} color={color} />} label="Menu" />
+          ),
         }}
       />
     </Tabs>

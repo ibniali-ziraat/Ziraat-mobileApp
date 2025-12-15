@@ -1,12 +1,10 @@
+import { ScrollView, Text, TouchableOpacity } from "react-native";
+
+import BackHeader from "@/src/components/shared/BackHeader";
+import ProfileHeader from "./components/ProfileHeader";
+import SectionCard from "./components/SectionCard";
+
 import { colors } from "@/src/constants/colors";
-import React from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
 
 import {
   useAddressDeleteMutation,
@@ -16,85 +14,139 @@ import {
   useProfessionDeleteMutation,
   useProfessionQuery,
   useProfileQuery,
-} from "@/src/hooks/useUserProfileMutation";
+} from "@/src/hooks/userQueryHooks";
 
-import ProfileHeader from "./components/ProfileHeader";
-import SectionCard from "./components/SectionCard";
-
-import { useAuth } from "@/src/contexts/AuthContext";
 import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 
-export default function ProfileScreen() {
-  const { userId, userProfileId } = useAuth();
+import { useProfileProgress } from "@/src/hooks/useProfileProgress";
+import { useEffect, useState } from "react";
+import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
+import { userRoutes } from "../auth/vendor/config/userRoutes";
+import { ActivityIndicator } from "react-native-paper";
+import Loader from "@/src/components/shared/Loader";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import LogoutButton from "@/src/components/ui/LogoutButton";
+import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
+import ProfileTopHeader from "@/src/components/shared/ProfileTopHeader";
+import ProfileDetails from "@/src/components/shared/ProfileDetails";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
+import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
+
+export default function UserProfileScreen() {
+  const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
+  const [deleteSection, setDeleteSection] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
   const queryClient = useQueryClient();
 
-  const { data: profileData, isLoading: loadingProfile } =
-    useProfileQuery(userId);
+  const { data: profileData } = useProfileQuery(userId);
+  console.log(profileData, "profileData......");
 
-  const { data: addressData, isLoading: loadingAddress } =
-    useAddressQuery(userProfileId);
-
-  const { data: educationData, isLoading: loadingEducation } =
-    useEducationQuery(userProfileId);
-
-  const { data: professionData, isLoading: loadingProfession } =
-    useProfessionQuery(userProfileId);
-
-  const loading =
-    loadingProfile || loadingAddress || loadingEducation || loadingProfession;
+  const { data: addressData } = useAddressQuery(userProfileId);
+  const { data: educationData } = useEducationQuery(userProfileId);
+  const { data: professionData } = useProfessionQuery(userProfileId);
 
   const { mutateAsync: deleteAddressApi } = useAddressDeleteMutation();
   const { mutateAsync: deleteEducationApi } = useEducationDeleteMutation();
   const { mutateAsync: deleteProfessionApi } = useProfessionDeleteMutation();
+  const { progress, missingSections } = useProfileProgress({
+    profile: profileData,
+    address: addressData,
+    education: educationData,
+    profession: professionData,
+  });
 
-  // 🚀 Navigate to form page with correct section
-  const goToSection = (section) => {
-    router.push({
-      pathname: "/userProfileCompletion",
-      params: { section },
-    });
+  useEffect(() => {
+    if (profileData?.id) {
+      setUserProfileId(profileData?.id);
+    }
+  }, [profileData]);
+
+  console.log();
+
+  const goToSection = (section) => router.push(userRoutes[section]);
+
+  const deleteActions = {
+    address: deleteAddressApi,
+    education: deleteEducationApi,
+    profession: deleteProfessionApi,
   };
 
-  const deleteAddress = async () => {
-    await deleteAddressApi(userProfileId);
-    showSuccessToast("Address deleted successfully");
-    queryClient.invalidateQueries(["addressSection", userProfileId]);
+  const handleDelete = async (section: string) => {
+    try {
+      const config = userDeleteConfig[section];
+      const api = deleteActions[section];
+
+      await api(userProfileId!);
+
+      showSuccessToast(config.success);
+      queryClient.invalidateQueries([config.queryKey, userProfileId]);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const deleteEducation = async () => {
-    await deleteEducationApi(userProfileId);
-    showSuccessToast("Education deleted successfully");
-    queryClient.invalidateQueries(["educationSection", userProfileId]);
+  const confirmDelete = async () => {
+    if (!deleteSection) return;
+
+    try {
+      setDeleting(true);
+      await handleDelete(deleteSection);
+      setDeleteSection(null);
+    } finally {
+      setDeleting(false);
+    }
   };
 
-  const deleteProfession = async () => {
-    await deleteProfessionApi(userProfileId);
-    showSuccessToast("Profession deleted successfully");
-    queryClient.invalidateQueries(["professionSection", userProfileId]);
-  };
-
-  if (loading)
-    return (
-      <View className="flex-1 justify-center items-center">
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
+  if (!profileData || deleting) {
+    return <Loader />;
+  }
 
   return (
-    <ScrollView className="flex-1 bg-white p-5">
-      {/* Profile Header */}
-      <ProfileHeader
-        profileData={profileData}
+    <ScreenLayout>
+      <BackHeader
+        title="Profile"
+        onPress={() => router.replace(ROUTES.USER.HOME)}
+      />
+      <ProfileTopHeader
+        profilePic={profileData?.profilePic}
+        fullName={profileData?.fullName}
         onEdit={() => goToSection("profile")}
       />
 
-      {/* Address Section */}
+      {/* Progress bar */}
+      {progress < 100 && (
+        <ProfileProgressBar
+          progress={progress}
+          missingSections={missingSections}
+          completedSections={[
+            "Profile",
+            "Address",
+            "Education",
+            "Profession",
+          ].filter((s) => !missingSections.includes(s.toLowerCase()))}
+        />
+      )}
+
+      {/* Details section */}
+      <ProfileDetails
+        email={profileData?.email}
+        phone={profileData?.phone}
+        age={profileData?.age}
+        gender={profileData?.gender}
+        createdOn={profileData?.createdOn}
+      />
+
       <SectionCard
         title="Address"
         onEdit={addressData ? () => goToSection("address") : undefined}
-        onDelete={addressData ? deleteAddress : undefined}
+        onDelete={addressData ? () => setDeleteSection("address") : undefined}
+        style={
+          !addressData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
       >
         {addressData ? (
           <Text>
@@ -110,11 +162,16 @@ export default function ProfileScreen() {
         )}
       </SectionCard>
 
-      {/* Education Section */}
+      {/* EDUCATION SECTION */}
       <SectionCard
         title="Education"
         onEdit={educationData ? () => goToSection("education") : undefined}
-        onDelete={educationData ? deleteEducation : undefined}
+        onDelete={
+          educationData ? () => setDeleteSection("education") : undefined
+        }
+        style={
+          !educationData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
       >
         {educationData ? (
           <>
@@ -132,11 +189,16 @@ export default function ProfileScreen() {
         )}
       </SectionCard>
 
-      {/* Profession Section */}
+      {/* PROFESSION SECTION */}
       <SectionCard
         title="Profession"
         onEdit={professionData ? () => goToSection("profession") : undefined}
-        onDelete={professionData ? deleteProfession : undefined}
+        onDelete={
+          professionData ? () => setDeleteSection("profession") : undefined
+        }
+        style={
+          !professionData ? { borderColor: colors.warning, borderWidth: 1 } : {}
+        }
       >
         {professionData ? (
           <>
@@ -152,6 +214,17 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         )}
       </SectionCard>
-    </ScrollView>
+
+      {/* LOGOUT BUTTON */}
+      <LogoutButton onPress={async () => await logoutUser()} />
+      <ConfirmDeleteModal
+        visible={!!deleteSection}
+        title="Confirm deletion"
+        description="Are you sure you want to delete this information?"
+        onCancel={() => setDeleteSection(null)}
+        onConfirm={confirmDelete}
+        loading={deleting}
+      />
+    </ScreenLayout>
   );
 }

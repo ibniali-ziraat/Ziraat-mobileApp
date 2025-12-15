@@ -1,41 +1,47 @@
+import { default as DetailCard } from "@/src/components/shared/DetailsCard";
 import { colors } from "@/src/constants/colors";
-import { Feather, Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
-export default function ProfileHeader({ profileData, onEdit }) {
+export default function ProfileHeader({ data, onEdit }) {
   return (
-    <View className="items-center p-5 mb-5">
-      <View className="relative mb-3">
+    <View className="items-center mb-6">
+      {/* Profile Image */}
+      <View className="relative mb-4">
         <Image
-          source={{ uri: profileData?.image || "https://placehold.co/200x200" }}
-          className="w-24 h-24 rounded-full"
+          source={{
+            uri: data?.profilePic || "https://placehold.co/200x200",
+          }}
+          className="w-28 h-28 rounded-full"
+          style={{
+            borderWidth: 2,
+            borderColor: colors.primary,
+            shadowColor: colors.neutral,
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.2,
+            shadowRadius: 4,
+          }}
         />
-
-        <TouchableOpacity className="absolute bottom-0 right-0 bg-primary p-2 rounded-full">
-          <Ionicons name="camera-outline" size={16} color="#fff" />
-        </TouchableOpacity>
       </View>
-
+      {/* Full Name with Edit */}
       <View className="flex-row items-center gap-2">
-        <Text
-          className="text-lg font-semibold"
-          style={{ color: colors.primary }}
-        >
-          {profileData?.fullName}
+        <Text className="text-xl font-bold" style={{ color: colors.primary }}>
+          {data?.fullName || "N/A"}
         </Text>
-
-        <TouchableOpacity onPress={onEdit}>
-          <Feather name="edit-3" size={18} color={colors.primary} />
-        </TouchableOpacity>
+        {onEdit && (
+          <TouchableOpacity onPress={onEdit}>
+            <Feather name="edit-3" size={20} color={colors.primary} />
+          </TouchableOpacity>
+        )}
       </View>
 
-      <View className="bg-[#E0F2F1] px-4 py-1 rounded-full mt-3">
-        <Text
-          className="font-semibold text-sm"
-          style={{ color: colors.primary }}
-        >
-          {profileData?.status || "Unverified"}
-        </Text>
+      {/* Basic Details Cards */}
+      <View className="mt-5 w-full space-y-3">
+        <DetailCard title="Email" value={data?.email} />
+        <DetailCard title="Phone" value={data?.phone} />
+        <DetailCard title="Age" value={(data?.age)} />
+        <DetailCard title="Gender" value={data?.gender} />
+        <DetailCard title="User Since" value={data?.createdOn?.split("T")[0]} />
       </View>
     </View>
   );
