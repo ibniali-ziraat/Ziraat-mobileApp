@@ -1,35 +1,18 @@
-import { router } from "expo-router";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { Redirect } from "expo-router";
+import { ReactNode } from "react";
+import Loader from "./shared/Loader";
 
-import { ReactNode, useEffect } from "react";
-import { View } from "react-native";
-import { useAuth } from "../contexts/AuthContext";
-
-interface RouteGuardProps {
-  children: ReactNode;
-}
-
-export default function RouteGuard({ children }: RouteGuardProps) {
+export default function RouteGuard({ children }: { children: ReactNode }) {
   const { userToken, initialized } = useAuth();
 
-  useEffect(() => {
-    if (!initialized) return;
+  if (!initialized) {
+    return <Loader />;
+  }
 
-    if (!userToken) {
-      router.replace("/auth/user");
-      // router.replace("/");
-    }
-  }, [initialized, userToken]);
+  if (!userToken) {
+    return <Redirect href="/auth/user" />;
+  }
 
-  if (!initialized) return null;
-
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-      }}
-    >
-      {children}
-    </View>
-  );
+  return <>{children}</>;
 }
