@@ -1,7 +1,7 @@
+
 import { colors } from "@/src/constants/colors";
 import { useEffect, useRef } from "react";
-import { Animated, Text, View, Dimensions } from "react-native";
-import { CheckCircle, XCircle } from "lucide-react-native";
+import { Animated, Text, View } from "react-native";
 
 interface ProgressBarProps {
   progress: number;
@@ -19,35 +19,34 @@ export default function ProfileProgressBar({
   useEffect(() => {
     Animated.timing(anim, {
       toValue: progress,
-      duration: 500,
-      useNativeDriver: false,
+      duration: 600,
+      useNativeDriver: false, // required for width animation
     }).start();
   }, [progress]);
 
-  const width = anim.interpolate({
+  const animatedWidth = anim.interpolate({
     inputRange: [0, 100],
     outputRange: ["0%", "100%"],
   });
 
-  const allSections = [...completedSections, ...missingSections];
-  const screenWidth = Dimensions.get("window").width;
-  const itemWidth = (screenWidth - 64) / 4; // 16px padding left/right + 12px gap
-
   return (
     <View
       style={{
-        marginVertical: 20,
-        padding: 16,
-        borderRadius: 12,
-        backgroundColor: colors.light,
-        shadowColor: colors.cardShadow,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
+        marginTop: 20,
+        marginBottom: 20,
+        padding: 17,
+        borderRadius: 14,
+        backgroundColor: "#FFFFFF",
+        borderColor: "#f1f1f1",
+        borderWidth: 1,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 3 },
         elevation: 4,
       }}
     >
-      {/* Header */}
+      {/* HEADER */}
       <View
         style={{
           flexDirection: "row",
@@ -55,78 +54,38 @@ export default function ProfileProgressBar({
           marginBottom: 12,
         }}
       >
-        <Text style={{ fontWeight: "600", fontSize: 16, color: colors.dark }}>
+        <Text style={{ fontWeight: "700", fontSize: 18, color: colors.dark }}>
           Profile Completion
         </Text>
+
         <Text
-          style={{ fontWeight: "600", fontSize: 14, color: colors.primary }}
+          style={{
+            fontWeight: "700",
+            fontSize: 16,
+            color: colors.primary,
+          }}
         >
           {progress}%
         </Text>
       </View>
 
-      {/* Progress Bar */}
+      {/* ANIMATED PROGRESS BAR */}
       <View
         style={{
-          height: 8,
+          height: 6,
+          borderRadius: 10,
           backgroundColor: colors.neutral + "33",
-          borderRadius: 7,
           overflow: "hidden",
         }}
       >
         <Animated.View
           style={{
             height: "100%",
-            width,
+            width: animatedWidth,
             backgroundColor: colors.primary,
-            borderRadius: 7,
+            borderRadius: 10,
           }}
         />
-      </View>
-
-      {/* Sections Grid */}
-      <View
-        style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          marginTop: 16,
-          gap: 12, // spacing between items
-        }}
-      >
-        {allSections.map((section) => {
-          const isCompleted = completedSections.includes(section);
-
-          return (
-            <View
-              key={section}
-              style={{
-                width: itemWidth,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              {isCompleted ? (
-                <CheckCircle size={20} color={colors.primary} />
-              ) : (
-                <XCircle size={20} color={colors.error} />
-              )}
-
-              <Text
-                style={{
-                  marginLeft: 6,
-                  color: isCompleted ? colors.dark : colors.neutral,
-                  fontWeight: isCompleted ? "600" : "400",
-                  fontSize: 13,
-                  flexWrap: "wrap",
-                }}
-              >
-                <Text>
-                  {section.charAt(0).toUpperCase() + section.slice(1)}
-                </Text>
-              </Text>
-            </View>
-          );
-        })}
       </View>
     </View>
   );

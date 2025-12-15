@@ -1,7 +1,6 @@
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
-import ProfileHeader from "./components/ProfileHeader";
 import SectionCard from "./components/SectionCard";
 
 import { colors } from "@/src/constants/colors";
@@ -20,26 +19,23 @@ import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 
-import { useProfileProgress } from "@/src/hooks/useProfileProgress";
-import { useEffect, useState } from "react";
-import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
-import { userRoutes } from "../auth/vendor/config/userRoutes";
-import { ActivityIndicator } from "react-native-paper";
-import Loader from "@/src/components/shared/Loader";
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import LogoutButton from "@/src/components/ui/LogoutButton";
+import ProfileDetails from "@/src/components/shared/ProfileDetails";
 import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
 import ProfileTopHeader from "@/src/components/shared/ProfileTopHeader";
-import ProfileDetails from "@/src/components/shared/ProfileDetails";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import LogoutButton from "@/src/components/ui/LogoutButton";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
-import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
+import { useProfileProgress } from "@/src/hooks/useProfileProgress";
+import { useEffect } from "react";
+import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
+import { userRoutes } from "../auth/vendor/config/userRoutes";
+
+// Icons
+import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { Briefcase, GraduationCap, MapPin } from "lucide-react-native";
 
 export default function UserProfileScreen() {
   const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
-  const [deleteSection, setDeleteSection] = useState<string | null>(null);
-  const [deleting, setDeleting] = useState(false);
-
   const queryClient = useQueryClient();
 
   const { data: profileData } = useProfileQuery(userId);
@@ -52,6 +48,7 @@ export default function UserProfileScreen() {
   const { mutateAsync: deleteAddressApi } = useAddressDeleteMutation();
   const { mutateAsync: deleteEducationApi } = useEducationDeleteMutation();
   const { mutateAsync: deleteProfessionApi } = useProfessionDeleteMutation();
+
   const { progress, missingSections } = useProfileProgress({
     profile: profileData,
     address: addressData,
@@ -64,8 +61,6 @@ export default function UserProfileScreen() {
       setUserProfileId(profileData?.id);
     }
   }, [profileData]);
-
-  console.log();
 
   const goToSection = (section) => router.push(userRoutes[section]);
 
@@ -89,35 +84,18 @@ export default function UserProfileScreen() {
     }
   };
 
-  const confirmDelete = async () => {
-    if (!deleteSection) return;
-
-    try {
-      setDeleting(true);
-      await handleDelete(deleteSection);
-      setDeleteSection(null);
-    } finally {
-      setDeleting(false);
-    }
-  };
-
-  if (!profileData || deleting) {
-    return <Loader />;
-  }
-
   return (
-    <ScreenLayout>
-      <BackHeader
-        title="Profile"
-        onPress={() => router.replace(ROUTES.USER.HOME)}
-      />
+   <View className="w-full h-full"
+   style={{backgroundColor: colors.error}}>
+ <ScreenLayout  >
+      <BackHeader title="Profile" />
+
       <ProfileTopHeader
         profilePic={profileData?.profilePic}
         fullName={profileData?.fullName}
         onEdit={() => goToSection("profile")}
       />
 
-      {/* Progress bar */}
       {progress < 100 && (
         <ProfileProgressBar
           progress={progress}
@@ -131,7 +109,6 @@ export default function UserProfileScreen() {
         />
       )}
 
-      {/* Details section */}
       <ProfileDetails
         email={profileData?.email}
         phone={profileData?.phone}
@@ -140,13 +117,21 @@ export default function UserProfileScreen() {
         createdOn={profileData?.createdOn}
       />
 
+      <ZiraatCard
+     
+
+     width="100%"
+     height="7%"
+     marginBottom={1}
+     paddingHorizontal={1}
+     
+     >
       <SectionCard
         title="Address"
+        icon={<MapPin size={22} color={colors.primary} />}
         onEdit={addressData ? () => goToSection("address") : undefined}
-        onDelete={addressData ? () => setDeleteSection("address") : undefined}
-        style={
-          !addressData ? { borderColor: colors.warning, borderWidth: 1 } : {}
-        }
+        onDelete={addressData ? () => handleDelete("address") : undefined}
+        
       >
         {addressData ? (
           <Text>
@@ -155,23 +140,29 @@ export default function UserProfileScreen() {
           </Text>
         ) : (
           <TouchableOpacity onPress={() => goToSection("address")}>
-            <Text style={{ color: colors.primary, fontWeight: "600" }}>
+            <Text style={{ color: colors.primary, fontWeight: "500",  }}>
               + Add Address
             </Text>
           </TouchableOpacity>
         )}
       </SectionCard>
+</ZiraatCard>
+  <ZiraatCard
+     
 
-      {/* EDUCATION SECTION */}
-      <SectionCard
+     width="100%"
+     height="7%"
+     marginBottom={1}
+     paddingHorizontal={1}
+     
+     >
+
+ <SectionCard
         title="Education"
+        icon={<GraduationCap size={22} color={colors.primary} />}
         onEdit={educationData ? () => goToSection("education") : undefined}
-        onDelete={
-          educationData ? () => setDeleteSection("education") : undefined
-        }
-        style={
-          !educationData ? { borderColor: colors.warning, borderWidth: 1 } : {}
-        }
+        onDelete={educationData ? () => handleDelete("education") : undefined}
+       
       >
         {educationData ? (
           <>
@@ -182,23 +173,36 @@ export default function UserProfileScreen() {
           </>
         ) : (
           <TouchableOpacity onPress={() => goToSection("education")}>
-            <Text style={{ color: colors.primary, fontWeight: "600" }}>
+            <Text style={{ color: colors.primary, fontWeight: "500" }}>
               + Add Education
             </Text>
           </TouchableOpacity>
         )}
       </SectionCard>
 
-      {/* PROFESSION SECTION */}
+     </ZiraatCard>
+
+
+      {/* EDUCATION SECTION */}
+     
+
+     <ZiraatCard
+     
+
+     width="100%"
+     height="7%"
+     marginBottom={1}
+     paddingHorizontal={1}
+     
+     
+     >
+       {/* PROFESSION SECTION */}
       <SectionCard
         title="Profession"
+        icon={<Briefcase size={22} color={colors.primary} />}
         onEdit={professionData ? () => goToSection("profession") : undefined}
-        onDelete={
-          professionData ? () => setDeleteSection("profession") : undefined
-        }
-        style={
-          !professionData ? { borderColor: colors.warning, borderWidth: 1 } : {}
-        }
+        onDelete={professionData ? () => handleDelete("profession") : undefined}
+      
       >
         {professionData ? (
           <>
@@ -208,13 +212,18 @@ export default function UserProfileScreen() {
           </>
         ) : (
           <TouchableOpacity onPress={() => goToSection("profession")}>
-            <Text style={{ color: colors.primary, fontWeight: "600" }}>
+            <Text style={{ color: colors.primary, fontWeight: "500" }}>
               + Add Profession
             </Text>
           </TouchableOpacity>
         )}
       </SectionCard>
+      
+     </ZiraatCard>
 
+<<<<<<< HEAD
+      <LogoutButton onPress={async () => await logoutUser()} />
+=======
       {/* LOGOUT BUTTON */}
       <LogoutButton
         onPress={async () => {
@@ -230,6 +239,11 @@ export default function UserProfileScreen() {
         onConfirm={confirmDelete}
         loading={deleting}
       />
+>>>>>>> 8c83eebc4225ab7c2d319dfe62ac77d0e1743022
     </ScreenLayout>
+   </View>
   );
 }
+
+
+
