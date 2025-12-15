@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ziraat",
+    "name": "Ziraat",
     "slug": "ziraat",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,7 +14,7 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/ziraaticon.png",
+        "foregroundImage": "./assets/images/adaptiveicon.png",
         "softwareKeyboardLayoutMode": "pan"
       },
       "edgeToEdgeEnabled": true,
