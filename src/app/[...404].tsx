@@ -1,9 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import { useRouter } from "expo-router";
-import { ThumbsUp } from "lucide-react-native";
 import { Image, Text, View } from "react-native";
-import RatingStars from "../components/shared/RatingStars";
-import ZiraatCard from "../components/shared/ZiraatProfileCard";
 import BackHeader from "../components/shared/BackHeader";
 
 export default function NotFoundPage() {
@@ -43,6 +40,9 @@ export default function NotFoundPage() {
         </Text>
       </View>
     </View>
+
+    
+
   );
 }
 
