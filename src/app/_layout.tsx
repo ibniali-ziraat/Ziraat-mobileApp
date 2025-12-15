@@ -24,21 +24,21 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       {/* STATUS BAR */}
       <StatusBar
-        style="light"
-        backgroundColor={colors.primary}
+        style="dark"
+        // backgroundColor={colors.primary}
         translucent
         animated
       />
 
       {/* STATUS BAR EXTENSION (THIS IS THE KEY) */}
-      {Platform.OS !== "web" && (
+      {/* {Platform.OS !== "web" && (
         <View
           style={{
             height: insets.top + 20, // 👈 extra bottom padding
             backgroundColor: colors.primary,
           }}
         />
-      )}
+      )} */}
 
       <AppProvider>
         <RouteGuard>
@@ -47,7 +47,7 @@ export default function RootLayout() {
             style={{
               flex: 1,
               backgroundColor: colors.bgColor,
-              // paddingTop: insets.top - 20,
+              paddingTop: insets.top + 20,
               paddingHorizontal: 10,
             }}
           >

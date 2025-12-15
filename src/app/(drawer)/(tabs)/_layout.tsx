@@ -7,13 +7,17 @@ import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
-import { Tabs } from "expo-router";
+import { Redirect, router, Tabs } from "expo-router";
 import { Home, Menu, ShoppingBag, Trees } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { userId, roleMode } = useAuth();
+  const { userId, roleMode, userToken } = useAuth();
+
+  if (!userToken) {
+    return <Redirect href="/auth/user" />;
+  }
 
   const { data } = useProfileQuery(userId);
   console.log(userId, data);
