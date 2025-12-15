@@ -8,8 +8,6 @@ import { FormProvider } from "react-hook-form";
 import InputCostDetails from "../sections/Input Cost Details";
 
 export default function InputCostDetailsScreen() {
-  //   const { vendorData, setVendorData, userData } = useGlobalData();
-
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 

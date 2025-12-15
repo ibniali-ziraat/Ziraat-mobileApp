@@ -1,6 +1,8 @@
-import { colors } from "@/src/constants/colors";
 import * as Icons from "lucide-react-native";
 import { Text, View } from "react-native";
+
+
+import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import StatChip from "./StatChip";
 
 export default function OrchardStatsSection({ orchards, admin, weather }: any) {
@@ -27,31 +29,44 @@ export default function OrchardStatsSection({ orchards, admin, weather }: any) {
     <View>
       {/* Stats Row */}
       <View className="flex-row flex-wrap justify-between">
-        <StatChip Icon={Tree} title="Total Area" value={`${totalArea.toFixed(2)} ha`} />
-        <StatChip Icon={Layers} title="Tree Count" value={totalTrees.toLocaleString()} />
-        <StatChip Icon={Percent} title="Survival Rate" value={`${survivalRatePercent}%`} />
-        <StatChip Icon={Calendar} title="Avg Tree Age" value={`${avgTreeAgeYears} yrs`} />
+        <StatChip
+          Icon={Tree}
+          title="Total Area"
+          value={`${totalArea.toFixed(2)} ha`}
+        />
+        <StatChip
+          Icon={Layers}
+          title="Tree Count"
+          value={totalTrees.toLocaleString()}
+        />
+        <StatChip
+          Icon={Percent}
+          title="Survival Rate"
+          value={`${survivalRatePercent}%`}
+        />
+        <StatChip
+          Icon={Calendar}
+          title="Avg Tree Age"
+          value={`${avgTreeAgeYears} yrs`}
+        />
       </View>
 
       {/* Smart Insight Card */}
-      <View
-        className="mt-3 p-3 rounded-xl border border-dark bg-light"
-        style={{
-          borderWidth: 1,
-          borderColor: colors.dark,
-        }}
+      <ZiraatCard
+        width="100%"
+        height="26%"
+        paddingHorizontal={1}
+        paddingVertical={1}
+      
       >
-        <Text
-          className="text-[18px] font-bold my-2">
+        <Text className="text-[18px] font-bold my-2">
           📈 Smart Insight
         </Text>
 
-        <Text
-          className="text-[14px] my-2">
-          Tree density and survival suggest potential to increase yield by
-          improving fertigation.
+        <Text className="text-[14px] my-2 ">
+          Tree density and survival suggest potential to increase yield by improving fertigation.
         </Text>
-      </View>
+      </ZiraatCard>
     </View>
   );
 }

@@ -8,8 +8,6 @@ import { FormProvider } from "react-hook-form";
 import ProductionMarketing from "../sections/Production & Marketing";
 
 export default function ProductionAndMarketingScreen() {
-  //   const { vendorData, setVendorData, userData } = useGlobalData();
-
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
@@ -65,10 +63,7 @@ export default function ProductionAndMarketingScreen() {
   };
   return (
     <ScreenLayout>
-      <BackHeader
-        title="Orchard Registration"
-        desc="Production & Marketing"
-      />
+      <BackHeader title="Orchard Registration" desc="Production & Marketing" />
       <FormProvider {...form}>
         <ProductionMarketing errors={errors} control={control} />
         <FormActions

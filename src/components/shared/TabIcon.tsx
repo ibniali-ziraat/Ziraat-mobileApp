@@ -1,18 +1,19 @@
+import React from "react";
 import { Text, View } from "react-native";
 
-export default function TabIcon({ icon, label }) {
+function TabIcon({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <View
       style={{
         alignItems: "center",
         justifyContent: "center",
-        width: 100, // fixed width to prevent label wrapping
+        width: 100,
       }}
     >
       {icon}
       <Text
         style={{
-          fontSize: 12,
+          fontSize: 14,
           marginTop: 2,
           textAlign: "center",
         }}
@@ -24,3 +25,5 @@ export default function TabIcon({ icon, label }) {
     </View>
   );
 }
+
+export default React.memo(TabIcon);

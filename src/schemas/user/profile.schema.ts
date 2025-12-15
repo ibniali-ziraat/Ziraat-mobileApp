@@ -8,8 +8,12 @@ export const profileSchema = z
       .string()
       .min(1, "Required Field")
       .regex(/^[0-9]{10}$/, "Enter a valid 10-digit mobile number"),
+    email: z
+      .string()
+      .email("Enter a valid email")
+      .optional()
+      .or(z.literal("")),
 
-    email: z.string().email("Enter a valid email"),
 
     age: z.coerce
       .number()

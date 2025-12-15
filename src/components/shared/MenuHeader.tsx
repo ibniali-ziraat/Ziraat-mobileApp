@@ -1,8 +1,10 @@
 import { colors } from "@/src/constants/colors";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useVendorProfileQuery } from "@/src/hooks/vendorQueryHooks";
 import { router } from "expo-router";
 import { BarChart2, PhoneCall, Store, User } from "lucide-react-native";
+import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 interface MenuHeaderProps {
@@ -10,21 +12,22 @@ interface MenuHeaderProps {
   onToggleRole: () => void; // parent controls role state
 }
 
-export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
-  const { vendorData, setVendorData, userData } = useGlobalData();
-  const { data: profileData, isPending: loadingVendorProfile } = useVendorProfileQuery(userData.id);
+const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
+  const { userId } = useAuth();
+  const { data: profileData, isPending: loadingVendorProfile } =
+    useVendorProfileQuery(userId);
 
   const showBecomeSupplier = role === "supplier" && !profileData; // Show button if no vendor profile
 
   return (
-    <View className="flex-row items-center justify-between h-16 bg-white">
+    <View className="flex-row items-center justify-between bg-light py-4">
       {/* Title & Subtitle */}
       <View>
-        <Text className="text-lg font-bold" style={{ color: colors.dark }}>
+        <Text className="text-xl font-bold" style={{ color: colors.dark }}>
           Menu
         </Text>
 
-        <Text className="text-sm" style={{ color: colors.neutral }}>
+        <Text className="text-md" style={{ color: colors.neutral }}>
           {role === "supplier" ? "Supplier Dashboard" : "Farmer Dashboard"}
         </Text>
       </View>
@@ -59,11 +62,27 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
         ) : showBecomeSupplier ? (
           // Show Become a Supplier button if no vendor data
           <TouchableOpacity
-            className="p-2 rounded-full bg-white border"
-            style={{ borderColor: colors.neutral }}
-            onPress={() => router.push("/auth/vendor")}
+            onPress={() => router.push(ROUTES.AUTH.VENDOR_ONBOARD)}
+            activeOpacity={0.85}
+            style={{
+              paddingVertical: 6,
+              paddingHorizontal: 14,
+              borderRadius: 999, // pill style (Airbnb-like)
+              backgroundColor: colors.light,
+              borderWidth: 1,
+              borderColor: colors.neutral,
+              alignSelf: "flex-start",
+            }}
           >
-            <Text style={{ color: colors.primary }}>Become a Supplier</Text>
+            <Text
+              style={{
+                color: colors.primary,
+                fontSize: 14,
+                fontWeight: "600",
+              }}
+            >
+              Become a Supplier
+            </Text>
           </TouchableOpacity>
         ) : role === "farmer" ? (
           <>
@@ -93,4 +112,6 @@ export default function MenuHeader({ role, onToggleRole }: MenuHeaderProps) {
       </View>
     </View>
   );
-}
+};
+
+export default React.memo(MenuHeader);

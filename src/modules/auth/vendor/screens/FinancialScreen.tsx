@@ -1,7 +1,6 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorFinancialMutation,
@@ -18,8 +17,7 @@ import FinancialPaymentSection from "../sections/FinancialSection";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { ROUTES } from "@/src/constants/routes";
 export default function FinancialScreen() {
-  // const { vendorData } = useGlobalData();
-  const { vendorProfileId, userId } = useAuth()
+  const { vendorProfileId, userId } = useAuth();
 
   const { data } = useVendorFinancialQuery(vendorProfileId);
 
@@ -59,16 +57,18 @@ export default function FinancialScreen() {
     try {
       const payload = {
         supplierProfileId: vendorProfileId,
-        upiAvailable: values.upiAvailable === "yes",
-        creditFacility: values.creditFacility === "yes",
+        upiAvailable: values.upiAvailable,
+        creditFacility: values.creditFacility,
         sellingViaZiraat: values.sellingViaZiraat,
         bankDetails: values.sellingViaZiraat ? values.bankDetails : null,
       };
 
       if (data) {
         await update(payload);
+        showSuccessToast("Financial Info Updated");
       } else {
         await save(payload);
+        showSuccessToast("Financial Info Added ");
       }
 
       showSuccessToast("Financial Info Saved!");
@@ -83,15 +83,19 @@ export default function FinancialScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Financial & Payment Details" />
+      <BackHeader
+        title="Financial & Payment Details"
+        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+      />
       <FormProvider {...form}>
         <FinancialPaymentSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          submitLabel={data ? "Update" : "Add Financial Info"}
           onCancel={() => router.back()}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>
