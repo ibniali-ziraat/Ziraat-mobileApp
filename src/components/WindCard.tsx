@@ -1,108 +1,146 @@
+import { View, Text, StyleSheet } from "react-native";
 import { Wind } from "lucide-react-native";
-import { Animated, Text, View } from "react-native";
 import ZiratCard from "./shared/ZiratCard";
 
-export default function WindCard({ speed, gust, dir }) {
-    const degMap = {
-        N: 0,
-        NE: 45,
-        E: 90,
-        SE: 135,
-        S: 180,
-        SW: 225,
-        W: 270,
-        NW: 315,
-    };
+type Props = {
+    speed?: number;
+    gust?: number;
+    deg?: number;
+    dir?: string;
+};
 
-    const deg = degMap[dir] ?? 0;
-
+export default function WindCard({
+    speed = 16,
+    gust = 31,
+    deg = 155,
+    dir = "SSE",
+}: Props) {
     return (
         <ZiratCard
             title="Wind"
             subtitle="Speed, gusts & direction"
-            leftIcon={<Wind size={20} color="#c7611f" />}
+            leftIcon={<Wind size={18} color="#c7611f" />}
         >
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-
-                {/* LEFT: Wind details */}
-                <View style={{ gap: 10 }}>
-                    {/* Speed */}
-                    <View>
-                        <Text style={{ fontSize: 12, color: "#6B7280" }}>
-                            Wind Speed
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 28,
-                                fontWeight: "700",
-                                color: "#111827",
-                            }}
-                        >
-                            {speed} kph
-                        </Text>
-                    </View>
-
-                    {/* Gusts */}
-                    <View>
-                        <Text style={{ fontSize: 12, color: "#6B7280" }}>
-                            Gusts
-                        </Text>
-                        <Text style={{ fontSize: 16, fontWeight: "600" }}>
-                            {gust} kph
-                        </Text>
-                    </View>
-
-                    {/* Direction */}
-                    <View>
-                        <Text style={{ fontSize: 12, color: "#6B7280" }}>
-                            Direction
-                        </Text>
-                        <Text style={{ fontSize: 16, fontWeight: "600" }}>
-                            {dir} ({deg}°)
-                        </Text>
-                    </View>
+            <View style={styles.row}>
+                {/* LEFT INFO */}
+                <View style={styles.left}>
+                    <InfoRow label="Wind" value={`${speed} km/h`} />
+                    <InfoRow label="Gusts" value={`${gust} km/h`} />
+                    <InfoRow label="Direction" value={`${deg}° ${dir}`} />
                 </View>
 
-                {/* RIGHT: Compass */}
-                <View style={{ alignItems: "center", justifyContent: "center" }}>
-                    <View
-                        style={{
-                            width: 110,
-                            height: 110,
-                            borderRadius: 55,
-                            borderWidth: 2,
-                            borderColor: "#c7611f",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
-                    >
-                        {/* Cardinal points */}
-                        <Text style={{ position: "absolute", top: 6, fontSize: 10, color: "#6B7280" }}>N</Text>
-                        <Text style={{ position: "absolute", bottom: 6, fontSize: 10, color: "#6B7280" }}>S</Text>
-                        <Text style={{ position: "absolute", left: 6, fontSize: 10, color: "#6B7280" }}>W</Text>
-                        <Text style={{ position: "absolute", right: 6, fontSize: 10, color: "#6B7280" }}>E</Text>
+                {/* RIGHT DIAL */}
+                <View style={styles.right}>
+                    <View style={styles.dial}>
+                        {/* Compass letters */}
+                        <Text style={[styles.compass, styles.north]}>N</Text>
+                        <Text style={[styles.compass, styles.south]}>S</Text>
+                        <Text style={[styles.compass, styles.west]}>W</Text>
+                        <Text style={[styles.compass, styles.east]}>E</Text>
 
-                        {/* Rotating wind icon */}
-                        <Animated.View
-                            style={{
-                                transform: [{ rotate: `${deg}deg` }],
-                            }}
-                        >
-                            <Wind size={42} color="#c7611f" />
-                        </Animated.View>
+                        {/* Arrow */}
+                        <View style={{ transform: [{ rotate: `${deg}deg` }] }}>
+                            <View style={styles.arrowMain} />
+                            <View style={styles.arrowTail} />
+                        </View>
+
+                        {/* Center speed */}
+                        <View style={styles.center}>
+                            <Text style={styles.speed}>{speed}</Text>
+                            <Text style={styles.unit}>km/h</Text>
+                        </View>
                     </View>
-
-                    <Text
-                        style={{
-                            marginTop: 6,
-                            fontSize: 12,
-                            color: "#6B7280",
-                        }}
-                    >
-                        {speed} kph • {dir}
-                    </Text>
                 </View>
             </View>
         </ZiratCard>
     );
 }
+
+function InfoRow({
+    label,
+    value,
+}: {
+    label: string;
+    value: string;
+}) {
+    return (
+        <View style={styles.infoRow}>
+            <Text style={styles.label}>{label}</Text>
+            <Text style={styles.value}>{value}</Text>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    row: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    left: {
+        gap: 10,
+    },
+    right: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    infoRow: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        width: 140,
+    },
+    label: {
+        fontSize: 14,
+        color: "#6B7280",
+    },
+    value: {
+        fontSize: 14,
+        fontWeight: "600",
+        color: "#111827",
+    },
+    dial: {
+        width: 120,
+        height: 120,
+        borderRadius: 60,
+        borderWidth: 1,
+        borderColor: "#E5E7EB",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    compass: {
+        position: "absolute",
+        fontSize: 10,
+        color: "#6B7280",
+    },
+    north: { top: 6 },
+    south: { bottom: 6 },
+    west: { left: 6 },
+    east: { right: 6 },
+    arrowMain: {
+        width: 4,
+        height: 40,
+        backgroundColor: "#111827",
+        borderRadius: 999,
+    },
+    arrowTail: {
+        width: 4,
+        height: 12,
+        backgroundColor: "#111827",
+        borderRadius: 999,
+        marginTop: -4,
+        alignSelf: "center",
+    },
+    center: {
+        position: "absolute",
+        alignItems: "center",
+    },
+    speed: {
+        fontSize: 18,
+        fontWeight: "700",
+        color: "#111827",
+    },
+    unit: {
+        fontSize: 12,
+        color: "#6B7280",
+    },
+});

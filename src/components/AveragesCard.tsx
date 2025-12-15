@@ -1,5 +1,4 @@
 import { View, Text } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import ZiratCard from "./shared/ZiratCard";
 
 export default function AveragesCard() {
@@ -8,13 +7,7 @@ export default function AveragesCard() {
             style={{ width: "48%" }}
             title="Averages"
             subtitle="Today’s temperature average"
-            leftIcon={
-                <Ionicons
-                    name="analytics-outline"
-                    size={22}
-                    color="#c7611f"
-                />
-            }
+
         >
             <View>
                 <Text

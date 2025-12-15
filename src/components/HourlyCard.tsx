@@ -1,5 +1,4 @@
 import { View, Text, ScrollView } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import ZiratCard from "./shared/ZiratCard";
 import TempLineChart from "./charts/TempLineChart";
 
@@ -35,13 +34,6 @@ export default function HourlyCard() {
                                 <Text style={{ fontSize: 12, color: "#6B7280" }}>
                                     {item.time}
                                 </Text>
-
-                                <Ionicons
-                                    name={item.icon}
-                                    size={26}
-                                    color="#c7611f"
-                                    style={{ marginVertical: 6 }}
-                                />
 
                                 <Text style={{ fontSize: 16, fontWeight: "700" }}>
                                     {item.temp}°

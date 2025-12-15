@@ -1,5 +1,4 @@
 import { View, Text } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import ZiratCard from "./shared/ZiratCard";
 
 export default function WeeklyCard() {
@@ -48,12 +47,6 @@ export default function WeeklyCard() {
                     >
                         {item.rain}
                     </Text>
-                    <Ionicons
-                        name={item.icon}
-                        size={22}
-                        color="#c7611f"
-                        style={{ width: 30, textAlign: "center" }}
-                    />
                     <Text
                         style={{
                             fontSize: 14,
