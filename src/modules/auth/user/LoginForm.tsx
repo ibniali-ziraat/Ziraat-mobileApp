@@ -119,30 +119,30 @@ export default function LoginForm() {
   const { mutateAsync: loginMutate, isPending } = useLoginMutation();
 
   const onSubmit = async (data: any) => {
-    // router.push("/");
-    try {
-      const response = await loginMutate({
-        mobileNumber: data.mobileNumber,
-        password: data.password,
-      });
-      console.log(response, "login response");
+    router.push("/");
+    // try {
+    //   const response = await loginMutate({
+    //     mobileNumber: data.mobileNumber,
+    //     password: data.password,
+    //   });
+    //   console.log(response, "login response");
 
-      if (response.success) {
-        console.log(response, "response..");
+    //   if (response.success) {
+    //     console.log(response, "response..");
 
-        await setUserToken(response?.token);
-        await setUserId(response?.user)
+    //     await setUserToken(response?.token);
+    //     await setUserId(response?.user)
 
-        router.replace("/");
-        showSuccessToast("logged in");
-      }
-    } catch (error: any) {
-      if (error?.response?.status === 401) {
-        showErrorToast("Invalid credentials.");
-      } else {
-        showErrorToast("Something went wrong. Please try again later.");
-      }
-    }
+    //     router.replace("/");
+    //     showSuccessToast("logged in");
+    //   }
+    // } catch (error: any) {
+    //   if (error?.response?.status === 401) {
+    //     showErrorToast("Invalid credentials.");
+    //   } else {
+    //     showErrorToast("Something went wrong. Please try again later.");
+    //   }
+    // }
   };
 
   return (

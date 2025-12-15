@@ -1,0 +1,30 @@
+[
+  {
+    "id": "weather",
+    "title": "Weather Alerts",
+    "icon": "rainy-outline",
+    "iconType": "Ionicons",
+    "delay": 80
+  },
+  {
+    "id": "pest",
+    "title": "Pest Alerts",
+    "icon": "bug-outline",
+    "iconType": "Ionicons",
+    "delay": 150
+  },
+  {
+    "id": "nutrient",
+    "title": "Nutrient Alerts",
+    "icon": "leaf-circle-outline",
+    "iconType": "MaterialCommunityIcons",
+    "delay": 220
+  },
+  {
+    "id": "spray",
+    "title": "Spray Advisory Alerts",
+    "icon": "flask-outline",
+    "iconType": "Ionicons",
+    "delay": 290
+  }
+]
