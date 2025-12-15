@@ -1,3 +1,229 @@
+// // // import { colors } from "@/src/constants/colors";
+// // // import { Feather } from "@expo/vector-icons";
+// // // import { Image, Text, TouchableOpacity, View } from "react-native";
+
+// // // interface ProfileTopHeaderProps {
+// // //     profilePic?: string;
+// // //     fullName?: string;
+// // //     onEdit?: () => void;
+// // // }
+
+// // // export default function ProfileTopHeader({ profilePic, fullName, onEdit }: ProfileTopHeaderProps) {
+// // //     return (
+// // //         <View className="items-center mb-4">
+// // //             {/* Profile Image */}
+// // //             <View className="relative mb-4">
+// // //                 <Image
+// // //                     source={{ uri: profilePic || "https://placehold.co/200x200" }}
+// // //                     className="w-28 h-28 rounded-full"
+// // //                     style={{
+// // //                         borderWidth: 2,
+// // //                         borderColor: colors.primary,
+// // //                         shadowColor: colors.neutral,
+// // //                         shadowOffset: { width: 0, height: 2 },
+// // //                         shadowOpacity: 0.2,
+// // //                         shadowRadius: 4,
+// // //                     }}
+// // //                 />
+// // //             </View>
+
+// // //             {/* Full Name with Edit */}
+// // //             <View className="flex-row items-center gap-2">
+// // //                 <Text className="text-xl font-bold" style={{ color: colors.primary }}>
+// // //                     {fullName || "N/A"}
+// // //                 </Text>
+// // //                 {onEdit && (
+// // //                     <TouchableOpacity onPress={onEdit}>
+// // //                         <Feather name="edit-3" size={20} color={colors.primary} />
+// // //                     </TouchableOpacity>
+// // //                 )}
+// // //             </View>
+// // //         </View>
+// // //     );
+// // // }
+
+
+// // import { colors } from "@/src/constants/colors";
+// // import { Feather } from "@expo/vector-icons";
+// // import { Image, Text, TouchableOpacity, View } from "react-native";
+
+// // interface ProfileTopHeaderProps {
+// //     profilePic?: string;
+// //     fullName?: string;
+// //     onEdit?: () => void;
+// // }
+
+// // export default function ProfileTopHeader({ profilePic, fullName, onEdit }: ProfileTopHeaderProps) {
+// //     const initials = fullName
+// //         ? fullName
+// //               .split(" ")
+// //               .map((w) => w[0])
+// //               .join("")
+// //               .substring(0, 2)
+// //               .toUpperCase()
+// //         : "TA"
+
+// //     return (
+// //         <View className="items-center mb-4">
+
+// //             {/* Avatar Container */}
+// //             <TouchableOpacity activeOpacity={0.8} className="relative mb-4">
+
+// //                 {/* If image exists → show image, otherwise show initials avatar */}
+// //                 {profilePic ? (
+// //                     <Image
+// //                         source={{ uri: profilePic }}
+// //                         className="w-32 h-32 rounded-full"
+// //                         style={{
+// //                             borderWidth: 3,
+// //                             borderColor: colors.primary,
+// //                             shadowColor: "#000",
+// //                             shadowOffset: { width: 0, height: 3 },
+// //                             shadowOpacity: 0.25,
+// //                             shadowRadius: 5,
+// //                         }}
+// //                     />
+// //                 ) : (
+// //                     <View
+// //                         className="w-32 h-32 rounded-full items-center justify-center"
+// //                         style={{
+// //                             backgroundColor: colors.primary + "33",
+// //                             borderWidth: 3,
+// //                             borderColor: colors.primary,
+// //                             shadowColor: "#000",
+// //                             shadowOffset: { width: 0, height: 3 },
+// //                             shadowOpacity: 0.25,
+// //                             shadowRadius: 5,
+// //                         }}
+// //                     >
+// //                         <Text
+// //                             className="text-4xl font-bold"
+// //                             style={{ color: colors.primary }}
+// //                         >
+// //                             {initials}
+// //                         </Text>
+// //                     </View>
+// //                 )}
+
+// //                 {/* Camera Icon Overlay */}
+// //                 <View
+// //                     className="absolute bottom-1 right-1 rounded-full p-2"
+// //                     style={{
+// //                         backgroundColor: colors.primary,
+// //                         shadowColor: "#000",
+// //                         shadowOffset: { width: 0, height: 2 },
+// //                         shadowOpacity: 0.3,
+// //                         shadowRadius: 3,
+// //                     }}
+// //                 >
+// //                     <Feather name="camera" size={18} color="#fff" />
+// //                 </View>
+// //             </TouchableOpacity>
+
+// //             {/* Full Name + Edit Icon */}
+// //             <View className="flex-row items-center gap-2">
+// //                 <Text className="text-xl font-bold" style={{ color: colors.primary }}>
+// //                     {fullName || "Tansha ashraf"}
+// //                 </Text>
+
+// //                 {onEdit && (
+// //                     <TouchableOpacity onPress={onEdit}>
+// //                         <Feather name="edit-3" size={20} color={colors.primary} />
+// //                     </TouchableOpacity>
+// //                 )}
+// //             </View>
+// //         </View>
+// //     );
+// // }
+
+
+// import { colors } from "@/src/constants/colors";
+// import { Feather } from "@expo/vector-icons";
+// import { Image, Text, TouchableOpacity, View } from "react-native";
+
+// interface ProfileTopHeaderProps {
+//     profilePic?: string;
+//     fullName?: string;
+//     onEdit?: () => void;
+// }
+
+// // Default avatar image (replace with your local asset if needed)
+// const defaultAvatar =
+//     "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+
+// export default function ProfileTopHeader({ profilePic, fullName, onEdit }: ProfileTopHeaderProps) {
+//     const initials = fullName
+//         ? fullName
+//               .split(" ")
+//               .map((w) => w[0])
+//               .join("")
+//               .substring(0, 2)
+//               .toUpperCase()
+//         : "TA";
+
+//     return (
+//         <View className="items-center mb-6">
+
+//             {/* Avatar Container */}
+//             <TouchableOpacity activeOpacity={0.9} className="relative mb-4">
+
+//                 {/* Profile Image OR Default Avatar */}
+//                 <Image
+//                     source={{ uri: profilePic || defaultAvatar }}
+//                     className="w-32 h-32 rounded-full"
+//                     style={{
+//                         borderWidth: 4,
+//                         borderColor: colors.primary,
+//                         shadowColor: "#000",
+//                         shadowOffset: { width: 0, height: 4 },
+//                         shadowOpacity: 0.3,
+//                         shadowRadius: 6,
+//                         backgroundColor: colors.primary + "22",
+//                     }}
+//                 />
+
+//                 {/* Camera Icon */}
+//                 <View
+//                     className="absolute bottom-1 right-1 rounded-full p-2"
+//                     style={{
+//                         backgroundColor: colors.primary,
+//                         shadowColor: "#000",
+//                         shadowOffset: { width: 0, height: 2 },
+//                         shadowOpacity: 0.3,
+//                         shadowRadius: 4,
+//                         elevation: 4,
+//                         borderWidth: 2,
+//                         borderColor: "#fff",
+//                     }}
+//                 >
+//                     <Feather name="camera" size={18} color="#fff" />
+//                 </View>
+//             </TouchableOpacity>
+
+//             {/* Full Name + Edit */}
+//             <View className="flex-row items-center gap-2">
+//                 <Text
+//                     className="font-bold"
+//                     style={{
+//                         fontSize: 22,
+//                         color: colors.primary,
+//                         textTransform: "capitalize",
+//                     }}
+//                 >
+//                     {fullName || "Tansha ashraf"}
+//                 </Text>
+
+//                 {onEdit && (
+//                     <TouchableOpacity onPress={onEdit} style={{ padding: 4 }}>
+//                         <Feather name="edit-3" size={20} color={colors.primary} />
+//                     </TouchableOpacity>
+//                 )}
+//             </View>
+//         </View>
+//     );
+// }
+
+
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -8,35 +234,97 @@ interface ProfileTopHeaderProps {
     onEdit?: () => void;
 }
 
+const defaultAvatar =
+    "https://cdn-icons-png.flaticon.com/512/847/847969.png";
+
 export default function ProfileTopHeader({ profilePic, fullName, onEdit }: ProfileTopHeaderProps) {
+    const initials = fullName
+        ? fullName
+              .split(" ")
+              .map((w) => w[0])
+              .join("")
+              .substring(0, 2)
+              .toUpperCase()
+        : "TA";
+
     return (
-        <View className="items-center mb-4">
-            {/* Profile Image */}
-            <View className="relative mb-4">
+        <View className="items-center mb-6">
+
+            {/* Avatar Container */}
+            <TouchableOpacity activeOpacity={0.9} className="relative mb-4">
+
+                {/* Profile Image OR Default Avatar */}
                 <Image
-                    source={{ uri: profilePic || "https://placehold.co/200x200" }}
-                    className="w-28 h-28 rounded-full"
+                    source={{ uri: profilePic || defaultAvatar }}
+                    className="w-32 h-32 rounded-full"
                     style={{
-                        borderWidth: 2,
+                        borderWidth: 4,
                         borderColor: colors.primary,
-                        shadowColor: colors.neutral,
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowOpacity: 0.2,
-                        shadowRadius: 4,
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 4 },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 6,
+                        backgroundColor: colors.primary + "22",
                     }}
                 />
-            </View>
 
-            {/* Full Name with Edit */}
-            <View className="flex-row items-center gap-2">
-                <Text className="text-xl font-bold" style={{ color: colors.primary }}>
-                    {fullName || "N/A"}
-                </Text>
+                {/* TOP-RIGHT Edit Icon */}
                 {onEdit && (
-                    <TouchableOpacity onPress={onEdit}>
-                        <Feather name="edit-3" size={20} color={colors.primary} />
+                    <TouchableOpacity
+                        onPress={onEdit}
+                        style={{
+                            position: "absolute",
+                            top: -8,
+                            right:-70,
+                            padding: 6,
+                            backgroundColor: "#fff",
+                            borderRadius: 50,
+                            shadowColor: "#000",
+                            shadowOpacity: 0.2,
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowRadius: 3,
+                            elevation: 3,
+                        }}
+                    >
+                        <Feather name="edit-3" size={16} color={colors.primary} />
                     </TouchableOpacity>
                 )}
+
+                {/* BOTTOM-RIGHT Camera Icon */}
+                <View
+                    className="absolute bottom-1 right-1 rounded-full p-2"
+                    style={{
+                        backgroundColor: colors.primary,
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 4,
+                        elevation: 4,
+                        borderWidth: 2,
+                        borderColor: "#fff",
+                    }}
+                >
+                    <Feather name="camera" size={18} color="#fff" />
+                </View>
+            </TouchableOpacity>
+
+            {/* Full Name + Underline */}
+            <View className="items-center mt-2">
+                <View className="flex-row items-center gap-3">
+                    <Text
+                        className="font-bold"
+                        style={{
+                            fontSize: 24,
+                            color: colors.primary,
+                            textTransform: "capitalize",
+                            letterSpacing: 0.5,
+                        }}
+                    >
+                        {fullName || "Tansha ashraf"}
+                    </Text>
+                </View>
+
+               
             </View>
         </View>
     );
