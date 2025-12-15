@@ -216,7 +216,12 @@ export default function UserProfileScreen() {
       </SectionCard>
 
       {/* LOGOUT BUTTON */}
-      <LogoutButton onPress={async () => await logoutUser()} />
+      <LogoutButton
+        onPress={async () => {
+          await logoutUser();
+          router.replace("/auth/user");
+        }}
+      />
       <ConfirmDeleteModal
         visible={!!deleteSection}
         title="Confirm deletion"
