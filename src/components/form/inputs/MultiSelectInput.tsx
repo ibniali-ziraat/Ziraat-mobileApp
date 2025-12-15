@@ -1,8 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { Asterisk } from "lucide-react-native";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import { Modal, Text, TouchableOpacity, View, FlatList } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function MultiSelectInput({
   control,
@@ -12,13 +12,24 @@ export default function MultiSelectInput({
   error,
   optional = false,
 }: FormFieldProps) {
-  const [visible, setVisible] = useState(false); // Modal visibility
-  const [selectedOptions, setSelectedOptions] = useState<any[]>([]); // Store selected options
+  const [visible, setVisible] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
 
-  // Toggle option selection
-  const toggleOption = (value: string | number) => {
+  // ✅ watch RHF value safely
+  const value = useWatch({ control, name });
+
+  // ✅ sync modal state with prefill
+  useEffect(() => {
+    if (Array.isArray(value)) {
+      setSelectedOptions(value);
+    } else {
+      setSelectedOptions([]);
+    }
+  }, [value]);
+
+  const toggleOption = (val: string | number) => {
     setSelectedOptions((prev) =>
-      prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]
+      prev.includes(val) ? prev.filter((x) => x !== val) : [...prev, val]
     );
   };
 
@@ -26,59 +37,60 @@ export default function MultiSelectInput({
     <Controller
       control={control}
       name={name}
-      render={({ field: { value, onChange } }) => (
+      render={({ field: { onChange } }) => (
         <View style={{ marginBottom: 16 }}>
-          {/* Label with Asterisk if required */}
-          <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
-            <Text style={{ color: colors.dark, fontSize: 16, fontWeight: "600" }}>{label}</Text>
+          {/* Label */}
+          <View style={{ flexDirection: "row", marginBottom: 8 }}>
+            <Text
+              style={{ fontSize: 16, fontWeight: "600", color: colors.dark }}
+            >
+              {label}
+            </Text>
             {!optional && (
-              <Asterisk size={14} color={colors.error} style={{ marginLeft: 4 }} />
+              <Asterisk
+                size={14}
+                color={colors.error}
+                style={{ marginLeft: 4 }}
+              />
             )}
           </View>
 
-          {/* Dropdown Trigger */}
+          {/* Trigger */}
           <TouchableOpacity
             onPress={() => setVisible(true)}
-            activeOpacity={0.8}
             style={{
-              backgroundColor: "white",
-              borderColor: colors.neutral,
               borderWidth: 1,
-              paddingVertical: 12,
-              paddingHorizontal: 16,
+              borderColor: colors.neutral,
+              padding: 12,
               borderRadius: 6,
-              marginBottom: 8,
+              backgroundColor: "white",
             }}
           >
             <Text
-              style={{
-                fontSize: 16,
-                color: value && value.length ? colors.dark : colors.neutral,
-              }}
+              style={{ color: value?.length ? colors.dark : colors.neutral }}
             >
-              {value && value.length ? value.join(", ") : `Select ${label}`}
+              {value?.length ? value.join(", ") : `Select ${label}`}
             </Text>
           </TouchableOpacity>
 
-          {/* Error Message */}
-          {error && <Text style={{ color: colors.error, fontSize: 12 }}>{error.message || error}</Text>}
+          {/* Error */}
+          {error && (
+            <Text style={{ color: colors.error, fontSize: 12 }}>
+              {error.message || error}
+            </Text>
+          )}
 
-          {/* Modal for Options */}
-          <Modal
-            visible={visible}
-            transparent
-            animationType="fade"
-            onRequestClose={() => setVisible(false)}
-          >
+          {/* Modal */}
+          <Modal visible={visible} transparent animationType="fade">
             <TouchableOpacity
+              activeOpacity={1}
+              onPress={() => setVisible(false)}
               style={{
                 flex: 1,
+                backgroundColor: "rgba(0,0,0,0.5)",
                 justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
               }}
-              activeOpacity={1}
-              onPress={() => setVisible(false)} // Close the modal when clicking outside
             >
               <View
                 style={{
@@ -91,65 +103,50 @@ export default function MultiSelectInput({
               >
                 <FlatList
                   data={options}
-                  keyExtractor={(item) => item.value.toString()}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity
-                      onPress={() => toggleOption(item.value)}
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        paddingVertical: 12,
-                        paddingHorizontal: 16,
-                        marginVertical: 4,
-                        borderRadius: 6,
-                        borderWidth: 1,
-                        borderColor: colors.neutral,
-                      }}
-                    >
-                      {/* Checkbox */}
-                      <View
+                  keyExtractor={(i) => i.value.toString()}
+                  renderItem={({ item }) => {
+                    const selected = selectedOptions.includes(item.value);
+                    return (
+                      <TouchableOpacity
+                        onPress={() => toggleOption(item.value)}
                         style={{
-                          width: 20,
-                          height: 20,
-                          borderRadius: 4,
-                          borderWidth: 2,
-                          borderColor: colors.primary,
-                          justifyContent: "center",
+                          flexDirection: "row",
                           alignItems: "center",
-                          marginRight: 12,
+                          padding: 12,
+                          borderWidth: 1,
+                          borderColor: selected
+                            ? colors.primary
+                            : colors.neutral,
+                          backgroundColor: selected
+                            ? colors.primary + "15"
+                            : "white",
+                          borderRadius: 6,
+                          marginBottom: 6,
                         }}
                       >
-                        {selectedOptions.includes(item.value) && (
-                          <Text style={{ fontSize: 14, color: colors.primary }}>✓</Text> // Checkmark
-                        )}
-                      </View>
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          color: colors.dark,
-                        }}
-                      >
-                        {item.label}
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                  showsVerticalScrollIndicator={false} // Hide scrollbar
-
+                        <Text style={{ marginRight: 10 }}>
+                          {selected ? "✓" : ""}
+                        </Text>
+                        <Text>{item.label}</Text>
+                      </TouchableOpacity>
+                    );
+                  }}
                 />
+
                 <TouchableOpacity
                   onPress={() => {
                     onChange(selectedOptions);
-                    setVisible(false); // Close modal after confirming
+                    setVisible(false);
                   }}
                   style={{
                     backgroundColor: colors.primary,
-                    paddingVertical: 12,
+                    padding: 12,
                     borderRadius: 6,
-                    marginTop: 16,
+                    marginTop: 12,
                     alignItems: "center",
                   }}
                 >
-                  <Text style={{ color: "white", fontSize: 16 }}>Add</Text>
+                  <Text style={{ color: "white" }}>Add</Text>
                 </TouchableOpacity>
               </View>
             </TouchableOpacity>

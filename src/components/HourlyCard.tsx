@@ -1,6 +1,7 @@
 import { View, Text, ScrollView } from "react-native";
 import ZiratCard from "./shared/ZiratCard";
 import TempLineChart from "./charts/TempLineChart";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
 export default function HourlyCard() {
     const data = [
@@ -14,7 +15,7 @@ export default function HourlyCard() {
     ];
 
     return (
-        <ZiratCard
+        <ZiraatCard
             title="Hourly Forecast"
             subtitle="Thunderstorms. Highs 20–22°C, lows 16–18°C"
             badge="Today"
@@ -48,6 +49,6 @@ export default function HourlyCard() {
                     <TempLineChart data={data} />
                 </View>
             </ScrollView>
-        </ZiratCard>
+        </ZiraatCard>
     );
 }

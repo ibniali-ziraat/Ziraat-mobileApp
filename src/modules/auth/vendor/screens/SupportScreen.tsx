@@ -1,7 +1,6 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorSupportMutation,
@@ -19,8 +18,7 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { ROUTES } from "@/src/constants/routes";
 
 export default function SupportScreen() {
-  // const { vendorData } = useGlobalData();
-  const { vendorProfileId, userId } = useAuth()
+  const { vendorProfileId, userId } = useAuth();
 
   const { data } = useVendorSupportQuery(vendorProfileId);
 
@@ -60,8 +58,14 @@ export default function SupportScreen() {
     };
 
     try {
-      data ? await update(payload) : await save(payload);
-      showSuccessToast("Support Info Saved!");
+      if (data) {
+        await update(payload);
+        showSuccessToast("Support info updated ");
+      } else {
+        await save(payload);
+        showSuccessToast("Support info added ");
+      }
+
       router.push(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       showErrorToast("Error saving data", err.message || "Unknown error");
@@ -70,14 +74,19 @@ export default function SupportScreen() {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Support Services" />
+      <BackHeader
+        title="Support Services"
+        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+      />
       <FormProvider {...form}>
         <SupportSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={"Next"}
+          onCancel={() => router.back()}
+          submitLabel={data ? "Update" : "Add Support Info"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
+          loading={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

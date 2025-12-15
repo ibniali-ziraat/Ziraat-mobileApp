@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, Dimensions } from "react-native";
 import { useState } from "react";
 import ZiratCard from "./shared/ZiratCard";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
 const { width } = Dimensions.get("window");
 
@@ -30,7 +31,7 @@ export default function StormCard() {
     };
 
     return (
-        <ZiratCard>
+        <ZiraatCard>
             <ScrollView
                 horizontal
                 pagingEnabled
@@ -96,6 +97,6 @@ export default function StormCard() {
                     />
                 ))}
             </View>
-        </ZiratCard>
+        </ZiraatCard>
     );
 }

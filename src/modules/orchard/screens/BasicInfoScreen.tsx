@@ -8,8 +8,6 @@ import { FormProvider } from "react-hook-form";
 import BasicInfo from "../sections/BasicInfo";
 
 export default function BasicInfoScreen() {
-  //   const { vendorData, setVendorData, userData } = useGlobalData();
-
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 

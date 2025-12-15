@@ -1,12 +1,13 @@
 import { colors } from "@/src/constants/colors";
 import { Filter, Search } from "lucide-react-native";
+import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
 interface CropsHeaderProps {
   role?: "farmer" | "supplier"; // optional role prop
 }
 
-export default function CropsHeader({ role = "farmer" }: CropsHeaderProps) {
+const CropsHeader = ({ role = "farmer" }: CropsHeaderProps) => {
   return (
     <View className="flex-row items-center justify-between h-16 bg-white">
       {/* Title & Subtitle */}
@@ -23,4 +24,6 @@ export default function CropsHeader({ role = "farmer" }: CropsHeaderProps) {
       {/* Actions */}
     </View>
   );
-}
+};
+
+export default React.memo(CropsHeader);

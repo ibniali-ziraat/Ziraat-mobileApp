@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Sun } from "lucide-react-native";
 import ZiratCard from "./shared/ZiratCard";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
     value?: number;
@@ -12,7 +13,7 @@ export default function UVIndexCard({
     level = "Low",
 }: Props) {
     return (
-        <ZiratCard
+        <ZiraatCard
             title="UV Index"
             leftIcon={<Sun size={18} color="#c7611f" />}
         >
@@ -31,7 +32,7 @@ export default function UVIndexCard({
             <Text style={styles.note}>
                 Low for the rest of the day.
             </Text>
-        </ZiratCard>
+        </ZiraatCard>
     );
 }
 

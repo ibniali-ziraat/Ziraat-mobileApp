@@ -6,25 +6,19 @@ import ProductHeader from "@/src/components/shared/ProductHeader";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useGlobalData } from "@/src/contexts/GlobalDataContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { Tabs } from "expo-router";
-import { getItem } from "expo-secure-store";
 import { Home, Menu, ShoppingBag, Trees } from "lucide-react-native";
-import { useEffect } from "react";
-import { ActivityIndicator } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
-
-
   const insets = useSafeAreaInsets();
-  // const { roleMode, userData } = useGlobalData();
-  const { userId, roleMode } = useAuth()
+  const { userId, roleMode } = useAuth();
 
   const { data } = useProfileQuery(userId);
+  console.log(userId, data);
 
-  console.log(data, "user profile data...");
+  console.log("user profile data...");
 
   // if (!userId || !data) {
   //   return <Loader />
@@ -38,28 +32,21 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.secondary,
         tabBarInactiveTintColor: colors.dark,
         tabBarStyle: {
-          paddingTop: 10,
-          elevation: 0.5,
-          height: 0,
-          paddingBottom: insets.bottom + 50,
+          paddingTop: 12,
           shadowColor: colors.overlay,
           shadowOpacity: 0.1,
           shadowRadius: 5,
+          paddingBottom: insets.bottom + 50,
         },
       }}
     >
-      {/* Home Tab */}
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
           header: () => <HomeHeader title={data?.fullName} />,
-          tabBarIcon: ({ color }) => (
-            <TabIcon
-              icon={<Home size={22} color={color} />}
-              label="Home"
-              color={color}
-            />
+          tabBarIcon: ({ size, color }) => (
+            <TabIcon icon={<Home size={size} color={color} />} label="Home" />
           ),
         }}
       />
@@ -68,13 +55,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="orchards"
         options={{
-          title: "Crops",
+          title: "Orchards",
+          headerShown: false,
           header: () => <CropHeader />,
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ size, color }) => (
             <TabIcon
-              icon={<Trees size={22} color={color} />}
-              label="Crops"
-              color={color}
+              icon={<Trees size={size} color={color} />}
+              label="Orchards"
             />
           ),
         }}
@@ -85,12 +72,13 @@ export default function TabLayout() {
         name="Product"
         options={{
           title: "Products",
+          headerShown: false,
+
           header: () => <ProductHeader />,
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ size, color }) => (
             <TabIcon
-              icon={<ShoppingBag size={22} color={color} />}
+              icon={<ShoppingBag size={size} color={color} />}
               label="Products"
-              color={color}
             />
           ),
         }}
@@ -103,12 +91,8 @@ export default function TabLayout() {
           title: "Menu",
           header: () => <MenuHeader role={roleMode} />,
 
-          tabBarIcon: ({ color }) => (
-            <TabIcon
-              icon={<Menu size={22} color={color} />}
-              label="Menu"
-              color={color}
-            />
+          tabBarIcon: ({ size, color }) => (
+            <TabIcon icon={<Menu size={size} color={color} />} label="Menu" />
           ),
         }}
       />

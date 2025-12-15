@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Wind } from "lucide-react-native";
-import ZiratCard from "./shared/ZiratCard";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
     speed?: number;
@@ -16,10 +16,9 @@ export default function WindCard({
     dir = "SSE",
 }: Props) {
     return (
-        <ZiratCard
-            title="Wind"
-            subtitle="Speed, gusts & direction"
-            leftIcon={<Wind size={18} color="#c7611f" />}
+        <ZiraatCard
+            width={250}
+            height={120}
         >
             <View style={styles.row}>
                 {/* LEFT INFO */}
@@ -52,7 +51,7 @@ export default function WindCard({
                     </View>
                 </View>
             </View>
-        </ZiratCard>
+        </ZiraatCard>
     );
 }
 

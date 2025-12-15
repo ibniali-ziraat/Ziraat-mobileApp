@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Sunset } from "lucide-react-native";
 import ZiratCard from "./shared/ZiratCard";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
   sunset?: string;
@@ -12,9 +13,9 @@ export default function SunsetCard({
   sunrise = "7:18 AM",
 }: Props) {
   return (
-    <ZiratCard
-      title="Sunset"
-      leftIcon={<Sunset size={18} color="#c7611f" />}
+    <ZiraatCard
+      width={250}
+      height={150}
     >
       <Text style={styles.time}>{sunset}</Text>
 
@@ -27,7 +28,7 @@ export default function SunsetCard({
       <Text style={styles.sunrise}>
         Sunrise: {sunrise}
       </Text>
-    </ZiratCard>
+    </ZiraatCard>
   );
 }
 

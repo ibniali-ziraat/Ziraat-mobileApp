@@ -7,14 +7,17 @@ interface ScreenLayoutProps {
   keyboardOffset?: number;
 }
 
-export default function ScreenLayout({ children, keyboardOffset = 80 }: ScreenLayoutProps) {
+export default function ScreenLayout({
+  children,
+  keyboardOffset = 30,
+}: ScreenLayoutProps) {
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: "white" }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={keyboardOffset} // important
+      keyboardVerticalOffset={keyboardOffset}
     >
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
           keyboardShouldPersistTaps="handled"

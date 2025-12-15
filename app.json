@@ -14,7 +14,8 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/ziraaticon.png"
+        "foregroundImage": "./assets/images/ziraaticon.png",
+        "softwareKeyboardLayoutMode": "pan"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -47,10 +48,7 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "f3e737bc-ddd8-4171-a6be-de82db6cc9ac"
-      }
+      "router": {}
     }
   }
 }

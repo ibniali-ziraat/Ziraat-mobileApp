@@ -1,5 +1,6 @@
 import { View, Text } from "react-native";
 import ZiratCard from "./shared/ZiratCard";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
 export default function WeeklyCard() {
     const days = [
@@ -12,9 +13,8 @@ export default function WeeklyCard() {
         { day: "Thursday", rain: "2%", icon: "sunny-outline", high: 30, low: 17 },
     ];
     return (
-        <ZiratCard
-            title="7-Day Forecast"
-            subtitle="Weather conditions for the coming week"
+        <ZiraatCard
+
         >
             {days.map((item, i) => (
                 <View
@@ -60,6 +60,6 @@ export default function WeeklyCard() {
                     </Text>
                 </View>
             ))}
-        </ZiratCard>
+        </ZiraatCard>
     );
 }

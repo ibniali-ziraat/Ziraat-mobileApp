@@ -1,9 +1,11 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
+import { colors } from "@/src/constants/colors";
 import { FormSectionProps } from "@/src/types/formSectionProps";
 import { useEffect } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
 import { Text, TouchableOpacity, View } from "react-native";
+import { Checkbox } from "react-native-paper";
 
 export default function FinancialPaymentSection({
   control,
@@ -36,6 +38,7 @@ export default function FinancialPaymentSection({
         <SingleSelectInput
           control={control}
           name="upiAvailable"
+          modalLabel="Digital Payment Available"
           label="UPI / Digital Payment Options"
           options={[
             { value: "yes", label: "Yes" },
@@ -47,6 +50,7 @@ export default function FinancialPaymentSection({
         <SingleSelectInput
           control={control}
           name="creditFacility"
+          modalLabel="Credit Facility to Farmers"
           label="Credit Facility to Farmers"
           options={[
             { value: "yes", label: "Yes" },
@@ -69,6 +73,29 @@ export default function FinancialPaymentSection({
           control={control}
           name="sellingViaZiraat"
           defaultValue={false}
+          render={({ field: { value, onChange } }) => (
+            <TouchableOpacity
+              onPress={() => onChange(!value)}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 10,
+              }}
+              activeOpacity={0.7}
+            >
+              <Checkbox
+                status={value ? "checked" : "unchecked"}
+                onPress={() => onChange(!value)}
+                color={colors.primary}
+              />
+              <Text style={{ fontSize: 16 }}>Sell at ZIRAAT Marketplace</Text>
+            </TouchableOpacity>
+          )}
+        />
+        {/* <Controller
+          control={control}
+          name="sellingViaZiraat"
+          defaultValue={false}
           render={({ field }) => (
             <TouchableOpacity
               onPress={() => field.onChange(!field.value)}
@@ -85,20 +112,18 @@ export default function FinancialPaymentSection({
                   borderRadius: 3,
                   borderWidth: 2,
                   borderColor: "#4CAF50",
-                  backgroundColor: field.value ? "#4CAF50" : "white",
+                  backgroundColor: field.value ? colors.primary : "white",
                   marginRight: 10,
                 }}
               />
               <Text style={{ fontSize: 16 }}>Sell at ZIRAAT Marketplace</Text>
             </TouchableOpacity>
           )}
-        />
-
+        /> */}
         <Text style={{ fontSize: 12, color: "#444", marginBottom: 10 }}>
           If you choose to sell via ZIRAAT, provide your bank details for
           payouts.
         </Text>
-
         {sellingViaZiraat && (
           <View style={{ marginTop: 10 }}>
             <FormInput
@@ -112,7 +137,7 @@ export default function FinancialPaymentSection({
               control={control}
               name="bankDetails.accountNumber"
               label="Account Number"
-              type="numeric"
+              type="phone"
               error={errors.bankDetails?.accountNumber}
             />
 

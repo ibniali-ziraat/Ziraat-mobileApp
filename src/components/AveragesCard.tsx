@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import ZiratCard from "./shared/ZiratCard";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
 export default function AveragesCard() {
     return (
-        <ZiratCard
-            style={{ width: "48%" }}
-            title="Averages"
-            subtitle="Today’s temperature average"
+        <ZiraatCard
+            width={250}
+            height={150}
 
         >
             <View>
@@ -30,6 +30,6 @@ export default function AveragesCard() {
                     Above today’s high
                 </Text>
             </View>
-        </ZiratCard>
+        </ZiraatCard>
     );
 }

@@ -2,7 +2,6 @@ import { router } from "expo-router";
 
 import { ReactNode, useEffect } from "react";
 import { View } from "react-native";
-import { useGlobalData } from "../contexts/GlobalDataContext";
 import { useAuth } from "../contexts/AuthContext";
 
 interface RouteGuardProps {
@@ -10,9 +9,7 @@ interface RouteGuardProps {
 }
 
 export default function RouteGuard({ children }: RouteGuardProps) {
-  // const { userToken, initialized } = useGlobalData();
-  const { userToken, initialized } = useAuth()
-
+  const { userToken, initialized } = useAuth();
 
   useEffect(() => {
     if (!initialized) return;

@@ -16,6 +16,7 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
       <SingleSelectInput
         control={control}
         name="advisorySupport"
+        modalLabel="Advisory Support"
         label="Agronomy Advisory Support"
         options={[
           { value: "yes", label: "Yes" },
@@ -28,6 +29,7 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         control={control}
         name="fieldStaffAvailable"
         label="Field Staff Available"
+        modalLabel="Field Staff Availability"
         options={[
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
@@ -48,7 +50,7 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
       <FormInput
         control={control}
         name="afterSalesService"
-        label="After-Sales Service (Warranty / Return / Replacement policy)"
+        label="After-Sales Service Policy"
         error={errors?.afterSalesService?.message}
       />
 
@@ -64,6 +66,7 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         control={control}
         name="computerAvailable"
         label="Computer/Laptop Facility Available"
+        modalLabel="Computer/Laptop Facility"
         options={[
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
@@ -75,6 +78,7 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
         control={control}
         name="vehicleAvailable"
         label="Vehicle for Delivery / Two Wheeler"
+        modalLabel="Vehicle Availability"
         options={[
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },

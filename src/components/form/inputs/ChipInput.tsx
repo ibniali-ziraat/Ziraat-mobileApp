@@ -3,6 +3,7 @@ import { Controller } from "react-hook-form";
 import { Text, TextInput, View, TouchableOpacity } from "react-native";
 import { X, Plus } from "lucide-react-native"; // Lucide icons
 import { colors } from "@/src/constants/colors";
+import { HelperText } from "react-native-paper";
 
 interface ChipInputProps {
   control: any;
@@ -18,6 +19,7 @@ export default function ChipInput({
   label,
   placeholder = "Add",
   error,
+  required = false,
 }: ChipInputProps) {
   const [input, setInput] = useState("");
 
@@ -40,8 +42,11 @@ export default function ChipInput({
         };
 
         return (
-          <View className="mt-4">
-            <Text className="text-dark text-base font-semibold mb-2">{label}</Text>
+          <View style={{ marginBottom: 10 }}>
+            <Text className="text-dark text-base font-semibold mb-2">
+              {label}
+              {required && <Text className="text-red-500"> *</Text>}
+            </Text>
 
             {/* Chips */}
             <View className="flex-row flex-wrap gap-2 mb-2">
@@ -75,9 +80,20 @@ export default function ChipInput({
               </TouchableOpacity>
             </View>
 
-            {/* Error */}
             {error && (
-              <Text className="text-error text-sm mt-1">{error.message}</Text>
+              <HelperText
+                type="error"
+                visible
+                style={{
+                  color: colors.error,
+                  paddingVertical: 0,
+                  paddingBottom: 0,
+                  marginTop: 2,
+                  marginBottom: 0,
+                }}
+              >
+                {error?.message}
+              </HelperText>
             )}
           </View>
         );

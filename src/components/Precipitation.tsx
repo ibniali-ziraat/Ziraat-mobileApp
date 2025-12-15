@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Droplets } from "lucide-react-native";
 import ZiratCard from "./shared/ZiratCard";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
     amount?: string;
@@ -12,14 +13,14 @@ export default function Precipitation({
     note = "None expected in next 10 days.",
 }: Props) {
     return (
-        <ZiratCard
-            title="Precipitation"
-            leftIcon={<Droplets size={18} color="#c7611f" />}
+        <ZiraatCard
+            width={250}
+            height={150}
         >
             <Text style={styles.amount}>{amount}</Text>
             <Text style={styles.subtext}>in last 24 hours</Text>
             <Text style={styles.note}>{note}</Text>
-        </ZiratCard>
+        </ZiraatCard>
     );
 }
 

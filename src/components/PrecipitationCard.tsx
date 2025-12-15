@@ -1,11 +1,13 @@
-import ZiratCard from "./shared/ZiratCard";
+
+import ZiraatCard from "./shared/ZiraatProfileCard";
+
 import PrecipitationMap from "./PrecipitationMap";
 
 export default function PrecipitationCard() {
     return (
-        <ZiratCard
-            title="Precipitation"
-            subtitle="Live weather map"
+        <ZiraatCard
+            width={120}
+            height={100}
 
             style={{
                 paddingHorizontal: 12,
@@ -13,6 +15,6 @@ export default function PrecipitationCard() {
             }}
         >
             <PrecipitationMap />
-        </ZiratCard>
+        </ZiraatCard>
     );
 }

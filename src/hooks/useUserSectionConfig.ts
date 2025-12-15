@@ -1,7 +1,7 @@
-import AddressSection from "@/src/components/form/sections/AddressSection";
-import EducationSection from "@/src/components/form/sections/EducationSection";
-import ProfessionSection from "@/src/components/form/sections/ProfessionSection";
-import ProfileSection from "@/src/components/form/sections/ProfileSection";
+import AddressSection from "@/src/modules/auth/user/sections/AddressSection";
+import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
+import ProfessionSection from "@/src/modules/auth/user/sections/ProfessionSection";
+import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 import { useMemo } from "react";
 
 export function useUserSectionConfig({
