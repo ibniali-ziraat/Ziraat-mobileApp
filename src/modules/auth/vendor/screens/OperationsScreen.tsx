@@ -77,7 +77,7 @@ export default function OperationsScreen() {
         showSuccessToast("Changes saved ");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
       showErrorToast(
         "Error saving operations",
@@ -90,13 +90,13 @@ export default function OperationsScreen() {
     <ScreenLayout>
       <BackHeader
         title="Operational Details"
-        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+        onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <OperationalSection control={control} errors={errors} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+          onCancel={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
           submitLabel={data ? "Update Operations" : "Save Operations"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}

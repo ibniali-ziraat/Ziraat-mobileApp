@@ -34,8 +34,26 @@ import { userRoutes } from "../auth/vendor/config/userRoutes";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { ROUTES } from "@/src/constants/routes";
-import { Briefcase, GraduationCap, MapPin } from "lucide-react-native";
+import {
+  Briefcase,
+  Building,
+  Calendar,
+  Clock,
+  GraduationCap,
+  GraduationCapIcon,
+  Home,
+  Mail,
+  MapPin,
+  Navigation,
+  Phone,
+  School,
+  User,
+  UserCheck,
+  VenetianMask,
+} from "lucide-react-native";
 import { View } from "react-native";
+import { ProfileInfoRow } from "./components/ProfileInfoRow";
+import DetailsCard from "./components/DetailsCard";
 
 export default function UserProfileScreen() {
   const [deleteSection, setDeleteSection] = useState<string | null>(null);
@@ -49,6 +67,7 @@ export default function UserProfileScreen() {
   const { data: addressData } = useAddressQuery(userProfileId);
   const { data: educationData } = useEducationQuery(userProfileId);
   const { data: professionData } = useProfessionQuery(userProfileId);
+  console.log(professionData);
 
   const { mutateAsync: deleteAddressApi } = useAddressDeleteMutation();
   const { mutateAsync: deleteEducationApi } = useEducationDeleteMutation();
@@ -101,16 +120,16 @@ export default function UserProfileScreen() {
   };
 
   return (
-    // <View  style={{ backgroundColor: colors.error, width:"100%", height:"100%", marginHorizontal: 15 }}>
     <ScreenLayout>
-      <BackHeader title="Profile" onPress={() => router.push(ROUTES.USER.HOME)} />
-
+      <BackHeader
+        title="Profile"
+        onPress={() => router.push(ROUTES.TABS.HOME)}
+      />
       <ProfileTopHeader
         profilePic={profileData?.profilePic}
         fullName={profileData?.fullName}
-      // onEdit={() => goToSection("profile")}
+        // onEdit={() => goToSection("profile")}
       />
-
       {progress < 100 && (
         <ProfileProgressBar
           progress={progress}
@@ -124,192 +143,160 @@ export default function UserProfileScreen() {
         />
       )}
 
-      <ProfileDetails
-        email={profileData?.email}
-        phone={profileData?.phone}
-        age={profileData?.age}
-        gender={profileData?.gender}
-        createdOn={profileData?.createdOn}
+      <DetailsCard
+        heading="Personal Details"
+        items={
+          profileData
+            ? [
+                {
+                  title: "Email",
+                  value: profileData?.email,
+                  icon: <Mail size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Phone",
+                  value: profileData?.phone,
+                  icon: <Phone size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Age",
+                  value: profileData?.age,
+                  icon: <User size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Gender",
+                  value: profileData?.gender,
+                  icon: <VenetianMask size={22} color={colors.primary} />,
+                },
+                {
+                  title: "User Since",
+                  value: profileData?.createdOn
+                    ? new Date(profileData.createdOn).toLocaleDateString()
+                    : "—",
+                  icon: <Calendar size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
         onEdit={() => goToSection("profile")}
       />
+      <DetailsCard
+        heading="Address"
+        items={
+          addressData
+            ? [
+                {
+                  title: "State",
+                  value: addressData.state,
+                  icon: <MapPin size={22} color={colors.primary} />,
+                },
+                {
+                  title: "District",
+                  value: addressData.district,
+                  icon: <Building size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Tehsil",
+                  value: addressData.tehsil,
+                  icon: <Navigation size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Locality",
+                  value: addressData.village,
+                  icon: <Home size={22} color={colors.primary} />,
+                },
 
-
-
-
-      <ZiraatCard
-        width="100%"
-        marginBottom={1}
-        paddingHorizontal={2}
-      >
-        <SectionCard
-          title="Address"
-          icon={<MapPin size={21} color={colors.primary} />}
-          onEdit={addressData ? () => goToSection("address") : undefined}
-          onDelete={
-            addressData ? () => setDeleteSection("address") : undefined
-          }
-        >
-          {addressData ? (
-            <Text>
-              {addressData.village}, {addressData.tehsil},{" "}
-              {addressData.district}, {addressData.state} -{" "}
-              {addressData.pincode}
-            </Text>
-          ) : (
-            <TouchableOpacity onPress={() => goToSection("address")}>
-              <Text style={{ color: colors.primary, fontWeight: "500" }}>
-                + Add Address
-              </Text>
-            </TouchableOpacity>
-          )}
-        </SectionCard>
-      </ZiraatCard>
-
-
-
-      <ZiraatCard
-        width="100%"
-        marginBottom={1}
-        paddingHorizontal={2}
-      >
-        <SectionCard
-          title="Education"
-          icon={<GraduationCap size={21} color={colors.primary} />}
-          onEdit={educationData ? () => goToSection("education") : undefined}
-          onDelete={
-            educationData ? () => setDeleteSection("education") : undefined
-          }
-        >
-          {educationData ? (
-            <>
-
-
-              <View className="h-16 justify-between items-start py-2 border-b border-gray-200 ml-3">
-                <Text className="text-[13px] text-gray-500 font-medium">
-                  Highest Qualification
-                </Text>
-                <Text className="text-[14px] text-gray-900 font-semibold max-w-[55%] text-right">
-                  {educationData.highestQualification || "-"}
-                </Text>
-              </View>
-
-              <View className="h-16 justify-between items-start py-2 border-b border-gray-200 mt-3 ml-3">
-                <Text className="text-[13px] text-gray-500 font-medium">
-                  Institute
-                </Text>
-                <Text className="text-[14px] text-gray-900 font-semibold max-w-[55%] text-right">
-                  {educationData.instituteName || "-"}
-                </Text>
-              </View>
-
-              <View className="h-16 justify-between items-start py-2 border-b border-gray-200 mt-3 ml-3">
-                <Text className="text-[13px] text-gray-500 font-medium">
-                  Year of Passing
-                </Text>
-                <Text className="text-[14px] text-gray-900 font-semibold max-w-[55%] text-right">
-                  {educationData.passingYear || "-"}
-                </Text>
-              </View>
-
-              <View className="h-16 justify-between items-start py-2 mt-3 ml-3">
-                <Text className="text-[13px] text-gray-500 font-medium">
-                  Specialization
-                </Text>
-                <Text className="text-[14px] text-gray-900 font-semibold max-w-[55%] text-right">
-                  {educationData.specialization || "-"}
-                </Text>
-              </View>
-
-              {/* <Text>Education: {educationData.highestQualification}</Text>
-                <Text>Institute: {educationData.instituteName}</Text>
-                <Text>Year of Passing: {educationData.passingYear}</Text>
-                <Text>Education: {educationData.specialization}</Text> */}
-            </>
-          ) : (
-            <TouchableOpacity onPress={() => goToSection("education")}>
-              <Text style={{ color: colors.primary, fontWeight: "500" }}>
-                + Add Education
-              </Text>
-            </TouchableOpacity>
-          )}
-        </SectionCard>
-      </ZiraatCard>
-
-      {/* EDUCATION SECTION */}
-
-      <ZiraatCard
-        width="100%"
-        marginBottom={1}
-        paddingHorizontal={2}
-      >
-        {/* PROFESSION SECTION */}
-        <SectionCard
-        
-          title="Profession"
-          icon={<Briefcase size={21} color={colors.primary} />}
-          onEdit={
-            professionData ? () => goToSection("profession") : undefined
-          }
-          onDelete={
-            professionData ? () => setDeleteSection("profession") : undefined
-          }
-        >
-          {professionData ? (
-            <>
-
-              <View className="h-16 flex justify-between items-start py-2 border-b border-gray-200 ml-3">
-                <Text className="text-[13px] text-gray-500 font-medium">
-                  Organisation
-                </Text>
-                <Text className="text-[14px] text-gray-900 font-semibold max-w-[55%] text-right">
-                  {professionData.organizationName || "-"}
-                </Text>
-              </View>
-
-              <View className=" h-16 flex justify-between items-start py-2 border-b border-gray-200 mt-3 ml-3">
-                <Text className="text-[13px] text-gray-500 font-medium">
-                  Designation
-                </Text>
-                <Text className="text-[14px] text-gray-900 font-semibold max-w-[55%] text-right">
-                  {professionData.designation || "-"}
-                </Text>
-              </View>
-
-              <View className="h-16 flex justify-between items-start py-2 mt-3 ml-3">
-                <Text className="text-[13px] text-gray-500 font-medium">
-                  Experience
-                </Text>
-                <Text className="text-[14px] text-gray-900 font-semibold text-right">
-                  {professionData.experienceYears
-                    ? `${professionData.experienceYears} yrs`
-                    : "-"}
-                </Text>
-              </View>
-
-
-              {/* <Text>Organisation: {professionData.organizationName}</Text>
-              <Text>Designation: {professionData.designation}</Text>
-              <Text>Exp: {professionData.experienceYears}</Text> */}
-
-
-            </>
-          ) : (
-            <TouchableOpacity onPress={() => goToSection("profession")}>
-              <Text style={{ color: colors.primary, fontWeight: "500" }}>
-                + Add Profession
-              </Text>
-            </TouchableOpacity>
-          )}
-        </SectionCard>
-      </ZiraatCard>
-
-      {/* LOGOUT BUTTON */}
-      <LogoutButton
-        onPress={async () => {
-          await logoutUser();
-          router.replace("/auth/user");
-        }}
+                {
+                  title: "Pincode",
+                  value: addressData.pincode,
+                  icon: <MapPin size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={addressData ? () => goToSection("address") : undefined}
+        onDelete={addressData ? () => setDeleteSection("address") : undefined}
+        onAdd={() => goToSection("address")}
+        emptyActionLabel="Add Address"
       />
+      {/* EDUCATION */}
+      <DetailsCard
+        heading="Education"
+        items={
+          educationData
+            ? [
+                {
+                  title: "Qualification",
+                  value: educationData.highestQualification,
+                  icon: <GraduationCap size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Institute",
+                  value: educationData.instituteName,
+                  icon: <School size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Passing Year",
+                  value: educationData.passingYear,
+                  icon: <Calendar size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Specialization",
+                  value: educationData.specialization || "—",
+                  icon: <GraduationCapIcon size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={educationData ? () => goToSection("education") : undefined}
+        onDelete={
+          educationData ? () => setDeleteSection("education") : undefined
+        }
+        onAdd={() => goToSection("education")}
+        emptyActionLabel="Add Education"
+      />
+      {/* PROFESSION */}
+      <DetailsCard
+        heading="Profession"
+        onEdit={() => goToSection("profession")}
+        onDelete={() => setDeleteSection("profession")}
+        items={
+          professionData
+            ? [
+                {
+                  title: "Organization",
+                  value: professionData.organizationName,
+                  icon: <Briefcase size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Designation",
+                  value: professionData.designation,
+                  icon: <UserCheck size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Profession Type",
+                  value: professionData.professionType,
+                  icon: <Building size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Experience",
+                  value: professionData.experienceYears
+                    ? `${professionData.experienceYears} yrs`
+                    : "—",
+                  icon: <Clock size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Skills",
+                  value: professionData.skills || "—",
+                  icon: <UserCheck size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        emptyActionLabel="Add Profession Details"
+      />
+
+      <LogoutButton onPress={logoutUser} />
       <ConfirmDeleteModal
         visible={!!deleteSection}
         title="Confirm deletion"
@@ -319,24 +306,5 @@ export default function UserProfileScreen() {
         loading={deleting}
       />
     </ScreenLayout>
-    // </View>
-              </TouchableOpacity>
-            )}
-          </SectionCard>
-        </ZiraatCard>
-
-        {/* LOGOUT BUTTON */}
-        <LogoutButton onPress={logoutUser} />
-
-        <ConfirmDeleteModal
-          visible={!!deleteSection}
-          title="Confirm deletion"
-          description="Are you sure you want to delete this information?"
-          onCancel={() => setDeleteSection(null)}
-          onConfirm={confirmDelete}
-          loading={deleting}
-        />
-      </ScreenLayout>
-    </View>
   );
 }

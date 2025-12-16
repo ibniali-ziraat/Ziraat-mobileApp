@@ -31,113 +31,110 @@ export default function ProfileProgressBar({
   });
 
   // Sections in UI order
-  const allSections = ["Profile", "Address", "Education", "Profession"];
+  const allSections = [...completedSections, ...missingSections];
 
   return (
-
-      <ZiraatCard
-        width="100%"
-        paddingHorizontal={1}
+    <ZiraatCard width="100%" paddingHorizontal={1}>
+      {/* HEADER */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginBottom: 12,
+        }}
       >
-        {/* HEADER */}
-        <View
+        <Text
           style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginBottom: 12,
-          }}
-        >
-          <Text style={{
-            marginTop: 19, fontSize: 21,
+            marginTop: 19,
+            fontSize: 22,
             fontWeight: "700",
             color: colors.dark,
             letterSpacing: 0.4,
-          }}>
-            Profile Completion
-          </Text>
+          }}
+        >
+          Profile Completion
+        </Text>
 
-          <Text
-            style={{
-              fontWeight: "700",
-              fontSize: 16,
-              color: colors.primary,
-              marginTop: 19
-            }}
-          >
-            {progress}%
-          </Text>
-        </View>
-
-        {/* ANIMATED PROGRESS BAR */}
-        <View
+        <Text
           style={{
-            height: 5,
+            fontWeight: "700",
+            fontSize: 16,
+            color: colors.primary,
+            marginTop: 19,
+          }}
+        >
+          {progress}%
+        </Text>
+      </View>
+
+      {/* ANIMATED PROGRESS BAR */}
+      <View
+        style={{
+          height: 5,
+          borderRadius: 10,
+          backgroundColor: colors.neutral + "33",
+          overflow: "hidden",
+          marginBottom: 20,
+        }}
+      >
+        <Animated.View
+          style={{
+            height: "100%",
+            width: animatedWidth,
+            backgroundColor: colors.primary,
             borderRadius: 10,
-            backgroundColor: colors.neutral + "33",
-            overflow: "hidden",
-            marginBottom: 20,
           }}
-        >
-          <Animated.View
-            style={{
-              height: "100%",
-              width: animatedWidth,
-              backgroundColor: colors.primary,
-              borderRadius: 10,
-            }}
-          />
-        </View>
+        />
+      </View>
 
-        {/* SECTION STATUS (3 items per row) */}
-        <View
-          style={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            // spacing between rows and columns
-            marginHorizontal: -8,
-          }}
-        >
-          {allSections.map((section) => {
-            const isCompleted = completedSections.includes(section);
+      {/* SECTION STATUS (3 items per row) */}
+      <View
+        style={{
+          flexDirection: "row",
+          flexWrap: "wrap",
+          // spacing between rows and columns
+          marginHorizontal: -8,
+        }}
+      >
+        {allSections.map((section) => {
+          const isCompleted = completedSections.includes(section);
 
-            return (
+          return (
+            <View
+              key={section}
+              style={{
+                width: "33.333%",
+                paddingHorizontal: 8,
+                marginBottom: 12,
+              }}
+            >
               <View
-                key={section}
                 style={{
-
-                  width: "33.333%",
-                  paddingHorizontal: 8,
-                  marginBottom: 12,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 8,
                 }}
               >
-                <View
+                {isCompleted ? (
+                  <CheckCircle size={18} color={colors.primary} />
+                ) : (
+                  <XCircle size={18} color="#d9534f" />
+                )}
+
+                <Text
                   style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 8,
+                    fontSize: 14,
+                    color: isCompleted ? colors.dark : "#d9534f",
+                    fontWeight: isCompleted ? "600" : "500",
                   }}
                 >
-                  {isCompleted ? (
-                    <CheckCircle size={18} color={colors.primary} />
-                  ) : (
-                    <XCircle size={18} color="#d9534f" />
-                  )}
-
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: isCompleted ? colors.dark : "#d9534f",
-                      fontWeight: isCompleted ? "600" : "500",
-                    }}
-                  >
-                    {section}
-                  </Text>
-                </View>
+                  {section.charAt(0).toUpperCase() + section.slice(1)}
+                </Text>
               </View>
-            );
-          })}
-        </View>
-      </ZiraatCard>
-   
+            </View>
+          );
+        })}
+      </View>
+    </ZiraatCard>
   );
 }

@@ -20,18 +20,39 @@
       "Uri",
       "Gulmarg"
     ],
-    "Srinagar": ["Kangan", "Ganderbal", "Srinagar"],
-    "Budgam": ["Beerwah", "Badgam", "Chadura"],
+    "Srinagar": [
+      "Central Shalteng",
+      "Channapora",
+      "Natipora",
+      "Eidgah",
+      "Khanyar",
+      "Pantha Chowk",
+      "Srinagar North",
+      "Srinagar South"
+    ],
+
+    "Budgam": [
+      "Beerwah",
+      "Badgam",
+      "Chadura",
+      "Khansahib",
+      "Khag",
+      "Charisharief",
+      "B.K. Pora",
+      "Narbal",
+      "Magam"
+    ],
     "Pulwama": [
       "Pampore",
       "Tral",
       "Pulwama",
-      "Shupiyan",
+      "Shopian",
       "Litter",
       "Awantipora",
       "Rajpora",
       "Aripal",
-      "Kakapora"
+      "Kakapora",
+      "Shahoora Litter"
     ],
     "Anantnag": [
       "Pahalgam",

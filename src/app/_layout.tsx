@@ -1,6 +1,5 @@
 import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";

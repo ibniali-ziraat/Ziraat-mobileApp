@@ -68,13 +68,13 @@ export default function EducationScreen() {
       <FormProvider {...form}>
         <BackHeader
           title="Education"
-          onPress={() => router.push(ROUTES.USER.PROFILE)}
+          onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
 
         <EducationSection control={control} errors={errors} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.push(ROUTES.USER.PROFILE)}
+          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
           submitLabel={data ? "Update Education" : "Add Education"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}

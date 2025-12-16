@@ -14,13 +14,16 @@ export default function ScreenLayout({
 }: ScreenLayoutProps) {
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: colors.light}}
+      style={{ flex: 1, backgroundColor: colors.light }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={keyboardOffset}
     >
       <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
         <ScrollView
-          contentContainerStyle={{  paddingBottom: Platform.OS=="android"?40:100 }}
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: Platform.OS == "android" ? 40 : 100,
+          }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
