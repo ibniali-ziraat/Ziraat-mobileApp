@@ -1,7 +1,10 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import DetailsCard from "@/src/components/shared/DetailsCard";
-import ProgressBar from "@/src/components/shared/ProgressBar";
-import { colors } from "@/src/constants/colors";
+import Loader from "@/src/components/shared/Loader";
+import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import VendorProfileDetails from "@/src/components/shared/VendorProfileDetails";
+import VendorProfileHeader from "@/src/components/shared/VendorProfileHeader";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
 import {
   useVendorFinancialDeleteMutation,
@@ -19,47 +22,40 @@ import {
 import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+
+
+import DetailCard from "@/src/components/shared/DetailsCard";
+import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { colors } from "@/src/constants/colors";
+import { BadgeCheck, Boxes, Headset, Wallet, Workflow } from "lucide-react-native";
+import { useEffect } from "react";
+import { Text, TouchableOpacity } from "react-native";
 import { vendorDeleteConfig } from "../auth/vendor/config/vendorDeleteConfig";
 import { vendorRoutes } from "../auth/vendor/config/vendorRoutes";
 import ProductItemCard from "./components/ProductItemCard";
-import ProfileHeader from "./components/ProfileHeader";
 import SectionCard from "./components/SectionCard";
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import Loader from "@/src/components/shared/Loader";
-import VendorProfileHeader from "@/src/components/shared/VendorProfileHeader";
-import VendorProfileDetails from "@/src/components/shared/VendorProfileDetails";
-import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
-import { maskValue } from "@/src/utils/mask";
-import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 
 export default function VendorProfileScreen() {
-  const { userId, setVendorProfileId, vendorProfileId } = useAuth();
+  // const { vendorData, setVendorData } = useGlobalData();
+  const { userId, setVendorProfileId, vendorProfileId } = useAuth()
   console.log(vendorProfileId, "vendorproifleidddd");
+
+
 
   const queryClient = useQueryClient();
 
-  const { data: profileData, isPending: loadingVendorProfile } =
-    useVendorProfileQuery(userId);
-  const { data: licenseData, isPending: loadingLicense } =
-    useVendorLicenseQuery(vendorProfileId);
-  const { data: productsData, isPending: loadingProducts } =
-    useVendorProductsQuery(vendorProfileId);
-  const { data: operationsData, isPending: loadingOperations } =
-    useVendorOperationsQuery(vendorProfileId);
-  const { data: financialData, isPending: loadingFinancial } =
-    useVendorFinancialQuery(vendorProfileId);
-  const { data: supportData, isPending: loadingSupport } =
-    useVendorSupportQuery(vendorProfileId);
+  const { data: profileData, isPending: loadingVendorProfile } = useVendorProfileQuery(userId);
+  const { data: licenseData } = useVendorLicenseQuery(vendorProfileId);
+  const { data: productsData } = useVendorProductsQuery(vendorProfileId);
+  const { data: operationsData } = useVendorOperationsQuery(
+    vendorProfileId
+  );
+
+  const { data: financialData } = useVendorFinancialQuery(vendorProfileId);
+  const { data: supportData } = useVendorSupportQuery(vendorProfileId);
 
   const { mutateAsync: deleteLicenseApi } = useVendorLicenseDeleteMutation();
   const { mutateAsync: deleteProductsApi } = useVendorProductsDeleteMutation();
-
-  const [deleteSection, setDeleteSection] = useState<string | null>(null);
-  const [deleting, setDeleting] = useState(false);
   const { mutateAsync: deleteOperationsApi } =
     useVendorOperationsDeleteMutation();
   const { mutateAsync: deleteFinancialApi } =
@@ -76,7 +72,7 @@ export default function VendorProfileScreen() {
 
   useEffect(() => {
     if (!profileData) return;
-    setVendorProfileId(profileData?.id);
+    setVendorProfileId(profileData?.id)
   }, [profileData]);
 
   const goToSection = (section: VendorRouteKey) => {
@@ -128,14 +124,11 @@ export default function VendorProfileScreen() {
   if (!profileData) return <Loader />;
 
   return (
-    <ScreenLayout>
-      <BackHeader
-        title="Profile"
-        onPress={() => router.push(ROUTES.TABS.MENU)}
-      />
 
-      <VendorProfileHeader
-        data={profileData}
+    <ScreenLayout>
+      <BackHeader title="Profile" />
+
+      <VendorProfileHeader data={profileData}
         onEdit={() => goToSection("business")}
       />
 
@@ -143,14 +136,9 @@ export default function VendorProfileScreen() {
         <ProfileProgressBar
           progress={progress}
           missingSections={missingSections}
-          completedSections={[
-            "Business",
-            "License",
-            "Products",
-            "Operations",
-            "Financial",
-            "Support",
-          ].filter((s) => !missingSections.includes(s.toLowerCase()))}
+          completedSections={["Business", "License", "Products", "Operations", "Financial", "Support"].filter(
+            (s) => !missingSections.includes(s.toLowerCase())
+          )}
         />
       )}
 
@@ -168,345 +156,251 @@ export default function VendorProfileScreen() {
         onEdit={() => goToSection("business")}
       /> */}
 
-      <SectionCard
-        title="License & Compliance"
-        onEdit={licenseData ? () => goToSection("license") : undefined}
-        onDelete={licenseData ? () => setDeleteSection("license") : undefined}
-        style={
-          !licenseData ? { borderColor: colors.warning, borderWidth: 1 } : {}
-        }
-      >
-        {licenseData ? (
-          <>
-            <DetailsCard
-              title="GST"
-              value={maskValue(licenseData.gstNumber, 2, 3)}
-            />
-            <DetailsCard
-              title="License No."
-              value={maskValue(licenseData.dealerLicenseNumber, 0, 4)}
-            />
-            <DetailsCard
-              title="License Start Date"
-              value={new Date(
-                licenseData.licenseStartDate
-              ).toLocaleDateString()}
-            />
-            <DetailsCard
-              title="License Expiry Date"
-              value={new Date(
-                licenseData.licenseExpiryDate
-              ).toLocaleDateString()}
-            />
-            {/* <DetailsCard
-              title="License Copy URL"
-              value={licenseData.licenseCopyUrl}
-            /> */}
-            <DetailsCard
-              title="PAN Number"
-              value={maskValue(licenseData.panNumber, 2, 2)}
-            />
-          </>
-        ) : (
-          <TouchableOpacity onPress={() => goToSection("license")}>
-            <Text style={{ color: colors.primary, fontWeight: "600" }}>
-              + Add License Details
-            </Text>
-          </TouchableOpacity>
-        )}
-      </SectionCard>
 
-      <SectionCard
-        title="Product Portfolio"
-        onEdit={productsData ? () => goToSection("products") : undefined}
-        onDelete={productsData ? () => setDeleteSection("products") : undefined}
-        style={
-          !productsData ? { borderColor: colors.warning, borderWidth: 1 } : {}
-        }
-      >
-        {productsData ? (
-          <>
-            {/* STORAGE CAPACITY */}
-            <DetailsCard
-              title="Storage Capacity"
-              value={
-                `${productsData.storageCapacityValue || ""} ${
-                  productsData.storageCapacityUnit || ""
-                }`.trim() || "N/A"
-              }
-            />
 
-            {/* INPUT TYPES */}
-            <DetailsCard
-              title="Input Types"
-              value={
-                productsData.inputTypes?.map((i) => i.inputType).join(", ") ||
-                "N/A"
-              }
-            />
 
-            {/* MAJOR BRANDS */}
-            <DetailsCard
-              title="Major Brands"
-              value={
-                productsData.majorBrands?.map((b) => b.brandName).join(", ") ||
-                "N/A"
-              }
-            />
+{/* LICENSE & COMPLIANCE */}
+<ZiraatCard width="100%"  paddingHorizontal={1}
 
-            {/* PRODUCT LIST */}
+>
+  
+  <SectionCard
+    title="License & Compliance"
+     icon={<BadgeCheck size={22} color={colors.primary} />}
+    onEdit={licenseData ? () => goToSection("license") : undefined}
+    onDelete={licenseData ? () => handleDelete("license") : undefined}
+  >
+    {licenseData ? (
+      <>
+        <DetailCard title="GST" value={licenseData.gstNumber} />
+        <DetailCard title="License No." value={licenseData.dealerLicenseNumber} />
+        <DetailCard
+          title="License Start Date"
+          value={new Date(licenseData.licenseStartDate).toLocaleDateString()}
+        />
+        <DetailCard
+          title="License Expiry Date"
+          value={new Date(licenseData.licenseExpiryDate).toLocaleDateString()}
+        />
+        {/* <DetailCard title="License Copy URL" value={licenseData.licenseCopyUrl} /> */}
+        <DetailCard title="PAN Number" value={licenseData.panNumber} />
+      </>
+    ) : (
+      <TouchableOpacity onPress={() => goToSection("license")}>
+        <Text style={{ color: colors.primary, fontWeight: "600" }}>
+          + Add License Details
+        </Text>
+      </TouchableOpacity>
+    )}
+  </SectionCard>
+</ZiraatCard>
 
-            {/* --- Input Types as Product Items --- */}
-            {/* {productsData.inputTypes.map((item) => (
-              <ProductItemCard
-                key={`type-${item.id}`}
-                name={item.inputType}
-                stock="Category"
-                unit=""
-              />
-            ))} */}
+{/* PRODUCT PORTFOLIO */}
+<ZiraatCard 
 
-            {/* --- Custom Inputs as Product Items --- */}
-            {productsData.customInputs.length > 0 && (
-              <>
-                <Text className="font-semibold text-gray-700 mt-5 mb-2 text-base">
-                  Other Inputs
-                </Text>
-                {productsData.customInputs.map((item) => (
-                  <ProductItemCard
-                    key={`custom-${item.id}`}
-                    name={item.productName}
-                    stock={item.stockQuantity || "Not Provided"}
-                    unit={item.unit || ""}
-                  />
-                ))}
-              </>
-            )}
-          </>
-        ) : (
-          <TouchableOpacity onPress={() => goToSection("products")}>
-            <Text style={{ color: colors.primary, fontWeight: "600" }}>
-              + Add Products
-            </Text>
-          </TouchableOpacity>
-        )}
-      </SectionCard>
+width="100%" 
+marginVertical={1} 
+paddingHorizontal={1} >
+  
+  <SectionCard
+    title="Product Portfolio"
+    icon={<Boxes size={22} color={colors.primary}/>}
+    onEdit={productsData ? () => goToSection("products") : undefined}
+    onDelete={productsData ? () => handleDelete("products") : undefined}
+  >
+    {productsData ? (
+      <>
+        <DetailCard
+          title="Storage Capacity"
+          value={`${productsData.storageCapacityValue || ""} ${
+            productsData.storageCapacityUnit || ""
+          }`.trim()}
+        />
 
-      <SectionCard
-        title="Operations"
-        onEdit={operationsData ? () => goToSection("operations") : undefined}
-        onDelete={
-          operationsData ? () => setDeleteSection("operations") : undefined
-        }
-        style={
-          !operationsData ? { borderColor: colors.warning, borderWidth: 1 } : {}
-        }
-      >
-        {operationsData ? (
-          <>
-            {/* YEARS IN BUSINESS */}
-            <DetailsCard
-              title="Years in Business"
-              value={operationsData.yearsInBusiness || "N/A"}
-            />
+        <DetailCard
+          title="Input Types"
+          value={
+            productsData.inputTypes?.map((i) => i.inputType).join(", ") || "N/A"
+          }
+        />
 
-            {/* DELIVERY SERVICE */}
-            <DetailsCard
-              title="Delivery Service Available"
-              value={operationsData.deliveryServiceAvailable ? "Yes" : "No"}
-            />
+        <DetailCard
+          title="Major Brands"
+          value={
+            productsData.majorBrands?.map((b) => b.brandName).join(", ") || "N/A"
+          }
+        />
 
-            {/* MONTHLY SALES */}
+        <Text className="font-semibold text-gray-700 mt-5 mb-2 text-base">
+          Products
+        </Text>
 
-            {/* SERVICE AREAS */}
-            {operationsData?.deliveryServiceAvailable && (
-              <>
-                <DetailsCard
-                  title="Service Areas"
-                  value={
-                    operationsData.serviceAreas
-                      ?.map((i) => i.placeName)
-                      .join(", ") || "N/A"
-                  }
-                />
-              </>
-            )}
-            <DetailsCard
-              title="Avg. Monthly Sales Volume"
-              value={operationsData.avgMonthlySalesVolume || "N/A"}
-            />
+        {productsData.inputTypes.map((item) => (
+          <ProductItemCard
+            key={`type-${item.id}`}
+            name={item.inputType}
+            stock="Category"
+            unit=""
+          />
+        ))}
 
-            {/* COMPANY TIEUPS */}
-            {operationsData?.companyTieups.length > 0 && (
-              <>
-                <Text className="font-semibold text-gray-700 mt-4 mb-2 text-base">
-                  Company Tie-ups
-                </Text>
+        {productsData.customInputs.map((item) => (
+          <ProductItemCard
+            key={`custom-${item.id}`}
+            name={item.productName}
+            stock={item.stockQuantity || "Not Provided"}
+            unit={item.unit || ""}
+          />
+        ))}
+      </>
+    ) : (
+      <TouchableOpacity onPress={() => goToSection("products")}>
+        <Text style={{ color: colors.primary, fontWeight: "600" }}>
+          + Add Products
+        </Text>
+      </TouchableOpacity>
+    )}
+  </SectionCard>
+</ZiraatCard>
 
-                {operationsData.companyTieups?.map((tie) => (
-                  <DetailsCard key={tie.id} title="Company" value={tie.name} />
-                ))}
-              </>
-            )}
-          </>
-        ) : (
-          <TouchableOpacity onPress={() => goToSection("operations")}>
-            <Text style={{ color: colors.primary, fontWeight: "600" }}>
-              + Add Operational Details
-            </Text>
-          </TouchableOpacity>
-        )}
-      </SectionCard>
+{/* OPERATIONS */}
+<ZiraatCard 
 
-      <SectionCard
-        title="Financial Info"
-        onEdit={financialData ? () => goToSection("financial") : undefined}
-        onDelete={
-          financialData ? () => setDeleteSection("financial") : undefined
-        }
-        style={
-          !financialData ? { borderColor: colors.warning, borderWidth: 1 } : {}
-        }
-      >
-        {financialData ? (
-          <>
-            {/* UPI AVAILABLE */}
-            <DetailsCard
-              title="UPI Available"
-              value={financialData.upiAvailable ? "Yes" : "No"}
-            />
+width="100%" 
+paddingHorizontal={1}
+ 
+>
+  <SectionCard
+    title="Operations"
+ icon={<Workflow size={22} color={colors.primary} />}
 
-            {/* CREDIT FACILITY */}
-            <DetailsCard
-              title="Credit Facility"
-              value={financialData.creditFacility ? "Yes" : "No"}
-            />
+    onEdit={operationsData ? () => goToSection("operations") : undefined}
+    onDelete={operationsData ? () => handleDelete("operations") : undefined}
+  >
+    {operationsData ? (
+      <>
+        <DetailCard title="Years in Business" value={operationsData.yearsInBusiness || "N/A"} />
+        <DetailCard
+          title="Delivery Service Available"
+          value={operationsData.deliveryServiceAvailable ? "Yes" : "No"}
+        />
+        <DetailCard
+          title="Avg. Monthly Sales Volume"
+          value={operationsData.avgMonthlySalesVolume || "N/A"}
+        />
+        <DetailCard
+          title="Service Areas"
+          value={operationsData.serviceAreas?.map((i) => i.placeName).join(", ") || "N/A"}
+        />
 
-            {/* SELLING VIA ZIRAAT */}
-            {financialData.sellingViaZiraat && (
-              <>
-                <DetailsCard
-                  title="Selling via Ziraat"
-                  value={financialData.sellingViaZiraat ? "Yes" : "No"}
-                />
+        <Text className="font-semibold text-gray-700 mt-4 mb-2 text-base">
+          Company Tie-ups
+        </Text>
 
-                {/* BANK DETAILS */}
-                <Text className="font-semibold text-gray-700 mt-4 mb-2 text-base">
-                  Bank Details
-                </Text>
+        {operationsData.companyTieups?.map((tie) => (
+          <DetailCard key={tie.id} title="Company" value={tie.name} />
+        ))}
+      </>
+    ) : (
+      <TouchableOpacity onPress={() => goToSection("operations")}>
+        <Text style={{ color: colors.primary, fontWeight: "600" }}>
+          + Add Operational Details
+        </Text>
+      </TouchableOpacity>
+    )}
+  </SectionCard>
+</ZiraatCard>
 
-                <DetailsCard
-                  title="Account Holder Name"
-                  value={financialData.bankDetails?.accountHolderName || "N/A"}
-                />
+{/* FINANCIAL INFO */}
+<ZiraatCard width="100%"  marginTop={1} paddingHorizontal={1}>
+  <SectionCard
+    title="Financial Info"
+     icon={<Wallet size={22} color={colors.primary} />}
+    onEdit={financialData ? () => goToSection("financial") : undefined}
+    onDelete={financialData ? () => handleDelete("financial") : undefined}
+  >
+    {financialData ? (
+      <>
+        <DetailCard title="UPI Available" value={financialData.upiAvailable ? "Yes" : "No"} />
+        <DetailCard
+          title="Credit Facility"
+          value={financialData.creditFacility ? "Yes" : "No"}
+        />
+        <DetailCard
+          title="Selling via Ziraat"
+          value={financialData.sellingViaZiraat ? "Yes" : "No"}
+        />
 
-                <DetailsCard
-                  title="Account Number"
-                  value={
-                    maskValue(financialData.bankDetails?.accountNumber, 3, 4) ||
-                    "N/A"
-                  }
-                />
+        <Text className="font-semibold text-gray-700 mt-4 mb-2 text-base">
+          Bank Details
+        </Text>
 
-                <DetailsCard
-                  title="IFSC Code"
-                  value={
-                    maskValue(financialData.bankDetails?.ifscCode, 4, 1) ||
-                    "N/A"
-                  }
-                />
+        <DetailCard title="Account Holder Name" value={financialData.bankDetails?.accountHolderName || "N/A"} />
+        <DetailCard title="Account Number" value={financialData.bankDetails?.accountNumber || "N/A"} />
+        <DetailCard title="IFSC Code" value={financialData.bankDetails?.ifscCode || "N/A"} />
+        <DetailCard title="Bank Name" value={financialData.bankDetails?.bankName || "N/A"} />
+        <DetailCard title="Branch Name" value={financialData.bankDetails?.branchName || "N/A"} />
+      </>
+    ) : (
+      <TouchableOpacity onPress={() => goToSection("financial")}>
+        <Text style={{ color: colors.primary, fontWeight: "600" }}>
+          + Add Financial Details
+        </Text>
+      </TouchableOpacity>
+    )}
+  </SectionCard>
+</ZiraatCard>
 
-                <DetailsCard
-                  title="Bank Name"
-                  value={financialData.bankDetails?.bankName || "N/A"}
-                />
+{/* SUPPORT SERVICES */}
+<ZiraatCard width="100%" height="7%" marginTop={1} paddingHorizontal={1}>
+  <SectionCard
+    title="Support Services"
+     icon={<Headset size={22} color={colors.primary} />}
+    onEdit={supportData ? () => goToSection("support") : undefined}
+    onDelete={supportData ? () => handleDelete("support") : undefined}
+  >
+    {supportData ? (
+      <>
+        <DetailCard
+          title="Agronomy Advisory Support"
+          value={supportData.agronomyAdvisorySupport ? "Yes" : "No"}
+        />
+        <DetailCard
+          title="Field Staff Available"
+          value={supportData.fieldStaffAvailable ? "Yes" : "No"}
+        />
+        <DetailCard
+          title="Number of Field Staff"
+          value={supportData.fieldStaffCount || "N/A"}
+        />
+        <DetailCard
+          title="After Sales Service"
+          value={supportData.afterSalesService || "N/A"}
+        />
+        <DetailCard
+          title="Preferred Delivery Range (sq. km)"
+          value={supportData.deliveryRange ? `${supportData.deliveryRange} sq.km` : "N/A"}
+        />
+        <DetailCard
+          title="Computer Facility Available"
+          value={supportData.computerFacilityAvailable ? "Yes" : "No"}
+        />
+        <DetailCard
+          title="Delivery Vehicle Available"
+          value={supportData.deliveryVehicleAvailable ? "Yes" : "No"}
+        />
+      </>
+    ) : (
+      <TouchableOpacity onPress={() => goToSection("support")}>
+        <Text style={{ color: colors.primary, fontWeight: "600" }}>
+          + Add Support Info
+        </Text>
+      </TouchableOpacity>
+    )}
+  </SectionCard>
+</ZiraatCard>
 
-                <DetailsCard
-                  title="Branch Name"
-                  value={financialData.bankDetails?.branchName || "N/A"}
-                />
-              </>
-            )}
-          </>
-        ) : (
-          <TouchableOpacity onPress={() => goToSection("financial")}>
-            <Text style={{ color: colors.primary, fontWeight: "600" }}>
-              + Add Financial Details
-            </Text>
-          </TouchableOpacity>
-        )}
-      </SectionCard>
 
-      <SectionCard
-        title="Support Services"
-        onEdit={supportData ? () => goToSection("support") : undefined}
-        onDelete={supportData ? () => setDeleteSection("support") : undefined}
-        style={
-          !supportData ? { borderColor: colors.warning, borderWidth: 1 } : {}
-        }
-      >
-        {supportData ? (
-          <>
-            <DetailsCard
-              title="Agronomy Advisory Support"
-              value={supportData.advisorySupport ? "Yes" : "No"}
-            />
-
-            <DetailsCard
-              title="Field Staff Available"
-              value={supportData.fieldStaffAvailable ? "Yes" : "No"}
-            />
-
-            {supportData?.fieldStaffAvailable && (
-              <>
-                <DetailsCard
-                  title="Number of Field Staff"
-                  value={supportData.fieldStaffCount || "N/A"}
-                />
-              </>
-            )}
-
-            <DetailsCard
-              title="After Sales Service"
-              value={supportData.afterSalesService || "N/A"}
-            />
-
-            <DetailsCard
-              title="Preferred Delivery Range (sq. km)"
-              value={
-                supportData.deliveryRange
-                  ? `${supportData.deliveryRange} sq.km`
-                  : "N/A"
-              }
-            />
-
-            <DetailsCard
-              title="Computer Facility Available"
-              value={supportData.computerAvailable ? "Yes" : "No"}
-            />
-
-            <DetailsCard
-              title="Delivery Vehicle Available"
-              value={supportData.vehicleAvailable ? "Yes" : "No"}
-            />
-          </>
-        ) : (
-          <TouchableOpacity onPress={() => goToSection("support")}>
-            <Text style={{ color: colors.primary, fontWeight: "600" }}>
-              + Add Support Info
-            </Text>
-          </TouchableOpacity>
-        )}
-      </SectionCard>
-
-      <ConfirmDeleteModal
-        visible={!!deleteSection}
-        title="Confirm deletion"
-        description="Are you sure you want to delete this information?"
-        onCancel={() => setDeleteSection(null)}
-        onConfirm={confirmDelete}
-        loading={deleting}
-      />
     </ScreenLayout>
   );
 }
