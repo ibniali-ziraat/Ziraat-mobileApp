@@ -136,7 +136,7 @@ export default function DetailsCard({
                   {item.icon}
                 </View>
 
-                <View>
+                <View style={{ flex: 1 }}>
                   <Text
                     style={{
                       fontSize: 13,
@@ -146,8 +146,13 @@ export default function DetailsCard({
                   >
                     {item.title}
                   </Text>
-
-                  <Text style={{ color: colors.neutral, fontSize: 14 }}>
+                  <Text
+                    style={{
+                      color: colors.neutral,
+                      fontSize: 14,
+                      flexWrap: "wrap", // ← allow line wrap
+                    }}
+                  >
                     {item.value || "—"}
                   </Text>
                 </View>

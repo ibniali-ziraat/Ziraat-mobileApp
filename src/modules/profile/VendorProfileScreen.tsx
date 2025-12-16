@@ -172,7 +172,7 @@ export default function VendorProfileScreen() {
       <DetailsCard
         heading="Business Details"
         items={
-          productsData
+          profileData
             ? [
                 {
                   title: "Shop Name",
