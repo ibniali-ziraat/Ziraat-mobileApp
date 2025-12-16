@@ -67,12 +67,12 @@ export default function AddressScreen() {
       <FormProvider {...form}>
         <BackHeader
           title="Address"
-          onPress={() => router.push(ROUTES.USER.PROFILE)}
+          onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
         <AddressSection control={control} errors={errors} data={data} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.push(ROUTES.USER.PROFILE)}
+          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
           submitLabel={data ? "Update Adress" : "Add Address"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}

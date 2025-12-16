@@ -34,7 +34,6 @@
 //   );
 // }
 
-
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -48,12 +47,8 @@ export default function SectionCard({
   style,
 }) {
   return (
-    <View
-      className="  rounded-sm mb-5 mt-5"
-      style={style}
-    >
+    <View className="  rounded-sm mb-5 mt-5" style={style}>
       <View className="flex-row justify-between mb-3">
-
         {/* LEFT : Icon + Title */}
         <View className="flex-row items-center gap-2">
           {icon}

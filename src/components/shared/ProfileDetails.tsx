@@ -1,181 +1,194 @@
-
 import { colors } from "@/src/constants/colors";
 import {
-    Calendar,
-    Mail,
-    PencilLine,
-    Phone,
-    User,
-    VenetianMask,
+  Calendar,
+  Mail,
+  PencilLine,
+  Phone,
+  User,
+  VenetianMask,
 } from "lucide-react-native";
 import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import ZiraatCard from "./ZiraatProfileCard";
 
 interface ProfileDetailsProps {
-    email?: string;
-    phone?: string;
-    age?: number;
-    gender?: string;
-    createdOn?: string;
-    onEdit?: () => void;
+  email?: string;
+  phone?: string;
+  age?: number;
+  gender?: string;
+  createdOn?: string;
+  onEdit?: () => void;
 }
 
 export default function ProfileDetails({
-    email,
-    phone,
-    age,
-    gender,
-    createdOn,
-    onEdit,
+  email,
+  phone,
+  age,
+  gender,
+  createdOn,
+  onEdit,
 }: ProfileDetailsProps) {
+  const screenWidth = Dimensions.get("window").width;
+  const cardWidth = screenWidth - 32;
 
-    const screenWidth = Dimensions.get("window").width;
-    const cardWidth = screenWidth - 32; 
+  const fields = [
+    {
+      title: "Email",
+      value: email,
+      icon: <Mail size={22} color={colors.primary} />,
+    },
+    {
+      title: "Phone",
+      value: phone,
+      icon: <Phone size={22} color={colors.primary} />,
+    },
+    {
+      title: "Age",
+      value: age,
+      icon: <User size={22} color={colors.primary} />,
+    },
+    {
+      title: "Gender",
+      value: gender,
+      icon: <VenetianMask size={22} color={colors.primary} />,
+    },
+    {
+      title: "User Since",
+      value: createdOn?.split("T")[0],
+      icon: <Calendar size={22} color={colors.primary} />,
+    },
+  ];
 
-    const fields = [
-        { title: "Email", value: email, icon: <Mail size={22} color={colors.primary} /> },
-        { title: "Phone", value: phone, icon: <Phone size={22} color={colors.primary} /> },
-        { title: "Age", value: age, icon: <User size={22} color={colors.primary} /> },
-        { title: "Gender", value: gender, icon: <VenetianMask size={22} color={colors.primary} /> },
-        {
-            title: "User Since",
-            value: createdOn?.split("T")[0],
-            icon: <Calendar size={22} color={colors.primary} />,
-        },
-    ];
-
-    return (
-        <ZiraatCard
-            width="100%"
-            height={fields.length * 80 + 140} 
-            paddingHorizontal={1.4}
-            paddingVertical={1.4}
-            marginVertical={1}
-            borderRadius={24}
-            backgroundColor="#FFFFFF"
-            borderWidth={1}
-            borderColor="#f0f0f0"
+  return (
+    <ZiraatCard
+      width="100%"
+      height={fields.length * 80 + 140}
+      paddingHorizontal={1}
+      paddingVertical={1.4}
+      marginVertical={1}
+      borderRadius={24}
+      backgroundColor="#FFFFFF"
+      borderWidth={1}
+      borderColor="#f0f0f0"
+    >
+      {/* Header Row */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 16,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "700",
+            color: colors.dark,
+            letterSpacing: 0.4,
+          }}
         >
-            {/* Header Row */}
+          Personal Details
+        </Text>
+
+        <TouchableOpacity
+          onPress={onEdit}
+          style={{
+            padding: 8,
+            paddingHorizontal: 12,
+            borderRadius: 14,
+            shadowColor: "#000",
+            shadowOpacity: 0.15,
+            shadowOffset: { width: 0, height: 1 },
+            shadowRadius: 3,
+          }}
+          activeOpacity={0.7}
+        >
+          <PencilLine size={18} color={colors.primary} />
+        </TouchableOpacity>
+      </View>
+
+      {/* Accent Underline */}
+      <View
+        style={{
+          height: 3,
+          width: 80,
+          backgroundColor: colors.primary,
+          opacity: 0.25,
+          borderRadius: 10,
+          marginBottom: 20,
+        }}
+      />
+
+      {/* Details List */}
+      <View style={{ gap: 22 }}>
+        {fields.map((item, index) => (
+          <View key={item.title}>
             <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: 16,
-                }}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingVertical: 6,
+              }}
             >
+              {/* Icon Badge */}
+              <View
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 14,
+                  backgroundColor: colors.primary + "18",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 14,
+                  shadowColor: "#000",
+                  shadowOpacity: 0.1,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowRadius: 4,
+                }}
+              >
+                {item.icon}
+              </View>
+
+              {/* Text Block */}
+              <View>
                 <Text
-                    style={{
-                        fontSize: 22,
-                        fontWeight: "700",
-                        color: colors.dark,
-                        letterSpacing: 0.4,
-                    }}
+                  style={{
+                    color: colors.dark,
+                    fontSize: 13,
+                    fontWeight: "600",
+                    marginBottom: 2,
+                  }}
                 >
-                    Personal Details
+                  {item.title}
                 </Text>
 
-                <TouchableOpacity
-                    onPress={onEdit}
-                    style={{
-                        padding: 8,
-                        paddingHorizontal: 12,
-                        borderRadius: 14,
-                        shadowColor: "#000",
-                        shadowOpacity: 0.15,
-                        shadowOffset: { width: 0, height: 1 },
-                        shadowRadius: 3,
-                    }}
-                    activeOpacity={0.7}
+                <Text
+                  style={{
+                    color: colors.neutral,
+                    fontSize: 14,
+                    paddingVertical: 2,
+                  }}
                 >
-                    <PencilLine size={18} color={colors.primary} />
-                </TouchableOpacity>
+                  {item.value || "—"}
+                </Text>
+              </View>
             </View>
 
-            {/* Accent Underline */}
-            <View
+            {/* Divider */}
+            {index < fields.length - 1 && (
+              <View
                 style={{
-                    height: 3,
-                    width: 80,
-                    backgroundColor: colors.primary,
-                    opacity: 0.25,
-                    borderRadius: 10,
-                    marginBottom: 20,
+                  marginLeft: 62,
+                  marginTop: 4,
+                  height: 1,
+                  backgroundColor: colors.neutral + "30",
+                  borderRadius: 10,
                 }}
-            />
-
-            {/* Details List */}
-            <View style={{ gap: 22 }}>
-                {fields.map((item, index) => (
-                    <View key={item.title}>
-
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                paddingVertical: 6,
-                            }}
-                        >
-                            {/* Icon Badge */}
-                            <View
-                                style={{
-                                    width: 48,
-                                    height: 48,
-                                    borderRadius: 14,
-                                    backgroundColor: colors.primary + "18",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    marginRight: 14,
-                                    shadowColor: "#000",
-                                    shadowOpacity: 0.1,
-                                    shadowOffset: { width: 0, height: 2 },
-                                    shadowRadius: 4,
-                                }}
-                            >
-                                {item.icon}
-                            </View>
-
-                            {/* Text Block */}
-                            <View>
-                                <Text
-                                    style={{
-                                        color: colors.dark,
-                                        fontSize: 13,
-                                        fontWeight: "600",
-                                        marginBottom: 2,
-                                    }}
-                                >
-                                    {item.title}
-                                </Text>
-
-                                <Text
-                                    style={{
-                                        color: colors.neutral,
-                                        fontSize: 14,
-                                        paddingVertical: 2,
-                                    }}
-                                >
-                                    {item.value || "—"}
-                                </Text>
-                            </View>
-                        </View>
-
-                        {/* Divider */}
-                        {index < fields.length - 1 && (
-                            <View
-                                style={{
-                                    marginLeft: 62,
-                                    marginTop: 4,
-                                    height: 1,
-                                    backgroundColor: colors.neutral + "30",
-                                    borderRadius: 10,
-                                }}
-                            />
-                        )}
-                    </View>
-                ))}
-            </View>
-        </ZiraatCard>
-    );
+              />
+            )}
+          </View>
+        ))}
+      </View>
+    </ZiraatCard>
+  );
 }
