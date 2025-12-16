@@ -15,7 +15,7 @@ export default function WeatherCard({ current }) {
             <Text className="text-white text-7xl font-bold">
               {current?.tempC}°
             </Text>
-            <Sun size={65} color="#c7611f" />
+            <Sun size={65} color="yellow" />
           </View>
 
           <Text className="text-white/90 text-lg font-medium mt-1">

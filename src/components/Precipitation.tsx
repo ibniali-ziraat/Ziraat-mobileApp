@@ -14,7 +14,8 @@ export function Precipitation({
     return (
         <ZiraatCard
             width="48%"
-            height="9%"
+            height="22%"
+            marginVertical={0.2}
             paddingHorizontal={1}
             paddingVertical={1}
             marginBottom={1}

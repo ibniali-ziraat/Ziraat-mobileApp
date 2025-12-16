@@ -17,7 +17,6 @@ export default function SearchBar({ search, setSearch }: Props) {
                 rounded-full
                 px-4 py-2
                 shadow-sm 
-                border border-neutral
                  mb-6
             "
             style={{ height: 48 }}

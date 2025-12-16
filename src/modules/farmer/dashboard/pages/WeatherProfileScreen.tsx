@@ -1,11 +1,9 @@
 import { useCallback, useState } from "react";
 import {
-    ScrollView,
     RefreshControl,
     Text,
     View,
 } from "react-native";
-
 import BackHeader from "@/src/components/shared/BackHeader";
 import SearchBar from "@/src/components/shared/SearchBar";
 import WeatherCard from "@/src/modules/home/components/weatherCard";
@@ -16,11 +14,16 @@ import WindCard from "@/src/components/WindCard";
 import VisibilityCard from "@/src/components/VisibilityCard";
 import HumidityCard from "@/src/components/HumidityCard";
 import AveragesCard from "@/src/components/AveragesCard";
-import { SunsetCard } from "@/src/components/SunsetCard";
 import { Precipitation } from "@/src/components/Precipitation";
-import { PressureCard } from "@/src/components/PressureCard";
-import { UVIndexCard } from "@/src/components/UVIndexCard";
-// import MoonCard from "@/src/components/MoonCard"; // optional
+
+import FeelsLikeCard from "@/src/components/FeelsLikeCard";
+import UVCard from "@/src/components/UVCard";
+import SunsetCard from "@/src/components/SunsetCard";
+import PressureCard from "@/src/components/PressureCard";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { MoonCard } from "@/src/components/MoonCard";
+import PrecipitationCard from "@/src/components/PrecipitationCard";
+
 
 export default function WeatherScreen() {
     const [refreshing, setRefreshing] = useState(false);
@@ -49,7 +52,7 @@ export default function WeatherScreen() {
     }, []);
 
     return (
-        <ScrollView
+        <ScreenLayout
             className="flex-1 bg-white"
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -60,20 +63,22 @@ export default function WeatherScreen() {
                 desc="Manage Your Weather & Orchards"
             />
 
-            <View className="pb-10 ">
+
+            <View className="h-fit pb-10"
+                style={{ backgroundColor: "red" }}
+            >
                 <SearchBar search={search} setSearch={setSearch} />
 
-                {/* Location */}
                 <View className="mb-4">
-                    <Text className="text-black text-3xl font-bold">
+                    <Text className="text-dark text-3xl font-bold">
                         {current.location}
                     </Text>
-                    <Text className="text-black/70 mt-1 text-sm">
+                    <Text className="text-dark mt-1 text-md">
                         Updated: {current.lastUpdated}
                     </Text>
                 </View>
 
-                {/* Main Weather */}
+
                 <WeatherCard
                     current={{
                         tempC: 27,
@@ -87,48 +92,42 @@ export default function WeatherScreen() {
 
 
                 <HourlyCard />
-                <StormCard />
-                <WeeklyCard />
+                {/* <StormCard /> */}
+                {/* <WeeklyCard /> */}
 
-                <View className="h-4" />
 
-                <WindCard />
-
-                {/* GRID ROW 1 */}
-                <View className="flex-row justify-between mt-4">
-                    <VisibilityCard visibility={current.visibility} />
-                    <SunsetCard sunset={current.sunset} sunrise={current.sunrise} />
-                </View>
-
-                {/* GRID ROW 2 */}
-                <View className="flex-row justify-between">
-
-                    <UVIndexCard value={current.uv} />
+                {/* <View className="mt-6 flex-row justify-between ">
+                    <UVCard />
+                    <FeelsLikeCard />
+                </View> */}
+                {/* <WindCard /> */}
+                {/* <View className="mt-6 flex-row justify-between ">
+                    <PressureCard />
                     <Precipitation />
-                </View>
 
-                {/* GRID ROW 3 */}
-                <View className="flex-row justify-between">
-                    <HumidityCard humidity={current.humidity} />
-                    <PressureCard pressure={current.pressure} />
-                </View>
+                </View> */}
 
-                {/* Optional full-width */}
-                {/* <MoonCard /> */}
 
-                <View className="h-6" />
+                {/* <View className="mt-6 flex-row justify-between">
+                    <VisibilityCard />
+                    <SunsetCard />
 
-                <View className="flex-row justify-between">
+                </View> */}
+                {/* <View className="mt-6 flex-row justify-between">
+                    <MoonCard />
                     <AveragesCard />
+                    <HumidityCard />
 
-                </View>
+                </View> */}
+                {/* <PrecipitationCard /> */}
 
-                <View className="h-16" />
+            </View>
+            <View className="h-16">
 
                 <Text className="text-dark text-center text-sm">
                     Data provided by Zirat Weather Services.
                 </Text>
             </View>
-        </ScrollView>
+        </ScreenLayout >
     );
 }

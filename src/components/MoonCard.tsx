@@ -10,7 +10,7 @@ type Props = {
 };
 
 export function MoonCard({
-    phase = "GIBBEUSE DÉCROISSANTE",
+    phase = "Waxing Cresent",
     illumination = 90,
     nextRise = "00:57",
     nextFullMoon = "26 j",
@@ -18,15 +18,15 @@ export function MoonCard({
     return (
         <ZiraatCard
             width="100%"
-            height="9%"
+            height="7%"
             paddingHorizontal={1}
             paddingVertical={1}
             marginBottom={1}
             className="justify-between"
         >
             <View className="flex-row items-center">
-                <Moon size={16} color="#9CA3AF" />
-                <Text className="ml-2 text-xs font-bold tracking-wide text-neutral-400 uppercase">
+                <Moon size={16} color="#c7611f" />
+                <Text className="ml-2 text-sm font-bold tracking-wide text-neutral-400 uppercase">
                     {phase}
                 </Text>
             </View>
@@ -42,7 +42,7 @@ export function MoonCard({
 
                 <Image
                     source={{
-                        uri: "https://images.pexels.com/photos/30243836/pexels-photo-30243836.jpeg",
+                        uri: "https://images.pexels.com/photos/47367/full-moon-moon-bright-sky-47367.jpeg",
                     }}
                     className="w-28 h-28 rounded-full"
                 />
@@ -61,5 +61,5 @@ function InfoRow({ label, value }: { label: string; value: string }) {
 }
 
 function Divider() {
-    return <View className="h-px bg-white/10" />;
+    return <View className="h-px bg-dark" />;
 }

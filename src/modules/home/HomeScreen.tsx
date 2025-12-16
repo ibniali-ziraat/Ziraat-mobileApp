@@ -30,7 +30,7 @@ export default function HomeScreen() {
 
 
           {/* Weather */}
-          <SectionTitle title="Today's Weatherfghjk" icon="sunny-outline" />
+          <SectionTitle title="Today's Weather" icon="sunny-outline" />
           <TouchableOpacity onPress={() => router.push("/dashboards/(farmer)/weather-profile")}>
             <WeatherCard
               current={{

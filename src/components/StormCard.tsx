@@ -1,97 +1,75 @@
-import {
-    View,
-    Text,
-    ScrollView,
-    Dimensions,
-    NativeSyntheticEvent,
-    NativeScrollEvent
-} from "react-native";
-import { useState } from "react";
-// Assuming ZiraatProfileCard is a valid component
-import ZiraatProfileCard from "./shared/ZiraatProfileCard";
+import { View, Text } from "react-native";
+import { Wind } from "lucide-react-native";
 import ZiraatCard from "./shared/ZiraatProfileCard";
-import { colors } from "../constants/colors";
+import WeatherCarousel, { SLIDE_WIDTH } from "./WeatherCarousel";
 
-const { width } = Dimensions.get("window");
-// ✅ The visible width of a single slide on the screen
-const SLIDE_WIDTH = width - 25;
+const STORM_ALERTS = [
+    {
+        title: "Storms possible Thursday morning",
+        chance: "41%",
+    },
+    {
+        title: "Heavy rain & lightning expected",
+        chance: "56%",
+    },
+];
 
 export default function StormCard() {
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    const slides = [
-        {
-            title: "Six Hour Storm Outlook",
-            text: "Thunderstorms possible after 12 pm",
-        },
-        {
-            title: "Rain Probability",
-            text: "Heavy rainfall expected in afternoon",
-        },
-        {
-            title: "Wind Advisory",
-            text: "Strong gusts up to 35 km/h",
-        },
-    ];
-
-    const handleScrollEnd = (
-        e: NativeSyntheticEvent<NativeScrollEvent>
-    ) => {
-        const offsetX = e.nativeEvent.contentOffset.x;
-
-        // 💡 Correction: We need to divide the scrolled offset 
-        // by the exact width of ONE slide (SLIDE_WIDTH) to get the index.
-        // Math.round is used because snapToInterval ensures the scroll 
-        // lands close to a multiple of SLIDE_WIDTH.
-        const rawIndex = Math.round(offsetX / SLIDE_WIDTH);
-
-        // clamp index (VERY IMPORTANT)
-        const index = Math.min(
-            Math.max(rawIndex, 0),
-            slides.length - 1
-        );
-
-        setActiveIndex(index);
-    };
-
     return (
-        // Note: I've added a container style for demonstration 
-        // to show the alignment is correct if needed.
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.bgColor }}>
-            <ZiraatCard
-                width={SLIDE_WIDTH}    // ✅ MUST match slide width
-                height={120}
-                marginVertical={1}
-                paddingBottom={1}        // ✅ numeric height only
-            >
-                <ScrollView
-                    horizontal
-                    snapToInterval={SLIDE_WIDTH}
-                    snapToAlignment="start"
-                    decelerationRate="fast"
-                    showsHorizontalScrollIndicator={false}
-                    onMomentumScrollEnd={handleScrollEnd}
-                    // It's often better to align the items in the View component 
-                    // within the map, and remove contentContainerStyle here, 
-                    // but keeping it for consistency.
-                    contentContainerStyle={{ alignItems: "center" }}
-                >
-                    {slides.map((item, index) => (
+        <ZiraatCard
+            width="100%"
+            height="3.3%"
+            marginVertical={0.6}
+            paddingHorizontal={1}
+            paddingVertical={1.5}
+        >
+            <WeatherCarousel
+                data={STORM_ALERTS}
+                renderItem={({ item }) => (
+                    <View
+                        style={{
+                            width: SLIDE_WIDTH, // ✅ FIXED
+                            paddingHorizontal: 8,
+                        }}
+                    >
+                        {/* HEADER */}
                         <View
-                            key={index}
                             style={{
-                                width: SLIDE_WIDTH, // 👈 Must be SLIDE_WIDTH
+                                flexDirection: "row",
                                 alignItems: "center",
+                                marginBottom: 10,
+                            }}
+                        >
+                            <Wind size={18} color="#c7611f" />
+                            <Text
+                                style={{
+                                    marginLeft: 8,
+                                    fontSize: 14,
+                                    color: "#333333",
+                                    fontWeight: "500",
+                                    justifyContent: "center"
+                                }}
+                            >
+                                Storms Coming
+                            </Text>
+                        </View>
+
+                        {/* CONTENT */}
+                        <View
+                            style={{
+                                flexDirection: "row",
                                 justifyContent: "center",
-                                paddingHorizontal: 16,
+                                alignItems: "center",
                             }}
                         >
                             <Text
                                 style={{
+                                    color: "#333333",
                                     fontSize: 16,
-                                    fontWeight: "700",
-                                    color: "#111827",
-                                    textAlign: "center",
+                                    fontWeight: "600",
+                                    width: "70%",
+
+
                                 }}
                             >
                                 {item.title}
@@ -99,42 +77,19 @@ export default function StormCard() {
 
                             <Text
                                 style={{
-                                    fontSize: 13,
-                                    color: "#4B5563",
-                                    marginTop: 6,
-                                    textAlign: "center",
+                                    color: "#333333",
+                                    fontSize: 26,
+
+                                    fontWeight: "700",
+                                    justifyContent: "center"
                                 }}
                             >
-                                {item.text}
+                                {item.chance}
                             </Text>
                         </View>
-                    ))}
-                </ScrollView>
-
-                {/* Pagination dots */}
-                <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "center",
-                        marginTop: 10,
-                    }}
-                >
-                    {slides.map((_, i) => (
-                        <View
-                            key={i}
-                            style={{
-                                width: i === activeIndex ? 14 : 8,
-                                height: 8,
-                                borderRadius: 4,
-                                marginHorizontal: 4,
-                                // Color changes based on the activeIndex state
-                                backgroundColor:
-                                    i === activeIndex ? "#111827" : "#D1D5DB",
-                            }}
-                        />
-                    ))}
-                </View>
-            </ZiraatCard>
-        </View>
+                    </View>
+                )}
+            />
+        </ZiraatCard>
     );
 }
