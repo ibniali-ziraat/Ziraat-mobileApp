@@ -20,7 +20,7 @@ export default function ScreenLayout({
     >
       <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
         <ScrollView
-          contentContainerStyle={{ flexGrow: 1, paddingBottom: 40 }}
+          contentContainerStyle={{  paddingBottom: Platform.OS=="android"?40:100 }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >

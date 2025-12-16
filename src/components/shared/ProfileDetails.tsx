@@ -141,7 +141,7 @@ export default function ProfileDetails({
                                 <Text
                                     style={{
                                         color: colors.dark,
-                                        fontSize: 15,
+                                        fontSize: 13,
                                         fontWeight: "600",
                                         marginBottom: 2,
                                     }}

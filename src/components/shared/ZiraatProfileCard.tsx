@@ -36,8 +36,8 @@ export default function ZiraatCard({
 }) {
   const REM = 16;
 
-  if (!width || !height) {
-    throw new Error("ZiraatCard requires width and height props.");
+  if (!width) {
+    throw new Error("ZiraatCard requires width  props.");
   }
 
   // PADDING
@@ -87,41 +87,44 @@ export default function ZiraatCard({
 
   // SHADOW WRAPPER (STATIC PER PLATFORM)
   const ShadowWrapper = ({ children }) => (
-    <View
-      style={[
-        styles.shadowWrapper,
-        {
-          width,
-          height,
-          borderRadius,
-          ...computedMargin,
-        },
-      ]}
-    >
-      {children}
-    </View>
-  );
+  <View
+    style={[
+      styles.shadowWrapper,
+      {
+        width,
+        ...(height ? { height } : {}), // 👈 conditional height
+        borderRadius,
+        ...computedMargin,
+      },
+    ]}
+  >
+    {children}
+  </View>
+);
+
 
   // INNER CARD (NO SHADOW)
-  const CardInner = (
-    <View
-      className={`overflow-hidden ${className}`}
-      style={[
-        {
-          width: "100%",
-          height: "100%",
-          borderRadius,
-          backgroundColor,
-          borderWidth,
-          borderColor,
-          ...computedPadding,
-        },
-        style,
-      ]}
-    >
-      {children}
-    </View>
-  );
+ const CardInner = (
+  <View
+    className={`overflow-hidden ${className}`}
+    style={[
+      {
+        width: "100%",
+        borderRadius,
+        backgroundColor,
+        borderWidth,
+        borderColor,
+        ...computedPadding,
+
+        // ✅ ONLY apply height when explicitly provided
+        ...(height ? { height: "100%" } : {}),
+      },
+      style,
+    ]}
+  >
+    {children}
+  </View>
+);
 
   return (
     <ShadowWrapper>

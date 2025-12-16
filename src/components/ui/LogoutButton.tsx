@@ -7,7 +7,7 @@ export default function LogoutButton({ onPress }) {
         <TouchableOpacity
             onPress={onPress}
             className="w- py-4 rounded-xl flex-row items-center justify-center"
-            style={{ backgroundColor: colors.primary }} // root color only
+            style={{ backgroundColor: colors.error }} // root color only
         >
             <LogOut size={20} color={colors.light} strokeWidth={2.5} />
             <Text
