@@ -104,7 +104,6 @@ export const AuthProvider = ({ children }: any) => {
   const logoutUser = async () => {
     await clear("user_token");
     await clear("user_id");
-    router.replace("/auth/user");
 
     setUserTokenState(null);
     setUserIdState(null);
@@ -112,6 +111,7 @@ export const AuthProvider = ({ children }: any) => {
 
     // Non-stored fields also reset
     setUserProfileIdState(null);
+    // router.replace("/auth/user");
   };
 
   const logoutVendor = () => {

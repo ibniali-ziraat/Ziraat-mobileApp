@@ -125,7 +125,7 @@ export default function VendorProfileScreen() {
     }
   };
 
-  if (!profileData || deleting) return <Loader />;
+  if (!profileData) return <Loader />;
 
   return (
     <ScreenLayout>
