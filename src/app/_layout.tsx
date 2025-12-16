@@ -13,6 +13,7 @@ import "../../styles/global.css";
 import { colors } from "../constants/colors";
 import AppProvider from "../contexts/AppProvider";
 import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
+import RouteGuard from "../components/RouteGuard";
 
 registerTranslation("en-GB", enGB);
 
@@ -25,24 +26,26 @@ export default function RootLayout() {
 
       <AppProvider>
         <DisableBackWrapper>
-          <SafeAreaView
-            edges={["left", "right"]}
-            style={{
-              flex: 1,
-              backgroundColor: colors.bgColor,
-              paddingTop: insets.top + 20,
-              paddingHorizontal: 10,
-            }}
-          >
-            <PaperProvider>
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  animation: "slide_from_right",
-                }}
-              />
-            </PaperProvider>
-          </SafeAreaView>
+          <RouteGuard>
+            <SafeAreaView
+              edges={["left", "right"]}
+              style={{
+                flex: 1,
+                backgroundColor: colors.bgColor,
+                paddingTop: insets.top + 20,
+                paddingHorizontal: 10,
+              }}
+            >
+              <PaperProvider>
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                    animation: "slide_from_right",
+                  }}
+                />
+              </PaperProvider>
+            </SafeAreaView>
+          </RouteGuard>
         </DisableBackWrapper>
       </AppProvider>
 

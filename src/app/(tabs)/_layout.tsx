@@ -15,7 +15,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const { userId, roleMode } = useAuth();
-  if (!userId) return <Redirect href="/auth/user" />;
 
   const { data } = useProfileQuery(userId);
   if (!data || !userId) return <Loader />;

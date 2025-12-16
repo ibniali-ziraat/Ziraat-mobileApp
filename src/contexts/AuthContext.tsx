@@ -111,7 +111,7 @@ export const AuthProvider = ({ children }: any) => {
 
     // Non-stored fields also reset
     setUserProfileIdState(null);
-    router.replace("/auth/user");
+    // router.replace("/auth/user");
   };
 
   const logoutVendor = () => {

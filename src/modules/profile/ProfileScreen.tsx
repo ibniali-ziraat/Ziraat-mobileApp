@@ -226,12 +226,8 @@ export default function UserProfileScreen() {
         </ZiraatCard>
 
         {/* LOGOUT BUTTON */}
-        <LogoutButton
-          onPress={async () => {
-            await logoutUser();
-            router.replace("/auth/user");
-          }}
-        />
+        <LogoutButton onPress={logoutUser} />
+
         <ConfirmDeleteModal
           visible={!!deleteSection}
           title="Confirm deletion"
