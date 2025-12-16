@@ -1,3 +1,4 @@
+import RouteGuard from "@/src/components/RouteGuard";
 import CropHeader from "@/src/components/shared/CropHeader";
 import HomeHeader from "@/src/components/shared/HomeHeader";
 import Loader from "@/src/components/shared/Loader";
@@ -13,20 +14,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { userId, roleMode, userToken } = useAuth();
-
-  if (!userToken) {
-    return <Redirect href="/auth/user" />;
-  }
+  const { userId, roleMode } = useAuth();
 
   const { data } = useProfileQuery(userId);
-  console.log(userId, data);
-
-  console.log("user profile data...");
-
-  if (!userId || !data) {
-    return <Loader />;
-  }
+  if (!data || !userId) return <Loader />;
 
   return (
     <Tabs

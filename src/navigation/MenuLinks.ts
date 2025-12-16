@@ -4,7 +4,7 @@ export const MenuLinks = {
       title: "Farmer Settings",
       routes: [
         { label: "Profile", screen: "user-profile" },
-        { label: "Notifications", screen: "settings/farmer/notifications" },
+        { label: "Notifications", screen: "notifications" },
         { label: "Support", screen: "settings/farmer/support" },
         { label: "Payment Methods", screen: "settings/farmer/payments" },
         { label: "Saved Addresses", screen: "settings/farmer/addresses" },

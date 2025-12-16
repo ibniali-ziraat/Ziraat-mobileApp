@@ -109,7 +109,19 @@ export default function VendorProfileScreen() {
     }
   };
 
-  if (loadingVendorProfile) return <Loader />
+  const confirmDelete = async () => {
+    if (!deleteSection) return;
+
+    try {
+      setDeleting(true);
+      await handleDelete(deleteSection);
+      setDeleteSection(null);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  if (!profileData) return <Loader />;
 
   return (
 

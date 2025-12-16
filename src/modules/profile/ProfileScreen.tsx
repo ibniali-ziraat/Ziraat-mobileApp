@@ -320,5 +320,23 @@ export default function UserProfileScreen() {
       />
     </ScreenLayout>
     // </View>
+              </TouchableOpacity>
+            )}
+          </SectionCard>
+        </ZiraatCard>
+
+        {/* LOGOUT BUTTON */}
+        <LogoutButton onPress={logoutUser} />
+
+        <ConfirmDeleteModal
+          visible={!!deleteSection}
+          title="Confirm deletion"
+          description="Are you sure you want to delete this information?"
+          onCancel={() => setDeleteSection(null)}
+          onConfirm={confirmDelete}
+          loading={deleting}
+        />
+      </ScreenLayout>
+    </View>
   );
 }

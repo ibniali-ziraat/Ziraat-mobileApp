@@ -8,11 +8,13 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 
 import "../../styles/global.css";
-import RouteGuard from "../components/RouteGuard";
 import { colors } from "../constants/colors";
 import AppProvider from "../contexts/AppProvider";
+import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
+import RouteGuard from "../components/RouteGuard";
 
 registerTranslation("en-GB", enGB);
 
@@ -21,48 +23,31 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {/* STATUS BAR */}
-      <StatusBar
-        style="dark"
-        // backgroundColor={colors.primary}
-        translucent
-        animated
-      />
-
-      {/* STATUS BAR EXTENSION (THIS IS THE KEY) */}
-      {/* {Platform.OS !== "web" && (
-        <View
-          style={{
-            height: insets.top + 20, // 👈 extra bottom padding
-            backgroundColor: colors.primary,
-          }}
-        />
-      )} */}
+      <StatusBar style="dark" translucent animated />
 
       <AppProvider>
-        <RouteGuard>
-          <SafeAreaView
-            edges={["left", "right",]}
-            style={{
-              flex: 1,
-              backgroundColor: colors.bgColor,
-              paddingTop: insets.top + 20,
-              paddingHorizontal: 15,
-            }}
-          >
-            <PaperProvider>
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  animation: "slide_from_right",
-                  animationDuration: 280,
-                }}
-              >
-                <Stack.Screen name="(tabs)/_layout" />
-              </Stack>
-            </PaperProvider>
-          </SafeAreaView>
-        </RouteGuard>
+        <DisableBackWrapper>
+          <RouteGuard>
+            <SafeAreaView
+              edges={["left", "right"]}
+              style={{
+                flex: 1,
+                backgroundColor: colors.bgColor,
+                paddingTop: insets.top + 20,
+                paddingHorizontal: 10,
+              }}
+            >
+              <PaperProvider>
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                    animation: "slide_from_right",
+                  }}
+                />
+              </PaperProvider>
+            </SafeAreaView>
+          </RouteGuard>
+        </DisableBackWrapper>
       </AppProvider>
 
       <Toasts defaultPosition={ToastPosition.TOP} />
