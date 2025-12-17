@@ -7,7 +7,6 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
 
 import "../../styles/global.css";
 import { colors } from "../constants/colors";

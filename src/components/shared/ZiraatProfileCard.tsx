@@ -46,29 +46,29 @@ export default function ZiraatCard({
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingTop
-        ? paddingTop * REM
-        : 0,
+          ? paddingTop * REM
+          : 0,
 
     paddingBottom:
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingBottom
-        ? paddingBottom * REM
-        : 0,
+          ? paddingBottom * REM
+          : 0,
 
     paddingLeft:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingLeft
-        ? paddingLeft * REM
-        : 0,
+          ? paddingLeft * REM
+          : 0,
 
     paddingRight:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingRight
-        ? paddingRight * REM
-        : 0,
+          ? paddingRight * REM
+          : 0,
   };
 
   // MARGIN
@@ -87,44 +87,44 @@ export default function ZiraatCard({
 
   // SHADOW WRAPPER (STATIC PER PLATFORM)
   const ShadowWrapper = ({ children }) => (
-  <View
-    style={[
-      styles.shadowWrapper,
-      {
-        width,
-        ...(height ? { height } : {}), // 👈 conditional height
-        borderRadius,
-        ...computedMargin,
-      },
-    ]}
-  >
-    {children}
-  </View>
-);
+    <View
+      style={[
+        styles.shadowWrapper,
+        {
+          width,
+          ...(height ? { height } : {}), // 👈 conditional height
+          borderRadius,
+          ...computedMargin,
+        },
+      ]}
+    >
+      {children}
+    </View>
+  );
 
 
   // INNER CARD (NO SHADOW)
- const CardInner = (
-  <View
-    className={`overflow-hidden ${className}`}
-    style={[
-      {
-        width: "100%",
-        borderRadius,
-        backgroundColor,
-        borderWidth,
-        borderColor,
-        ...computedPadding,
+  const CardInner = (
+    <View
+      className={`overflow-hidden ${className}`}
+      style={[
+        {
+          width: "100%",
+          borderRadius,
+          backgroundColor,
+          borderWidth,
+          borderColor,
+          ...computedPadding,
 
-        // ✅ ONLY apply height when explicitly provided
-        ...(height ? { height: "100%" } : {}),
-      },
-      style,
-    ]}
-  >
-    {children}
-  </View>
-);
+          // ✅ ONLY apply height when explicitly provided
+          ...(height ? { height: "100%" } : {}),
+        },
+        style,
+      ]}
+    >
+      {children}
+    </View>
+  );
 
   return (
     <ShadowWrapper>

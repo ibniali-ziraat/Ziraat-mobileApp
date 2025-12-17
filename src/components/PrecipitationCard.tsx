@@ -1,11 +1,26 @@
-import { Text, View } from "react-native";
+import { View, Text } from "react-native";
+import { CloudRain, Umbrella } from "lucide-react-native";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 import PrecipitationMap from "./PrecipitationMap";
 
 export default function PrecipitationCard() {
     return (
-        <View className="bg-white rounded-2xl p-4 mb-4 border border-neutral border-sm shadow-md">
-            <Text className="text-black text-md font-semibold mb-3">Precipitation</Text>
+        <ZiraatCard
+            width="100%"
+            paddingHorizontal={1.4}
+            paddingVertical={1.4}
+            className="border border-white"
+        >
+
+            <View className="flex-row items-center mb-3">
+                <Umbrella size={18} color="#c7611f" />
+                <Text className="ml-2 text-md font-semibold tracking-wide text-neutral-600">
+                    PRECIPITATION
+                </Text>
+            </View>
+
+
             <PrecipitationMap />
-        </View>
+        </ZiraatCard>
     );
 }

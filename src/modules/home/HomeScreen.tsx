@@ -1,11 +1,15 @@
-import { ScrollView, View, Text } from "react-native";
-import { ChevronRight } from "lucide-react-native";
-
+import {
+  ScrollView,
+  TouchableOpacity,
+  View
+} from "react-native";
 import FarmOverviewChart from "./components/FarmOverviewChart";
+
 import FarmerTipsCard from "./components/FarmerTipsCard";
 import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
+import { router } from "expo-router";
 
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import ProductCarousel from "@/src/components/shared/ProductCarousel";
@@ -23,36 +27,46 @@ export default function HomeScreen() {
     <AnimatedTabContent>
       <View className="flex-1 bg-white pt-4">
         <ScrollView showsVerticalScrollIndicator={false}>
+
+
           {/* Weather */}
           <SectionTitle title="Today's Weather" icon="sunny-outline" />
-          <WeatherCard />
+          <TouchableOpacity onPress={() => router.push("/dashboards/(farmer)/weather-profile")}>
+            <WeatherCard
+              current={{
+                tempC: 27,
+                feelsLikeC: 29,
+                condition: "Partly cloudy",
+                humidity: 62,
+                windKph: 14,
+                windDir: "NE"
+              }}
+            />
 
+          </TouchableOpacity>
           {/* Quick Actions */}
-          {/* <SectionTitle title="Quick Actions" icon="flash-outline" /> */}
+          <SectionTitle title="Quick Actions" icon="flash-outline" />
           <QuickActions />
-
-          {/* Featured Pesticides */}
 
           {sections.map((section, index) => (
             <View key={index} className="mb-6">
               <SectionTitle title={section.title} icon="flask-outline" />
 
-              <ProductCarousel
-                items={products.slice(...section.slice)}
-                imageMapper={imageMapper}
-              />
+
+              {/* Farm Overview */}
+              <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
+              <FarmOverviewChart />
+
+              {/* Tips */}
+              <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
+              <FarmerTipsCard />
             </View>
           ))}
 
-          {/* Farm Overview */}
-          <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
-          <FarmOverviewChart />
+        </ScrollView >
 
-          {/* Tips */}
-          <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
-          <FarmerTipsCard />
-        </ScrollView>
       </View>
-    </AnimatedTabContent>
+
+    </AnimatedTabContent >
   );
 }
