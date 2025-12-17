@@ -74,7 +74,7 @@ export default function LicenseScreen() {
         showSuccessToast("License Saved!");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       console.error(err);
       showErrorToast("Error saving license");
@@ -85,7 +85,7 @@ export default function LicenseScreen() {
     <ScreenLayout>
       <BackHeader
         title="Licensing & Compliance"
-        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+        onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <LicenseSection errors={errors} control={control} />

@@ -66,7 +66,7 @@ export default function SupportScreen() {
         showSuccessToast("Support info added ");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       showErrorToast("Error saving data", err.message || "Unknown error");
     }
@@ -76,7 +76,7 @@ export default function SupportScreen() {
     <ScreenLayout>
       <BackHeader
         title="Support Services"
-        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+        onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <SupportSection errors={errors} control={control} />

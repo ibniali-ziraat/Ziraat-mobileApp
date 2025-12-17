@@ -94,7 +94,7 @@ export default function AddressSection({ control, errors, data }: Props) {
       <FormInput
         control={control}
         name="village"
-        label="Village"
+        label="Locality"
         error={errors.village?.message}
       />
 

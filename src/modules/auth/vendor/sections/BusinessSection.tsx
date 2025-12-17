@@ -128,7 +128,7 @@ export default function BusinessSection({
       <FormInput
         control={control}
         name="village"
-        label="Village"
+        label="Shop Address"
         error={errors?.village?.message}
       />
       <FormInput

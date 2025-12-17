@@ -94,7 +94,7 @@ export default function ProductsScreen() {
         showSuccessToast("Products Added");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
       showErrorToast("Error saving products", error.message || "Unknown error");
     }
@@ -104,7 +104,7 @@ export default function ProductsScreen() {
     <ScreenLayout>
       <BackHeader
         title="Products & Services"
-        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+        onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <ProductSection errors={errors} control={control} />

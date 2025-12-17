@@ -68,13 +68,13 @@ export default function ProfessionScreen() {
       <FormProvider {...form}>
         <BackHeader
           title="Profession"
-          onPress={() => router.push(ROUTES.USER.PROFILE)}
+          onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
 
         <ProfessionSection control={control} errors={errors} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.push(ROUTES.USER.PROFILE)}
+          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
           submitLabel={data ? "Update Profession" : "Add Profession Info"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
