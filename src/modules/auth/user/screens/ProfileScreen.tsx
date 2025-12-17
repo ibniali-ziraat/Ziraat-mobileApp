@@ -67,7 +67,7 @@ export default function ProfileScreen() {
         desc={
           data ? "Update your profile details" : "Add your profile information"
         }
-        onPress={() => router.push(ROUTES.USER.PROFILE)}
+        onPress={() => router.replace(ROUTES.USER.PROFILE)}
       />
 
       <FormProvider {...form}>
@@ -76,7 +76,7 @@ export default function ProfileScreen() {
         <ProfileSection control={control} errors={errors} data={data} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.push(ROUTES.USER.PROFILE)}
+          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
           submitLabel={data ? "Update Profile" : "Submit"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
