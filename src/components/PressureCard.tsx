@@ -1,6 +1,6 @@
-import { View, Text } from "react-native";
 import { Gauge } from "lucide-react-native";
-import Svg, { Path, Line, Circle, G } from "react-native-svg";
+import { Text, View } from "react-native";
+import Svg, { Circle, G, Line, Path } from "react-native-svg";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -62,10 +62,10 @@ export default function PressureCard({ value }: Props) {
 
                     <Circle cx={CENTER} cy={CENTER} r={4} fill="#c7611f" />
                 </Svg>
-                {/* <View className=" w-full flex-row justify-between px-4">
+                <View className=" w-full flex-row justify-between px-4">
                     <Text className="text-xs text-neutral-500">Low</Text>
                     <Text className="text-xs text-neutral-500">High</Text>
-                </View> */}
+                </View>
             </View>
         </ZiraatCard>
     );

@@ -11,6 +11,12 @@ export const colors = {
   error: "#f44336",
   bgColor: "#FDFDFD",
 
+  bgGradient: {
+  colors: ["#FAFAFA", "#F1F1F1", "#ECECEC"],
+  locations: [0, 0.6, 1],
+},
+
+
   warning: "#f5a623",
   warningHover: "#d98c1c",
   cardShadow: "rgba(0,0,0,0.6)",

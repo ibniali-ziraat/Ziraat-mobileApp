@@ -1,6 +1,6 @@
-import { View, Text } from "react-native";
 import { Sunset } from "lucide-react-native";
-import Svg, { Path, Circle } from "react-native-svg";
+import { Text, View } from "react-native";
+import Svg, { Circle, Path } from "react-native-svg";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -19,7 +19,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
       <View className="flex-row items-center">
         <Sunset size={18} color="#c7611f" />
         <Text className="ml-2 text-sm font-semibold tracking-wide text-dark">
-          SUNRISE :6: 09AM
+          SUNRISE :6:09AM
         </Text>
       </View>
 

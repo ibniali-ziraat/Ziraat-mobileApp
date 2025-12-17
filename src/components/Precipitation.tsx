@@ -1,5 +1,5 @@
-import { Text, View } from "react-native";
 import { Droplets } from "lucide-react-native";
+import { Text, View } from "react-native";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -16,7 +16,6 @@ export function Precipitation({
             width="48%"
             paddingHorizontal={1}
             paddingVertical={1}
-            marginBottom={1}
             className="justify-between"
         >
 
@@ -33,12 +32,12 @@ export function Precipitation({
             </Text>
 
 
-            <Text className="text-sm text-dark mb-1">
-                in last 24 hours
+            <Text className="text-sm text-dark pt-2">
+                In last 24 hours
             </Text>
 
 
-            <Text className="text-xs text-dark">
+            <Text className="text-xs text-dark pt-2">
                 {note}
             </Text>
         </ZiraatCard>

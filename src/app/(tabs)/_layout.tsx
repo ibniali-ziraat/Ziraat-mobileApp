@@ -1,14 +1,12 @@
-import RouteGuard from "@/src/components/RouteGuard";
 import CropHeader from "@/src/components/shared/CropHeader";
 import HomeHeader from "@/src/components/shared/HomeHeader";
-import Loader from "@/src/components/shared/Loader";
 import MenuHeader from "@/src/components/shared/MenuHeader";
 import ProductHeader from "@/src/components/shared/ProductHeader";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
-import { Redirect, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import { Home, Menu, ShoppingBag, Trees } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
