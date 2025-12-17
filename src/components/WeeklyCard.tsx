@@ -40,7 +40,6 @@ export default function TenDayForecastCard() {
 
     return (
         <ZiraatCard width="100%"
-            height="10%"
             paddingHorizontal={1.5}
             paddingVertical={1.5}>
 

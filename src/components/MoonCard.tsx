@@ -18,14 +18,13 @@ export function MoonCard({
     return (
         <ZiraatCard
             width="100%"
-            height="7%"
             paddingHorizontal={1}
             paddingVertical={1}
             marginBottom={1}
             className="justify-between"
         >
             <View className="flex-row items-center">
-                <Moon size={16} color="#c7611f" />
+                <Moon size={18} color="#c7611f" />
                 <Text className="ml-2 text-sm font-bold tracking-wide text-neutral-400 uppercase">
                     {phase}
                 </Text>

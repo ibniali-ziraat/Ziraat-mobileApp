@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 
 export default function ProductItemCard({ name, stock, unit }) {
   return (
-    <View className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-3">
+    <View className="bg-white p-4 rounded-lg border border-gray-200 mb-3">
       {/* Product Name */}
       <Text className="text-gray-900 text-base font-semibold mb-1">{name}</Text>
 

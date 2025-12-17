@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
-import { useEffect, useRef } from "react";
-import { Animated, Text, View, Dimensions } from "react-native";
 import { CheckCircle, XCircle } from "lucide-react-native";
+import { useEffect, useRef } from "react";
+import { Animated, Text, View } from "react-native";
+import ZiraatCard from "./ZiraatProfileCard";
 
 interface ProgressBarProps {
   progress: number;
@@ -19,115 +20,124 @@ export default function ProfileProgressBar({
   useEffect(() => {
     Animated.timing(anim, {
       toValue: progress,
-      duration: 500,
+      duration: 600,
       useNativeDriver: false,
     }).start();
   }, [progress]);
 
-  const width = anim.interpolate({
+  const animatedWidth = anim.interpolate({
     inputRange: [0, 100],
     outputRange: ["0%", "100%"],
   });
 
-  const allSections = [...completedSections, ...missingSections];
-  const screenWidth = Dimensions.get("window").width;
-  const itemWidth = (screenWidth - 64) / 4; // 16px padding left/right + 12px gap
+  // Sections in UI order
+  const allSections = ["Profile", "Address", "Education", "Profession"];
 
   return (
-    <View
-      style={{
-        marginVertical: 20,
-        padding: 16,
-        borderRadius: 12,
-        backgroundColor: colors.light,
-        shadowColor: colors.cardShadow,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.3,
-        shadowRadius: 4,
-        elevation: 4,
-      }}
-    >
-      {/* Header */}
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          marginBottom: 12,
-        }}
-      >
-        <Text style={{ fontWeight: "600", fontSize: 16, color: colors.dark }}>
-          Profile Completion
-        </Text>
-        <Text
-          style={{ fontWeight: "600", fontSize: 14, color: colors.primary }}
-        >
-          {progress}%
-        </Text>
-      </View>
 
-      {/* Progress Bar */}
-      <View
-        style={{
-          height: 8,
-          backgroundColor: colors.neutral + "33",
-          borderRadius: 7,
-          overflow: "hidden",
-        }}
+      <ZiraatCard
+        width="100%"
+        paddingHorizontal={1}
       >
-        <Animated.View
+        {/* HEADER */}
+        <View
           style={{
-            height: "100%",
-            width,
-            backgroundColor: colors.primary,
-            borderRadius: 7,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginBottom: 12,
           }}
-        />
-      </View>
+        >
+          <Text style={{
+            marginTop: 19, fontSize: 21,
+            fontWeight: "700",
+            color: colors.dark,
+            letterSpacing: 0.4,
+          }}>
+            Profile Completion
+          </Text>
 
-      {/* Sections Grid */}
-      <View
-        style={{
-          flexDirection: "row",
-          flexWrap: "wrap",
-          marginTop: 16,
-          gap: 12, // spacing between items
-        }}
-      >
-        {allSections.map((section) => {
-          const isCompleted = completedSections.includes(section);
+          <Text
+            style={{
+              fontWeight: "700",
+              fontSize: 16,
+              color: colors.primary,
+              marginTop: 19
+            }}
+          >
+            {progress}%
+          </Text>
+        </View>
 
-          return (
-            <View
-              key={section}
-              style={{
-                width: itemWidth,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              {isCompleted ? (
-                <CheckCircle size={20} color={colors.primary} />
-              ) : (
-                <XCircle size={20} color={colors.error} />
-              )}
+        {/* ANIMATED PROGRESS BAR */}
+        <View
+          style={{
+            height: 5,
+            borderRadius: 10,
+            backgroundColor: colors.neutral + "33",
+            overflow: "hidden",
+            marginBottom: 20,
+          }}
+        >
+          <Animated.View
+            style={{
+              height: "100%",
+              width: animatedWidth,
+              backgroundColor: colors.primary,
+              borderRadius: 10,
+            }}
+          />
+        </View>
 
-              <Text
+        {/* SECTION STATUS (3 items per row) */}
+        <View
+          style={{
+            flexDirection: "row",
+            flexWrap: "wrap",
+            // spacing between rows and columns
+            marginHorizontal: -8,
+          }}
+        >
+          {allSections.map((section) => {
+            const isCompleted = completedSections.includes(section);
+
+            return (
+              <View
+                key={section}
                 style={{
-                  marginLeft: 6,
-                  color: isCompleted ? colors.dark : colors.neutral,
-                  fontWeight: isCompleted ? "600" : "400",
-                  fontSize: 13,
-                  flexWrap: "wrap",
+
+                  width: "33.333%",
+                  paddingHorizontal: 8,
+                  marginBottom: 12,
                 }}
               >
-                <Text>
-                  {section.charAt(0).toUpperCase() + section.slice(1)}
-                </Text>
-              </Text>
-            </View>
-          );
-        })}
-      </View>
-    </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  {isCompleted ? (
+                    <CheckCircle size={18} color={colors.primary} />
+                  ) : (
+                    <XCircle size={18} color="#d9534f" />
+                  )}
+
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: isCompleted ? colors.dark : "#d9534f",
+                      fontWeight: isCompleted ? "600" : "500",
+                    }}
+                  >
+                    {section}
+                  </Text>
+                </View>
+              </View>
+            );
+          })}
+        </View>
+      </ZiraatCard>
+   
   );
 }

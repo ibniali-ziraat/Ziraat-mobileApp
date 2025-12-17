@@ -7,64 +7,64 @@ type Props = {
 };
 
 export default function WindCompass({ speed, degree }: Props) {
-    const size = 120;
-    const center = size / 2;
-    const radius = 48;
+    const SIZE = 120;
+    const CENTER = SIZE / 2;
+    const RADIUS = 46;
 
     return (
-        <View>
-            <Svg width={size} height={size}>
+        <View className="items-center justify-center">
+            <Svg width={SIZE} height={SIZE}>
                 <Circle
-                    cx={center}
-                    cy={center}
-                    r={radius}
-                    stroke="#c7611f"
-                    strokeWidth={2}
+                    cx={CENTER}
+                    cy={CENTER}
+                    r={RADIUS}
+                    stroke="#000000"
+                    strokeWidth={6}
                     fill="none"
+                    strokeDasharray="2 5"
                 />
 
 
-                {[
-                    { t: "N", x: center, y: 14 },
-                    { t: "E", x: size - 12, y: center + 4 },
-                    { t: "S", x: center, y: size - 6 },
-                    { t: "W", x: 8, y: center + 4 },
-                ].map((d, i) => (
-                    <SvgText
-                        key={i}
-                        x={d.x}
-                        y={d.y}
-                        fontSize="10"
-                        fill="#000000"
-                        textAnchor="middle"
-                    >
-                        {d.t}
-                    </SvgText>
-                ))}
-                <G rotation={degree} origin={`${center}, ${center}`}>
+                <SvgText x={CENTER} y={12} fontSize="12" fill="#000000" textAnchor="middle">N</SvgText>
+                <SvgText x={SIZE - 10} y={CENTER + 4} fontSize="12" fill="#000000" textAnchor="middle">E</SvgText>
+                <SvgText x={CENTER} y={SIZE - 4} fontSize="12" fill="#000000" textAnchor="middle">S</SvgText>
+                <SvgText x={10} y={CENTER + 4} fontSize="12" fill="#000000" textAnchor="middle">W</SvgText>
+
+
+                <G rotation={degree} origin={`${CENTER}, ${CENTER}`}>
                     <Line
-                        x1={center}
-                        y1={center}
-                        x2={center}
-                        y2={center - 40}
-                        stroke="#000000"
-                        strokeWidth={2}
+                        x1={CENTER}
+                        y1={CENTER}
+                        x2={CENTER}
+                        y2={CENTER - 38}
+                        stroke="#c7611f"
+                        strokeWidth={2.5}
                         strokeLinecap="round"
                     />
                 </G>
 
 
-                <Circle cx={center} cy={center} r={4} fill="#00000" />
+                <Circle cx={CENTER} cy={CENTER + 38} r={3.8} fill="#c7611f" />
 
 
                 <SvgText
-                    x={center}
-                    y={center + 30}
-                    fontSize="14"
+                    x={CENTER}
+                    y={CENTER + 6}
+                    fontSize="18"
+                    fill="#000000"
+                    textAnchor="middle"
+                    fontWeight="600"
+                >
+                    {speed}
+                </SvgText>
+                <SvgText
+                    x={CENTER}
+                    y={CENTER + 22}
+                    fontSize="10"
                     fill="#000000"
                     textAnchor="middle"
                 >
-                    {speed} km/h
+                    mph
                 </SvgText>
             </Svg>
         </View>

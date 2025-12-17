@@ -53,31 +53,25 @@ export default function WeatherScreen() {
 
     return (
         <ScreenLayout
-            className="flex-1 bg-white"
+            className="flex-1"
             refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
         >
             <BackHeader
                 title="Weather"
-                desc="Manage Your Weather & Orchards"
-            />
-
-
-            <View className="h-fit pb-10"
-                style={{ backgroundColor: "red" }}
-            >
+                desc="Manage Your Weather & Orchards" />
+            <View className="h-fit pb-10" >
                 <SearchBar search={search} setSearch={setSearch} />
 
-                <View className="mb-4">
-                    <Text className="text-dark text-3xl font-bold">
+                <View className="mb-1">
+                    <Text className="text-dark text-3xl font-semibold">
                         {current.location}
                     </Text>
                     <Text className="text-dark mt-1 text-md">
                         Updated: {current.lastUpdated}
                     </Text>
                 </View>
-
 
                 <WeatherCard
                     current={{
@@ -87,44 +81,57 @@ export default function WeatherScreen() {
                         humidity: 62,
                         windKph: 14,
                         windDir: "NE",
-                    }}
-                />
-
-
+                    }} />
                 <HourlyCard />
-                {/* <StormCard /> */}
-                {/* <WeeklyCard /> */}
+                <StormCard />
+                <WeeklyCard />
 
 
-                {/* <View className="mt-6 flex-row justify-between ">
-                    <UVCard />
-                    <FeelsLikeCard />
-                </View> */}
-                {/* <WindCard /> */}
-                {/* <View className="mt-6 flex-row justify-between ">
-                    <PressureCard />
-                    <Precipitation />
+                <View className="flex-row justify-between ">
+                    <FeelsLikeCard temp={21} />
+                    <UVCard
+                        value={6}
+                        level="High"
+                        advice="Use sun protection until 5PM."
+                    />
+                </View>
+                <WindCard
+                    speed={10}
+                    gusts={19}
+                    degree={200}
+                    direction="SSE / mph" />
 
-                </View> */}
+                <View className="mt-4 flex-row justify-between">
+                    <PressureCard value={1028} />
+                    <HumidityCard />
 
 
-                {/* <View className="mt-6 flex-row justify-between">
+                </View>
+
+
+
+
+                <View className="mt-2 flex-row justify-between mb-3">
                     <VisibilityCard />
                     <SunsetCard />
 
-                </View> */}
-                {/* <View className="mt-6 flex-row justify-between">
-                    <MoonCard />
+                </View>
+                <MoonCard />
+                <View className=" flex-row justify-between">
                     <AveragesCard />
-                    <HumidityCard />
+                    <Precipitation />
 
-                </View> */}
-                {/* <PrecipitationCard /> */}
+                </View>
+
+                <PrecipitationCard />
 
             </View>
             <View className="h-16">
+                <Text className="text-dark text-xl text-center font-semibold">
+                    Weather for Srinagar
 
-                <Text className="text-dark text-center text-sm">
+                </Text>
+                <Text className=" mt-3 text-dark text-center text-sm">
                     Data provided by Zirat Weather Services.
                 </Text>
             </View>

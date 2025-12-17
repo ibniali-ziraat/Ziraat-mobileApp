@@ -16,20 +16,20 @@ export default function UVCard({ value, level, advice }: Props) {
     return (
         <ZiraatCard
             width="48%"
-            height="22%"
-            paddingHorizontal={1.4}
-            paddingVertical={1.4}
+            marginVertical={1}
+            paddingHorizontal={1}
+            paddingVertical={1}
         >
             <View className="flex-row items-center">
-                <Sun size={14} color="#c7611f" />
-                <Text className="ml-1.5 text-sm font-semibold tracking-wide text-dark">
+                <Sun size={18} color="#c7611f" />
+                <Text className="ml-1 text-md font-semibold tracking-wide text-dark">
                     UV INDEX
                 </Text>
             </View>
 
 
             <Text className="mt-1 text-3xl font-bold text-dark">
-                {value} 1
+                {value}
             </Text>
             <Text className="text-md text-dark">
                 {level} Low
@@ -47,7 +47,6 @@ export default function UVCard({ value, level, advice }: Props) {
                 <Line x1="90" y1="7" x2="120" y2="7" stroke="#EF4444" strokeWidth="4" />
                 <Line x1="120" y1="7" x2="150" y2="7" stroke="#A855F7" strokeWidth="4" />
 
-                {/* MARKER */}
                 <Circle
                     cx={markerX}
                     cy={7}

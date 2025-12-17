@@ -19,32 +19,33 @@ export default function WindCard({
     return (
         <ZiraatCard
             width="100%"
-            height="5%"
-            paddingHorizontal={1.5}
-            paddingVertical={1.5}
+            paddingHorizontal={1.6}
+            paddingVertical={1.6}
         >
+            {/* HEADER */}
             <View className="flex-row items-center mb-3">
                 <Wind size={16} color="#c7611f" />
-                <Text className="ml-2 text-sm font-semibold text-[#c7611f]">
+                <Text className="ml-2 text-md font-semibold tracking-wide text-dark">
                     WIND
                 </Text>
             </View>
 
-            {/* CONTENT */}
-            <View className="flex-row justify-between items-center">
-                {/* LEFT DATA */}
-                <View className="w-[55%]">
-                    <Row label="Wind  ---- 2kph" />
-                    <Row label="Gusts ---- 8kph " />
-                    <Row
-                        label="Direction ---- 233° SW"
 
-                    />
+            <View className="flex-row justify-between items-center ">
+
+                <View className="w-[55%]">
+                    <Row label="Wind" value={`2 kph `} />
+                    <Row label="Gusts" value={`8 kph `} />
+                    <Row label="Direction" value={`123 ESE `} />
+
                 </View>
 
-                {/* COMPASS */}
-                <View className="w-[45%] items-center justify-center">
+
+                <View className="w-[52%] items-center">
                     <WindCompass speed={speed} degree={degree} />
+                    <Text className="mt-1 text-sm font-semibold text-dark">
+                        {direction}
+                    </Text>
                 </View>
             </View>
         </ZiraatCard>
@@ -54,12 +55,8 @@ export default function WindCard({
 function Row({ label, value }: { label: string; value: string }) {
     return (
         <View className="flex-row justify-between mb-2">
-            <Text className="text-sm text-neutral-700">
-                {label}
-            </Text>
-            <Text className="text-sm font-medium text-neutral-900">
-                {value}
-            </Text>
+            <Text className="text-sm text-dark">{label}</Text>
+            <Text className="text-sm font-medium text-dark">{value}</Text>
         </View>
     );
 }

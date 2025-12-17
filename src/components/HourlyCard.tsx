@@ -54,7 +54,6 @@ export default function HourlyCard() {
     return (
         <ZiraatCard
             width="100%"
-            height="35%"
             paddingHorizontal={1.5}
             paddingVertical={1.5}>
             <Text

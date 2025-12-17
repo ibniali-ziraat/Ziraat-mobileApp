@@ -14,33 +14,31 @@ export function Precipitation({
     return (
         <ZiraatCard
             width="48%"
-            height="22%"
-            marginVertical={0.2}
             paddingHorizontal={1}
             paddingVertical={1}
             marginBottom={1}
             className="justify-between"
         >
-            {/* Header */}
+
             <View className="flex-row items-center mb-1">
                 <Droplets size={16} color="#c7611f" />
-                <Text className="ml-2 text-xs font-bold tracking-wide text-neutral-500">
+                <Text className="ml-2 text-sm font-bold tracking-wide text-dark">
                     PRECIPITATION
                 </Text>
             </View>
 
-            {/* Amount */}
-            <Text className="text-3xl font-bold text-neutral-900">
+
+            <Text className="text-3xl font-bold text-dark">
                 {amount}
             </Text>
 
-            {/* Subtext */}
-            <Text className="text-sm text-neutral-500 mb-1">
+
+            <Text className="text-sm text-dark mb-1">
                 in last 24 hours
             </Text>
 
-            {/* Note */}
-            <Text className="text-xs text-neutral-500">
+
+            <Text className="text-xs text-dark">
                 {note}
             </Text>
         </ZiraatCard>

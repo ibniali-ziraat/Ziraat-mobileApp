@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { clear, load, save } from "../utils/authStorage";
+import { router } from "expo-router";
 
 interface AuthContextType {
   userToken: string | null;
@@ -110,6 +111,7 @@ export const AuthProvider = ({ children }: any) => {
 
     // Non-stored fields also reset
     setUserProfileIdState(null);
+    // router.replace("/auth/user");
   };
 
   const logoutVendor = () => {

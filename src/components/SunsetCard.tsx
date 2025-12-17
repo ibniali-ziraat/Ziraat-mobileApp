@@ -10,50 +10,46 @@ type Props = {
 
 export default function SunsetCard({ sunset, sunrise }: Props) {
   return (
-    <ZiraatCard width="48%"
-      height="22%"
-      paddingHorizontal={1.2} paddingVertical={1.2}>
-
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Sunset size={14} color="#c7611f" />
-        <Text style={styles.label}>SUNSET</Text>
+    <ZiraatCard
+      width="48%"
+      paddingHorizontal={1.4}
+      paddingVertical={1.4}
+      className="border border-white"
+    >
+      <View className="flex-row items-center">
+        <Sunset size={18} color="#c7611f" />
+        <Text className="ml-2 text-sm font-semibold tracking-wide text-dark">
+          SUNRISE :6: 09AM
+        </Text>
       </View>
 
 
-      <Text style={styles.time}>{sunset}</Text>
+      <Text className="mt-1 text-2xl font-bold text-dark">
+        {sunset}
+      </Text>
 
 
-      <Svg width={150} height={50}>
+      <Svg width={160} height={48}>
+
         <Path
-          d="M10 40 Q75 5 140 40"
+          d="M10 36 Q80 16 150 36"
           stroke="#c7611f"
-          strokeWidth={2}
+          strokeWidth={3}
           fill="none"
         />
-        <Circle cx="75" cy="18" r="5" fill="#c7611f" />
+
+        <Circle
+          cx="100"
+          cy="20"
+          r="4.5"
+          fill="#c7611f"
+        />
       </Svg>
 
-
-      <Text style={styles.sub}>Sunrise: {sunrise}</Text>
+      {/* SUNRISE LABEL */}
+      <Text className="text-xs text-dark">
+        Sunset: 7:44 PM {sunrise}
+      </Text>
     </ZiraatCard>
   );
 }
-
-const styles = {
-  label: {
-    marginLeft: 6,
-    fontSize: 12,
-    color: "#000000",
-    fontWeight: "700",
-  },
-  time: {
-    fontSize: 26,
-    fontWeight: "700",
-    color: "#00000",
-    marginVertical: 6,
-  },
-  sub: {
-    fontSize: 13,
-    color: "#c7611f",
-  },
-};

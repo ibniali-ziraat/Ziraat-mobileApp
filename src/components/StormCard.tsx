@@ -18,7 +18,6 @@ export default function StormCard() {
     return (
         <ZiraatCard
             width="100%"
-            height="3.3%"
             marginVertical={0.6}
             paddingHorizontal={1}
             paddingVertical={1.5}
@@ -28,11 +27,11 @@ export default function StormCard() {
                 renderItem={({ item }) => (
                     <View
                         style={{
-                            width: SLIDE_WIDTH, // ✅ FIXED
+                            width: SLIDE_WIDTH,
                             paddingHorizontal: 8,
                         }}
                     >
-                        {/* HEADER */}
+
                         <View
                             style={{
                                 flexDirection: "row",
@@ -54,7 +53,6 @@ export default function StormCard() {
                             </Text>
                         </View>
 
-                        {/* CONTENT */}
                         <View
                             style={{
                                 flexDirection: "row",
@@ -67,7 +65,7 @@ export default function StormCard() {
                                     color: "#333333",
                                     fontSize: 16,
                                     fontWeight: "600",
-                                    width: "70%",
+                                    width: "75%",
 
 
                                 }}
@@ -79,8 +77,7 @@ export default function StormCard() {
                                 style={{
                                     color: "#333333",
                                     fontSize: 26,
-
-                                    fontWeight: "700",
+                                    fontWeight: "600",
                                     justifyContent: "center"
                                 }}
                             >
