@@ -24,9 +24,9 @@ export default function ZiraatCard({
   width,
   height,
 
-  // border (static unless overridden)
-  borderWidth = 0.25,
-  borderColor = "#CCCCCC",
+  // border
+  borderWidth = 1,
+  borderColor = "#E6E6E6",
   borderRadius = 12,
 
   backgroundColor = "#FFFFFF",
@@ -37,87 +37,85 @@ export default function ZiraatCard({
   const REM = 16;
 
   if (!width) {
-    throw new Error("ZiraatCard requires width  props.");
+    throw new Error("ZiraatCard requires width props.");
   }
 
-  // PADDING
+  /* ---------------- PADDING ---------------- */
   const computedPadding = {
     paddingTop:
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingTop
-          ? paddingTop * REM
-          : 0,
+        ? paddingTop * REM
+        : 0,
 
     paddingBottom:
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingBottom
-          ? paddingBottom * REM
-          : 0,
+        ? paddingBottom * REM
+        : 0,
 
     paddingLeft:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingLeft
-          ? paddingLeft * REM
-          : 0,
+        ? paddingLeft * REM
+        : 0,
 
     paddingRight:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingRight
-          ? paddingRight * REM
-          : 0,
+        ? paddingRight * REM
+        : 0,
   };
 
-  // MARGIN
+  /* ---------------- MARGIN ---------------- */
   const computedMargin = {
     marginTop:
-      marginVertical !== undefined ? marginVertical * REM : marginTop * REM,
+      marginVertical !== undefined
+        ? marginVertical * REM
+        : marginTop
+        ? marginTop * REM
+        : 0,
+
     marginBottom:
-      marginVertical !== undefined ? marginVertical * REM : marginBottom * REM,
+      marginVertical !== undefined
+        ? marginVertical * REM
+        : marginBottom
+        ? marginBottom * REM
+        : 0,
+
     marginLeft:
-      marginHorizontal !== undefined ? marginHorizontal * REM : marginLeft * REM,
+      marginHorizontal !== undefined
+        ? marginHorizontal * REM
+        : marginLeft
+        ? marginLeft * REM
+        : 0,
+
     marginRight:
       marginHorizontal !== undefined
         ? marginHorizontal * REM
-        : marginRight * REM,
+        : marginRight
+        ? marginRight * REM
+        : 0,
   };
 
-  // SHADOW WRAPPER (STATIC PER PLATFORM)
-  const ShadowWrapper = ({ children }) => (
-    <View
-      style={[
-        styles.shadowWrapper,
-        {
-          width,
-          ...(height ? { height } : {}), // 👈 conditional height
-          borderRadius,
-          ...computedMargin,
-        },
-      ]}
-    >
-      {children}
-    </View>
-  );
-
-
-  // INNER CARD (NO SHADOW)
-  const CardInner = (
+  const Card = (
     <View
       className={`overflow-hidden ${className}`}
       style={[
+        styles.card,
         {
-          width: "100%",
+          width,
+          ...(height ? { height } : {}),
           borderRadius,
           backgroundColor,
           borderWidth,
           borderColor,
           ...computedPadding,
-
-          // ✅ ONLY apply height when explicitly provided
-          ...(height ? { height: "100%" } : {}),
+          ...computedMargin,
         },
         style,
       ]}
@@ -126,41 +124,35 @@ export default function ZiraatCard({
     </View>
   );
 
-  return (
-    <ShadowWrapper>
-      {onPress ? <Pressable onPress={onPress}>{CardInner}</Pressable> : CardInner}
-    </ShadowWrapper>
-  );
+  return onPress ? <Pressable onPress={onPress}>{Card}</Pressable> : Card;
 }
 
 const styles = StyleSheet.create({
-  shadowWrapper: {
+  card: {
     backgroundColor: "#FFFFFF",
-    borderRadius: 24,
+    borderRadius: 12,
 
-    /* ----------------------------------------
-       ⚡ STATIC iOS SHADOW
-    ----------------------------------------- */
+    /* ---------- iOS ---------- */
     ...(Platform.OS === "ios" && {
-      shadowColor: "#000000",
+      shadowColor: "#000",
       shadowOpacity: 0.12,
-      shadowRadius: 16,
-      shadowOffset: { width: 0, height: 8 },
+      shadowRadius: 14,
+      shadowOffset: {
+        width: 0,
+        height: 7,
+      },
     }),
 
-    /* ----------------------------------------
-       ⚡ STATIC ANDROID SHADOW
-    ----------------------------------------- */
+    /* ---------- ANDROID ---------- */
     ...(Platform.OS === "android" && {
-      elevation: 15,
-      shadowColor: "gray",
+      elevation: 0.8, 
     }),
 
-    /* ----------------------------------------
-       ⚡ STATIC WEB SHADOW
-    ----------------------------------------- */
+    /* ---------- WEB ---------- */
     ...(Platform.OS === "web" && {
-      boxShadow: "0px 8px 22px rgba(0,0,0,0.12)",
+      boxShadow:
+        "0px 2px 4px rgba(0,0,0,0.06), 0px 10px 20px rgba(0,0,0,0.08)",
     }),
   },
 });
+

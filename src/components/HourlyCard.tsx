@@ -1,6 +1,6 @@
-import { View, Text, ScrollView, Dimensions } from "react-native";
-import { Droplet, Sun, Moon, CloudSun } from "lucide-react-native";
-import Svg, { Path, Circle } from "react-native-svg";
+import { CloudSun, Droplet, Moon, Sun } from "lucide-react-native";
+import { Dimensions, ScrollView, Text, View } from "react-native";
+import Svg, { Circle, Path } from "react-native-svg";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 const { width } = Dimensions.get("window");
@@ -71,7 +71,7 @@ export default function HourlyCard() {
             <View
                 style={{
                     height: 1,
-                    backgroundColor: "#ffffff",
+                    backgroundColor: "#FFFF",
                     marginBottom: 12,
                 }}
             />
