@@ -22,23 +22,6 @@ const CropsHeader = ({ role = "farmer" }: CropsHeaderProps) => {
       </View>
 
       {/* Actions */}
-      <View className="flex-row items-center space-x-3">
-        {/* Search */}
-        <TouchableOpacity
-          className="p-2 rounded-full bg-white border mr-2"
-          style={{ borderColor: colors.neutral }}
-        >
-          <Search color={colors.primary} size={20} />
-        </TouchableOpacity>
-
-        {/* Filter */}
-        <TouchableOpacity
-          className="p-2 rounded-full bg-white border"
-          style={{ borderColor: colors.neutral }}
-        >
-          <Filter color={colors.secondary} size={20} />
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };

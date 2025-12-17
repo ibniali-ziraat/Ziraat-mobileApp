@@ -1,11 +1,40 @@
-import { Text, View } from "react-native";
+import { View, Text } from "react-native";
+import { Droplets } from "lucide-react-native";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
-export default function HumidityCard({ humidity }) {
+type Props = {
+    value: number;
+    note: string;
+};
+
+export default function HumidityCard({ value, note }: Props) {
     return (
-        <View className="bg-white rounded-2xl p-4 w-[48%] mb-4 border border-neutral border-sm shadow-md">
-            <Text className="text-black text-md font-semibold mb-2">Humidity</Text>
-            <Text className="text-black text-2xl font-semibold">{humidity}%</Text>
-            <Text className="text-black/60 mt-2 text-xs">Dew point −6°</Text>
-        </View>
+        <ZiraatCard
+            width="48%"
+            paddingHorizontal={1.4}
+            paddingVertical={1.7}
+        >
+
+            <View className="flex-row items-center mb-2">
+                <Droplets size={18} color="#c7611f" />
+                <Text className="ml-2 text-md font-semibold tracking-wide text-dark">
+                    HUMIDITY
+                </Text>
+            </View>
+
+
+            <Text className="text-3xl font-bold text-dark">
+                {value} 89%
+            </Text>
+
+
+            <Text className="mt-2 text-sm leading-5 text-dark">
+                {note} "The dew point is 13° right now.
+
+
+
+
+            </Text>
+        </ZiraatCard>
     );
 }
