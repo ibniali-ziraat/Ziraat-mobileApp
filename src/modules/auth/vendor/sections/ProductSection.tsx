@@ -137,9 +137,7 @@ export default function ProductSection({ control, errors }) {
           alignSelf: "flex-start",
         }}
       >
-        <Text style={{ color: "white", fontWeight: "600" }} className="mb-10">
-          + Add Input
-        </Text>
+        <Text style={{ color: "white", fontWeight: "600" }}>+ Add Input</Text>
       </TouchableOpacity>
     </View>
   );

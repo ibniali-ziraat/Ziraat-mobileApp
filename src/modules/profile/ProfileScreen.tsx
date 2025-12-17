@@ -260,6 +260,7 @@ export default function UserProfileScreen() {
         heading="Profession"
         onEdit={() => goToSection("profession")}
         onDelete={() => setDeleteSection("profession")}
+        onAdd={() => goToSection("profession")}
         items={
           professionData
             ? [

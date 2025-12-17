@@ -138,7 +138,7 @@ export const AuthProvider = ({ children }: any) => {
 
     setUserProfileIdState(null);
 
-    router.replace("/auth/user"); // redirect to login
+    // router.replace("/auth/user"); // redirect to login
   };
 
   const logoutVendor = () => {

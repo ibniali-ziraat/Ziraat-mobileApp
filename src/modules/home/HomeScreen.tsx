@@ -16,11 +16,11 @@ import { useState } from "react";
 import Loader from "@/src/components/shared/Loader";
 
 export default function HomeScreen() {
-  const [cityData, setCityData] = useState("srinagar");
-  const { data, isPending, isError } = useWeatherQuery(cityData);
-  console.log(data, "data...");
+  // const [cityData, setCityData] = useState("srinagar");
+  // const { data, isPending, isError } = useWeatherQuery(cityData);
+  // console.log(data, "data...");
 
-  if (isPending) return <Loader />;
+  // if (isPending) return <Loader />;
 
   const sections = [
     { title: "Top Pesticides for Healthy Crop Growth", slice: [0, 8] },
