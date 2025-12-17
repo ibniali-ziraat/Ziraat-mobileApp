@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import BackHeader from "../components/shared/BackHeader";
 import { DashboardTabs } from "../navigation/DashboardTabs";
 
 const { width: screenWidth } = Dimensions.get("window");
@@ -52,7 +51,7 @@ export default function DashboardPage() {
         contentContainerStyle={{ paddingBottom: 140 }}
          showsHorizontalScrollIndicator={false}
       >
-        <BackHeader
+        {/* <BackHeader
           title={tabs[activeTab]?.label}
           desc={
             role === "farmer"
@@ -61,7 +60,7 @@ export default function DashboardPage() {
                 ? "Manage Your Products & Orders"
                 : undefined
           }
-        />
+        /> */}
         {ActiveComponent ? (
           <ActiveComponent />
         ) : (

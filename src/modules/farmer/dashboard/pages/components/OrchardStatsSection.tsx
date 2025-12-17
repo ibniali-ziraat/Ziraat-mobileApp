@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 
 
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { colors } from "@/src/constants/colors";
 import StatChip from "./StatChip";
 
 export default function OrchardStatsSection({ orchards, admin, weather }: any) {
@@ -26,48 +27,54 @@ export default function OrchardStatsSection({ orchards, admin, weather }: any) {
   const avgTreeAgeYears = admin?.avgTreeAgeYears ?? 4;
 
   return (
-    <View className=" w-full bg-red-900 px-1"
-    >
-      {/* Stats Row */}
-      <View className="flex-row flex-wrap justify-between">
-        <StatChip
-          Icon={Tree}
-          title="Total Area"
-          value={`${totalArea.toFixed(2)} ha`}
-        />
-        <StatChip
-          Icon={Layers}
-          title="Tree Count"
-          value={totalTrees.toLocaleString()}
-        />
-        <StatChip
-          Icon={Percent}
-          title="Survival Rate"
-          value={`${survivalRatePercent}%`}
-        />
-        <StatChip
-          Icon={Calendar}
-          title="Avg Tree Age"
-          value={`${avgTreeAgeYears} yrs`}
-        />
+
+    <View className="flex-row flex-wrap justify-between"
+      style={{ backgroundColor: colors.bgColor }}>
+      <StatChip
+        Icon={Tree}
+        title="Total Area"
+        value={`${totalArea.toFixed(2)} ha`}
+      />
+      <StatChip
+        Icon={Layers}
+        title="Tree Count"
+        value={totalTrees.toLocaleString()}
+      />
+      <StatChip
+        Icon={Percent}
+        title="Survival Rate"
+        value={`${survivalRatePercent}%`}
+      />
+      <StatChip
+        Icon={Calendar}
+        title="Avg Tree Age"
+        value={`${avgTreeAgeYears} yrs`}
+      />
+
+      <View className="w-full"
+
+        style={{ height: 100, marginVertical: 18, backgroundColor: colors.bgColor }}
+      >
+        <ZiraatCard
+          width="100%"
+          height="100%"
+          paddingHorizontal={1}
+          paddingVertical={1}
+        >
+          <Text className="text-[16px] font-bold mb-2">
+            Smart Insight
+          </Text>
+          <Text className="text-[12px]">
+            Tree density and survival suggest potential to increase yield by improving fertigation.
+          </Text>
+        </ZiraatCard>
       </View>
 
-      {/* Smart Insight Card */}
-      <ZiraatCard
-        width="100%"
-        height="26%"
-        paddingHorizontal={1}
-        paddingVertical={1}
-      
-      >
-        <Text className="text-[18px] font-bold my-2">
-          📈 Smart Insight
-        </Text>
 
-        <Text className="text-[14px] my-2 ">
-          Tree density and survival suggest potential to increase yield by improving fertigation.
-        </Text>
-      </ZiraatCard>
+
     </View>
+
+
+
   );
 }

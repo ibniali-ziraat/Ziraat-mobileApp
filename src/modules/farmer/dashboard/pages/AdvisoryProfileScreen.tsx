@@ -1,14 +1,16 @@
+import BackHeader from "@/src/components/shared/BackHeader";
+import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import kpis from "@/src/Data/advisoryKpis.json";
 import tags from "@/src/Data/participationTags.json";
 import recentActivities from "@/src/Data/recentActivities.json";
 import {
-    BookOpen,
-    MessageCircle,
-    Percent,
-    Sparkles,
-    TrendingUp,
-    Users
+  BookOpen,
+  MessageCircle,
+  Percent,
+  Sparkles,
+  TrendingUp,
+  Users
 } from "lucide-react-native";
 import { Image, SafeAreaView, ScrollView, Text, View } from "react-native";
 export default function AdvisoryScreen() {
@@ -21,17 +23,8 @@ export default function AdvisoryScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <ScrollView className="px-5 py-6" contentContainerClassName="pb-32">
-
-        {/* Header */}
-        <View className="mb-4">
-          <Text className="text-2xl font-bold text-dark">
-            Knowledge & Advisory
-          </Text>
-          <Text className="mt-1 text-dark">
-            Track your engagement with advisories, community forums, and expert support.
-          </Text>
-        </View>
+      <ScrollView className="px-5 py-6">
+        <BackHeader title="Advisory Profile" desc="   Track your engagement with advisories, community forums, and expert support." />
 
         {/* KPIs */}
         <Text className="mb-2 text-xl font-semibold text-black">Key Metrics</Text>
@@ -43,7 +36,7 @@ export default function AdvisoryScreen() {
             return (
               <View
                 key={item.id}
-                className="mr-2 w-64 overflow-hidden border border-dark rounded-lg"
+                className="mr-2 w-64 overflow-hidden border border-darkHover rounded-lg"
               >
                 <View className="relative h-36">
                   <Image
@@ -88,7 +81,13 @@ export default function AdvisoryScreen() {
         </ScrollView>
 
         {/* Engagement Score */}
-        <View className="mb-6 rounded-2xl bg-white p-5 border border-dark">
+        <ZiraatCard
+          width="100%"
+          height={140}
+          paddingHorizontal={1}
+          paddingVertical={1}
+        >
+          {/* Header */}
           <View className="flex-row items-center justify-between">
             <View className="flex-row items-center">
               <TrendingUp size={30} color={colors.secondary} />
@@ -96,21 +95,25 @@ export default function AdvisoryScreen() {
                 Overall Engagement Score
               </Text>
             </View>
+
             <Text className="rounded-full bg-secondary px-3 py-1 font-bold text-light">
               87%
             </Text>
           </View>
 
+          {/* Score */}
           <Text className="mt-4 text-center text-xl font-bold text-dark">
             87 / 100
           </Text>
+
+          {/* Insight */}
           <Text className="mt-2 text-center font-bold text-dark">
             Excellent — higher than 92% of users.
           </Text>
-        </View>
+        </ZiraatCard>
 
         {/* Participation Tags */}
-        <Text className="mb-3 text-2xl font-bold">
+        <Text className="my-4 text-2xl font-bold">
           Participation Heat
         </Text>
         <View className="mb-6 flex-row flex-wrap gap-3">
@@ -120,24 +123,28 @@ export default function AdvisoryScreen() {
         </View>
 
         {/* Recent Activities */}
-        <View className="mb-6 rounded-2xl bg-light border border-dark p-4">
-          <Text className="mb-4 text-2xl font-bold text-black">
-            Recent Activities
-          </Text>
+        <ZiraatCard width="100%" height="25%" paddingHorizontal={1} paddingVertical={1}>
+          <View className="mb-6 p-4">
+            <Text className="mb-4 text-2xl font-bold text-black">
+              Recent Activities
+            </Text>
 
-          {recentActivities.map((item) => (
-            <View key={item.id} className="mb-3 flex-row items-center justify-between">
-              <View>
-                <Text className="font-semibold text-dark">{item.type}</Text>
-                <Text className="text-sm text-dark">{item.id}</Text>
+            {recentActivities.map((item) => (
+              <View key={item.id} className="mb-3 flex-row items-center justify-between">
+                <View>
+                  <Text className="font-semibold text-dark">{item.type}</Text>
+                  <Text className="text-sm text-dark">{item.id}</Text>
+                </View>
+                <StatusBadge status={item.status} />
               </View>
-              <StatusBadge status={item.status} />
-            </View>
-          ))}
-        </View>
+            ))}
+          </View>
+        </ZiraatCard>
+
 
         {/* Footer */}
-        <View className="flex-row gap-3 rounded-2xl  p-5 ">
+        <ZiraatCard width="100%" height="10%" marginTop={1}>
+       <View className="flex-row gap-3  p-5 mt-4">
           <Sparkles size={30} color={colors.secondary} />
           <View className="flex-1">
             <Text className="text-xl font-extrabold text-black">
@@ -149,6 +156,9 @@ export default function AdvisoryScreen() {
           </View>
         </View>
 
+        </ZiraatCard>
+      
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -157,11 +167,17 @@ export default function AdvisoryScreen() {
 /* ------------------ Helpers ------------------ */
 
 const Tag = ({ label, color }: any) => (
-  <View className={`rounded-xl border px-4 py-2 bg-${color}-100 border-${color}-400`}>
+  <ZiraatCard
+    width="auto"
+    height={36}
+    paddingHorizontal={0.76}
+    paddingVertical={0.7}
+    backgroundColor={`${color}-100`}
+  >
     <Text className={`text-sm font-semibold text-${color}-600`}>
       {label}
     </Text>
-  </View>
+  </ZiraatCard>
 );
 
 const StatusBadge = ({ status }: any) => {

@@ -1,5 +1,4 @@
 import AddToCartButton from "@/src/components/shared/AddToCartButton";
-import BackHeader from "@/src/components/shared/BackHeader";
 import BuyNowButton from "@/src/components/shared/BuyNowButton";
 import ProductFaq from "@/src/components/shared/ProductFaq";
 import RatingStars from "@/src/components/shared/RatingStars";
@@ -11,6 +10,7 @@ import { addToCartList } from "@/src/utils/cartlistStore";
 import { router, useLocalSearchParams } from "expo-router";
 import { IndianRupee, Package } from "lucide-react-native";
 // Imported FlatList
+import BackHeader from "@/src/components/shared/BackHeader";
 import { FlatList, Text, ToastAndroid, View } from "react-native";
 import faqData from "../../Data/Faq.json";
 import products from "../../Data/products.json";
@@ -173,7 +173,8 @@ export default function ProductDetails() {
 
   return (
     <View className="flex-1 bg-light">
-      <BackHeader />
+      <BackHeader
+      title="cghjk" />
 
       {/* FIX: Use FlatList as the main scroll container for the page content */}
       <FlatList

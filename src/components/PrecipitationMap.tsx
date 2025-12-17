@@ -28,8 +28,8 @@ export default function PrecipitationMap() {
 
   // fallback for web
   return (
-    <View>
-      <Text>maps not supported with web</Text>
+    <View className="h-44 w-full flex-row justify-center items-center">
+      <Text className="text-dark">maps not supported with web</Text>
     </View>
   );
 }

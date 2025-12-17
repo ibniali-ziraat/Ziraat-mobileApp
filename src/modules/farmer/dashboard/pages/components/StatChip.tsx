@@ -1,44 +1,49 @@
+import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { Text, View } from "react-native";
 
-export default function StatChip({ Icon, title, value, small }: any) {
+export default function StatChip({
+  Icon,
+  title,
+  value,
+  small = false,
+}: any) {
   return (
-    <View
-      className="
-        w-[47.5%] mb-3 rounded-2xl 
-        px-[14px] py-[12px]
-        bg-white border border-dark
-      "
-    //   style={{
-    //     shadowColor: colors.secondary,
-    //     shadowOpacity: 0.04,
-    //     shadowRadius: 6,
-    //     elevation: 2,
-    //   }}
+    <ZiraatCard
+      width="49%"
+      height={90}
+      paddingHorizontal={1}
+      paddingVertical={1}
+      marginBottom={1}
     >
-      <Text
-        className="text-[14px] font-bold"
-        style={{ color: colors.dark }}
-      >
-        {title}
-      </Text>
-
-      <View className="flex-row items-center mt-[6px]">
-        {Icon ? (
+      <View className="flex-1 items-center justify-center">
+        {/* ICON */}
+        {Icon && (
           <Icon
-            size={22}
+            size={30}
             color={colors.secondary}
-            style={{ marginRight: 8 }}
+            style={{ marginBottom: 4 }}
           />
-        ) : null}
+        )}
 
+        {/* TITLE */}
         <Text
-          className={`${small ? "text-[10px]" : "text-[14px]"} font-medium`}
+          className="text-[16px] font-bold text-center"
+          style={{ color: colors.dark }}
+        >
+          {title}
+        </Text>
+
+        {/* VALUE */}
+        <Text
+          className={`${
+            small ? "text-[10px]" : "text-[14px]"
+          } font-medium text-center mt-1`}
           style={{ color: colors.dark }}
         >
           {value}
         </Text>
       </View>
-    </View>
+    </ZiraatCard>
   );
 }

@@ -1,45 +1,50 @@
-import { Text, TouchableOpacity, View } from "react-native";
+import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { Text, View } from "react-native";
 
 export default function EnhancedCard({
   title,
-  subtitle,
   value,
   accent,
   icon,
-  onPress,
-}: any) {
+}) {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={0.8}
-      className="bg-light rounded-2xl px-4 py-4 mx-4 mb-4 flex-row justify-between items-center border border-neutral"
+    <ZiraatCard
+      width="48%" 
+      height="15%"        
+      paddingHorizontal={1}
+      paddingVertical={1}
+      marginBottom={0.5}
     >
-      {/* LEFT SECTION */}
-      <View className="flex-1 pr-4">
-        {/* Title - 18px bold */}
-        <Text className="text-[18px] font-bold text-dark">{title}</Text>
-
-        {/* Subtitle - 16px medium */}
-        <Text className="text-[16px] font-medium  mt-1">
-          {subtitle}
+      <View className="flex-1 flex-col justify-between items-center">
+        {/* TITLE */}
+        <Text className="text-[14px] font-bold text-center">
+          {title}
         </Text>
 
-        {/* Value + Accent below subtitle */}
+        {/* ICON */}
+        {icon && (
+          <View className="justify-center items-center">
+            {/* icon should be passed with size={30} */}
+            {icon}
+          </View>
+        )}
+
+        {/* VALUE / ACCENT */}
         {(value || accent) && (
-          <View className="mt-2">
+          <View className="items-center">
             {value && (
-              <Text className="text-[15px] font-semibold text-primary">
+              <Text className="text-[22px] font-semibold text-primary text-center">
                 {value}
+              </Text>
+            )}
+            {accent && (
+              <Text className="text-[13px] mt-1 text-dark text-center">
+                {accent}
               </Text>
             )}
           </View>
         )}
       </View>
-
-      {/* RIGHT SIDE ICON (Full height) */}
-      <View className="h-30 justify-center items-center  rounded-xl px-3 py-4">
-        {icon}
-      </View>
-    </TouchableOpacity>
+    </ZiraatCard>
   );
 }

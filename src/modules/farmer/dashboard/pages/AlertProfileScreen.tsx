@@ -1,3 +1,4 @@
+import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
 import categoriesData from "@/src/Data/alertCategoriesData.json";
 import summaryData from "@/src/Data/alertSummaryData.json";
@@ -10,7 +11,7 @@ import AlertTimelineItem from "./components/AlertTimelineItem";
 import HeaderBanner from "./components/HeaderBanner";
 
 export default function AlertsTrackingScreen() {
-  const renderIcon = (item: any, size = 32) => {
+  const renderIcon = (item: any, size = 28) => {
     return item.iconType === "MaterialCommunityIcons" ? (
       <MaterialCommunityIcons name={item.icon} size={size} color={colors.secondary} />
     ) : (
@@ -20,11 +21,13 @@ export default function AlertsTrackingScreen() {
 
   return (
     <ScrollView className="flex-1 bg-light">
-
+    <BackHeader title="Alerts Dashboard" 
+    desc="Real-time warnings • Risk insights • Advisory actions"/>
+    
       <HeaderBanner />
 
-      <Text className="text-2xl font-bold px-4 mb-2">Alert Summary</Text>
-      <View className="px-4">
+      <Text className="text-2xl font-bold  mb-2">Alert Summary</Text>
+      <View className="">
         {summaryData.map(item => (
           <AlertSummaryCard
             key={item.id}
@@ -37,20 +40,20 @@ export default function AlertsTrackingScreen() {
         ))}
       </View>
 
-      <Text className="text-2xl font-bold px-4 mt-4 mb-4 ">Alert Categories</Text>
-      <View className="px-4 mb-6">
+      <Text className="text-2xl font-bold mt-4 mb-4 ">Alert Categories</Text>
+      <View className=" mb-6">
         {categoriesData.map(item => (
           <AlertCategoryCard
             key={item.id}
             delay={item.delay}
             title={item.title}
-            icon={renderIcon(item, 32)}
+            icon={renderIcon(item, 28)}
           />
         ))}
       </View>
 
-      <Text className="text-2xl font-bold px-4 mt-2 mb-4 ">Recent Alert Timeline</Text>
-      <View className="px-4">
+      <Text className="text-2xl font-bold  mt-2 mb-4 ">Recent Alert Timeline</Text>
+      <View >
         {timelineData.map((item, index) => (
           <AlertTimelineItem
             key={item.id}

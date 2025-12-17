@@ -1,14 +1,40 @@
-import { Text } from "react-native";
-import Animated, { FadeInUp } from "react-native-reanimated";
+import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { MotiView } from "moti";
+import { Text, View } from "react-native";
 
-export default function AlertCategoryCard({ icon, title, delay }: any) {
+export default function AlertSummaryCard({
+  icon,
+  title,
+  value,
+  subtitle,
+  delay = 0,
+}: any) {
   return (
-    <Animated.View
-      entering={FadeInUp.delay(delay)}
-      className="bg-white rounded-xl border border-dark p-4 mb-3 flex-row items-center"
+    <MotiView
+      from={{ opacity: 0, translateY: 20 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ delay }}
     >
-      {icon}
-      <Text className="ml-3 text-xl font-semibold">{title}</Text>
-    </Animated.View>
+      <ZiraatCard
+        width="100%"
+        height={65}
+        paddingHorizontal={1}
+        paddingVertical={0.75}
+        marginBottom={1}
+      >
+        <View className="flex-1 justify-center">
+          {/* TITLE + ICON ROW */}
+          <View className="flex-row items-center justify-between">
+            <Text className="text-[16px] text-dark font-semibold">
+              {title}
+            </Text>
+
+            <View className="p-2 rounded-xl">
+              {icon}
+            </View>
+          </View>
+         </View>
+      </ZiraatCard>
+    </MotiView>
   );
 }
