@@ -91,7 +91,7 @@ export default function LicenseScreen() {
         <LicenseSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Add License Info"}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

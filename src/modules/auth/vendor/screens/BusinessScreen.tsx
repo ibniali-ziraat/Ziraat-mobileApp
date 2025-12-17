@@ -85,7 +85,7 @@ export default function BusinessScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.back()}
-          submitLabel={data ? "Update Profile" : "Submit"}
+          submitLabel={data ? "Update" : "Submit"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

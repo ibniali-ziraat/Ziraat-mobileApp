@@ -91,7 +91,7 @@ export default function FinancialScreen() {
         <FinancialPaymentSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Add Financial Info"}
+          submitLabel={data ? "Update" : "Add"}
           onCancel={() => router.back()}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}

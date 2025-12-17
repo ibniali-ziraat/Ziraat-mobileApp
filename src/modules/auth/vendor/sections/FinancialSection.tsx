@@ -38,7 +38,7 @@ export default function FinancialPaymentSection({
         <SingleSelectInput
           control={control}
           name="upiAvailable"
-          modalLabel="Digital Payment Available"
+          modalLabel="Digital Payment"
           label="UPI / Digital Payment Options"
           options={[
             { value: "yes", label: "Yes" },

@@ -77,7 +77,7 @@ export default function ProfileScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update Profile" : "Submit"}
+          submitLabel={data ? "Update " : "Submit"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}
