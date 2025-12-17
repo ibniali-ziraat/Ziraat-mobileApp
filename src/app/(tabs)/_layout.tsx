@@ -1,15 +1,14 @@
-import RouteGuard from "@/src/components/RouteGuard";
 import CropHeader from "@/src/components/shared/CropHeader";
 import HomeHeader from "@/src/components/shared/HomeHeader";
-import Loader from "@/src/components/shared/Loader";
 import MenuHeader from "@/src/components/shared/MenuHeader";
 import ProductHeader from "@/src/components/shared/ProductHeader";
+import SprayHeader from "@/src/components/shared/SprayHeader";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
-import { Redirect, Tabs } from "expo-router";
-import { Home, Menu, ShoppingBag, Trees } from "lucide-react-native";
+import { Tabs } from "expo-router";
+import { Home, LucideDroplets, Menu, ShoppingBag, Trees } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
@@ -67,6 +66,22 @@ export default function TabLayout() {
           ),
         }}
       />
+            {/* Spray Tab */}
+       <Tabs.Screen
+        name="spray"
+        options={{
+          title: "Spray",
+          headerShown: true,
+
+          header: () => <SprayHeader />,
+          tabBarIcon: ({ size, color }) => (
+            <TabIcon
+              icon={<LucideDroplets size={size} color={color} />}
+              label="Spray"
+            />
+          ),
+        }}
+      />
 
       {/* Products Tab */}
       <Tabs.Screen
@@ -84,6 +99,8 @@ export default function TabLayout() {
           ),
         }}
       />
+
+     
 
       {/* Menu Tab */}
       <Tabs.Screen

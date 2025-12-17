@@ -8,11 +8,12 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
+import { StatusBar } from "react-native";
 import "../../styles/global.css";
+import RouteGuard from "../components/RouteGuard";
+import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
 import { colors } from "../constants/colors";
 import AppProvider from "../contexts/AppProvider";
-import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
-import RouteGuard from "../components/RouteGuard";
 
 registerTranslation("en-GB", enGB);
 
