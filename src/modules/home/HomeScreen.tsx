@@ -1,5 +1,4 @@
 import { ScrollView, View, Text } from "react-native";
-import { ChevronRight } from "lucide-react-native";
 
 import FarmOverviewChart from "./components/FarmOverviewChart";
 import FarmerTipsCard from "./components/FarmerTipsCard";
@@ -12,9 +11,17 @@ import ProductCarousel from "@/src/components/shared/ProductCarousel";
 
 import products from "@/src/Data/products.json";
 import { imageMapper } from "@/src/Data/imageMapper";
-import { colors } from "@/src/constants/colors";
+import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
+import { useState } from "react";
+import Loader from "@/src/components/shared/Loader";
 
 export default function HomeScreen() {
+  const [cityData, setCityData] = useState("srinagar");
+  const { data, isPending, isError } = useWeatherQuery(cityData);
+  console.log(data, "data...");
+
+  if (isPending) return <Loader />;
+
   const sections = [
     { title: "Top Pesticides for Healthy Crop Growth", slice: [0, 8] },
   ];

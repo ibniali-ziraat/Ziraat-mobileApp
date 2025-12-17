@@ -20,10 +20,10 @@ export const MenuLinks = {
     {
       title: "Vendor Settings",
       routes: [
-        {
-          label: "Profile Settings",
-          screen: "auth/vendor/vendor-profile-screen",
-        },
+        // {
+        //   label: "Profile Settings",
+        //   screen: "auth/vendor/vendor-profile-screen",
+        // },
         { label: "Notifications", screen: "settings/vendor/notifications" },
         { label: "Support", screen: "settings/vendor/support" },
         { label: "Payment Methods", screen: "settings/vendor/payments" },

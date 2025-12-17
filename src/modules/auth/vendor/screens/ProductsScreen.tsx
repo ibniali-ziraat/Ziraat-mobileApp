@@ -110,7 +110,7 @@ export default function ProductsScreen() {
         <ProductSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Add Products"}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           onCancel={() => router.back()}
           disabled={isSaving || isUpdating}

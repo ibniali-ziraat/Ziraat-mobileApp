@@ -75,7 +75,7 @@ export default function EducationScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update Education" : "Add Education"}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}
