@@ -73,7 +73,7 @@ export default function AddressScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update Adress" : "Add Address"}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

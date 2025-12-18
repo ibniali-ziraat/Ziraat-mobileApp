@@ -1,5 +1,5 @@
-import { View, Text } from "react-native";
 import { Eye } from "lucide-react-native";
+import { Text, View } from "react-native";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -26,10 +26,10 @@ export default function VisibilityCard({ distance, note }: Props) {
 
 
             <Text className="mt-1 text-sm leading-5 text-dark">
-                {note} Light haze is affecting visibility.
+                {note}Light haze is affecting visibility.
             </Text>
             <Text className=" mt-1 text-sm text-left text-dark">
-                {note}  Perfect Clear View.
+                {note}Perfect Clear View.
             </Text>
         </ZiraatCard>
     );

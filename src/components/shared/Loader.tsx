@@ -89,8 +89,8 @@ export default function Loader() {
           source={require("../../../assets/images/logo.jpeg")}
           resizeMode="contain"
           style={{
-            width: 300,
-            height: 300,
+            width: 180,
+            height: 180,
           }}
         />
       </Animated.View>
@@ -108,8 +108,8 @@ export default function Loader() {
             key={index}
             style={[
               {
-                width: 12,
-                height: 12,
+                width: 10,
+                height: 10,
                 borderRadius: 6,
                 backgroundColor: colors.primary,
               },

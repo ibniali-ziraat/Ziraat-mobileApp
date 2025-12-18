@@ -30,12 +30,18 @@ import {
   Boxes,
   Building,
   Building2,
+  CreditCard,
+  GitBranch,
+  Hash,
   Headset,
   Home,
+  Landmark,
   Mail,
   MapPin,
   Navigation,
   Phone,
+  Store,
+  User,
   UserCheck,
   Wallet,
   Workflow,
@@ -50,6 +56,7 @@ import { View } from "react-native";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { ROUTES } from "@/src/constants/routes";
 import DetailsCard from "./components/DetailsCard";
+import { maskValue } from "@/src/utils/mask";
 
 export default function VendorProfileScreen() {
   // const { vendorData, setVendorData } = useGlobalData();
@@ -137,6 +144,7 @@ export default function VendorProfileScreen() {
   };
 
   if (!profileData) return <Loader />;
+  console.log(financialData, "finncialdata");
 
   return (
     <ScreenLayout>
@@ -248,12 +256,12 @@ export default function VendorProfileScreen() {
             ? [
                 {
                   title: "GST Number",
-                  value: licenseData.gstNumber,
+                  value: maskValue(licenseData.gstNumber, 2, 4),
                   icon: <BadgeCheck size={22} color={colors.primary} />,
                 },
                 {
                   title: "License Number",
-                  value: licenseData.dealerLicenseNumber,
+                  value: maskValue(licenseData.dealerLicenseNumber, 4, 2),
                   icon: <BadgeCheck size={22} color={colors.primary} />,
                 },
                 {
@@ -272,7 +280,7 @@ export default function VendorProfileScreen() {
                 },
                 {
                   title: "PAN Number",
-                  value: licenseData.panNumber,
+                  value: maskValue(licenseData.panNumber, 2, 1),
                   icon: <BadgeCheck size={22} color={colors.primary} />,
                 },
               ]
@@ -361,7 +369,7 @@ export default function VendorProfileScreen() {
         emptyActionLabel="Add Operational Details"
       />
 
-      <DetailsCard
+      {/* <DetailsCard
         heading="Financial Info"
         items={
           financialData
@@ -385,7 +393,78 @@ export default function VendorProfileScreen() {
         }
         onAdd={() => goToSection("financial")}
         emptyActionLabel="Add Financial Details"
+      /> */}
+
+      <DetailsCard
+        heading="Financial Info"
+        items={
+          financialData
+            ? [
+                {
+                  title: "UPI Available",
+                  value: financialData.upiAvailable ? "Yes" : "No",
+                  icon: <Wallet size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Credit Facility",
+                  value: financialData.creditFacility ? "Yes" : "No",
+                  icon: <Wallet size={22} color={colors.primary} />,
+                },
+                // {
+                //   title: "Selling via Ziraat",
+                //   value: financialData.sellingViaZiraat ? "Yes" : "No",
+                //   icon: <Store size={22} color={colors.primary} />,
+                // },
+
+                // ---- Bank Details ----
+                ...(financialData.bankDetails
+                  ? [
+                      {
+                        title: "Bank Name",
+                        value: financialData.bankDetails.bankName,
+                        icon: <Landmark size={22} color={colors.primary} />,
+                      },
+                      {
+                        title: "Branch Name",
+                        value: financialData.bankDetails.branchName,
+                        icon: <GitBranch size={22} color={colors.primary} />,
+                      },
+                      {
+                        title: "Account Holder Name",
+                        value: financialData.bankDetails.accountHolderName,
+                        icon: <User size={22} color={colors.primary} />,
+                      },
+                      {
+                        title: "Account Number",
+                        value: maskValue(
+                          financialData.bankDetails.accountNumber,
+                          4,
+                          6
+                        ),
+                        icon: <CreditCard size={22} color={colors.primary} />,
+                      },
+                      {
+                        title: "IFSC Code",
+                        value: maskValue(
+                          financialData.bankDetails.ifscCode,
+                          4,
+                          1
+                        ),
+                        icon: <Hash size={22} color={colors.primary} />,
+                      },
+                    ]
+                  : []),
+              ]
+            : []
+        }
+        onEdit={financialData ? () => goToSection("financial") : undefined}
+        onDelete={
+          financialData ? () => setDeleteSection("financial") : undefined
+        }
+        onAdd={() => goToSection("financial")}
+        emptyActionLabel="Add Financial Details"
       />
+
       <DetailsCard
         heading="Support Services"
         items={

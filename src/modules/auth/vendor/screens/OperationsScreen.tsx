@@ -97,7 +97,7 @@ export default function OperationsScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
-          submitLabel={data ? "Update Operations" : "Save Operations"}
+          submitLabel={data ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

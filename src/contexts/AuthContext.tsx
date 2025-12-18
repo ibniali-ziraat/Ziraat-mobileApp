@@ -1,10 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { clear, load, save } from "../utils/authStorage";
-import { router } from "expo-router";
 
 interface AuthContextType {
   userToken: string | null;
   vendorToken: string | null;
+  userTokenExp: string | null;
 
   userId: number | null;
   vendorId: number | null;
@@ -16,10 +16,11 @@ interface AuthContextType {
   initialized: boolean;
 
   setUserToken: (v: string | null) => Promise<void>;
-  setVendorToken: (v: string | null) => void; // no storage
+  setVendorToken: (v: string | null) => void;
+  setUserTokenExp: (v: string | null) => Promise<void>;
 
   setUserId: (v: number | null) => Promise<void>;
-  setVendorId: (v: number | null) => void; // no storage
+  setVendorId: (v: number | null) => void;
 
   setUserProfileId: (v: number | null) => void;
   setVendorProfileId: (v: number | null) => void;
@@ -39,6 +40,7 @@ export const AuthProvider = ({ children }: any) => {
 
   const [userId, setUserIdState] = useState<number | null>(null);
   const [vendorId, setVendorIdState] = useState<number | null>(null);
+  const [userTokenExp, setUserTokenExpState] = useState<string | null>(null);
 
   const [userProfileId, setUserProfileIdState] = useState<number | null>(null);
   const [vendorProfileId, setVendorProfileIdState] = useState<number | null>(
@@ -50,32 +52,57 @@ export const AuthProvider = ({ children }: any) => {
   );
   const [initialized, setInitialized] = useState(false);
 
-  // Load on app start
+  // ---------------- AUTO LOGOUT ----------------
+  useEffect(() => {
+    if (!userTokenExp) return;
+
+    const expTime = new Date(userTokenExp).getTime(); // parse ISO string
+    const timeout = expTime - Date.now();
+
+    if (timeout <= 0) {
+      logoutUser();
+      return;
+    }
+
+    const timer = setTimeout(() => logoutUser(), timeout);
+    return () => clearTimeout(timer);
+  }, [userTokenExp]);
+
+  // ---------------- LOAD STORED VALUES ----------------
   useEffect(() => {
     (async () => {
       const storedToken = await load("user_token");
       const storedUserId = await load("user_id");
+      const storedExp = await load("user_token_exp");
 
-      // Only these two come from storage
-      setUserTokenState(storedToken);
-      setUserIdState(storedUserId ? Number(storedUserId) : null);
+      // Clear if expired
+      if (storedExp && new Date(storedExp).getTime() < Date.now()) {
+        await clear("user_token");
+        await clear("user_id");
+        await clear("user_token_exp");
+      } else {
+        setUserTokenState(storedToken);
+        setUserIdState(storedUserId ? Number(storedUserId) : null);
+        setUserTokenExpState(storedExp || null);
+      }
 
-      // Apply axios auth token
-      // setUserAxiosToken(storedToken);
-
-      // Others are NOT stored, so remain null/default
       setInitialized(true);
     })();
   }, []);
 
   // ---------------- SIMPLE SETTERS ----------------
-  // Stored
   const setUserToken = async (token: string | null) => {
     if (token) await save("user_token", token);
     else await clear("user_token");
 
     setUserTokenState(token);
-    // setUserAxiosToken(token);
+  };
+
+  const setUserTokenExp = async (exp: string | null) => {
+    if (exp) await save("user_token_exp", exp);
+    else await clear("user_token_exp");
+
+    setUserTokenExpState(exp);
   };
 
   const setUserId = async (v: number | null) => {
@@ -85,10 +112,8 @@ export const AuthProvider = ({ children }: any) => {
     setUserIdState(v);
   };
 
-  // Not stored
   const setVendorToken = (token: string | null) => {
     setVendorTokenState(token);
-    // setVendorAxiosToken(token);
   };
 
   const setVendorId = (v: number | null) => {
@@ -104,13 +129,14 @@ export const AuthProvider = ({ children }: any) => {
   const logoutUser = async () => {
     await clear("user_token");
     await clear("user_id");
+    await clear("user_token_exp");
 
     setUserTokenState(null);
     setUserIdState(null);
-    // setUserAxiosToken(null);
+    setUserTokenExpState(null);
 
-    // Non-stored fields also reset
     setUserProfileIdState(null);
+
     // router.replace("/auth/user");
   };
 
@@ -118,7 +144,6 @@ export const AuthProvider = ({ children }: any) => {
     setVendorTokenState(null);
     setVendorIdState(null);
     setVendorProfileIdState(null);
-    // setVendorAxiosToken(null);
   };
 
   const logoutAll = async () => {
@@ -131,6 +156,8 @@ export const AuthProvider = ({ children }: any) => {
       value={{
         userToken,
         vendorToken,
+        userTokenExp,
+        setUserTokenExp,
         userId,
         vendorId,
         userProfileId,

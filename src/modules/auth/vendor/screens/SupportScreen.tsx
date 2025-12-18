@@ -83,7 +83,7 @@ export default function SupportScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.back()}
-          submitLabel={data ? "Update" : "Add Support Info"}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

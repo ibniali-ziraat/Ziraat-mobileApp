@@ -1,7 +1,4 @@
-import { Text, TouchableOpacity } from "react-native";
-
 import BackHeader from "@/src/components/shared/BackHeader";
-import SectionCard from "./components/SectionCard";
 
 import { colors } from "@/src/constants/colors";
 
@@ -19,7 +16,6 @@ import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 
-import ProfileDetails from "@/src/components/shared/ProfileDetails";
 import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
 import ProfileTopHeader from "@/src/components/shared/ProfileTopHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -31,7 +27,6 @@ import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
 import { userRoutes } from "../auth/vendor/config/userRoutes";
 
 // Icons
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { ROUTES } from "@/src/constants/routes";
 import {
@@ -51,8 +46,6 @@ import {
   UserCheck,
   VenetianMask,
 } from "lucide-react-native";
-import { View } from "react-native";
-import { ProfileInfoRow } from "./components/ProfileInfoRow";
 import DetailsCard from "./components/DetailsCard";
 
 export default function UserProfileScreen() {
@@ -260,6 +253,7 @@ export default function UserProfileScreen() {
         heading="Profession"
         onEdit={() => goToSection("profession")}
         onDelete={() => setDeleteSection("profession")}
+        onAdd={() => goToSection("profession")}
         items={
           professionData
             ? [

@@ -75,7 +75,7 @@ export default function ProfessionScreen() {
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update Profession" : "Add Profession Info"}
+          submitLabel={data ? "Update " : "Add "}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}
