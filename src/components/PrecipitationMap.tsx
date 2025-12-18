@@ -1,5 +1,5 @@
-import { View, Platform } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import { Platform, View } from "react-native";
+// import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Text } from "react-native-paper";
 
 export default function PrecipitationMap() {
@@ -41,7 +41,7 @@ export default function PrecipitationMap() {
         backgroundColor: "#FFFFFF",
       }}
     >
-      <MapView
+      {/* <MapView
         style={{ flex: 1 }}
         initialRegion={region}
         provider={
@@ -55,7 +55,7 @@ export default function PrecipitationMap() {
         toolbarEnabled={false}
         scrollEnabled
         zoomEnabled
-      />
+      /> */}
     </View>
   );
 }

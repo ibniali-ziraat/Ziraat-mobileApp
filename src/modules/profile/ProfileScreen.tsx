@@ -1,4 +1,3 @@
-
 import BackHeader from "@/src/components/shared/BackHeader";
 
 import { colors } from "@/src/constants/colors";
@@ -254,6 +253,7 @@ export default function UserProfileScreen() {
         heading="Profession"
         onEdit={() => goToSection("profession")}
         onDelete={() => setDeleteSection("profession")}
+        onAdd={() => goToSection("profession")}
         items={
           professionData
             ? [

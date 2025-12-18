@@ -1,6 +1,8 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorSupportMutation,
@@ -8,14 +10,11 @@ import {
   useVendorSupportUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
 import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert } from "react-native";
 import SupportSection from "../sections/SupportSection";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
 
 export default function SupportScreen() {
   const { vendorProfileId, userId } = useAuth();

@@ -9,7 +9,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BackHeader from "../components/shared/BackHeader";
+import ScreenLayout from "../components/shared/ScreenLayout";
 import { DashboardTabs } from "../navigation/DashboardTabs";
 
 const { width: screenWidth } = Dimensions.get("window");
@@ -43,34 +45,35 @@ export default function DashboardPage() {
       animated: true,
     });
   }, [activeTab]);
+  const insets = useSafeAreaInsets();
 
   return (
     <View className="flex-1 bg-light">
       {/* Scrollable Main Content */}
-      <ScrollView
-        className="flex-1"
-        contentContainerStyle={{ paddingBottom: 140 }}
-        showsHorizontalScrollIndicator={false}
-      >
-        {/* <BackHeader
-          title={tabs[activeTab]?.label}
-          desc={
-            role === "farmer"
-              ? "Manage Your Orchards & Fields"
-              : role === "supplier"
-                ? "Manage Your Products & Orders"
-                : undefined
-          }
-        /> */}
-        {ActiveComponent ? (
+
+      <BackHeader
+        title={tabs[activeTab]?.label}
+        desc={
+          role === "farmer"
+            ? "Manage Your Orchards & Fields"
+            : role === "supplier"
+              ? "Manage Your Products & Orders"
+              : undefined
+        }
+      />
+      {ActiveComponent ? (
+        <ScreenLayout>
           <ActiveComponent />
-        ) : (
-          <Text className="p-4 text-dark">No Screen Found</Text>
-        )}
-      </ScrollView>
+        </ScreenLayout>
+      ) : (
+        <Text className="p-4 text-dark">No Screen Found</Text>
+      )}
 
       {/* Bottom Tabs */}
-      <View className="absolute bottom-5 left-0 right-0">
+      <View
+        className="absolute bottom-5 left-0 right-0"
+        style={{ bottom: insets.bottom + 10 }}
+      >
         <View
           className="bg-light border rounded-full mx-3"
           style={{ borderColor: colors.neutral }}
@@ -83,7 +86,7 @@ export default function DashboardPage() {
               flexGrow: 1,
               justifyContent: "center",
               alignItems: "center",
-              paddingHorizontal: 8,
+              paddingHorizontal: 4,
             }}
           >
             {tabs.map((tab, index) => {
@@ -93,11 +96,10 @@ export default function DashboardPage() {
               return (
                 <TouchableOpacity
                   key={tab.name}
-                  className="mx-1 items-center justify-center rounded-full"
+                  className="mx-1 items-center justify-center rounded-full overflow-hidden"
                   style={{
                     width: tabWidth,
                     paddingVertical: 6,
-
                   }}
                   onPress={() => setActiveTab(index)}
                 >
@@ -109,8 +111,9 @@ export default function DashboardPage() {
                   )}
 
                   <Text
-                    className={`text-[10px] mt-1 text-center ${isActive ? "text-primary font-semibold" : "text-dark"
-                      }`}
+                    className={`text-[10px] mt-1 text-center ${
+                      isActive ? "text-primary font-semibold" : "text-dark"
+                    }`}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >
@@ -120,10 +123,10 @@ export default function DashboardPage() {
               );
             })}
 
-            <Animated.View
+            {/* <Animated.View
               style={{
                 position: "absolute",
-                bottom: 0,
+                bottom: insets.bottom + 10,
                 left: 16,
                 width: tabWidth * 0.8, // <<< FIXED WIDTH
                 height: 2,
@@ -131,12 +134,10 @@ export default function DashboardPage() {
                 backgroundColor: colors.primary,
                 transform: [{ translateX: underlineAnim }],
               }}
-            />
-
+            /> */}
           </ScrollView>
         </View>
       </View>
-
     </View>
   );
 }

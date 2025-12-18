@@ -1,5 +1,4 @@
 import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
-import { LinearGradient } from "expo-linear-gradient";
 import { Stack } from "expo-router";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
@@ -9,12 +8,11 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
+import { StatusBar } from "expo-status-bar";
 import "../../styles/global.css";
 import RouteGuard from "../components/RouteGuard";
 import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
-import { colors } from "../constants/colors";
 import AppProvider from "../contexts/AppProvider";
-import { StatusBar } from "expo-status-bar";
 
 registerTranslation("en-GB", enGB);
 
