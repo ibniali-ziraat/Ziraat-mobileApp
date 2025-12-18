@@ -1,5 +1,6 @@
 import CropHeader from "@/src/components/shared/CropHeader";
 import HomeHeader from "@/src/components/shared/HomeHeader";
+import Loader from "@/src/components/shared/Loader";
 import MenuHeader from "@/src/components/shared/MenuHeader";
 import ProductHeader from "@/src/components/shared/ProductHeader";
 import TabIcon from "@/src/components/shared/TabIcon";
