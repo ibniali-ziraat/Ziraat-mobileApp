@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import BackHeader from "../components/shared/BackHeader";
 import { DashboardTabs } from "../navigation/DashboardTabs";
 
 const { width: screenWidth } = Dimensions.get("window");

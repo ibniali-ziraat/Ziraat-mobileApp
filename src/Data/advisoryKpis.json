@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "Learning Progress",
+    "value": "76%",
+    "subtitle": "Growth Curve",
+    "icon": "BookOpen",
+    "color": "orange",
+    "image": "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
+  },
+  {
+    "id": 2,
+    "title": "Seasonal Compliance",
+    "value": "92%",
+    "subtitle": "Advisories Followed",
+    "icon": "Percent",
+    "color": "orange",
+    "image": "https://images.unsplash.com/photo-1501004318641-b39e6451bec6"
+  },
+  {
+    "id": 3,
+    "title": "Community Impact",
+    "value": "44%",
+    "subtitle": "Posts & Answers",
+    "icon": "Users",
+    "color": "orange",
+    "image": "https://images.unsplash.com/photo-1494173853739-c21f58b16055"
+  },
+  {
+    "id": 4,
+    "title": "Expert Sessions",
+    "value": "8%",
+    "subtitle": "This Month",
+    "icon": "MessageCircle",
+    "color": "orange",
+    "image": "https://images.unsplash.com/photo-1521737604893-d14cc237f11d"
+  }
+]

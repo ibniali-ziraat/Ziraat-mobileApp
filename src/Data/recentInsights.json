@@ -1,0 +1,5 @@
+[
+  { "id": "FY-101", "type": "Yield Update", "status": "Improved" },
+  { "id": "FY-102", "type": "Market Price Change", "status": "Positive" },
+  { "id": "FY-103", "type": "Cost Increase", "status": "Negative" }
+]

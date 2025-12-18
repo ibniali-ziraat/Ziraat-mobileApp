@@ -1,4 +1,4 @@
-import { View, Platform } from "react-native";
+import { Platform, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import { Text } from "react-native-paper";
 

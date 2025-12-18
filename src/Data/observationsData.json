@@ -1,0 +1,28 @@
+{
+  "highRiskPests": [
+    {
+      "id": 1,
+      "title": "Codling Moth",
+      "description": "Humidity & temperature favour rapid development. Trap counts rising.",
+      "recommended": "Chlorantraniliprole"
+    },
+    {
+      "id": 2,
+      "title": "Aphid Colonies",
+      "description": "Fresh leaf curling observed. Infestation spreading rapidly.",
+      "recommended": "Neem Oil / Imidacloprid"
+    }
+  ],
+  "diseaseObservations": [
+    {
+      "id": 1,
+      "title": "Apple Scab",
+      "description": "Early lesions detected. Moisture conditions ideal for disease spread."
+    },
+    {
+      "id": 2,
+      "title": "Powdery Mildew",
+      "description": "White patches observed on tender shoots. Moderate but rising risk."
+    }
+  ]
+}
