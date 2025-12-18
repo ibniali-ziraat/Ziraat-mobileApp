@@ -71,8 +71,8 @@ export default function FinancialScreen() {
         showSuccessToast("Financial Info Added ");
       }
 
-      showSuccessToast("Financial Info Saved!");
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      // showSuccessToast("Financial Info Saved!");
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
       console.error("Error saving financial info:", error);
       showErrorToast(

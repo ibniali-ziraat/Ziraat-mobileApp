@@ -2,29 +2,25 @@
   {
     "id": "humidity",
     "time": "2 hrs ago",
-    "message": "High humidity—risk of fungal spread",
-    "icon": "cloud-outline",
-    "iconType": "Ionicons"
+    "message": "Humidity risk of fungal spread",
+    "icon": "CloudRain"
   },
   {
     "id": "codling",
     "time": "6 hrs ago",
     "message": "Codling moth trap count rising",
-    "icon": "bug-outline",
-    "iconType": "Ionicons"
+    "icon": "Bug"
   },
   {
     "id": "nitrogen",
     "time": "Yesterday",
-    "message": "Nitrogen deficiency detected in Block C",
-    "icon": "leaf-outline",
-    "iconType": "MaterialCommunityIcons"
+    "message": "Nitrogen deficiency in Block C",
+    "icon": "Leaf"
   },
   {
     "id": "sprayOverdue",
     "time": "2 days ago",
     "message": "Recommended spray overdue by 3 days",
-    "icon": "alert-circle-outline",
-    "iconType": "Ionicons"
+    "icon": "AlertCircle"
   }
 ]

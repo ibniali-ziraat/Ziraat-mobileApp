@@ -13,7 +13,7 @@ import { IndianRupee, Package } from "lucide-react-native";
 import BackHeader from "@/src/components/shared/BackHeader";
 import { FlatList, Text, ToastAndroid, View } from "react-native";
 import faqData from "../../Data/Faq.json";
-import products from "../../Data/products.json";
+// import products from "../../Data/products.json";
 
 // --- START: renderHeader Function (Content moved from ScreenLayout) ---
 const renderHeader = (product, colors) => (

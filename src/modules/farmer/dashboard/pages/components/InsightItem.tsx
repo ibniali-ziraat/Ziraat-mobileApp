@@ -1,29 +1,38 @@
 import { Text, View } from "react-native";
 
+type InsightItemProps = {
+  item: {
+    id: string | number;
+    type: string;
+    status: "Improved" | "Positive" | "Negative";
+  };
+};
 
-export default function InsightItem({ item }) {
+export default function InsightItem({ item }: InsightItemProps) {
   return (
-  
-      <View className="flex-row items-center mb-2 justify-between">
-        <Text className="font-bold text-xl  text-black w-[30%]">
-          {item.id}
-        </Text>
+    <View className="flex-row items-center justify-between mb-2">
+      {/* ID */}
+      <Text className="font-bold text-[14px] text-black w-[25%]">
+        {item.id}
+      </Text>
 
-        <Text className="text-dark mt-1 w-[45%]">
-          {item.type}
-        </Text>
+      {/* TYPE */}
+      <Text className="text-dark w-[50%] text-center">
+        {item.type}
+      </Text>
 
-        <Text
-          className={`w-[25%] text-right font-medium ${
-            item.status === "Improved"
-              ? "text-primary"
-              : item.status === "Positive"
-              ? "text-secondary"
-              : "text-error"
-          }`}
-        >
-          {item.status}
-        </Text>
-      </View>
+      {/* STATUS */}
+      <Text
+        className={`w-[25%] text-right font-medium ${
+          item.status === "Improved"
+            ? "text-primary"
+            : item.status === "Positive"
+            ? "text-secondary"
+            : "text-error"
+        }`}
+      >
+        {item.status}
+      </Text>
+    </View>
   );
 }

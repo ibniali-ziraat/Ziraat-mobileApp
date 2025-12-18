@@ -1,4 +1,3 @@
-
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import {
@@ -16,32 +15,46 @@ const icons = {
   TrendingUp,
   Percent,
   Wheat,
+} as const;
+
+type KpiItem = {
+  title: string;
+  value: string | number;
+  subtitle?: string;
+  icon: keyof typeof icons;
 };
 
-export default function KpiCard({ item }) {
+type Props = {
+  item: KpiItem;
+};
+
+export default function KpiCard({ item }: Props) {
   const Icon = icons[item.icon];
 
   return (
-    <ZiraatCard
-      width="49%"
-      height={120}
-      paddingVertical={1}
-      paddingHorizontal={1}
-    >
-      <View className="flex-1 items-center justify-center">
-        <Icon size={28} color={colors.secondary} />
+    <ZiraatCard width="49%" paddingVertical={2} paddingHorizontal={2}>
+      <View className="h-48 items-center justify-evenly">
+        {/* Icon */}
+        {Icon && (
+          <Icon size={38} color={colors.secondary} strokeWidth={1.3} />
+        )}
 
-        <Text className="mt-1 text-black font-bold text-[16px] text-center">
+        {/* Title */}
+        <Text className="text-black font-semibold text-[14px] text-center">
           {item.title}
         </Text>
 
-        <Text className="mt-1 text-black text-center text-[12px]">
+        {/* Value */}
+        <Text className="text-black font-bold text-[18px] text-center">
           {item.value}
         </Text>
 
-        <Text className="mt-1 text-black text-center text-sm">
-          {item.subtitle}
-        </Text>
+        {/* Subtitle */}
+        {item.subtitle && (
+          <Text className="text-black text-[14px] text-center">
+            {item.subtitle}
+          </Text>
+        )}
       </View>
     </ZiraatCard>
   );

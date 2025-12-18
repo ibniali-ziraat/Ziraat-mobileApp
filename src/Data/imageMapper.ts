@@ -156,11 +156,11 @@ export const imageMapper = {
   spirotetramat_5: require("../../assets/images/product-images/Spirotetramat/QR.png"),
 
   // 126 - Thiamethoxam
-  thiamethoxam_1: require("../../assets/images/product-images/Thiamethoxam/frontimg.jpg"),
-  thiamethoxam_2: require("../../assets/images/product-images/Thiamethoxam/backimg.png"),
-  thiamethoxam_3: require("../../assets/images/product-images/Thiamethoxam/ingre.png"),
-  thiamethoxam_4: require("../../assets/images/product-images/Thiamethoxam/front2img.png"),
-  thiamethoxam_5: require("../../assets/images/product-images/Thiamethoxam/QR.png"),
+  // thiamethoxam_1: require("../../assets/images/product-images/Thiamethoxam/frontimg.jpg"),
+  // thiamethoxam_2: require("../../assets/images/product-images/Thiamethoxam/backimg.png"),
+  // thiamethoxam_3: require("../../assets/images/product-images/Thiamethoxam/ingre.png"),
+  // thiamethoxam_4: require("../../assets/images/product-images/Thiamethoxam/front2img.png"),
+  // thiamethoxam_5: require("../../assets/images/product-images/Thiamethoxam/QR.png"),
 
   // 127 - Hexaconazole duplicate
   hexaconazole2_1: require("../../assets/images/product-images/Hexaconazole/frontimg.png"),

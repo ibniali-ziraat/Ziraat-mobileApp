@@ -1,6 +1,6 @@
 [
-  { "label": "Active Reader", "color": "blue" },
-  { "label": "Top Contributor", "color": "orange" },
-  { "label": "Forum Helper", "color": "green" },
-  { "label": "Seasonal Follower", "color": "violet" }
+  { "label": "Active Reader" },
+  { "label": "Top Contributor" },
+  { "label": "Forum Helper" },
+  { "label": "Seasonal Follower" }
 ]

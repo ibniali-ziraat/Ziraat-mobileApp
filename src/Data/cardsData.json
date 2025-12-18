@@ -1,73 +1,53 @@
 [
   {
     "title": "Soil pH",
-    // "subtitle": "Latest reading",
     "value": "pH 6.5",
-    "iconType": "Ionicons",
-    "iconName": "leaf-outline"
+    "icon": "Leaf"
   },
-   {
-    "title": " EC Status",
-    // "subtitle": "Latest reading",
+  {
+    "title": "EC Status",
     "value": "EC 0.8",
-    "iconType": "Ionicons",
-    "iconName": "leaf-outline"
+    "icon": "Activity"
   },
   {
     "title": "Organic Matter %",
-    // "subtitle": "Current level",
     "value": "2.3%",
-    "iconType": "MaterialCommunityIcons",
-    "iconName": "compost"
+    "icon": "Recycle"
   },
   {
     "title": "N Levels",
-    // "subtitle": "Status",
     "value": "N: Low",
-    "iconType": "Entypo",
-    "iconName": "bar-graph"
+    "icon": "BarChart3"
   },
-   {
+  {
     "title": "P Levels",
-    // "subtitle": "Status",
-    "value": " P: Med",
-    "iconType": "Entypo",
-    "iconName": "bar-graph"
+    "value": "P: Med",
+    "icon": "BarChart3"
   },
-   {
+  {
     "title": "K Levels",
-    // "subtitle": "Status",
-    "value": " K: High",
-    "iconType": "Entypo",
-    "iconName": "bar-graph"
+    "value": "K: High",
+    "icon": "BarChart3"
   },
   {
     "title": "Fertigation Compliance (%)",
-    // "subtitle": "Tap to update",
     "value": "Tap to Update",
-    "iconType": "Ionicons",
-    "iconName": "water",
+    "icon": "Droplets",
     "onPress": "modal"
   },
   {
     "title": "Irrigation Volume Applied",
-    // "subtitle": "Last cycle",
     "value": "4,200 L/ha",
-    "iconType": "MaterialCommunityIcons",
-    "iconName": "watering-can"
+    "icon": "Sprout"
   },
   {
     "title": "Water Use Efficiency",
-    // "subtitle": "Seasonal",
     "value": "78%",
-    "iconType": "Ionicons",
-    "iconName": "analytics-outline"
+    "icon": "Gauge"
   },
   {
     "title": "Deficiency Symptoms",
-    // "subtitle": "Auto-detected",
     "value": "5 Issues",
-    "iconType": "Ionicons",
-    "iconName": "warning"
+    "icon": "AlertTriangle"
   }
 ]

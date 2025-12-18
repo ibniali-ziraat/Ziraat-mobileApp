@@ -61,7 +61,7 @@ export default function OrchardStatsSection({ orchards, admin, weather }: any) {
           paddingHorizontal={1}
           paddingVertical={1}
         >
-          <Text className="text-[16px] font-bold mb-2">
+          <Text className="text-[18px] font-bold mb-3">
             Smart Insight
           </Text>
           <Text className="text-[12px]">

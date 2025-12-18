@@ -49,7 +49,7 @@ export default function DashboardPage() {
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 140 }}
-         showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
       >
         {/* <BackHeader
           title={tabs[activeTab]?.label}
@@ -96,7 +96,7 @@ export default function DashboardPage() {
                   style={{
                     width: tabWidth,
                     paddingVertical: 6,
-                   
+
                   }}
                   onPress={() => setActiveTab(index)}
                 >
@@ -119,18 +119,18 @@ export default function DashboardPage() {
               );
             })}
 
-<Animated.View
-  style={{
-    position: "absolute",
-    bottom: 0,
-    left: 16,
-    width: tabWidth * 0.8, // <<< FIXED WIDTH
-    height: 2,
-    borderRadius: 1,
-    backgroundColor: colors.primary,
-    transform: [{ translateX: underlineAnim }],
-  }}
-/>
+            <Animated.View
+              style={{
+                position: "absolute",
+                bottom: 0,
+                left: 16,
+                width: tabWidth * 0.8, // <<< FIXED WIDTH
+                height: 2,
+                borderRadius: 1,
+                backgroundColor: colors.primary,
+                transform: [{ translateX: underlineAnim }],
+              }}
+            />
 
           </ScrollView>
         </View>

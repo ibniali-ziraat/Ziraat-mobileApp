@@ -36,8 +36,8 @@ export default function ZiraatCard({
 }) {
   const REM = 16;
 
-  if (!width || !height) {
-    throw new Error("ZiraatCard requires width and height props.");
+  if (!width) {
+    throw new Error("ZiraatCard requires width  props.");
   }
 
   // PADDING
@@ -46,29 +46,29 @@ export default function ZiraatCard({
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingTop
-        ? paddingTop * REM
-        : 0,
+          ? paddingTop * REM
+          : 0,
 
     paddingBottom:
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingBottom
-        ? paddingBottom * REM
-        : 0,
+          ? paddingBottom * REM
+          : 0,
 
     paddingLeft:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingLeft
-        ? paddingLeft * REM
-        : 0,
+          ? paddingLeft * REM
+          : 0,
 
     paddingRight:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingRight
-        ? paddingRight * REM
-        : 0,
+          ? paddingRight * REM
+          : 0,
   };
 
   // MARGIN
@@ -92,7 +92,7 @@ export default function ZiraatCard({
         styles.shadowWrapper,
         {
           width,
-          height,
+          ...(height ? { height } : {}), // 👈 conditional height
           borderRadius,
           ...computedMargin,
         },
@@ -102,6 +102,7 @@ export default function ZiraatCard({
     </View>
   );
 
+
   // INNER CARD (NO SHADOW)
   const CardInner = (
     <View
@@ -109,12 +110,14 @@ export default function ZiraatCard({
       style={[
         {
           width: "100%",
-          height: "100%",
           borderRadius,
           backgroundColor,
           borderWidth,
           borderColor,
           ...computedPadding,
+
+          // ✅ ONLY apply height when explicitly provided
+          ...(height ? { height: "100%" } : {}),
         },
         style,
       ]}

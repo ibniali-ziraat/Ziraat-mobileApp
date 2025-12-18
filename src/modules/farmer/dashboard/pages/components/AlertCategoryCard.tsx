@@ -1,5 +1,4 @@
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { MotiView } from "moti";
 import { Text, View } from "react-native";
 
 export default function AlertSummaryCard({
@@ -10,31 +9,36 @@ export default function AlertSummaryCard({
   delay = 0,
 }: any) {
   return (
-    <MotiView
-      from={{ opacity: 0, translateY: 20 }}
-      animate={{ opacity: 1, translateY: 0 }}
-      transition={{ delay }}
-    >
+    <View className="w-[48%] h-48">
       <ZiraatCard
         width="100%"
-        height={65}
-        paddingHorizontal={1}
-        paddingVertical={0.75}
-        marginBottom={1}
+        paddingHorizontal={2}
+        paddingVertical={2}
       >
-        <View className="flex-1 justify-center">
-          {/* TITLE + ICON ROW */}
-          <View className="flex-row items-center justify-between">
-            <Text className="text-[16px] text-dark font-semibold">
-              {title}
-            </Text>
+        <View className="h-20 items-center justify-between">
+          {/* ICON */}
+          <View>{icon}</View>
 
-            <View className="p-2 rounded-xl">
-              {icon}
-            </View>
-          </View>
-         </View>
+          {/* TITLE */}
+          <Text className="text-[16px] font-semibold text-dark text-center">
+            {title}
+          </Text>
+
+          {/* VALUE */}
+          {value && (
+            <Text className="text-[18px] font-bold text-black text-center">
+              {value}
+            </Text>
+          )}
+
+          {/* SUBTITLE */}
+          {subtitle && (
+            <Text className="text-sm text-neutral-500 text-center">
+              {subtitle}
+            </Text>
+          )}
+        </View>
       </ZiraatCard>
-    </MotiView>
+    </View>
   );
 }

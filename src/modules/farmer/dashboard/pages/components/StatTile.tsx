@@ -1,43 +1,37 @@
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { Text, View } from "react-native";
 
-const StatTile = ({
-  title,
-  value,
-  footer,
-  icon,
-}: any) => {
+const StatTile = ({ title, value, footer, icon }) => {
   return (
     <ZiraatCard
       width="100%"
-      height="5%"
       paddingHorizontal={1}
-      paddingVertical={0.8}
+      paddingVertical={1}
       marginBottom={0.5}
     >
-      <View className="flex-row items-center justify-between">
-        {/* CONTENT */}
-        <View className="flex-1">
-          <Text className="text-[16px] font-bold text-black">
-            {title}
-          </Text>
-
-          <Text className="text-[14px] font-medium text-dark mt-1">
-            {value}
-          </Text>
-
-          {footer && (
-            <Text className="text-[12px] text-neutral-500 mt-1">
-              {footer}
-            </Text>
-          )}
-        </View>
-
-        {/* RIGHT ICON */}
+      <View className="items-center justify-evenly h-60">
+        {/* ICON */}
         {icon && (
-          <View className="ml-4 p-3 rounded-xl bg-light">
+          <View className="p-3 rounded-xl bg-light">
             {icon}
           </View>
+        )}
+
+        {/* TITLE */}
+        <Text className="text-[14px] font-semibold text-black">
+          {title}
+        </Text>
+
+        {/* VALUE */}
+        <Text className="text-[18px] text-dark">
+          {value}
+        </Text>
+
+        {/* FOOTER */}
+        {footer && (
+          <Text className="text-[14px] font-semibold text-center">
+            {footer}
+          </Text>
         )}
       </View>
     </ZiraatCard>

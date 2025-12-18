@@ -1,153 +1,61 @@
-// components/home/WeatherCard.tsx
-import { colors } from "@/src/constants/colors";
-import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View, Text, ImageBackground } from "react-native";
+import { Droplets, Wind, CloudLightning, Sun } from "lucide-react-native";
 
-export default function WeatherCard() {
+export default function WeatherCard({ current }) {
   return (
-    <View
-      className="rounded-3xl p-6 mb-6"
-      style={{
-        backgroundColor: colors.light,
-        borderWidth: 1,
-        borderColor: colors.neutral,
-        shadowColor: "#000",
-        shadowOpacity: 0.05,
-        shadowRadius: 10,
-        elevation: 3,
-      }}
-    >
-      {/* Header */}
-      <Text
-        className="text-[17px] font-semibold mb-4"
-        style={{ color: colors.dark }}
+    <View className="my-6 rounded-3xl overflow-hidden shadow-lg">
+      <ImageBackground
+        source={require("@/assets/images/weatherBg.png")}
+        resizeMode="cover"
+        className="w-full rounded-3xl overflow-hidden"
       >
-        Today
-      </Text>
+        <View className="p-6 bg-black/25 backdrop-blur-3xl rounded-3xl">
 
-      {/* Main Weather Row */}
-      <View className="flex-row justify-between items-center">
-        {/* LEFT SIDE */}
-        <View>
-          {/* Temperature */}
-          <Text
-            className="text-[48px] font-extrabold leading-none"
-            style={{ color: colors.primary }}
-          >
-            28°
-          </Text>
-
-          {/* Condition */}
-          <Text
-            className="text-[16px] mt-1 font-medium"
-            style={{ color: colors.secondary }}
-          >
-            Sunny
-          </Text>
-
-          {/* Min / Max Temperature */}
-          <Text
-            className="text-[13px] mt-1"
-            style={{ color: colors.dark + "99" }}
-          >
-            H: 32° / L: 15°
-          </Text>
-
-          {/* Details */}
-          <View className="mt-4 space-y-2">
-            <View className="flex-row items-center">
-              <Ionicons
-                name="water-outline"
-                size={20}
-                color={colors.secondary}
-              />
-              <Text className="text-sm ml-2" style={{ color: colors.dark }}>
-                Humidity: 65%
-              </Text>
-            </View>
-
-            <View className="flex-row items-center">
-              <Ionicons
-                name="rainy-outline"
-                size={20}
-                color={colors.secondary}
-              />
-              <Text className="text-sm ml-2" style={{ color: colors.dark }}>
-                Rain: 0mm
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        {/* RIGHT SIDE ICON */}
-        <View className="items-center">
-          <View
-            style={{
-              padding: 18,
-              borderRadius: 70,
-            
-              shadowColor: colors.secondary,
-              shadowOpacity: 0.35,
-              shadowRadius: 14,
-            }}
-          >
-            <Ionicons
-              name="sunny-outline"
-              size={62}
-              color={colors.secondary}
-            />
+          <View className="flex-row items-end justify-between">
+            <Text className="text-white text-7xl font-bold">
+              {current?.tempC}°
+            </Text>
+            <Sun size={65} color="yellow" />
           </View>
 
-          <Text
-            className="text-xs mt-3"
-            style={{ color: colors.dark + "CC" }}
-          >
-            Clear Sky
+          <Text className="text-white/90 text-lg font-medium mt-1">
+            Feels like {current?.feelsLikeC}° — {current?.condition}
           </Text>
-        </View>
-      </View>
 
-      {/* Bottom Stats */}
-      <View className="flex-row justify-between mt-6 px-1">
+          <View className="w-full h-[1px] bg-white/30 my-5" />
 
-        {/* Rain Chance */}
-        <View className="flex-row items-center">
-          <View
-            style={{
-              paddingVertical: 4,
-              paddingHorizontal: 10,
-              backgroundColor: colors.primary + "22",
-              borderRadius: 12,
-            }}
-          >
-            <View className="flex-row items-center">
-              <Ionicons name="water-outline" size={18} color={colors.primary} />
-              <Text
-                className="text-sm ml-2"
-                style={{ color: colors.primary, fontWeight: "600" }}
-              >
-                40% • 5mm
-              </Text>
+
+          <View className="flex-row justify-between">
+            <View className="items-center gap-1">
+              <View className="w-14 h-14 rounded-full bg-white/30 items-center justify-center border border-white/40">
+                <Droplets size={24} color="white" />
+              </View>
+              <Text className="text-white font-bold">{current?.humidity}%</Text>
+              <Text className="text-white/70 text-xs">Humidity</Text>
             </View>
+
+            <View className="items-center gap-1">
+              <View className="w-14 h-14 rounded-full bg-white/30 items-center justify-center border border-white/40">
+                <Wind size={24} color="white" />
+              </View>
+              <Text className="text-white font-bold">
+                {current?.windKph} km/h
+              </Text>
+              <Text className="text-white/70 text-xs">{current?.windDir}</Text>
+            </View>
+
+
+            <View className="items-center gap-1">
+              <View className="w-14 h-14 rounded-full bg-white/30 items-center justify-center border border-white/40">
+                <CloudLightning size={24} color="white" />
+              </View>
+              <Text className="text-white font-bold">Low</Text>
+              <Text className="text-white/70 text-xs">Hail risk</Text>
+            </View>
+
           </View>
         </View>
-
-        {/* Wind */}
-        <View className="flex-row items-center">
-          <Ionicons name="navigate-outline" size={18} color={colors.secondary} />
-          <Text className="text-sm ml-2" style={{ color: colors.dark }}>
-            15 kph NNE
-          </Text>
-        </View>
-
-        {/* Sunrise */}
-        <View className="flex-row items-center">
-          <Ionicons name="sunny-outline" size={18} color={colors.primary} />
-          <Text className="text-sm ml-2" style={{ color: colors.dark }}>
-            6:30 AM
-          </Text>
-        </View>
-      </View>
+      </ImageBackground>
     </View>
   );
 }

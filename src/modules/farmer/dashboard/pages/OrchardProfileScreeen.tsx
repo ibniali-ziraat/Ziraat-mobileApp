@@ -1,5 +1,5 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import { ScrollView } from "react-native";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import OrchardAnalyticsSection from "./components/OrchardAnalyticsSection";
 import OrchardStatsSection from "./components/OrchardStatsSection";
 
@@ -9,7 +9,7 @@ export default function OrchardProfileScreen({
   weather = null,
 }: any) {
   return (
-    <ScrollView className="flex-1 ">
+    <ScreenLayout className="flex-1 ">
       <BackHeader
       title="Orchard Profile"
       desc="Full analytics & actionable insights"
@@ -28,6 +28,6 @@ export default function OrchardProfileScreen({
       />
 
      
-    </ScrollView>
+    </ScreenLayout>
   );
 }

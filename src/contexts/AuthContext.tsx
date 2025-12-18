@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { setUserAxiosToken } from "../api/client/axiosUser";
-import { setVendorAxiosToken } from "../api/client/axiosVendor";
 import { clear, load, save } from "../utils/authStorage";
+import { router } from "expo-router";
 
 interface AuthContextType {
   userToken: string | null;
@@ -42,9 +41,13 @@ export const AuthProvider = ({ children }: any) => {
   const [vendorId, setVendorIdState] = useState<number | null>(null);
 
   const [userProfileId, setUserProfileIdState] = useState<number | null>(null);
-  const [vendorProfileId, setVendorProfileIdState] = useState<number | null>(null);
+  const [vendorProfileId, setVendorProfileIdState] = useState<number | null>(
+    null
+  );
 
-  const [roleMode, setRoleModeState] = useState<"farmer" | "supplier">("farmer");
+  const [roleMode, setRoleModeState] = useState<"farmer" | "supplier">(
+    "farmer"
+  );
   const [initialized, setInitialized] = useState(false);
 
   // Load on app start
@@ -58,7 +61,7 @@ export const AuthProvider = ({ children }: any) => {
       setUserIdState(storedUserId ? Number(storedUserId) : null);
 
       // Apply axios auth token
-      setUserAxiosToken(storedToken);
+      // setUserAxiosToken(storedToken);
 
       // Others are NOT stored, so remain null/default
       setInitialized(true);
@@ -72,7 +75,7 @@ export const AuthProvider = ({ children }: any) => {
     else await clear("user_token");
 
     setUserTokenState(token);
-    setUserAxiosToken(token);
+    // setUserAxiosToken(token);
   };
 
   const setUserId = async (v: number | null) => {
@@ -85,7 +88,7 @@ export const AuthProvider = ({ children }: any) => {
   // Not stored
   const setVendorToken = (token: string | null) => {
     setVendorTokenState(token);
-    setVendorAxiosToken(token);
+    // setVendorAxiosToken(token);
   };
 
   const setVendorId = (v: number | null) => {
@@ -104,17 +107,18 @@ export const AuthProvider = ({ children }: any) => {
 
     setUserTokenState(null);
     setUserIdState(null);
-    setUserAxiosToken(null);
+    // setUserAxiosToken(null);
 
     // Non-stored fields also reset
     setUserProfileIdState(null);
+    // router.replace("/auth/user");
   };
 
   const logoutVendor = () => {
     setVendorTokenState(null);
     setVendorIdState(null);
     setVendorProfileIdState(null);
-    setVendorAxiosToken(null);
+    // setVendorAxiosToken(null);
   };
 
   const logoutAll = async () => {

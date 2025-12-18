@@ -4,44 +4,34 @@
     "title": "Total Alerts Triggered",
     "value": "48%",
     "subtitle": "Weather / Pest / Nutrient systems",
-    "icon": "alert-circle",
-    "iconType": "Ionicons",
-    "delay": 80
+    "icon": "AlertTriangle"
   },
   {
     "id": "acknowledged",
     "title": "Alerts Acknowledged",
     "value": "86%",
     "subtitle": "Farmer response rate",
-    "icon": "checkbox-outline",
-    "iconType": "Ionicons",
-    "delay": 150
+    "icon": "CheckSquare"
   },
   {
     "id": "resolved",
     "title": "Advisory Tickets Resolved",
     "value": "72%",
     "subtitle": "Expert team performance",
-    "icon": "account-check-outline",
-    "iconType": "MaterialCommunityIcons",
-    "delay": 220
+    "icon": "UserCheck"
   },
   {
     "id": "pending",
     "title": "Pending Actions",
     "value": "14%",
     "subtitle": "Fertigation • Sprays • Pruning tasks",
-    "icon": "list",
-    "iconType": "Ionicons",
-    "delay": 290
+    "icon": "List"
   },
   {
     "id": "services",
     "title": "Services Booked",
     "value": "9%",
     "subtitle": "Orchard care / spraying / consulting",
-    "icon": "construct-outline",
-    "iconType": "Ionicons",
-    "delay": 360
+    "icon": "Wrench"
   }
 ]

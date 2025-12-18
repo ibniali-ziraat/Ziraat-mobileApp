@@ -66,7 +66,7 @@ export default function BusinessScreen() {
         showSuccessToast("Supplier registration successful");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       showErrorToast("Something went wrong");
       console.error(err);
@@ -78,7 +78,7 @@ export default function BusinessScreen() {
       <BackHeader
         title="Supplier Onboarding"
         desc="Start selling to farmers today."
-        onPress={() => router.push(ROUTES.TABS.MENU)}
+        onPress={() => router.replace(ROUTES.TABS.MENU)}
       />
       <FormProvider {...form}>
         <BusinessSection errors={errors} control={control} data={data} />

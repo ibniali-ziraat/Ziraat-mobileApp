@@ -6,29 +6,30 @@ export default function StatChip({
   Icon,
   title,
   value,
-  small = false,
+ 
 }: any) {
   return (
     <ZiraatCard
       width="49%"
-      height={90}
+      height={160}
       paddingHorizontal={1}
       paddingVertical={1}
       marginBottom={1}
     >
-      <View className="flex-1 items-center justify-center">
+      <View className="flex-1 items-center justify-center ">
         {/* ICON */}
         {Icon && (
           <Icon
-            size={30}
+            size={38}
             color={colors.secondary}
-            style={{ marginBottom: 4 }}
+            style={{ marginBottom: 9 }}
+            strokeWidth={1.3}
           />
         )}
 
         {/* TITLE */}
         <Text
-          className="text-[16px] font-bold text-center"
+          className="text-[14px]  text-center"
           style={{ color: colors.dark }}
         >
           {title}
@@ -36,10 +37,7 @@ export default function StatChip({
 
         {/* VALUE */}
         <Text
-          className={`${
-            small ? "text-[10px]" : "text-[14px]"
-          } font-medium text-center mt-1`}
-          style={{ color: colors.dark }}
+          className={"text-[18px] font-extrabold text-center mt-2"}
         >
           {value}
         </Text>

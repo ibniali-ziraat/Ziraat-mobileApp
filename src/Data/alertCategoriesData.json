@@ -2,29 +2,21 @@
   {
     "id": "weather",
     "title": "Weather Alerts",
-    "icon": "rainy-outline",
-    "iconType": "Ionicons",
-    "delay": 80
+    "icon": "CloudRain"
   },
   {
     "id": "pest",
     "title": "Pest Alerts",
-    "icon": "bug-outline",
-    "iconType": "Ionicons",
-    "delay": 150
+    "icon": "Bug"
   },
   {
     "id": "nutrient",
     "title": "Nutrient Alerts",
-    "icon": "leaf-circle-outline",
-    "iconType": "MaterialCommunityIcons",
-    "delay": 220
+    "icon": "Leaf"
   },
   {
     "id": "spray",
-    "title": "Spray Advisory Alerts",
-    "icon": "flask-outline",
-    "iconType": "Ionicons",
-    "delay": 290
+    "title": "Spray Advisory",
+    "icon": "FlaskConical"
   }
 ]
