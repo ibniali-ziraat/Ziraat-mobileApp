@@ -65,7 +65,7 @@ export default function SupportSection({ control, errors }: FormSectionProps) {
       <SingleSelectInput
         control={control}
         name="computerAvailable"
-        label="Computer/Laptop Facility Available"
+        label="Computer/Laptop Facility"
         modalLabel="Computer/Laptop Facility"
         options={[
           { value: "yes", label: "Yes" },

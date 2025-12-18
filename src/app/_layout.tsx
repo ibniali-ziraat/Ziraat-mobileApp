@@ -1,4 +1,5 @@
 import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
+import { LinearGradient } from "expo-linear-gradient";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Platform, View } from "react-native";
@@ -11,10 +12,11 @@ import {
 } from "react-native-safe-area-context";
 
 import "../../styles/global.css";
+import RouteGuard from "../components/RouteGuard";
+import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
 import { colors } from "../constants/colors";
 import AppProvider from "../contexts/AppProvider";
-import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
-import RouteGuard from "../components/RouteGuard";
+import { StatusBar } from "expo-status-bar";
 
 registerTranslation("en-GB", enGB);
 
@@ -28,13 +30,20 @@ export default function RootLayout() {
       <AppProvider>
         <DisableBackWrapper>
           <RouteGuard>
+            {/* <LinearGradient
+              colors={colors.bgGradient.colors}
+              locations={colors.bgGradient.locations}
+              start={{ x: 0.5, y: 0 }}   // top
+              end={{ x: 0.5, y: 1 }}     // bottom
+              style={{ flex: 1 }}
+            > */}
             <SafeAreaView
               edges={["left", "right"]}
               style={{
                 flex: 1,
-                backgroundColor: colors.bgColor,
                 paddingTop: insets.top + 20,
                 paddingHorizontal: 10,
+                backgroundColor: "transparent",
               }}
             >
               <PaperProvider>
@@ -46,6 +55,7 @@ export default function RootLayout() {
                 />
               </PaperProvider>
             </SafeAreaView>
+            {/* </LinearGradient> */}
           </RouteGuard>
         </DisableBackWrapper>
       </AppProvider>

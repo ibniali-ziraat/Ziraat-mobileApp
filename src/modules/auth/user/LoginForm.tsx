@@ -16,7 +16,7 @@ export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
   const { errors } = formState;
 
-  const { setUserToken, setUserId } = useAuth();
+  const { setUserToken, setUserId, setUserTokenExp } = useAuth();
 
   const { mutateAsync: loginMutate } = useLoginMutation();
   const [isPending, setIsPending] = useState(false);
@@ -35,6 +35,7 @@ export default function LoginForm() {
         console.log(response, "response..");
 
         await setUserToken(response?.token);
+        await setUserTokenExp(response.tokenExpiry);
         await setUserId(response?.user);
 
         router.replace("/");
