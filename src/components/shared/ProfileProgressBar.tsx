@@ -34,7 +34,7 @@ export default function ProfileProgressBar({
   const allSections = [...completedSections, ...missingSections];
 
   return (
-    <ZiraatCard width="100%" paddingHorizontal={1}>
+    <ZiraatCard width="100%" paddingHorizontal={1} marginBottom={0.5}>
       {/* HEADER */}
       <View
         style={{

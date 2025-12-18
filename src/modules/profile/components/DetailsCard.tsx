@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity } from "react-native";
-import { colors } from "@/src/constants/colors";
-import { PencilLine, Trash2, Plus } from "lucide-react-native";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { colors } from "@/src/constants/colors";
+import { PencilLine, Plus, Trash2 } from "lucide-react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 interface DetailItem {
   title: string;
@@ -34,12 +34,8 @@ export default function DetailsCard({
     <ZiraatCard
       width="100%"
       paddingHorizontal={1}
-      paddingVertical={1.4}
-      marginVertical={1}
-      borderRadius={24}
-      backgroundColor="#fff"
-      borderWidth={1}
-      borderColor="#f0f0f0"
+      paddingVertical={1}
+      marginVertical={0.5}
     >
       {/* Header */}
       <View
@@ -52,8 +48,8 @@ export default function DetailsCard({
       >
         <Text
           style={{
-            fontSize: 20,
-            fontWeight: "700",
+            fontSize: 18,
+            fontWeight: "500",
             color: colors.dark,
           }}
         >
@@ -76,18 +72,6 @@ export default function DetailsCard({
         )}
       </View>
 
-      {/* Accent */}
-      <View
-        style={{
-          height: 3,
-          width: 70,
-          backgroundColor: colors.primary,
-          opacity: 0.25,
-          borderRadius: 10,
-          marginBottom: 20,
-        }}
-      />
-
       {/* EMPTY STATE */}
       {isEmpty ? (
         <TouchableOpacity
@@ -96,19 +80,13 @@ export default function DetailsCard({
           style={{
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",
-            paddingVertical: 18,
-            borderRadius: 16,
-            backgroundColor: colors.primary + "10",
-            borderWidth: 1,
-            borderColor: colors.primary + "30",
           }}
         >
-          <Plus size={18} color={colors.primary} />
+          <Plus size={14} color={colors.primary} />
           <Text
             style={{
-              marginLeft: 8,
-              fontSize: 15,
+              marginLeft: 4,
+              fontSize: 14,
               fontWeight: "600",
               color: colors.primary,
             }}

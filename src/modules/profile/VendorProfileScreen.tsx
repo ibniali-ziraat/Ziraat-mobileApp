@@ -2,7 +2,6 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import Loader from "@/src/components/shared/Loader";
 import ProfileProgressBar from "@/src/components/shared/ProfileProgressBar";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import VendorProfileDetails from "@/src/components/shared/VendorProfileDetails";
 import VendorProfileHeader from "@/src/components/shared/VendorProfileHeader";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
@@ -23,8 +22,10 @@ import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router } from "expo-router";
 
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
+import { maskValue } from "@/src/utils/mask";
 import {
   BadgeCheck,
   Boxes,
@@ -34,29 +35,20 @@ import {
   GitBranch,
   Hash,
   Headset,
-  Home,
   Landmark,
   Mail,
   MapPin,
   Navigation,
   Phone,
-  Store,
   User,
   UserCheck,
   Wallet,
   Workflow,
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
 import { vendorDeleteConfig } from "../auth/vendor/config/vendorDeleteConfig";
 import { vendorRoutes } from "../auth/vendor/config/vendorRoutes";
-import ProductItemCard from "./components/ProductItemCard";
-import SectionCard from "./components/SectionCard";
-import { View } from "react-native";
-import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
-import { ROUTES } from "@/src/constants/routes";
 import DetailsCard from "./components/DetailsCard";
-import { maskValue } from "@/src/utils/mask";
 
 export default function VendorProfileScreen() {
   // const { vendorData, setVendorData } = useGlobalData();
