@@ -3,11 +3,11 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 // import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { VarietyAndPlatingDetailsSchema } from "@/src/schemas/orchard schemas/VarietyAndPlatingDetailsSchema";
+import { InputCostDetailsSchema } from "@/src/schemas/orchard schemas/InputCostDetailsSchema";
 import { FormProvider } from "react-hook-form";
-import VarietAndPlatingDetails from "../sections/Variety & Planting Details ";
+import InputCostDetails from "../../sections/Input Cost Details";
 
-export default function VarietyAndPlatingDetailsScreen() {
+export default function InputCostDetailsScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
@@ -15,7 +15,7 @@ export default function VarietyAndPlatingDetailsScreen() {
   //   const { mutateAsync: save } = useVendorProfileMutation();
   //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
 
-  const form = useZodForm(VarietyAndPlatingDetailsSchema);
+  const form = useZodForm(InputCostDetailsSchema);
   const {
     setValue,
     handleSubmit,
@@ -61,14 +61,12 @@ export default function VarietyAndPlatingDetailsScreen() {
   const onSubmit = () => {
     console.log("subited");
   };
+
   return (
     <ScreenLayout>
-      <BackHeader
-        title="Orchard Registration"
-        desc="Variety And Planting Details"
-      />
+      <BackHeader title="Orchard Registration" desc=" Input Cost Details" />
       <FormProvider {...form}>
-        <VarietAndPlatingDetails errors={errors} control={control} />
+        <InputCostDetails errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
           // submitLabel={data ? "Update" : "Save"}

@@ -3,11 +3,11 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 // import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { BasicInfoSchema } from "@/src/schemas/orchard schemas/BasicInfoSchema";
+import { OptionalFutureFieldsSchema } from "@/src/schemas/orchard schemas/OptionalFutureFieldsSchema";
 import { FormProvider } from "react-hook-form";
-import BasicInfo from "../sections/BasicInfo";
+import OptionalFutureFields from "../../sections/Optional-Future-Proof Fields";
 
-export default function BasicInfoScreen() {
+export default function OptionalFutureFieldsScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
@@ -15,7 +15,7 @@ export default function BasicInfoScreen() {
   //   const { mutateAsync: save } = useVendorProfileMutation();
   //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
 
-  const form = useZodForm(BasicInfoSchema);
+  const form = useZodForm(OptionalFutureFieldsSchema);
   const {
     setValue,
     handleSubmit,
@@ -58,7 +58,6 @@ export default function BasicInfoScreen() {
   //       console.error(err);
   //     }
   //   };
-
   const onSubmit = () => {
     console.log("subited");
   };
@@ -67,10 +66,10 @@ export default function BasicInfoScreen() {
     <ScreenLayout>
       <BackHeader
         title="Orchard Registration"
-        desc="Basic / Mandatory Information"
+        desc="Optional / Future-Proof Fields"
       />
       <FormProvider {...form}>
-        <BasicInfo errors={errors} control={control} />
+        <OptionalFutureFields errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
           // submitLabel={data ? "Update" : "Save"}
