@@ -1,5 +1,7 @@
 import { Umbrella } from "lucide-react-native";
 import { Text, View } from "react-native";
+// import PrecipitationMap from "./PrecipitationMap";
+import PrecipitationMap from "./PrecipitationMap";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 export default function PrecipitationCard() {
@@ -18,7 +20,7 @@ export default function PrecipitationCard() {
         </Text>
       </View>
 
-      {/* <PrecipitationMap /> */}
+      <PrecipitationMap />
     </ZiraatCard>
   );
 }

@@ -1,6 +1,6 @@
-// import { View, Platform } from "react-native";
+import { Platform, View } from "react-native";
 // import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-// import { Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 
 // export default function PrecipitationMap() {
 //   const region = {
@@ -31,31 +31,31 @@
 //     );
 //   }
 
-//   return (
-//     <View
-//       style={{
-//         height: 220,
-//         width: "100%",
-//         borderRadius: 12,
-//         overflow: "hidden",
-//         backgroundColor: "#FFFFFF",
-//       }}
-//     >
-//       <MapView
-//         style={{ flex: 1 }}
-//         initialRegion={region}
-//         provider={
-//           Platform.OS === "android"
-//             ? PROVIDER_GOOGLE
-//             : undefined
-//         }
-//         mapType="standard"
-//         showsBuildings={false}
-//         showsIndoors={false}
-//         toolbarEnabled={false}
-//         scrollEnabled
-//         zoomEnabled
-//       />
-//     </View>
-//   );
-// }
+  return (
+    <View
+      style={{
+        height: 220,
+        width: "100%",
+        borderRadius: 12,
+        overflow: "hidden",
+        backgroundColor: "#FFFFFF",
+      }}
+    >
+      {/* <MapView
+        style={{ flex: 1 }}
+        initialRegion={region}
+        provider={
+          Platform.OS === "android"
+            ? PROVIDER_GOOGLE
+            : undefined
+        }
+        mapType="standard"
+        showsBuildings={false}
+        showsIndoors={false}
+        toolbarEnabled={false}
+        scrollEnabled
+        zoomEnabled
+      /> */}
+    </View>
+  );
+}

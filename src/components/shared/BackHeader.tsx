@@ -13,7 +13,7 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
   const router = useRouter();
 
   return (
-    <View className="bg-bgColor py-4 mb-4">
+    <View className="bg-light py-4 mb-4">
       {/* Row */}
       <View className="flex-row items-center">
         {/* Back Button */}
