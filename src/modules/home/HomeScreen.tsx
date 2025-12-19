@@ -20,7 +20,7 @@ export default function HomeScreen() {
   const { data, isPending, isError } = useWeatherQuery(cityData);
   console.log(data, "data...");
 
-  // if (isPending) return <Loader />;
+  // // if (isPending) return <Loader />;
 
   const sections = [
     { title: "Top Pesticides for Healthy Crop Growth", slice: [0, 8] },

@@ -31,8 +31,8 @@ export default function RootLayout() {
             {/* <LinearGradient
               colors={colors.bgGradient.colors}
               locations={colors.bgGradient.locations}
-              start={{ x: 0.5, y: 0 }}   // top
-              end={{ x: 0.5, y: 1 }}     // bottom
+              start={{ x: 0.5, y: 0 }} // top
+              end={{ x: 0.5, y: 1 }} // bottom
               style={{ flex: 1 }}
             > */}
             <SafeAreaView

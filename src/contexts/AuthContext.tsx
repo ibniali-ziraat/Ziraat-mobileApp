@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { clear, load, save } from "../utils/authStorage";
-import { router } from "expo-router";
 
 interface AuthContextType {
   userToken: string | null;
@@ -138,7 +137,7 @@ export const AuthProvider = ({ children }: any) => {
 
     setUserProfileIdState(null);
 
-    router.replace("/auth/user"); // redirect to login
+    // router.replace("/auth/user");
   };
 
   const logoutVendor = () => {
