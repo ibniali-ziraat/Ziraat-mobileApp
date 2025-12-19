@@ -3,11 +3,11 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 // import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { OptionalFutureFieldsSchema } from "@/src/schemas/orchard schemas/OptionalFutureFieldsSchema";
+import { VarietyAndPlatingDetailsSchema } from "@/src/schemas/orchard schemas/VarietyAndPlatingDetailsSchema";
 import { FormProvider } from "react-hook-form";
-import OptionalFutureFields from "../sections/Optional-Future-Proof Fields";
+import VarietAndPlatingDetails from "../../sections/Variety & Planting Details ";
 
-export default function OptionalFutureFieldsScreen() {
+export default function VarietyAndPlatingDetailsScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
@@ -15,7 +15,7 @@ export default function OptionalFutureFieldsScreen() {
   //   const { mutateAsync: save } = useVendorProfileMutation();
   //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
 
-  const form = useZodForm(OptionalFutureFieldsSchema);
+  const form = useZodForm(VarietyAndPlatingDetailsSchema);
   const {
     setValue,
     handleSubmit,
@@ -61,15 +61,14 @@ export default function OptionalFutureFieldsScreen() {
   const onSubmit = () => {
     console.log("subited");
   };
-
   return (
     <ScreenLayout>
       <BackHeader
         title="Orchard Registration"
-        desc="Optional / Future-Proof Fields"
+        desc="Variety And Planting Details"
       />
       <FormProvider {...form}>
-        <OptionalFutureFields errors={errors} control={control} />
+        <VarietAndPlatingDetails errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
           // submitLabel={data ? "Update" : "Save"}

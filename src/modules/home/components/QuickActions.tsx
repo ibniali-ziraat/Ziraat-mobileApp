@@ -1,7 +1,7 @@
 // components/home/QuickActions.tsx
 import { colors } from "@/src/constants/colors"; // use your global theme
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import { router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export default function QuickActions() {
@@ -11,21 +11,21 @@ export default function QuickActions() {
       icon: "add-circle-outline",
       color: colors.primary,
       bg: colors.primary + "15",
-      onPress: () => {},
+      onPress: () => router.push("/orchards/orchard-registration"),
     },
     {
       title: "Log Harvest",
       icon: "book-outline",
       color: colors.primary,
       bg: colors.primary + "15",
-      onPress: () => {},
+      onPress: () => router.push("/orchards/orchard-registration"),
     },
     {
       title: "Add Spray",
       icon: "flask-outline",
       color: colors.secondary,
       bg: colors.secondary + "15",
-      onPress: () => {},
+      onPress: () => router.push("/orchards/orchard-registration"),
     },
   ];
 

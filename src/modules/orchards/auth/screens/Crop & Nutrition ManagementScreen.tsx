@@ -3,11 +3,11 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 // import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { InputCostDetailsSchema } from "@/src/schemas/orchard schemas/InputCostDetailsSchema";
+import { CropNutritionSchema } from "@/src/schemas/orchard schemas/CropNutritionSchema";
 import { FormProvider } from "react-hook-form";
-import InputCostDetails from "../sections/Input Cost Details";
+import CropNutrition from "../../sections/Crop & Nutrition Management";
 
-export default function InputCostDetailsScreen() {
+export default function CropandNutritionScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
@@ -15,7 +15,7 @@ export default function InputCostDetailsScreen() {
   //   const { mutateAsync: save } = useVendorProfileMutation();
   //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
 
-  const form = useZodForm(InputCostDetailsSchema);
+  const form = useZodForm(CropNutritionSchema);
   const {
     setValue,
     handleSubmit,
@@ -61,12 +61,15 @@ export default function InputCostDetailsScreen() {
   const onSubmit = () => {
     console.log("subited");
   };
-
   return (
     <ScreenLayout>
-      <BackHeader title="Orchard Registration" desc=" Input Cost Details" />
+      <BackHeader
+        title="Orchard Registration"
+        desc="Crop & Nutrition Management
+"
+      />
       <FormProvider {...form}>
-        <InputCostDetails errors={errors} control={control} />
+        <CropNutrition errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
           // submitLabel={data ? "Update" : "Save"}
