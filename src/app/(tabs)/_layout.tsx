@@ -1,6 +1,5 @@
 import CropHeader from "@/src/components/shared/CropHeader";
 import HomeHeader from "@/src/components/shared/HomeHeader";
-import Loader from "@/src/components/shared/Loader";
 import MenuHeader from "@/src/components/shared/MenuHeader";
 import ProductHeader from "@/src/components/shared/ProductHeader";
 import SprayHeader from "@/src/components/shared/SprayHeader";
@@ -23,7 +22,7 @@ export default function TabLayout() {
   const { userToken, roleMode, userId } = useAuth();
 
   const { data } = useProfileQuery(userId);
-  if (!data || !userToken) return <Loader />;
+  // if (!data || !userToken) return <Loader />;
 
   return (
     <Tabs
@@ -71,7 +70,7 @@ export default function TabLayout() {
         name="spray"
         options={{
           title: "Spray",
-          headerShown: false,
+          headerShown: true,
 
           header: () => <SprayHeader />,
           tabBarIcon: ({ size, color }) => (

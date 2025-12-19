@@ -23,8 +23,8 @@ export default function ScreenLayout({
       <LinearGradient
         colors={colors.bgGradient.colors}
         locations={colors.bgGradient.locations}
-        start={{ x: 0, y: 0 }}   // strong from top
-        end={{ x: 0, y: 1 }}     // to bottom
+        start={{ x: 0, y: 0 }} // strong from top
+        end={{ x: 0, y: 1 }} // to bottom
         style={{ flex: 1 }}
       >
         <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
@@ -36,9 +36,7 @@ export default function ScreenLayout({
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            <View style={{ flex: 1 }}>
-              {children}
-            </View>
+            <View style={{ flex: 1 }}>{children}</View>
           </ScrollView>
         </SafeAreaView>
       </LinearGradient>
