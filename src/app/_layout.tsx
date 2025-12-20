@@ -1,7 +1,5 @@
 import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { Platform, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";
@@ -40,8 +38,8 @@ export default function RootLayout() {
               style={{
                 flex: 1,
                 paddingTop: insets.top + 20,
-                paddingHorizontal: 10,
-                backgroundColor: "transparent",
+                paddingHorizontal: 5,
+                backgroundColor: "FFFFFF",
               }}
             >
               <PaperProvider>
