@@ -25,7 +25,7 @@ export default function ZiraatCard({
   height,
 
   // border
-  borderWidth = 1,
+  borderWidth = 0,
   borderColor = "#E6E6E6",
   borderRadius = 12,
 
@@ -104,7 +104,7 @@ export default function ZiraatCard({
 
   const Card = (
     <View
-      className={`overflow-hidden ${className}`}
+      className={className}
       style={[
         styles.card,
         {
@@ -133,26 +133,24 @@ const styles = StyleSheet.create({
     borderRadius: 12,
 
     /* ---------- iOS ---------- */
-    ...(Platform.OS === "ios" && {
-      shadowColor: "#000",
-      shadowOpacity: 0.12,
-      shadowRadius: 14,
-      shadowOffset: {
-        width: 0,
-        height: 7,
-      },
-    }),
+ ...(Platform.OS === "ios" && {
+  shadowColor: "#000",
+  shadowOpacity: 0.25,  // Reduced from 0.12 (Softer)
+  shadowRadius: 3,     // Reduced from 16 (Tighter blur)
+  shadowOffset: {
+    width: 0,
+    height: 4,         // Reduced from 6 (Closer to background)
+  },
+}),
 
     /* ---------- ANDROID ---------- */
     ...(Platform.OS === "android" && {
-      elevation: 0.8, 
+      elevation: 4,
     }),
 
     /* ---------- WEB ---------- */
     ...(Platform.OS === "web" && {
-      boxShadow:
-        "0px 2px 4px rgba(0,0,0,0.06), 0px 10px 20px rgba(0,0,0,0.08)",
+      boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.06), 0px 4px 16px rgba(0, 0, 0, 0.08)",
     }),
   },
 });
-
