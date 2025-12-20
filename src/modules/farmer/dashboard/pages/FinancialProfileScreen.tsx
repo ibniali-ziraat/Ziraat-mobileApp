@@ -4,8 +4,8 @@ import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { Dimensions, Text, View } from "react-native";
 import { BarChart, LineChart as CurveChart } from "react-native-chart-kit";
-import kpis from "../../../../Data/kpis.json";
-import recentInsights from "../../../../Data/recentInsights.json";
+import kpis from "../../../../data/kpis.json";
+import recentInsights from "../../../../data/recentInsights.json";
 import InsightItem from "./components/InsightItem";
 import KpiCard from "./components/KpiCard";
 
@@ -43,74 +43,71 @@ export default function FinancialPerformanceScreen() {
         </View>
 
         {/* Revenue vs Cost Chart */}
-     <ZiraatCard
-  width="100%"
-  height={300}
-  paddingVertical={1}
-  paddingHorizontal={0.75}
-  marginTop={2}
->
-  {/* Header */}
-  <View className="mb-6">
-    <Text className="mt-1 text-[18px] font-bold text-black">
-      Revenue vs Cost
-    </Text>
-  </View>
+        <ZiraatCard
+          width="100%"
+          height={300}
+          paddingVertical={1}
+          paddingHorizontal={0.75}
+          marginTop={2}
+        >
+          {/* Header */}
+          <View className="mb-6">
+            <Text className="mt-1 text-[18px] font-bold text-black">
+              Revenue vs Cost
+            </Text>
+          </View>
 
-  {/* Chart */}
-  <View className="items-center">
-    <BarChart
-      data={revenueVsCostData}
-      width={screenWidth - 32}
-      height={200}
-      chartConfig={{
-        backgroundColor: "#ffffff",
-        backgroundGradientFrom: "#ffffff",
-        backgroundGradientTo: "#ffffff",
-        decimalPlaces: 0,
-        color: () => colors.secondary,
-      }}
-      style={{ borderRadius: 12 }}
-    />
-  </View>
-</ZiraatCard>
-
-
+          {/* Chart */}
+          <View className="items-center">
+            <BarChart
+              data={revenueVsCostData}
+              width={screenWidth - 32}
+              height={200}
+              chartConfig={{
+                backgroundColor: "#ffffff",
+                backgroundGradientFrom: "#ffffff",
+                backgroundGradientTo: "#ffffff",
+                decimalPlaces: 0,
+                color: () => colors.secondary,
+              }}
+              style={{ borderRadius: 12 }}
+            />
+          </View>
+        </ZiraatCard>
 
         {/* Net Profit Trend */}
-       <ZiraatCard
-  width="100%"
-  height={300}
-  paddingVertical={1}
-  paddingHorizontal={0.75}
-  marginTop={2}
->
-  {/* Header */}
-  <View className="mb-8">
-    <Text className="mt-1 text-[16px] font-bold text-black">
-      Net Profit Trend (6 Months)
-    </Text>
-  </View>
+        <ZiraatCard
+          width="100%"
+          height={300}
+          paddingVertical={1}
+          paddingHorizontal={0.75}
+          marginTop={2}
+        >
+          {/* Header */}
+          <View className="mb-8">
+            <Text className="mt-1 text-[16px] font-bold text-black">
+              Net Profit Trend (6 Months)
+            </Text>
+          </View>
 
-  {/* Chart */}
-  <View className="items-center">
-    <CurveChart
-      data={netProfitTrendData}
-      width={screenWidth - 32}
-      height={200}
-      bezier
-      chartConfig={{
-        backgroundColor: "#ffffff",
-        backgroundGradientFrom: "#ffffff",
-        backgroundGradientTo: "#ffffff",
-        decimalPlaces: 0,
-        color: () => "#c7611f",
-      }}
-      style={{ borderRadius: 12 }}
-    />
-  </View>
-</ZiraatCard>
-
+          {/* Chart */}
+          <View className="items-center">
+            <CurveChart
+              data={netProfitTrendData}
+              width={screenWidth - 32}
+              height={200}
+              bezier
+              chartConfig={{
+                backgroundColor: "#ffffff",
+                backgroundGradientFrom: "#ffffff",
+                backgroundGradientTo: "#ffffff",
+                decimalPlaces: 0,
+                color: () => "#c7611f",
+              }}
+              style={{ borderRadius: 12 }}
+            />
+          </View>
+        </ZiraatCard>
 
         {/* Recent Financial Insights */}
         <ZiraatCard

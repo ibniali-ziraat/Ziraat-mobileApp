@@ -98,18 +98,28 @@ export const ROUTES = {
     FORGOT_PASSWORD: "/auth/forgot-password",
     VENDOR_ONBOARD: "/auth/vendor",
     VENDOR_PROFILE: "/auth/vendor/vendor-profile-screen",
+    USER: {
+      REGISTRAION: "/",
+      PROFILE: "/user/user-profile",
+      EDIT_PROFILE: "/user-profile/edit",
+    },
+    VENDOR: {
+      REGISTRAION: "/auth/vendor",
+      EDIT_PROFILE: "/user-profile/edit",
+    },
   },
 
   // USER SCREENS
   USER: {
     HOME: "/",
-    PROFILE: "/user-profile",
+    PROFILE: "/user/user-profile",
     EDIT_PROFILE: "/user-profile/edit",
   },
 
   // VENDOR / SUPPLIER SCREENS
   VENDOR: {
-    PROFILE: "/vendor/profile",
+    PROFILE: "/vendor/vendor-profile-screen",
+
     NOTIFICATIONS: "/vendor/notifications",
     SUPPORT: "/vendor/support",
     PAYMENTS: "/vendor/payments",

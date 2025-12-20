@@ -8,17 +8,13 @@ import {
   Wallet,
 } from "lucide-react-native";
 import React, { useState } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import resourceData from "../../../../Data/resourceUsageData.json";
+import resourceData from "../../../../data/resourceUsageData.json";
 import InputModal from "./components/InputModal";
 
 /* --------------------------------------------------
@@ -91,13 +87,7 @@ const InsightItem = ({ icon, text }: any) => {
   return (
     <View className="mb-3 bg-white  py-3 rounded-lg">
       <View className="flex-row ">
-        {Icon && (
-          <Icon
-            size={26}
-            color={colors.secondary}
-            strokeWidth={1.3}
-          />
-        )}
+        {Icon && <Icon size={26} color={colors.secondary} strokeWidth={1.3} />}
         <Text className="ml-2 flex-1 text-black">{text}</Text>
       </View>
     </View>
@@ -133,9 +123,7 @@ export default function InputResourceUsageScreen() {
               key={i}
               title={m.title}
               value={
-                m.title === "Total Input Cost"
-                  ? `₹ ${overallCost}`
-                  : m.value
+                m.title === "Total Input Cost" ? `₹ ${overallCost}` : m.value
               }
               icon={m.icon}
             />
@@ -153,9 +141,7 @@ export default function InputResourceUsageScreen() {
         </TouchableOpacity>
 
         {/* SUMMARY */}
-        <Text className="text-2xl font-bold mb-4">
-          Resource Summary
-        </Text>
+        <Text className="text-2xl font-bold mb-4">Resource Summary</Text>
 
         <ZiraatCard
           width="100%"
@@ -190,21 +176,13 @@ export default function InputResourceUsageScreen() {
             <EfficiencyTag
               key={i}
               label={label}
-              score={
-                i === 0
-                  ? fertilizer
-                  : i === 1
-                  ? laborHours
-                  : materialCost
-              }
+              score={i === 0 ? fertilizer : i === 1 ? laborHours : materialCost}
             />
           ))}
         </ZiraatCard>
 
         {/* INSIGHTS */}
-        <Text className="text-2xl font-bold mb-6">
-          Performance Insights
-        </Text>
+        <Text className="text-2xl font-bold mb-6">Performance Insights</Text>
 
         <ZiraatCard
           width="100%"
@@ -215,11 +193,7 @@ export default function InputResourceUsageScreen() {
         >
           <View className="bg-light">
             {resourceData.insights.map((insight: any, i: number) => (
-              <InsightItem
-                key={i}
-                icon={insight.icon}
-                text={insight.text}
-              />
+              <InsightItem key={i} icon={insight.icon} text={insight.text} />
             ))}
           </View>
         </ZiraatCard>

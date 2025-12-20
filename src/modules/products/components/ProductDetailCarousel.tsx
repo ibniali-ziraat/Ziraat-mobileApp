@@ -8,7 +8,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { imageMapper } from "../../../Data/imageMapper";
+import { imageMapper } from "../../../data/imageMapper";
 
 const { width } = Dimensions.get("window");
 const ITEM_WIDTH = width * 1;
@@ -33,7 +33,8 @@ export default function ProductDetailCarousel({
     const imgSource = imageMapper[item];
     if (!imgSource) return null;
 
-    const source = typeof imgSource === "string" ? { uri: imgSource } : imgSource;
+    const source =
+      typeof imgSource === "string" ? { uri: imgSource } : imgSource;
 
     return (
       <View style={{ width: ITEM_WIDTH }}>
@@ -63,15 +64,12 @@ export default function ProductDetailCarousel({
         scrollEventThrottle={16}
         renderItem={renderItem}
       />
-      
+
       <View className="absolute bottom-4 w-full flex-row justify-center">
         {photos.map((_, i) => {
           const bgColor = currentIndex === i ? "bg-neutral" : "bg-dark"; // fixed colors
           return (
-            <View
-              key={i}
-              className={`w-3 h-3 rounded-full mx-1 ${bgColor}`}
-            />
+            <View key={i} className={`w-3 h-3 rounded-full mx-1 ${bgColor}`} />
           );
         })}
       </View>

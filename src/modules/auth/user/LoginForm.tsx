@@ -4,13 +4,13 @@ import Heading from "@/src/components/shared/Heading";
 import Loader from "@/src/components/shared/Loader";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
+import { LoginSchema } from "@/src/schemas/login.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 import { Divider } from "react-native-paper";
 import { useZodForm } from "../../../hooks/useZodForm";
-import { LoginSchema } from "../../../schemas/shared/login.schema";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);

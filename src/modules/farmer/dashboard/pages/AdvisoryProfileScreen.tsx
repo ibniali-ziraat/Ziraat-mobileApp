@@ -2,9 +2,9 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import kpis from "@/src/Data/advisoryKpis.json";
-import tags from "@/src/Data/participationTags.json";
-import recentActivities from "@/src/Data/recentActivities.json";
+import kpis from "@/src/data/advisoryKpis.json";
+import tags from "@/src/data/participationTags.json";
+import recentActivities from "@/src/data/recentActivities.json";
 import {
   BookOpen,
   MessageCircle,
@@ -43,13 +43,12 @@ export default function AdvisoryScreen() {
         >
           {kpis.map((item) => {
             const Icon = ICONS[item.icon];
-            const progress =
-              Number(String(item.value).replace("%", "")) || 0;
+            const progress = Number(String(item.value).replace("%", "")) || 0;
 
             return (
               <View
                 key={item.id}
-                 className="mr-2 w-64 overflow-hidden rounded-lg border border-white"
+                className="mr-2 w-64 overflow-hidden rounded-lg border border-white"
               >
                 <View className="relative h-36">
                   <Image
@@ -59,12 +58,8 @@ export default function AdvisoryScreen() {
                   />
                   <View className="absolute bottom-0 h-2/5 w-full bg-dark" />
                   <View className="absolute bottom-3 left-3">
-                    <Text className="font-bold text-light">
-                      {item.title}
-                    </Text>
-                    <Text className="text-xs text-light">
-                      {item.subtitle}
-                    </Text>
+                    <Text className="font-bold text-light">{item.title}</Text>
+                    <Text className="text-xs text-light">{item.subtitle}</Text>
                   </View>
                 </View>
 
@@ -72,9 +67,7 @@ export default function AdvisoryScreen() {
                   <View className="flex-row items-center justify-between">
                     <View className="flex-row items-center">
                       <View className="h-12 w-12 items-center justify-center rounded-xl">
-                        {Icon && (
-                          <Icon size={22} color={colors.secondary} />
-                        )}
+                        {Icon && <Icon size={22} color={colors.secondary} />}
                       </View>
                       <View className="ml-1">
                         <Text className="font-semibold text-dark">
@@ -133,9 +126,7 @@ export default function AdvisoryScreen() {
         </ZiraatCard>
 
         {/* Participation Tags */}
-        <Text className="mt-8 mb-6 text-2xl font-bold">
-          Participation Heat
-        </Text>
+        <Text className="mt-8 mb-6 text-2xl font-bold">Participation Heat</Text>
         <View className="mb-6 flex-row flex-wrap gap-3">
           {tags.map((tag) => (
             <Tag key={tag.label} {...tag} />
@@ -160,12 +151,8 @@ export default function AdvisoryScreen() {
                 className="mb-3 flex-row items-center justify-between"
               >
                 <View>
-                  <Text className="font-semibold text-dark">
-                    {item.type}
-                  </Text>
-                  <Text className="text-sm text-dark">
-                    {item.id}
-                  </Text>
+                  <Text className="font-semibold text-dark">{item.type}</Text>
+                  <Text className="text-sm text-dark">{item.id}</Text>
                 </View>
                 <StatusBadge status={item.status} />
               </View>
@@ -195,19 +182,15 @@ export default function AdvisoryScreen() {
 /* ------------------ Helpers ------------------ */
 
 const Tag = ({ label }: any) => (
-  <View style={{ width:"30%"}}>
-
+  <View style={{ width: "30%" }}>
     <ZiraatCard
-    width="100%"
-    height={36}
-    paddingHorizontal={0.76}
-    paddingVertical={0.7}
-  
-  >
-    <Text className={`text-sm font-semibold`}>
-      {label}
-    </Text>
-  </ZiraatCard>
+      width="100%"
+      height={36}
+      paddingHorizontal={0.76}
+      paddingVertical={0.7}
+    >
+      <Text className={`text-sm font-semibold`}>{label}</Text>
+    </ZiraatCard>
   </View>
 );
 

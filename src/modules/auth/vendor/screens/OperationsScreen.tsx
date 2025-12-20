@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert } from "react-native";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -12,12 +11,12 @@ import {
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { operationalDetailsSchema } from "@/src/modules/auth/vendor/schemas/operations.schema";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import OperationalSection from "../sections/OperationalSection";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
 
 export default function OperationsScreen() {
   const { vendorProfileId } = useAuth();

@@ -5,7 +5,7 @@ import { colors } from "@/src/constants/colors";
 import { ThumbsUp, User, X } from "lucide-react-native";
 import React, { useState } from "react";
 import { Modal, Text, TouchableOpacity, View } from "react-native";
-import data from "../../Data/Review.json";
+import data from "../../data/Review.json";
 
 export default function Review() {
   const { summary, reviews: initialReviews } = data;
@@ -83,15 +83,11 @@ export default function Review() {
           <RatingStars rating={summary.averageRating} size={14} />
         </Text>
 
-        <Text className="text-dark mt-1">
-          {summary.totalReviews} Reviews
-        </Text>
+        <Text className="text-dark mt-1">{summary.totalReviews} Reviews</Text>
       </View>
 
-     
       <ReviewFilters filter={filter} setFilter={setFilter} />
 
- 
       {sortedReviews.map((r) => (
         <View
           key={r.id}

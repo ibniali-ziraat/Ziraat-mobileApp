@@ -1,6 +1,6 @@
 import QuantitySelector from "@/src/components/shared/QuantitySelector";
 import { colors } from "@/src/constants/colors";
-import { imageMapper } from "@/src/Data/imageMapper";
+import { imageMapper } from "@/src/data/imageMapper";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -25,7 +25,6 @@ export default function CartListItem({
 
       {/* Right Section */}
       <View className="ml-4 flex-1">
-
         {/* Title + Quantity */}
         <View className="flex-row justify-between items-center">
           <Text className="text-dark font-semibold text-lg flex-1">
@@ -33,10 +32,7 @@ export default function CartListItem({
           </Text>
 
           <View className="w-30">
-            <QuantitySelector
-              quantity={quantity}
-              setQuantity={onQtyChange}
-            />
+            <QuantitySelector quantity={quantity} setQuantity={onQtyChange} />
           </View>
         </View>
 
@@ -61,18 +57,12 @@ export default function CartListItem({
                 )}
               </>
             ) : (
-              <Text className="text-primary font-semibold">
-                ₹{item.price}
-              </Text>
+              <Text className="text-primary font-semibold">₹{item.price}</Text>
             )}
           </View>
 
           <TouchableOpacity onPress={onRemove} className="p-1 ml-2">
-            <Ionicons
-              name="trash-outline"
-              size={20}
-              color={colors.secondary}
-            />
+            <Ionicons name="trash-outline" size={20} color={colors.secondary} />
           </TouchableOpacity>
         </View>
       </View>
