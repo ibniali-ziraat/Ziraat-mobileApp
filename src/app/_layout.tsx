@@ -13,7 +13,6 @@ import "../../styles/global.css";
 import RouteGuard from "../components/RouteGuard";
 import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
 import AppProvider from "../contexts/AppProvider";
-
 registerTranslation("en-GB", enGB);
 
 export default function RootLayout() {
