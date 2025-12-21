@@ -1,5 +1,3 @@
-import OTPSection from "@/src/modules/auth/user/sections/OTPSection";
-import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 import {
   useCheckUserExists,
   useLoginMutation,
@@ -7,23 +5,23 @@ import {
   useProfileMutation,
   useSendOtpMutation,
 } from "@/src/hooks/userQueryHooks";
+import OTPSection from "@/src/modules/auth/user/sections/OTPSection";
+import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 
 import FormActions from "@/src/components/shared/FormActions";
-import Button from "@/src/components/ui/Button";
 
+import AnimatedStepWrapper from "@/src/components/shared/AnimatedStepWrapper";
+import Heading from "@/src/components/shared/Heading";
+import OtpHeading from "@/src/components/shared/OtpHeading";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
-import { otpSchema } from "@/src/schemas/shared/otp.schema";
-import { profileSchema } from "@/src/schemas/user/profile.schema";
+import { profileSchema } from "@/src/modules/auth/user/schemas/profile.schema";
+import { otpSchema } from "@/src/schemas/otp.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Alert, View } from "react-native";
-import Heading from "@/src/components/shared/Heading";
-import Loader from "@/src/components/shared/Loader";
-import { ROUTES } from "@/src/constants/routes";
-import OtpHeading from "@/src/components/shared/OtpHeading";
-import AnimatedStepWrapper from "@/src/components/shared/AnimatedStepWrapper";
-import { useAuth } from "@/src/contexts/AuthContext";
+import { View } from "react-native";
 
 export default function UserRegistrationScreen() {
   const [step, setStep] = useState(0);

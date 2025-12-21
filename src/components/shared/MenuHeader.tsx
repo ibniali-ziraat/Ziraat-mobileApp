@@ -42,7 +42,7 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
               style={{ borderColor: colors.neutral }}
               onPress={() =>
                 router.push({
-                  pathname: "/DashboardPage",
+                  pathname: "/dashboards",
                   params: { role: "supplier" },
                 })
               }
@@ -54,7 +54,7 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
             <TouchableOpacity
               className="p-2 rounded-full bg-white border"
               style={{ borderColor: colors.neutral }}
-              onPress={() => router.push("/auth/vendor/vendor-profile-screen")}
+              onPress={() => router.push(ROUTES.VENDOR.PROFILE)}
             >
               <User color={colors.secondary} size={20} />
             </TouchableOpacity>
@@ -100,7 +100,7 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
               style={{ borderColor: colors.neutral }}
               onPress={() =>
                 router.push({
-                  pathname: "/DashboardPage",
+                  pathname: "/dashboards",
                   params: { role: "farmer" },
                 })
               }

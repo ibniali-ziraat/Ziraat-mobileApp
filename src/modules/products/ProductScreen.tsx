@@ -1,10 +1,10 @@
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ChevronRight } from "lucide-react-native";
 import { Text, View } from "react-native";
-import { imageMapper } from "../../Data/imageMapper";
-import products from "../../Data/products.json";
 import ProductCarousel from "../../components/shared/ProductCarousel";
 import { colors } from "../../constants/colors";
+import { imageMapper } from "../../data/imageMapper";
+import products from "../../data/products.json";
 
 export default function ProductScreen() {
   console.log(products, "products...");

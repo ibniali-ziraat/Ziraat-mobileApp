@@ -1,20 +1,20 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorProfileMutation,
   useVendorProfileQuery,
   useVendorProfileUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
-import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
+import { businessInformationSchema } from "@/src/modules/auth/vendor/schemas/business.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import BusinessSection from "../sections/BusinessSection";
-import { ROUTES } from "@/src/constants/routes";
-import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function BusinessScreen() {
   const { setVendorProfileId, userId } = useAuth();

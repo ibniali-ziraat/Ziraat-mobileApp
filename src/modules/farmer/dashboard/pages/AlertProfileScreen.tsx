@@ -1,8 +1,8 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
-import categoriesData from "@/src/Data/alertCategoriesData.json";
-import summaryData from "@/src/Data/alertSummaryData.json";
-import timelineData from "@/src/Data/alertTimelineData.json";
+import categoriesData from "@/src/data/alertCategoriesData.json";
+import summaryData from "@/src/data/alertSummaryData.json";
+import timelineData from "@/src/data/alertTimelineData.json";
 
 import { Text, View } from "react-native";
 
@@ -16,19 +16,13 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import * as LucideIcons from "lucide-react-native";
 
 export default function AlertsTrackingScreen() {
-
   const renderIcon = (item: any, size = 36) => {
-    const IconComponent =
-      LucideIcons[item.icon as keyof typeof LucideIcons];
+    const IconComponent = LucideIcons[item.icon as keyof typeof LucideIcons];
 
     if (!IconComponent) return null;
 
     return (
-      <IconComponent
-        size={size}
-        color={colors.secondary}
-        strokeWidth={1.2}
-      />
+      <IconComponent size={size} color={colors.secondary} strokeWidth={1.2} />
     );
   };
 
@@ -44,7 +38,7 @@ export default function AlertsTrackingScreen() {
       {/* Alert Summary */}
       <Text className="text-2xl font-bold mb-2">Alert Summary</Text>
       <View className="flex-row flex-wrap justify-between ">
-        {summaryData.map(item => (
+        {summaryData.map((item) => (
           <AlertSummaryCard
             key={item.id}
             title={item.title}
@@ -56,11 +50,9 @@ export default function AlertsTrackingScreen() {
       </View>
 
       {/* Alert Categories */}
-      <Text className="text-2xl font-bold mt-4 mb-4">
-        Alert Categories
-      </Text>
+      <Text className="text-2xl font-bold mt-4 mb-4">Alert Categories</Text>
       <View className="flex-row flex-wrap justify-between">
-        {categoriesData.map(item => (
+        {categoriesData.map((item) => (
           <AlertCategoryCard
             key={item.id}
             title={item.title}

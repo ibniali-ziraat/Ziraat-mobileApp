@@ -4,7 +4,7 @@ import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { useState } from "react";
 import { ImageBackground, Text, View } from "react-native";
-import cardsDataJson from "../../../../Data/cardsData.json";
+import cardsDataJson from "../../../../data/cardsData.json";
 import EnhancedCard from "./components/EnhancedCard";
 
 // ✅ Lucide icons
@@ -73,11 +73,7 @@ export default function NutrientsProfileScreen() {
               value={card.value}
               icon={
                 Icon ? (
-                  <Icon
-                    size={30}
-                    color={colors.secondary}
-                    strokeWidth={1.3}
-                  />
+                  <Icon size={30} color={colors.secondary} strokeWidth={1.3} />
                 ) : null
               }
               onPress={
@@ -99,9 +95,7 @@ export default function NutrientsProfileScreen() {
 
         <ZiraatCard width="100%" paddingHorizontal={2} paddingVertical={2}>
           <CustomBarChart />
-          <Text className="text-center text-md mt-2">
-            (pH, EC & NPK trend)
-          </Text>
+          <Text className="text-center text-md mt-2">(pH, EC & NPK trend)</Text>
         </ZiraatCard>
       </View>
     </ScreenLayout>

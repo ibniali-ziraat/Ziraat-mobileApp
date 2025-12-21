@@ -29,7 +29,7 @@ const HomeHeader = () => {
 
       <View className="flex-row items-center">
         <TouchableOpacity
-          onPress={() => router.push("/notifications")}
+          onPress={() => router.push("/user/notifications")}
           className="p-2 mr-3 rounded-full border"
           style={{ borderColor: colors.neutral }}
         >
