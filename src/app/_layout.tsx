@@ -8,7 +8,6 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-import { StatusBar } from "expo-status-bar";
 import "../../styles/global.css";
 import RouteGuard from "../components/RouteGuard";
 import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
