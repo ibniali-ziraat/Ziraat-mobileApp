@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  buyProduct,
   createProduct,
   deleteProduct,
   getProductById,
@@ -56,6 +57,19 @@ export const useDeleteProductMutation = () => {
     mutationFn: deleteProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+};
+
+export const useBuyProductMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: buyProduct,
+    onSuccess: () => {
+      // Optional: invalidate orders / cart
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 };

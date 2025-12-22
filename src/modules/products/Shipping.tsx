@@ -4,6 +4,7 @@ import BuyNowButton from "@/src/components/shared/BuyNowButton";
 import PaymentSelector from "@/src/components/shared/PaymentSelector";
 import SummaryCard from "@/src/components/shared/SummaryCard";
 import { usePayment } from "@/src/hooks/usePayment";
+import { useBuyProductMutation } from "@/src/hooks/useProductsQuery";
 import ProductCard from "@/src/modules/products/components/ProductCard";
 import ShippingOptionList from "@/src/modules/products/components/ShippingOptionList";
 import { addToCartList } from "@/src/utils/cartlistStore";
@@ -80,6 +81,8 @@ export default function Shipping() {
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState<any>(null);
+  const { mutateAsync: buyProductMutation, isLoading } =
+    useBuyProductMutation();
   const { pay } = usePayment();
 
   const getFinalPrice = () => {
@@ -108,7 +111,7 @@ export default function Shipping() {
   };
 
   const handleBuyNow = async () => {
-    const result = await pay({
+    const paymentResult = await pay({
       amount: getFinalPrice(),
       description: product.title,
       image: product.photos?.[0],
@@ -119,12 +122,19 @@ export default function Shipping() {
       },
     });
 
-    if (result.success) {
-      Alert.alert("Payment Success", `Payment ID: ${result.paymentId}`);
-      // 👉 create order / navigate / clear cart here
-    } else {
-      Alert.alert("Payment Failed", result.error);
+    if (!paymentResult.success) {
+      Alert.alert("Payment Failed", paymentResult.error.description);
+      return;
     }
+
+    await buyProductMutation({
+      productId: product._id,
+      quantity,
+      paymentMethod,
+      razorpay: paymentResult.data,
+    });
+
+    Alert.alert("Order Placed", "Your order has been placed successfully");
   };
 
   if (!product) {

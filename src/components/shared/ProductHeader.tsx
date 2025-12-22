@@ -20,7 +20,7 @@ const ProductHeader = () => {
 
       <View className="flex-row items-center space-x-3">
         <TouchableOpacity
-          onPress={() => router.push("/wishlist")}
+          onPress={() => router.push("/products/wishlist")}
           className="p-2 me-2 rounded-full bg-white border"
           style={{ borderColor: colors.neutral }}
         >
@@ -28,7 +28,7 @@ const ProductHeader = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => router.push("/cartlist")}
+          onPress={() => router.push("/products/cartlist")}
           className="p-2 rounded-full bg-white border"
           style={{ borderColor: colors.neutral }}
         >
