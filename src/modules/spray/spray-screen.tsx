@@ -1,7 +1,7 @@
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import sprayData from "@/src/data/SprayData.json";
+import sprayData from "@/src/data/sprayData.json";
 import { Droplets, Edit, Trash2, Trees } from "lucide-react-native";
 import { FlatList, Text, View } from "react-native";
 
