@@ -10,7 +10,6 @@ import ResourcesProfile from "../app/dashboards/(farmer)/resources-profile";
 import WeatherProfile from "../app/dashboards/(farmer)/weather-profile";
 import Delivery from "../app/dashboards/(vendor)/vendor-delivery";
 import Profile from "../app/dashboards/(vendor)/vendor-profile";
-import SalesScreen from "../app/SalesScreen";
 import CreditScreen from "../modules/vendor/screens/CreditScreen";
 import FinancialScreen from "../modules/vendor/screens/FinancialScreen";
 import NotificationScreen from "../modules/vendor/screens/NotificationScreen";
@@ -18,6 +17,7 @@ import OffersScreen from "../modules/vendor/screens/OffersScreen";
 import PlatformScreen from "../modules/vendor/screens/PlatformScreen";
 import ProductsScreen from "../modules/vendor/screens/ProductsScreen";
 import ReportsScreen from "../modules/vendor/screens/ReportsScreen";
+import SalesScreen from "../modules/vendor/screens/SaleScreen";
 import UserScreen from "../modules/vendor/screens/UserScreen";
 
 // ------------------------------
@@ -179,7 +179,4 @@ export const DashboardTabs = {
     link: "dashboards/vendor-products",
     role: "supplier",
   },
-
-
-
 };

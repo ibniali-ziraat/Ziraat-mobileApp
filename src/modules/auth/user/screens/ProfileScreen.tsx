@@ -1,21 +1,20 @@
-import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useProfileMutation,
   useProfileQuery,
   useProfileUpdateMutation,
 } from "@/src/hooks/userQueryHooks";
-import { profileSchema } from "@/src/schemas/user/profile.schema";
+import { profileSchema } from "@/src/modules/auth/user/schemas/profile.schema";
+import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 import { showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert } from "react-native";
-import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function ProfileScreen() {
   const { setUserProfileId, userId } = useAuth();

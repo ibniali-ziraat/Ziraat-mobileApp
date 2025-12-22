@@ -14,7 +14,6 @@ import "../../styles/global.css";
 import RouteGuard from "../components/RouteGuard";
 import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
 import AppProvider from "../contexts/AppProvider";
-
 registerTranslation("en-GB", enGB);
 
 export default function RootLayout() {
@@ -30,8 +29,8 @@ export default function RootLayout() {
             {/* <LinearGradient
               colors={colors.bgGradient.colors}
               locations={colors.bgGradient.locations}
-              start={{ x: 0.5, y: 0 }}   // top
-              end={{ x: 0.5, y: 1 }}     // bottom
+              start={{ x: 0.5, y: 0 }} // top
+              end={{ x: 0.5, y: 1 }} // bottom
               style={{ flex: 1 }}
             > */}
             <SafeAreaView
@@ -39,8 +38,8 @@ export default function RootLayout() {
               style={{
                 flex: 1,
                 paddingTop: insets.top + 20,
-                paddingHorizontal: 10,
-                backgroundColor: "transparent",
+                paddingHorizontal: 5,
+                backgroundColor: "FFFFFF",
               }}
             >
               <PaperProvider>

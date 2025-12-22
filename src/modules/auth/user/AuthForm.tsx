@@ -122,7 +122,7 @@ function ModeButton({ title, onPress }: ModeButtonProps) {
           <Text
             style={{
               color: "#6B7280", 
-              fontSize: 13,
+              fontSize: 14,
             }}
           >
             Already have an account?{" "}
@@ -131,7 +131,7 @@ function ModeButton({ title, onPress }: ModeButtonProps) {
             style={{
               color: colors.primary,
               fontWeight: "700",
-              fontSize: 13,
+              fontSize: 14,
             }}
           >
             Login
@@ -159,7 +159,7 @@ export default function AuthForm() {
         <View style={{ alignItems: "center", marginBottom: 10 }}>
           <Image
             source={require("@/assets/images/logo.jpeg")}
-            style={{ width: 120, height: 120, resizeMode: "contain" }}
+            style={{ width: 140, height: 130, resizeMode: "contain" }}
           />
         </View>
 

@@ -12,7 +12,7 @@ import { IndianRupee, Package } from "lucide-react-native";
 // Imported FlatList
 import BackHeader from "@/src/components/shared/BackHeader";
 import { FlatList, Text, ToastAndroid, View } from "react-native";
-import faqData from "../../Data/Faq.json";
+import faqData from "../../data/Faq.json";
 // import products from "../../Data/products.json";
 
 // --- START: renderHeader Function (Content moved from ScreenLayout) ---
@@ -25,9 +25,7 @@ const renderHeader = (product, colors) => (
         {String(product.title)}
       </Text>
 
-      <Text className="text-xl mb-1">
-        Category: {String(product.category)}
-      </Text>
+      <Text className="text-xl mb-1">Category: {String(product.category)}</Text>
 
       {product.saltComposition && (
         <Text className="text-xl mb-2 text-dark">
@@ -73,17 +71,12 @@ const renderHeader = (product, colors) => (
         <RatingStars rating={product.rating} />
       </View>
 
-      <Text className="font-semibold text-xl mb-2">
-        Product Description:
-      </Text>
+      <Text className="font-semibold text-xl mb-2">Product Description:</Text>
 
       {/* DESCRIPTION */}
       {Array.isArray(product.description) ? (
         product.description.map((desc, index) => (
-          <Text
-            key={index}
-            className="text-dark text-[15px] mb-2 text-justify"
-          >
+          <Text key={index} className="text-dark text-[15px] mb-2 text-justify">
             {String(desc)}
           </Text>
         ))
@@ -161,7 +154,9 @@ export default function ProductDetails() {
         title: String(product.title),
         category: String(product.category),
         price: String(product.price),
-        discountPrice: product.discountPrice ? String(product.discountPrice) : null,
+        discountPrice: product.discountPrice
+          ? String(product.discountPrice)
+          : null,
         photos: product.photos || [],
       });
       ToastAndroid.show("Added to Cart", ToastAndroid.SHORT);
@@ -173,27 +168,26 @@ export default function ProductDetails() {
 
   return (
     <View className="flex-1 bg-light">
-      <BackHeader
-      title="cghjk" />
+      <BackHeader title="cghjk" />
 
       {/* FIX: Use FlatList as the main scroll container for the page content */}
       <FlatList
-        data={[{ key: 'details-footer' }]} // Dummy data for FlatList structure
+        data={[{ key: "details-footer" }]} // Dummy data for FlatList structure
         keyExtractor={(item) => item.key}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={renderHeader(product, colors)} // Passes the top details section
         ListFooterComponent={
-            <>
-                {/* REVIEWS */}
-                <View className="mt-6 px-4">
-                    <Review />
-                </View>
+          <>
+            {/* REVIEWS */}
+            <View className="mt-6 px-4">
+              <Review />
+            </View>
 
-                {/* FAQ */}
-                <View className="mt-2 px-4 pb-8">
-                    <ProductFaq data={faqData} />
-                </View>
-            </>
+            {/* FAQ */}
+            <View className="mt-2 px-4 pb-8">
+              <ProductFaq data={faqData} />
+            </View>
+          </>
         }
         renderItem={() => null} // Don't render dummy item
       />

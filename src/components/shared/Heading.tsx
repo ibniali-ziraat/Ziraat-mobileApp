@@ -16,14 +16,16 @@ export default function Heading({
   subtitleSize = 15,
 }: HeadingProps) {
   return (
-    <View style={{ marginBottom: 16 }}>
+    <View style={{ marginBottom: 6,
+      
+     }}>
       <Text
         style={{
           fontSize: titleSize,
-          color: colors.dark,
+          color: colors.primary,
           fontWeight: "semibold",
-          alignContent:"center",
-          textAlign:"center",
+         
+          
         }}
       >
         {title}
@@ -34,13 +36,28 @@ export default function Heading({
           style={{
             fontSize: subtitleSize,
             color: colors.darkHover,
-            marginTop: 10,
-             textAlign:"center",
+            marginTop: 7,
+             
+             
           }}
         >
           {subtitle}
+          
         </Text>
+        
       ) : null}
+      {/* Primary Divider */}
+      <View
+        style={{
+          width: 63,
+          height: 3,
+          borderRadius: 2,
+          backgroundColor: colors.primary,
+          marginTop: 9,
+         
+        }}
+      />
     </View>
+    
   );
 }

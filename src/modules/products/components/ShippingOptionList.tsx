@@ -1,4 +1,4 @@
-import SHIPPING_OPTIONS from "@/src/Data/shippingOptions.json";
+import SHIPPING_OPTIONS from "@/src/data/shippingOptions.json";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 export default function ShippingOptionList({
@@ -18,7 +18,6 @@ export default function ShippingOptionList({
             className="p-4 mb-2  rounded-xl border border-neutral"
           >
             <View className="flex-row justify-between items-center">
-          
               <View className="flex-row items-start gap-3">
                 <View
                   className={`h-5 w-5 rounded-full border-2 ${
@@ -30,17 +29,13 @@ export default function ShippingOptionList({
                   )}
                 </View>
 
-      
                 <View>
                   <Text className="font-bold">{item.title}</Text>
                   <Text className="text-dark">{item.delivery}</Text>
                 </View>
               </View>
 
-            
-              <Text className="text-secondary font-semibold">
-                {item.price}
-              </Text>
+              <Text className="text-secondary font-semibold">{item.price}</Text>
             </View>
           </TouchableOpacity>
         );

@@ -330,7 +330,6 @@ export default function FormInput({
           ? "phone-pad"
           : "default";
 
-        // 🔹 Icon color resolver (UI only)
         const iconColor = showError
           ? colors.error
           : isFocused
@@ -338,8 +337,9 @@ export default function FormInput({
           : colors.neutral;
 
         return (
-          <View style={{ marginBottom: 16 }}>
+          <View style={{ marginBottom: 10   }}>
             <TextInput
+            
               mode="outlined"
               label={labelWithRequired}
               value={value}
@@ -374,7 +374,7 @@ export default function FormInput({
                 ) : undefined
               }
 
-              /* 🔹 Password toggle (Lucide) */
+            
               right={
                 isSecure ? (
                   <TextInput.Icon
@@ -393,9 +393,12 @@ export default function FormInput({
               style={{
                 backgroundColor: colors.light,
                 borderColor: colors.primary,
+             borderRadius:14,
+             overflow:"hidden"
                
               }}
               theme={{
+                  roundness: 14,
                 colors: {
                   primary: colors.primary,
                   placeholder: colors.neutral,

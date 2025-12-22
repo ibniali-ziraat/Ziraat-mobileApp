@@ -224,13 +224,13 @@ import Loader from "@/src/components/shared/Loader";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
+import { LoginSchema } from "@/src/schemas/login.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Image, Pressable, Text, View } from "react-native";
 import { useZodForm } from "../../../hooks/useZodForm";
-import { LoginSchema } from "../../../schemas/shared/login.schema";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -297,30 +297,53 @@ export default function LoginForm() {
         }}
       >
         <Heading
-          title="Let's Sign you in."
+          title="Let's Sign in."
           subtitle="Welcome back to your account"
-  //          title="Welcome to Ziraat"
-  // subtitle="Designed for safe pesticide management and smarter agricultural decisions"
+          
         />
 
-        <FormInput
-          control={control}
-          name="mobileNumber"
-          label="Phone Number"
-          type="phone"
-          error={errors.mobileNumber}
-        />
+       {/* Login Inputs */}
+{/* Login Inputs */}
+<View
+  style={{
+    marginTop: 16,
+    marginBottom: 12,
+    borderRadius: 20,
+    padding: 1.5,
 
-        <FormInput
-          control={control}
-          name="password"
-          label="Password"
-          type="password"
-          error={errors.password}
-        />
+  }}
+>
+  <View
+    style={{
+      borderRadius: 18,
+      
+    
+      shadowColor: "#000",
+      shadowOpacity: 0.04,
+      shadowRadius: 10,
+      shadowOffset: { width: 0, height: 4 },
+      elevation: 2,
+    }}
+  >
+    <FormInput
+      control={control}
+      name="mobileNumber"
+      label="Phone Number"
+      type="phone"
+      error={errors.mobileNumber}
+    />
 
-        {/* Forgot Password */}
-        <Pressable className="items-end mt-2">
+    
+
+    <FormInput
+      control={control}
+      name="password"
+      label="Password"
+      type="password"
+      error={errors.password}
+    />
+  </View>
+   <Pressable className="items-end ">
           <Text
             className="text-sm font-medium"
             style={{ color: colors.primary }}
@@ -328,16 +351,26 @@ export default function LoginForm() {
             Forgot password?
           </Text>
         </Pressable>
+</View>
+
+
+        
+       
 
         {/* Login Button */}
-        <View className="mt-4 mb-3">
+        <View className=" mb-3">
+          
           <FormActions
+          
             submitLabel={"Login"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isPending}
             loading={isPending}
+            
           />
         </View>
+
+        
 
         {/* OR Divider */}
         <View className="flex-row items-center my-4">

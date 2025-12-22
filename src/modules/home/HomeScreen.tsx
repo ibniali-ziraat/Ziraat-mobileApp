@@ -10,8 +10,8 @@ import WeatherCard from "./components/weatherCard";
 
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import ProductCarousel from "@/src/components/shared/ProductCarousel";
-import { imageMapper } from "@/src/Data/imageMapper";
-import products from "@/src/Data/products.json";
+import { imageMapper } from "@/src/data/imageMapper";
+import products from "@/src/data/products.json";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 import { useState } from "react";
 
@@ -20,7 +20,7 @@ export default function HomeScreen() {
   const { data, isPending, isError } = useWeatherQuery(cityData);
   console.log(data, "data...");
 
-  // if (isPending) return <Loader />;
+  // // if (isPending) return <Loader />;
 
   const sections = [
     { title: "Top Pesticides for Healthy Crop Growth", slice: [0, 8] },

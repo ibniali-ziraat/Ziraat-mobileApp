@@ -9,7 +9,7 @@ import {
   useVendorSupportQuery,
   useVendorSupportUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
-import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
+import { supportServicesSchema } from "@/src/modules/auth/vendor/schemas/support.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
