@@ -1,8 +1,8 @@
+import { colors } from "@/src/constants/colors";
+import { Plus, X } from "lucide-react-native"; // Lucide icons
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import { Text, TextInput, View, TouchableOpacity } from "react-native";
-import { X, Plus } from "lucide-react-native"; // Lucide icons
-import { colors } from "@/src/constants/colors";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { HelperText } from "react-native-paper";
 
 interface ChipInputProps {

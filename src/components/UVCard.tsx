@@ -1,6 +1,6 @@
-import { View, Text } from "react-native";
 import { Sun } from "lucide-react-native";
-import Svg, { Line, Circle } from "react-native-svg";
+import { Text, View } from "react-native";
+import Svg, { Circle, Line } from "react-native-svg";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {

@@ -1,7 +1,6 @@
 // src/components/shared/Heading.tsx
-import React from "react";
-import { View, Text } from "react-native";
 import { colors } from "@/src/constants/colors";
+import { Text, View } from "react-native";
 
 interface HeadingProps {
   title: string;

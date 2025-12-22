@@ -1,6 +1,6 @@
-import { View, Text } from "react-native";
-import ZiraatCard from "./shared/ZiraatProfileCard";
 import { Thermometer } from "lucide-react-native";
+import { Text, View } from "react-native";
+import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
     temp: number;

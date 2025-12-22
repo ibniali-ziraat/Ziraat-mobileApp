@@ -2,7 +2,6 @@
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import FormInput from "../../../../components/form/inputs/FormInput";
-import Heading from "../../../../components/shared/Heading";
 
 interface Props {
   control: any;

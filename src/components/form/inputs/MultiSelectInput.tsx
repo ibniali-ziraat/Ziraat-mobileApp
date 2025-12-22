@@ -1,8 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { Asterisk } from "lucide-react-native";
-import { Controller, useWatch } from "react-hook-form";
-import { Modal, Text, TouchableOpacity, View, FlatList } from "react-native";
 import { useEffect, useState } from "react";
+import { Controller, useWatch } from "react-hook-form";
+import { FlatList, Modal, Text, TouchableOpacity, View } from "react-native";
 
 export default function MultiSelectInput({
   control,

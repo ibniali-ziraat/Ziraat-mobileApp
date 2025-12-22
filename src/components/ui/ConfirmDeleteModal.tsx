@@ -1,7 +1,5 @@
-import React from "react";
-import { Modal, View, Text, Pressable } from "react-native";
 import { colors } from "@/src/constants/colors";
-import Loader from "../shared/Loader";
+import { Modal, Pressable, Text, View } from "react-native";
 
 interface ConfirmDeleteModalProps {
   visible: boolean;

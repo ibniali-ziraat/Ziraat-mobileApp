@@ -1,9 +1,9 @@
 import { colors } from "@/src/constants/colors"; // Import root colors
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { Platform, TouchableOpacity, View } from "react-native";
-import { HelperText, TextInput } from "react-native-paper";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { HelperText } from "react-native-paper";
 
 export default function FormDatePicker({
   control,

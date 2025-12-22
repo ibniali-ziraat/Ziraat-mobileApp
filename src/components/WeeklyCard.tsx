@@ -1,5 +1,5 @@
-import { View, Text, Dimensions } from "react-native";
-import { CalendarDays, Sun, Cloud, CloudSun } from "lucide-react-native";
+import { CalendarDays, Cloud, CloudSun, Sun } from "lucide-react-native";
+import { Dimensions, Text, View } from "react-native";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 const { width } = Dimensions.get("window");

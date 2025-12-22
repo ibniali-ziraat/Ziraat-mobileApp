@@ -1,7 +1,6 @@
 import { colors } from "@/src/constants/colors";
-import { Filter, Search } from "lucide-react-native";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, View } from "react-native";
 
 interface CropsHeaderProps {
   role?: "farmer" | "supplier"; // optional role prop

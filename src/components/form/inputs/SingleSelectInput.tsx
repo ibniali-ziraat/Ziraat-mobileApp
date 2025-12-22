@@ -1,6 +1,6 @@
 import { colors } from "@/src/constants/colors";
-import { RefreshCcw, XCircle, Search } from "lucide-react-native";
-import { useEffect, useState, useMemo, useRef } from "react";
+import { RefreshCcw, Search, XCircle } from "lucide-react-native";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
   Animated,
@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { HelperText, Portal } from "react-native-paper";
+import { HelperText } from "react-native-paper";
 
 interface Option {
   label: string;

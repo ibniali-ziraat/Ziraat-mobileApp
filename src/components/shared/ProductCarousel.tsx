@@ -1,5 +1,4 @@
 import { ProductCarouselProps } from "@/src/types/product-carousel.type";
-import { router } from "expo-router";
 import { Heart } from "lucide-react-native";
 import { useState } from "react";
 import {

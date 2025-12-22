@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, Pressable } from "react-native";
 import { colors } from "@/src/constants/colors";
 import { maskValue } from "@/src/utils/mask";
+import { useEffect, useState } from "react";
+import { Pressable, Text, View } from "react-native";
 
 interface OtpHeadingProps {
   title?: string;

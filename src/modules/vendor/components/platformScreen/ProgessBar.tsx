@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { Text, View } from "react-native";
 import Animated, {
-    Easing,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 export default function AnimatedProgressBar({ label, value, maxValue, color }) {

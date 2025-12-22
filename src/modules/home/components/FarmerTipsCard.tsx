@@ -1,18 +1,18 @@
 // components/home/FarmerTipsCard.tsx
 import { colors } from "@/src/constants/colors";
 import {
-    ChevronRight,
-    Droplets,
-    Leaf,
-    ShieldCheck,
-    Sun
+  ChevronRight,
+  Droplets,
+  Leaf,
+  ShieldCheck,
+  Sun
 } from "lucide-react-native";
 import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 // Weather-based warnings

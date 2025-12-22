@@ -1,4 +1,3 @@
-import React from "react";
 import { Dimensions, Text, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 

@@ -1,5 +1,5 @@
-import { View, Text } from "react-native";
 import { Wind } from "lucide-react-native";
+import { Text, View } from "react-native";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 import WeatherCarousel, { SLIDE_WIDTH } from "./WeatherCarousel";
 

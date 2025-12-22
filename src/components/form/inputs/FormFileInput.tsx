@@ -2,10 +2,10 @@ import { colors } from "@/src/constants/colors"; // Import root colors
 import { FormFieldProps } from "@/src/types/formFieldProps";
 import * as DocumentPicker from "expo-document-picker";
 import { Eye, Upload, X } from "lucide-react-native";
+import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { Text, TouchableOpacity, View } from "react-native";
 import { HelperText } from "react-native-paper";
-import React, { useState } from "react";
 import FilePreviewModal from "../../shared/FilePreviewModal";
 
 export default function FormFileInput({

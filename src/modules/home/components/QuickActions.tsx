@@ -1,8 +1,9 @@
 // components/home/QuickActions.tsx
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors"; // use your global theme
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function QuickActions() {
   const actions = [
@@ -58,17 +59,22 @@ export default function QuickActions() {
                 padding: 12,
                 borderRadius: 50,
                 marginBottom: 10,
+              
               }}
             >
-              <Ionicons name={item.icon} size={24} color={item.color} />
+              <Ionicons name={item.icon} size={24} color={item.color}  />
             </View>
 
-            <Text
+            {/* <Text
               className="text-[13px] font-semibold text-center"
               style={{ color: colors.dark }}
             >
               {item.title}
-            </Text>
+            </Text> */}
+
+            <CsText className="text-center"variant="title">{item.title}</CsText>
+
+           
           </TouchableOpacity>
         ))}
       </View>
