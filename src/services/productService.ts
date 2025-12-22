@@ -34,3 +34,8 @@ export const deleteProduct = async (id: string) => {
   const { data } = await axiosInstance.delete(`/api/products/${id}`);
   return data;
 };
+
+export const buyProduct = async (payload: any) => {
+  const { data } = await axiosInstance.post("/api/orders/buy", payload);
+  return data;
+};

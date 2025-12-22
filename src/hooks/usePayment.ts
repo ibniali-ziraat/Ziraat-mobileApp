@@ -2,25 +2,26 @@ import { useCallback } from "react";
 import RazorpayCheckout from "react-native-razorpay";
 import { colors } from "../constants/colors";
 
-type RazorpayUser = {
-  name: string;
-  email: string;
-  contact: string;
-};
-
-type RazorpayPaymentInput = {
-  amount: number; // rupees
-  orderId?: string;
-  description?: string;
-  image?: string;
-  user: RazorpayUser;
-};
-
-type RazorpayResult =
-  | { success: true; paymentId: string }
-  | { success: false; error: string };
-
 const RAZORPAY_KEY = "rzp_test_RuYSKNZSDzCrK1";
+type RazorpayResult =
+  | {
+      success: true;
+      data: {
+        razorpay_payment_id: string;
+        razorpay_order_id?: string;
+        razorpay_signature?: string;
+      };
+    }
+  | {
+      success: false;
+      error: {
+        code?: string;
+        description: string;
+        source?: string;
+        step?: string;
+        reason?: string;
+      };
+    };
 
 export const usePayment = () => {
   const pay = useCallback(
@@ -30,22 +31,27 @@ export const usePayment = () => {
       description,
       image,
       user,
-    }: RazorpayPaymentInput): Promise<RazorpayResult> => {
+    }: {
+      amount: number; // rupees
+      orderId?: string;
+      description?: string;
+      image?: string;
+      user: {
+        name: string;
+        email: string;
+        contact: string;
+      };
+    }): Promise<RazorpayResult> => {
       try {
         const options = {
           key: RAZORPAY_KEY,
           currency: "INR",
-          //   amount: String(amount * 100),
-          amount: "1",
+          amount: String(amount * 100), // paise
           name: "Ziraat",
           description,
           image,
-          order_id: orderId, // optional
-          prefill: {
-            name: user.name,
-            email: user.email,
-            contact: user.contact,
-          },
+          order_id: orderId,
+          prefill: user,
           theme: { color: colors.primary },
           method: {
             upi: true,
@@ -55,16 +61,22 @@ export const usePayment = () => {
           },
         };
 
-        const result = await RazorpayCheckout.open(options);
+        const response = await RazorpayCheckout.open(options);
 
         return {
           success: true,
-          paymentId: result.razorpay_payment_id,
+          data: response,
         };
-      } catch (error: any) {
+      } catch (err: any) {
         return {
           success: false,
-          error: error?.description || "Payment cancelled",
+          error: {
+            code: err?.code,
+            description: err?.description || "Payment cancelled",
+            source: err?.source,
+            step: err?.step,
+            reason: err?.reason,
+          },
         };
       }
     },
