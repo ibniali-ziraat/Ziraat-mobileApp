@@ -38,7 +38,7 @@ export default function RootLayout() {
                 flex: 1,
                 paddingTop: insets.top + 20,
                 paddingHorizontal: 5,
-                backgroundColor: "FFFFFF",
+                backgroundColor: "#FFFFFF",
               }}
             >
               <PaperProvider>

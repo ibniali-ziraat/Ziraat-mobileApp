@@ -25,14 +25,18 @@ export default function TabLayout() {
   const { roleMode, userId } = useAuth();
   const { data } = useProfileQuery(userId);
 
-  const [pressedTab, setPressedTab] = useState<string>("");
+  // 🔑 FIX: numeric press trigger
+  const [pressKey, setPressKey] = useState(0);
+  const [activeTab, setActiveTab] = useState<string>("index");
+
   // if (!data || !userToken) return <Loader />;
+
   return (
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.secondary,
+        tabBarInactiveTintColor: colors.dark,
 
         //your earlier changes what you were  doing earlier here i replaced that to ensure working for all devices
         // tabBarStyle: {
@@ -69,7 +73,8 @@ export default function TabLayout() {
             <TouchableOpacity
               activeOpacity={1}
               onPress={(e) => {
-                setPressedTab("index");
+                setActiveTab("index");
+                setPressKey((prev) => prev + 1); // 🔑 important
                 onPress?.(e);
               }}
               style={{
@@ -84,7 +89,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
-              pressKey={pressedTab === "index" ? pressedTab : ""}
+              pressKey={pressKey}
               icon={<Home size={20} color={color} strokeWidth={2.2} />}
               label="Home"
             />
@@ -102,7 +107,8 @@ export default function TabLayout() {
             <TouchableOpacity
               activeOpacity={1}
               onPress={(e) => {
-                setPressedTab("orchards");
+                setActiveTab("orchards");
+                setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
               style={{
@@ -117,7 +123,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
-              pressKey={pressedTab === "orchards" ? pressedTab : ""}
+              pressKey={pressKey}
               icon={<Trees size={20} color={color} strokeWidth={2.2} />}
               label="Orchards"
             />
@@ -135,7 +141,8 @@ export default function TabLayout() {
             <TouchableOpacity
               activeOpacity={1}
               onPress={(e) => {
-                setPressedTab("spray");
+                setActiveTab("spray");
+                setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
               style={{
@@ -150,7 +157,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
-              pressKey={pressedTab === "spray" ? pressedTab : ""}
+              pressKey={pressKey}
               icon={
                 <LucideDroplets size={20} color={color} strokeWidth={2.2} />
               }
@@ -170,7 +177,8 @@ export default function TabLayout() {
             <TouchableOpacity
               activeOpacity={1}
               onPress={(e) => {
-                setPressedTab("Product");
+                setActiveTab("Product");
+                setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
               style={{
@@ -185,7 +193,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
-              pressKey={pressedTab === "Product" ? pressedTab : ""}
+              pressKey={pressKey}
               icon={<ShoppingBag size={20} color={color} strokeWidth={2.2} />}
               label="Products"
             />
@@ -203,7 +211,8 @@ export default function TabLayout() {
             <TouchableOpacity
               activeOpacity={1}
               onPress={(e) => {
-                setPressedTab("menu");
+                setActiveTab("menu");
+                setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
               style={{
@@ -218,7 +227,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
-              pressKey={pressedTab === "menu" ? pressedTab : ""}
+              pressKey={pressKey}
               icon={<Menu size={20} color={color} strokeWidth={2.2} />}
               label="Menu"
             />
