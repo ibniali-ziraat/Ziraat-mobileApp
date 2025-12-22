@@ -17,14 +17,14 @@ export default function FormActions({
   onSubmit,
   onCancel,
   disabled = false,
-  loading = false, // new
+  loading = false, 
 }: FormActionsProps) {
   const showCancel = !!cancelLabel && !!onCancel;
   const isDisabled = disabled || loading;
 
   return (
     <View
-      className={`w-full mt-2 gap-6 bg-light ${showCancel ? "flex-row" : "items-center"
+      className={`w-full mt-2 bg-light  gap-6   ${showCancel ? "flex-row" : "items-center"
         }`}
     >
       {showCancel && (

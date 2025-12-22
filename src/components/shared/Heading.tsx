@@ -1,7 +1,6 @@
 // src/components/shared/Heading.tsx
-import React from "react";
-import { View, Text } from "react-native";
 import { colors } from "@/src/constants/colors";
+import { Text, View } from "react-native";
 
 interface HeadingProps {
   title: string;
@@ -13,8 +12,8 @@ interface HeadingProps {
 export default function Heading({
   title,
   subtitle,
-  titleSize = 28,
-  subtitleSize = 14,
+  titleSize = 26,
+  subtitleSize = 15,
 }: HeadingProps) {
   return (
     <View style={{ marginBottom: 16 }}>
@@ -22,7 +21,9 @@ export default function Heading({
         style={{
           fontSize: titleSize,
           color: colors.dark,
-          fontWeight: "medium",
+          fontWeight: "semibold",
+          alignContent:"center",
+          textAlign:"center",
         }}
       >
         {title}
@@ -32,8 +33,9 @@ export default function Heading({
         <Text
           style={{
             fontSize: subtitleSize,
-            color: colors.dark,
-            marginTop: 4,
+            color: colors.darkHover,
+            marginTop: 10,
+             textAlign:"center",
           }}
         >
           {subtitle}
