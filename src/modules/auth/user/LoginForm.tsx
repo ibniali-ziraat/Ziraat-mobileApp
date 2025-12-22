@@ -1,24 +1,22 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
+import FormActions from "@/src/components/shared/FormActions";
+import Heading from "@/src/components/shared/Heading";
+import Loader from "@/src/components/shared/Loader";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
+import { LoginSchema } from "@/src/schemas/login.schema";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
-import { Button, Divider, Snackbar, Text } from "react-native-paper";
+import { Divider } from "react-native-paper";
 import { useZodForm } from "../../../hooks/useZodForm";
-import { LoginSchema } from "../../../schemas/shared/login.schema";
-import FormActions from "@/src/components/shared/FormActions";
-import { colors } from "@/src/constants/colors";
-import Heading from "@/src/components/shared/Heading";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { useAuth } from "@/src/contexts/AuthContext";
-import Loader from "@/src/components/shared/Loader";
-import { set } from "react-hook-form";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
   const { errors } = formState;
 
-  const { setUserToken, setUserId } = useAuth();
+  const { setUserToken, setUserId, setUserTokenExp } = useAuth();
 
   const { mutateAsync: loginMutate } = useLoginMutation();
   const [isPending, setIsPending] = useState(false);
@@ -37,6 +35,7 @@ export default function LoginForm() {
         console.log(response, "response..");
 
         await setUserToken(response?.token);
+        await setUserTokenExp(response.tokenExpiry);
         await setUserId(response?.user);
 
         router.replace("/");

@@ -1,4 +1,3 @@
-import AddressSection from "@/src/modules/auth/user/sections/AddressSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -10,12 +9,12 @@ import {
   useAddressQuery,
   useAddressUpdateMutation,
 } from "@/src/hooks/userQueryHooks";
-import { addressSchema } from "@/src/schemas/user/address.schema";
+import { addressSchema } from "@/src/modules/auth/user/schemas/address.schema";
+import AddressSection from "@/src/modules/auth/user/sections/AddressSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { ScrollView } from "react-native";
 
 export default function AddressScreen() {
   const { userProfileId } = useAuth();
@@ -67,13 +66,13 @@ export default function AddressScreen() {
       <FormProvider {...form}>
         <BackHeader
           title="Address"
-          onPress={() => router.push(ROUTES.USER.PROFILE)}
+          onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
         <AddressSection control={control} errors={errors} data={data} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.push(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update Adress" : "Add Address"}
+          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

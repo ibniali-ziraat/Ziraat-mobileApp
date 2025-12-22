@@ -1,12 +1,19 @@
 import AddToCartButton from "@/src/components/shared/AddToCartButton";
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
-import { imageMapper } from "@/src/Data/imageMapper";
+import { imageMapper } from "@/src/data/imageMapper";
 import { addToCartList, getCartList } from "@/src/utils/cartlistStore";
 import { useRouter } from "expo-router";
 import { X } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Dimensions, Image, Pressable, Text, ToastAndroid, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  Text,
+  ToastAndroid,
+  View,
+} from "react-native";
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth * 0.9;
@@ -17,10 +24,9 @@ const WishlistItem = ({ item, onRemove }) => {
   const [addedToCart, setAddedToCart] = useState(false);
   const router = useRouter();
 
-  
   useEffect(() => {
     const checkInCart = async () => {
-      const cart = await getCartList(); 
+      const cart = await getCartList();
       if (cart.some((cartItem) => cartItem.id === item._id.toString())) {
         setAddedToCart(true);
       }
@@ -58,7 +64,10 @@ const WishlistItem = ({ item, onRemove }) => {
   };
 
   return (
-    <View className="bg-white border border-neutral rounded-2xl mt-4 p-4" style={{ width: cardWidth, alignSelf: "center" }}>
+    <View
+      className="bg-white border border-neutral rounded-2xl mt-4 p-4"
+      style={{ width: cardWidth, alignSelf: "center" }}
+    >
       <View className="flex-row items-start ">
         <Image
           source={imageMapper[item.photos[0]]}
@@ -73,7 +82,10 @@ const WishlistItem = ({ item, onRemove }) => {
               <Text className="font-semibold text-[16px]" numberOfLines={1}>
                 {item.title}
               </Text>
-              <Pressable className="rounded-full" onPress={() => onRemove(item._id)}>
+              <Pressable
+                className="rounded-full"
+                onPress={() => onRemove(item._id)}
+              >
                 <X size={22} color={colors.dark} />
               </Pressable>
             </View>
@@ -87,24 +99,40 @@ const WishlistItem = ({ item, onRemove }) => {
             <View className="flex-row items-center mt-2">
               {item.discountPrice ? (
                 <>
-                  <Text className="text-dark line-through text-[14px] mr-2">₹{item.price}</Text>
-                  <Text className="text-primary font-bold text-[16px] mr-1">₹{item.discountPrice}</Text>
-                  {discountPercent && <Text className="text-secondary text-[12px] font-semibold">{discountPercent}% OFF</Text>}
+                  <Text className="text-dark line-through text-[14px] mr-2">
+                    ₹{item.price}
+                  </Text>
+                  <Text className="text-primary font-bold text-[16px] mr-1">
+                    ₹{item.discountPrice}
+                  </Text>
+                  {discountPercent && (
+                    <Text className="text-secondary text-[12px] font-semibold">
+                      {discountPercent}% OFF
+                    </Text>
+                  )}
                 </>
               ) : (
-                <Text className="text-primary font-semibold text-[16px]">₹{item.price}</Text>
+                <Text className="text-primary font-semibold text-[16px]">
+                  ₹{item.price}
+                </Text>
               )}
             </View>
 
             <View className="flex-row items-center justify-between mt-2">
               <RatingStars rating={item.rating} />
-              <Text className="text-sm text-light px-2 rounded-xl bg-primary">{item.inStock ? "In Stock" : "Out of Stock"}</Text>
+              <Text className="text-sm text-light px-2 rounded-xl bg-primary">
+                {item.inStock ? "In Stock" : "Out of Stock"}
+              </Text>
             </View>
           </View>
 
           <View className="mt-4">
             {addedToCart ? (
-              <AddToCartButton title="View Cart" onPress={handleViewCart} className="bg-secondary" />
+              <AddToCartButton
+                title="View Cart"
+                onPress={handleViewCart}
+                className="bg-secondary"
+              />
             ) : (
               <AddToCartButton title="Add to Cart" onPress={handleAddToCart} />
             )}

@@ -20,7 +20,7 @@ export default function ProgressBar({ progress }) {
 
   return (
     <View style={{ marginVertical: 15 }}>
-      <Text style={{ fontWeight: "600", marginBottom: 5 }}>
+      <Text style={{ fontWeight: "600", marginBottom: 5, }}>
         Profile Completion: {progress}%
       </Text>
 

@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert } from "react-native";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -12,12 +11,12 @@ import {
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { operationalDetailsSchema } from "@/src/schemas/vendor/operations.schema";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { operationalDetailsSchema } from "@/src/modules/auth/vendor/schemas/operations.schema";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import OperationalSection from "../sections/OperationalSection";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
 
 export default function OperationsScreen() {
   const { vendorProfileId } = useAuth();
@@ -77,7 +76,7 @@ export default function OperationsScreen() {
         showSuccessToast("Changes saved ");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
       showErrorToast(
         "Error saving operations",
@@ -90,14 +89,14 @@ export default function OperationsScreen() {
     <ScreenLayout>
       <BackHeader
         title="Operational Details"
-        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+        onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <OperationalSection control={control} errors={errors} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
-          submitLabel={data ? "Update Operations" : "Save Operations"}
+          onCancel={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
+          submitLabel={data ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

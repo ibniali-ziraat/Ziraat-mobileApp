@@ -1,56 +1,59 @@
 import { Wind } from "lucide-react-native";
-import { Animated, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import ZiraatCard from "./shared/ZiraatProfileCard";
+import WindCompass from "./WindCompass";
 
-export default function WindCard({ speed, gust, dir }) {
-    const degMap: Record<string, number> = {
-        N: 0, NE: 45, E: 90, SE: 135,
-        S: 180, SW: 225, W: 270, NW: 315
-    };
+type Props = {
+  speed: number;
+  gusts: number;
+  degree: number;
+  direction: string;
+};
 
-    const deg = degMap[dir] ?? 0;
+export default function WindCard({ speed, gusts, degree, direction }: Props) {
+  return (
+    <ZiraatCard width="100%" paddingHorizontal={1} paddingVertical={1}>
+      {/* HEADER */}
 
-    return (
-        <View className="bg-white rounded-2xl p-5 mb-4 border border-neutral border-sm shadow-md">
-
-
-            <Text className="text-black text-base font-semibold mb-3">Wind</Text>
-
-            <View className="flex-row justify-between items-center">
-
-                <View>
-                    <Text className="text-black text-3xl font-bold">{speed} kph</Text>
-
-                    <Text className="text-black/60 mt-1 text-sm">
-                        Gusts: {gust} kph
-                    </Text>
-
-                    <Text className="text-black/60 mt-1 text-sm">
-                        Direction: {dir} ({deg}°)
-                    </Text>
-                </View>
-
-                <View className="items-center justify-center">
+      <View className="w-full flex-row justify-between">
 
 
-                    <View className="w-28 h-28 rounded-full border-2 border-secondary items-center justify-center relative">
+        <View className="w-36">
 
-                        <Text className="absolute top-1 text-[10px] text-black/60">N</Text>
-                        <Text className="absolute bottom-1 text-[10px] text-black/60">S</Text>
-                        <Text className="absolute left-1 text-[10px] text-black/60">W</Text>
-                        <Text className="absolute right-1 text-[10px] text-black/60">E</Text>
+          <View className="flex-row pb-5">
+            <Wind size={16} color="#c7611f" />
+            <Text className="ml-2 text-md font-semibold tracking-wide text-dark">
+              WIND
+            </Text>
+          </View>
 
+          <View className="flex-col">
+            <Row label="Wind" value={`2 kph `} />
+            <Row label="Gusts" value={`8 kph `} />
+            <Row label="Direction" value={`123 ESE `} />
+          </View>
 
-                        <Animated.View style={{ transform: [{ rotate: `${deg}deg` }] }}>
-                            <Wind size={42} color="#c7611f" />
-                        </Animated.View>
-                    </View>
-
-
-                    <Text className="text-black/70 text-xs mt-2">
-                        {speed} kph • {dir}
-                    </Text>
-                </View>
-            </View>
         </View>
-    );
+
+        <View className="flex-col items-center">
+          <View className="pb-2">
+            <WindCompass speed={speed} degree={degree} />
+          </View>
+
+          <View>
+            <Text className="text-sm font-semibold text-dark">{direction}</Text>
+          </View>
+        </View>
+      </View>
+    </ZiraatCard>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <View className="flex-row justify-between mb-2">
+      <Text className="text-sm text-dark">{label}</Text>
+      <Text className="text-sm font-medium text-dark">{value}</Text>
+    </View>
+  );
 }

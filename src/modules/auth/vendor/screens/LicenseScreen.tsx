@@ -1,21 +1,20 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorLicenseMutation,
   useVendorLicenseQuery,
   useVendorLicenseUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
-import { licensingComplianceSchema } from "@/src/schemas/vendor/licensing.schema";
+import { licensingComplianceSchema } from "@/src/modules/auth/vendor/schemas/licensing.schema";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert } from "react-native";
 import LicenseSection from "../sections/LicenseSection";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
 
 export default function LicenseScreen() {
   const { vendorProfileId } = useAuth();
@@ -74,7 +73,7 @@ export default function LicenseScreen() {
         showSuccessToast("License Saved!");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       console.error(err);
       showErrorToast("Error saving license");
@@ -85,13 +84,13 @@ export default function LicenseScreen() {
     <ScreenLayout>
       <BackHeader
         title="Licensing & Compliance"
-        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+        onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <LicenseSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Add License Info"}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

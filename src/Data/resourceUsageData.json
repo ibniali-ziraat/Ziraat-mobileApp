@@ -1,0 +1,27 @@
+{
+  "metrics": [
+    { "title": "Pesticide Usage", "value": "620 ml/ha", "icon": "Shield" },
+    { "title": "Usage Condition", "value": "Slight Overuse", "icon": "AlertTriangle" },
+    { "title": "Machinery Utilization", "value": "72%", "icon": "Tractor" },
+    { "title": "Total Input Cost", "value": "", "icon": "Wallet" }
+  ],
+  "insights": [
+    {
+      "icon": "Leaf",
+      "text": "Fertilizer usage slightly below ideal; consider adjusting dose based on crop cycle."
+    },
+    {
+      "icon": "GaugeCircle",
+      "text": "Machinery is underutilized; field operations can be optimized."
+    },
+    {
+      "icon": "PiggyBank",
+      "text": "Input costs are high—opportunity for bulk purchase discounts."
+    }
+  ],
+  "efficiencyLabels": [
+    "Fertilizer Use",
+    "Labor Productivity",
+    "Cost Efficiency"
+  ]
+}

@@ -1,21 +1,20 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorFinancialMutation,
   useVendorFinancialQuery,
   useVendorFinancialUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
-import { financialPaymentSchema } from "@/src/schemas/vendor/finance.schema";
+import { financialPaymentSchema } from "@/src/modules/auth/vendor/schemas/finance.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert } from "react-native";
 import FinancialPaymentSection from "../sections/FinancialSection";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
 export default function FinancialScreen() {
   const { vendorProfileId, userId } = useAuth();
 
@@ -71,8 +70,8 @@ export default function FinancialScreen() {
         showSuccessToast("Financial Info Added ");
       }
 
-      showSuccessToast("Financial Info Saved!");
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      // showSuccessToast("Financial Info Saved!");
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
       console.error("Error saving financial info:", error);
       showErrorToast(
@@ -91,7 +90,7 @@ export default function FinancialScreen() {
         <FinancialPaymentSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Add Financial Info"}
+          submitLabel={data ? "Update" : "Add"}
           onCancel={() => router.back()}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}

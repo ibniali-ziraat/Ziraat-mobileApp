@@ -1,5 +1,5 @@
+import locations from "@/src/data/locations.json";
 import { useState } from "react";
-import locations from "@/src/Data/locations.json";
 
 export function useCascadingLocation() {
   const [selectedState, setSelectedState] = useState<string | null>(null);

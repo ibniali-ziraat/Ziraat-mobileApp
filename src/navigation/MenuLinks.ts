@@ -3,11 +3,12 @@ export const MenuLinks = {
     {
       title: "Farmer Settings",
       routes: [
-        { label: "Profile", screen: "settings/farmer/profile" },
-        { label: "Notifications", screen: "settings/farmer/notifications" },
+        { label: "Profile", screen: "user-profile" },
+        { label: "Notifications", screen: "notifications" },
         { label: "Support", screen: "settings/farmer/support" },
         { label: "Payment Methods", screen: "settings/farmer/payments" },
         { label: "Saved Addresses", screen: "settings/farmer/addresses" },
+        { label: "About Us", screen: "about-us" },
       ],
     },
   ],
@@ -20,7 +21,10 @@ export const MenuLinks = {
     {
       title: "Vendor Settings",
       routes: [
-        { label: "Profile Settings", screen: "settings/vendor/profile" },
+        // {
+        //   label: "Profile Settings",
+        //   screen: "auth/vendor/vendor-profile-screen",
+        // },
         { label: "Notifications", screen: "settings/vendor/notifications" },
         { label: "Support", screen: "settings/vendor/support" },
         { label: "Payment Methods", screen: "settings/vendor/payments" },

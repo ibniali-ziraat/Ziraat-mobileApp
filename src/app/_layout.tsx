@@ -7,14 +7,12 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { Platform, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
 
+import { StatusBar } from "expo-status-bar";
 import "../../styles/global.css";
 import RouteGuard from "../components/RouteGuard";
-import { colors } from "../constants/colors";
+import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
 import AppProvider from "../contexts/AppProvider";
-
 registerTranslation("en-GB", enGB);
 
 export default function RootLayout() {
@@ -22,48 +20,39 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      {/* STATUS BAR */}
-      <StatusBar
-        style="light"
-        backgroundColor={colors.primary}
-        translucent
-        animated
-      />
-
-      {/* STATUS BAR EXTENSION (THIS IS THE KEY) */}
-      {Platform.OS !== "web" && (
-        <View
-          style={{
-            height: insets.top + 20, // 👈 extra bottom padding
-            backgroundColor: colors.primary,
-          }}
-        />
-      )}
+      <StatusBar style="dark" translucent animated />
 
       <AppProvider>
-        <RouteGuard>
-          <SafeAreaView
-            edges={["left", "right"]}
-            style={{
-              flex: 1,
-              backgroundColor: colors.bgColor,
-              // paddingTop: insets.top - 20,
-              paddingHorizontal: 10,
-            }}
-          >
-            <PaperProvider>
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                  animation: "slide_from_right",
-                  animationDuration: 280,
-                }}
-              >
-                <Stack.Screen name="(tabs)/_layout" />
-              </Stack>
-            </PaperProvider>
-          </SafeAreaView>
-        </RouteGuard>
+        <DisableBackWrapper>
+          <RouteGuard>
+            {/* <LinearGradient
+              colors={colors.bgGradient.colors}
+              locations={colors.bgGradient.locations}
+              start={{ x: 0.5, y: 0 }} // top
+              end={{ x: 0.5, y: 1 }} // bottom
+              style={{ flex: 1 }}
+            > */}
+            <SafeAreaView
+              edges={["left", "right"]}
+              style={{
+                flex: 1,
+                paddingTop: insets.top + 20,
+                paddingHorizontal: 5,
+                backgroundColor: "FFFFFF",
+              }}
+            >
+              <PaperProvider>
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                    animation: "slide_from_right",
+                  }}
+                />
+              </PaperProvider>
+            </SafeAreaView>
+            {/* </LinearGradient> */}
+          </RouteGuard>
+        </DisableBackWrapper>
       </AppProvider>
 
       <Toasts defaultPosition={ToastPosition.TOP} />

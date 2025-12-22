@@ -1,0 +1,26 @@
+[
+  {
+    "id": "humidity",
+    "time": "2 hrs ago",
+    "message": "Humidity risk of fungal spread",
+    "icon": "CloudRain"
+  },
+  {
+    "id": "codling",
+    "time": "6 hrs ago",
+    "message": "Codling moth trap count rising",
+    "icon": "Bug"
+  },
+  {
+    "id": "nitrogen",
+    "time": "Yesterday",
+    "message": "Nitrogen deficiency in Block C",
+    "icon": "Leaf"
+  },
+  {
+    "id": "sprayOverdue",
+    "time": "2 days ago",
+    "message": "Recommended spray overdue by 3 days",
+    "icon": "AlertCircle"
+  }
+]

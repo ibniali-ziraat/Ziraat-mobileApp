@@ -1,20 +1,20 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorProfileMutation,
   useVendorProfileQuery,
   useVendorProfileUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
-import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
+import { businessInformationSchema } from "@/src/modules/auth/vendor/schemas/business.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import BusinessSection from "../sections/BusinessSection";
-import { ROUTES } from "@/src/constants/routes";
-import { useAuth } from "@/src/contexts/AuthContext";
 
 export default function BusinessScreen() {
   const { setVendorProfileId, userId } = useAuth();
@@ -66,7 +66,7 @@ export default function BusinessScreen() {
         showSuccessToast("Supplier registration successful");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       showErrorToast("Something went wrong");
       console.error(err);
@@ -78,14 +78,14 @@ export default function BusinessScreen() {
       <BackHeader
         title="Supplier Onboarding"
         desc="Start selling to farmers today."
-        onPress={() => router.push(ROUTES.TABS.MENU)}
+        onPress={() => router.replace(ROUTES.TABS.MENU)}
       />
       <FormProvider {...form}>
         <BusinessSection errors={errors} control={control} data={data} />
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.back()}
-          submitLabel={data ? "Update Profile" : "Submit"}
+          submitLabel={data ? "Update" : "Submit"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

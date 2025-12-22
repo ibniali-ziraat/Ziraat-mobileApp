@@ -1,58 +1,108 @@
-import React, { useEffect, useRef } from "react";
-import { View, Animated } from "react-native";
 import { colors } from "@/src/constants/colors";
+import { useEffect, useRef } from "react";
+import { Animated, Easing, Image, View } from "react-native";
 
 export default function Loader() {
+  // Logo animation
+  const scale = useRef(new Animated.Value(0.96)).current;
+
+  // Dots animation
   const dot1 = useRef(new Animated.Value(0)).current;
   const dot2 = useRef(new Animated.Value(0)).current;
   const dot3 = useRef(new Animated.Value(0)).current;
 
-  const animateDot = (dot: Animated.Value, delay: number) =>
-    Animated.loop(
+  useEffect(() => {
+    // 🔹 Logo breathing (NO opacity change)
+    const logoBreathing = Animated.loop(
       Animated.sequence([
-        Animated.delay(delay),
-        Animated.timing(dot, {
+        Animated.timing(scale, {
           toValue: 1,
-          duration: 300,
+          duration: 1600,
+          easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
-        Animated.timing(dot, {
-          toValue: 0,
-          duration: 300,
+        Animated.delay(400),
+        Animated.timing(scale, {
+          toValue: 0.96,
+          duration: 1600,
+          easing: Easing.inOut(Easing.ease),
           useNativeDriver: true,
         }),
       ])
     );
 
-  useEffect(() => {
-    Animated.parallel([
-      animateDot(dot1, 0),
-      animateDot(dot2, 120),
-      animateDot(dot3, 240),
-    ]).start();
+    // 🔹 Dot animation
+    const animateDot = (dot: Animated.Value, delay: number) =>
+      Animated.loop(
+        Animated.sequence([
+          Animated.delay(delay),
+          Animated.timing(dot, {
+            toValue: 1,
+            duration: 1600,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+          Animated.timing(dot, {
+            toValue: 0,
+            duration: 1600,
+            easing: Easing.inOut(Easing.ease),
+            useNativeDriver: true,
+          }),
+        ])
+      );
+
+    logoBreathing.start();
+    animateDot(dot1, 0).start();
+    animateDot(dot2, 200).start();
+    animateDot(dot3, 400).start();
+
+    return () => logoBreathing.stop();
   }, []);
 
   const dotStyle = (dot: Animated.Value) => ({
+    opacity: dot.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0.3, 1],
+    }),
     transform: [
       {
         translateY: dot.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, -4], // subtler bounce
+          outputRange: [0, -4],
         }),
       },
     ],
-    opacity: dot.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0.5, 1],
-    }),
   });
 
   return (
     <View
-      className="w-full h-full items-center justify-center"
+      className="w-full h-full items-center justify-center "
       style={{ backgroundColor: colors.light }}
     >
-      <View className="flex-row items-center" style={{ gap: 8 }}>
+      {/* Logo */}
+      <Animated.View
+        style={{
+          transform: [{ scale }],
+        }}
+      >
+        <Image
+          source={require("../../../assets/images/logo.jpeg")}
+          resizeMode="contain"
+          style={{
+            width: 200,
+            height: 200,
+          }}
+        />
+      </Animated.View>
+
+      {/* Dots */}
+      {/* <View
+        style={{
+          flexDirection: "row",
+          marginTop: 0,
+          gap: 8,
+        }}
+      >
         {[dot1, dot2, dot3].map((dot, index) => (
           <Animated.View
             key={index}
@@ -60,14 +110,14 @@ export default function Loader() {
               {
                 width: 10,
                 height: 10,
-                borderRadius: 10,
+                borderRadius: 6,
                 backgroundColor: colors.primary,
               },
               dotStyle(dot),
             ]}
           />
         ))}
-      </View>
+      </View> */}
     </View>
   );
 }

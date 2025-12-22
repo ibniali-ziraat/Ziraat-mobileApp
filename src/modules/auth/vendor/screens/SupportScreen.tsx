@@ -1,21 +1,20 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorSupportMutation,
   useVendorSupportQuery,
   useVendorSupportUpdateMutation,
 } from "@/src/hooks/vendorQueryHooks";
-import { supportServicesSchema } from "@/src/schemas/vendor/support.schema";
+import { supportServicesSchema } from "@/src/modules/auth/vendor/schemas/support.schema";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert } from "react-native";
 import SupportSection from "../sections/SupportSection";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
 
 export default function SupportScreen() {
   const { vendorProfileId, userId } = useAuth();
@@ -66,7 +65,7 @@ export default function SupportScreen() {
         showSuccessToast("Support info added ");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       showErrorToast("Error saving data", err.message || "Unknown error");
     }
@@ -76,14 +75,14 @@ export default function SupportScreen() {
     <ScreenLayout>
       <BackHeader
         title="Support Services"
-        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+        onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <SupportSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
           onCancel={() => router.back()}
-          submitLabel={data ? "Update" : "Add Support Info"}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

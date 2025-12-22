@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { Alert } from "react-native";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
@@ -12,12 +11,12 @@ import {
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { productPortfolioSchema } from "@/src/schemas/vendor/products.schema";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
+import { productPortfolioSchema } from "@/src/modules/auth/vendor/schemas/products.schema";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import ProductSection from "../sections/ProductSection";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { ROUTES } from "@/src/constants/routes";
 
 export default function ProductsScreen() {
   const { vendorProfileId, userId } = useAuth();
@@ -94,7 +93,7 @@ export default function ProductsScreen() {
         showSuccessToast("Products Added");
       }
 
-      router.push(ROUTES.AUTH.VENDOR_PROFILE);
+      router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (error) {
       showErrorToast("Error saving products", error.message || "Unknown error");
     }
@@ -104,13 +103,13 @@ export default function ProductsScreen() {
     <ScreenLayout>
       <BackHeader
         title="Products & Services"
-        onPress={() => router.push(ROUTES.AUTH.VENDOR_PROFILE)}
+        onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
         <ProductSection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Add Products"}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           onCancel={() => router.back()}
           disabled={isSaving || isUpdating}

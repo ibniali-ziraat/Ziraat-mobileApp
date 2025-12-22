@@ -1,4 +1,3 @@
-import ProfessionSection from "@/src/modules/auth/user/sections/ProfessionSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -10,12 +9,12 @@ import {
   useProfessionQuery,
   useProfessionUpdateMutation,
 } from "@/src/hooks/userQueryHooks";
-import { professionSchema } from "@/src/schemas/user/profession.schema";
+import { professionSchema } from "@/src/modules/auth/user/schemas/profession.schema";
+import ProfessionSection from "@/src/modules/auth/user/sections/ProfessionSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { ScrollView } from "react-native";
 
 export default function ProfessionScreen() {
   const { userProfileId } = useAuth();
@@ -68,14 +67,14 @@ export default function ProfessionScreen() {
       <FormProvider {...form}>
         <BackHeader
           title="Profession"
-          onPress={() => router.push(ROUTES.USER.PROFILE)}
+          onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
 
         <ProfessionSection control={control} errors={errors} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.push(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update Profession" : "Add Profession Info"}
+          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+          submitLabel={data ? "Update " : "Add "}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

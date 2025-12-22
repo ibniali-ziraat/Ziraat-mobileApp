@@ -1,4 +1,3 @@
-import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -10,12 +9,12 @@ import {
   useEducationQuery,
   useEducationUpdateMutation,
 } from "@/src/hooks/userQueryHooks";
-import { educationSchema } from "@/src/schemas/user/education.schema";
+import { educationSchema } from "@/src/modules/auth/user/schemas/education.schema";
+import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { ScrollView } from "react-native";
 
 export default function EducationScreen() {
   const { userProfileId } = useAuth();
@@ -68,14 +67,14 @@ export default function EducationScreen() {
       <FormProvider {...form}>
         <BackHeader
           title="Education"
-          onPress={() => router.push(ROUTES.USER.PROFILE)}
+          onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
 
         <EducationSection control={control} errors={errors} />
         <FormActions
           cancelLabel={"Cancel"}
-          onCancel={() => router.push(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update Education" : "Add Education"}
+          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+          submitLabel={data ? "Update" : "Add"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}

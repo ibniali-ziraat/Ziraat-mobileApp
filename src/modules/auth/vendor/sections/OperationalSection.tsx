@@ -43,7 +43,7 @@ export default function OperationalSection({ control, errors }) {
         control={control}
         name="deliveryServiceAvailable"
         label="Delivery Service Available"
-        modalLabel="Delivery Service Available"
+        modalLabel="Delivery Service"
         options={[
           { value: "yes", label: "Yes" },
           { value: "no", label: "No" },
