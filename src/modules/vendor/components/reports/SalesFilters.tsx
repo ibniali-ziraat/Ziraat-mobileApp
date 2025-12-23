@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 
 export default function SalesFilters({
   salesFilters,
@@ -32,7 +33,7 @@ export default function SalesFilters({
                 borderColor: isActive ? colors.secondary : "transparent",
               }}
             >
-              <Text
+              <CsText
                 className="text-sm font-semibold"
                 style={{
                   color: isActive ? colors.secondary : colors.dark,
@@ -40,7 +41,7 @@ export default function SalesFilters({
                 }}
               >
                 {f}
-              </Text>
+             </CsText>
             </TouchableOpacity>
           );
         })}

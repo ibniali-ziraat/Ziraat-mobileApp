@@ -1,7 +1,8 @@
+import CsText from "@/src/components/shared/CsText";
 import { default as DetailCard } from "@/src/components/shared/DetailsCard";
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
 
 export default function ProfileHeader({ data, onEdit }) {
   return (
@@ -25,9 +26,9 @@ export default function ProfileHeader({ data, onEdit }) {
       </View>
       {/* Full Name with Edit */}
       <View className="flex-row items-center gap-2">
-        <Text className="text-xl font-bold" style={{ color: colors.primary }}>
+        <CsText className="text-xl font-bold" style={{ color: colors.primary }}>
           {data?.fullName || "N/A"}
-        </Text>
+       </CsText>
         {onEdit && (
           <TouchableOpacity onPress={onEdit}>
             <Feather name="edit-3" size={20} color={colors.primary} />

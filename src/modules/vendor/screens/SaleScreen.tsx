@@ -1,3 +1,4 @@
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SalesSummaryCard from "@/src/modules/vendor/components/SalesSummaryCard";
 import SalesTabs from "@/src/modules/vendor/components/SalesTabs";
@@ -6,8 +7,7 @@ import { useState } from "react";
 import {
   Platform,
   ScrollView,
-  Text,
-  View,
+  View
 } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 
@@ -114,9 +114,9 @@ export default function SalesScreen() {
    ------------------------ */
 function PageTitle({ title }) {
   return (
-    <Text className="text-[18px] font-semibold text-gray-900 mb-3">
+    <CsText className="text-[18px] font-semibold text-gray-900 mb-3">
       {title}
-    </Text>
+   </CsText>
   );
 }
 
@@ -149,7 +149,7 @@ function SectionHeader({ title, icon }) {
         <Ionicons name={icon} size={18} color="#444" />
       </View>
 
-      <Text className="text-[16px] font-semibold text-gray-900">{title}</Text>
+      <CsText className="text-[16px] font-semibold text-gray-900">{title}</CsText>
     </View>
   );
 }
@@ -176,12 +176,12 @@ function IconRow({ label, value, icon, color, highlight }) {
           <Ionicons name={icon} size={18} color={color} />
         </View>
 
-        <Text className="text-[14px] font-medium text-gray-800">{label}</Text>
+        <CsText className="text-[14px] font-medium text-gray-800">{label}</CsText>
       </View>
 
-      <Text className="text-[13px] font-semibold" style={{ color }}>
+      <CsText className="text-[13px] font-semibold" style={{ color }}>
         {value}
-      </Text>
+     </CsText>
     </View>
   );
 }
@@ -215,16 +215,16 @@ function TransactionRow({ id, client, amount, status }) {
     >
       {/* TOP ROW */}
       <View className="flex-row justify-between items-center">
-        <Text className="text-[15px] font-semibold text-gray-900">{id}</Text>
+        <CsText className="text-[15px] font-semibold text-gray-900">{id}</CsText>
 
-        <Text className="text-[15px] font-bold" style={{ color: statusColor }}>
+        <CsText className="text-[15px] font-bold" style={{ color: statusColor }}>
           ₹{amount.toLocaleString()}
-        </Text>
+       </CsText>
       </View>
 
       {/* BOTTOM ROW */}
       <View className="flex-row justify-between items-center mt-2">
-        <Text className="text-[12px] text-gray-600">{client}</Text>
+        <CsText className="text-[12px] text-gray-600">{client}</CsText>
 
         <View
           className="flex-row items-center px-3 py-[4px] rounded-full"
@@ -232,9 +232,9 @@ function TransactionRow({ id, client, amount, status }) {
         >
           <Ionicons name={statusIcon} size={14} color={statusColor} style={{ marginRight: 4 }} />
 
-          <Text className="text-[11px] font-semibold" style={{ color: statusColor }}>
+          <CsText className="text-[11px] font-semibold" style={{ color: statusColor }}>
             {status}
-          </Text>
+         </CsText>
         </View>
       </View>
     </View>

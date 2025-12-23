@@ -76,12 +76,12 @@
 //               <>
 //                 {/* 📱 MOBILE VERSION (react-native-paper floating label) */}
 //                 <TouchableOpacity onPress={() => setOpen(true)}>
-//                   <TextInput
+//                   <CsTextInput
 //                     mode="outlined"
 //                     label={optional ? `${label} (Optional)` : `${label} *`}
 //                     value={value ? new Date(value).toDateString() : ""}
 //                     editable={false}
-//                     right={<TextInput.Icon icon="calendar" />}
+//                     right={<CsTextInput.Icon icon="calendar" />}
 //                     error={showError}
 //                   />
 //                 </TouchableOpacity>

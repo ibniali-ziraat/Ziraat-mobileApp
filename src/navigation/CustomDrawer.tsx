@@ -43,13 +43,13 @@
 //       className={`flex-row items-center ${isSubItem ? "pl-6 py-2" : "px-5 py-3"}`}
 //     >
 //       {Icon && <Icon color={colors.dark} size={16} className="mr-3" />}
-//       <Text
+//       <CsText
 //         className={`${
 //           isSubItem ? "text-base font-normal" : "text-base font-medium"
 //         } text-dark`}
 //       >
 //         {label}
-//       </Text>
+//      </CsText>
 //     </TouchableOpacity>
 //   );
 
@@ -94,17 +94,17 @@
 //               {group.title === "Vendor Dashboard" && (
 //                 <Package color={colors.secondary} size={20} className="mr-3" />
 //               )}
-//               <Text className="text-base font-medium text-dark">
+//               <CsText className="text-base font-medium text-dark">
 //                 {group.title}
-//               </Text>
+//              </CsText>
 //             </View>
-//             <Text className="text-base text-secondary">
+//             <CsText className="text-base text-secondary">
 //               {openGroup === group.title ? (
 //                 <ChevronDown color={colors.secondary} size={16} />
 //               ) : (
 //                 <ChevronRight color={colors.secondary} size={16} />
 //               )}
-//             </Text>
+//            </CsText>
 //           </TouchableOpacity>
 
 //           {openGroup === group.title && (
@@ -166,7 +166,7 @@
 //           className="flex-row items-center py-3"
 //         >
 //           <LogOutIcon color={colors.error} size={16} className="mr-3" />
-//           <Text className="text-base font-medium text-red-600">Log out</Text>
+//           <CsText className="text-base font-medium text-red-600">Log out</Text>
 //         </TouchableOpacity>
 //       </View>
 //     </DrawerContentScrollView>

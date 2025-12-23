@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 export default function HeaderBar({ title, icon }) {
   return (
@@ -8,7 +9,7 @@ export default function HeaderBar({ title, icon }) {
         <Ionicons name="arrow-back" size={24} color="#fff" />
       </TouchableOpacity>
 
-      <Text className="text-white font-semibold text-lg">{title}</Text>
+      <CsText className="text-white font-semibold text-lg">{title}</CsText>
 
       <Ionicons name={icon} size={28} color="#fff" />
     </View>

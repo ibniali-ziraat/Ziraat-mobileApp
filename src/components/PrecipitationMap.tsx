@@ -1,6 +1,6 @@
 import { Platform, View } from "react-native";
+import CsText from "./shared/CsText";
 // import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import { Text } from "react-native-paper";
 
 export default function PrecipitationMap() {
   const region = {
@@ -24,9 +24,9 @@ export default function PrecipitationMap() {
           borderColor: "#E5E7EB",
         }}
       >
-        <Text style={{ fontSize: 12, color: "#6B7280" }}>
+        <CsText style={{ fontSize: 12, color: "#6B7280" }}>
           Map not supported on web
-        </Text>
+       </CsText>
       </View>
     );
   }

@@ -3,8 +3,8 @@ import { Text } from "react-native";
 
 export default function OptionalLabel({ label }: { label: string }) {
   return (
-    <Text>
-      {label} <Text style={{ opacity: 0.6 }}>(Optional)</Text>
-    </Text>
+    <CsText>
+      {label} <CsText style={{ opacity: 0.6 }}>(Optional)</Text>
+   </CsText>
   );
 }

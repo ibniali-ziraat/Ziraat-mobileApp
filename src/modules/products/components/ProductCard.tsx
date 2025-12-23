@@ -1,7 +1,8 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { imageMapper } from "@/src/data/imageMapper";
 import { IndianRupee, X } from "lucide-react-native";
-import { Image, Pressable, Text, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 
 export default function ProductCard({ product, onRemove }: any) {
   return (
@@ -17,9 +18,9 @@ export default function ProductCard({ product, onRemove }: any) {
 
         <View className="flex-1">
           <View className="flex-row justify-between items-start">
-            <Text className="text-2xl font-bold text-dark flex-1">
+            <CsText className="text-2xl font-bold text-dark flex-1">
               {product.title}
-            </Text>
+           </CsText>
 
             {onRemove && (
               <Pressable
@@ -31,30 +32,30 @@ export default function ProductCard({ product, onRemove }: any) {
             )}
           </View>
 
-          <Text className="text-lg text-dark mt-1">
+          <CsText className="text-lg text-dark mt-1">
             Category: {product.category}
-          </Text>
+         </CsText>
 
           <View className="flex-row items-center mt-3">
             <IndianRupee size={18} color={colors.dark} />
-            <Text
+            <CsText
               className={`text-xl text-dark ${
                 product.discountPrice ? "line-through" : ""
               }`}
             >
               {product.price}
-            </Text>
+           </CsText>
 
             {product.discountPrice && (
               <View className="flex-row items-center ml-2">
                 <IndianRupee size={18} color={colors.dark} />
-                <Text className="text-2xl font-bold text-dark">
+                <CsText className="text-2xl font-bold text-dark">
                   {product.discountPrice}
-                </Text>
+               </CsText>
               </View>
             )}
 
-            <Text
+            <CsText
               className={`text-sm px-2 py-1 rounded-xl ml-2 ${
                 product.inStock
                   ? "bg-primary text-light"
@@ -62,7 +63,7 @@ export default function ProductCard({ product, onRemove }: any) {
               }`}
             >
               {product.inStock ? "In Stock" : "Out of Stock"}
-            </Text>
+           </CsText>
           </View>
         </View>
       </View>

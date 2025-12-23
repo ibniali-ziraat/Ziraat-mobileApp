@@ -1,7 +1,8 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { PencilLine, Plus, Trash2 } from "lucide-react-native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 interface DetailItem {
   title: string;
@@ -46,7 +47,7 @@ export default function DetailsCard({
           marginBottom: 14,
         }}
       >
-        <Text
+        <CsText
           style={{
             fontSize: 18,
             fontWeight: "500",
@@ -54,7 +55,7 @@ export default function DetailsCard({
           }}
         >
           {heading}
-        </Text>
+       </CsText>
 
         {!isEmpty && (
           <View style={{ flexDirection: "row", gap: 10 }}>
@@ -83,7 +84,7 @@ export default function DetailsCard({
           }}
         >
           <Plus size={14} color={colors.primary} />
-          <Text
+          <CsText
             style={{
               marginLeft: 4,
               fontSize: 14,
@@ -92,7 +93,7 @@ export default function DetailsCard({
             }}
           >
             {emptyActionLabel}
-          </Text>
+         </CsText>
         </TouchableOpacity>
       ) : (
         /* ROWS */
@@ -115,7 +116,7 @@ export default function DetailsCard({
                 </View>
 
                 <View style={{ flex: 1 }}>
-                  <Text
+                  <CsText
                     style={{
                       fontSize: 13,
                       fontWeight: "600",
@@ -123,8 +124,8 @@ export default function DetailsCard({
                     }}
                   >
                     {item.title}
-                  </Text>
-                  <Text
+                 </CsText>
+                  <CsText
                     style={{
                       color: colors.neutral,
                       fontSize: 14,
@@ -132,7 +133,7 @@ export default function DetailsCard({
                     }}
                   >
                     {item.value || "—"}
-                  </Text>
+                 </CsText>
                 </View>
               </View>
 

@@ -4,8 +4,9 @@ import WriteReview from "@/src/components/shared/WriteReview";
 import { colors } from "@/src/constants/colors";
 import { ThumbsUp, User, X } from "lucide-react-native";
 import React, { useState } from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
+import { Modal, TouchableOpacity, View } from "react-native";
 import data from "../../data/Review.json";
+import CsText from "./CsText";
 
 export default function Review() {
   const { summary, reviews: initialReviews } = data;
@@ -48,9 +49,9 @@ export default function Review() {
         onPress={() => setModalVisible(true)}
         className="bg-secondary p-3 rounded-xl mt-4"
       >
-        <Text className="text-white text-center font-semibold text-lg">
+        <CsText className="text-white text-center font-semibold text-lg">
           Write a Review
-        </Text>
+       </CsText>
       </TouchableOpacity>
 
       <Modal
@@ -73,17 +74,17 @@ export default function Review() {
         </View>
       </Modal>
 
-      <Text className="text-3xl font-bold pt-6 mt-4 border-t border-dark">
+      <CsText className="text-3xl font-bold pt-6 mt-4 border-t border-dark">
         Customer Reviews
-      </Text>
+     </CsText>
 
       <View className="mb-4 mt-2">
-        <Text className="text-2xl font-semibold flex-row items-center">
+        <CsText className="text-2xl font-semibold flex-row items-center">
           {summary.averageRating}{" "}
           <RatingStars rating={summary.averageRating} size={14} />
-        </Text>
+       </CsText>
 
-        <Text className="text-dark mt-1">{summary.totalReviews} Reviews</Text>
+        <CsText className="text-dark mt-1">{summary.totalReviews} Reviews</CsText>
       </View>
 
       <ReviewFilters filter={filter} setFilter={setFilter} />
@@ -100,15 +101,15 @@ export default function Review() {
               </View>
 
               <View>
-                <Text className="font-semibold text-xl">{r.user}</Text>
-                <Text className="text-md text-dark">{r.date}</Text>
+                <CsText className="font-semibold text-xl">{r.user}</CsText>
+                <CsText className="text-md text-dark">{r.date}</CsText>
               </View>
             </View>
 
             <RatingStars rating={r.rating} size={16} />
           </View>
 
-          <Text className="text-dark mt-1">{r.comment}</Text>
+          <CsText className="text-dark mt-1">{r.comment}</CsText>
 
           <View className="flex-row items-center mt-3 mb-1">
             <ThumbsUp
@@ -116,9 +117,9 @@ export default function Review() {
               color={colors.secondary}
               fill={colors.secondary}
             />
-            <Text className="text-dark ml-1 text-sm">
+            <CsText className="text-dark ml-1 text-sm">
               {r.helpful} People found it helpful
-            </Text>
+           </CsText>
           </View>
         </View>
       ))}

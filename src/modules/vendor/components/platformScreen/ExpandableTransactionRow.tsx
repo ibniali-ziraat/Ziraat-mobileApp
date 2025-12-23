@@ -1,6 +1,7 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function ExpandableTransactionRow({ tx, colors }) {
   const [expanded, setExpanded] = useState(false);
@@ -17,14 +18,14 @@ export default function ExpandableTransactionRow({ tx, colors }) {
     >
       {/* Main Row */}
       <View className="flex-row items-center">
-        <Text className="w-[25%] text-[13px] text-black">{tx.id}</Text>
-        <Text className="w-[20%] text-[13px] text-black">{tx.type}</Text>
-        <Text className="w-[25%] text-[13px] text-black">{tx.amount}</Text>
+        <CsText className="w-[25%] text-[13px] text-black">{tx.id}</CsText>
+        <CsText className="w-[20%] text-[13px] text-black">{tx.type}</CsText>
+        <CsText className="w-[25%] text-[13px] text-black">{tx.amount}</CsText>
 
         <View className="w-[30%] flex-row items-center justify-between">
-          <Text className="text-[13px] font-medium text-gray-900">
+          <CsText className="text-[13px] font-medium text-gray-900">
             {tx.charged}
-          </Text>
+         </CsText>
           <Ionicons
             name={expanded ? "chevron-up" : "chevron-down"}
             size={16}
@@ -44,18 +45,18 @@ export default function ExpandableTransactionRow({ tx, colors }) {
           }}
         >
           <View className="flex-row justify-between mb-1">
-            <Text className="text-[12px] text-gray-500">Fee Rate</Text>
-            <Text
+            <CsText className="text-[12px] text-gray-500">Fee Rate</CsText>
+            <CsText
               className="text-[12px] font-semibold"
               style={{ color: colors.primaryDark }}
             >
               {tx.feeRate}
-            </Text>
+           </CsText>
           </View>
 
           <View className="flex-row justify-between">
-            <Text className="text-[12px] text-gray-500">Date</Text>
-            <Text className="text-[12px] text-gray-700">{tx.date}</Text>
+            <CsText className="text-[12px] text-gray-500">Date</CsText>
+            <CsText className="text-[12px] text-gray-700">{tx.date}</CsText>
           </View>
         </View>
       )}

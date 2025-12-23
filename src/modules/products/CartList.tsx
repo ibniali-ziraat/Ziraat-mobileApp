@@ -14,15 +14,15 @@ import {
   removeFromCartList,
 } from "@/src/utils/cartlistStore";
 
+import CsText from "@/src/components/shared/CsText";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
-  Text,
   ToastAndroid,
   TouchableOpacity,
-  View, // <-- Using View now for the outer container when FlatList is present
+  View
 } from "react-native";
 
 const CartList = () => {
@@ -114,21 +114,21 @@ const CartList = () => {
             className="w-56 h-56 mb-6"
             resizeMode="contain"
           />
-          <Text className="text-2xl font-semibold text-dark mb-2">
+          <CsText className="text-2xl font-semibold text-dark mb-2">
             Empty Cart
-          </Text>
+         </CsText>
 
-          <Text className="text-center text-dark/70 mb-6 text-sm">
+          <CsText className="text-center text-dark/70 mb-6 text-sm">
             Add items you love and view them all in one place.
-          </Text>
+         </CsText>
 
           <TouchableOpacity
             onPress={handleStartShopping}
             className="bg-primary px-8 py-3 rounded-full shadow-md active:opacity-80"
           >
-            <Text className="text-light font-semibold text-base">
+            <CsText className="text-light font-semibold text-base">
               Browse Products
-            </Text>
+           </CsText>
           </TouchableOpacity>
         </View>
       </View>
@@ -197,9 +197,9 @@ const CartList = () => {
                 onPress={handleClearCart}
                 className="bg-secondary py-3 rounded-lg mt-4"
               >
-                <Text className="text-light text-center text-lg font-bold">
+                <CsText className="text-light text-center text-lg font-bold">
                   Clear Cart
-                </Text>
+               </CsText>
               </TouchableOpacity>
             </View>
           </View>

@@ -1,11 +1,11 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { X } from "lucide-react-native";
 import {
   Modal,
-  Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 export default function InputModal({
@@ -31,9 +31,9 @@ export default function InputModal({
         >
           {/* HEADER */}
           <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-xl font-bold text-dark">
+            <CsText className="text-xl font-bold text-dark">
               Enter Field Inputs
-            </Text>
+           </CsText>
 
             <TouchableOpacity onPress={onClose}>
               <X size={22} color="#000" />
@@ -64,9 +64,9 @@ export default function InputModal({
             className="bg-secondary p-4 rounded-xl mt-3"
             onPress={onClose}
           >
-            <Text className="text-light text-center font-semibold">
+            <CsText className="text-light text-center font-semibold">
               Apply & Calculate
-            </Text>
+           </CsText>
           </TouchableOpacity>
         </ZiraatCard>
       </View>
@@ -76,7 +76,7 @@ export default function InputModal({
 
 const InputField = ({ label, ...props }: any) => (
   <View className="mb-4">
-    <Text className="font-medium mb-1 text-dark">{label}</Text>
+    <CsText className="font-medium mb-1 text-dark">{label}</CsText>
     <TextInput
       {...props}
       keyboardType="numeric"

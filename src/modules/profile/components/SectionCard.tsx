@@ -12,7 +12,7 @@
 //   return (
 //     <View className="border border-slate-300 p-5 rounded-sm mb-5" style={style}>
 //       <View className="flex-row justify-between mb-3">
-//         <Text className="text-base font-semibold">{title}</Text>
+//         <CsText className="text-base font-semibold">{title}</Text>
 
 //         <View className="flex-row gap-3">
 //           {onEdit && (
@@ -34,9 +34,10 @@
 //   );
 // }
 
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function SectionCard({
   title,
@@ -52,7 +53,7 @@ export default function SectionCard({
         {/* LEFT : Icon + Title */}
         <View className="flex-row items-center gap-2">
           {icon}
-          <Text className="text-lg font-semibold">{title}</Text>
+          <CsText className="text-lg font-semibold">{title}</CsText>
         </View>
 
         {/* RIGHT : Edit/Delete */}

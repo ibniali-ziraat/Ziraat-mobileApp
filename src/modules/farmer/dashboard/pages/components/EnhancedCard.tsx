@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function EnhancedCard({
   title,
@@ -26,23 +27,23 @@ export default function EnhancedCard({
         )}
 
         {/* TITLE */}
-        <Text className="text-[14px] font-semibold text-center">
+        <CsText className="text-[14px] font-semibold text-center">
           {title}
-        </Text>
+       </CsText>
 
       
 
         {(value || accent) && (
           <View className="items-center">
             {value && (
-              <Text className="text-[18px] font-semibold text-primary text-center">
+              <CsText className="text-[18px] font-semibold text-primary text-center">
                 {value}
-              </Text>
+             </CsText>
             )}
             {accent && (
-              <Text className="text-[18px] mt-1 text-dark text-center">
+              <CsText className="text-[18px] mt-1 text-dark text-center">
                 {accent}
-              </Text>
+             </CsText>
             )}
           </View>
         )}

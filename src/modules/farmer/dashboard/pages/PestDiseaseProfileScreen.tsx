@@ -1,5 +1,6 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
 import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import observationsData from "@/src/data/observationsData.json";
@@ -15,7 +16,7 @@ import {
   ShieldHalf,
 } from "lucide-react-native";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 export default function PestDiseaseProfile() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -71,9 +72,9 @@ export default function PestDiseaseProfile() {
       </View>
 
       {/* HIGH-RISK PESTS */}
-      <Text className="text-2xl font-bold my-4">
+      <CsText className="text-2xl font-bold my-4">
         High-Risk Pests Identified
-      </Text>
+     </CsText>
       {observationsData.highRiskPests.map((item) => (
         <ObservationCard
           key={item.id}
@@ -84,7 +85,7 @@ export default function PestDiseaseProfile() {
       ))}
 
       {/* DISEASE OBSERVATIONS */}
-      <Text className="text-2xl font-bold my-4">Disease Observations</Text>
+      <CsText className="text-2xl font-bold my-4">Disease Observations</CsText>
       {observationsData.diseaseObservations.map((item) => (
         <ObservationCard
           key={item.id}
@@ -94,9 +95,9 @@ export default function PestDiseaseProfile() {
       ))}
 
       {/* SPRAY SCHEDULE */}
-      <Text className="text-2xl font-bold mt-5 mb-4">
+      <CsText className="text-2xl font-bold mt-5 mb-4">
         Spray Schedule & History
-      </Text>
+     </CsText>
       <View className="bg-white rounded-xl p-4 shadow mb-6">
         {[
           {
@@ -114,34 +115,34 @@ export default function PestDiseaseProfile() {
           },
         ].map((item, index) => (
           <View key={index}>
-            <Text
+            <CsText
               className={`font-semibold text-lg ${item.isError ? "text-error" : ""}`}
             >
               {item.title}
-            </Text>
-            <Text
+           </CsText>
+            <CsText
               className={`mt-1 ${item.isError ? "text-error" : "text-neutral"}`}
             >
               {item.description}
-            </Text>
+           </CsText>
             {index < 2 && <View className="border-t border-neutral-200 my-4" />}
           </View>
         ))}
       </View>
 
       {/* TREND CHART */}
-      <Text className="text-2xl font-bold mt-6 mb-2">
+      <CsText className="text-2xl font-bold mt-6 mb-2">
         Pest & Disease Trend (30 Days)
-      </Text>
-      <Text className="text-base mb-4">
+     </CsText>
+      <CsText className="text-base mb-4">
         Chart showing incidence trends to help plan interventions.
-      </Text>
+     </CsText>
 
       <View className="bg-white rounded-xl p-4 shadow mb-6">
         <CustomBarChart labels={[]} values={[]} type="bar" />
-        <Text className="text-center text-sm text-overlay mt-2">
+        <CsText className="text-center text-sm text-overlay mt-2">
           (Analytics integration coming soon)
-        </Text>
+       </CsText>
       </View>
     </ScreenLayout>
   );

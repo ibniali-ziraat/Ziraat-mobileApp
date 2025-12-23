@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+import CsText from "@/src/components/shared/CsText";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+>>>>>>> cdbc13b9895d2be1d3a19c5978ad9f6e1ee7731f
 import SearchBar from "@/src/components/shared/SearchBar";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
@@ -6,10 +11,10 @@ import { orchardImagesById } from "@/src/data/orchardImages";
 import { router } from "expo-router";
 import { MoreVertical } from "lucide-react-native";
 import { useState } from "react";
+import { Text } from "react-native";
 import {
   FlatList,
   Image,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -22,10 +27,15 @@ const Detail = ({
   value?: string;
 }) => (
   <View className="flex-row justify-between py-1">
+<<<<<<< HEAD
     <Text className="text-[14px] font-medium">{label}</Text>
     <Text className="text-[12px] text-black font-semibold">
+=======
+    <CsText className="text-[14px] text-black font-medium">{label}</CsText>
+    <CsText className="text-[12px] text-black font-semibold">
+>>>>>>> cdbc13b9895d2be1d3a19c5978ad9f6e1ee7731f
       {value || "-"}
-    </Text>
+   </CsText>
   </View>
 );
 

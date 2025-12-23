@@ -1,9 +1,10 @@
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
+import CsText from "@/src/components/shared/CsText";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { MenuLinks } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
 import { Repeat } from "lucide-react-native";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 
 export default function MenuScreen() {
   const { roleMode, setRoleMode } = useAuth();
@@ -39,9 +40,9 @@ export default function MenuScreen() {
           className="absolute bottom-6 right-6 bg-dark rounded-full flex-row items-center px-4 py-2"
         >
           <Repeat size={20} color="white" />
-          <Text className="text-white font-medium ml-2">
+          <CsText className="text-white font-medium ml-2">
             {roleMode === "farmer" ? "Switch to Supplier" : "Switch to Farmer"}
-          </Text>
+         </CsText>
         </TouchableOpacity>
       </View>
     </AnimatedTabContent>
@@ -54,7 +55,7 @@ function MenuItem({ label, onPress }) {
       onPress={onPress}
       className="py-3 border-b border-gray-200"
     >
-      <Text className="text-lg text-gray-900">{label}</Text>
+      <CsText className="text-lg text-gray-900">{label}</CsText>
     </TouchableOpacity>
   );
 }

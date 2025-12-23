@@ -1,6 +1,7 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function ProductPerformanceCard({ data }) {
   return (
@@ -14,9 +15,9 @@ export default function ProductPerformanceCard({ data }) {
       }}
     >
       {/* TITLE */}
-      <Text className="text-lg font-bold text-gray-900 mb-5">
+      <CsText className="text-lg font-bold text-gray-900 mb-5">
         Pesticide Performance
-      </Text>
+     </CsText>
 
       {data.map((p, i) => {
         // Trend Logic
@@ -73,12 +74,12 @@ export default function ProductPerformanceCard({ data }) {
                 </View>
 
                 <View>
-                  <Text className="text-gray-900 font-semibold text-sm">
+                  <CsText className="text-gray-900 font-semibold text-sm">
                     {p.name}
-                  </Text>
-                  <Text className="text-xs text-black mt-0.5">
+                 </CsText>
+                  <CsText className="text-xs text-black mt-0.5">
                     {p.units} units sold
-                  </Text>
+                 </CsText>
                 </View>
               </View>
 
@@ -93,12 +94,12 @@ export default function ProductPerformanceCard({ data }) {
                     borderColor: "#e3e3e3",
                   }}
                 >
-                  <Text
+                  <CsText
                     className="text-sm font-semibold"
                     style={{ color: colors.secondary }}
                   >
                     ★ {p.rating}
-                  </Text>
+                 </CsText>
                 </View>
 
                 {/* Trend */}
@@ -110,12 +111,12 @@ export default function ProductPerformanceCard({ data }) {
                     style={{ marginRight: 4 }}
                   />
 
-                  <Text
+                  <CsText
                     className="text-xs font-semibold"
                     style={{ color: trendColor }}
                   >
                     {trendLabel}
-                  </Text>
+                 </CsText>
                 </View>
               </View>
             </View>
