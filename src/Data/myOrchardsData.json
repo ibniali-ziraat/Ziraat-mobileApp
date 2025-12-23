@@ -1,0 +1,309 @@
+[
+  {
+    "id": "1",
+    "name": "Apple Orchard",
+    "acres": "10 Kanals 5 Marlas",
+    "trees": "2015",
+    "fruit": "Traditional",
+    "about": "Growing",
+    "location": "Srinagar, Pampore",
+    "season": "Zone 1",
+    "irrigation": "190001",
+    "soil": "BoundaryLink",
+    "lat": "34.1442",
+    "long": "74.7844",
+
+    "variety_and_planting_details": {
+      "varieties_planted": ["Red Delicious", "Golden Delicious"],
+      "number_of_trees": {
+        "total": 1200,
+        "per_variety": {
+          "Red Delicious": 700,
+          "Golden Delicious": 500
+        }
+      },
+      "rootstock_used": ["M9", "MM106"],
+      "plant_density": "High Density",
+      "tree_age_distribution": {
+        "less_than_5_years": 300,
+        "between_5_and_10_years": 600,
+        "above_10_years": 300
+      }
+    },
+
+    "soil_and_water_profile": {
+      "soil_type": "Sandy Clay Loam",
+      "soil_test_records": {
+        "ph": 6.4,
+        "nitrogen": "Medium",
+        "phosphorus": "Low",
+        "potassium": "High",
+        "organic_carbon": "0.78%",
+        "micronutrients": {
+          "zinc": "Adequate",
+          "boron": "Low"
+        }
+      },
+      "soil_health_status": "Acidic",
+      "last_soil_test_date": "2024-02-15",
+      "water_source": ["Canal", "Rainfed"],
+      "irrigation_method": "Drip",
+      "water_availability": "Round-the-year"
+    },
+
+    "crop_and_nutrition_management": {
+      "fertilizer_practices": "Integrated",
+      "fertigation_facility": true,
+      "nutrition_plan_followed": true,
+      "mulching": true,
+      "last_fertiliser_application_date": "2024-03-10",
+      "mode_of_fertiliser_application": "Soil application"
+    },
+
+    "plant_protection_and_health": {
+      "disease_history": ["Apple Scab", "Powdery Mildew"],
+      "pest_history": ["Aphids", "Codling Moth"],
+      "spray_schedule": [],
+      "crop_insurance_coverage": true
+    },
+
+    "farm_infrastructure_and_resources": {
+      "equipment_owned": ["Tractor", "Sprayer", "Power Weeder"],
+      "storage_facilities": ["Cold Storage"],
+      "farm_labor": {
+        "permanent": 2,
+        "seasonal": 8,
+        "contract_based": false
+      },
+      "other_tools": ["Pruning Shear", "Ladder", "Fruit Baskets"]
+    },
+
+    "production_and_marketing": {
+      "average_annual_yield": {
+        "quantity": 18000,
+        "unit": "Kilos"
+      },
+      "peak_harvest_season": {
+        "start_month": "September",
+        "end_month": "October"
+      },
+      "selling_preference": ["Local Mandi", "Commission Agent"],
+      "buyer_details": null
+    },
+
+    "input_cost_details": {
+      "pesticide_supplier_location": "From Town",
+      "payment_type": "Mixed",
+      "credit_period": "Crop Season"
+    }
+  },
+
+  {
+    "id": "2",
+    "name": "Mango Orchard",
+    "acres": "15 Kanals 2 Marlas",
+    "trees": "2013",
+    "fruit": "Traditional",
+    "about": "Owned",
+    "location": "Srinagar, Tral",
+    "season": "Zone 2",
+    "irrigation": "190001",
+    "soil": "BoundaryLink",
+    "lat": "34.1442",
+    "long": "74.7844",
+
+    "variety_and_planting_details": {
+      "varieties_planted": ["Dasheri", "Langra"],
+      "number_of_trees": {
+        "total": 800,
+        "per_variety": {
+          "Dasheri": 500,
+          "Langra": 300
+        }
+      },
+      "rootstock_used": ["Seedling"],
+      "plant_density": "Traditional",
+      "tree_age_distribution": {
+        "less_than_5_years": 100,
+        "between_5_and_10_years": 300,
+        "above_10_years": 400
+      }
+    },
+
+    "soil_and_water_profile": {
+      "soil_type": "Sandy Loam",
+      "soil_health_status": "Not Known",
+      "water_source": ["Borewell"],
+      "irrigation_method": "Flood",
+      "water_availability": "Seasonal"
+    },
+
+    "crop_and_nutrition_management": {
+      "fertilizer_practices": "Chemical",
+      "fertigation_facility": false,
+      "nutrition_plan_followed": false,
+      "mulching": false
+    },
+
+    "plant_protection_and_health": {
+      "disease_history": ["Anthracnose"],
+      "pest_history": ["Fruit Fly"],
+      "spray_schedule": [],
+      "crop_insurance_coverage": false
+    },
+
+    "farm_infrastructure_and_resources": {
+      "equipment_owned": ["Tractor", "Sprayer"],
+      "storage_facilities": ["Open Storage"],
+      "farm_labor": {
+        "permanent": 1,
+        "seasonal": 6,
+        "contract_based": true
+      },
+      "other_tools": ["Ladder", "Fruit Crates"]
+    },
+
+    "production_and_marketing": {
+      "average_annual_yield": {
+        "quantity": 12000,
+        "unit": "Kilos"
+      },
+      "peak_harvest_season": {
+        "start_month": "July",
+        "end_month": "August"
+      },
+      "selling_preference": ["Local Mandi"]
+    },
+
+    "input_cost_details": {
+      "pesticide_supplier_location": "Village Level",
+      "payment_type": "Cash purchase",
+      "credit_period": "No limits"
+    }
+  },
+
+  {
+    "id": "3",
+    "name": "Walnut Orchard",
+    "acres": "8 Kanals 2 Marlas",
+    "trees": "2019",
+    "fruit": "Traditional",
+    "about": "Owned",
+    "location": "Srinagar, Tral",
+    "season": "Zone 2",
+    "irrigation": "190001",
+    "soil": "BoundaryLink",
+    "lat": "34.1442",
+    "long": "74.7844",
+
+    "variety_and_planting_details": {
+      "varieties_planted": ["Local Selection"],
+      "number_of_trees": {
+        "total": 300,
+        "per_variety": {
+          "Local Selection": 300
+        }
+      },
+      "rootstock_used": ["Seedling"],
+      "plant_density": "Traditional",
+      "tree_age_distribution": {
+        "less_than_5_years": 300
+      }
+    },
+
+    "soil_and_water_profile": {
+      "soil_type": "Silt Clay Loam",
+      "soil_health_status": "Not Known",
+      "water_source": ["Rainfed"],
+      "irrigation_method": "None",
+      "water_availability": "Seasonal"
+    },
+
+    "production_and_marketing": {
+      "average_annual_yield": {
+        "quantity": 3500,
+        "unit": "Kilos"
+      },
+      "peak_harvest_season": {
+        "start_month": "October",
+        "end_month": "November"
+      },
+      "selling_preference": ["Commission Agent"]
+    }
+  },
+
+  {
+    "id": "4",
+    "name": "Cherry Orchard",
+    "acres": "10 Kanals 4 Marlas",
+    "trees": "2014",
+    "fruit": "Traditional",
+    "about": "Growing",
+    "location": "Srinagar, Pampore",
+    "season": "Zone 2",
+    "irrigation": "190001",
+    "soil": "BoundaryLink",
+    "lat": "34.1442",
+    "long": "74.7844",
+
+    "variety_and_planting_details": {
+      "varieties_planted": ["Stella", "Bing"],
+      "number_of_trees": {
+        "total": 500,
+        "per_variety": {
+          "Stella": 250,
+          "Bing": 250
+        }
+      },
+      "rootstock_used": ["Mahaleb"],
+      "plant_density": "Medium Density"
+    },
+
+    "soil_and_water_profile": {
+      "soil_type": "Sandy Loam",
+      "water_source": ["Canal"],
+      "irrigation_method": "Sprinkler",
+      "water_availability": "Round-the-year"
+    }
+  },
+
+  {
+    "id": "5",
+    "name": "Apricot Orchard",
+    "acres": "10 Kanals 4 Marlas",
+    "trees": "2014",
+    "fruit": "Traditional",
+    "about": "Growing",
+    "location": "Srinagar, Pampore",
+    "season": "Zone 2",
+    "irrigation": "190001",
+    "soil": "BoundaryLink",
+    "lat": "34.1442",
+    "long": "74.7844",
+
+    "variety_and_planting_details": {
+      "varieties_planted": ["Halman", "New Castle"],
+      "number_of_trees": {
+        "total": 450,
+        "per_variety": {
+          "Halman": 250,
+          "New Castle": 200
+        }
+      },
+      "rootstock_used": ["Seedling"],
+      "plant_density": "Traditional"
+    },
+
+    "production_and_marketing": {
+      "average_annual_yield": {
+        "quantity": 6000,
+        "unit": "Kilos"
+      },
+      "peak_harvest_season": {
+        "start_month": "June",
+        "end_month": "July"
+      },
+      "selling_preference": ["Local Mandi", "Direct Buyer"]
+    }
+  }
+]
