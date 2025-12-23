@@ -12,7 +12,10 @@ import {
   View
 } from "react-native";
 import { HelperText } from "react-native-paper";
+<<<<<<< HEAD
 import CsText from "../../shared/CsText";
+=======
+>>>>>>> 5387be7ce70d78ec470e3176db8333f9750e8204
 
 interface Option {
   label: string;
@@ -87,7 +90,7 @@ export default function SingleSelectInput({
         }, [value, options]);
 
         return (
-          <View style={{ marginBottom: 16 }}>
+          <View style={{ marginBottom: 16,  }}>
             {/* Label */}
             {showInputLabel && (
               <CsText
@@ -96,6 +99,8 @@ export default function SingleSelectInput({
                   fontSize: 14,
                   fontWeight: "500",
                   color: colors.dark,
+                 
+                  
                 }}
               >
                 {label}{" "}
@@ -114,12 +119,14 @@ export default function SingleSelectInput({
                 borderColor: liveError
                   ? colors.error
                   : disabled
-                    ? colors.neutral + "88"
-                    : colors.neutral,
-                borderRadius: 8,
+                    ? colors.darkHover + "88"
+                    : colors.darkHover,
+                borderRadius: 14,
                 paddingHorizontal: 16,
-                paddingVertical: 12,
+                paddingVertical: 14,
                 backgroundColor: colors.light,
+                marginTop:6,
+                
               }}
               onPress={() => {
                 if (!disabled) {
@@ -131,7 +138,8 @@ export default function SingleSelectInput({
               <CsText
                 style={{
                   fontSize: 16,
-                  color: disabled ? colors.neutral + "88" : colors.dark,
+                  color: disabled ? colors.neutral + "88" : colors.darkHover,
+                  
                 }}
               >
                 {selectedLabel || `${label}`}

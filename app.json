@@ -9,7 +9,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.ziraat"
     },
     "android": {
       "adaptiveIcon": {
@@ -48,7 +49,10 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {}
+      "router": {},
+      "eas": {
+        "projectId": "37c72b31-0bda-4771-9aa2-33389ff60037"
+      }
     }
   }
 }

@@ -60,12 +60,12 @@ export default function ProductCarousel({
 
           return (
             <Pressable
-            // onPress={() =>
-            //   router.push({
-            //     pathname: "/single-product-details",
-            //     params: { productId: item._id },
-            //   })
-            // }
+              onPress={() =>
+                router.push({
+                  pathname: "/products/single-product-details",
+                  params: { productId: item._id },
+                })
+              }
             >
               <View className="mr-2 items-center" style={{ width: cardWidth }}>
                 <View className="relative">

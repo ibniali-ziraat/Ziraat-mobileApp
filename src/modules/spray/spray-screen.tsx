@@ -13,7 +13,11 @@ const SprayScreen = () => {
         data={sprayData}
         keyExtractor={(item) => item.id}
         scrollEnabled={false}
-        contentContainerStyle={{ paddingTop: 20 }}
+        contentContainerStyle={{
+          paddingTop: 20,
+          paddingLeft: 2,
+          paddingRight: 2,
+        }}
         renderItem={({ item }) => (
           <ZiraatCard width="100%" marginBottom={1}>
             <View
