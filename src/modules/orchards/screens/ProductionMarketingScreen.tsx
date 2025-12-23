@@ -3,11 +3,11 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 // import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { PlantProtectionSchema } from "@/src/modules/orchards/schemas/PlantProtectionSchema";
+import { ProductionMarketingSchema } from "@/src/modules/orchards/schemas/ProductionMarketingSchema";
 import { FormProvider } from "react-hook-form";
-import PlantProtection from "../form-sections/Plant Protection & Health";
+import ProductionMarketing from "../form-sections/ProductionMarketingSection";
 
-export default function PlantProtectionScreen() {
+export default function ProductionAndMarketingScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
@@ -15,7 +15,7 @@ export default function PlantProtectionScreen() {
   //   const { mutateAsync: save } = useVendorProfileMutation();
   //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
 
-  const form = useZodForm(PlantProtectionSchema);
+  const form = useZodForm(ProductionMarketingSchema);
   const {
     setValue,
     handleSubmit,
@@ -63,12 +63,9 @@ export default function PlantProtectionScreen() {
   };
   return (
     <ScreenLayout>
-      <BackHeader
-        title="Orchard Registration"
-        desc="Plant Protection & Health"
-      />
+      <BackHeader title="Orchard Registration" desc="Production & Marketing" />
       <FormProvider {...form}>
-        <PlantProtection errors={errors} control={control} />
+        <ProductionMarketing errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
           // submitLabel={data ? "Update" : "Save"}

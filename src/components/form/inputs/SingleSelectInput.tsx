@@ -9,13 +9,10 @@ import {
   Pressable,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { HelperText } from "react-native-paper";
-<<<<<<< HEAD
 import CsText from "../../shared/CsText";
-=======
->>>>>>> 5387be7ce70d78ec470e3176db8333f9750e8204
 
 interface Option {
   label: string;
@@ -90,7 +87,7 @@ export default function SingleSelectInput({
         }, [value, options]);
 
         return (
-          <View style={{ marginBottom: 16,  }}>
+          <View style={{ marginBottom: 16 }}>
             {/* Label */}
             {showInputLabel && (
               <CsText
@@ -99,13 +96,13 @@ export default function SingleSelectInput({
                   fontSize: 14,
                   fontWeight: "500",
                   color: colors.dark,
-                 
-                  
                 }}
               >
                 {label}{" "}
-                {!optional && <CsText style={{ color: colors.error }}> *</CsText>}
-             </CsText>
+                {!optional && (
+                  <CsText style={{ color: colors.error }}> *</CsText>
+                )}
+              </CsText>
             )}
 
             {/* Selector */}
@@ -125,8 +122,7 @@ export default function SingleSelectInput({
                 paddingHorizontal: 16,
                 paddingVertical: 14,
                 backgroundColor: colors.light,
-                marginTop:6,
-                
+                marginTop: 6,
               }}
               onPress={() => {
                 if (!disabled) {
@@ -139,7 +135,6 @@ export default function SingleSelectInput({
                 style={{
                   fontSize: 16,
                   color: disabled ? colors.neutral + "88" : colors.darkHover,
-                  
                 }}
               >
                 {selectedLabel || `${label}`}
@@ -149,7 +144,7 @@ export default function SingleSelectInput({
                   !showInputLabel && (
                     <CsText style={{ color: colors.error }}> *</CsText>
                   )}
-             </CsText>
+              </CsText>
             </TouchableOpacity>
 
             {liveError && (
@@ -219,7 +214,7 @@ export default function SingleSelectInput({
                         }}
                       >
                         {modalLabel}
-                     </CsText>
+                      </CsText>
 
                       <View
                         style={{ flexDirection: "row", alignItems: "center" }}
@@ -324,7 +319,7 @@ export default function SingleSelectInput({
                             }}
                           >
                             {item.label}
-                         </CsText>
+                          </CsText>
                         </TouchableOpacity>
                       )}
                     />
