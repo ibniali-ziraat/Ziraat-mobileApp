@@ -1,7 +1,8 @@
+import CsText from "@/src/components/shared/CsText";
 import QuantitySelector from "@/src/components/shared/QuantitySelector";
 import { colors } from "@/src/constants/colors";
 import { imageMapper } from "@/src/data/imageMapper";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function CartListItem({
@@ -27,9 +28,9 @@ export default function CartListItem({
       <View className="ml-4 flex-1">
         {/* Title + Quantity */}
         <View className="flex-row justify-between items-center">
-          <Text className="text-dark font-semibold text-lg flex-1">
+          <CsText className="text-dark font-semibold text-lg flex-1">
             {item.title}
-          </Text>
+         </CsText>
 
           <View className="w-30">
             <QuantitySelector quantity={quantity} setQuantity={onQtyChange} />
@@ -37,27 +38,27 @@ export default function CartListItem({
         </View>
 
         {/* Category */}
-        <Text className="text-dark text-sm">{item.category}</Text>
+        <CsText className="text-dark text-sm">{item.category}</CsText>
 
         {/* Price + Remove */}
         <View className="flex-row items-center justify-between mt-1">
           <View className="flex-row items-center">
             {item.discountPrice ? (
               <>
-                <Text className="text-dark line-through mr-2">
+                <CsText className="text-dark line-through mr-2">
                   ₹{item.price}
-                </Text>
-                <Text className="text-primary font-bold mr-1">
+               </CsText>
+                <CsText className="text-primary font-bold mr-1">
                   ₹{item.discountPrice}
-                </Text>
+               </CsText>
                 {!!discountPercent && (
-                  <Text className="text-secondary text-xs font-semibold">
+                  <CsText className="text-secondary text-xs font-semibold">
                     {discountPercent}% OFF
-                  </Text>
+                 </CsText>
                 )}
               </>
             ) : (
-              <Text className="text-primary font-semibold">₹{item.price}</Text>
+              <CsText className="text-primary font-semibold">₹{item.price}</CsText>
             )}
           </View>
 

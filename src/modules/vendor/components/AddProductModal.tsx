@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Modal, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function AddProductModal({ onClose }) {
   return (
@@ -10,17 +11,17 @@ export default function AddProductModal({ onClose }) {
       />
 
       <View className="absolute bottom-0 w-full bg-white rounded-t-3xl p-6">
-        <Text className="font-bold text-lg" style={{ color: colors.dark }}>
+        <CsText className="font-bold text-lg" style={{ color: colors.dark }}>
           Add/Edit Product Details
-        </Text>
+       </CsText>
 
-        <Text className="mt-5 mb-1 text-gray-600 text-xs">Product Name</Text>
+        <CsText className="mt-5 mb-1 text-gray-600 text-xs">Product Name</CsText>
         <TextInput className="border rounded-lg px-3 py-2 mb-3 bg-gray-50 border-gray-200" />
 
-        <Text className="mb-1 text-gray-600 text-xs">Price (₹)</Text>
+        <CsText className="mb-1 text-gray-600 text-xs">Price (₹)</CsText>
         <TextInput className="border rounded-lg px-3 py-2 mb-3 bg-gray-50 border-gray-200" />
 
-        <Text className="mb-1 text-gray-600 text-xs">Expiry Date</Text>
+        <CsText className="mb-1 text-gray-600 text-xs">Expiry Date</CsText>
         <TextInput className="border rounded-lg px-3 py-2 mb-3 bg-gray-50 border-gray-200" />
 
         <TouchableOpacity
@@ -28,13 +29,13 @@ export default function AddProductModal({ onClose }) {
           style={{ backgroundColor: colors.primary }}
           onPress={onClose}
         >
-          <Text className="text-center text-white font-semibold">
+          <CsText className="text-center text-white font-semibold">
             Save
-          </Text>
+         </CsText>
         </TouchableOpacity>
 
         <TouchableOpacity className="py-3 mt-2" onPress={onClose}>
-          <Text className="text-center text-gray-700 font-medium">Cancel</Text>
+          <CsText className="text-center text-gray-700 font-medium">Cancel</CsText>
         </TouchableOpacity>
       </View>
     </Modal>

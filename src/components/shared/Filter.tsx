@@ -1,5 +1,6 @@
 import { FilterProps } from "@/src/types/filter.type";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 export const FILTERS = {
   LATEST: "Latest",
@@ -19,13 +20,13 @@ export default function Filter({ filter, setFilter }: FilterProps) {
             filter === f ? "bg-secondary": "bg-white"
           }`}
         >
-          <Text
+          <CsText
             className={`text-sm ${
               filter === f ? "text-white" : "text-dark"
             }`}
           >
             {f}
-          </Text>
+         </CsText>
         </TouchableOpacity>
       ))}
     </View>

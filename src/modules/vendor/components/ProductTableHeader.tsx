@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import CsText from "@/src/components/shared/CsText";
+import { View } from "react-native";
 
 export default function ProductTableHeader() {
   return (
@@ -17,12 +18,12 @@ export default function ProductTableHeader() {
     >
       {/* PRODUCT */}
       <View className="flex-1">
-        <Text
+        <CsText
           className="text-[11px] font-semibold tracking-wider"
           style={{ color: "#374151", letterSpacing: 1 }}
         >
           PRODUCT
-        </Text>
+       </CsText>
       </View>
 
       {/* SEPARATOR */}
@@ -33,12 +34,12 @@ export default function ProductTableHeader() {
 
       {/* PRICE */}
       <View className="w-16 items-center">
-        <Text
+        <CsText
           className="text-[11px] font-semibold tracking-wider"
           style={{ color: "#374151", letterSpacing: 1 }}
         >
           PRICE
-        </Text>
+       </CsText>
       </View>
 
       <View
@@ -48,12 +49,12 @@ export default function ProductTableHeader() {
 
       {/* EXPIRY */}
       <View className="w-20 items-center">
-        <Text
+        <CsText
           className="text-[11px] font-semibold tracking-wider"
           style={{ color: "#374151", letterSpacing: 1 }}
         >
           EXPIRY
-        </Text>
+       </CsText>
       </View>
 
       <View
@@ -63,12 +64,12 @@ export default function ProductTableHeader() {
 
       {/* STATUS */}
       <View className="w-16 items-center">
-        <Text
+        <CsText
           className="text-[11px] font-semibold tracking-wider"
           style={{ color: "#374151", letterSpacing: 1 }}
         >
           STATUS
-        </Text>
+       </CsText>
       </View>
     </View>
   );

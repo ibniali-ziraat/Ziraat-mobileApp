@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useWatch } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
 import FormFileInput from "@/src/components/form/inputs/FormFileInput";
@@ -8,6 +8,7 @@ import FormInput from "@/src/components/form/inputs/FormInput";
 import RadioGroup from "@/src/components/form/inputs/RadioButton";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 
+import CsText from "@/src/components/shared/CsText";
 import {
   irrigationOptions,
   soilHealthOptions,
@@ -39,14 +40,14 @@ export default function SoilAndWaterProfile({ control, errors }) {
   return (
     <View className="flex-1 w-full p-4">
       {/* ---- Title ---- */}
-      {/* <Text className="text-2xl font-bold mb-6 text-center text-primary">
+      {/* <CsText className="text-2xl font-bold mb-6 text-center text-primary">
         Soil & Water Profile
-      </Text> */}
+     </CsText> */}
 
       <View className="bg-white ">
-        {/* <Text className="text-lg font-semibold mb-3 text-gray-800">
+        {/* <CsText className="text-lg font-semibold mb-3 text-gray-800">
           Soil Information
-        </Text> */}
+       </CsText> */}
 
         <SingleSelectInput
           control={control}
@@ -97,12 +98,12 @@ export default function SoilAndWaterProfile({ control, errors }) {
               onPress={() => setOpen((prev) => !prev)}
               className="flex-row justify-between items-center mt-3 mb-1"
             >
-              <Text className="text-lg font-semibold text-gray-800">
+              <CsText className="text-lg font-semibold text-gray-800">
                 Soil Records
-              </Text>
-              <Text className="text-primary text-sm">
+             </CsText>
+              <CsText className="text-primary text-sm">
                 {open ? "Hide ▲" : "Show ▼"}
-              </Text>
+             </CsText>
             </TouchableOpacity>
 
             {open && (
@@ -156,9 +157,9 @@ export default function SoilAndWaterProfile({ control, errors }) {
       </View>
 
       <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
-        <Text className="text-lg font-semibold mb-3 text-gray-800">
+        <CsText className="text-lg font-semibold mb-3 text-gray-800">
           Soil Test Report Upload
-        </Text>
+       </CsText>
 
         <RadioGroup
           control={control}
@@ -179,9 +180,9 @@ export default function SoilAndWaterProfile({ control, errors }) {
       </View>
 
       <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
-        <Text className="text-lg font-semibold mb-3 text-gray-800">
+        <CsText className="text-lg font-semibold mb-3 text-gray-800">
           Water Information
-        </Text>
+       </CsText>
 
         <SingleSelectInput
           control={control}

@@ -5,7 +5,8 @@ import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
 import { Bell } from "lucide-react-native";
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 const HomeHeader = () => {
   const { userId } = useAuth();
@@ -19,12 +20,12 @@ const HomeHeader = () => {
       style={{ borderBottomColor: colors.neutral }}
     >
       <View>
-        <Text className="text-md" style={{ color: colors.dark }}>
+        <CsText  variant= "subheading" className="text-md" style={{ color: colors.dark }}>
           Welcome
-        </Text>
-        <Text className="text-lg font-semibold" style={{ color: colors.dark }}>
+        </CsText>
+        <CsText variant= "title"  style={{ color: colors.dark }}>
           {title}
-        </Text>
+        </CsText>
       </View>
 
       <View className="flex-row items-center">

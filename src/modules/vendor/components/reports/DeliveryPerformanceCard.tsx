@@ -1,6 +1,7 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function DeliveryPerformanceCard({ stats }) {
   return (
@@ -14,9 +15,9 @@ export default function DeliveryPerformanceCard({ stats }) {
       }}
     >
       {/* TITLE */}
-      <Text className="text-lg font-bold text-gray-900 mb-5">
+      <CsText className="text-lg font-bold text-gray-900 mb-5">
         Delivery Performance
-      </Text>
+     </CsText>
 
       {/* EACH METRIC CARD */}
       {[
@@ -82,20 +83,20 @@ export default function DeliveryPerformanceCard({ stats }) {
 
               {/* Text */}
               <View>
-                <Text className="text-gray-900 font-semibold text-sm">
+                <CsText className="text-gray-900 font-semibold text-sm">
                   {item.label}
-                </Text>
-                <Text className="text-xs text-gray-500 mt-1">{item.sub}</Text>
+               </CsText>
+                <CsText className="text-xs text-gray-500 mt-1">{item.sub}</CsText>
               </View>
             </View>
 
             {/* VALUE */}
-            <Text
+            <CsText
               className="text-xl font-bold"
               style={{ color: item.color }}
             >
               {item.value}
-            </Text>
+           </CsText>
           </View>
 
           {/* MINI PROGRESS BAR */}

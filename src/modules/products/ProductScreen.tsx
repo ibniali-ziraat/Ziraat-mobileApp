@@ -1,6 +1,7 @@
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ChevronRight } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import ProductCarousel from "../../components/shared/ProductCarousel";
 import { colors } from "../../constants/colors";
 import { imageMapper } from "../../data/imageMapper";
@@ -21,7 +22,7 @@ export default function ProductScreen() {
       {sections.map((section, index) => (
         <View key={index}>
           <View className="flex-row items-center mt-6 mb-4">
-            <Text className="text-xl font-bold text-dark">{section.title}</Text>
+            <CsText className="text-xl font-bold text-dark">{section.title}</CsText>
             <ChevronRight size={20} color={colors.dark} className="ml-1" />
           </View>
 

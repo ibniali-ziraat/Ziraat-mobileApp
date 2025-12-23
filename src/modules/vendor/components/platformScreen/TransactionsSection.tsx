@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import ExpandableTransactionRow from "./ExpandableTransactionRow";
 
 export default function TransactionsSection({ transactions, colors }) {
@@ -7,9 +8,9 @@ export default function TransactionsSection({ transactions, colors }) {
     <View className="mb-7">
       {/* Header */}
       <View className="flex-row justify-between items-center mb-3">
-        <Text className="text-[17px] font-semibold text-gray-900">
+        <CsText className="text-[17px] font-semibold text-gray-900">
           Recent Fee Transactions
-        </Text>
+       </CsText>
 
         {/* Optional mini action */}
         <Ionicons name="chevron-forward" size={18} color={colors.primaryDark} />
@@ -30,18 +31,18 @@ export default function TransactionsSection({ transactions, colors }) {
           className="flex-row pb-2 mb-1 border-b"
           style={{ borderColor: colors.border }}
         >
-          <Text className="w-[25%] text-[12px] font-semibold text-black">
+          <CsText className="w-[25%] text-[12px] font-semibold text-black">
             Order
-          </Text>
-          <Text className="w-[20%] text-[12px] font-semibold text-black">
+         </CsText>
+          <CsText className="w-[20%] text-[12px] font-semibold text-black">
             Type
-          </Text>
-          <Text className="w-[25%] text-[12px] font-semibold ttext-black">
+         </CsText>
+          <CsText className="w-[25%] text-[12px] font-semibold ttext-black">
             Amount
-          </Text>
-          <Text className="w-[30%] text-[12px] font-semibold text-black">
+         </CsText>
+          <CsText className="w-[30%] text-[12px] font-semibold text-black">
             Fee
-          </Text>
+         </CsText>
         </View>
 
         {/* Rows */}

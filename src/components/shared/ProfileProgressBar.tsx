@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { CheckCircle, XCircle } from "lucide-react-native";
 import { useEffect, useRef } from "react";
-import { Animated, Text, View } from "react-native";
+import { Animated, View } from "react-native";
+import CsText from "./CsText";
 import ZiraatCard from "./ZiraatProfileCard";
 
 interface ProgressBarProps {
@@ -43,7 +44,7 @@ export default function ProfileProgressBar({
           marginBottom: 12,
         }}
       >
-        <Text
+        <CsText
           style={{
             marginTop: 19,
             fontSize: 22,
@@ -53,9 +54,9 @@ export default function ProfileProgressBar({
           }}
         >
           Profile Completion
-        </Text>
+       </CsText>
 
-        <Text
+        <CsText
           style={{
             fontWeight: "700",
             fontSize: 16,
@@ -64,7 +65,7 @@ export default function ProfileProgressBar({
           }}
         >
           {progress}%
-        </Text>
+       </CsText>
       </View>
 
       {/* ANIMATED PROGRESS BAR */}
@@ -121,7 +122,7 @@ export default function ProfileProgressBar({
                   <XCircle size={18} color="#d9534f" />
                 )}
 
-                <Text
+                <CsText
                   style={{
                     fontSize: 14,
                     color: isCompleted ? colors.dark : "#d9534f",
@@ -129,7 +130,7 @@ export default function ProfileProgressBar({
                   }}
                 >
                   {section.charAt(0).toUpperCase() + section.slice(1)}
-                </Text>
+               </CsText>
               </View>
             </View>
           );

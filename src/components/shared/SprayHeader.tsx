@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { Search, X } from "lucide-react-native";
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 import SearchBar from "./SearchBar";
 
 const SprayHeader = () => {
@@ -14,12 +15,12 @@ const SprayHeader = () => {
       <View className="flex-row items-center justify-between h-16">
         {/* Left */}
         <View>
-          <Text className="text-lg font-bold" style={{ color: colors.dark }}>
+          <CsText className="text-lg font-bold" style={{ color: colors.dark }}>
             Spray Records
-          </Text>
-          <Text className="text-sm" style={{ color: colors.neutral }}>
+         </CsText>
+          <CsText className="text-sm" style={{ color: colors.neutral }}>
             Manage your spray activities
-          </Text>
+         </CsText>
         </View>
 
         {/* Right */}

@@ -1,6 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { LogOut } from "lucide-react-native";
-import { Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
+import CsText from "../shared/CsText";
 
 export default function LogoutButton({ onPress }) {
     return (
@@ -10,12 +11,12 @@ export default function LogoutButton({ onPress }) {
             style={{ backgroundColor: colors.error }} // root color only
         >
             <LogOut size={20} color={colors.light} strokeWidth={2.5} />
-            <Text
+            <CsText
                 className="ml-2 text-base font-bold"
                 style={{ color: colors.light }}
             >
                 Logout
-            </Text>
+           </CsText>
         </TouchableOpacity>
     );
 }

@@ -1,5 +1,6 @@
 // components/notifications/NotificationTabs.jsx
-import { Pressable, ScrollView, Text, View } from "react-native";
+import CsText from "@/src/components/shared/CsText";
+import { Pressable, ScrollView, View } from "react-native";
 
 export default function NotificationTabs({
   tabs,
@@ -27,7 +28,7 @@ export default function NotificationTabs({
                 activeTab === tab.key ? colors.secondaryLight : "#e5e7eb",
             }}
           >
-            <Text
+            <CsText
               style={{
                 fontSize: 12,
                 fontWeight: "600",
@@ -36,7 +37,7 @@ export default function NotificationTabs({
               }}
             >
               {tab.label}
-            </Text>
+           </CsText>
           </Pressable>
         ))}
       </ScrollView>

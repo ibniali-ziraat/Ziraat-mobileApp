@@ -1,6 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
+import CsText from "./CsText";
 
 export default function BottomModal({ title, onClose }) {
   return (
@@ -9,7 +10,7 @@ export default function BottomModal({ title, onClose }) {
         entering={FadeInUp}
         className="bg-white rounded-t-2xl p-5"
       >
-        <Text className="text-lg font-bold mb-3">{title}</Text>
+        <CsText className="text-lg font-bold mb-3">{title}</CsText>
 
         {[
           "GST Verified",
@@ -19,7 +20,7 @@ export default function BottomModal({ title, onClose }) {
         ].map((item, i) => (
           <View key={i} className="flex-row items-center mt-3">
             <Ionicons name="checkbox-outline" size={20} color="#2d6b06" />
-            <Text className="ml-2 text-gray-700">{item}</Text>
+            <CsText className="ml-2 text-gray-700">{item}</CsText>
           </View>
         ))}
 
@@ -27,7 +28,7 @@ export default function BottomModal({ title, onClose }) {
           onPress={onClose}
           className="mt-6 bg-primary py-3 rounded-xl items-center"
         >
-          <Text className="text-white font-semibold text-sm">Done</Text>
+          <CsText className="text-white font-semibold text-sm">Done</CsText>
         </TouchableOpacity>
       </Animated.View>
     </View>

@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 const StatTile = ({ title, value, footer, icon }) => {
   return (
@@ -18,20 +19,20 @@ const StatTile = ({ title, value, footer, icon }) => {
         )}
 
         {/* TITLE */}
-        <Text className="text-[14px] font-semibold text-black">
+        <CsText className="text-[14px] font-semibold text-black">
           {title}
-        </Text>
+       </CsText>
 
         {/* VALUE */}
-        <Text className="text-[18px] text-dark">
+        <CsText className="text-[18px] text-dark">
           {value}
-        </Text>
+       </CsText>
 
         {/* FOOTER */}
         {footer && (
-          <Text className="text-[14px] font-semibold text-center">
+          <CsText className="text-[14px] font-semibold text-center">
             {footer}
-          </Text>
+         </CsText>
         )}
       </View>
     </ZiraatCard>

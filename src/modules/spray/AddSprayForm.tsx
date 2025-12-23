@@ -8,12 +8,12 @@ import { FormProvider } from "react-hook-form";
 import {
   ScrollView,
   StatusBar,
-  Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
+import CsText from "@/src/components/shared/CsText";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SpraySchema } from "./schemas/spraySchema";
@@ -56,18 +56,18 @@ export default function AddSprayScreen() {
             <X size={24} color={colors.dark} />
           </TouchableOpacity>
 
-          <Text className="text-lg font-bold text-dark">New Spray Record</Text>
+          <CsText className="text-lg font-bold text-dark">New Spray Record</CsText>
 
           <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-            <Text className="text-primary font-bold text-base">Save</Text>
+            <CsText className="text-primary font-bold text-base">Save</CsText>
           </TouchableOpacity>
         </View>
 
         <ScrollView className="flex-1 px-4 py-4">
           {/* LOCATION DETAILS */}
-          <Text className="text-xs uppercase font-bold mb-2 ml-1 text-dark">
+          <CsText className="text-xs uppercase font-bold mb-2 ml-1 text-dark">
             Location Details
-          </Text>
+         </CsText>
 
           <View className="rounded-xl p-4 mb-6 border border-neutral bg-light">
             <SingleSelectInput
@@ -87,9 +87,9 @@ export default function AddSprayScreen() {
           </View>
 
           {/* CHEMICAL INFO */}
-          <Text className="text-xs uppercase font-bold mb-2 ml-1 text-dark">
+          <CsText className="text-xs uppercase font-bold mb-2 ml-1 text-dark">
             Chemical Info
-          </Text>
+         </CsText>
 
           <View className="rounded-xl p-4 mb-6 border border-neutral bg-light">
             <FormInput
@@ -108,9 +108,9 @@ export default function AddSprayScreen() {
           </View>
 
           {/* APPLICATION DATA */}
-          <Text className="text-xs uppercase font-bold mb-2 ml-1 text-dark">
+          <CsText className="text-xs uppercase font-bold mb-2 ml-1 text-dark">
             Application Data
-          </Text>
+         </CsText>
 
           <View className="rounded-xl p-4 mb-6 border border-neutral bg-light">
             <View className="flex">
@@ -157,9 +157,9 @@ export default function AddSprayScreen() {
           </View>
 
           {/* MEDIA & NOTES */}
-          <Text className="text-xs uppercase font-bold mb-2 ml-1 text-dark">
+          <CsText className="text-xs uppercase font-bold mb-2 ml-1 text-dark">
             Media & Notes
-          </Text>
+         </CsText>
 
           <View className="rounded-xl p-4 mb-20 border border-neutral bg-light">
             <FormFileInput

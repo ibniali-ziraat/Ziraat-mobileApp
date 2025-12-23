@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { useRouter } from "expo-router";
-import { Image, Text, View } from "react-native";
+import { Image, View } from "react-native";
 import BackHeader from "../components/shared/BackHeader";
+import CsText from "../components/shared/CsText";
 
 export default function NotFoundPage() {
   const router = useRouter();
@@ -25,23 +26,23 @@ export default function NotFoundPage() {
         }}
         pointerEvents="box-none"
       >
-        <Text onPress={() => router.replace("/")}>
+        <CsText onPress={() => router.replace("/")}>
           <Image
             source={require("../../assets/images/logo.jpeg")}
             style={{ width: 100, height: 100, resizeMode: "contain" }}
           />
-        </Text>
+       </CsText>
 
-        <Text
+        <CsText
           className="text-2xl font-semibold mb-2 text-center"
           style={{ color: colors.primary }}
         >
           We're Working on It
-        </Text>
+       </CsText>
 
-        <Text className="text-base text-center" style={{ color: colors.dark }}>
+        <CsText className="text-base text-center" style={{ color: colors.dark }}>
           This page is under construction. Check back soon!
-        </Text>
+       </CsText>
       </View>
     </View>
   );
@@ -75,8 +76,8 @@ export default function NotFoundPage() {
 //         </View>
 
 //         <View>
-//           <Text className="font-semibold text-xl">{"John Doe"}</Text>
-//           <Text className="text-md text-dark">{"Jan 15, 2025"}</Text>
+//           <CsText className="font-semibold text-xl">{"John Doe"}</Text>
+//           <CsText className="text-md text-dark">{"Jan 15, 2025"}</Text>
 //         </View>
 //       </View>
 
@@ -84,7 +85,7 @@ export default function NotFoundPage() {
 //     </View>
 
 //     {/* Comment */}
-//     <Text className="text-dark mt-1">{"Great Product! very useful and high quality"}</Text>
+//     <CsText className="text-dark mt-1">{"Great Product! very useful and high quality"}</Text>
 
 //     {/* Helpful Section */}
 //     <View className="flex-row items-center mt-3 mb-1">
@@ -93,9 +94,9 @@ export default function NotFoundPage() {
 //         color={colors.secondary}
 //         fill={colors.secondary}
 //       />
-//       <Text className="text-dark ml-1 text-sm">
+//       <CsText className="text-dark ml-1 text-sm">
 //         {"20"} People found it helpful
-//       </Text>
+//      </CsText>
 //     </View>
 
 //   </View>

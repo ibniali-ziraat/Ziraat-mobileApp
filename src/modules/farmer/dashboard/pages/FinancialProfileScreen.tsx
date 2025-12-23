@@ -1,8 +1,9 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { BarChart, LineChart as CurveChart } from "react-native-chart-kit";
 import kpis from "../../../../data/kpis.json";
 import recentInsights from "../../../../data/recentInsights.json";
@@ -52,9 +53,9 @@ export default function FinancialPerformanceScreen() {
         >
           {/* Header */}
           <View className="mb-6">
-            <Text className="mt-1 text-[18px] font-bold text-black">
+            <CsText className="mt-1 text-[18px] font-bold text-black">
               Revenue vs Cost
-            </Text>
+           </CsText>
           </View>
 
           {/* Chart */}
@@ -85,9 +86,9 @@ export default function FinancialPerformanceScreen() {
         >
           {/* Header */}
           <View className="mb-8">
-            <Text className="mt-1 text-[16px] font-bold text-black">
+            <CsText className="mt-1 text-[16px] font-bold text-black">
               Net Profit Trend (6 Months)
-            </Text>
+           </CsText>
           </View>
 
           {/* Chart */}
@@ -118,9 +119,9 @@ export default function FinancialPerformanceScreen() {
           marginTop={2}
           marginBottom={2}
         >
-          <Text className="font-bold  text-black text-[18px] mb-8">
+          <CsText className="font-bold  text-black text-[18px] mb-8">
             Recent Financial Insights
-          </Text>
+         </CsText>
 
           <View>
             {recentInsights.map((item) => (

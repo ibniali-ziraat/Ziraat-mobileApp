@@ -233,9 +233,9 @@ export default function VendorProfileScreen() {
       {/* <ProgressBar progress={progress} />
 
       {missingSections.length > 0 && (
-        <Text style={{ color: "gray", marginBottom: 15 }}>
+        <CsText style={{ color: "gray", marginBottom: 15 }}>
           Missing: {missingSections.join(", ")}
-        </Text>
+       </CsText>
       )}
       <ProfileHeader
         data={profileData}

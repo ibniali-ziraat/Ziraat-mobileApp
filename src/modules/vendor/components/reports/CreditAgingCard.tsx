@@ -1,13 +1,13 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
   LayoutAnimation,
   Platform,
-  Text,
   TouchableOpacity,
   UIManager,
-  View,
+  View
 } from "react-native";
 
 // Enable Android animations
@@ -71,9 +71,9 @@ export default function CreditAgingCard({ items }) {
         shadowOffset: { width: 0, height: 4 },
       }}
     >
-      <Text className="text-lg font-bold text-black mb-4">
+      <CsText className="text-lg font-bold text-black mb-4">
         Credit Aging Summary
-      </Text>
+     </CsText>
 
       {items.map((item, i) => {
         const status = getStatus(item.days);
@@ -107,23 +107,23 @@ export default function CreditAgingCard({ items }) {
 
                 {/* LABELS */}
                 <View className="flex-1">
-                  <Text className="text-sm font-bold text-gray-900">
+                  <CsText className="text-sm font-bold text-gray-900">
                     {item.label}
-                  </Text>
-                  <Text className="text-xs text-gray-500 mt-1">
+                 </CsText>
+                  <CsText className="text-xs text-gray-500 mt-1">
                     {item.days} days outstanding
-                  </Text>
+                 </CsText>
 
                 </View>
 
                 {/* Amount + Rotating Arrow */}
                 <View className="items-end">
-                  <Text
+                  <CsText
                     className="text-xl font-bold"
                     style={{ color: colors.primary }}
                   >
                     {item.value}
-                  </Text>
+                 </CsText>
 
                   <Ionicons
                     name={expanded ? "chevron-up" : "chevron-down"}
@@ -153,26 +153,26 @@ export default function CreditAgingCard({ items }) {
               >
                 {/* Credit Details */}
                 <View className="mb-3">
-                  <Text className="text-xs text-black">Invoices Count</Text>
-                  <Text className="text-[15px] font-semibold text-gray-900 mt-1">
+                  <CsText className="text-xs text-black">Invoices Count</CsText>
+                  <CsText className="text-[15px] font-semibold text-gray-900 mt-1">
                     {item.invoices} invoices
-                  </Text>
+                 </CsText>
                 </View>
 
                 <View className="my-1 h-[1px] bg-gray-200" />
 
                 <View className="mb-3 mt-3">
-                  <Text className="text-xs text-black">Last Payment</Text>
-                  <Text className="text-[15px] font-semibold text-gray-900 mt-1">
+                  <CsText className="text-xs text-black">Last Payment</CsText>
+                  <CsText className="text-[15px] font-semibold text-gray-900 mt-1">
                     {item.lastPayment}
-                  </Text>
+                 </CsText>
                 </View>
 
                 <View className="my-1 h-[1px] bg-gray-200" />
 
                 <View className="mb-3 mt-3">
-                  <Text className="text-xs text-black">Customer Notes</Text>
-                  <Text className="text-gray-700 mt-1">{item.notes}</Text>
+                  <CsText className="text-xs text-black">Customer Notes</CsText>
+                  <CsText className="text-gray-700 mt-1">{item.notes}</CsText>
                 </View>
 
                 {/* ACTION BUTTONS */}
@@ -191,12 +191,12 @@ export default function CreditAgingCard({ items }) {
                     }}
                   >
                     <Ionicons name="call" size={16} color={colors.primary} />
-                    <Text
+                    <CsText
                       className="ml-2 text-xs font-semibold"
                       style={{ color: colors.primary }}
                     >
                       Call
-                    </Text>
+                   </CsText>
                   </TouchableOpacity>
 
                   {/* REMIND */}
@@ -216,12 +216,12 @@ export default function CreditAgingCard({ items }) {
                       size={16}
                       color={colors.secondary}
                     />
-                    <Text
+                    <CsText
                       className="ml-2 text-xs font-semibold"
                       style={{ color: colors.secondary }}
                     >
                       Remind
-                    </Text>
+                   </CsText>
                   </TouchableOpacity>
 
                   {/* WHATSAPP */}
@@ -241,12 +241,12 @@ export default function CreditAgingCard({ items }) {
                       size={16}
                       color="#22c55e"
                     />
-                    <Text
+                    <CsText
                       className="ml-2 text-xs font-semibold"
                       style={{ color: "#22c55e" }}
                     >
                       WhatsApp
-                    </Text>
+                   </CsText>
                   </TouchableOpacity>
                 </View>
               </View>
