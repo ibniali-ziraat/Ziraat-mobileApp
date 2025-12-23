@@ -41,6 +41,7 @@
 //     </KeyboardAvoidingView>
 //   );
 // }
+import { colors } from "@/src/constants/colors";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -56,7 +57,7 @@ export default function ScreenLayout({
 }: ScreenLayoutProps) {
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor:"#FFFFFF" }}
+      style={{ flex: 1, backgroundColor: "#FFFFFF" }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={keyboardOffset}
     >
@@ -66,6 +67,7 @@ export default function ScreenLayout({
             flexGrow: 1,
             paddingBottom: Platform.OS == "android" ? 40 : 100,
             paddingHorizontal: 5,
+            backgroundColor: colors.light,
           }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}

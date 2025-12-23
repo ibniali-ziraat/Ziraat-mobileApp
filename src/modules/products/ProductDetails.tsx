@@ -13,7 +13,7 @@ import { IndianRupee, Package } from "lucide-react-native";
 import BackHeader from "@/src/components/shared/BackHeader";
 import { FlatList, Text, ToastAndroid, View } from "react-native";
 import faqData from "../../data/Faq.json";
-// import products from "../../Data/products.json";
+import products from "../../data/products.json";
 
 // --- START: renderHeader Function (Content moved from ScreenLayout) ---
 const renderHeader = (product, colors) => (
@@ -137,7 +137,7 @@ export default function ProductDetails() {
     );
   }
 
-  const product = products.find((p) => String(p._id) === String(productId));
+  const product = products?.find((p) => String(p._id) === String(productId));
 
   if (!product) {
     return (
@@ -168,7 +168,7 @@ export default function ProductDetails() {
 
   return (
     <View className="flex-1 bg-light">
-      <BackHeader title="cghjk" />
+      <BackHeader title={"Products"} />
 
       {/* FIX: Use FlatList as the main scroll container for the page content */}
       <FlatList
@@ -198,7 +198,7 @@ export default function ProductDetails() {
           <BuyNowButton
             onPress={() =>
               router.push({
-                pathname: "/shipping",
+                pathname: "/products/shipping",
                 params: { productId: String(product._id) },
               })
             }

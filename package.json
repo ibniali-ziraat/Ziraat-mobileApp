@@ -60,6 +60,7 @@
     "react-native-paper": "^5.14.5",
     "react-native-paper-dates": "^0.22.51",
     "react-native-paper-dropdown": "^2.3.1",
+    "react-native-razorpay": "^2.3.1",
     "react-native-reanimated": "~4.1.1",
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
@@ -77,6 +78,7 @@
   "devDependencies": {
     "@types/react": "~19.1.0",
     "@types/react-native": "^0.72.8",
+    "@types/react-native-razorpay": "^2.2.6",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
     "metro-config": "^0.83.3",
