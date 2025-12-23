@@ -1,14 +1,8 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
 import BackHeader from "@/src/components/shared/BackHeader";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import { useState } from "react";
-import { ImageBackground, Text, View } from "react-native";
-import cardsDataJson from "../../../../data/cardsData.json";
-import EnhancedCard from "./components/EnhancedCard";
-
-// ✅ Lucide icons
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import {
   Activity,
   AlertTriangle,
@@ -19,6 +13,10 @@ import {
   Recycle,
   Sprout,
 } from "lucide-react-native";
+import { useState } from "react";
+import { ImageBackground, Text, View } from "react-native";
+import cardsDataJson from "../../../../data/cardsData.json";
+import EnhancedCard from "./components/EnhancedCard";
 
 const ICON_MAP: Record<string, any> = {
   Leaf,
@@ -38,7 +36,7 @@ export default function NutrientsProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <ScreenLayout className="pt-4 px-2">
+    <ScreenLayout>
       <BackHeader
         title="Nutrients Profile"
         desc="Comprehensive insights into soil and water nutrient levels."

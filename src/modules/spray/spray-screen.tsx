@@ -1,9 +1,9 @@
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import sprayData from "@/src/data/SprayData.json";
 import { Droplets, Edit, Trash2, Trees } from "lucide-react-native";
 import { FlatList, Text, View } from "react-native";
+import sprayData from "../../data/SprayData.json";
 
 const SprayScreen = () => {
   return (
@@ -17,11 +17,11 @@ const SprayScreen = () => {
           <ZiraatCard width="100%" marginBottom={1}>
             <View
               className=" p-5 rounded-2xl"
-              // style={{
-              //   backgroundColor: colors.light,
-              //   borderWidth: 1,
-              //   borderColor: colors.primary,
-              // }}
+            // style={{
+            //   backgroundColor: colors.light,
+            //   borderWidth: 1,
+            //   borderColor: colors.primary,
+            // }}
             >
               {/* Top Row */}
               <View className="flex-row justify-between items-center ">

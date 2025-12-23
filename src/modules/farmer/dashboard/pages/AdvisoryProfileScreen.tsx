@@ -2,9 +2,6 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import kpis from "@/src/data/advisoryKpis.json";
-import tags from "@/src/data/participationTags.json";
-import recentActivities from "@/src/data/recentActivities.json";
 import {
   BookOpen,
   MessageCircle,
@@ -14,6 +11,9 @@ import {
   Users,
 } from "lucide-react-native";
 import { Image, ScrollView, Text, View } from "react-native";
+import kpis from "../../../../data/kpis.json";
+import tags from "../../../../data/participationTags.json";
+import recentActivities from "../../../../data/recentActivities.json";
 
 export default function AdvisoryScreen() {
   const ICONS: Record<string, any> = {

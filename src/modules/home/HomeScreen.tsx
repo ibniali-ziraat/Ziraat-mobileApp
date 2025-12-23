@@ -10,10 +10,11 @@ import WeatherCard from "./components/weatherCard";
 
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import ProductCarousel from "@/src/components/shared/ProductCarousel";
+
 import { imageMapper } from "@/src/data/imageMapper";
-import products from "@/src/data/products.json";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 import { useState } from "react";
+import products from "../../data/products.json";
 
 export default function HomeScreen() {
   const [cityData, setCityData] = useState("srinagar");

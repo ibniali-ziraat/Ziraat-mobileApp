@@ -40,9 +40,8 @@ const renderHeader = (product, colors) => (
         <View className="flex-row items-center">
           <IndianRupee size={16} color={colors.dark} />
           <Text
-            className={`text-xl text-dark ${
-              product.discountPrice ? "line-through" : ""
-            }`}
+            className={`text-xl text-dark ${product.discountPrice ? "line-through" : ""
+              }`}
           >
             {String(product.price)}
           </Text>
@@ -58,9 +57,8 @@ const renderHeader = (product, colors) => (
         )}
 
         <Text
-          className={`text-sm px-2 py-1 bg-primary rounded-xl ml-3 ${
-            product.inStock ? "text-light" : "text-primary"
-          }`}
+          className={`text-sm px-2 py-1 bg-primary rounded-xl ml-3 ${product.inStock ? "text-light" : "text-primary"
+            }`}
         >
           {product.inStock ? "In Stock" : "Out of Stock"}
         </Text>

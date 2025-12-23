@@ -1,8 +1,8 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
-import categoriesData from "@/src/data/alertCategoriesData.json";
-import summaryData from "@/src/data/alertSummaryData.json";
-import timelineData from "@/src/data/alertTimelineData.json";
+import categoriesData from "../../../../data/alertCategoriesData.json";
+import summaryData from "../../../../data/alertSummaryData.json";
+import timelineData from "../../../../data/alertTimelineData.json";
 
 import { Text, View } from "react-native";
 

@@ -2,8 +2,6 @@ import CustomBarChart from "@/src/components/charts/CustomBarChart";
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import observationsData from "@/src/data/observationsData.json";
-import { statTileData } from "@/src/data/statTileData";
 import ObservationCard from "@/src/modules/farmer/dashboard/pages/components/ObservationCard";
 import StatTile from "@/src/modules/farmer/dashboard/pages/components/StatTile";
 import {
@@ -16,6 +14,8 @@ import {
 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
+import observationsData from "../../../../data/observationsData.json";
+import { statTileData } from "../../../../data/statTileData";
 
 export default function PestDiseaseProfile() {
   const [modalVisible, setModalVisible] = useState(false);

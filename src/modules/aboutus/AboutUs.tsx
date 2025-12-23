@@ -1,8 +1,8 @@
-import aboutZiraatData from "@/src/Data/aboutZiraatData.json";
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
+import aboutZiraatData from "@/src/data/aboutZiraatData.json";
 import {
     BarChart3,
     BookOpen,
@@ -56,9 +56,8 @@ export default function AboutUs() {
                         marginBottom={3}
                     >
                         <View
-                            className={`flex-row ${
-                                isEven ? "flex-row" : "flex-row-reverse"
-                            } items-stretch`}
+                            className={`flex-row ${isEven ? "flex-row" : "flex-row-reverse"
+                                } items-stretch`}
                         >
                             {section.image && (
                                 <View className="w-[45%] rounded-xl overflow-hidden">
