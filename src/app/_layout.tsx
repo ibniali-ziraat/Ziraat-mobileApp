@@ -3,17 +3,13 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import {
-  MD3LightTheme,
-  PaperProvider,
-} from "react-native-paper";
+import { MD3LightTheme, PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-<<<<<<< HEAD
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -34,8 +30,6 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic,
 } from "@expo-google-fonts/poppins";
-=======
->>>>>>> 5387be7ce70d78ec470e3176db8333f9750e8204
 
 import "../../styles/global.css";
 import RouteGuard from "../components/RouteGuard";
