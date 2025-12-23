@@ -1,7 +1,7 @@
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import sprayData from "@/src/data/sprayData.json";
+import SprayData from "@/src/data/SprayData.json";
 import { Droplets, Edit, Trash2, Trees } from "lucide-react-native";
 import { FlatList, Text, View } from "react-native";
 
@@ -9,7 +9,7 @@ const SprayScreen = () => {
   return (
     <ScreenLayout>
       <FlatList
-        data={sprayData}
+        data={SprayData}
         keyExtractor={(item) => item.id}
         scrollEnabled={false}
         contentContainerStyle={{ paddingTop: 20 }}
