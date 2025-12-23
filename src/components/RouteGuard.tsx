@@ -16,11 +16,24 @@ export default function RouteGuard({ children }: RouteGuardProps) {
     if (!initialized) return;
 
     // No token -> immediate logout and redirect
+<<<<<<< HEAD
+    if (!userToken) {
+      logoutUser();
+      router.replace("/");
+      return;
+    }
+
+    if (!userToken) {
+      router.replace("/");
+      return;
+    }
+=======
     // if (!userToken) {
     //   logoutUser();
     //   router.replace("/");
     //   return;
     // }
+>>>>>>> 5387be7ce70d78ec470e3176db8333f9750e8204
 
     if (!userToken) {
       router.replace("/");

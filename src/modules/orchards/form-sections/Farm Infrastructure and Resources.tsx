@@ -16,9 +16,9 @@ export default function FarmInfrastructure({ control, errors }) {
   return (
     <View className="flex-1 w-full">
       <View className="bg-light w-full">
-        {/* <Text className="text-lg font-semibold mb-3 text-primary">
+        {/* <CsText className="text-lg font-semibold mb-3 text-primary">
           Farm Infrastructure and Resources
-        </Text> */}
+       </CsText> */}
 
         {/* 1️⃣ Equipment Owned (REQUIRED) */}
         <CheckboxGroup

@@ -1,7 +1,8 @@
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 
 
 const colors = {
@@ -109,7 +110,7 @@ export default function NotificationScreen() {
                   activeTab === tab.key ? colors.secondaryLight : "#e5e7eb",
               }}
             >
-              <Text
+              <CsText
                 style={{
                   fontSize: 12,
                   fontWeight: "600",
@@ -117,7 +118,7 @@ export default function NotificationScreen() {
                 }}
               >
                 {tab.label}
-              </Text>
+             </CsText>
             </Pressable>
           ))}
         </ScrollView>
@@ -131,7 +132,7 @@ export default function NotificationScreen() {
 
           return (
             <View key={sec} className="mb-4">
-              <Text className="text-black text-lg font-bold mb-2">{sec}</Text>
+              <CsText className="text-black text-lg font-bold mb-2">{sec}</CsText>
 
               {secItems.map((n) => (
                 <View
@@ -158,21 +159,21 @@ export default function NotificationScreen() {
 
                   {/* TEXT */}
                   <View className="ml-3 flex-1">
-                    <Text
+                    <CsText
                       className={`text-lg font-semibold ${
                         n.read ? "text-black" : "text-black"
                       }`}
                     >
                       {n.title}
-                    </Text>
+                   </CsText>
 
-                    <Text className="text-sm text-black mt-[2px]">
+                    <CsText className="text-sm text-black mt-[2px]">
                       {n.message}
-                    </Text>
+                   </CsText>
 
-                    <Text className="text-[10px] text-black mt-1">
+                    <CsText className="text-[10px] text-black mt-1">
                       {n.time}
-                    </Text>
+                   </CsText>
                   </View>
 
                   {/* UNREAD DOT */}

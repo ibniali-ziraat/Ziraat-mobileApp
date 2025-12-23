@@ -1,3 +1,4 @@
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SearchBar from "@/src/components/shared/SearchBar";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,7 +7,6 @@ import { useState } from "react";
 import {
   FlatList,
   Image,
-  Text,
   TouchableOpacity,
   View
 } from "react-native";
@@ -92,10 +92,10 @@ const initialOrchards = [
 
 const Detail = ({ label, value }: { label: string; value?: string }) => (
   <View className="flex-row justify-between py-1">
-    <Text className="text-[14px] text-black font-medium">{label}</Text>
-    <Text className="text-[12px] text-black font-semibold">
+    <CsText className="text-[14px] text-black font-medium">{label}</CsText>
+    <CsText className="text-[12px] text-black font-semibold">
       {value || "-"}
-    </Text>
+   </CsText>
   </View>
 );
 
@@ -112,14 +112,14 @@ export default function MyOrchardsScreen() {
 
       <View className="p-4">
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-[18px] font-bold text-black">
+          <CsText className="text-[18px] font-bold text-black">
             {item.name}
-          </Text>
+         </CsText>
 
           <View className="bg-secondary px-3 py-1 rounded-full">
-            <Text className="text-[12px] font-semibold text-white">
+            <CsText className="text-[12px] font-semibold text-white">
               {item.about}
-            </Text>
+           </CsText>
           </View>
         </View>
 
@@ -128,17 +128,17 @@ export default function MyOrchardsScreen() {
         <Detail label="Plantation Pattern" value={item.fruit} />
         <Detail label="Ownership Type" value={item.about} />
 
-        <Text className="text-xl font-bold text-black mt-4 mb-2">
+        <CsText className="text-xl font-bold text-black mt-4 mb-2">
           Address
-        </Text>
+       </CsText>
         <Detail label="District" value={item.location.split(",")[0]?.trim()} />
         <Detail label="Tehsil" value={item.location.split(",")[1]?.trim()} />
         <Detail label="Zone" value={item.season} />
         <Detail label="PIN Code" value={item.irrigation} />
 
-        <Text className="text-xl font-bold text-black mt-4 mb-2">
+        <CsText className="text-xl font-bold text-black mt-4 mb-2">
           Location
-        </Text>
+       </CsText>
         <Detail label="Latitude" value={item.lat} />
         <Detail label="Longitude" value={item.long} />
       </View>

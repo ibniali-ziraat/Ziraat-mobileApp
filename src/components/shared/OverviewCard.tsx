@@ -3,7 +3,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
   PanResponder,
-  Text,
   TouchableOpacity,
   View
 } from "react-native";
@@ -21,6 +20,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
+import CsText from "./CsText";
 
 const primary = "#2d6b06";
 const secondary = "#c7611f";
@@ -106,7 +106,7 @@ function ProgressRing({ percent }) {
         },
       ]}
     >
-      <Text className="font-extrabold text-lg text-primary">{percent}%</Text>
+      <CsText className="font-extrabold text-lg text-primary">{percent}%</CsText>
     </Animated.View>
   );
 }
@@ -161,12 +161,12 @@ export default function OverviewCard() {
       {/* HEADER */}
       <View className="flex-row justify-between items-center">
         <View>
-          <Text className="text-lg font-extrabold text-black">
+          <CsText className="text-lg font-extrabold text-black">
             Onboarding Status
-          </Text>
-          <Text className="text-[11px] text-gray-700 mt-[2px]">
+         </CsText>
+          <CsText className="text-[11px] text-gray-700 mt-[2px]">
             Vendor KYC + Document Verification
-          </Text>
+         </CsText>
         </View>
 
         <TouchableOpacity
@@ -192,12 +192,12 @@ export default function OverviewCard() {
 
           {/* Text */}
           <View className="ml-4 flex-1">
-            <Text className="font-semibold text-black text-sm">
+            <CsText className="font-semibold text-black text-sm">
               Completion Progress
-            </Text>
-            <Text className="text-xs text-gray-700 mt-[2px]">
+           </CsText>
+            <CsText className="text-xs text-gray-700 mt-[2px]">
               {vendor.completion}% onboarding complete
-            </Text>
+           </CsText>
           </View>
         </View>
 
@@ -215,8 +215,8 @@ export default function OverviewCard() {
 
         {/* Status text row */}
         <View className="flex-row justify-between mt-2">
-          <Text className="text-[10px] text-gray-600">Started</Text>
-          <Text className="text-[10px] text-gray-600">Almost Done</Text>
+          <CsText className="text-[10px] text-gray-600">Started</CsText>
+          <CsText className="text-[10px] text-gray-600">Almost Done</CsText>
         </View>
       </Animated.View>
 
@@ -233,15 +233,15 @@ export default function OverviewCard() {
           >
             <Ionicons name="alert-circle" size={22} color={secondary} />
             <View className="ml-3 flex-1">
-              <Text className="text-secondary font-semibold">Next Step</Text>
-              <Text className="text-xs text-gray-700">{vendor.nextTask}</Text>
+              <CsText className="text-secondary font-semibold">Next Step</CsText>
+              <CsText className="text-xs text-gray-700">{vendor.nextTask}</CsText>
             </View>
           </Animated.View>
 
           {/* VERIFICATION TIMELINE */}
-          <Text className="font-semibold text-lg text-gray-900 mt-6 mb-3">
+          <CsText className="font-semibold text-lg text-gray-900 mt-6 mb-3">
             Verification Timeline
-          </Text>
+         </CsText>
 
           {vendor.kyc.map((step, index) => (
             <Animated.View
@@ -261,23 +261,23 @@ export default function OverviewCard() {
               </View>
 
               <View className="ml-3 flex-1">
-                <Text
+                <CsText
                   className={`text-sm font-semibold ${
                     step.ok ? "text-black" : "text-secondary"
                   }`}
                 >
                   {step.label}
-                </Text>
+               </CsText>
 
-                <Text className="text-[11px] text-gray-700 mt-[3px]">
+                <CsText className="text-[11px] text-gray-700 mt-[3px]">
                   {step.details}
-                </Text>
+               </CsText>
 
                 <View className="flex-row items-center mt-2">
                   <Ionicons name="calendar-outline" size={12} color="#777" />
-                  <Text className="text-[10px] text-gray-600 ml-1">
+                  <CsText className="text-[10px] text-gray-600 ml-1">
                     {step.timestamp}
-                  </Text>
+                 </CsText>
                 </View>
 
                 {index !== vendor.kyc.length - 1 && (
@@ -294,20 +294,20 @@ export default function OverviewCard() {
           >
             <View className="flex-row items-center mb-1">
               <Ionicons name="shield-checkmark" size={16} color={primary} />
-              <Text className="text-primary font-semibold text-sm ml-2">
+              <CsText className="text-primary font-semibold text-sm ml-2">
                 Vendor Code
-              </Text>
+             </CsText>
             </View>
 
-            <Text className="text-2xl font-extrabold text-primary tracking-wide">
+            <CsText className="text-2xl font-extrabold text-primary tracking-wide">
               {vendor.vendorCode}
-            </Text>
+           </CsText>
 
             <View className="h-[1px] bg-primary/20 mt-3 mb-2" />
 
-            <Text className="text-[11px] text-gray-600 leading-4">
+            <CsText className="text-[11px] text-gray-600 leading-4">
               Used for ZIRAAT mapping and credit approvals.
-            </Text>
+           </CsText>
           </Animated.View>
 
           {/* ZONE DETAILS */}
@@ -325,9 +325,9 @@ export default function OverviewCard() {
           >
             <View className="flex-row items-center mb-3">
               <Ionicons name="location-outline" size={22} color={secondary} />
-              <Text className="ml-3 text-black font-semibold text-lg">
+              <CsText className="ml-3 text-black font-semibold text-lg">
                 {vendor.zone.title}
-              </Text>
+             </CsText>
             </View>
 
             {vendor.zone.items.map((item, index) => (
@@ -343,9 +343,9 @@ export default function OverviewCard() {
                   style={{ marginTop: 6 }}
                 />
 
-                <Text className="text-gray-800 text-sm flex-1 ml-2 leading-5">
+                <CsText className="text-gray-800 text-sm flex-1 ml-2 leading-5">
                   {item}
-                </Text>
+               </CsText>
               </Animated.View>
             ))}
           </Animated.View>

@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import CsText from "@/src/components/shared/CsText";
+import { View } from "react-native";
 
 type InsightItemProps = {
   item: {
@@ -12,17 +13,17 @@ export default function InsightItem({ item }: InsightItemProps) {
   return (
     <View className="flex-row items-center justify-between mb-2">
       {/* ID */}
-      <Text className="font-bold text-[14px] text-black w-[25%]">
+      <CsText className="font-bold text-[14px] text-black w-[25%]">
         {item.id}
-      </Text>
+     </CsText>
 
       {/* TYPE */}
-      <Text className="text-dark w-[50%] text-center">
+      <CsText className="text-dark w-[50%] text-center">
         {item.type}
-      </Text>
+     </CsText>
 
       {/* STATUS */}
-      <Text
+      <CsText
         className={`w-[25%] text-right font-medium ${
           item.status === "Improved"
             ? "text-primary"
@@ -32,7 +33,7 @@ export default function InsightItem({ item }: InsightItemProps) {
         }`}
       >
         {item.status}
-      </Text>
+     </CsText>
     </View>
   );
 }

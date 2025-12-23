@@ -33,9 +33,9 @@
 
 //             {/* Shop/Owner Name */}
 //             <View className="flex-row items-center gap-2">
-//                 <Text className="text-xl font-bold" style={{ color: colors.primary }}>
+//                 <CsText className="text-xl font-bold" style={{ color: colors.primary }}>
 //                     {data?.shopName || data?.ownerName || "N/A"}
-//                 </Text>
+//                </CsText>
 //                 {onEdit && (
 //                     <TouchableOpacity onPress={onEdit}>
 //                         <Feather name="edit-3" size={20} color={colors.primary} />
@@ -48,7 +48,8 @@
 
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 interface VendorProfileHeaderProps {
   data: {
@@ -113,7 +114,7 @@ export default function VendorProfileHeader({
               shadowRadius: 6,
             }}
           >
-            <Text
+            <CsText
               style={{
                 fontSize: 40,
                 fontWeight: "600",
@@ -121,7 +122,7 @@ export default function VendorProfileHeader({
               }}
             >
               {initials}
-            </Text>
+           </CsText>
           </View>
         )}
 
@@ -151,7 +152,7 @@ export default function VendorProfileHeader({
 
       {/* Shop / Owner Name + Edit Button */}
       <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-        <Text
+        <CsText
           style={{
             marginTop: 13,
             fontSize: 20,
@@ -162,7 +163,7 @@ export default function VendorProfileHeader({
           }}
         >
           {name}
-        </Text>
+       </CsText>
 
         {/* {onEdit && (
           <TouchableOpacity onPress={onEdit} activeOpacity={0.8}>

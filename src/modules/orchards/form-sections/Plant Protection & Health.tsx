@@ -31,16 +31,16 @@ export default function PlantProtection({ control, errors }: FormSectionProps) {
     <View className="flex-1 w-full">
 
       {/* PAGE HEADING */}
-      {/* <Text className="text-2xl font-bold mb-4 text-center text-primary">
+      {/* <CsText className="text-2xl font-bold mb-4 text-center text-primary">
         Plant Protection & Health
-      </Text> */}
+     </CsText> */}
 
       {/* CARD */}
       <View className="bg-light w-full">
 
-        {/* <Text className="text-lg font-semibold mb-3 text-primary">
+        {/* <CsText className="text-lg font-semibold mb-3 text-primary">
           Plant Protection & Health
-        </Text> */}
+       </CsText> */}
 
         {/* 1️⃣ Disease History */}
         <CheckboxGroup

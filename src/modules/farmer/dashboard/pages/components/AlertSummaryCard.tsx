@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function AlertSummaryCard({
   icon,
@@ -20,20 +21,20 @@ export default function AlertSummaryCard({
           <View>{icon}</View>
 
           {/* TITLE */}
-          <Text className="text-[14px] font-semibold text-dark text-center">
+          <CsText className="text-[14px] font-semibold text-dark text-center">
             {title}
-          </Text>
+         </CsText>
 
           {/* VALUE */}
-          <Text className="text-[18px] font-bold text-black text-center">
+          <CsText className="text-[18px] font-bold text-black text-center">
             {value}
-          </Text>
+         </CsText>
 
           {/* SUBTITLE */}
           {subtitle && (
-            <Text className="text-sm text-neutral-500 text-center">
+            <CsText className="text-sm text-neutral-500 text-center">
               {subtitle}
-            </Text>
+           </CsText>
           )}
         </View>
       </ZiraatCard>

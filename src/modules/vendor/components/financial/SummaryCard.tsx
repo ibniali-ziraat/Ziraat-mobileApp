@@ -1,4 +1,5 @@
 
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
@@ -6,7 +7,6 @@ import {
   Animated,
   Modal,
   Pressable,
-  Text,
   TouchableOpacity,
   View
 } from "react-native";
@@ -85,9 +85,9 @@ export default function VendorFinancialSummary({ data }) {
       {/* HEADER */}
       <View className="flex-row items-center mb-4">
         <Ionicons name="stats-chart-outline" size={22} color={colors.secondary} />
-        <Text className="ml-2 text-[18px] font-bold text-black">
+        <CsText className="ml-2 text-[18px] font-bold text-black">
           Vendor Financial Overview
-        </Text>
+       </CsText>
       </View>
 
       {/* GRID OF CARDS */}
@@ -153,28 +153,28 @@ function MetricCard({ metric, onPress }) {
       {/* LABEL */}
       <View className="flex-row items-center mb-1">
         {/* <Ionicons name={metric.icon} size={22} color={metric.color} /> */}
-        <Text className="text-[14px]  font-semibold text-gray-700">
+        <CsText className="text-[14px]  font-semibold text-gray-700">
           {metric.label}
-        </Text>
+       </CsText>
       </View>
 
       {/* VALUE */}
-      <Text
+      <CsText
         className="text-[14px] font-extrabold"
         style={{ color: metric.color }}
       >
         {metric.isText ? metric.value : `₹${metric.value.toLocaleString()}`}
-      </Text>
+     </CsText>
 
       {/* TREND */}
       {metric.trend !== null && (
         <View className="flex-row items-center mt-1">
-          <Text className="text-[11px] font-semibold" style={{ color: trendColor }}>
+          <CsText className="text-[11px] font-semibold" style={{ color: trendColor }}>
             {isPositive ? "+" : ""}
             {metric.trend}%
-          </Text>
+         </CsText>
           <Ionicons name={trendIcon} size={12} color={trendColor} style={{ marginLeft: 3 }} />
-          <Text className="ml-1 text-[11px] text-gray-500">vs last month</Text>
+          <CsText className="ml-1 text-[11px] text-gray-500">vs last month</CsText>
         </View>
       )}
     </TouchableOpacity>
@@ -254,29 +254,29 @@ function DetailSheet({ visible, metric, onClose }) {
         {/* TITLE */}
         <View className="flex-row items-center mb-1">
           <Ionicons name={metric.icon} size={22} color={metric.color} />
-          <Text className="ml-2 text-[18px] font-bold text-gray-900">
+          <CsText className="ml-2 text-[18px] font-bold text-gray-900">
             {metric.label}
-          </Text>
+         </CsText>
         </View>
 
         {/* VALUE */}
-        <Text className="text-[30px] font-extrabold mt-1" style={{ color: metric.color }}>
+        <CsText className="text-[30px] font-extrabold mt-1" style={{ color: metric.color }}>
           {metric.isText ? metric.value : `₹${metric.value.toLocaleString()}`}
-        </Text>
+       </CsText>
 
         {/* TREND */}
         {metric.trend !== null && (
-          <Text className="text-[12px] mt-1" style={{ color: metric.color }}>
+          <CsText className="text-[12px] mt-1" style={{ color: metric.color }}>
             {metric.trend > 0 ? "+" : ""}
             {metric.trend}% vs last month
-          </Text>
+         </CsText>
         )}
 
         {/* DIVIDER */}
         <View style={{ height: 1, backgroundColor: "#eaeaea", marginVertical: 18 }} />
 
         {/* BREAKDOWN SECTION */}
-        <Text className="text-[15px] font-bold mb-2">Breakdown</Text>
+        <CsText className="text-[15px] font-bold mb-2">Breakdown</CsText>
 
         <EnhancedBreakdownRow label="This Week" amount="₹12,540" progress={75} />
         <EnhancedBreakdownRow label="Last Week" amount="₹10,320" progress={48} />
@@ -292,9 +292,9 @@ function DetailSheet({ visible, metric, onClose }) {
             marginTop: 24,
           }}
         >
-          <Text className="text-center text-white font-semibold text-[15px]">
+          <CsText className="text-center text-white font-semibold text-[15px]">
             Close
-          </Text>
+         </CsText>
         </TouchableOpacity>
       </Animated.View>
     </Modal>
@@ -307,8 +307,8 @@ function DetailSheet({ visible, metric, onClose }) {
 function EnhancedBreakdownRow({ label, amount }) {
   return (
     <View style={{ marginBottom: 14 }}>
-      <Text className="text-[12px] text-gray-500">{label}</Text>
-      <Text className="text-[16px] font-semibold mt-1">{amount}</Text>
+      <CsText className="text-[12px] text-gray-500">{label}</CsText>
+      <CsText className="text-[16px] font-semibold mt-1">{amount}</CsText>
 
      
     </View>

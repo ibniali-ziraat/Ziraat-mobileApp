@@ -1,7 +1,9 @@
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
+import { TouchableOpacity, View } from "react-native";
+import { TextInput } from "react-native-paper";
+import CsText from "./CsText";
 
 export default function Searchandfilter() {
   const FILTERS = ["Published", "Low Stock", "Expiring Soon"];
@@ -51,14 +53,14 @@ export default function Searchandfilter() {
                 borderWidth: 1,
               }}
             >
-              <Text
+              <CsText
                 className="text-xs font-semibold"
                 style={{
                   color: isActive ? colors.primaryDark : "#4b5563",
                 }}
               >
                 {f}
-              </Text>
+             </CsText>
             </TouchableOpacity>
           );
         })}

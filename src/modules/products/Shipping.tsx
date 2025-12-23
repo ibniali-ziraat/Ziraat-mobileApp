@@ -1,6 +1,7 @@
 import AddToCartButton from "@/src/components/shared/AddToCartButton";
 import BackHeader from "@/src/components/shared/BackHeader";
 import BuyNowButton from "@/src/components/shared/BuyNowButton";
+import CsText from "@/src/components/shared/CsText";
 import PaymentSelector from "@/src/components/shared/PaymentSelector";
 import SummaryCard from "@/src/components/shared/SummaryCard";
 import { usePayment } from "@/src/hooks/usePayment";
@@ -10,7 +11,7 @@ import ShippingOptionList from "@/src/modules/products/components/ShippingOption
 import { addToCartList } from "@/src/utils/cartlistStore";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { Alert, FlatList, Text, ToastAndroid, View } from "react-native";
+import { Alert, FlatList, ToastAndroid, View } from "react-native";
 import products from "../../data/products.json";
 const renderShippingHeader = (
   product,
@@ -140,7 +141,7 @@ export default function Shipping() {
   if (!product) {
     return (
       <View className="flex-1 justify-center items-center bg-light">
-        <Text className="text-lg text-dark">Product not found</Text>
+        <CsText className="text-lg text-dark">Product not found</CsText>
       </View>
     );
   }

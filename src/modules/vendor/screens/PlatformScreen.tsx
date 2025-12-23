@@ -1,3 +1,4 @@
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import FeeOverviewSection from "@/src/modules/vendor/components/platformScreen/FeeOverviewSection";
 import FeeStructureCard from "@/src/modules/vendor/components/platformScreen/FeeStructureCard.";
@@ -6,7 +7,7 @@ import StatementCard from "@/src/modules/vendor/components/platformScreen/Statem
 import TransactionsSection from "@/src/modules/vendor/components/platformScreen/TransactionsSection";
 import WeeklyTrendChart from "@/src/modules/vendor/components/platformScreen/WeeklyTrendChart";
 import { useState } from "react";
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native";
 
 const colors = {
   primary: "#2d6b06",
@@ -91,7 +92,7 @@ export default function PlatformScreen() {
         <WeeklyTrendChart data={weeklyTrend} colors={colors} />
 
         {/*        
-        <Text className="mt-4 mb-2 font-semibold text-gray-800">Test Progress Bar</Text>
+        <CsText className="mt-4 mb-2 font-semibold text-gray-800">Test Progress Bar</Text>
         <AnimatedProgressBar value={50} maxValue={100} color={colors.primary} />  */}
 
         <TransactionsSection transactions={feeTransactions} colors={colors} />
@@ -101,15 +102,15 @@ export default function PlatformScreen() {
           style={{ backgroundColor: colors.primary }}
           onPress={() => setSheetVisible(true)}
         >
-          <Text className="text-white font-semibold">
+          <CsText className="text-white font-semibold">
             Download Weekly Statement
-          </Text>
+         </CsText>
         </TouchableOpacity>
 
         {/* Statements Preview */}
-        <Text className="text-[17px] font-semibold text-gray-900 mt-7 mb-3">
+        <CsText className="text-[17px] font-semibold text-gray-900 mt-7 mb-3">
           Fee Statements
-        </Text>
+       </CsText>
 
         {statements.slice(0, 2).map((s, i) => (
           <StatementCard key={i} item={s} colors={colors} />

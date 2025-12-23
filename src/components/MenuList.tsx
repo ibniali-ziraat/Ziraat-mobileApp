@@ -2,6 +2,7 @@ import { colors } from "@/src/constants/colors";
 import { menuGroups } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import CsText from "./shared/CsText";
 
 export default function MenuList() {
   return (
@@ -45,7 +46,7 @@ export default function MenuList() {
 
 function SectionTitle({ title }) {
   return (
-    <Text
+    <CsText
       style={{
         color: colors.secondary,
         fontSize: 14,
@@ -56,7 +57,7 @@ function SectionTitle({ title }) {
       }}
     >
       {title}
-    </Text>
+   </CsText>
   );
 }
 
@@ -71,7 +72,7 @@ function MenuItem({ label, onPress }) {
         borderBottomWidth: 1,
       }}
     >
-      <Text style={{ fontSize: 16, color: colors.dark }}>{label}</Text>
+      <CsText style={{ fontSize: 16, color: colors.dark }}>{label}</Text>
     </TouchableOpacity>
   );
 }
