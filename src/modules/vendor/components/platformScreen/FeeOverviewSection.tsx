@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function FeeOverviewSection({ colors, data }) {
   const rows = [
@@ -26,9 +27,9 @@ export default function FeeOverviewSection({ colors, data }) {
   return (
     <View className="mb-6">
       {/* Section Title */}
-      <Text className="text-[17px] font-semibold text-black mb-3">
+      <CsText className="text-[17px] font-semibold text-black mb-3">
         Fee Overview
-      </Text>
+     </CsText>
 
       {rows.map((item, index) => (
         <View
@@ -51,20 +52,20 @@ export default function FeeOverviewSection({ colors, data }) {
 
           {/* TEXT CONTENT */}
           <View className="flex-1">
-            <Text className="text-[13px] font-medium text-black">
+            <CsText className="text-[13px] font-medium text-black">
               {item.label}
-            </Text>
+           </CsText>
 
-            <Text
+            <CsText
               className="text-[20px] font-semibold mt-1"
               style={{ color: item.textColor }}
             >
               {item.value}
-            </Text>
+           </CsText>
 
-            <Text className="text-[11px] text-black mt-1">
+            <CsText className="text-[11px] text-black mt-1">
               {item.note}
-            </Text>
+           </CsText>
           </View>
         </View>
       ))}

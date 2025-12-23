@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 interface BackHeaderProps {
   title: string;
@@ -27,14 +28,14 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
 
         {/* Title + Description */}
         <View className="flex-1">
-          <Text className="text-dark font-bold text-2xl" numberOfLines={1}>
+          <CsText className="text-dark font-bold text-2xl" numberOfLines={1}>
             {title}
-          </Text>
+         </CsText>
 
           {desc && (
-            <Text className="text-neutral text-md mt-0.5" numberOfLines={2}>
+            <CsText className="text-neutral text-md mt-0.5" numberOfLines={2}>
               {desc}
-            </Text>
+           </CsText>
           )}
         </View>
       </View>

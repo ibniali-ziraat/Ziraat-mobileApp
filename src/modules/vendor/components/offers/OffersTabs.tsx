@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function OffersTabs({ tab, setTab }) {
   return (
@@ -24,7 +25,7 @@ export default function OffersTabs({ tab, setTab }) {
               marginRight: index === 0 ? 16 : 0, 
             }}
           >
-            <Text
+            <CsText
               className="text-center"
               style={{
                 fontWeight: active ? "700" : "500",
@@ -33,7 +34,7 @@ export default function OffersTabs({ tab, setTab }) {
               }}
             >
               {item.label}
-            </Text>
+           </CsText>
           </TouchableOpacity>
         );
       })}

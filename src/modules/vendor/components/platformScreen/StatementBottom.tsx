@@ -1,6 +1,7 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -61,9 +62,9 @@ export default function StatementBottom({ visible, onClose, statements, colors }
 
         {/* HEADER */}
         <View className="flex-row justify-between items-center mb-4">
-          <Text className="text-[17px] font-semibold text-gray-900">
+          <CsText className="text-[17px] font-semibold text-gray-900">
             All Fee Statements
-          </Text>
+         </CsText>
 
           <TouchableOpacity onPress={onClose}>
             <Ionicons name="close-circle-outline" size={26} color={colors.primaryDark} />
@@ -102,12 +103,12 @@ export default function StatementBottom({ visible, onClose, statements, colors }
 
                 {/* Texts */}
                 <View className="ml-3">
-                  <Text className="text-[15px] font-semibold text-black">
+                  <CsText className="text-[15px] font-semibold text-black">
                     {s.week}
-                  </Text>
-                  <Text className="text-[12px] text-black mt-[2px]">
+                 </CsText>
+                  <CsText className="text-[12px] text-black mt-[2px]">
                     PDF Statement
-                  </Text>
+                 </CsText>
                 </View>
               </View>
 

@@ -1,4 +1,5 @@
 // CreditScreen.js
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
@@ -7,10 +8,8 @@ import {
   ScrollView,
   StyleSheet,
   Switch,
-  Text,
-  TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 /* ---------------------------
@@ -122,27 +121,27 @@ export default function CreditScreen() {
         <View style={CARD_STYLE} className="mb-5">
           <View className="flex-row justify-between items-start">
             <View className="flex-1 mr-3">
-              <Text className="text-xs text-black opacity-70">
+              <CsText className="text-xs text-black opacity-70">
                 Total Credit Outstanding
-              </Text>
+             </CsText>
 
-              <Text
+              <CsText
                 className="text-[26px] font-extrabold mt-1"
                 style={{ color: colors.primaryDark }}
               >
                 ₹{totalOutstanding.toLocaleString()}
-              </Text>
+             </CsText>
 
-              <Text className="text-[11px] mt-1 text-black opacity-70">
+              <CsText className="text-[11px] mt-1 text-black opacity-70">
                 Total Limit: ₹{totalLimit.toLocaleString()}
-              </Text>
+             </CsText>
             </View>
 
             {/* Available Credit */}
             <View className="items-end">
-              <Text className="text-xs text-black opacity-70 mb-1">
+              <CsText className="text-xs text-black opacity-70 mb-1">
                 Available Credit
-              </Text>
+             </CsText>
               <View
                 className="py-[6px] px-3 rounded-full"
                 style={{
@@ -150,9 +149,9 @@ export default function CreditScreen() {
                   borderWidth: 1,
                 }}
               >
-                <Text className="text-xs font-bold" style={{ color: colors.primaryDark }}>
+                <CsText className="text-xs font-bold" style={{ color: colors.primaryDark }}>
                   ₹{availableCredit.toLocaleString()}
-                </Text>
+               </CsText>
               </View>
             </View>
           </View>
@@ -169,18 +168,18 @@ export default function CreditScreen() {
           >
             <MaterialIcons name="access-time" size={20} color={colors.secondary} />
             <View className="ml-3 flex-1">
-              <Text className="text-[12px] font-semibold" style={{ color: colors.secondaryDark }}>
+              <CsText className="text-[12px] font-semibold" style={{ color: colors.secondaryDark }}>
                 Upcoming Payments (7 Days)
-              </Text>
-              <Text className="text-[12px]" style={{ color: colors.secondaryDark }}>
+             </CsText>
+              <CsText className="text-[12px]" style={{ color: colors.secondaryDark }}>
                 ₹{upcomingAmount.toLocaleString()} due from {upcomingClients} clients
-              </Text>
+             </CsText>
             </View>
             <TouchableOpacity
               className="px-3 py-2 rounded-full"
               style={{ backgroundColor: colors.secondary }}
             >
-              <Text className="text-xs text-white font-semibold">View Calendar</Text>
+              <CsText className="text-xs text-white font-semibold">View Calendar</CsText>
             </TouchableOpacity>
           </View>
         </View>
@@ -203,9 +202,9 @@ export default function CreditScreen() {
 
         {activeTab === "clients" ? (
           <>
-            <Text className="text-lg text-gray-800 mb-4">
+            <CsText className="text-lg text-gray-800 mb-4">
               {mockClients.length} credit-approved clients
-            </Text>
+           </CsText>
 
             {mockClients.map((client) => (
               <ClientCard key={client.id} client={client} />
@@ -246,12 +245,12 @@ function TabButton({ label, active, onPress, activeColor }) {
         elevation: active ? 2 : 0,
       }}
     >
-      <Text
+      <CsText
         className="text-xs font-semibold text-center"
         style={{ color: active ? activeColor : "#666" }}
       >
         {label}
-      </Text>
+     </CsText>
     </TouchableOpacity>
   );
 }
@@ -265,18 +264,18 @@ function ClientCard({ client }) {
     <View style={CARD_STYLE} className="mb-4 px-4 py-5">
       <View className="flex-row justify-between items-start">
         <View className="flex-1">
-          <Text
+          <CsText
             className="font-semibold text-[15px]"
             style={{ color: colors.secondaryDark,
               
              }}
           >
             {client.name}
-          </Text>
+         </CsText>
 
-          <Text className="text-[13px] text-gray-700 mt-[3px]">Code: {client.code}</Text>
-          <Text className="text-[13px] text-gray-700 mt-[3px]">Credit Limit: ₹{client.creditLimit.toLocaleString()}</Text>
-          <Text className="text-[13px] text-gray-700 mt-[3px]">Valid Thru: {client.validity}</Text>
+          <CsText className="text-[13px] text-gray-700 mt-[3px]">Code: {client.code}</CsText>
+          <CsText className="text-[13px] text-gray-700 mt-[3px]">Credit Limit: ₹{client.creditLimit.toLocaleString()}</CsText>
+          <CsText className="text-[13px] text-gray-700 mt-[3px]">Valid Thru: {client.validity}</CsText>
         </View>
 
         <View
@@ -284,19 +283,19 @@ function ClientCard({ client }) {
           style={{ backgroundColor: risk.bg }}
         >
           <View style={{ width: 7, height: 7, borderRadius: 99, backgroundColor: risk.text }} />
-          <Text className="ml-2 text-[11px] font-semibold" style={{ color: risk.text }}>
+          <CsText className="ml-2 text-[11px] font-semibold" style={{ color: risk.text }}>
             {client.risk === "green" ? "Low Risk" : client.risk === "yellow" ? "Medium Risk" : "High Risk"}
-          </Text>
+         </CsText>
         </View>
       </View>
 
       {/* Utilization Bar */}
       <View className="mt-4">
         <View className="flex-row justify-between mb-[4px]">
-          <Text className="text-lg text-gray-800">Credit Utilisation</Text>
-          <Text className="text-[11px] text-gray-700 font-medium">
+          <CsText className="text-lg text-gray-800">Credit Utilisation</CsText>
+          <CsText className="text-[11px] text-gray-700 font-medium">
             {Math.round(utilization * 100)}%
-          </Text>
+         </CsText>
         </View>
 
         <View className="h-2 rounded-full overflow-hidden" style={{ backgroundColor: "#e5e7eb" }}>
@@ -313,25 +312,25 @@ function ClientCard({ client }) {
       {/* Footer */}
       <View className="flex-row justify-between items-center mt-4">
         <View>
-          <Text className="text-[11px] text-gray-700">Outstanding</Text>
-          <Text
+          <CsText className="text-[11px] text-gray-700">Outstanding</CsText>
+          <CsText
             className="text-sm font-semibold"
             style={{ color: client.overdue ? colors.secondaryDark : colors.primaryDark }}
           >
             ₹{client.outstanding.toLocaleString()}
             {client.overdue ? " (Overdue)" : ""}
-          </Text>
+         </CsText>
         </View>
 
         <View className="flex-row items-center">
           <TouchableOpacity className="px-3 py-2 rounded-full mr-2">
-            <Text className="text-primary text-[11px] font-semibold">View Bills</Text>
+            <CsText className="text-primary text-[11px] font-semibold">View Bills</CsText>
           </TouchableOpacity>
 
           <TouchableOpacity className="px-3 py-2 rounded-full border" style={{ borderColor: colors.secondaryDark }}>
-            <Text className="text-[11px] font-semibold" style={{ color: colors.secondaryDark }}>
+            <CsText className="text-[11px] font-semibold" style={{ color: colors.secondaryDark }}>
               Restrict Credit
-            </Text>
+           </CsText>
           </TouchableOpacity>
         </View>
       </View>
@@ -345,20 +344,20 @@ function ClientCard({ client }) {
 function SettlementCard({ discountPercent, setDiscountPercent, discountValidity, setDiscountValidity }) {
   return (
     <View style={[CARD_STYLE, { paddingVertical: 20 }]} className="mb-5 px-5">
-      <Text className="text-[16px] font-semibold text-gray-800 mb-1">
+      <CsText className="text-[16px] font-semibold text-gray-800 mb-1">
         Settlement Discount Controls
-      </Text>
+     </CsText>
 
-      <Text className="text-[12px] text-gray-500 mb-4 leading-4">
+      <CsText className="text-[12px] text-gray-500 mb-4 leading-4">
         Automatically apply settlement discounts when customers pay within the configured window.
-      </Text>
+     </CsText>
 
       {/* Inputs */}
       <View className="flex-row gap-x-4">
         <View className="flex-1">
-          <Text className="text-[12px] font-medium text-gray-700 mb-1">
+          <CsText className="text-[12px] font-medium text-gray-700 mb-1">
             Discount %
-          </Text>
+         </CsText>
 
           <View
             className="rounded-xl px-3 py-2"
@@ -368,7 +367,7 @@ function SettlementCard({ discountPercent, setDiscountPercent, discountValidity,
               backgroundColor: "#fafafa",
             }}
           >
-            <TextInput
+            <CsTextInput
               value={discountPercent}
               onChangeText={setDiscountPercent}
               keyboardType="numeric"
@@ -380,9 +379,9 @@ function SettlementCard({ discountPercent, setDiscountPercent, discountValidity,
         </View>
 
         <View className="flex-1">
-          <Text className="text-[12px] font-medium text-gray-700 mb-1">
+          <CsText className="text-[12px] font-medium text-gray-700 mb-1">
             Validity
-          </Text>
+         </CsText>
 
           <View
             className="rounded-xl px-3 py-2"
@@ -392,7 +391,7 @@ function SettlementCard({ discountPercent, setDiscountPercent, discountValidity,
               backgroundColor: "#fafafa",
             }}
           >
-            <TextInput
+            <CsTextInput
               value={discountValidity}
               onChangeText={setDiscountValidity}
               placeholder="e.g. 30 Days"
@@ -413,9 +412,9 @@ function SettlementCard({ discountPercent, setDiscountPercent, discountValidity,
         }}
       >
         <Ionicons name="information-circle-outline" size={20} color={colors.secondaryDark} />
-        <Text className="ml-2 text-[12px] text-gray-700 leading-4 flex-1">
+        <CsText className="ml-2 text-[12px] text-gray-700 leading-4 flex-1">
           The discount will be automatically applied during the settlement workflow.
-        </Text>
+       </CsText>
       </View>
     </View>
   );
@@ -437,12 +436,12 @@ function ReminderCard({ reminders, setReminders }) {
     <View style={CARD_STYLE} className="mb-6 px-5 py-5">
       <View className="flex-row justify-between items-center mb-4">
         <View>
-          <Text className="text-[15px] font-semibold text-gray-800">
+          <CsText className="text-[15px] font-semibold text-gray-800">
             Payment Reminders
-          </Text>
-          <Text className="text-[12px] text-gray-500">
+         </CsText>
+          <CsText className="text-[12px] text-gray-500">
             Automated notifications for clients
-          </Text>
+         </CsText>
         </View>
 
         <Switch
@@ -465,9 +464,9 @@ function ReminderCard({ reminders, setReminders }) {
       <ReminderRow label="Overdue + Penalty" value={reminders.overdue} onChange={(v) => setReminders((r) => ({ ...r, overdue: v }))} />
 
       <View className="mt-4 rounded-xl px-3 py-2" style={{ backgroundColor: `${colors.primary}10` }}>
-        <Text className="text-[11px]" style={{ color: colors.primaryDark }}>
+        <CsText className="text-[11px]" style={{ color: colors.primaryDark }}>
           View all scheduled reminders in the Credit Calendar.
-        </Text>
+       </CsText>
       </View>
     </View>
   );
@@ -478,7 +477,7 @@ function ReminderRow({ label, value, onChange }) {
     <View className="flex-row justify-between items-center mt-3">
       <View className="flex-row items-center">
         <View className="w-2 h-2 rounded-full mr-3" style={{ backgroundColor: colors.primary, opacity: 0.9 }} />
-        <Text className="text-sm text-gray-700">{label}</Text>
+        <CsText className="text-sm text-gray-700">{label}</CsText>
       </View>
 
       <Switch
@@ -498,15 +497,15 @@ function BillingTab() {
   return (
     <View style={[CARD_STYLE, { paddingVertical: 20 }]} className="mt-2 mb-6 px-5">
       {/* HEADER */}
-      <Text className="text-[18px] font-bold text-gray-800 mb-4">
+      <CsText className="text-[18px] font-bold text-gray-800 mb-4">
         Billing & Statements
-      </Text>
+     </CsText>
 
       {/* Consolidated Statements */}
       <View className="mb-6">
-        <Text className="text-[14px] font-semibold text-gray-800 mb-3">
+        <CsText className="text-[14px] font-semibold text-gray-800 mb-3">
           Consolidated Statements
-        </Text>
+       </CsText>
 
         <View className="flex-row gap-x-3 mb-3">
           <FilterChip label="Daily" active />
@@ -514,16 +513,16 @@ function BillingTab() {
           <FilterChip label="Monthly" />
         </View>
 
-        <Text className="text-[12px] text-gray-500 leading-4">
+        <CsText className="text-[12px] text-gray-500 leading-4">
           Generate, download or share summaries for all invoices.
-        </Text>
+       </CsText>
       </View>
 
       {/* Individual Bills */}
       <View className="border-t border-gray-100 pt-4">
-        <Text className="text-[14px] font-semibold text-gray-800 mb-4">
+        <CsText className="text-[14px] font-semibold text-gray-800 mb-4">
           Individual Bills
-        </Text>
+       </CsText>
 
         {mockBills.map((bill) => (
           <BillRowEnhanced key={bill.id} bill={bill} />
@@ -532,9 +531,9 @@ function BillingTab() {
 
       {/* ACTION BUTTONS */}
       <View className="border-t border-gray-100 pt-4 mt-2">
-        <Text className="text-[14px] font-semibold text-gray-800 mb-3">
+        <CsText className="text-[14px] font-semibold text-gray-800 mb-3">
           Invoice Actions
-        </Text>
+       </CsText>
 
         <View className="flex-row flex-wrap gap-3">
           <ActionPillEnhanced icon="print-outline" label="Print / PDF" />
@@ -564,7 +563,7 @@ function FilterChip({ label, active }) {
         backgroundColor: active ? `${colors.primary}20` : "#f8f8f8",
       }}
     >
-      <Text
+      <CsText
         style={{
           fontSize: 12,
           fontWeight: active ? "700" : "500",
@@ -572,7 +571,7 @@ function FilterChip({ label, active }) {
         }}
       >
         {label}
-      </Text>
+     </CsText>
     </TouchableOpacity>
   );
 }
@@ -596,9 +595,9 @@ function ActionPillEnhanced({ icon, label }) {
       }}
     >
       <Ionicons name={icon} size={16} color="#444" />
-      <Text className="ml-2 text-[12px]" style={{ color: "#374151", fontWeight: "500" }}>
+      <CsText className="ml-2 text-[12px]" style={{ color: "#374151", fontWeight: "500" }}>
         {label}
-      </Text>
+     </CsText>
     </TouchableOpacity>
   );
 }
@@ -625,17 +624,17 @@ function BillRowEnhanced({ bill }) {
       <View className="flex-row justify-between items-start">
         {/* LEFT */}
         <View className="flex-1 pr-4">
-          <Text className="text-[14px] font-semibold text-gray-800">
+          <CsText className="text-[14px] font-semibold text-gray-800">
             {bill.client}
-          </Text>
+         </CsText>
 
-          <Text className="text-[12px] text-gray-600 mt-[2px]">
+          <CsText className="text-[12px] text-gray-600 mt-[2px]">
             {bill.id} · {bill.period}
-          </Text>
+         </CsText>
 
-          <Text className="text-[13px] text-gray-800 mt-2 font-medium">
+          <CsText className="text-[13px] text-gray-800 mt-2 font-medium">
             Amount: ₹{bill.amount.toLocaleString()}
-          </Text>
+         </CsText>
         </View>
 
         {/* STATUS + ACTION */}
@@ -650,18 +649,18 @@ function BillRowEnhanced({ bill }) {
               borderWidth: 1,
             }}
           >
-            <Text style={{ fontSize: 11, fontWeight: "700", color: style.text }}>
+            <CsText style={{ fontSize: 11, fontWeight: "700", color: style.text }}>
               {bill.status}
-            </Text>
+           </CsText>
           </View>
 
           <TouchableOpacity
             className="mt-3 px-4 py-2 rounded-full"
             style={{ backgroundColor: colors.primary }}
           >
-            <Text className="text-[10px] text-white font-semibold">
+            <CsText className="text-[10px] text-white font-semibold">
               View Bill
-            </Text>
+           </CsText>
           </TouchableOpacity>
         </View>
       </View>

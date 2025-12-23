@@ -1,10 +1,11 @@
+import CsText from "@/src/components/shared/CsText";
 import { useEffect } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Animated, {
-    Easing,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 export default function AnimatedProgressBar({ label, value, maxValue, color }) {
@@ -25,10 +26,10 @@ export default function AnimatedProgressBar({ label, value, maxValue, color }) {
     <View className="mb-4">
       {/* Label Row */}
       <View className="flex-row justify-between mb-1">
-        <Text className="text-[13px] font-medium text-gray-700">{label}</Text>
-        <Text className="text-[13px] font-semibold" style={{ color }}>
+        <CsText className="text-[13px] font-medium text-gray-700">{label}</CsText>
+        <CsText className="text-[13px] font-semibold" style={{ color }}>
           {(value / maxValue * 100).toFixed(0)}%
-        </Text>
+       </CsText>
       </View>
 
       {/* Progress Container */}

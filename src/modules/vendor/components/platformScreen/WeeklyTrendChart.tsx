@@ -1,4 +1,5 @@
-import { Dimensions, Text, View } from "react-native";
+import CsText from "@/src/components/shared/CsText";
+import { Dimensions, View } from "react-native";
 import Svg, { Polyline } from "react-native-svg";
 
 export default function WeeklyTrendChart({ data, colors }) {
@@ -21,8 +22,8 @@ export default function WeeklyTrendChart({ data, colors }) {
   return (
     <View className="rounded-2xl border shadow-sm mb-6 bg-white p-4" style={{ borderColor: colors.border }}>
       <View className="flex-row justify-between mb-3">
-        <Text className="text-[16px] font-semibold text-gray-900">Weekly Fee Trend</Text>
-        <Text className="text-[12px] text-gray-500">Last 6 weeks</Text>
+        <CsText className="text-[16px] font-semibold text-gray-900">Weekly Fee Trend</CsText>
+        <CsText className="text-[12px] text-gray-500">Last 6 weeks</CsText>
       </View>
 
       <Svg width={chartWidth} height={chartHeight}>

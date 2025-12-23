@@ -51,12 +51,12 @@ export default function ReportsScreen() {
 
         <SalesCard activeFilter={activeFilter} />
 
-        {/* <Text className="text-gray-800 font-semibold mb-2">
+        {/* <CsText className="text-gray-800 font-semibold mb-2">
           Credit Ageing Report (30/60/90)
-        </Text> */}
+       </CsText> */}
         <CreditAgingCard items={creditAging} />
 
-        {/* <Text className="text-gray-800 font-semibold mb-2">Tax Report (GST)</Text> */}
+        {/* <CsText className="text-gray-800 font-semibold mb-2">Tax Report (GST)</Text> */}
         <TaxReportCard />
 
         <ProductPerformanceCard data={productPerformance} />

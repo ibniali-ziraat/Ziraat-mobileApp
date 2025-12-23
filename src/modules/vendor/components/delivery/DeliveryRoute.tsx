@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function DeliveryRouteView({ order, theme }) {
   return (
@@ -8,9 +9,9 @@ export default function DeliveryRouteView({ order, theme }) {
       
     >
       {/* HEADER */}
-      <Text className="text-lg font-bold text-gray-900 mb-4 ">
+      <CsText className="text-lg font-bold text-gray-900 mb-4 ">
         Delivery Route View
-      </Text>
+     </CsText>
 
       {/* MAP SECTION */}
       <View
@@ -22,13 +23,13 @@ export default function DeliveryRouteView({ order, theme }) {
         }}
       >
         <Ionicons name="map-outline" size={42} color="#94a3b8" />
-        <Text className="text-gray-500 text-sm mt-1">Map Preview</Text>
+        <CsText className="text-gray-500 text-sm mt-1">Map Preview</CsText>
       </View>
 
       {/* ROUTE TITLE */}
-      <Text className="text-lg font-semibold text-black mb-3">
+      <CsText className="text-lg font-semibold text-black mb-3">
         Delivery Route (Sequence)
-      </Text>
+     </CsText>
 
       {/* TIMELINE ROUTE LIST */}
       <View className="pl-3">
@@ -82,17 +83,17 @@ export default function DeliveryRouteView({ order, theme }) {
 
             {/* STOP INFO */}
             <View className="ml-4 flex-1">
-              <Text className="text-gray-800 font-semibold text-[14px]">
+              <CsText className="text-gray-800 font-semibold text-[14px]">
                 {stop}
-              </Text>
+             </CsText>
 
-              <Text className="text-[11px] text-gray-500 mt-[2px]">
+              <CsText className="text-[11px] text-gray-500 mt-[2px]">
                 {index === 0
                   ? "Pickup Point"
                   : index === order.route.length - 1
                   ? "Return Hub"
                   : `Stop ${index}`}
-              </Text>
+             </CsText>
             </View>
 
             {/* DRAG HANDLE */}
@@ -113,9 +114,9 @@ export default function DeliveryRouteView({ order, theme }) {
         }}
       >
         <Ionicons name="swap-vertical-outline" size={20} color={theme.primaryDark} />
-        <Text className="ml-2 font-semibold text-gray-800">
+        <CsText className="ml-2 font-semibold text-gray-800">
           Reorder Delivery Sequence
-        </Text>
+       </CsText>
       </TouchableOpacity>
     </View>
   );

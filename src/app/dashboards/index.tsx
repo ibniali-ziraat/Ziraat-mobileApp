@@ -1,4 +1,5 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { DashboardTabs } from "@/src/navigation/DashboardTabs";
@@ -8,9 +9,8 @@ import {
   Animated,
   Dimensions,
   ScrollView,
-  Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -66,7 +66,7 @@ export default function DashboardPage() {
           <ActiveComponent />
         </ScreenLayout>
       ) : (
-        <Text className="p-4 text-dark">No Screen Found</Text>
+        <CsText className="p-4 text-dark">No Screen Found</CsText>
       )}
 
       {/* Bottom Tabs */}
@@ -110,7 +110,7 @@ export default function DashboardPage() {
                     />
                   )}
 
-                  <Text
+                  <CsText
                     className={`text-[10px] mt-1 text-center ${
                       isActive ? "text-primary font-semibold" : "text-dark"
                     }`}
@@ -118,7 +118,7 @@ export default function DashboardPage() {
                     ellipsizeMode="tail"
                   >
                     {tab.label.split(" ")[0]}
-                  </Text>
+                  </CsText>
                 </TouchableOpacity>
               );
             })}

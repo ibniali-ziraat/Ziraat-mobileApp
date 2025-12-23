@@ -1,3 +1,4 @@
+import CsText from "@/src/components/shared/CsText";
 import { useRef, useState } from "react";
 import {
   Dimensions,
@@ -5,8 +6,7 @@ import {
   Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  Text,
-  View,
+  View
 } from "react-native";
 import { imageMapper } from "../../../data/imageMapper";
 
@@ -43,7 +43,7 @@ export default function ProductDetailCarousel({
 
           {label && (
             <View className="absolute top-3 left-2 bg-primary px-3 py-1 rounded-full">
-              <Text className="text-light font-semibold text-sm">{label}</Text>
+              <CsText className="text-light font-semibold text-sm">{label}</CsText>
             </View>
           )}
         </View>

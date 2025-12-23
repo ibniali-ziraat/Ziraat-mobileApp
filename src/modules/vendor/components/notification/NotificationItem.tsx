@@ -1,6 +1,7 @@
 // components/notifications/NotificationItem.jsx
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function NotificationItem({ n, colors }) {
   return (
@@ -30,15 +31,15 @@ export default function NotificationItem({ n, colors }) {
 
       {/* TEXT */}
       <View className="ml-3 flex-1">
-        <Text
+        <CsText
           className={`text-sm font-semibold ${
             n.read ? "text-gray-800" : "text-black"
           }`}
         >
           {n.title}
-        </Text>
-        <Text className="text-xs text-gray-600 mt-[2px]">{n.message}</Text>
-        <Text className="text-[10px] text-gray-400 mt-1">{n.time}</Text>
+       </CsText>
+        <CsText className="text-xs text-gray-600 mt-[2px]">{n.message}</CsText>
+        <CsText className="text-[10px] text-gray-400 mt-1">{n.time}</CsText>
       </View>
 
       {/* UNREAD */}

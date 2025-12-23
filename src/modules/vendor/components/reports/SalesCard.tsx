@@ -1,7 +1,8 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Pressable, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, TouchableOpacity, View } from "react-native";
 
 export default function SalesCard({ activeFilter }) {
   const ranges = ["Today", "Weekly", "Monthly", "Yearly"];
@@ -101,21 +102,21 @@ export default function SalesCard({ activeFilter }) {
               className="flex-1 items-center py-2 rounded-full"
               style={{ backgroundColor: active ? colors.primary : "transparent" }}
             >
-              <Text
+              <CsText
                 className="text-xs font-semibold"
                 style={{ color: active ? "#fff" : "#666" }}
               >
                 {r}
-              </Text>
+             </CsText>
             </TouchableOpacity>
           );
         })}
       </View>
 
       {/* MAIN AMOUNT */}
-      <Text className="text-gray-900 font-extrabold" style={{ fontSize: 38 }}>
+      <CsText className="text-gray-900 font-extrabold" style={{ fontSize: 38 }}>
         {formatAmount(total)}
-      </Text>
+     </CsText>
 
       {/* COMPARISON */}
       <View className="flex-row items-center mt-1 mb-4">
@@ -124,28 +125,28 @@ export default function SalesCard({ activeFilter }) {
           size={18}
           color={isGrowth ? colors.primary : "red"}
         />
-        <Text
+        <CsText
           className="ml-1 text-sm font-bold"
           style={{ color: isGrowth ? colors.primary : "red" }}
         >
           {isGrowth ? `+${formatAmount(diff)}` : `-${formatAmount(Math.abs(diff))}`}
-        </Text>
+       </CsText>
 
-        <Text
+        <CsText
           className="ml-1 text-xs font-semibold"
           style={{ color: isGrowth ? colors.primary : "red" }}
         >
           ({isGrowth ? `+${diffPercent}%` : `${diffPercent}%`})
-        </Text>
+       </CsText>
 
-        <Text className="text-gray-500 text-xs ml-2">
+        <CsText className="text-gray-500 text-xs ml-2">
           vs previous {selectedRange.toLowerCase()}
-        </Text>
+       </CsText>
       </View>
 
       {/* MINI CHART */}
       <View className="mb-5">
-        <Text className="text-xs text-gray-500 mb-2">Sales Trend</Text>
+        <CsText className="text-xs text-gray-500 mb-2">Sales Trend</CsText>
         <View className="flex-row items-end justify-between h-16">
           {sparkData[selectedRange].map((v, i) => (
             <View
@@ -177,12 +178,12 @@ export default function SalesCard({ activeFilter }) {
                   <Ionicons name={item.icon} size={20} color={item.color} />
                 </View>
 
-                <Text className="ml-2 text-sm font-semibold text-gray-900">{item.title}</Text>
+                <CsText className="ml-2 text-sm font-semibold text-gray-900">{item.title}</CsText>
               </View>
 
-              <Text className="text-sm font-bold text-gray-800">
+              <CsText className="text-sm font-bold text-gray-800">
                 {formatAmount(item.amount)} ({pct}%)
-              </Text>
+             </CsText>
             </View>
 
             {/* Percentage Bar */}

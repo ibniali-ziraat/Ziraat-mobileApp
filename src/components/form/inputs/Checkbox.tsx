@@ -1,7 +1,8 @@
 // CheckboxGroup.jsx
 import { Controller, useFormContext } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Checkbox } from "react-native-paper";
+import CsText from "../../shared/CsText";
 
 /**
  * Props:
@@ -47,9 +48,9 @@ export default function CheckboxGroup({ control: controlProp, name, label, optio
 
         return (
           <View style={{ marginBottom: 20 }}>
-            <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 6 }}>
+            <CsText style={{ fontSize: 16, fontWeight: "bold", marginBottom: 6 }}>
               {label}
-            </Text>
+           </CsText>
 
             {options.map((opt) => (
               <TouchableOpacity
@@ -62,14 +63,14 @@ export default function CheckboxGroup({ control: controlProp, name, label, optio
                   status={value.includes(opt) ? "checked" : "unchecked"}
                   onPress={() => toggle(opt)}
                 />
-                <Text>{opt}</Text>
+                <CsText>{opt}</CsText>
               </TouchableOpacity>
             ))}
 
             {error && (
-              <Text style={{ color: "red", marginTop: 4 }}>
+              <CsText style={{ color: "red", marginTop: 4 }}>
                 {error.message}
-              </Text>
+             </CsText>
             )}
           </View>
         );

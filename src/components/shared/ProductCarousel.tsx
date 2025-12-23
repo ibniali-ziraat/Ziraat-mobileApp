@@ -1,5 +1,4 @@
 import { ProductCarouselProps } from "@/src/types/product-carousel.type";
-import { router } from "expo-router";
 import { Heart } from "lucide-react-native";
 import { useState } from "react";
 import {
@@ -7,9 +6,8 @@ import {
   FlatList,
   Image,
   Pressable,
-  Text,
   ToastAndroid,
-  View,
+  View
 } from "react-native";
 import RatingStars from "../../components/shared/RatingStars";
 import { colors } from "../../constants/colors";
@@ -19,6 +17,7 @@ import {
   isInWishlist,
   removeFromWishlist,
 } from "@/src/utils/wishlistStore";
+import CsText from "./CsText";
 
 export default function ProductCarousel({
   items,
@@ -78,9 +77,9 @@ export default function ProductCarousel({
 
                   {item.label && (
                     <View className="absolute top-2 left-2 bg-primary px-2 py-1 rounded-lg">
-                      <Text className="text-white text-[10px] font-semibold">
+                      <CsText className="text-white text-[10px] font-semibold">
                         {item.label}
-                      </Text>
+                     </CsText>
                     </View>
                   )}
 
@@ -103,43 +102,43 @@ export default function ProductCarousel({
                   </Pressable>
                 </View>
 
-                <Text
+                <CsText
                   className="font-semibold text-[18px] mt-2 w-full px-2"
                   numberOfLines={1}
                 >
                   {item.title}
-                </Text>
+               </CsText>
 
                 {item.category && (
-                  <Text
+                  <CsText
                     className="text-dark text-[14px] w-full px-2 mt-1"
                     numberOfLines={1}
                   >
                     {item.category}
-                  </Text>
+                 </CsText>
                 )}
 
                 <View className="flex-row items-center mt-1 w-full px-2">
                   {item.discountPrice ? (
                     <>
-                      <Text className="text-dark line-through text-[14px] mr-5">
+                      <CsText className="text-dark line-through text-[14px] mr-5">
                         ₹{item.price}
-                      </Text>
+                     </CsText>
 
-                      <Text className="text-primary font-bold text-[16px] mr-1">
+                      <CsText className="text-primary font-bold text-[16px] mr-1">
                         ₹{item.discountPrice}
-                      </Text>
+                     </CsText>
 
                       {discountPercent && (
-                        <Text className="text-secondary text-[14px] font-semibold">
+                        <CsText className="text-secondary text-[14px] font-semibold">
                           {discountPercent}% OFF
-                        </Text>
+                       </CsText>
                       )}
                     </>
                   ) : (
-                    <Text className="text-primary font-semibold text-[18px]">
+                    <CsText className="text-primary font-semibold text-[18px]">
                       ₹{item.price}
-                    </Text>
+                   </CsText>
                   )}
                 </View>
 

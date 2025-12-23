@@ -1,5 +1,6 @@
-import { View, Text, ImageBackground } from "react-native";
-import { Droplets, Wind, CloudLightning, Sun } from "lucide-react-native";
+import CsText from "@/src/components/shared/CsText";
+import { CloudLightning, Droplets, Sun, Wind } from "lucide-react-native";
+import { ImageBackground, View } from "react-native";
 
 export default function WeatherCard({ current }) {
   return (
@@ -12,45 +13,45 @@ export default function WeatherCard({ current }) {
         <View className="p-6 bg-black/25 backdrop-blur-3xl rounded-3xl">
 
           <View className="flex-row items-end justify-between">
-            <Text className="text-white text-7xl font-bold">
+            <CsText variant= "bigHeading" className="text-light ">
               {current?.tempC}°
-            </Text>
+            </CsText>
             <Sun size={65} color="yellow" />
           </View>
 
-          <Text className="text-white/90 text-lg font-medium mt-1">
+          <CsText variant= "title" className="text-light">
             Feels like {current?.feelsLikeC}° — {current?.condition}
-          </Text>
+          </CsText>
 
           <View className="w-full h-[1px] bg-white/30 my-5" />
 
 
           <View className="flex-row justify-between">
             <View className="items-center gap-1">
-              <View className="w-14 h-14 rounded-full bg-white/30 items-center justify-center border border-white/40">
+              <View className="w-14 h-14 rounded-full bg-white/30 items-center justify-center border border-light/40">
                 <Droplets size={24} color="white" />
               </View>
-              <Text className="text-white font-bold">{current?.humidity}%</Text>
-              <Text className="text-white/70 text-xs">Humidity</Text>
+              <CsText variant= "caption" className="text-light">{current?.humidity}%</CsText>
+              <CsText variant= "subtitle" className="text-light/70">Humidity</CsText>
             </View>
 
             <View className="items-center gap-1">
-              <View className="w-14 h-14 rounded-full bg-white/30 items-center justify-center border border-white/40">
+              <View className="w-14 h-14 rounded-full bg-white/30 items-center justify-center border border-light/40">
                 <Wind size={24} color="white" />
               </View>
-              <Text className="text-white font-bold">
+              <CsText variant= "caption" className="text-white">
                 {current?.windKph} km/h
-              </Text>
-              <Text className="text-white/70 text-xs">{current?.windDir}</Text>
+              </CsText>
+              <CsText variant= "subtitle" className="text-light/70 ">{current?.windDir}</CsText>
             </View>
 
 
             <View className="items-center gap-1">
-              <View className="w-14 h-14 rounded-full bg-white/30 items-center justify-center border border-white/40">
+              <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light/40">
                 <CloudLightning size={24} color="white" />
               </View>
-              <Text className="text-white font-bold">Low</Text>
-              <Text className="text-white/70 text-xs">Hail risk</Text>
+              <CsText variant= "caption" className="text-light">Low</CsText>
+              <CsText variant= "subtitle" className="text-light/70 ">Hail risk</CsText>
             </View>
 
           </View>
