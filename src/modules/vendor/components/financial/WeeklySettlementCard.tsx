@@ -19,17 +19,17 @@
 //       }}
 //     >
 //       <View className="flex-row justify-between items-center">
-//         <Text className="font-semibold text-[15px]" style={{ color: colors.dark }}>
+//         <CsText className="font-semibold text-[15px]" style={{ color: colors.dark }}>
 //           {item.week}
-//         </Text>
+//        </CsText>
 
 //         <View
 //           className="px-2 py-[3px] rounded-full"
 //           style={{ backgroundColor: `${statusColor}33` }}
 //         >
-//           <Text className="text-[10px] font-semibold" style={{ color: statusColor }}>
+//           <CsText className="text-[10px] font-semibold" style={{ color: statusColor }}>
 //             {item.status}
-//           </Text>
+//          </CsText>
 //         </View>
 //       </View>
 
@@ -47,9 +47,9 @@
 //         className="mt-3 py-2 rounded-lg"
 //         style={{ backgroundColor: colors.primaryLight }}
 //       >
-//         <Text className="text-center text-sm font-semibold" style={{ color: colors.primaryHover }}>
+//         <CsText className="text-center text-sm font-semibold" style={{ color: colors.primaryHover }}>
 //           Download PDF
-//         </Text>
+//        </CsText>
 //       </TouchableOpacity>
 //     </View>
 //   );
@@ -58,26 +58,27 @@
 // function SetDetail({ label, value }) {
 //   return (
 //     <View>
-//       <Text className="text-[11px]" style={{ color: colors.dark }}>
+//       <CsText className="text-[11px]" style={{ color: colors.dark }}>
 //         {label}
-//       </Text>
-//       <Text className="text-[15px] font-semibold" style={{ color: colors.dark }}>
+//      </CsText>
+//       <CsText className="text-[15px] font-semibold" style={{ color: colors.dark }}>
 //         ₹{value.toLocaleString()}
-//       </Text>
+//      </CsText>
 //     </View>
 //   );
 // }
 
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function WeeklySettlementCard({ weekly }) {
   return (
     <View className="mt-5">
-      <Text className="font-bold text-lg text-gray-900 mb-4">
+      <CsText className="font-bold text-lg text-gray-900 mb-4">
         Weekly Settlements
-      </Text>
+     </CsText>
 
       {weekly.map((item, i) => (
         <View
@@ -118,9 +119,9 @@ export default function WeeklySettlementCard({ weekly }) {
                 />
               </View>
 
-              <Text className="text-[15px] font-semibold text-gray-900">
+              <CsText className="text-[15px] font-semibold text-gray-900">
                 {item.week}
-              </Text>
+             </CsText>
             </View>
 
             {/* STATUS BADGE */}
@@ -140,7 +141,7 @@ export default function WeeklySettlementCard({ weekly }) {
                     : `${colors.error}35`,
               }}
             >
-              <Text
+              <CsText
                 className="text-[11px] font-bold"
                 style={{
                   color:
@@ -150,21 +151,21 @@ export default function WeeklySettlementCard({ weekly }) {
                 }}
               >
                 {item.status}
-              </Text>
+             </CsText>
             </View>
           </View>
 
           {/* AMOUNT */}
           <View className="mt-4">
-            <Text
+            <CsText
               className="text-[26px] font-extrabold"
               style={{ color: colors.primary }}
             >
               ₹{item.amount.toLocaleString()}
-            </Text>
-            <Text className="text-[11px] text-gray-500 mt-1">
+           </CsText>
+            <CsText className="text-[11px] text-gray-500 mt-1">
               Amount transferred to your bank
-            </Text>
+           </CsText>
           </View>
 
           {/* ACTION BUTTON */}
@@ -180,9 +181,9 @@ export default function WeeklySettlementCard({ weekly }) {
             }}
           >
             <Ionicons name="download-outline" size={22} color="#2d6b06" />
-            <Text className="text-primary ml-2 font-semibold text-[13px]">
+            <CsText className="text-primary ml-2 font-semibold text-[13px]">
               Download PDF
-            </Text>
+           </CsText>
           </TouchableOpacity>
         </View>
       ))}

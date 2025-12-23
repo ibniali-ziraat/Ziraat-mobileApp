@@ -1,6 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 interface ProfileTopHeaderProps {
     profilePic?: string;
@@ -49,16 +50,13 @@ export default function ProfileTopHeader({ fullName, onEdit }: ProfileTopHeaderP
                         justifyContent: "center",
                     }}
                 >
-                    <Text
+                    <CsText variant="bigSubHeading"
                         style={{
-                            fontSize: 40,
-                            fontWeight: "600",
                             color: colors.primary,
-                            letterSpacing: 2,
                         }}
                     >
                         {initials}
-                    </Text>
+                   </CsText>
                 </View>
 
                 {/* Edit Icon */}
@@ -109,18 +107,19 @@ export default function ProfileTopHeader({ fullName, onEdit }: ProfileTopHeaderP
             </TouchableOpacity>
 
             {/* Full Name */}
-            <Text
+            <CsText
+            variant="subheading"
                 style={{
                     marginTop: 13,
-                    fontSize: 20,
-                    fontWeight: "700",
+                    
+                    
                     color: colors.primary,
                     textTransform: "capitalize",
-                    letterSpacing: 0.6,
+                   
                 }}
             >
                 {fullName || "Tansha Ashraf"}
-            </Text>
+           </CsText>
         </View>
     );
 }

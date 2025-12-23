@@ -4,8 +4,9 @@ import * as DocumentPicker from "expo-document-picker";
 import { Eye, Upload, X } from "lucide-react-native";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { HelperText } from "react-native-paper";
+import CsText from "../../shared/CsText";
 import FilePreviewModal from "../../shared/FilePreviewModal";
 
 export default function FormFileInput({
@@ -86,7 +87,7 @@ export default function FormFileInput({
                 activeOpacity={0.7}
                 style={{ flex: 1 }}
               >
-                <Text
+                <CsText
                   style={{
                     color: colors.dark, // Text color based on root color
                     fontSize: 15,
@@ -97,7 +98,7 @@ export default function FormFileInput({
                   {hasFile
                     ? value?.name.split(" ")[0] // Display the file name if available
                     : `${label}${optional ? " (Optional)" : ""}`}
-                </Text>
+               </CsText>
               </TouchableOpacity>
 
               <View style={{ flexDirection: "row", gap: 14 }}>

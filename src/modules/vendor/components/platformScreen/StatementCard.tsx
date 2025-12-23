@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function StatementCard({ item, colors }) {
   return (
@@ -34,12 +35,12 @@ export default function StatementCard({ item, colors }) {
 
           {/* Title */}
           <View className="ml-3">
-            <Text className="text-[15px] font-semibold text-gray-900">
+            <CsText className="text-[15px] font-semibold text-gray-900">
               {item.week}
-            </Text>
-            <Text className="text-[12px] text-gray-500 mt-[2px]">
+           </CsText>
+            <CsText className="text-[12px] text-gray-500 mt-[2px]">
               Weekly Fee Statement • {item.format}
-            </Text>
+           </CsText>
           </View>
         </View>
 

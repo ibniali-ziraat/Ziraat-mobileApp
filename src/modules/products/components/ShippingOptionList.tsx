@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import SHIPPING_OPTIONS from "@/src/data/shippingOptions.json";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 
 export default function ShippingOptionList({
   selectedOption,
@@ -30,12 +31,12 @@ export default function ShippingOptionList({
                 </View>
 
                 <View>
-                  <Text className="font-bold">{item.title}</Text>
-                  <Text className="text-dark">{item.delivery}</Text>
+                  <CsText className="font-bold">{item.title}</CsText>
+                  <CsText className="text-dark">{item.delivery}</CsText>
                 </View>
               </View>
 
-              <Text className="text-secondary font-semibold">{item.price}</Text>
+              <CsText className="text-secondary font-semibold">{item.price}</CsText>
             </View>
           </TouchableOpacity>
         );

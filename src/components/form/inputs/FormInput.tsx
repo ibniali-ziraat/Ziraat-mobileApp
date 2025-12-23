@@ -3,7 +3,7 @@ import { FormSectionProps } from "@/src/types/formSectionProps";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { View } from "react-native";
-import { HelperText } from "react-native-paper";
+import { HelperText, TextInput } from "react-native-paper";
 
 export default function FormInput({
   control,

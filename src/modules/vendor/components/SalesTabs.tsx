@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function SalesTabs({ tab, setTab }) {
   const tabs = ["daily", "weekly", "monthly"];
@@ -17,14 +18,14 @@ export default function SalesTabs({ tab, setTab }) {
             borderColor: tab === t ? colors.primary : "transparent",
           }}
 >
-          <Text
+          <CsText
             className="text-xs font-semibold"
             style={{
               color: tab === t ? colors.primary : colors.dark,
             }}
           >
             {t.toUpperCase()}
-          </Text>
+         </CsText>
         </TouchableOpacity>
       ))}
     </View>

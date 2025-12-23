@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
   withTiming,
 } from "react-native-reanimated";
+import CsText from "./CsText";
 
 type Props = {
   icon: React.ReactNode;
@@ -73,7 +74,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
         <Animated.View style={iconStyle}>{icon}</Animated.View>
       </View>
 
-      <Text
+      <CsText
         style={{
           fontSize: 12,
           textAlign: "center",
@@ -82,7 +83,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
         numberOfLines={1}
       >
         {label}
-      </Text>
+     </CsText>
     </View>
   );
 }

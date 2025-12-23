@@ -40,12 +40,12 @@ export default function FinancialScreen() {
         
         
         {/* <View className="mb-4 mt-1">
-          <Text className="text-[22px] font-extrabold text-gray-900">
+          <CsText className="text-[22px] font-extrabold text-gray-900">
             Financial Overview
-          </Text>
-          <Text className="text-[12px] text-gray-500 mt-1">
+         </CsText>
+          <CsText className="text-[12px] text-gray-500 mt-1">
             Sales, settlements & payout insights
-          </Text>
+         </CsText>
         </View> */}
 
        

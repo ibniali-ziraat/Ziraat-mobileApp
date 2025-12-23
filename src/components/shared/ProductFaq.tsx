@@ -6,7 +6,8 @@ import {
   Sparkles,
 } from "lucide-react-native";
 import { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 export default function ProductFaq({ data }) {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -17,9 +18,9 @@ export default function ProductFaq({ data }) {
 
   return (
     <View className="p-1 bg-white"> 
-      <Text className="text-2xl font-bold mb-4 ms-2 text-dark">
+      <CsText className="text-2xl font-bold mb-4 ms-2 text-dark">
         Frequently Asked Questions
-      </Text>
+     </CsText>
 
       {data.faq.map((q, index) => {
         const isOpen = activeIndex === index;
@@ -40,9 +41,9 @@ export default function ProductFaq({ data }) {
                   <CircleHelp size={18} color={colors.secondary} />
                 </View>
 
-                <Text className="text-[16px] text-dark flex-1">
+                <CsText className="text-[16px] text-dark flex-1">
                   {q.question}
-                </Text>
+               </CsText>
               </View>
 
               {isOpen ? (
@@ -58,9 +59,9 @@ export default function ProductFaq({ data }) {
                   <Sparkles size={18} color={colors.secondary} />
                 </View>
 
-                <Text className="text-[15px] text-dark flex-1">
+                <CsText className="text-[15px] text-dark flex-1">
                   {q.answer}
-                </Text>
+               </CsText>
               </View>
             )}
           </View>

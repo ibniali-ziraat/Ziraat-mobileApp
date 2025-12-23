@@ -1,4 +1,5 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
@@ -12,7 +13,7 @@ import {
   Target,
   Wheat,
 } from "lucide-react-native";
-import { Image, Text, View } from "react-native";
+import { Image, View } from "react-native";
 
 const iconMap = {
   Wheat,
@@ -79,17 +80,17 @@ export default function AboutUs() {
                       strokeWidth={1.3}
                     />
                   )}
-                  <Text className="ml-2 text-[18px] font-bold text-dark">
+                  <CsText className="ml-2 text-[18px] font-bold text-dark">
                     {section.title}
-                  </Text>
+                 </CsText>
                 </View>
 
                 {section.content.map((item: string, idx: number) => (
                   <View key={idx} className="flex-row mb-2">
-                    <Text className="mr-2 text-[14px] text-dark">•</Text>
-                    <Text className="flex-1 text-[14px] text-normal">
+                    <CsText className="mr-2 text-[14px] text-dark">•</CsText>
+                    <CsText className="flex-1 text-[14px] text-normal">
                       {item}
-                    </Text>
+                   </CsText>
                   </View>
                 ))}
               </View>

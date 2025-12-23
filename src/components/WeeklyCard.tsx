@@ -1,5 +1,6 @@
 import { CalendarDays, Cloud, CloudSun, Sun } from "lucide-react-native";
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, View } from "react-native";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 const { width } = Dimensions.get("window");
@@ -52,7 +53,7 @@ export default function TenDayForecastCard() {
                 }}
             >
                 <CalendarDays size={20} color="#c7611f" />
-                <Text
+                <CsText
                     style={{
                         color: "#000000",
                         fontSize: 15,
@@ -61,7 +62,7 @@ export default function TenDayForecastCard() {
                     }}
                 >
                     10-DAY FORECAST
-                </Text>
+               </CsText>
             </View>
             {DATA.map((item, index) => {
                 const start =
@@ -78,7 +79,7 @@ export default function TenDayForecastCard() {
                                 paddingVertical: 12,
                             }}
                         >
-                            <Text
+                            <CsText
                                 style={{
                                     width: "18%",
                                     color: "#000000",
@@ -87,14 +88,14 @@ export default function TenDayForecastCard() {
                                 }}
                             >
                                 {item.day}
-                            </Text>
+                           </CsText>
 
 
                             <View style={{ width: "10%", alignItems: "center" }}>
                                 {renderIcon(item.icon)}
                             </View>
 
-                            <Text
+                            <CsText
                                 style={{
                                     width: "10%",
                                     color: "#000000",
@@ -103,7 +104,7 @@ export default function TenDayForecastCard() {
                                 }}
                             >
                                 {item.min}°
-                            </Text>
+                           </CsText>
                             <View
                                 style={{
                                     width: BAR_WIDTH,
@@ -124,7 +125,7 @@ export default function TenDayForecastCard() {
                                     }}
                                 />
                             </View>
-                            <Text
+                            <CsText
                                 style={{
                                     width: "12%",
                                     color: "#00000",
@@ -134,7 +135,7 @@ export default function TenDayForecastCard() {
                                 }}
                             >
                                 {item.max}°
-                            </Text>
+                           </CsText>
                         </View>
                         {index !== DATA.length - 1 && (
                             <View

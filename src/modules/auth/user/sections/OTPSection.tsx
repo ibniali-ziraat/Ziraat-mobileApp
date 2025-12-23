@@ -1,6 +1,6 @@
 // src/components/form/sections/OTPSection.tsx
+import CsText from "@/src/components/shared/CsText";
 import { View } from "react-native";
-import { Text } from "react-native-paper";
 import FormInput from "../../../../components/form/inputs/FormInput";
 
 interface Props {
@@ -21,7 +21,7 @@ export default function OTPSection({ control, errors, onResend }: Props) {
       />
 
       {onResend && (
-        <Text
+        <CsText
           onPress={onResend}
           style={{
             color: "blue",
@@ -30,7 +30,7 @@ export default function OTPSection({ control, errors, onResend }: Props) {
           }}
         >
           Resend OTP
-        </Text>
+       </CsText>
       )}
     </View>
   );

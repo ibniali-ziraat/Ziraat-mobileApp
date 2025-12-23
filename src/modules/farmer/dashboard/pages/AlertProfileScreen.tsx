@@ -4,7 +4,7 @@ import categoriesData from "@/src/data/alertCategoriesData.json";
 import summaryData from "@/src/data/alertSummaryData.json";
 import timelineData from "@/src/data/alertTimelineData.json";
 
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 import AlertCategoryCard from "./components/AlertCategoryCard";
 import AlertSummaryCard from "./components/AlertSummaryCard";
@@ -12,6 +12,7 @@ import AlertTimelineItem from "./components/AlertTimelineItem";
 import HeaderBanner from "./components/HeaderBanner";
 
 // ✅ Lucide icons
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import * as LucideIcons from "lucide-react-native";
 
@@ -36,7 +37,7 @@ export default function AlertsTrackingScreen() {
       <HeaderBanner />
 
       {/* Alert Summary */}
-      <Text className="text-2xl font-bold mb-2">Alert Summary</Text>
+      <CsText className="text-2xl font-bold mb-2">Alert Summary</CsText>
       <View className="flex-row flex-wrap justify-between ">
         {summaryData.map((item) => (
           <AlertSummaryCard
@@ -50,7 +51,7 @@ export default function AlertsTrackingScreen() {
       </View>
 
       {/* Alert Categories */}
-      <Text className="text-2xl font-bold mt-4 mb-4">Alert Categories</Text>
+      <CsText className="text-2xl font-bold mt-4 mb-4">Alert Categories</CsText>
       <View className="flex-row flex-wrap justify-between">
         {categoriesData.map((item) => (
           <AlertCategoryCard
@@ -62,9 +63,9 @@ export default function AlertsTrackingScreen() {
       </View>
 
       {/* Timeline */}
-      <Text className="text-2xl font-bold mt-2 mb-4">
+      <CsText className="text-2xl font-bold mt-2 mb-4">
         Recent Alert Timeline
-      </Text>
+     </CsText>
       <View className="flex-row flex-wrap justify-between">
         {timelineData.map((item, index) => (
           <AlertTimelineItem

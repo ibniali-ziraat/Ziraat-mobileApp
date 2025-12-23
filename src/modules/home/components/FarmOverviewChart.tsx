@@ -1,7 +1,8 @@
 // components/home/FarmOverviewChart.tsx
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { useState } from "react";
-import { Dimensions, Text, TouchableOpacity, View } from "react-native";
+import { Dimensions, TouchableOpacity, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 
 const screenWidth = Dimensions.get("window").width;
@@ -89,22 +90,22 @@ export default function FarmOverviewChart() {
                 borderRadius: 20,
               }}
             >
-              <Text
+              <CsText
                 style={{
                   color: mode === opt ? "#fff" : colors.primary,
                   fontWeight: "600",
                 }}
               >
                 {opt === "WEEK" ? "Weekly" : "Monthly"}
-              </Text>
+             </CsText>
             </TouchableOpacity>
           ))}
         </View>
       </View>
 
-      <Text className="text-xs text-black mb-4">
+      <CsText className="text-xs text-black mb-4">
         Activity comparison ({mode === "WEEK" ? "This Week vs Last Week" : "This Month vs Last Month"})
-      </Text>
+     </CsText>
 
      
       <BarChart
@@ -125,13 +126,13 @@ export default function FarmOverviewChart() {
           const positive = g >= 0;
           return (
             <View key={i} className="items-center">
-              <Text className="text-gray-700 text-sm font-medium">{label}</Text>
-              <Text
+              <CsText className="text-gray-700 text-sm font-medium">{label}</CsText>
+              <CsText
                 className="font-semibold text-xs mt-1"
                 style={{ color: positive ? colors.secondary : "red" }}
               >
                 {positive ? `+${g}% ↑` : `${g}% ↓`}
-              </Text>
+             </CsText>
             </View>
           );
         })}

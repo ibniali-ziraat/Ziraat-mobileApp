@@ -1,5 +1,6 @@
 import { colors } from "@/src/constants/colors";
-import { Modal, Pressable, Text, View } from "react-native";
+import { Modal, Pressable, View } from "react-native";
+import CsText from "../shared/CsText";
 
 interface ConfirmDeleteModalProps {
   visible: boolean;
@@ -27,24 +28,24 @@ export default function ConfirmDeleteModal({
       <View className="flex-1 justify-center items-center bg-black/50 px-6">
         <View className="w-full rounded-2xl bg-light p-6">
           {/* Title */}
-          <Text
+          <CsText
             className="text-lg font-semibold mb-2"
             style={{ color: colors.dark }}
           >
             {title}
-          </Text>
+         </CsText>
 
           {/* Description */}
-          <Text className="text-sm mb-6" style={{ color: colors.neutral }}>
+          <CsText className="text-sm mb-6" style={{ color: colors.neutral }}>
             {description}
-          </Text>
+         </CsText>
 
           {/* Actions */}
           <View className="flex-row justify-end space-x-4">
             <Pressable onPress={onCancel} className="px-4 py-2 rounded-lg">
-              <Text className="font-medium" style={{ color: colors.darkHover }}>
+              <CsText className="font-medium" style={{ color: colors.darkHover }}>
                 {cancelText}
-              </Text>
+             </CsText>
             </Pressable>
 
             <Pressable
@@ -53,9 +54,9 @@ export default function ConfirmDeleteModal({
               className="px-4 py-2 rounded-lg"
               style={{ backgroundColor: colors.error }}
             >
-              <Text className="text-light font-semibold">
+              <CsText className="text-light font-semibold">
                 {loading ? "Deleting..." : confirmText}
-              </Text>
+             </CsText>
             </Pressable>
           </View>
         </View>

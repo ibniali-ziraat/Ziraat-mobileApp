@@ -1,5 +1,6 @@
 import { Wind } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 import WeatherCarousel, { SLIDE_WIDTH } from "./WeatherCarousel";
 
@@ -40,7 +41,7 @@ export default function StormCard() {
                             }}
                         >
                             <Wind size={18} color="#c7611f" />
-                            <Text
+                            <CsText
                                 style={{
                                     marginLeft: 8,
                                     fontSize: 14,
@@ -50,7 +51,7 @@ export default function StormCard() {
                                 }}
                             >
                                 Storms Coming
-                            </Text>
+                           </CsText>
                         </View>
 
                         <View
@@ -60,7 +61,7 @@ export default function StormCard() {
                                 alignItems: "center",
                             }}
                         >
-                            <Text
+                            <CsText
                                 style={{
                                     color: "#333333",
                                     fontSize: 16,
@@ -71,9 +72,9 @@ export default function StormCard() {
                                 }}
                             >
                                 {item.title}
-                            </Text>
+                           </CsText>
 
-                            <Text
+                            <CsText
                                 style={{
                                     color: "#333333",
                                     fontSize: 26,
@@ -82,7 +83,7 @@ export default function StormCard() {
                                 }}
                             >
                                 {item.chance}
-                            </Text>
+                           </CsText>
                         </View>
                     </View>
                 )}

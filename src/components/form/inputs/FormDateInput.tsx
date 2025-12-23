@@ -3,7 +3,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 import { Platform, TouchableOpacity, View } from "react-native";
-import { HelperText } from "react-native-paper";
+import { HelperText, TextInput } from "react-native-paper";
 
 export default function FormDatePicker({
   control,

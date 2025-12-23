@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 
 export default function SalesSummaryCard({ data, net }) {
@@ -18,9 +19,10 @@ export default function SalesSummaryCard({ data, net }) {
       }}
     >
       {/* TITLE */}
-      <Text className="text-[15px] font-semibold text-gray-900 mb-3">
+      <CsText
+       className="text-[15px] font-semibold text-gray-900 mb-3">
         Summary Breakdown
-      </Text>
+     </CsText>
 
       {/* ROWS */}
       <Row label="Cash Sales" value={`₹${data.cash}`} color={colors.primary} />
@@ -34,20 +36,20 @@ export default function SalesSummaryCard({ data, net }) {
         style={{ borderColor: colors.neutral }}
       >
         <View className="flex-row justify-between items-center">
-          <Text className="text-[14px] font-bold text-gray-900">
+          <CsText className="text-[14px] font-bold text-gray-900">
             Net Receivable
-          </Text>
+         </CsText>
 
           <View
             className="px-3 py-[4px] rounded-full"
             style={{ backgroundColor: `${colors.primary}15` }}
           >
-            <Text
+            <CsText
               className="text-[13px] font-bold"
               style={{ color: colors.primary }}
             >
               ₹{net}
-            </Text>
+           </CsText>
           </View>
         </View>
       </View>
@@ -59,16 +61,16 @@ export default function SalesSummaryCard({ data, net }) {
 function Row({ label, value, color }) {
   return (
     <View className="flex-row justify-between items-center mb-[10px]">
-      <Text className="text-[13px] text-gray-700 font-medium">
+      <CsText className="text-[13px] text-gray-700 font-medium">
         {label}
-      </Text>
+     </CsText>
 
-      <Text
+      <CsText
         className="text-[13px] font-semibold"
         style={{ color }}
       >
         {value}
-      </Text>
+     </CsText>
     </View>
   );
 }

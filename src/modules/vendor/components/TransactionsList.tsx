@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function TransactionsList({ transactions }) {
   return (
@@ -30,22 +31,22 @@ function TransactionRow({ tx }) {
   return (
     <View className="flex-row justify-between items-center py-[6px]">
       <View>
-        <Text className="text-[12px] font-semibold text-gray-800">{tx.id}</Text>
-        <Text className="text-[11px] text-gray-600">{tx.client}</Text>
+        <CsText className="text-[12px] font-semibold text-gray-800">{tx.id}</CsText>
+        <CsText className="text-[11px] text-gray-600">{tx.client}</CsText>
       </View>
 
       <View className="items-end">
-        <Text className="text-[12px] font-semibold text-gray-800">
+        <CsText className="text-[12px] font-semibold text-gray-800">
           ₹{tx.amount.toLocaleString()}
-        </Text>
+       </CsText>
 
         <View
           className="px-2 py-[2px] mt-[2px] rounded-full"
           style={{ backgroundColor: badgeColor + "22" }}
         >
-          <Text className="text-[10px]" style={{ color: badgeColor }}>
+          <CsText className="text-[10px]" style={{ color: badgeColor }}>
             {tx.status}
-          </Text>
+         </CsText>
         </View>
       </View>
     </View>

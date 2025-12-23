@@ -65,12 +65,12 @@ export default function QuickActions() {
               <Ionicons name={item.icon} size={24} color={item.color}  />
             </View>
 
-            {/* <Text
+            {/* <CsText
               className="text-[13px] font-semibold text-center"
               style={{ color: colors.dark }}
             >
               {item.title}
-            </Text> */}
+           </CsText> */}
 
             <CsText className="text-center"variant="title">{item.title}</CsText>
 

@@ -39,12 +39,12 @@
 //                 border border-white/40 shadow-2xl
 //                 items-center"
 //             >
-//                 <Text className="text-white/90 text-lg font-semibold">
+//                 <CsText className="text-white/90 text-lg font-semibold">
 //                     Feels like {current.feelsLikeC}°
-//                 </Text>
-//                 <Text className="text-white text-2xl font-bold mt-1">
+//                </CsText>
+//                 <CsText className="text-white text-2xl font-bold mt-1">
 //                     {current.condition}
-//                 </Text>
+//                </CsText>
 
 //                 <View className="w-full h-[1px] bg-white/20 my-4" />
 
@@ -53,24 +53,24 @@
 //                         <View className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-2xl items-center justify-center border border-white/30">
 //                             <Droplets size={22} color="white" />
 //                         </View>
-//                         <Text className="text-white font-semibold">{current.humidity}%</Text>
-//                         <Text className="text-white/70 text-xs">Humidity</Text>
+//                         <CsText className="text-white font-semibold">{current.humidity}%</Text>
+//                         <CsText className="text-white/70 text-xs">Humidity</Text>
 //                     </View>
 
 //                     <View className="items-center gap-2">
 //                         <View className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-2xl items-center justify-center border border-white/30">
 //                             <Wind size={22} color="white" />
 //                         </View>
-//                         <Text className="text-white font-semibold">{current.windKph} km/h</Text>
-//                         <Text className="text-white/70 text-xs">{current.windDir}</Text>
+//                         <CsText className="text-white font-semibold">{current.windKph} km/h</Text>
+//                         <CsText className="text-white/70 text-xs">{current.windDir}</Text>
 //                     </View>
 
 //                     <View className="items-center gap-2">
 //                         <View className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-2xl items-center justify-center border border-white/30">
 //                             <CloudLightning size={22} color="white" />
 //                         </View>
-//                         <Text className="text-white font-semibold">Low</Text>
-//                         <Text className="text-white/70 text-xs">Hail risk</Text>
+//                         <CsText className="text-white font-semibold">Low</Text>
+//                         <CsText className="text-white/70 text-xs">Hail risk</Text>
 //                     </View>
 //                 </View>
 //             </View>

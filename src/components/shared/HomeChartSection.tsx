@@ -1,5 +1,6 @@
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
+import CsText from "./CsText";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -38,7 +39,7 @@ export default function HomeChartSection() {
         shadowRadius: 4,
       }}
     >
-      <Text
+      <CsText
         style={{
           fontSize: 18,
           fontWeight: "700",
@@ -47,7 +48,7 @@ export default function HomeChartSection() {
         }}
       >
         Farm Overview
-      </Text>
+     </CsText>
 
       <BarChart
         data={data}

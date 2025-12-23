@@ -1,7 +1,8 @@
 import { Umbrella } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 // import PrecipitationMap from "./PrecipitationMap";
 import PrecipitationMap from "./PrecipitationMap";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 export default function PrecipitationCard() {
@@ -15,9 +16,9 @@ export default function PrecipitationCard() {
     >
       <View className="flex-row items-center mb-3">
         <Umbrella size={18} color="#c7611f" />
-        <Text className="ml-2 text-md font-semibold tracking-wide text-neutral-600">
+        <CsText className="ml-2 text-md font-semibold tracking-wide text-neutral-600">
           PRECIPITATION
-        </Text>
+       </CsText>
       </View>
 
       <PrecipitationMap />

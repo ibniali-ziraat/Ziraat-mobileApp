@@ -1,8 +1,9 @@
 // src/components/auth/AuthForm.tsx
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
 import LoginForm from "./LoginForm";
 import UserRegistrationScreen from "./screens/UserRegistraitonScreen";
 
@@ -23,9 +24,9 @@ function ModeButton({ title, onPress }: ModeButtonProps) {
         marginBottom: 20,
       }}
     >
-      <Text style={{ color: colors.primary, fontWeight: "600", fontSize: 16 }}>
+      <CsText style={{ color: colors.primary, fontWeight: "600", fontSize: 16 }}>
         {title}
-      </Text>
+     </CsText>
     </TouchableOpacity>
   );
 }

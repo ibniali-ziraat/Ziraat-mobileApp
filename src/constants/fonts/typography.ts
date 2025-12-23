@@ -2,7 +2,8 @@ import { fonts } from "./font";
 import { scale } from "./scale";
 
 export type TextVariant =
-"bigHeading"
+  | "bigHeading"
+  | "bigSubheading"
   | "heading"
   | "subheading"
   | "title"
@@ -14,6 +15,13 @@ export const typography = {
 bigHeading:{
 fontFamily: fonts.poppins.bold,
     fontSize: scale(57),
+    lineHeight: scale(57),
+    letterSpacing: scale(-0),
+},
+
+bigSubHeading:{
+fontFamily: fonts.poppins.semibold,
+    fontSize: scale(52),
     lineHeight: scale(57),
     letterSpacing: scale(-0),
 },

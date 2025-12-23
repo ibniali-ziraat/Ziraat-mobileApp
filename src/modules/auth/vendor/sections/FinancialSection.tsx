@@ -1,10 +1,11 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { FormSectionProps } from "@/src/types/formSectionProps";
 import { useEffect } from "react";
 import { Controller, useFormContext, useWatch } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Checkbox } from "react-native-paper";
 
 export default function FinancialPaymentSection({
@@ -88,7 +89,7 @@ export default function FinancialPaymentSection({
                 onPress={() => onChange(!value)}
                 color={colors.primary}
               />
-              <Text style={{ fontSize: 16 }}>Sell at ZIRAAT Marketplace</Text>
+              <CsText style={{ fontSize: 16 }}>Sell at ZIRAAT Marketplace</CsText>
             </TouchableOpacity>
           )}
         />
@@ -116,14 +117,14 @@ export default function FinancialPaymentSection({
                   marginRight: 10,
                 }}
               />
-              <Text style={{ fontSize: 16 }}>Sell at ZIRAAT Marketplace</Text>
+              <CsText style={{ fontSize: 16 }}>Sell at ZIRAAT Marketplace</Text>
             </TouchableOpacity>
           )}
         /> */}
-        <Text style={{ fontSize: 12, color: "#444", marginBottom: 10 }}>
+        <CsText style={{ fontSize: 12, color: "#444", marginBottom: 10 }}>
           If you choose to sell via ZIRAAT, provide your bank details for
           payouts.
-        </Text>
+       </CsText>
         {sellingViaZiraat && (
           <View style={{ marginTop: 10 }}>
             <FormInput

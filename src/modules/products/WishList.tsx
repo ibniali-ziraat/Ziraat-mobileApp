@@ -1,4 +1,5 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
 import WishlistItem from "@/src/modules/products/components/WishListItem";
 import { getWishlist, removeFromWishlist } from "@/src/utils/wishlistStore";
 import { useRouter } from "expo-router";
@@ -6,10 +7,9 @@ import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
-  Text,
   ToastAndroid,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 const Wishlist = () => {
@@ -54,21 +54,21 @@ const Wishlist = () => {
             className="w-56 h-56 mb-6"
             resizeMode="contain"
           />
-          <Text className="text-2xl font-semibold text-dark mb-2">
+          <CsText className="text-2xl font-semibold text-dark mb-2">
             Empty Wishlist
-          </Text>
+         </CsText>
 
-          <Text className="text-center text-dark/70 mb-6 text-sm">
+          <CsText className="text-center text-dark/70 mb-6 text-sm">
             Save items you love and view them all in one place.
-          </Text>
+         </CsText>
 
           <TouchableOpacity
             onPress={handleStartShopping}
             className="bg-primary px-8 py-3 rounded-full shadow-md active:opacity-80"
           >
-            <Text className="text-white font-semibold text-base">
+            <CsText className="text-white font-semibold text-base">
               Browse Products
-            </Text>
+           </CsText>
           </TouchableOpacity>
         </View>
       </View>
@@ -99,9 +99,9 @@ const Wishlist = () => {
         )}
         ListFooterComponent={
           <View className="mt-6 mb-4 px-4">
-            <Text className="text-center text-dark text-sm">
+            <CsText className="text-center text-dark text-sm">
               You have reached the end of your wishlist.
-            </Text>
+           </CsText>
           </View>
         }
       />

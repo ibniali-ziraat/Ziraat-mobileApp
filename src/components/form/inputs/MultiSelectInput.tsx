@@ -2,7 +2,8 @@ import { colors } from "@/src/constants/colors";
 import { Asterisk } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Controller, useWatch } from "react-hook-form";
-import { FlatList, Modal, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Modal, TouchableOpacity, View } from "react-native";
+import CsText from "../../shared/CsText";
 
 export default function MultiSelectInput({
   control,
@@ -41,11 +42,11 @@ export default function MultiSelectInput({
         <View style={{ marginBottom: 16 }}>
           {/* Label */}
           <View style={{ flexDirection: "row", marginBottom: 8 }}>
-            <Text
+            <CsText
               style={{ fontSize: 16, fontWeight: "600", color: colors.dark }}
             >
               {label}
-            </Text>
+           </CsText>
             {!optional && (
               <Asterisk
                 size={14}
@@ -66,18 +67,18 @@ export default function MultiSelectInput({
               backgroundColor: "white",
             }}
           >
-            <Text
+            <CsText
               style={{ color: value?.length ? colors.dark : colors.neutral }}
             >
               {value?.length ? value.join(", ") : `Select ${label}`}
-            </Text>
+           </CsText>
           </TouchableOpacity>
 
           {/* Error */}
           {error && (
-            <Text style={{ color: colors.error, fontSize: 12 }}>
+            <CsText style={{ color: colors.error, fontSize: 12 }}>
               {error.message || error}
-            </Text>
+           </CsText>
           )}
 
           {/* Modal */}
@@ -124,10 +125,10 @@ export default function MultiSelectInput({
                           marginBottom: 6,
                         }}
                       >
-                        <Text style={{ marginRight: 10 }}>
+                        <CsText style={{ marginRight: 10 }}>
                           {selected ? "✓" : ""}
-                        </Text>
-                        <Text>{item.label}</Text>
+                       </CsText>
+                        <CsText>{item.label}</CsText>
                       </TouchableOpacity>
                     );
                   }}
@@ -146,7 +147,7 @@ export default function MultiSelectInput({
                     alignItems: "center",
                   }}
                 >
-                  <Text style={{ color: "white" }}>Add</Text>
+                  <CsText style={{ color: "white" }}>Add</CsText>
                 </TouchableOpacity>
               </View>
             </TouchableOpacity>

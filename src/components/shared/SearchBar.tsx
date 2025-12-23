@@ -1,6 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { LucideIcon, Search } from "lucide-react-native";
 import { Platform, TouchableOpacity, View } from "react-native";
+import { TextInput } from "react-native-paper";
 
 type Props = {
   search: string;

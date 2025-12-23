@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Pressable, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, TouchableOpacity, View } from "react-native";
 import Animated, {
   FadeInLeft,
   FadeInUp,
@@ -10,6 +10,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import CsText from "./CsText";
 
 // ======================= DOCUMENT DATA ==========================
 const documents = [
@@ -91,9 +92,9 @@ function StatusBadge({ status }) {
       
     >
       <Ionicons name={s.icon} size={13} color={s.color} />
-      <Text className="ml-1 text-[10px] font-semibold" style={{ color: s.color }}>
+      <CsText className="ml-1 text-[10px] font-semibold" style={{ color: s.color }}>
         {s.text}
-      </Text>
+     </CsText>
     </View>
   );
 }
@@ -113,9 +114,9 @@ function FileTypeIcon({ type, color }) {
 // ======================= INFO ROW ==========================
 function InfoRow({ label, value }) {
   return (
-    <Text className="text-[12px] mb-1" style={{ color: colors.dark }}>
-      {label}: <Text className="font-semibold">{value}</Text>
-    </Text>
+    <CsText className="text-[12px] mb-1" style={{ color: colors.dark }}>
+      {label}: <CsText className="font-semibold">{value}</CsText>
+   </CsText>
   );
 }
 
@@ -134,12 +135,12 @@ export default function DocumentCard() {
       {/* ================= HEADER ================= */}
       <View className="flex-row justify-between items-center">
         <View>
-          <Text className="text-lg font-extrabold" style={{ color: colors.dark }}>
+          <CsText className="text-lg font-extrabold" style={{ color: colors.dark }}>
             Documents & Verification
-          </Text>
-          <Text className="text-[11px] mt-[2px]" style={{ color: colors.dark }}>
+         </CsText>
+          <CsText className="text-[11px] mt-[2px]" style={{ color: colors.dark }}>
             Legal, compliance and business verification
-          </Text>
+         </CsText>
         </View>
 
         <View
@@ -197,21 +198,21 @@ export default function DocumentCard() {
 
                     {/* TEXT SECTION */}
                     <View className="ml-3">
-                      <Text className="text-sm font-semibold" style={{ color: colors.dark }}>
+                      <CsText className="text-sm font-semibold" style={{ color: colors.dark }}>
                         {doc.title}
-                      </Text>
+                     </CsText>
 
-                      <Text className="text-[10px] mt-[1px]" style={{ color: colors.dark }}>
+                      <CsText className="text-[10px] mt-[1px]" style={{ color: colors.dark }}>
                         Size: {doc.fileSize} • Type: {doc.type.toUpperCase()}
-                      </Text>
+                     </CsText>
 
-                      <Text className="text-[10px] mt-[1px]" style={{ color: colors.dark }}>
+                      <CsText className="text-[10px] mt-[1px]" style={{ color: colors.dark }}>
                         Updated: {doc.updated}
-                      </Text>
+                     </CsText>
 
-                      <Text className="text-[11px] mt-[1px]" style={{ color: colors.dark }}>
+                      <CsText className="text-[11px] mt-[1px]" style={{ color: colors.dark }}>
                         {doc.category}
-                      </Text>
+                     </CsText>
                     </View>
                   </View>
 
@@ -243,9 +244,9 @@ export default function DocumentCard() {
                     <InfoRow label="Validity" value={doc.validity} />
                   </View>
 
-                  <Text className="text-[12px] mt-3" style={{ color: colors.dark }}>
-                    Notes: <Text className="font-medium">{doc.notes}</Text>
-                  </Text>
+                  <CsText className="text-[12px] mt-3" style={{ color: colors.dark }}>
+                    Notes: <CsText className="font-medium">{doc.notes}</CsText>
+                 </CsText>
 
                   <TouchableOpacity
                     className="rounded-full px-5 py-2 mt-4"
@@ -257,9 +258,9 @@ export default function DocumentCard() {
                       elevation: 2,
                     }}
                   >
-                    <Text className="text-white text-[12px] font-semibold text-center">
+                    <CsText className="text-white text-[12px] font-semibold text-center">
                       View Document
-                    </Text>
+                   </CsText>
                   </TouchableOpacity>
                 </Animated.View>
               )}

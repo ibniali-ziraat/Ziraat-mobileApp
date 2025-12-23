@@ -1,9 +1,10 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
 import PrecipitationMap from "@/src/components/PrecipitationMap";
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function OrchardAnalyticsSection({ orchards, admin }: any) {
   const [openYield, setOpenYield] = useState(true);
@@ -35,25 +36,25 @@ export default function OrchardAnalyticsSection({ orchards, admin }: any) {
 
   {/* Row 1: Estimated Productivity */}
   <View className="flex-row justify-between mb-2">
-    <Text className="text-[14px] font-bold">Estimated Productivity</Text>
-    <Text className="text-[14px] font-bold">{yieldPerTreeKg} kg / tree</Text>
+    <CsText className="text-[14px] font-bold">Estimated Productivity</CsText>
+    <CsText className="text-[14px] font-bold">{yieldPerTreeKg} kg / tree</CsText>
   </View>
 
   {/* Row 2: Projected Yield */}
   <View className="flex-row justify-between mb-2">
-    <Text className="text-[14px] font-bold">Projected Yield</Text>
-    <Text className="text-[14px]" style={{ color: colors.dark }}>
+    <CsText className="text-[14px] font-bold">Projected Yield</CsText>
+    <CsText className="text-[14px]" style={{ color: colors.dark }}>
       {totalYieldKg.toLocaleString()} kg
-    </Text>
+   </CsText>
   </View>
 
   {/* Row 3: Revenue Estimate (optional) */}
   {openYield && (
     <View className="flex-row justify-between">
-      <Text className="text-[14px] font-bold">Revenue Estimate</Text>
-      <Text className="text-[14px]" style={{ color: colors.dark }}>
+      <CsText className="text-[14px] font-bold">Revenue Estimate</CsText>
+      <CsText className="text-[14px]" style={{ color: colors.dark }}>
         ₹ {estimatedRevenue.toLocaleString()}
-      </Text>
+     </CsText>
     </View>
   )}
 </ZiraatCard>
@@ -66,9 +67,9 @@ export default function OrchardAnalyticsSection({ orchards, admin }: any) {
         paddingHorizontal={1}
         paddingVertical={1}
       >
-        <Text className="text-[18px] font-bold text-center mb-4">
+        <CsText className="text-[18px] font-bold text-center mb-4">
           Graphical Analysis
-        </Text>
+       </CsText>
 
         <CustomBarChart
           labels={["A", "B", "C"]}

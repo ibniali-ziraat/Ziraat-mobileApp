@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { maskValue } from "@/src/utils/mask";
 import { useEffect, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
+import CsText from "./CsText";
 
 interface OtpHeadingProps {
   title?: string;
@@ -44,7 +45,7 @@ export default function OtpHeading({
   return (
     <View style={{ marginBottom: 24 }}>
       {/* Title */}
-      <Text
+      <CsText
         style={{
           fontSize: 22,
           fontWeight: "600",
@@ -52,11 +53,11 @@ export default function OtpHeading({
         }}
       >
         {title}
-      </Text>
+     </CsText>
 
       {/* Subtitle with masked number */}
       {phone && (
-        <Text
+        <CsText
           style={{
             marginTop: 6,
             fontSize: 14,
@@ -64,12 +65,12 @@ export default function OtpHeading({
           }}
         >
           Enter the 6-digit code sent to {maskValue(phone, 2, 3)}
-        </Text>
+       </CsText>
       )}
 
       {/* Timer / Resend */}
       {!isExpired ? (
-        <Text
+        <CsText
           style={{
             marginTop: 12,
             fontSize: 13,
@@ -77,17 +78,17 @@ export default function OtpHeading({
           }}
         >
           Code expires in{" "}
-          <Text style={{ fontWeight: "600", color: colors.dark }}>
+          <CsText style={{ fontWeight: "600", color: colors.dark }}>
             {minutes}:{seconds.toString().padStart(2, "0")}
-          </Text>
-        </Text>
+         </CsText>
+       </CsText>
       ) : (
         <View style={{ marginTop: 12, flexDirection: "row" }}>
-          <Text style={{ fontSize: 13, color: colors.neutral }}>
+          <CsText style={{ fontSize: 13, color: colors.neutral }}>
             Didn’t receive the code?{" "}
-          </Text>
+         </CsText>
           <Pressable onPress={handleResend}>
-            <Text
+            <CsText
               style={{
                 fontSize: 13,
                 fontWeight: "600",
@@ -95,7 +96,7 @@ export default function OtpHeading({
               }}
             >
               {resendLabel}
-            </Text>
+           </CsText>
           </Pressable>
         </View>
       )}

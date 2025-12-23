@@ -1,5 +1,6 @@
 import { Droplets } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -17,24 +18,24 @@ export default function HumidityCard({ value, note }: Props) {
 
             <View className="flex-row items-center mb-2">
                 <Droplets size={18} color="#c7611f" />
-                <Text className="ml-2 text-md font-semibold tracking-wide text-dark">
+                <CsText className="ml-2 text-md font-semibold tracking-wide text-dark">
                     HUMIDITY
-                </Text>
+               </CsText>
             </View>
 
 
-            <Text className="text-3xl font-bold text-dark">
+            <CsText className="text-3xl font-bold text-dark">
                 {value} 89%
-            </Text>
+           </CsText>
 
 
-            <Text className="mt-2 text-sm leading-5 text-dark">
+            <CsText className="mt-2 text-sm leading-5 text-dark">
                 {note} "The dew point is 13° right now.
 
 
 
 
-            </Text>
+           </CsText>
         </ZiraatCard>
     );
 }
