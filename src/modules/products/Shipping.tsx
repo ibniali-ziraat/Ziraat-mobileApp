@@ -3,6 +3,8 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import BuyNowButton from "@/src/components/shared/BuyNowButton";
 import PaymentSelector from "@/src/components/shared/PaymentSelector";
 import SummaryCard from "@/src/components/shared/SummaryCard";
+import { usePayment } from "@/src/hooks/usePayment";
+import { useBuyProductMutation } from "@/src/hooks/useProductsQuery";
 import ProductCard from "@/src/modules/products/components/ProductCard";
 import ShippingOptionList from "@/src/modules/products/components/ShippingOptionList";
 import { addToCartList } from "@/src/utils/cartlistStore";
@@ -79,6 +81,9 @@ export default function Shipping() {
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState<any>(null);
+  const { mutateAsync: buyProductMutation, isLoading } =
+    useBuyProductMutation();
+  const { pay } = usePayment();
 
   const getFinalPrice = () => {
     const unitPrice = product?.discountPrice
@@ -105,17 +110,31 @@ export default function Shipping() {
     }
   };
 
-  const handleBuyNow = () => {
-    if (!paymentMethod) {
-      Alert.alert("Error", "Please select a payment method");
-      return;
-    }
-    if (!selectedOption) {
-      Alert.alert("Error", "Please select a shipping option");
+  const handleBuyNow = async () => {
+    const paymentResult = await pay({
+      amount: getFinalPrice(),
+      description: product.title,
+      image: product.photos?.[0],
+      user: {
+        name: "Test User",
+        email: "test@example.com",
+        contact: "9999999999",
+      },
+    });
+
+    if (!paymentResult.success) {
+      Alert.alert("Payment Failed", paymentResult.error.description);
       return;
     }
 
-    Alert.alert("Order Placed", "Your order has been successfully placed!");
+    await buyProductMutation({
+      productId: product._id,
+      quantity,
+      paymentMethod,
+      razorpay: paymentResult.data,
+    });
+
+    Alert.alert("Order Placed", "Your order has been placed successfully");
   };
 
   if (!product) {
