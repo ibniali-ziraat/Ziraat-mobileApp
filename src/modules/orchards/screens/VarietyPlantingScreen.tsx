@@ -3,19 +3,27 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 // import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { VarietyAndPlatingDetailsSchema } from "@/src/modules/orchards/schemas/VarietyAndPlatingDetailsSchema";
+import { ROUTES } from "@/src/constants/routes";
+import {
+  useCreateVarietyMutation,
+  useOrchardVarietiesQuery,
+  useUpdateVarietyMutation,
+} from "@/src/hooks/useOrchardsQuery";
+import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
-import VarietAndPlatingDetails from "../form-sections/Variety & Planting Details ";
+import VarietAndPlatingDetails from "../form-sections/VarietyPlantingSection";
 
 export default function VarietyAndPlatingDetailsScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
-  //   const { data } = useVendorProfileQuery(userData.id);
-  //   const { mutateAsync: save } = useVendorProfileMutation();
-  //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
+  const { data } = useOrchardVarietiesQuery(1);
+  const { mutateAsync: save, isPending: isSaving } = useCreateVarietyMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useUpdateVarietyMutation();
 
-  const form = useZodForm(VarietyAndPlatingDetailsSchema);
+  const form = useZodForm();
+  // const form = useZodForm(VarietyAndPlatingDetailsSchema);
   const {
     setValue,
     handleSubmit,
@@ -38,29 +46,28 @@ export default function VarietyAndPlatingDetailsScreen() {
   //     });
   //   }, [data]);
 
-  //   const onSubmit = async (val: any) => {
-  //     try {
-  //       if (data) {
-  //         const payload = { id: vendorData.id, ...val };
-  //         await update(payload);
-  //       } else {
-  //         const payload = { userId: userData.id, ...val };
-  //         const res = await save(payload);
+  const onSubmit = async (val: any) => {
+    router.push(ROUTES.ORCHARDS.REGISTRATION.FUTURE_INFO);
+    // try {
+    //   if (data) {
+    //     const payload = { id: vendorData.id, ...val };
+    //     await update(payload);
+    //   } else {
+    //     const payload = { userId: userData.id, ...val };
+    //     const res = await save(payload);
 
-  //         setVendorData({
-  //           profileId: res.id,
-  //         });
-  //       }
+    //     setVendorData({
+    //       profileId: res.id,
+    //     });
+    //   }
 
-  //       router.push("/auth/vendor/vendor-profile-screen");
-  //     } catch (err) {
-  //       showErrorToast("Something went wrong");
-  //       console.error(err);
-  //     }
-  //   };
-  const onSubmit = () => {
-    console.log("subited");
+    //   router.push("/auth/vendor/vendor-profile-screen");
+    // } catch (err) {
+    //   showErrorToast("Something went wrong");
+    //   console.error(err);
+    // }
   };
+
   return (
     <ScreenLayout>
       <BackHeader
@@ -71,9 +78,9 @@ export default function VarietyAndPlatingDetailsScreen() {
         <VarietAndPlatingDetails errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          // submitLabel={data ? "Update" : "Save"}
+          submitLabel={data ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
-          // disabled={isSaving || isUpdating}
+          disabled={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

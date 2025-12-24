@@ -3,19 +3,28 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 // import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { PlantProtectionSchema } from "@/src/modules/orchards/schemas/PlantProtectionSchema";
+import { ROUTES } from "@/src/constants/routes";
+import {
+  useCreatePlantProtectionMutation,
+  usePlantProtectionQuery,
+  useUpdatePlantProtectionMutation,
+} from "@/src/hooks/useOrchardsQuery";
+import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
-import PlantProtection from "../form-sections/Plant Protection & Health";
+import PlantProtection from "../form-sections/PlantProtectionSection";
 
 export default function PlantProtectionScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
-  //   const { data } = useVendorProfileQuery(userData.id);
-  //   const { mutateAsync: save } = useVendorProfileMutation();
-  //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
+  const { data } = usePlantProtectionQuery(1);
+  const { mutateAsync: save, isPending: isSaving } =
+    useCreatePlantProtectionMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useUpdatePlantProtectionMutation();
 
-  const form = useZodForm(PlantProtectionSchema);
+  const form = useZodForm();
+  // const form = useZodForm(PlantProtectionSchema);
   const {
     setValue,
     handleSubmit,
@@ -38,29 +47,29 @@ export default function PlantProtectionScreen() {
   //     });
   //   }, [data]);
 
-  //   const onSubmit = async (val: any) => {
-  //     try {
-  //       if (data) {
-  //         const payload = { id: vendorData.id, ...val };
-  //         await update(payload);
-  //       } else {
-  //         const payload = { userId: userData.id, ...val };
-  //         const res = await save(payload);
+  const onSubmit = async (val: any) => {
+    router.push(ROUTES.ORCHARDS.REGISTRATION.PRODUCTION_INFO);
 
-  //         setVendorData({
-  //           profileId: res.id,
-  //         });
-  //       }
+    // try {
+    //   if (data) {
+    //     const payload = { id: vendorData.id, ...val };
+    //     await update(payload);
+    //   } else {
+    //     const payload = { userId: userData.id, ...val };
+    //     const res = await save(payload);
 
-  //       router.push("/auth/vendor/vendor-profile-screen");
-  //     } catch (err) {
-  //       showErrorToast("Something went wrong");
-  //       console.error(err);
-  //     }
-  //   };
-  const onSubmit = () => {
-    console.log("subited");
+    //     setVendorData({
+    //       profileId: res.id,
+    //     });
+    //   }
+
+    //   router.push("/auth/vendor/vendor-profile-screen");
+    // } catch (err) {
+    //   showErrorToast("Something went wrong");
+    //   console.error(err);
+    // }
   };
+
   return (
     <ScreenLayout>
       <BackHeader
@@ -71,9 +80,9 @@ export default function PlantProtectionScreen() {
         <PlantProtection errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          // submitLabel={data ? "Update" : "Save"}
+          submitLabel={data ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
-          // disabled={isSaving || isUpdating}
+          disabled={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

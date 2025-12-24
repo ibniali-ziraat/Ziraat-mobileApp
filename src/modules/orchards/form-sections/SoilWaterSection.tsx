@@ -5,13 +5,12 @@ import { TouchableOpacity, View } from "react-native";
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
 import FormFileInput from "@/src/components/form/inputs/FormFileInput";
 import FormInput from "@/src/components/form/inputs/FormInput";
-import RadioGroup from "@/src/components/form/inputs/RadioButton";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 
+import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
 import CsText from "@/src/components/shared/CsText";
 import {
   irrigationOptions,
-  soilHealthOptions,
   soilTypeOptions,
   waterAvailabilityOptions,
   waterSourceOptions,
@@ -19,6 +18,22 @@ import {
 } from "@/src/modules/orchards/schemas/SoilWaterProfileSchema";
 
 export default function SoilAndWaterProfile({ control, errors }) {
+  const SOIL_HEALTH_OPTIONS = [
+    "Strongly Acidic",
+    "Moderately Acidic",
+    "Slightly Acidic",
+    "Neutral",
+    "Slightly Alkaline",
+    "Moderately Alkaline",
+    "Strongly Alkaline",
+    "Saline",
+    "Sodic",
+    "Not Known",
+  ].map((x) => ({
+    label: x,
+    value: x,
+  }));
+
   const lastSoilTestDone = useWatch({
     control,
     name: "lastSoilTestDone",
@@ -39,56 +54,103 @@ export default function SoilAndWaterProfile({ control, errors }) {
 
   return (
     <View className="flex-1 w-full p-4">
-      {/* ---- Title ---- */}
-      {/* <CsText className="text-2xl font-bold mb-6 text-center text-primary">
-        Soil & Water Profile
-     </CsText> */}
-
       <View className="bg-white ">
-        {/* <CsText className="text-lg font-semibold mb-3 text-gray-800">
-          Soil Information
-       </CsText> */}
-
         <SingleSelectInput
           control={control}
           name="soilType"
           label="Soil Type"
+          modalLabel="Soil Type"
           options={soilTypeOptions.map((v) => ({ label: v, value: v }))}
           error={errors?.soilType?.message}
         />
 
-        <RadioGroup
-          control={control}
+        <MultiSelectInput
           name="soilHealth"
+          control={control}
           label="Soil Health"
-          options={soilHealthOptions}
+          options={SOIL_HEALTH_OPTIONS}
           error={errors?.soilHealth?.message}
         />
 
-        <RadioGroup
+        {/* <SingleSelectInput
+          control={control}
+          name="lastSoilTestDone"
+          label="Last Soil Test Done?"
+          modalLabel="Soil Type"
+          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
+          error={errors?.lastSoilTestDone?.message}
+        /> */}
+
+        {/* <RadioGroup
           control={control}
           name="lastSoilTestDone"
           label="Last Soil Test Done?"
           options={yesNoOptions}
           error={errors?.lastSoilTestDone?.message}
-        />
+        /> */}
 
-        {lastSoilTestDone === "Yes" && (
-          <FormDateInput
-            control={control}
-            name="lastSoilTestDate"
-            label="Latest Soil Test Date"
-            error={errors?.lastSoilTestDate?.message}
-          />
-        )}
+        {/* {lastSoilTestDone === "Yes" && ( */}
+        <FormDateInput
+          control={control}
+          name="lastSoilTestDate"
+          label="Latest Soil Test Date"
+          error={errors?.lastSoilTestDate?.message}
+        />
+        {/* )} */}
+
+        {/* <SingleSelectInput
+          control={control}
+          name="lastSoilTestDate"
+          label="Last Soil Test Done?"
+          modalLabel="Soil Type"
+          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
+          error={errors?.lastSoilTestDate?.message}
+        /> */}
       </View>
 
       <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
-        <RadioGroup
+        <CsText className="text-lg font-semibold mb-3 text-gray-800">
+          Water Information
+        </CsText>
+
+        <SingleSelectInput
+          control={control}
+          name="waterSource"
+          label="Water Source"
+          modalLabel="Water Source"
+          options={waterSourceOptions.map((v) => ({ label: v, value: v }))}
+          error={errors?.waterSource?.message}
+        />
+
+        <SingleSelectInput
+          control={control}
+          name="irrigationMethod"
+          label="Irrigation Method"
+          modalLabel="Irrigation Method"
+          options={irrigationOptions.map((v) => ({ label: v, value: v }))}
+          error={errors?.irrigationMethod?.message}
+        />
+
+        <SingleSelectInput
+          control={control}
+          name="waterAvailability"
+          label="Water Availability"
+          modalLabel="Water Availability"
+          options={waterAvailabilityOptions.map((v) => ({
+            label: v,
+            value: v,
+          }))}
+          error={errors?.waterAvailability?.message}
+        />
+      </View>
+
+      <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
+        <SingleSelectInput
           control={control}
           name="soilTestRecordsDone"
           label="Soil Test Records Available?"
-          options={yesNoOptions}
+          modalLabel="Soil Records Available"
+          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
           error={errors?.soilTestRecordsDone?.message}
         />
 
@@ -100,10 +162,10 @@ export default function SoilAndWaterProfile({ control, errors }) {
             >
               <CsText className="text-lg font-semibold text-gray-800">
                 Soil Records
-             </CsText>
+              </CsText>
               <CsText className="text-primary text-sm">
                 {open ? "Hide ▲" : "Show ▼"}
-             </CsText>
+              </CsText>
             </TouchableOpacity>
 
             {open && (
@@ -157,16 +219,13 @@ export default function SoilAndWaterProfile({ control, errors }) {
       </View>
 
       <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
-        <CsText className="text-lg font-semibold mb-3 text-gray-800">
-          Soil Test Report Upload
-       </CsText>
-
-        <RadioGroup
+        <SingleSelectInput
           control={control}
           name="soilTestFileToggle"
           label="Upload Soil Test Report?"
-          options={yesNoOptions}
+          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
           error={errors?.soilTestFileToggle?.message}
+          modalLabel="Soil Test Report"
         />
 
         {soilTestFileToggle === "Yes" && (
@@ -177,39 +236,6 @@ export default function SoilAndWaterProfile({ control, errors }) {
             error={errors?.soilTestFile}
           />
         )}
-      </View>
-
-      <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
-        <CsText className="text-lg font-semibold mb-3 text-gray-800">
-          Water Information
-       </CsText>
-
-        <SingleSelectInput
-          control={control}
-          name="waterSource"
-          label="Water Source"
-          options={waterSourceOptions.map((v) => ({ label: v, value: v }))}
-          error={errors?.waterSource?.message}
-        />
-
-        <SingleSelectInput
-          control={control}
-          name="irrigationMethod"
-          label="Irrigation Method"
-          options={irrigationOptions.map((v) => ({ label: v, value: v }))}
-          error={errors?.irrigationMethod?.message}
-        />
-
-        <SingleSelectInput
-          control={control}
-          name="waterAvailability"
-          label="Water Availability"
-          options={waterAvailabilityOptions.map((v) => ({
-            label: v,
-            value: v,
-          }))}
-          error={errors?.waterAvailability?.message}
-        />
       </View>
     </View>
   );
