@@ -12,6 +12,8 @@ import { IndianRupee, Package } from "lucide-react-native";
 // Imported FlatList
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { typography } from "@/src/constants/fonts/typography";
 import { FlatList, ToastAndroid, View } from "react-native";
 import faqData from "../../data/Faq.json";
 import products from "../../data/products.json";
@@ -19,25 +21,34 @@ import products from "../../data/products.json";
 // --- START: renderHeader Function (Content moved from ScreenLayout) ---
 const renderHeader = (product, colors) => (
   <>
-    <ProductDetailCarousel photos={product.photos} label={product.label} />
+  <ScreenLayout>
+<ProductDetailCarousel photos={product.photos} label={product.label} />
 
-    <View className="mt-8 px-4">
-      <CsText className="text-4xl font-bold text-dark mb-2">
+    <View className="mt-8 ">
+      <CsText 
+      style ={[typography.heading_xl_semibold]}
+      
+      className=" text-dark ">
         {String(product.title)}
      </CsText>
 
       <CsText className="text-xl mb-1">Category: {String(product.category)}</CsText>
 
       {product.saltComposition && (
-        <CsText className="text-xl mb-2 text-dark">
-          <CsText className="font-semibold text-primary">
+        <CsText 
+        
+        
+        className="text-xl  text-dark">
+          <CsText 
+          
+          className=" text-primary">
             {String(product.saltComposition)}
          </CsText>
        </CsText>
       )}
 
       {/* PRICE + DISCOUNT */}
-      <View className="flex-row items-center mb-2 w-full">
+      <View className="flex-row items-center pb-2 w-full">
         <View className="flex-row items-center">
           <IndianRupee size={16} color={colors.dark} />
           <CsText
@@ -50,7 +61,7 @@ const renderHeader = (product, colors) => (
         </View>
 
         {product.discountPrice && (
-          <View className="flex-row items-center ml-2">
+          <View className="flex-row items-center ">
             <IndianRupee size={20} color={colors.dark} />
             <CsText className="text-3xl font-bold text-dark">
               {String(product.discountPrice)}
@@ -68,16 +79,16 @@ const renderHeader = (product, colors) => (
       </View>
 
       {/* RATING */}
-      <View className="flex-row justify-start mb-6">
+      <View className="flex-row justify-start pb-4">
         <RatingStars rating={product.rating} />
       </View>
 
-      <CsText className="font-semibold text-xl mb-2">Product Description:</CsText>
+      <CsText className="font-semibold  mb-2">Product Description:</CsText>
 
       {/* DESCRIPTION */}
       {Array.isArray(product.description) ? (
         product.description.map((desc, index) => (
-          <CsText key={index} className="text-dark text-[15px] mb-2 text-justify">
+          <CsText key={index} className="text-dark  mb-2 text-justify">
             {String(desc)}
          </CsText>
         ))
@@ -123,6 +134,9 @@ const renderHeader = (product, colors) => (
        </CsText>
       )}
     </View>
+
+  </ScreenLayout>
+    
   </>
 );
 // --- END: renderHeader Function ---

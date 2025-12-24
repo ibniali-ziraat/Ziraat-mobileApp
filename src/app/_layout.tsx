@@ -13,7 +13,6 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 
-<<<<<<< HEAD
 import {
   Poppins_100Thin,
   Poppins_100Thin_Italic,
@@ -34,8 +33,6 @@ import {
   Poppins_900Black,
   Poppins_900Black_Italic,
 } from "@expo-google-fonts/poppins";
-=======
->>>>>>> 5387be7ce70d78ec470e3176db8333f9750e8204
 
 import "../../styles/global.css";
 import RouteGuard from "../components/RouteGuard";

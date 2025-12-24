@@ -18,11 +18,11 @@ export default function ProductScreen() {
   ];
 
   return (
-    <ScreenLayout className="py-4 bg-light">
+    <ScreenLayout>
       {sections.map((section, index) => (
         <View key={index}>
           <View className="flex-row items-center mt-6 mb-4">
-            <CsText className="text-xl font-bold text-dark">{section.title}</CsText>
+            <CsText className="text-dark">{section.title}</CsText>
             <ChevronRight size={20} color={colors.dark} className="ml-1" />
           </View>
 

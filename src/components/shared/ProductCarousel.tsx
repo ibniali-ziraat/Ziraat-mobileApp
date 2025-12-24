@@ -12,11 +12,13 @@ import {
 import RatingStars from "../../components/shared/RatingStars";
 import { colors } from "../../constants/colors";
 
+import { typography } from "@/src/constants/fonts/typography";
 import {
   addToWishlist,
   isInWishlist,
   removeFromWishlist,
 } from "@/src/utils/wishlistStore";
+import { router } from "expo-router";
 import CsText from "./CsText";
 
 export default function ProductCarousel({
@@ -77,7 +79,7 @@ export default function ProductCarousel({
 
                   {item.label && (
                     <View className="absolute top-2 left-2 bg-primary px-2 py-1 rounded-lg">
-                      <CsText className="text-white text-[10px] font-semibold">
+                      <CsText style= {[typography.caption_xs_regular]} className="text-white ">
                         {item.label}
                      </CsText>
                     </View>
@@ -103,7 +105,8 @@ export default function ProductCarousel({
                 </View>
 
                 <CsText
-                  className="font-semibold text-[18px] mt-2 w-full px-2"
+                style ={[typography.subHeading_m_semibold]}
+                  className="mt-2 w-full px-2"
                   numberOfLines={1}
                 >
                   {item.title}
@@ -111,32 +114,47 @@ export default function ProductCarousel({
 
                 {item.category && (
                   <CsText
-                    className="text-dark text-[14px] w-full px-2 mt-1"
+                  style ={[typography.caption_s_regular]}
+                    className="text-dark  w-full px-2 mt-1"
                     numberOfLines={1}
                   >
                     {item.category}
                  </CsText>
                 )}
 
-                <View className="flex-row items-center mt-1 w-full px-2">
+                <View className="flex-row items-center pt-2 w-full px-2"
+                
+                >
                   {item.discountPrice ? (
                     <>
-                      <CsText className="text-dark line-through text-[14px] mr-5">
+                      <CsText 
+                      style ={[typography.caption_s_regular]}
+                      
+                      className="text-dark line-through pr-3">
                         ₹{item.price}
                      </CsText>
 
-                      <CsText className="text-primary font-bold text-[16px] mr-1">
+                      <CsText 
+                      style ={[typography.caption_s_medium]}
+                      
+                      className="text-primary pr-3 ">
                         ₹{item.discountPrice}
                      </CsText>
 
                       {discountPercent && (
-                        <CsText className="text-secondary text-[14px] font-semibold">
+                        <CsText 
+                        style ={[typography.description_xs_regular]}
+                        
+                        className="text-secondary">
                           {discountPercent}% OFF
                        </CsText>
                       )}
                     </>
                   ) : (
-                    <CsText className="text-primary font-semibold text-[18px]">
+                    <CsText 
+                      style ={[typography.caption_s_medium]}
+                    
+                    className="text-primary text-[18px]">
                       ₹{item.price}
                    </CsText>
                   )}

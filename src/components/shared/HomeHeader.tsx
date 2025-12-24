@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
@@ -20,10 +21,14 @@ const HomeHeader = () => {
       style={{ borderBottomColor: colors.neutral }}
     >
       <View>
-        <CsText  variant= "subheading" className="text-md" style={{ color: colors.dark }}>
+        <CsText   className="text-md" style={[typography.subHeading_m_semibold,]}>
           Welcome
         </CsText>
-        <CsText variant= "title"  style={{ color: colors.dark }}>
+        <CsText   style={[ {color: colors.dark,},
+          typography.subHeading_m_regular,
+
+
+        ]}>
           {title}
         </CsText>
       </View>

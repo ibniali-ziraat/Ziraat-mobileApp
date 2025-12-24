@@ -1,6 +1,7 @@
 // components/home/QuickActions.tsx
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors"; // use your global theme
+import { typography } from "@/src/constants/fonts/typography";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
@@ -72,7 +73,7 @@ export default function QuickActions() {
               {item.title}
            </CsText> */}
 
-            <CsText className="text-center"variant="title">{item.title}</CsText>
+            <CsText style ={[typography.caption_s_regular]}>{item.title}</CsText>
 
            
           </TouchableOpacity>
