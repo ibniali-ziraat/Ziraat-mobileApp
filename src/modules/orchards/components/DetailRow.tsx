@@ -1,4 +1,6 @@
-import { Text, View } from "react-native";
+import CsText from "@/src/components/shared/CsText";
+import { typography } from "@/src/constants/fonts/typography";
+import { View } from "react-native";
 
 export default function DetailRow({
   label,
@@ -9,14 +11,14 @@ export default function DetailRow({
 }) {
   return (
     <View className="flex-row justify-between py-2">
-      <Text className="text-[14px] font-medium text-black">
+      <CsText style={[typography.subtitle_xs_semibold]}>
         {label}
-      </Text>
-      <Text className="text-[13px] font-semibold text-black text-right max-w-[60%]">
+      </CsText>
+      <CsText className="text-right max-w-[60%]" style={[typography.subtitle_xs_medium]}>
         {value !== undefined && value !== null && value !== ""
           ? String(value)
           : "-"}
-      </Text>
+      </CsText>
     </View>
   );
 }

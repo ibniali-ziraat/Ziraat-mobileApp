@@ -5,12 +5,14 @@ import orchardsData from "@/src/data/myOrchardsData.json";
 import { orchardDetailImagesById } from "@/src/data/orchardDetailImages";
 
 import { useLocalSearchParams } from "expo-router";
-import { Image, Text, View } from "react-native";
+import { Image, View } from "react-native";
 
+import CsText from "@/src/components/shared/CsText";
 import AddressDetails from "./components/AddressDetails";
 import BasicInformation from "./components/BasicInformation";
 import CropAndNutrition from "./components/CropAndNutrition";
 import FarmInfrastructure from "./components/FarmInfrastructure";
+import FutureReadinessAndLinkages from "./components/FutureReadinessAndLinkages";
 import GeoLocation from "./components/GeoLocation";
 import InputCostDetails from "./components/InputCostDetails";
 import PlantProtection from "./components/PlantProtection";
@@ -28,7 +30,7 @@ export default function OrchardDetail() {
   if (!orchard) {
     return (
       <View className="flex-1 items-center justify-center">
-        <Text>Orchard not found</Text>
+        <CsText>Orchard not found</CsText>
       </View>
     );
   }
@@ -36,7 +38,9 @@ export default function OrchardDetail() {
   const images = orchardDetailImagesById[String(orchard.id)];
 
   return (
-    <ScreenLayout className="flex-1 bg-light">
+    <ScreenLayout 
+    
+    className="flex-1 bg-light">
       <BackHeader
         title="Orchard Details"
         desc="Detailed orchard profile and management information"
@@ -103,6 +107,10 @@ export default function OrchardDetail() {
       <InputCostDetails
         data={orchard.input_cost_details}
       />
+
+      <FutureReadinessAndLinkages
+  data={orchard?.future_readiness_and_linkages}
+/>
     </ScreenLayout>
   );
 }

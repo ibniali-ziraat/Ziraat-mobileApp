@@ -95,6 +95,12 @@
       "pesticide_supplier_location": "From Town",
       "payment_type": "Mixed",
       "credit_period": "Crop Season"
+    },
+      "future_readiness_and_linkages":{
+    "government_schemes_availed": ["PMFBY"],
+    "fpo_or_cooperative_membership": "Apple Growers FPO",
+    "certifications": ["GAP"],
+    "digital_tools_used": ["Weather App", "Soil Health Card Portal"]
     }
   },
 
@@ -179,7 +185,13 @@
       "pesticide_supplier_location": "Village Level",
       "payment_type": "Cash purchase",
       "credit_period": "No limits"
-    }
+    },
+  "future_readiness_and_linkages": {
+    "government_schemes_availed": [],
+    "fpo_or_cooperative_membership": null,
+    "certifications": [],
+    "digital_tools_used": []
+  }
   },
 
   {
@@ -229,7 +241,13 @@
         "end_month": "November"
       },
       "selling_preference": ["Commission Agent"]
-    }
+    },
+  "future_readiness_and_linkages": {
+    "government_schemes_availed": ["Horticulture Mission"],
+    "fpo_or_cooperative_membership": null,
+    "certifications": [],
+    "digital_tools_used": ["Weather App"]
+  }
   },
 
   {
@@ -264,7 +282,13 @@
       "water_source": ["Canal"],
       "irrigation_method": "Sprinkler",
       "water_availability": "Round-the-year"
-    }
+    },
+       "future_readiness_and_linkages": {
+    "government_schemes_availed": [],
+    "fpo_or_cooperative_membership": null,
+    "certifications": [],
+    "digital_tools_used": []
+       }
   },
 
   {
@@ -304,6 +328,13 @@
         "end_month": "July"
       },
       "selling_preference": ["Local Mandi", "Direct Buyer"]
-    }
+    },
+
+  "future_readiness_and_linkages": {
+  "government_schemes_availed": [],
+  "fpo_or_cooperative_membership": null,
+  "certifications": [],
+  "digital_tools_used": []
+}
   }
 ]

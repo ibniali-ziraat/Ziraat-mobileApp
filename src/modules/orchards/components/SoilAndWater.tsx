@@ -1,5 +1,7 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { Text, View } from "react-native";
+import { typography } from "@/src/constants/fonts/typography";
+import { View } from "react-native";
 import DetailRow from "../components/DetailRow";
 
 export default function SoilAndWater({ data }: any) {
@@ -8,9 +10,9 @@ export default function SoilAndWater({ data }: any) {
   return (
     <ZiraatCard width="100%" marginBottom={2}>
       <View className="p-4">
-        <Text className="text-lg font-bold text-black mb-3">
+        <CsText className="mb-3" style={[typography.heading_m_semibold]}>
           Soil & Water Profile
-        </Text>
+        </CsText>
 
         <DetailRow label="Soil Type" value={data.soil_type} />
         <DetailRow label="Soil Health" value={data.soil_health_status} />

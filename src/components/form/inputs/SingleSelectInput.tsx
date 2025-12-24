@@ -12,10 +12,6 @@ import {
   View
 } from "react-native";
 import { HelperText } from "react-native-paper";
-<<<<<<< HEAD
-import CsText from "../../shared/CsText";
-=======
->>>>>>> 5387be7ce70d78ec470e3176db8333f9750e8204
 
 interface Option {
   label: string;
