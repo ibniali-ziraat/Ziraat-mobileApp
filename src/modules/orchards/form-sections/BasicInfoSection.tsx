@@ -2,8 +2,9 @@ import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
+import { router } from "expo-router";
 import { useEffect } from "react";
-import { View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function BasicInfo({ control, errors, data }) {
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
@@ -47,7 +48,6 @@ export default function BasicInfo({ control, errors, data }) {
           label="Orchard Name"
           errors={errors?.orchardName?.message}
         />
-
         <FormInput
           control={control}
           name="orchardSize"
@@ -55,7 +55,6 @@ export default function BasicInfo({ control, errors, data }) {
           type="phone"
           errors={errors?.orchardSize?.message}
         />
-
         <SingleSelectInput
           searchable
           control={control}
@@ -73,7 +72,6 @@ export default function BasicInfo({ control, errors, data }) {
           options={PLANTATION_PATTERN_OPTIONS}
           error={errors?.plantationPattern}
         />
-
         <SingleSelectInput
           control={control}
           name="ownershipType"
@@ -93,7 +91,6 @@ export default function BasicInfo({ control, errors, data }) {
           disabled={!districts.length}
           error={errors.district}
         />
-
         {/* Tehsil */}
         <SingleSelectInput
           control={control}
@@ -105,29 +102,12 @@ export default function BasicInfo({ control, errors, data }) {
           disabled={!tehsils.length}
           error={errors.tehsil}
         />
-
-        {/* 
-        <FormInput
-          control={control}
-          name="district"
-          label="District"
-          errors={errors?.district?.message}
-        />
-
-        <FormInput
-          control={control}
-          name="tehsil"
-          label="Tehsil"
-          errors={errors?.tehsil?.message}
-        /> */}
-
         {/* <FormInput
           control={control}
           name="zone"
           label="Zone"
           errors={errors?.zone?.message}
         /> */}
-
         <FormInput
           control={control}
           name="pincode"
@@ -135,7 +115,6 @@ export default function BasicInfo({ control, errors, data }) {
           type="phone"
           errors={errors?.pincode?.message}
         />
-
         {/* <FormInput
           control={control}
           name="latitude"
@@ -151,6 +130,12 @@ export default function BasicInfo({ control, errors, data }) {
           type="phone"
           errors={errors?.longitude?.message}
         /> */}
+        <TouchableOpacity onPress={() => router.push("/test2")}>
+          <Text>Measure Plot By Walking</Text>
+        </TouchableOpacity>{" "}
+        <TouchableOpacity onPress={() => router.push("/test")}>
+          <Text>Measure Plot By Tap</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
