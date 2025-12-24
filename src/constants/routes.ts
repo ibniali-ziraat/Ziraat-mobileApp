@@ -143,5 +143,6 @@ export const ROUTES = {
     MENU: "/(tabs)/menu",
     HOME: "/(tabs)",
     PROFILE: "/(tabs)/profile",
+    ORCHARDS: "/(tabs)/orchards",
   },
 } as const;

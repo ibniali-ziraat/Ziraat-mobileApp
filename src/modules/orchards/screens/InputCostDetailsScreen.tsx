@@ -8,10 +8,9 @@ import {
   useUpdateInputCostMutation,
 } from "@/src/hooks/useOrchardsQuery";
 import { useZodForm } from "@/src/hooks/useZodForm";
-import { InputCostDetailsSchema } from "@/src/modules/orchards/schemas/InputCostDetailsSchema";
 import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
-import InputCostDetails from "../form-sections/InputCostSection.tsx";
+import InputCostDetails from "../form-sections/InputCostSection";
 
 export default function InputCostDetailsScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
@@ -23,7 +22,8 @@ export default function InputCostDetailsScreen() {
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateInputCostMutation();
 
-  const form = useZodForm(InputCostDetailsSchema);
+  // const form = useZodForm(InputCostDetailsSchema);
+  const form = useZodForm();
   const {
     setValue,
     handleSubmit,
