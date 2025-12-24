@@ -46,7 +46,6 @@ export default function TabLayout() {
         //   shadowRadius: 5,
         //   paddingBottom: insets.bottom + 50,
         // },
-        // optional safety net
 
         tabBarStyle: {
           height: 64 + Math.max(insets.bottom, 8),

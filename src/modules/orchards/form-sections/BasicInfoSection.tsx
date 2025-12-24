@@ -7,14 +7,12 @@ import { View } from "react-native";
 
 export default function BasicInfo({ control, errors, data }) {
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
-  const { states, districts, tehsils, setSelectedState, setSelectedDistrict } =
-    useCascadingLocation();
+  // const { states, districts, tehsils, setSelectedState, setSelectedDistrict } =
+  //   useCascadingLocation();
+  const { districts, tehsils, setSelectedDistrict } =
+    useCascadingLocation("Jammu and Kashmir");
 
   useEffect(() => {
-    if (data?.state) {
-      setSelectedState(data.state);
-    }
-
     if (data?.district) {
       setSelectedDistrict(data.district);
     }
@@ -86,18 +84,6 @@ export default function BasicInfo({ control, errors, data }) {
         />
         <SingleSelectInput
           control={control}
-          modalLabel="State"
-          name="state"
-          label="State"
-          options={states.map((s) => ({ label: s, value: s }))}
-          onValueChange={(value) => {
-            setSelectedState(value as string);
-            setSelectedDistrict(null);
-          }}
-          error={errors.state}
-        />
-        <SingleSelectInput
-          control={control}
           modalLabel="District"
           name="district"
           label="District"
@@ -119,6 +105,7 @@ export default function BasicInfo({ control, errors, data }) {
           disabled={!tehsils.length}
           error={errors.tehsil}
         />
+
         {/* 
         <FormInput
           control={control}
