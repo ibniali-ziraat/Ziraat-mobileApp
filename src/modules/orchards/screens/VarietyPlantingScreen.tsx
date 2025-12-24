@@ -5,7 +5,7 @@ import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { VarietyAndPlatingDetailsSchema } from "@/src/modules/orchards/schemas/VarietyAndPlatingDetailsSchema";
 import { FormProvider } from "react-hook-form";
-import VarietAndPlatingDetails from "../form-sections/Variety & Planting Details ";
+import VarietAndPlatingDetails from "../form-sections/VarietyPlantingSection";
 
 export default function VarietyAndPlatingDetailsScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
