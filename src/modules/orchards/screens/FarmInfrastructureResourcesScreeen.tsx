@@ -47,7 +47,7 @@ export default function FarmInfrastuctureScreen() {
   }, [data]);
 
   const onSubmit = async (val: any) => {
-    router.push(ROUTES.ORCHARDS.REGISTRATION.FUTURE_INFO);
+    router.push(ROUTES.ORCHARDS.REGISTRATION.INPUT_COST_INFO);
     // try {
     //   if (data) {
     //     const payload = { id: vendorData.id, ...val };

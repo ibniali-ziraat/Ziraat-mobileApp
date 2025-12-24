@@ -1,86 +1,92 @@
 // StepE_PlantProtection.js
 import { View } from "react-native";
 
-import CheckboxGroup from "@/src/components/form/inputs/Checkbox";
-import FormInput from "@/src/components/form/inputs/FormInput";
-import RadioGroup from "@/src/components/form/inputs/RadioButton";
+import ChipInput from "@/src/components/form/inputs/ChipInput";
+import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
+import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { FormSectionProps } from "@/src/types/formSectionProps";
 
 export default function PlantProtection({ control, errors }: FormSectionProps) {
-  const diseaseList = [
+  const insuranceOptions = ["Yes", "No"];
+  const DISEASE_LIST = [
     "Scab",
     "Alternaria",
     "Powdery Mildew",
     "Fire Blight",
     "Marssonina",
     "Root Rot",
-  ];
+  ].map((x) => ({ label: x, value: x }));
 
-  const pestList = [
+  const PEST_LIST = [
     "Aphids",
     "Mites",
     "Codling Moth",
     "Leaf Miner",
     "San Jose Scale",
     "Borers",
-  ];
-
-  const insuranceOptions = ["Yes", "No"];
+  ].map((x) => ({ label: x, value: x }));
 
   return (
     <View className="flex-1 w-full">
-
-      {/* PAGE HEADING */}
-      {/* <CsText className="text-2xl font-bold mb-4 text-center text-primary">
-        Plant Protection & Health
-     </CsText> */}
-
-      {/* CARD */}
       <View className="bg-light w-full">
-
         {/* <CsText className="text-lg font-semibold mb-3 text-primary">
           Plant Protection & Health
        </CsText> */}
 
         {/* 1️⃣ Disease History */}
-        <CheckboxGroup
+        {/* <CheckboxGroup
           control={control}
           name="diseases"
           label="Disease History"
           options={diseaseList}
           error={errors.diseases?.message}
-        />
+        /> */}
 
-        {/* 2️⃣ Pest History */}
-        <CheckboxGroup
+        <MultiSelectInput
+          name="diseases"
           control={control}
-          name="pests"
-          label="Pest History"
-          options={pestList}
-          error={errors.pests?.message}
+          label="Disease History"
+          options={DISEASE_LIST}
+          error={errors?.diseases?.message}
         />
 
-        {/* 3️⃣ Spray Schedule */}
-        <FormInput
+        <MultiSelectInput
+          name="pests"
+          control={control}
+          label="Pest History"
+          options={PEST_LIST}
+          error={errors?.pests?.message}
+        />
+
+        {/* <FormInput
           control={control}
           name="spraySchedule"
           label="Spray Schedule (Optional)"
           optional={true}
           icon="calendar-clock"
           error={errors.spraySchedule?.message}
+        /> */}
+
+        <ChipInput
+          control={control}
+          name="spraySchedule"
+          label="Spray Schedule (Optional)"
+          placeholder="Spray Schedule "
+          error={errors?.spraySchedule}
         />
 
-        {/* 4️⃣ Crop Insurance */}
-        <RadioGroup
+        <SingleSelectInput
           control={control}
           name="cropInsurance"
+          modalLabel="Crop Insurance"
           label="Crop Insurance Coverage"
-          options={insuranceOptions}
-          error={errors.cropInsurance?.message}
+          options={[
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+          ]}
+          error={errors.cropInsurance}
         />
-
       </View>
-
     </View>
   );
 }

@@ -8,7 +8,6 @@ import {
   useUpdateOrchardExtraMutation,
 } from "@/src/hooks/useOrchardsQuery";
 import { useZodForm } from "@/src/hooks/useZodForm";
-import { OptionalFutureFieldsSchema } from "@/src/modules/orchards/schemas/OptionalFutureFieldsSchema";
 import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
 import OptionalFutureFields from "../form-sections/FutureFieldSection";
@@ -23,7 +22,8 @@ export default function FutureProofFieldScreen() {
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateOrchardExtraMutation();
 
-  const form = useZodForm(OptionalFutureFieldsSchema);
+  const form = useZodForm();
+  // const form = useZodForm(OptionalFutureFieldsSchema);
   const {
     setValue,
     handleSubmit,
@@ -47,7 +47,7 @@ export default function FutureProofFieldScreen() {
   //   }, [data]);
 
   const onSubmit = async (val: any) => {
-    router.push(ROUTES.ORCHARDS.REGISTRATION.INPUT_COST_INFO);
+    router.push(ROUTES.TABS.ORCHARDS);
     // try {
     //   if (data) {
     //     const payload = { id: vendorData.id, ...val };

@@ -58,6 +58,7 @@ export default function ProductionMarketing({ control, errors }: any) {
           name="sellingPreference"
           label="Selling Preference"
           options={sellingOptions}
+          modalLabel="Selling Preference"
           error={errors.sellingPreference?.message}
         />
 

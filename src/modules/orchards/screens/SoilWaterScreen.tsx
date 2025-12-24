@@ -3,7 +3,13 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 // import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { SoilWaterProfileSchema } from "@/src/modules/orchards/schemas/SoilWaterProfileSchema";
+import { ROUTES } from "@/src/constants/routes";
+import {
+  useCreateSoilWaterMutation,
+  useSoilWaterQuery,
+  useUpdateSoilWaterMutation,
+} from "@/src/hooks/useOrchardsQuery";
+import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
 import SoilAndWaterProfile from "../form-sections/SoilWaterSection";
 
@@ -11,11 +17,14 @@ export default function SoilAndWaterProfileScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
-  //   const { data } = useVendorProfileQuery(userData.id);
-  //   const { mutateAsync: save } = useVendorProfileMutation();
-  //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
+  const { data } = useSoilWaterQuery(1);
+  const { mutateAsync: save, isPending: isSaving } =
+    useCreateSoilWaterMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useUpdateSoilWaterMutation();
 
-  const form = useZodForm(SoilWaterProfileSchema);
+  // const form = useZodForm(SoilWaterProfileSchema);
+  const form = useZodForm();
   const {
     setValue,
     handleSubmit,
@@ -38,29 +47,28 @@ export default function SoilAndWaterProfileScreen() {
   //     });
   //   }, [data]);
 
-  //   const onSubmit = async (val: any) => {
-  //     try {
-  //       if (data) {
-  //         const payload = { id: vendorData.id, ...val };
-  //         await update(payload);
-  //       } else {
-  //         const payload = { userId: userData.id, ...val };
-  //         const res = await save(payload);
+  const onSubmit = async (val: any) => {
+    router.push(ROUTES.ORCHARDS.REGISTRATION.VARIETY_INFO);
+    // try {
+    //   if (data) {
+    //     const payload = { id: vendorData.id, ...val };
+    //     await update(payload);
+    //   } else {
+    //     const payload = { userId: userData.id, ...val };
+    //     const res = await save(payload);
 
-  //         setVendorData({
-  //           profileId: res.id,
-  //         });
-  //       }
+    //     setVendorData({
+    //       profileId: res.id,
+    //     });
+    //   }
 
-  //       router.push("/auth/vendor/vendor-profile-screen");
-  //     } catch (err) {
-  //       showErrorToast("Something went wrong");
-  //       console.error(err);
-  //     }
-  //   };
-  const onSubmit = () => {
-    console.log("subited");
+    //   router.push("/auth/vendor/vendor-profile-screen");
+    // } catch (err) {
+    //   showErrorToast("Something went wrong");
+    //   console.error(err);
+    // }
   };
+
   return (
     <ScreenLayout>
       <BackHeader title="Orchard Registration" desc="Soil and Water Profile" />
@@ -68,9 +76,9 @@ export default function SoilAndWaterProfileScreen() {
         <SoilAndWaterProfile errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          // submitLabel={data ? "Update" : "Save"}
+          submitLabel={data ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
-          // disabled={isSaving || isUpdating}
+          disabled={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>
