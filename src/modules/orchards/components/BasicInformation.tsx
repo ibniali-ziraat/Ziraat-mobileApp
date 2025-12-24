@@ -8,7 +8,7 @@ export default function BasicInformation({ orchard }: any) {
   return (
     <ZiraatCard width="100%" marginBottom={2}>
       <View className="p-4">
-        <CsText style={[typography.heading_m_semibold]}>
+        <CsText style={[typography.Poppins_m_semibold]}>
           Basic Information
         </CsText>
 
