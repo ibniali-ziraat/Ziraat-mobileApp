@@ -1,19 +1,16 @@
-import { ScrollView, TouchableOpacity, View } from "react-native";
-
-import FarmOverviewChart from "./components/FarmOverviewChart";
-
-import { router } from "expo-router";
-import FarmerTipsCard from "./components/FarmerTipsCard";
-import QuickActions from "./components/QuickActions";
-import SectionTitle from "./components/SectionTitle";
-import WeatherCard from "./components/weatherCard";
-
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import ProductCarousel from "@/src/components/shared/ProductCarousel";
 import { imageMapper } from "@/src/data/imageMapper";
 import products from "@/src/data/products.json";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
+import { router } from "expo-router";
 import { useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
+import FarmerTipsCard from "./components/FarmerTipsCard";
+import FarmOverviewChart from "./components/FarmOverviewChart";
+import QuickActions from "./components/QuickActions";
+import SectionTitle from "./components/SectionTitle";
+import WeatherCard from "./components/weatherCard";
 
 export default function HomeScreen() {
   const [cityData, setCityData] = useState("srinagar");
