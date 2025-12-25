@@ -17,6 +17,7 @@ import {
   isInWishlist,
   removeFromWishlist,
 } from "@/src/utils/wishlistStore";
+import { router } from "expo-router";
 import CsText from "./CsText";
 
 export default function ProductCarousel({
@@ -77,7 +78,7 @@ export default function ProductCarousel({
 
                   {item.label && (
                     <View className="absolute top-2 left-2 bg-primary px-2 py-1 rounded-lg">
-                      <CsText className="text-white text-[10px] font-semibold">
+                      <CsText className="text-light text-[10px] font-semibold">
                         {item.label}
                      </CsText>
                     </View>
