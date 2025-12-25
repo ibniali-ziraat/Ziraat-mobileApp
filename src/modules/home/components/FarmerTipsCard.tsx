@@ -1,6 +1,7 @@
 // components/home/FarmerTipsCard.tsx
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import {
   ChevronRight,
   Droplets,
@@ -55,7 +56,7 @@ export default function FarmerTipsCard() {
     <View
       className="rounded-2xl mb-8"
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: colors.light,
         borderWidth: 1,
         borderColor: "rgba(0,0,0,0.06)",
         shadowColor: "#000",
@@ -114,14 +115,17 @@ export default function FarmerTipsCard() {
                   <View
                     style={{
                       
-                      padding: 8,
+                      padding: 5,
                       borderRadius: 10,
                     }}
                   >
                     <IconComponent size={22} color={colors.primary} />
                   </View>
 
-                  <CsText className="ml-3 font-semibold text-black text-[15px]">
+                  <CsText 
+                  style={[typography.Poppins_s_medium]}
+                  
+                  className="ml-3  text-dark ">
                     {tip.title}
                  </CsText>
                 </View>
@@ -134,13 +138,16 @@ export default function FarmerTipsCard() {
               {/* Expanded Content */}
               <Animated.View style={[contentStyle, { overflow: "hidden" }]}>
                 <View className="ml-14 mb-4">
-                  <CsText className="text-sm text-gray-700 leading-5">
+                  <CsText 
+                  style={[typography.Poppins_xs_regular]}
+                  
+                  className="eading-5 text-neutral">
                     {tip.desc}
                  </CsText>
 
                   {/* Weather Warning */}
                   {warning && (
-                    <CsText className="text-xs text-red-600 mt-2">{warning}</CsText>
+                    <CsText className="text-xs text-error mt-2">{warning}</CsText>
                   )}
 
                   

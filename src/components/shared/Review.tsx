@@ -47,10 +47,10 @@ export default function Review() {
     <View className="bg-light">
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
-        className="bg-secondary p-3 rounded-xl mt-4"
+        className="bg-secondary p-3 rounded-xl "
       >
         <CsText className="text-white text-center font-semibold text-lg">
-          Write a Review
+          Write a Reviewghjk
        </CsText>
       </TouchableOpacity>
 

@@ -12,6 +12,8 @@ import { IndianRupee, Package } from "lucide-react-native";
 // Imported FlatList
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { typography } from "@/src/constants/fonts/typography";
 import { FlatList, ToastAndroid, View } from "react-native";
 import faqData from "../../data/Faq.json";
 import products from "../../data/products.json";
@@ -19,29 +21,44 @@ import products from "../../data/products.json";
 // --- START: renderHeader Function (Content moved from ScreenLayout) ---
 const renderHeader = (product, colors) => (
   <>
-    <ProductDetailCarousel photos={product.photos} label={product.label} />
+  <ScreenLayout>
+<ProductDetailCarousel photos={product.photos} label={product.label} />
 
-    <View className="mt-8 px-4">
-      <CsText className="text-4xl font-bold text-dark mb-2">
+    <View className="mt-8 ">
+      <CsText 
+      style ={[typography.Poppins_l_semibold]}
+      
+      className=" text-dark ">
         {String(product.title)}
      </CsText>
 
-      <CsText className="text-xl mb-1">Category: {String(product.category)}</CsText>
+      <CsText 
+      style ={[typography.Poppins_s_regular]}
+      
+      >Category: {String(product.category)}</CsText>
 
       {product.saltComposition && (
-        <CsText className="text-xl mb-2 text-dark">
-          <CsText className="font-semibold text-primary">
+        <CsText 
+        style ={[typography.Poppins_s_regular]}
+        
+        
+        className="text-xl text-dark">
+          <CsText 
+          
+          className=" text-primary">
             {String(product.saltComposition)}
          </CsText>
        </CsText>
       )}
 
       {/* PRICE + DISCOUNT */}
-      <View className="flex-row items-center mb-2 w-full">
+      <View className="flex-row items-center w-full">
         <View className="flex-row items-center">
-          <IndianRupee size={16} color={colors.dark} />
+          <IndianRupee size={12} color={colors.dark} />
           <CsText
-            className={`text-xl text-dark ${
+          style ={[typography.Poppins_s_medium]}
+          
+            className={`text-dark ${
               product.discountPrice ? "line-through" : ""
             }`}
           >
@@ -50,16 +67,23 @@ const renderHeader = (product, colors) => (
         </View>
 
         {product.discountPrice && (
-          <View className="flex-row items-center ml-2">
-            <IndianRupee size={20} color={colors.dark} />
-            <CsText className="text-3xl font-bold text-dark">
+          <View className="flex-row items-center ml-2 ">
+            <IndianRupee size={15} color={colors.dark} />
+            <CsText 
+            style ={[typography.Poppins_l_semibold,
+            
+            ]}
+            
+            className="text-dark">
               {String(product.discountPrice)}
            </CsText>
           </View>
         )}
 
         <CsText
-          className={`text-sm px-2 py-1 bg-primary rounded-xl ml-3 ${
+          style ={[typography.Poppins_s_medium]}
+          
+          className={`px-2 py-1 bg-primary rounded-xl ml-3 ${
             product.inStock ? "text-light" : "text-primary"
           }`}
         >
@@ -68,29 +92,43 @@ const renderHeader = (product, colors) => (
       </View>
 
       {/* RATING */}
-      <View className="flex-row justify-start mb-6">
+      <View className="flex-row justify-start pb-4">
         <RatingStars rating={product.rating} />
       </View>
 
-      <CsText className="font-semibold text-xl mb-2">Product Description:</CsText>
+      <CsText 
+      style ={[typography.Poppins_m_semibold]}
+          
+      className="mb-2">Product Description:</CsText>
 
       {/* DESCRIPTION */}
       {Array.isArray(product.description) ? (
         product.description.map((desc, index) => (
-          <CsText key={index} className="text-dark text-[15px] mb-2 text-justify">
+          <CsText 
+          style ={[typography.Poppins_s_regular]}
+          
+          
+          key={index} className="text-dark text-justify">
             {String(desc)}
          </CsText>
         ))
       ) : (
-        <CsText className="text-dark text-[15px] text-justify">
+        <CsText className="text-dark text-justify ">
           {String(product.description)}
        </CsText>
       )}
 
       {/* DOSAGE */}
       {product.dosage && (
-        <CsText className="text-[15px] text-dark mb-4 text-justify">
-          <CsText className="text-xl font-semibold text-dark">Dosage:</CsText>
+        <CsText 
+      style ={[typography.Poppins_s_regular]}
+          
+        
+        className=" text-justify">
+          <CsText 
+          style ={[typography.Poppins_m_semibold]}
+          
+          className="text-dark">Dosage: </CsText>
           {String(product.dosage)}
        </CsText>
       )}
@@ -98,12 +136,18 @@ const renderHeader = (product, colors) => (
       {/* PACKAGING */}
       {product.packaging && (
         <View className="mt-4">
-          <CsText className="font-semibold text-xl mb-2">Packaging:</CsText>
+          <CsText 
+          style ={[typography.Poppins_s_semibold]}
+          
+          className=" mb-2">Packaging:</CsText>
 
           {product.packaging.map((pack, index) => (
             <View key={index} className="flex-row items-center mb-1">
               <Package size={18} color={colors.secondary} />
-              <CsText className="text-dark text-[15px] ml-2">
+              <CsText 
+              style ={[typography.Poppins_s_regular]}
+              
+              className="text-dark ml-2">
                 {String(pack.type)}: {String(pack.size)}
                 {pack.weight ? ` (${String(pack.weight)})` : ""}
                 {pack.packOf ? ` - Pack of ${String(pack.packOf)}` : ""}
@@ -115,14 +159,25 @@ const renderHeader = (product, colors) => (
 
       {/* TAGS */}
       {product.tag && (
-        <CsText className="text-dark text-xl font-medium mt-4">
+        <CsText
+        style ={[typography.Poppins_s_medium]}
+        
+        
+        className="text-dark text-xl font-medium mt-4">
           Tags:{" "}
-          <CsText className="text-primary font-semibold">
+          <CsText 
+          style ={[typography.Poppins_s_medium]}
+          
+          
+          className="text-primary ">
             {String(product.tag)}
          </CsText>
        </CsText>
       )}
     </View>
+
+  </ScreenLayout>
+    
   </>
 );
 // --- END: renderHeader Function ---
@@ -133,7 +188,10 @@ export default function ProductDetails() {
   if (!productId) {
     return (
       <View className="flex-1 justify-center items-center bg-light">
-        <CsText className="text-lg text-dark">Please provide a product ID</CsText>
+        <CsText 
+        style ={[typography.Poppins_xl_semibold]}
+        
+        className=" text-dark">Please provide a product ID</CsText>
       </View>
     );
   }
@@ -143,7 +201,10 @@ export default function ProductDetails() {
   if (!product) {
     return (
       <View className="flex-1 justify-center items-center bg-light">
-        <CsText className="text-lg text-dark">Product not found</CsText>
+        <CsText 
+        style ={[typography.Poppins_xl_semibold]}
+        
+        className=" text-dark">Product not found</CsText>
       </View>
     );
   }
