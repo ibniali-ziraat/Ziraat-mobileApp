@@ -35,10 +35,11 @@ export default function ScreenLayout({
             <View style={{ flex: 1 }}>{children}</View>
           </ScrollView>
         ) : (
-          <View style={{ flex: 1, backgroundColor: colors.light,
+          <View style={{
+            flex: 1, backgroundColor: colors.light,
             paddingBottom: Platform.OS === "android" ? 40 : 100,
-              paddingHorizontal: 5,
-           }}>
+            paddingHorizontal: 5,
+          }}>
             {children}
           </View>
         )}

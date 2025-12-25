@@ -1,5 +1,6 @@
 import { GitGraph } from "lucide-react-native";
 import { View } from "react-native";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
@@ -13,24 +14,31 @@ export default function AveragesCard() {
         >
             <View className=" flex justify-center">
                 <View className="flex-row items-center mb-1">
-                    <GitGraph size={16} color="#c7611f"/>
-                    <CsText className="ml-2 text-sm font-bold tracking-wide text-dark">
+                    <GitGraph size={16} color="#c7611f" />
+                    <CsText
+                        className="text-error"
+
+                        style={[
+                            typography.caption_xs_bold,
+                            { color: "green" }
+                        ]}
+                    >
                         AVERAGES
-                   </CsText>
+                    </CsText>
                 </View>
 
                 <CsText className="text-3xl font-bold text-dark">
                     +1°
-               </CsText>
+                </CsText>
 
 
                 <CsText className=" text-xs text-dark pt-2">
                     Above average daily high.
-               </CsText>
+                </CsText>
                 <CsText className="text-xs text-dark pt-2">
                     Today Average --- H:15 --- H:8
 
-               </CsText>
+                </CsText>
             </View>
         </ZiraatCard>
     );

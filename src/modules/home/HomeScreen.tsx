@@ -25,59 +25,59 @@ export default function HomeScreen() {
   ];
 
   return (
-   <ScreenLayout>
+    <ScreenLayout>
 
-     <AnimatedTabContent>
-      <View className="flex-1">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Weather */}
-          {/* <SectionTitle title="Today's Weather" icon="sunny-outline" /> */}
-          <TouchableOpacity
-            onPress={() => router.push("/dashboards/(farmer)/weather-profile")}
-          >
-            <WeatherCard
-              current={{
-                tempC: 27,
-                feelsLikeC: 29,
-                condition: "Partly cloudy",
-                humidity: 62,
-                windKph: 14,
-                windDir: "NE",
-              }}
-            />
-          </TouchableOpacity>
-          {/* Quick Actions */}
-          <QuickActions />
-
-          {sections.map((section, index) => (
-            <View key={index} className="">
-              <SectionTitle title={section.title} icon="flask-outline" />
-
-              <ProductCarousel
-                items={products.slice(...section.slice)}
-                imageMapper={imageMapper}
+      <AnimatedTabContent>
+        <View className="flex-1">
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {/* Weather */}
+            {/* <SectionTitle title="Today's Weather" icon="sunny-outline" /> */}
+            <TouchableOpacity
+              onPress={() => router.push("/dashboards/(farmer)/weather-profile")}
+            >
+              <WeatherCard
+                current={{
+                  tempC: 27,
+                  feelsLikeC: 29,
+                  condition: "Partly cloudy",
+                  humidity: 62,
+                  windKph: 14,
+                  windDir: "NE",
+                }}
               />
-            </View>
-          ))}
+            </TouchableOpacity>
+            {/* Quick Actions */}
+            <QuickActions />
 
-          {sections.map((section, index) => (
-            <View key={index} className="">
-              {/* Farm Overview */}
-              <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
-              <FarmOverviewChart />
+            {sections.map((section, index) => (
+              <View key={index} className="">
+                <SectionTitle title={section.title} icon="flask-outline" />
 
-              {/* Tips */}
-              <SectionTitle
-                title="Farmer Tips & Awareness"
-                icon="bulb-outline"
-              />
-              <FarmerTipsCard />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-    </AnimatedTabContent>
+                <ProductCarousel
+                  items={products.slice(...section.slice)}
+                  imageMapper={imageMapper}
+                />
+              </View>
+            ))}
 
-   </ScreenLayout>
+            {sections.map((section, index) => (
+              <View key={index} className="">
+                {/* Farm Overview */}
+                <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
+                <FarmOverviewChart />
+
+                {/* Tips */}
+                <SectionTitle
+                  title="Farmer Tips & Awareness"
+                  icon="bulb-outline"
+                />
+                <FarmerTipsCard />
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      </AnimatedTabContent>
+
+    </ScreenLayout>
   );
 }

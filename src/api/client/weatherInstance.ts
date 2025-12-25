@@ -6,6 +6,7 @@ const weatherInstance = axios.create({
   params: {
     key: process.env.WEATHER_API_KEY,
   },
+
 });
 
 export default weatherInstance;

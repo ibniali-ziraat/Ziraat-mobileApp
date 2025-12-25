@@ -3,7 +3,6 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import sprayData from "@/src/data/SprayData.json";
 import { Droplets, Edit, Trash2, Trees } from "lucide-react-native";
 import { FlatList, View } from "react-native";
 
@@ -11,7 +10,7 @@ const SprayScreen = () => {
   return (
     <ScreenLayout>
       <FlatList
-        data={sprayData}
+        data={SprayData}
         keyExtractor={(item) => item.id}
         scrollEnabled={false}
         contentContainerStyle={{
@@ -35,7 +34,7 @@ const SprayScreen = () => {
                     ]}
                   >
                     {item.name}
-                 </CsText>
+                  </CsText>
                 </View>
 
                 <View
@@ -45,13 +44,13 @@ const SprayScreen = () => {
                   }}
                 >
                   <CsText
-                     style={[
+                    style={[
                       typography.Poppins_xs_medium,
                       { color: colors.light }
                     ]}
                   >
                     {item.type}
-                 </CsText>
+                  </CsText>
                 </View>
               </View>
 
@@ -59,42 +58,42 @@ const SprayScreen = () => {
               <View className="flex-row justify-between items-center mt-3">
                 <View className="flex-row items-center gap-2">
                   <Trees size={15} color={colors.secondary} />
-                  <CsText  style={[
-                      typography.Poppins_s_medium,
-                      { color: colors.neutral }
-                    ]}>
+                  <CsText style={[
+                    typography.Poppins_s_medium,
+                    { color: colors.neutral }
+                  ]}>
                     {item.orchardName}
-                 </CsText>
+                  </CsText>
                 </View>
 
                 <CsText
                   style={[
-                      typography.Poppins_s_semibold,
-                      { color: colors.neutral }
-                    ]}
+                    typography.Poppins_s_semibold,
+                    { color: colors.neutral }
+                  ]}
                 >
                   {item.price}
-               </CsText>
+                </CsText>
               </View>
 
               {/* Bottom Row */}
               <View className="flex-row justify-between items-center mt-3">
                 <CsText
                   className="text-sm pl-1 "
-                   style={[
-                      typography.Poppins_xs_regular,
-                      { color: colors.neutral }
-                    ]}
+                  style={[
+                    typography.Poppins_xs_regular,
+                    { color: colors.neutral }
+                  ]}
                 >
                   {item.brand} • {item.quantity}
-               </CsText>
+                </CsText>
 
-                <CsText  style={[
-                      typography.Poppins_xs_regular,
-                      { color: colors.neutral }
-                    ]}>
+                <CsText style={[
+                  typography.Poppins_xs_regular,
+                  { color: colors.neutral }
+                ]}>
                   Date: {item.date}
-               </CsText>
+                </CsText>
               </View>
 
               {/* Actions */}

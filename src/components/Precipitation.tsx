@@ -24,20 +24,20 @@ export function Precipitation({
                 <Droplets size={16} color="#c7611f" />
                 <CsText className="ml-2 text-sm font-bold tracking-wide text-dark">
                     PRECIPITATION
-               </CsText>
+                </CsText>
             </View>
 
             <CsText className="text-3xl font-bold text-dark">
                 {amount}
-           </CsText>
+            </CsText>
 
             <CsText className="text-sm text-dark pt-2">
                 In last 24 hours
-           </CsText>
+            </CsText>
 
             <CsText className="text-xs text-dark pt-2">
                 {note}
-           </CsText>
-        </ZiraatCard>
+            </CsText>
+        </ZiraatCard >
     );
 }
