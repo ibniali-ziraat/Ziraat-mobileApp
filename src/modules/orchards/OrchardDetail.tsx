@@ -38,25 +38,25 @@ export default function OrchardDetail() {
   const images = orchardDetailImagesById[String(orchard.id)];
 
   return (
-    <ScreenLayout 
-    
-    className="flex-1 bg-light">
+    <ScreenLayout
+
+      className="flex-1 bg-light">
       <BackHeader
         title="Orchard Details"
         desc="Detailed orchard profile and management information"
       />
 
-      
+
       {images && (
         <View className="flex-row w-full h-60 gap-1 overflow-hidden mt-3 mb-3">
-        
+
           <Image
             source={images[0]}
             resizeMode="cover"
             className="w-[55%] h-full rounded-2xl"
           />
 
- 
+
           <View className="w-[45%] h-full gap-2">
             <Image
               source={images[1]}
@@ -73,7 +73,7 @@ export default function OrchardDetail() {
         </View>
       )}
 
-  
+
       <BasicInformation orchard={orchard} />
 
       <AddressDetails orchard={orchard} />
@@ -109,8 +109,8 @@ export default function OrchardDetail() {
       />
 
       <FutureReadinessAndLinkages
-  data={orchard?.future_readiness_and_linkages}
-/>
+        data={orchard?.future_readiness_and_linkages}
+      />
     </ScreenLayout>
   );
 }

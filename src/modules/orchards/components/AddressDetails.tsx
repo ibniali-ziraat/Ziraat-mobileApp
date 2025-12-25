@@ -10,7 +10,7 @@ export default function AddressDetails({ orchard }: any) {
   return (
     <ZiraatCard width="100%" marginBottom={2}>
       <View className="p-4">
-        <CsText className="mb-3" style={[typography.heading_m_semibold]}>
+        <CsText className="mb-3" style={[typography.Poppins_m_semibold]}>
           Address Details
         </CsText>
 

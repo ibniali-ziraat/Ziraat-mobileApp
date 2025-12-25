@@ -25,10 +25,10 @@ const Detail = ({
   value?: string;
 }) => (
   <View className="flex-row justify-between py-1">
-    <CsText style={typography.subtitle_xs_medium}>
+    <CsText style={typography.Poppins_xs_medium}>
       {label}
     </CsText>
-    <CsText style={typography.subtitle_xs_regular}>
+    <CsText style={typography.Poppins_xs_regular}>
       {value || "-"}
     </CsText>
   </View>
@@ -63,32 +63,32 @@ export default function MyOrchardsScreen() {
             />
           )}
 
-          
+
           <TouchableOpacity
-            className="absolute top-3 right-0 bg-white p-2 mr-4 mt-2 rounded-full shadow z-50"
+            className="absolute top-3 right-0 bg-light p-2 mr-4 mt-2 rounded-full shadow z-50"
           >
             <MoreVertical size={20} color={colors.dark} />
           </TouchableOpacity>
         </View>
 
-  
+
         <View className="p-4">
           <View className="flex-row justify-between items-center mb-3">
-            <CsText style={typography.subHeading_m_semibold}>
+            <CsText style={typography.Poppins_m_semibold}>
               {item.name}
             </CsText>
 
             <View className="bg-secondary px-3 py-1 rounded-full">
               <CsText
                 className="text-light"
-                style={typography.caption_xs_semibold}
+                style={typography.Poppins_xs_semibold}
               >
                 {item.about}
               </CsText>
             </View>
           </View>
 
-   
+
           <Detail label="Size" value={item.acres} />
           <Detail label="Establishment Year" value={item.trees} />
           <Detail label="Plantation Pattern" value={item.fruit} />
