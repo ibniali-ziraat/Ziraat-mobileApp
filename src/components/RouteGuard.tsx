@@ -26,11 +26,6 @@ export default function RouteGuard({ children }: RouteGuardProps) {
       router.replace("/");
       return;
     }
-    // if (!userToken) {
-    //   logoutUser();
-    //   router.replace("/");
-    //   return;
-    // }
 
     if (!userToken) {
       router.replace("/");

@@ -1,5 +1,7 @@
 import MyOrchardsScreen from "@/src/modules/orchards/OrchardScreen";
 import React from "react";
-export default function Orchard() {
-  return React.createElement(MyOrchardsScreen, null);
+// import NotFoundPage from "../[...404]";
+export default function Crops() {
+   { return React.createElement(MyOrchardsScreen, null); }
+  // return React.createElement(NotFoundPage, null);
 }

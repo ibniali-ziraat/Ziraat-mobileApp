@@ -1,6 +1,7 @@
 // components/home/QuickActions.tsx
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors"; // use your global theme
+import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -72,9 +73,9 @@ export default function QuickActions() {
               {item.title}
            </CsText> */}
 
-            <CsText className="text-center" variant="title">
-              {item.title}
-            </CsText>
+            <CsText style ={[typography.Poppins_s_regular]}>{item.title}</CsText>
+
+           
           </TouchableOpacity>
         ))}
       </View>
