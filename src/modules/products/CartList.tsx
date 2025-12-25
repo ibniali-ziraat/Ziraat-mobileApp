@@ -96,7 +96,7 @@ const CartList = () => {
 
           <TouchableOpacity
             onPress={handleStartShopping}
-            className="bg-primary py-3 rounded-full shadow-md active:opacity-80"
+            className="bg-primary py-4 px-5 rounded-full shadow-md active:opacity-80"
           >
             <CsText className="text-light">Browse Products</CsText>
           </TouchableOpacity>
