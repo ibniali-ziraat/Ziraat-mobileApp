@@ -57,7 +57,7 @@ const WishlistItem = ({ item, onRemove }) => {
 
               <View className="flex-row justify-between items-center">
                 <CsText
-                  style={typography.Poppins_m_semibold}
+                  style={typography.Poppins_m_medium}
                   numberOfLines={1}
                 >
                   {item.title}
@@ -116,7 +116,7 @@ const WishlistItem = ({ item, onRemove }) => {
               <View className="flex-row items-center justify-between mt-2">
                 <RatingStars rating={item.rating} />
                 <CsText
-                  className={`px-2 rounded-xl text-white ${item.inStock ? "bg-primary" : "bg-gray-400"
+                  className={`px-2 rounded-xl text-light ${item.inStock ? "bg-primary" : "bg-dark"
                     }`}
                   style={typography.Poppins_xs_regular}
                 >

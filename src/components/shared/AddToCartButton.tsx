@@ -31,7 +31,7 @@ export default function AddToCartButton({ title = "Add to Cart", onPress }) {
         <View className="flex-row justify-center items-center w-full">
           <ShoppingCart size={20} color={colors.dark} />
           <CsText
-            className="text-dark  flex-shrink ml-2" style={[typography.Poppins_s_semibold]}
+            className="text-dark  flex-shrink ml-2" style={[typography.Poppins_s_medium]}
             numberOfLines={1}
           >
             {title}
