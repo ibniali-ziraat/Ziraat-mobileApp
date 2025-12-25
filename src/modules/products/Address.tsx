@@ -1,194 +1,253 @@
+import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { typography } from "@/src/constants/fonts/typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import {
+    FlatList,
     Modal,
-    ScrollView,
-    Text,
     TextInput,
+    ToastAndroid,
     TouchableOpacity,
     View,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
-export default function AddressScreen() {
-    const [addresses, setAddresses] = useState([]);
+interface Address {
+    id: string;
+    name: string;
+    phone: string;
+    address: string;
+    pincode: string;
+}
+
+const AddressPage = () => {
+    const [addresses, setAddresses] = useState<Address[]>([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [mode, setMode] = useState("add");
-    const [editId, setEditId] = useState(null);
+    const [editingAddress, setEditingAddress] = useState<Address | null>(null);
 
     const [form, setForm] = useState({
         name: "",
-        mobile: "",
-        pin: "",
-        house: "",
-        area: "",
+        phone: "",
+        address: "",
+        pincode: "",
     });
 
+    const loadAddresses = async () => {
+        const saved = await AsyncStorage.getItem("addresses");
+        if (saved) setAddresses(JSON.parse(saved));
+    };
+
+    const saveAddresses = async (data: Address[]) => {
+        setAddresses(data);
+        await AsyncStorage.setItem("addresses", JSON.stringify(data));
+    };
+
     useEffect(() => {
-        (async () => {
-            const saved = await AsyncStorage.getItem("ADDRESSES");
-            if (saved) setAddresses(JSON.parse(saved));
-        })();
+        loadAddresses();
     }, []);
 
-    useEffect(() => {
-        AsyncStorage.setItem("ADDRESSES", JSON.stringify(addresses));
-    }, [addresses]);
-
     const openAddModal = () => {
-        setMode("add");
-        setEditId(null);
-        setForm({ name: "", mobile: "", pin: "", house: "", area: "" });
+        setEditingAddress(null);
+        setForm({ name: "", phone: "", address: "", pincode: "" });
         setModalVisible(true);
     };
 
-    const openEditModal = (item) => {
-        setMode("edit");
-        setEditId(item.id);
+    const openEditModal = (item: Address) => {
+        setEditingAddress(item);
         setForm(item);
         setModalVisible(true);
     };
 
-    const saveAddress = () => {
-        if (mode === "edit") {
-            setAddresses((prev) =>
-                prev.map((a) => (a.id === editId ? { ...a, ...form } : a))
-            );
-        } else {
-            setAddresses((prev) => [...prev, { id: Date.now(), ...form }]);
+    const handleSave = () => {
+        if (!form.name || !form.phone || !form.address || !form.pincode) {
+            ToastAndroid.show("Please fill all fields", ToastAndroid.SHORT);
+            return;
         }
+
+        if (editingAddress) {
+            const updated = addresses.map((a) =>
+                a.id === editingAddress.id ? { ...editingAddress, ...form } : a
+            );
+
+            saveAddresses(updated);
+            ToastAndroid.show("Address updated", ToastAndroid.SHORT);
+        } else {
+            const newAddress: Address = {
+                id: Date.now().toString(),
+                ...form,
+            };
+
+            saveAddresses([...addresses, newAddress]);
+            ToastAndroid.show("Address added", ToastAndroid.SHORT);
+        }
+
         setModalVisible(false);
     };
 
-    const removeAddress = (id) => {
-        setAddresses((prev) => prev.filter((a) => a.id !== id));
+    const handleRemove = (id: string) => {
+        const filtered = addresses.filter((a) => a.id !== id);
+        saveAddresses(filtered);
+        ToastAndroid.show("Address removed", ToastAndroid.SHORT);
     };
 
     return (
-        <View className="flex-1 bg-white px-4 pt-4">
-            <Text className="text-lg font-bold mb-4">Select Delivery Address</Text>
+        <ScreenLayout>
+            <BackHeader title="Address Details" desc="Select delivery address" />
 
-            {addresses.map((item) => (
-                <View
-                    key={item.id}
-                    className="border border-gray-300 rounded-lg p-4 mb-4"
-                >
-                    <Text className="font-bold">{item.name}</Text>
+            <FlatList
+                data={addresses}
+                keyExtractor={(item) => item.id}
+                contentContainerStyle={{ padding: 16 }}
+                renderItem={({ item }) => (
+                    <ZiraatCard
+                        width={"100%"}
+                        paddingVertical={1}
+                        paddingHorizontal={1}
+                        marginBottom={1}
+                        borderWidth={1}
+                        borderRadius={16}
+                    >
+                        <CsText style={[typography.Poppins_s_bold]} className="text-base">
+                            {item.name}
+                        </CsText>
 
-                    <Text className="mt-1">
-                        {item.house}, {item.area}
-                    </Text>
+                        <CsText className="mt-2">
+                            <CsText className="font-semibold">Mobile </CsText>
+                            {item.phone}
+                        </CsText>
 
-                    <Text>Mobile: {item.mobile}</Text>
+                        <CsText className="mt-2">{item.address}</CsText>
+                        <CsText className="mt-2">{item.pincode}</CsText>
 
-                    <View className="flex-row mt-3">
-                        <TouchableOpacity
-                            onPress={() => openEditModal(item)}
-                            className="border px-4 py-2 rounded mr-3"
+                        <View className="flex-row gap-3 mt-3">
+                            <TouchableOpacity
+                                onPress={() => openEditModal(item)}
+                                className="flex-1 border rounded-xl py-2 items-center"
+                            >
+                                <CsText>Edit</CsText>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => handleRemove(item.id)}
+                                className="flex-1 border rounded-xl py-2 items-center"
+                            >
+                                <CsText>Remove</CsText>
+                            </TouchableOpacity>
+                        </View>
+                    </ZiraatCard>
+                )}
+                ListFooterComponent={
+                    <TouchableOpacity
+                        onPress={openAddModal}
+                        className="border border-dashed py-3 rounded-full mt-4"
+                    >
+                        <CsText
+                            style={[typography.Poppins_s_bold]}
+                            className="text-center text-dark"
                         >
-                            <Text className="text-xs font-semibold">EDIT</Text>
-                        </TouchableOpacity>
+                            Add New Address
+                        </CsText>
+                    </TouchableOpacity>
+                }
+            />
 
-                        <TouchableOpacity
-                            onPress={() => removeAddress(item.id)}
-                            className="border px-4 py-2 rounded"
-                        >
-                            <Text className="text-xs font-semibold">REMOVE</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            ))}
-
-            <TouchableOpacity
-                onPress={openAddModal}
-                className="border border-dashed border-gray-500 rounded-lg p-4 items-center"
-            >
-                <Text className="font-semibold">+ Add New Address</Text>
-            </TouchableOpacity>
-
-            {/* POPUP */}
-            <Modal
-                transparent
-                animationType="fade"
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
-            >
-                <View className="flex-1 bg-black/50 justify-center px-4">
-                    <View className="bg-white rounded-2xl w-full max-h-[92%] shadow-xl">
-
+            <Modal visible={modalVisible} transparent animationType="fade">
+                <View className="flex-1 bg-bgColor justify-center items-center px-3">
+                    <ZiraatCard
+                        width={"100%"}
+                        borderRadius={18}
+                        paddingHorizontal={1}
+                        paddingVertical={1}
+                    >
                         <View className="border-b px-5 py-4">
-                            <Text className="text-base font-bold">
-                                {mode === "edit" ? "EDIT ADDRESS" : "ADD NEW ADDRESS"}
-                            </Text>
+                            <CsText style={[typography.Poppins_s_bold]} className="text-base">
+                                {editingAddress ? "Edit Address" : "Add New Address"}
+                            </CsText>
                         </View>
 
-                        <View className="flex-1">
-                            <ScrollView
-                                showsVerticalScrollIndicator={false}
-                                contentContainerStyle={{ paddingBottom: 120 }}
-                                className="px-5 py-4"
-                            >
+                        <ScrollView
+                            className="px-5 py-4 max-h-[70vh]"
+                            showsVerticalScrollIndicator={false}
+                        >
+                            <CsText className="mb-2">CONTACT DETAILS</CsText>
+
+                            <View className="mb-4">
+                                <CsText className="mb-1">Name*</CsText>
                                 <TextInput
-                                    placeholder="Name*"
+                                    placeholder="Full Name"
+                                    className="border rounded-xl px-3 py-2"
                                     value={form.name}
                                     onChangeText={(t) => setForm({ ...form, name: t })}
-                                    className="border border-gray-300 rounded-lg px-4 py-3 mb-4"
                                 />
+                            </View>
 
+                            <View className="mb-6">
+                                <CsText className="mb-1">Mobile No*</CsText>
                                 <TextInput
-                                    placeholder="Mobile No*"
+                                    placeholder="Mobile Number"
+                                    keyboardType="phone-pad"
+                                    className="border rounded-xl px-3 py-2"
+                                    value={form.phone}
+                                    onChangeText={(t) => setForm({ ...form, phone: t })}
+                                />
+                            </View>
+
+                            <CsText className="mb-2">ADDRESS</CsText>
+
+                            <View className="mb-4">
+                                <CsText className="mb-1">Pin Code*</CsText>
+                                <TextInput
+                                    placeholder="Pincode"
                                     keyboardType="number-pad"
-                                    value={form.mobile}
-                                    onChangeText={(t) => setForm({ ...form, mobile: t })}
-                                    className="border border-gray-300 rounded-lg px-4 py-3 mb-6"
+                                    className="border rounded-xl px-3 py-2"
+                                    value={form.pincode}
+                                    onChangeText={(t) => setForm({ ...form, pincode: t })}
                                 />
+                            </View>
 
+                            <View className="mb-2">
+                                <CsText className="mb-1">
+                                    Address (House No, Building, Street, Area)*
+                                </CsText>
                                 <TextInput
-                                    placeholder="Pin Code*"
-                                    keyboardType="number-pad"
-                                    value={form.pin}
-                                    onChangeText={(t) => setForm({ ...form, pin: t })}
-                                    className="border border-gray-300 rounded-lg px-4 py-3 mb-4"
+                                    placeholder="Address"
+                                    multiline
+                                    className="border rounded-xl  py-2 h-24 text-top"
+                                    value={form.address}
+                                    onChangeText={(t) => setForm({ ...form, address: t })}
                                 />
+                            </View>
 
-                                <TextInput
-                                    placeholder="House No / Building / Street*"
-                                    value={form.house}
-                                    onChangeText={(t) => setForm({ ...form, house: t })}
-                                    className="border border-gray-300 rounded-lg px-4 py-3 mb-4"
-                                />
+                            <CsText className="text-[11px] text-secondary mt-1">
+                                *Please update flat/house no and society/apartment details
+                            </CsText>
+                        </ScrollView>
 
-                                <TextInput
-                                    placeholder="Locality / Town*"
-                                    value={form.area}
-                                    onChangeText={(t) => setForm({ ...form, area: t })}
-                                    className="border border-gray-300 rounded-lg px-4 py-3"
-                                />
-                            </ScrollView>
-                        </View>
-
-                        {/* STICKY FOOTER */}
-                        <View className="border-t px-5 py-4 flex-row justify-between bg-white">
+                        <View className="border-t px-5 py-4 flex-row gap-3">
                             <TouchableOpacity
                                 onPress={() => setModalVisible(false)}
-                                className="border px-8 py-3 rounded-lg"
+                                className="flex-1 border rounded-xl py-3 items-center"
                             >
-                                <Text className="font-semibold">Cancel</Text>
+                                <CsText>Cancel</CsText>
                             </TouchableOpacity>
 
                             <TouchableOpacity
-                                onPress={saveAddress}
-                                className="px-10 py-3 rounded-lg"
-                                style={{ backgroundColor: "black" }}
+                                onPress={handleSave}
+                                className="flex-1 bg-primary rounded-xl py-3 items-center"
                             >
-                                <Text style={{ color: "white", fontWeight: "bold" }}>
-                                    SAVE
-                                </Text>
+                                <CsText className="text-light font-semibold">
+                                    {editingAddress ? "Update" : "Save"}
+                                </CsText>
                             </TouchableOpacity>
                         </View>
-
-                    </View>
+                    </ZiraatCard>
                 </View>
             </Modal>
-        </View>
+        </ScreenLayout>
     );
-}
+};
+
+export default AddressPage;

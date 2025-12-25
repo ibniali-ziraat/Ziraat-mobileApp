@@ -29,7 +29,7 @@ export default function OrchardStatsSection({ orchards, admin, weather }: any) {
 
   return (
 
-    <View className="flex-row flex-wrap justify-between"
+    <View className="pt-2 flex-row flex-wrap justify-between"
       style={{ backgroundColor: colors.bgColor }}>
       <StatChip
         Icon={Tree}
@@ -62,10 +62,12 @@ export default function OrchardStatsSection({ orchards, admin, weather }: any) {
           paddingHorizontal={1}
           paddingVertical={1}
         >
-          <CsText className="text-[18px] font-bold mb-3">
+          <CsText variant="semiBoldcaption" 
+
+          className="mb-3">
             Smart Insight
          </CsText>
-          <CsText className="text-[12px]">
+          <CsText >
             Tree density and survival suggest potential to increase yield by improving fertigation.
          </CsText>
         </ZiraatCard>

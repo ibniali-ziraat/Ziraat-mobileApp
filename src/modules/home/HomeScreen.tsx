@@ -1,20 +1,17 @@
-import { ScrollView, TouchableOpacity, View } from "react-native";
-
-import FarmOverviewChart from "./components/FarmOverviewChart";
-
+import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
+import ProductCarousel from "@/src/components/shared/ProductCarousel";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { imageMapper } from "@/src/data/imageMapper";
+import products from "@/src/data/products.json";
+import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 import { router } from "expo-router";
+import { useState } from "react";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import FarmerTipsCard from "./components/FarmerTipsCard";
+import FarmOverviewChart from "./components/FarmOverviewChart";
 import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
-
-import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
-import ProductCarousel from "@/src/components/shared/ProductCarousel";
-
-import { imageMapper } from "@/src/data/imageMapper";
-import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
-import { useState } from "react";
-import products from "../../data/products.json";
 
 export default function HomeScreen() {
   const [cityData, setCityData] = useState("srinagar");
@@ -28,55 +25,59 @@ export default function HomeScreen() {
   ];
 
   return (
-    <AnimatedTabContent>
-      <View className="flex-1 bg-white pt-4">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Weather */}
-          {/* <SectionTitle title="Today's Weather" icon="sunny-outline" /> */}
-          <TouchableOpacity
-            onPress={() => router.push("/dashboards/(farmer)/weather-profile")}
-          >
-            <WeatherCard
-              current={{
-                tempC: 27,
-                feelsLikeC: 29,
-                condition: "Partly cloudy",
-                humidity: 62,
-                windKph: 14,
-                windDir: "NE",
-              }}
-            />
-          </TouchableOpacity>
-          {/* Quick Actions */}
-          <QuickActions />
+    <ScreenLayout>
 
-          {sections.map((section, index) => (
-            <View key={index} className="mb-6">
-              <SectionTitle title={section.title} icon="flask-outline" />
-
-              <ProductCarousel
-                items={products.slice(...section.slice)}
-                imageMapper={imageMapper}
+      <AnimatedTabContent>
+        <View className="flex-1">
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {/* Weather */}
+            {/* <SectionTitle title="Today's Weather" icon="sunny-outline" /> */}
+            <TouchableOpacity
+              onPress={() => router.push("/dashboards/(farmer)/weather-profile")}
+            >
+              <WeatherCard
+                current={{
+                  tempC: 27,
+                  feelsLikeC: 29,
+                  condition: "Partly cloudy",
+                  humidity: 62,
+                  windKph: 14,
+                  windDir: "NE",
+                }}
               />
-            </View>
-          ))}
+            </TouchableOpacity>
+            {/* Quick Actions */}
+            <QuickActions />
 
-          {sections.map((section, index) => (
-            <View key={index} className="mb-6">
-              {/* Farm Overview */}
-              <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
-              <FarmOverviewChart />
+            {sections.map((section, index) => (
+              <View key={index} className="">
+                <SectionTitle title={section.title} icon="flask-outline" />
 
-              {/* Tips */}
-              <SectionTitle
-                title="Farmer Tips & Awareness"
-                icon="bulb-outline"
-              />
-              <FarmerTipsCard />
-            </View>
-          ))}
-        </ScrollView>
-      </View>
-    </AnimatedTabContent>
+                <ProductCarousel
+                  items={products.slice(...section.slice)}
+                  imageMapper={imageMapper}
+                />
+              </View>
+            ))}
+
+            {sections.map((section, index) => (
+              <View key={index} className="">
+                {/* Farm Overview */}
+                <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
+                <FarmOverviewChart />
+
+                {/* Tips */}
+                <SectionTitle
+                  title="Farmer Tips & Awareness"
+                  icon="bulb-outline"
+                />
+                <FarmerTipsCard />
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+      </AnimatedTabContent>
+
+    </ScreenLayout>
   );
 }

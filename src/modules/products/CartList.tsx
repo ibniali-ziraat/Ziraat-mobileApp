@@ -9,6 +9,7 @@ import {
 
 import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { typography } from "@/src/constants/fonts/typography";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -93,7 +94,7 @@ const CartList = () => {
 
           <TouchableOpacity
             onPress={handleStartShopping}
-            className="bg-primary  px-8 py-3 rounded-full shadow-md active:opacity-80"
+            className="bg-primary py-3 rounded-full shadow-md active:opacity-80"
           >
             <CsText className="text-light">Browse Products</CsText>
           </TouchableOpacity>
@@ -102,22 +103,20 @@ const CartList = () => {
     );
   }
   return (
-    <ScreenLayout scrollable={false} className="bg-light p-0">
+    <ScreenLayout scrollable={false}>
       <BackHeader
         title="My Cart"
         desc={`${cartItems.length} item${cartItems.length > 1 ? "s" : ""} in your cart`}
       />
-
-      {/* 🔹 SCROLLING AREA */}
       <View className="flex-1 ">
         <FlatList
           data={cartItems}
           keyExtractor={(item) => item.id.toString()}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
-            paddingHorizontal: 16,
+            paddingHorizontal: 2,
             paddingTop: 8,
-            paddingBottom: 115,
+            // paddingBottom: 115,
           }}
           renderItem={({ item }) => (
             <ZiraatCard
@@ -135,12 +134,12 @@ const CartList = () => {
         />
       </View>
 
-      {/* 🔒 TRUE STICKY FOOTER */}
+
       <View
-        className="absolute left-0 right-0 bottom-0 bg-light border-t border-gray-200"
+        className="absolute left-0 right-0 bottom-0 bg-light border-t border-lightGray px-4"
         style={{
           height: 95,
-          paddingHorizontal: 16,
+          // paddingHorizontal: 16,
           paddingTop: 12,
           paddingBottom: 12,
         }}
@@ -152,7 +151,9 @@ const CartList = () => {
           className="mt-2"
           activeOpacity={0.7}
         >
-          <CsText className="text-center text-dark text-sm">
+          <CsText
+            style={[typography.Poppins_s_medium]}
+            className="text-center text-dark">
             Remove all items
           </CsText>
         </TouchableOpacity>

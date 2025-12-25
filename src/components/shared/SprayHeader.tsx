@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import { Search, X } from "lucide-react-native";
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
@@ -15,12 +16,16 @@ const SprayHeader = () => {
       <View className="flex-row items-center justify-between h-16">
         {/* Left */}
         <View>
-          <CsText className="text-lg font-bold" style={{ color: colors.dark }}>
+          <CsText
+            style={[typography.Poppins_m_semibold, { color: colors.dark }]}
+          >
             Spray Records
-         </CsText>
-          <CsText className="text-sm" style={{ color: colors.neutral }}>
+          </CsText>
+          <CsText
+            style={[typography.Poppins_xs_regular, { color: colors.dark }]}
+          >
             Manage your spray activities
-         </CsText>
+          </CsText>
         </View>
 
         {/* Right */}
@@ -37,7 +42,7 @@ const SprayHeader = () => {
           className="
       absolute top-0 left-0 
       w-full h-full 
-      bg-white 
+      bg-light 
       z-50
       justify-center
     "

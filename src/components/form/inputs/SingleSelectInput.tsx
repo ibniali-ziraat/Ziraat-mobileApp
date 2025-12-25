@@ -9,9 +9,10 @@ import {
   Pressable,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import { HelperText } from "react-native-paper";
+import CsText from "../../shared/CsText";
 
 interface Option {
   label: string;
@@ -86,7 +87,7 @@ export default function SingleSelectInput({
         }, [value, options]);
 
         return (
-          <View style={{ marginBottom: 16, }}>
+          <View style={{ marginBottom: 16 }}>
             {/* Label */}
             {showInputLabel && (
               <CsText
@@ -95,12 +96,12 @@ export default function SingleSelectInput({
                   fontSize: 14,
                   fontWeight: "500",
                   color: colors.dark,
-
-
                 }}
               >
                 {label}{" "}
-                {!optional && <CsText style={{ color: colors.error }}> *</CsText>}
+                {!optional && (
+                  <CsText style={{ color: colors.error }}> *</CsText>
+                )}
               </CsText>
             )}
 
@@ -122,7 +123,6 @@ export default function SingleSelectInput({
                 paddingVertical: 14,
                 backgroundColor: colors.light,
                 marginTop: 6,
-
               }}
               onPress={() => {
                 if (!disabled) {
@@ -135,7 +135,6 @@ export default function SingleSelectInput({
                 style={{
                   fontSize: 16,
                   color: disabled ? colors.neutral + "88" : colors.darkHover,
-
                 }}
               >
                 {selectedLabel || `${label}`}

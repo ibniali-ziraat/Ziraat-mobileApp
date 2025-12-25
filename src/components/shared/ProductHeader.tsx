@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import { useRouter } from "expo-router";
 import { Heart, ShoppingCart } from "lucide-react-native";
 import React from "react";
@@ -9,12 +10,19 @@ const ProductHeader = () => {
   const router = useRouter();
 
   return (
-    <View className="flex-row items-center justify-between h-16 bg-white px-4">
-      {/* Title */}
-      <View>
-        <CsText className="text-lg font-bold text-dark">Products</CsText>
+    <View className="flex-row items-center justify-between h-16 bg-light px-4">
 
-        <CsText className="text-sm text-neutral">
+      <View>
+        <CsText
+          style={[typography.Poppins_m_semibold, { color: colors.dark }]}
+
+
+          className="text-lg ">Products</CsText>
+
+        <CsText
+          style={[typography.Poppins_xs_regular, { color: colors.dark }]}
+
+          className="text-neutral">
           Shop fertilizers, Tools & Supplies
         </CsText>
       </View>
@@ -22,7 +30,7 @@ const ProductHeader = () => {
       <View className="flex-row items-center space-x-3">
         <TouchableOpacity
           onPress={() => router.push("/products/wishlist")}
-          className="p-2 me-2 rounded-full bg-white border"
+          className="p-2 me-2 rounded-full bg-light border"
           style={{ borderColor: colors.neutral }}
         >
           <Heart size={20} color={colors.secondary} />
@@ -30,7 +38,7 @@ const ProductHeader = () => {
 
         <TouchableOpacity
           onPress={() => router.push("/products/cartlist")}
-          className="p-2 rounded-full bg-white border"
+          className="p-2 rounded-full bg-light border"
           style={{ borderColor: colors.neutral }}
         >
           <ShoppingCart size={20} color={colors.primary} />

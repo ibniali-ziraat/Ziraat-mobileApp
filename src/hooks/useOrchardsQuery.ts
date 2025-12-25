@@ -68,13 +68,13 @@ export const useOrchardByIdQuery = (orchardId) =>
     enabled: !!orchardId,
   });
 
-export const useCreateOrchardMutation = () =>
+export const useCreateOrchardBasinInfoMutation = () =>
   useMutation({ mutationFn: createOrchard });
 
-export const useUpdateOrchardMutation = () =>
+export const useUpdateOrchardBasicInfoMutation = () =>
   useMutation({ mutationFn: updateOrchard });
 
-export const useDeleteOrchardMutation = () =>
+export const useDeleteOrchardBasicInfoMutation = () =>
   useMutation({ mutationFn: deleteOrchard });
 
 //
