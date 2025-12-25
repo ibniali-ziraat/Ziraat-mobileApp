@@ -6,18 +6,12 @@ import {
   FlatList,
   Image,
   Pressable,
-  ToastAndroid,
   View
 } from "react-native";
 import RatingStars from "../../components/shared/RatingStars";
 import { colors } from "../../constants/colors";
 
-import { typography } from "@/src/constants/fonts/typography";
-import {
-  addToWishlist,
-  isInWishlist,
-  removeFromWishlist,
-} from "@/src/utils/wishlistStore";
+
 import { router } from "expo-router";
 import CsText from "./CsText";
 
@@ -35,17 +29,6 @@ export default function ProductCarousel({
   };
 
   const [refresh, setRefresh] = useState(false);
-
-  const handleHeartPress = (item: any) => {
-    if (isInWishlist(item._id)) {
-      removeFromWishlist(item._id);
-    } else {
-      addToWishlist(item);
-
-      ToastAndroid.show("Added to Wishlist", ToastAndroid.SHORT);
-    }
-    setRefresh(!refresh);
-  };
 
   return (
     <View className="mb-6">
@@ -78,8 +61,8 @@ export default function ProductCarousel({
                   />
 
                   {item.label && (
-                    <View className="absolute top-2 left-2 bg-primary px-2 py-1  rounded-lg">
-                      <CsText style= {[typography.Poppins_xs_regular]} className="text-light ">
+                    <View className="absolute top-2 left-2 bg-primary px-2 py-1 rounded-lg">
+                      <CsText className="text-light text-[10px] font-semibold">
                         {item.label}
                      </CsText>
                     </View>
@@ -89,27 +72,18 @@ export default function ProductCarousel({
                     className="absolute top-2 right-2 p-1"
                     onPress={(event) => {
                       event.stopPropagation();
-                      handleHeartPress(item);
+                 
                     }}
                   >
                     <Heart
                       size={20}
-                      // color={colors.bgColor}
-
-                      color={isInWishlist(item._id) ? colors.secondary : colors.overlay}
-
-                      fill={
-                        isInWishlist(item._id)
-                          ? colors.secondary
-                          : "transparent"
-                      }
+                      color={colors.dark}
                     />
                   </Pressable>
                 </View>
 
                 <CsText
-                style ={[typography.Poppins_m_semibold]}
-                  className="mt-2 w-full px-2"
+                  className="font-semibold text-[18px] mt-2 w-full px-2"
                   numberOfLines={1}
                 >
                   {item.title}
@@ -117,47 +91,32 @@ export default function ProductCarousel({
 
                 {item.category && (
                   <CsText
-                  style ={[typography.Poppins_s_regular]}
-                    className="text-dark  w-full px-2 mt-1"
+                    className="text-dark text-[14px] w-full px-2 mt-1"
                     numberOfLines={1}
                   >
                     {item.category}
                  </CsText>
                 )}
 
-                <View className="flex-row items-center pt-2 w-full px-2"
-                
-                >
+                <View className="flex-row items-center mt-1 w-full px-2">
                   {item.discountPrice ? (
                     <>
-                      <CsText 
-                      style ={[typography.Poppins_s_regular]}
-                      
-                      className="text-dark line-through pr-3">
+                      <CsText className="text-dark line-through text-[14px] mr-5">
                         ₹{item.price}
                      </CsText>
 
-                      <CsText 
-                      style ={[typography.Poppins_s_medium]}
-                      
-                      className="text-primary pr-3 ">
+                      <CsText className="text-primary font-bold text-[16px] mr-1">
                         ₹{item.discountPrice}
                      </CsText>
 
                       {discountPercent && (
-                        <CsText 
-                        style ={[typography.Poppins_xs_regular]}
-                        
-                        className="text-secondary">
+                        <CsText className="text-secondary text-[14px] font-semibold">
                           {discountPercent}% OFF
                        </CsText>
                       )}
                     </>
                   ) : (
-                    <CsText 
-                      style ={[typography.Poppins_s_medium]}
-                    
-                    className="text-primary text-[18px]">
+                    <CsText className="text-primary font-semibold text-[18px]">
                       ₹{item.price}
                    </CsText>
                   )}

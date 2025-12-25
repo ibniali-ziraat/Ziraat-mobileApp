@@ -1,51 +1,39 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
-import WishlistItem from "@/src/modules/products/components/WishListItem";
-import { getWishlist, removeFromWishlist } from "@/src/utils/wishlistStore";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { typography } from "@/src/constants/fonts/typography";
+import products from "@/src/data/products.json";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
   FlatList,
   Image,
-  ToastAndroid,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
+import WishlistItem from "./components/WishListItem";
+
+
 
 const Wishlist = () => {
   const router = useRouter();
-  const [wishlistItems, setWishlistItems] = useState<any[]>([]);
-
-  const fetchWishlist = async () => {
-    try {
-      const items = await getWishlist();
-      setWishlistItems(Array.isArray(items) ? items : []);
-    } catch (error) {
-      console.error("Failed to fetch wishlist:", error);
-      setWishlistItems([]);
-    }
-  };
+  const [wishlistItems, setWishlistItems] = useState([]);
 
   useEffect(() => {
-    fetchWishlist();
+    setWishlistItems(products); 
   }, []);
 
-  const handleRemove = async (itemId: string) => {
-    try {
-      await removeFromWishlist(itemId);
-      ToastAndroid.show("Removed from Wishlist", ToastAndroid.SHORT);
-      fetchWishlist();
-    } catch (error) {
-      console.error("Remove failed:", error);
-    }
+
+  const handleRemove = (id: string) => {
+    setWishlistItems((prev) => prev.filter((item) => item._id !== id));
   };
 
   const handleStartShopping = () => router.push("/Product");
 
+ 
   if (wishlistItems.length === 0) {
-
     return (
-      <View className="flex-1 bg-white"> 
+      <View className="flex-1 bg-white">
         <BackHeader title="My Wishlist" desc="Your selected items" />
 
         <View className="flex-1 justify-center items-center px-6">
@@ -54,21 +42,28 @@ const Wishlist = () => {
             className="w-56 h-56 mb-6"
             resizeMode="contain"
           />
-          <CsText className="text-2xl font-semibold text-dark mb-2">
-            Empty Wishlist
-         </CsText>
 
-          <CsText className="text-center text-dark/70 mb-6 text-sm">
+          <CsText style={typography.Poppins_l_semibold} className="mb-2">
+            Empty Wishlist
+          </CsText>
+
+          <CsText
+            className="text-center mb-6"
+            style={typography.Poppins_m_regular}
+          >
             Save items you love and view them all in one place.
-         </CsText>
+          </CsText>
 
           <TouchableOpacity
             onPress={handleStartShopping}
-            className="bg-primary px-8 py-3 rounded-full shadow-md active:opacity-80"
+            className="bg-primary px-8 py-3 rounded-full"
           >
-            <CsText className="text-white font-semibold text-base">
+            <CsText
+              className="text-light"
+              style={typography.Poppins_m_semibold}
+            >
               Browse Products
-           </CsText>
+            </CsText>
           </TouchableOpacity>
         </View>
       </View>
@@ -76,8 +71,7 @@ const Wishlist = () => {
   }
 
   return (
-
-    <View className="flex-1 bg-white"> 
+    <ScreenLayout scrollable={false}>
       <BackHeader
         title="My Wishlist"
         desc={`${wishlistItems.length} ${
@@ -87,26 +81,25 @@ const Wishlist = () => {
 
       <FlatList
         data={wishlistItems}
-        keyExtractor={(item) => item._id?.toString()}
+        keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20 }}
-        ItemSeparatorComponent={() => <View/>}
+       
         renderItem={({ item }) => (
-         
-          <View className="bg-light px-4 "> 
-            <WishlistItem item={item} onRemove={handleRemove} />
-          </View>
+          <WishlistItem item={item} onRemove={handleRemove} />
         )}
         ListFooterComponent={
-          <View className="mt-6 mb-4 px-4">
-            <CsText className="text-center text-dark text-sm">
+          <View>
+            <CsText
+              className="text-center text-dark"
+              style={typography.Poppins_xs_regular}
+            >
               You have reached the end of your wishlist.
-           </CsText>
+            </CsText>
           </View>
         }
       />
-    </View>
+    </ScreenLayout>
   );
-}
+};
 
 export default Wishlist;
