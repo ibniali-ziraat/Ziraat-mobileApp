@@ -1,7 +1,8 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import { hectaresToMarlas } from "@/src/utils/areaConversion";
+import { UNIT_CONVERSIONS } from "@/src/utils/units";
 import { router } from "expo-router";
 import { useState } from "react";
+import { Platform, Text, View } from "react-native";
 import AreaBadge from "../components/AreaBadge";
 import MeasureControls from "../components/MeasureControls";
 import MeasureMap from "../components/MeasureMap";
@@ -14,26 +15,47 @@ export default function WalkMeasureScreen() {
   const { path, start, stop, reset } = useWalkMeasurement();
   const [unit, setUnit] = useState("hectares");
   const [walking, setWalking] = useState(false);
-
-  const area = useAreaCalculation(path, unit);
-
   if (!location) return null;
 
+  const areaHectares = useAreaCalculation(path, unit);
+
+  const displayArea = (areaHectares * UNIT_CONVERSIONS[unit]).toFixed(3);
+  const marlas = areaHectares * UNIT_CONVERSIONS.marla;
+
   const handlePrimary = () => {
+    if (!areaHectares) return;
+
     if (walking) {
       stop();
-
-      const marlas = unit === "hectares" ? hectaresToMarlas(area) : area;
-
       router.push({
-        pathname: "/orchards/add",
-        params: { orchardSize: marlas.toFixed(2) },
+        pathname: "/orchards/basic-info",
+        params: {
+          orchardSize: marlas.toFixed(2),
+          areaValue: displayArea,
+          areaUnit: unit,
+          areaLabel: `${displayArea} ${unit}`,
+        },
       });
     } else {
       start();
     }
     setWalking(!walking);
   };
+
+  if (Platform.OS === "web") {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 20,
+        }}
+      >
+        <Text>Map is only available on iOS and Android</Text>
+      </View>
+    );
+  }
 
   return (
     <>

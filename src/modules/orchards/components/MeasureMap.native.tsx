@@ -6,7 +6,12 @@ import MapView, {
   PROVIDER_GOOGLE,
 } from "react-native-maps";
 
-export default function MeasureMap({ location, points, onTap, isWalking }) {
+export default function MeasureMap({
+  location,
+  points,
+  onTap,
+  isWalking,
+}: any) {
   return (
     <MapView
       style={{ flex: 1 }}
@@ -21,7 +26,8 @@ export default function MeasureMap({ location, points, onTap, isWalking }) {
       }}
       onPress={onTap}
     >
-      {!isWalking && points.map((p, i) => <Marker key={i} coordinate={p} />)}
+      {!isWalking &&
+        points.map((p: any, i: number) => <Marker key={i} coordinate={p} />)}
 
       {isWalking && <Polyline coordinates={points} strokeWidth={4} />}
 

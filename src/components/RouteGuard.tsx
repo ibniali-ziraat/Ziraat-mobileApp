@@ -18,26 +18,10 @@ export default function RouteGuard({ children }: RouteGuardProps) {
     // No token -> immediate logout and redirect
     if (!userToken) {
       logoutUser();
-      router.replace("/");
+      router.replace("/auth/user");
       return;
     }
 
-    if (!userToken) {
-      router.replace("/");
-      return;
-    }
-    // if (!userToken) {
-    //   logoutUser();
-    //   router.replace("/");
-    //   return;
-    // }
-
-    if (!userToken) {
-      router.replace("/");
-      return;
-    }
-
-    // Clear previous scheduled logout if present
     if (cancelRef.current) {
       cancelRef.current();
       cancelRef.current = null;

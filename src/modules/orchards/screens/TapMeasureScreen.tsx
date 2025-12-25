@@ -2,6 +2,7 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import { UNIT_CONVERSIONS } from "@/src/utils/units";
 import { router } from "expo-router";
 import { useState } from "react";
+import { Platform, Text, View } from "react-native";
 import AreaBadge from "../components/AreaBadge";
 import MeasureControls from "../components/MeasureControls";
 import MeasureMap from "../components/MeasureMap";
@@ -35,6 +36,21 @@ export default function TapMeasureScreen() {
       },
     });
   };
+
+  if (Platform.OS === "web") {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          padding: 20,
+        }}
+      >
+        <Text>Map is only available on iOS and Android</Text>
+      </View>
+    );
+  }
 
   return (
     <>

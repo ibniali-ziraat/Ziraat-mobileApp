@@ -20,6 +20,12 @@ import { BasicInfoSchema } from "../schemas/BasicInfoSchema";
 export default function BasicInfoScreen() {
   const { userId } = useAuth();
   const { orchardId, setOrchardId } = useOrchard();
+  const params = useLocalSearchParams<{
+    orchardSize?: string;
+    areaValue?: string;
+    areaUnit?: string;
+    areaLabel?: string;
+  }>();
 
   const { data } = useOrchardsByUserQuery(userId);
   const { mutateAsync: save, isPending: isSaving } =
@@ -37,7 +43,6 @@ export default function BasicInfoScreen() {
   } = form;
   console.log(errors, "errors....");
 
-  // Prefill if editing
   useEffect(() => {
     if (!data) return;
     Object.entries(data).forEach(([key, value]) => {
@@ -72,14 +77,6 @@ export default function BasicInfoScreen() {
     // }
   };
 
-  const params = useLocalSearchParams<{
-    orchardSize?: string;
-    areaValue?: string;
-    areaUnit?: string;
-    areaLabel?: string;
-  }>();
-
-  /* Apply measured value */
   useEffect(() => {
     if (params?.orchardSize) {
       setValue("orchardSize", params.orchardSize);
