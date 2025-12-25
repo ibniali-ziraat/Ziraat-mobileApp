@@ -1,5 +1,6 @@
 import { Wind } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 import WindCompass from "./WindCompass";
 
@@ -22,9 +23,9 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
 
           <View className="flex-row pb-5">
             <Wind size={16} color="#c7611f" />
-            <Text className="ml-2 text-md font-semibold tracking-wide text-dark">
+            <CsText className="ml-2 text-md font-semibold tracking-wide text-dark">
               WIND
-            </Text>
+           </CsText>
           </View>
 
           <View className="flex-col">
@@ -41,7 +42,7 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
           </View>
 
           <View>
-            <Text className="text-sm font-semibold text-dark">{direction}</Text>
+            <CsText className="text-sm font-semibold text-dark">{direction}</CsText>
           </View>
         </View>
       </View>
@@ -52,8 +53,8 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <View className="flex-row justify-between mb-2">
-      <Text className="text-sm text-dark">{label}</Text>
-      <Text className="text-sm font-medium text-dark">{value}</Text>
+      <CsText className="text-sm text-dark">{label}</CsText>
+      <CsText className="text-sm font-medium text-dark">{value}</CsText>
     </View>
   );
 }

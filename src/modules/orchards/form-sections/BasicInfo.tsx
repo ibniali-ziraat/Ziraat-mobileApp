@@ -142,7 +142,7 @@ export default function BasicInfo({ control, errors }) {
           iconSize={20}
           errors={errors?.orchardName?.message}
         />
-
+         
         <FormInput
           control={control}
           name="orchardSize"

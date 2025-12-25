@@ -1,10 +1,11 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { Info, User } from "lucide-react-native";
 import React from "react";
-import { ScrollView, Switch, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Switch, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SettingsScreen() {
@@ -35,15 +36,15 @@ export default function SettingsScreen() {
         >
           <View className="flex-row items-center mb-2">
             <User color={colors.secondary} size={24} className="mr-2" />
-            <Text
+            <CsText
               className="text-lg font-semibold"
               style={{ color: colors.black }}
             >
               Account Info
-            </Text>
+           </CsText>
           </View>
-          <Text style={{ color: colors.gray }}>Username: {"N/A"}</Text>
-          <Text style={{ color: colors.gray }}>Email: {"N/A"}</Text>
+          <CsText style={{ color: colors.gray }}>Username: {"N/A"}</CsText>
+          <CsText style={{ color: colors.gray }}>Email: {"N/A"}</CsText>
         </View>
 
         {/* 🔵 COMPLETE PROFILE BUTTON */}
@@ -54,15 +55,15 @@ export default function SettingsScreen() {
             backgroundColor: colors.secondaryHover,
           }}
         >
-          <Text
+          <CsText
             className="text-base font-semibold"
             style={{ color: colors.black }}
           >
             Complete Your Profile →
-          </Text>
-          <Text style={{ color: colors.gray, marginTop: 4 }}>
+         </CsText>
+          <CsText style={{ color: colors.gray, marginTop: 4 }}>
             Fill missing details like address, education, and profession.
-          </Text>
+         </CsText>
         </TouchableOpacity>
 
         {/* Preferences */}
@@ -71,12 +72,12 @@ export default function SettingsScreen() {
           style={{ backgroundColor: colors.blackHover }}
         >
           <View className="flex-row items-center justify-between mb-3">
-            <Text
+            <CsText
               className="text-base font-medium"
               style={{ color: colors.black }}
             >
               Enable Notifications
-            </Text>
+           </CsText>
             <Switch
               value={notificationsEnabled}
               onValueChange={setNotificationsEnabled}
@@ -86,12 +87,12 @@ export default function SettingsScreen() {
           </View>
 
           <View className="flex-row items-center justify-between">
-            <Text
+            <CsText
               className="text-base font-medium"
               style={{ color: colors.black }}
             >
               Dark Mode
-            </Text>
+           </CsText>
             <Switch
               value={darkModeEnabled}
               onValueChange={setDarkModeEnabled}
@@ -108,15 +109,15 @@ export default function SettingsScreen() {
         >
           <View className="flex-row items-center mb-2">
             <Info color={colors.secondary} size={24} className="mr-2" />
-            <Text
+            <CsText
               className="text-lg font-semibold"
               style={{ color: colors.black }}
             >
               App Info
-            </Text>
+           </CsText>
           </View>
-          <Text style={{ color: colors.gray }}>Version: 1.0.0</Text>
-          <Text style={{ color: colors.gray }}>Build: 2025</Text>
+          <CsText style={{ color: colors.gray }}>Version: 1.0.0</CsText>
+          <CsText style={{ color: colors.gray }}>Build: 2025</CsText>
         </View>
 
         {/* Logout Button */}
@@ -125,7 +126,7 @@ export default function SettingsScreen() {
           style={{ backgroundColor: colors.secondary }}
           onPress={handleLogout}
         >
-          <Text className="text-light font-semibold">Logout</Text>
+          <CsText className="text-light font-semibold">Logout</CsText>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

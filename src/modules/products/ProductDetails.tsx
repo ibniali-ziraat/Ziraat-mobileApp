@@ -11,7 +11,8 @@ import { router, useLocalSearchParams } from "expo-router";
 import { IndianRupee, Package } from "lucide-react-native";
 // Imported FlatList
 import BackHeader from "@/src/components/shared/BackHeader";
-import { FlatList, Text, ToastAndroid, View } from "react-native";
+import CsText from "@/src/components/shared/CsText";
+import { FlatList, ToastAndroid, View } from "react-native";
 import faqData from "../../data/Faq.json";
 import products from "../../data/products.json";
 
@@ -21,49 +22,49 @@ const renderHeader = (product, colors) => (
     <ProductDetailCarousel photos={product.photos} label={product.label} />
 
     <View className="mt-8 px-4">
-      <Text className="text-4xl font-bold text-dark mb-2">
+      <CsText className="text-4xl font-bold text-dark mb-2">
         {String(product.title)}
-      </Text>
+     </CsText>
 
-      <Text className="text-xl mb-1">Category: {String(product.category)}</Text>
+      <CsText className="text-xl mb-1">Category: {String(product.category)}</CsText>
 
       {product.saltComposition && (
-        <Text className="text-xl mb-2 text-dark">
-          <Text className="font-semibold text-primary">
+        <CsText className="text-xl mb-2 text-dark">
+          <CsText className="font-semibold text-primary">
             {String(product.saltComposition)}
-          </Text>
-        </Text>
+         </CsText>
+       </CsText>
       )}
 
       {/* PRICE + DISCOUNT */}
       <View className="flex-row items-center mb-2 w-full">
         <View className="flex-row items-center">
           <IndianRupee size={16} color={colors.dark} />
-          <Text
+          <CsText
             className={`text-xl text-dark ${
               product.discountPrice ? "line-through" : ""
             }`}
           >
             {String(product.price)}
-          </Text>
+         </CsText>
         </View>
 
         {product.discountPrice && (
           <View className="flex-row items-center ml-2">
             <IndianRupee size={20} color={colors.dark} />
-            <Text className="text-3xl font-bold text-dark">
+            <CsText className="text-3xl font-bold text-dark">
               {String(product.discountPrice)}
-            </Text>
+           </CsText>
           </View>
         )}
 
-        <Text
+        <CsText
           className={`text-sm px-2 py-1 bg-primary rounded-xl ml-3 ${
             product.inStock ? "text-light" : "text-primary"
           }`}
         >
           {product.inStock ? "In Stock" : "Out of Stock"}
-        </Text>
+       </CsText>
       </View>
 
       {/* RATING */}
@@ -71,42 +72,42 @@ const renderHeader = (product, colors) => (
         <RatingStars rating={product.rating} />
       </View>
 
-      <Text className="font-semibold text-xl mb-2">Product Description:</Text>
+      <CsText className="font-semibold text-xl mb-2">Product Description:</CsText>
 
       {/* DESCRIPTION */}
       {Array.isArray(product.description) ? (
         product.description.map((desc, index) => (
-          <Text key={index} className="text-dark text-[15px] mb-2 text-justify">
+          <CsText key={index} className="text-dark text-[15px] mb-2 text-justify">
             {String(desc)}
-          </Text>
+         </CsText>
         ))
       ) : (
-        <Text className="text-dark text-[15px] text-justify">
+        <CsText className="text-dark text-[15px] text-justify">
           {String(product.description)}
-        </Text>
+       </CsText>
       )}
 
       {/* DOSAGE */}
       {product.dosage && (
-        <Text className="text-[15px] text-dark mb-4 text-justify">
-          <Text className="text-xl font-semibold text-dark">Dosage: </Text>
+        <CsText className="text-[15px] text-dark mb-4 text-justify">
+          <CsText className="text-xl font-semibold text-dark">Dosage:</CsText>
           {String(product.dosage)}
-        </Text>
+       </CsText>
       )}
 
       {/* PACKAGING */}
       {product.packaging && (
         <View className="mt-4">
-          <Text className="font-semibold text-xl mb-2">Packaging:</Text>
+          <CsText className="font-semibold text-xl mb-2">Packaging:</CsText>
 
           {product.packaging.map((pack, index) => (
             <View key={index} className="flex-row items-center mb-1">
               <Package size={18} color={colors.secondary} />
-              <Text className="text-dark text-[15px] ml-2">
+              <CsText className="text-dark text-[15px] ml-2">
                 {String(pack.type)}: {String(pack.size)}
                 {pack.weight ? ` (${String(pack.weight)})` : ""}
                 {pack.packOf ? ` - Pack of ${String(pack.packOf)}` : ""}
-              </Text>
+             </CsText>
             </View>
           ))}
         </View>
@@ -114,12 +115,12 @@ const renderHeader = (product, colors) => (
 
       {/* TAGS */}
       {product.tag && (
-        <Text className="text-dark text-xl font-medium mt-4">
+        <CsText className="text-dark text-xl font-medium mt-4">
           Tags:{" "}
-          <Text className="text-primary font-semibold">
+          <CsText className="text-primary font-semibold">
             {String(product.tag)}
-          </Text>
-        </Text>
+         </CsText>
+       </CsText>
       )}
     </View>
   </>
@@ -132,7 +133,7 @@ export default function ProductDetails() {
   if (!productId) {
     return (
       <View className="flex-1 justify-center items-center bg-light">
-        <Text className="text-lg text-dark">Please provide a product ID</Text>
+        <CsText className="text-lg text-dark">Please provide a product ID</CsText>
       </View>
     );
   }
@@ -142,7 +143,7 @@ export default function ProductDetails() {
   if (!product) {
     return (
       <View className="flex-1 justify-center items-center bg-light">
-        <Text className="text-lg text-dark">Product not found</Text>
+        <CsText className="text-lg text-dark">Product not found</CsText>
       </View>
     );
   }

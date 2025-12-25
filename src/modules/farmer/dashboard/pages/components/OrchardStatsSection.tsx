@@ -1,7 +1,8 @@
 import * as Icons from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import StatChip from "./StatChip";
@@ -61,12 +62,12 @@ export default function OrchardStatsSection({ orchards, admin, weather }: any) {
           paddingHorizontal={1}
           paddingVertical={1}
         >
-          <Text className="text-[18px] font-bold mb-3">
+          <CsText className="text-[18px] font-bold mb-3">
             Smart Insight
-          </Text>
-          <Text className="text-[12px]">
+         </CsText>
+          <CsText className="text-[12px]">
             Tree density and survival suggest potential to increase yield by improving fertigation.
-          </Text>
+         </CsText>
         </ZiraatCard>
       </View>
 

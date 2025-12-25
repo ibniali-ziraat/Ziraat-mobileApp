@@ -1,6 +1,7 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function BankDetailsCard() {
 
@@ -25,17 +26,17 @@ export default function BankDetailsCard() {
 
       {/* HEADER */}
       <View className="flex-row justify-between items-center mb-3">
-        <Text className="font-bold text-[18px]" style={{ color: colors.dark }}>
+        <CsText className="font-bold text-[18px]" style={{ color: colors.dark }}>
           Bank Details & Logs
-        </Text>
+       </CsText>
 
         <TouchableOpacity>
-          <Text
+          <CsText
             className="text-[12px] font-semibold"
             style={{ color: colors.primary }}
           >
             View All
-          </Text>
+         </CsText>
         </TouchableOpacity>
       </View>
 
@@ -54,36 +55,36 @@ export default function BankDetailsCard() {
       >
         {/* Header row */}
         <View className="flex-row justify-between items-center mb-2">
-          <Text className="font-semibold text-[15px]" style={{ color: colors.dark }}>
+          <CsText className="font-semibold text-[15px]" style={{ color: colors.dark }}>
             {bank.accountName}
-          </Text>
+         </CsText>
 
           <View
             className="px-3 py-[3px] rounded-full"
             style={{ backgroundColor: colors.primary }}
           >
-            <Text className="text-white text-[11px]">{bank.status}</Text>
+            <CsText className="text-white text-[11px]">{bank.status}</CsText>
           </View>
         </View>
 
         {/* Account masked */}
-        <Text className="text-[13px] text-gray-500 mb-1">{bank.masked}</Text>
+        <CsText className="text-[13px] text-gray-500 mb-1">{bank.masked}</CsText>
 
         {/* Amount */}
-        <Text
+        <CsText
           className="text-[24px] font-extrabold tracking-tight"
           style={{ color: colors.secondaryHover }}
         >
           ₹{bank.amount.toLocaleString()}
-        </Text>
+       </CsText>
 
         {/* Positive change */}
-        <Text
+        <CsText
           className="text-[12px] font-semibold mt-[2px]"
           style={{ color: colors.primary }}
         >
           +₹{bank.change}
-        </Text>
+       </CsText>
 
         {/* Download Button */}
         <TouchableOpacity
@@ -91,19 +92,19 @@ export default function BankDetailsCard() {
           style={{ backgroundColor: colors.primary }}
         >
           <Ionicons name="download-outline" size={16} color={colors.light} />
-          <Text className="ml-2 text-white font-semibold text-[13px]">
+          <CsText className="ml-2 text-white font-semibold text-[13px]">
             Download Latest Settlement
-          </Text>
+         </CsText>
         </TouchableOpacity>
       </View>
 
       {/* LOGS */}
-      <Text
+      <CsText
         className="font-semibold text-[16px] mb-2"
         style={{ color: colors.dark }}
       >
         Settlement Logs
-      </Text>
+     </CsText>
 
       <View
         className="rounded-2xl border"
@@ -124,26 +125,26 @@ export default function BankDetailsCard() {
               style={{ borderColor: colors.neutral }}
             >
               <View className="">
-                <Text className="font-semibold text-[14px]" style={{ color: colors.dark }}>
+                <CsText className="font-semibold text-[14px]" style={{ color: colors.dark }}>
                   {log.id}
-                </Text>
-                <Text className="text-[11px] text-gray-500">Settlement ID</Text>
+               </CsText>
+                <CsText className="text-[11px] text-gray-500">Settlement ID</CsText>
               </View>
 
               <View className="items-end">
-                <Text
+                <CsText
                   className="font-bold text-[15px]"
                   style={{ color: colors.secondaryHover }}
                 >
                   ₹{log.amount.toLocaleString()}
-                </Text>
+               </CsText>
 
-                <Text
+                <CsText
                   className="text-[12px] font-semibold"
                   style={{ color: statusColor }}
                 >
                   {log.status}
-                </Text>
+               </CsText>
               </View>
             </View>
           );

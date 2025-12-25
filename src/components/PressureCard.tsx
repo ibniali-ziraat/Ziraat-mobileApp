@@ -1,6 +1,7 @@
 import { Gauge } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Svg, { Circle, G, Line, Path } from "react-native-svg";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -26,9 +27,9 @@ export default function PressureCard({ value }: Props) {
 
             <View className="flex-row items-center">
                 <Gauge size={18} color="#c7611f" />
-                <Text className="ml-2 text-md font-semibold tracking-wide text-dark">
+                <CsText className="ml-2 text-md font-semibold tracking-wide text-dark">
                     PRESSURE
-                </Text>
+               </CsText>
             </View>
 
 
@@ -63,8 +64,8 @@ export default function PressureCard({ value }: Props) {
                     <Circle cx={CENTER} cy={CENTER} r={4} fill="#c7611f" />
                 </Svg>
                 <View className=" w-full flex-row justify-between px-4">
-                    <Text className="text-xs text-neutral-500">Low</Text>
-                    <Text className="text-xs text-neutral-500">High</Text>
+                    <CsText className="text-xs text-neutral-500">Low</CsText>
+                    <CsText className="text-xs text-neutral-500">High</CsText>
                 </View>
             </View>
         </ZiraatCard>

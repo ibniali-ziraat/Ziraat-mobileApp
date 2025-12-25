@@ -32,9 +32,10 @@
 // }
 
 
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function VendorFinancialSummary({ data }) {
   const {
@@ -75,9 +76,9 @@ export default function VendorFinancialSummary({ data }) {
       {/* HEADER */}
       <View className="flex-row items-center mb-4">
         <Ionicons name="stats-chart-outline" size={22} color={colors.primary} />
-        <Text className="ml-2 text-[17px] font-bold text-gray-900">
+        <CsText className="ml-2 text-[17px] font-bold text-gray-900">
           Vendor Financial Summary
-        </Text>
+       </CsText>
       </View>
 
       {/* GRID */}
@@ -123,22 +124,22 @@ export default function VendorFinancialSummary({ data }) {
 function FinancialRow({ label, value, color, isText }) {
   return (
     <View className="w-[48%] mb-4">
-      <Text className="text-[12px] text-gray-500">{label}</Text>
+      <CsText className="text-[12px] text-gray-500">{label}</CsText>
 
       {isText ? (
-        <Text
+        <CsText
           className="text-[14px] mt-1 font-semibold"
           style={{ color }}
         >
           {value}
-        </Text>
+       </CsText>
       ) : (
-        <Text
+        <CsText
           className="text-[20px] mt-1 font-extrabold"
           style={{ color }}
         >
           ₹{value.toLocaleString()}
-        </Text>
+       </CsText>
       )}
     </View>
   );

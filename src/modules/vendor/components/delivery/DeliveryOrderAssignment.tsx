@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function DeliveryOrderAssignment({ order, theme }) {
   const statuses = [
@@ -15,9 +16,9 @@ export default function DeliveryOrderAssignment({ order, theme }) {
       
     >
       {/* HEADER */}
-      <Text className="text-lg font-bold text-black mb-4">
+      <CsText className="text-lg font-bold text-black mb-4">
         Delivery Order Assignment
-      </Text>
+     </CsText>
 
       {/* STATUS LIST (Simple & Clean) */}
       <View className="mb-5">
@@ -35,7 +36,7 @@ export default function DeliveryOrderAssignment({ order, theme }) {
                   size={18}
                   color={active ? s.color : "#9ca3af"}
                 />
-                <Text
+                <CsText
                   className="ml-2 text-[14px]"
                   style={{
                     color: active ? s.color : "#6b7280",
@@ -43,7 +44,7 @@ export default function DeliveryOrderAssignment({ order, theme }) {
                   }}
                 >
                   {s.label}
-                </Text>
+               </CsText>
               </View>
 
               {active && (
@@ -55,12 +56,12 @@ export default function DeliveryOrderAssignment({ order, theme }) {
                     borderWidth: 1,
                   }}
                 >
-                  <Text
+                  <CsText
                     className="text-[11px] font-semibold"
                     style={{ color: s.color }}
                   >
                     Active
-                  </Text>
+                 </CsText>
                 </View>
               )}
             </View>
@@ -93,9 +94,9 @@ export default function DeliveryOrderAssignment({ order, theme }) {
           />
         </View>
 
-        <Text className="ml-3 font-semibold text-black text-[14px]">
+        <CsText className="ml-3 font-semibold text-black text-[14px]">
           Assign Delivery Agent
-        </Text>
+       </CsText>
 
         <View className="flex-1 items-end">
           <Ionicons name="chevron-forward" size={22} color="#9ca3af" />
@@ -123,9 +124,9 @@ export default function DeliveryOrderAssignment({ order, theme }) {
           <Ionicons name="repeat-outline" size={22} color={theme.primary} />
         </View>
 
-        <Text className="ml-3 font-semibold text-black text-[14px]">
+        <CsText className="ml-3 font-semibold text-black text-[14px]">
           Change Delivery Status
-        </Text>
+       </CsText>
 
         <View className="flex-1 items-end">
           <Ionicons name="chevron-forward" size={20} color="#9ca3af" />

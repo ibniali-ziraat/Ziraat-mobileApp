@@ -1,18 +1,19 @@
 // components/home/FarmerTipsCard.tsx
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import {
-    ChevronRight,
-    Droplets,
-    Leaf,
-    ShieldCheck,
-    Sun
+  ChevronRight,
+  Droplets,
+  Leaf,
+  ShieldCheck,
+  Sun
 } from "lucide-react-native";
 import { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 // Weather-based warnings
@@ -120,9 +121,9 @@ export default function FarmerTipsCard() {
                     <IconComponent size={22} color={colors.primary} />
                   </View>
 
-                  <Text className="ml-3 font-semibold text-black text-[15px]">
+                  <CsText className="ml-3 font-semibold text-black text-[15px]">
                     {tip.title}
-                  </Text>
+                 </CsText>
                 </View>
 
                 <Animated.View style={arrowStyle}>
@@ -133,13 +134,13 @@ export default function FarmerTipsCard() {
               {/* Expanded Content */}
               <Animated.View style={[contentStyle, { overflow: "hidden" }]}>
                 <View className="ml-14 mb-4">
-                  <Text className="text-sm text-gray-700 leading-5">
+                  <CsText className="text-sm text-gray-700 leading-5">
                     {tip.desc}
-                  </Text>
+                 </CsText>
 
                   {/* Weather Warning */}
                   {warning && (
-                    <Text className="text-xs text-red-600 mt-2">{warning}</Text>
+                    <CsText className="text-xs text-red-600 mt-2">{warning}</CsText>
                   )}
 
                   

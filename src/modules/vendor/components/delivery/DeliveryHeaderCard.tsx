@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function DeliveryHeaderCard({ order, theme }) {
   return (
@@ -19,13 +20,13 @@ export default function DeliveryHeaderCard({ order, theme }) {
       />
 
       {/* ORDER ID */}
-      <Text className="text-xl font-extrabold text-black tracking-wide">
+      <CsText className="text-xl font-extrabold text-black tracking-wide">
         {order.id}
-      </Text>
+     </CsText>
 
-      <Text className="text-gray-500 mt-1 text-[13px]">
+      <CsText className="text-gray-500 mt-1 text-[13px]">
         Delivery & Logistics Monitoring • Live Tracking
-      </Text>
+     </CsText>
 
       {/* STATUS CHIP */}
       <View
@@ -46,31 +47,31 @@ export default function DeliveryHeaderCard({ order, theme }) {
           color={theme.secondary}
         />
 
-        <Text
+        <CsText
           className="ml-2 text-sm font-semibold"
           style={{ color: theme.secondary }}
         >
           {order.status}
-        </Text>
+       </CsText>
       </View>
 
       {/* ORDER META */}
       <View className="flex-row justify-between mt-5 border-t pt-3 border-gray-200">
         <View>
-          <Text className="text-[12px] text-gray-500">Assigned To</Text>
-          <Text className="text-[13px] font-semibold text-gray-800 mt-[2px]">
+          <CsText className="text-[12px] text-gray-500">Assigned To</CsText>
+          <CsText className="text-[13px] font-semibold text-gray-800 mt-[2px]">
             {order.agent?.name || "Not Assigned"}
-          </Text>
+         </CsText>
         </View>
 
         <View className="items-end">
-          <Text className="text-[12px] text-gray-500">Status</Text>
-          <Text
+          <CsText className="text-[12px] text-gray-500">Status</CsText>
+          <CsText
             className="text-[13px] font-semibold"
             style={{ color: theme.primary }}
           >
             {order.status}
-          </Text>
+         </CsText>
         </View>
       </View>
     </View>

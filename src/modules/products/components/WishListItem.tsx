@@ -1,4 +1,5 @@
 import AddToCartButton from "@/src/components/shared/AddToCartButton";
+import CsText from "@/src/components/shared/CsText";
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
 import { imageMapper } from "@/src/data/imageMapper";
@@ -10,9 +11,8 @@ import {
   Dimensions,
   Image,
   Pressable,
-  Text,
   ToastAndroid,
-  View,
+  View
 } from "react-native";
 
 const screenWidth = Dimensions.get("window").width;
@@ -79,9 +79,9 @@ const WishlistItem = ({ item, onRemove }) => {
         <View className="flex-1 ml-4 justify-between">
           <View>
             <View className="flex-row justify-between items-center">
-              <Text className="font-semibold text-[16px]" numberOfLines={1}>
+              <CsText className="font-semibold text-[16px]" numberOfLines={1}>
                 {item.title}
-              </Text>
+             </CsText>
               <Pressable
                 className="rounded-full"
                 onPress={() => onRemove(item._id)}
@@ -91,38 +91,38 @@ const WishlistItem = ({ item, onRemove }) => {
             </View>
 
             {item.category && (
-              <Text className="text-dark text-[14px] mt-1" numberOfLines={1}>
+              <CsText className="text-dark text-[14px] mt-1" numberOfLines={1}>
                 {item.category}
-              </Text>
+             </CsText>
             )}
 
             <View className="flex-row items-center mt-2">
               {item.discountPrice ? (
                 <>
-                  <Text className="text-dark line-through text-[14px] mr-2">
+                  <CsText className="text-dark line-through text-[14px] mr-2">
                     ₹{item.price}
-                  </Text>
-                  <Text className="text-primary font-bold text-[16px] mr-1">
+                 </CsText>
+                  <CsText className="text-primary font-bold text-[16px] mr-1">
                     ₹{item.discountPrice}
-                  </Text>
+                 </CsText>
                   {discountPercent && (
-                    <Text className="text-secondary text-[12px] font-semibold">
+                    <CsText className="text-secondary text-[12px] font-semibold">
                       {discountPercent}% OFF
-                    </Text>
+                   </CsText>
                   )}
                 </>
               ) : (
-                <Text className="text-primary font-semibold text-[16px]">
+                <CsText className="text-primary font-semibold text-[16px]">
                   ₹{item.price}
-                </Text>
+               </CsText>
               )}
             </View>
 
             <View className="flex-row items-center justify-between mt-2">
               <RatingStars rating={item.rating} />
-              <Text className="text-sm text-light px-2 rounded-xl bg-primary">
+              <CsText className="text-sm text-light px-2 rounded-xl bg-primary">
                 {item.inStock ? "In Stock" : "Out of Stock"}
-              </Text>
+             </CsText>
             </View>
           </View>
 

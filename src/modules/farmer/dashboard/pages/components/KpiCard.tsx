@@ -1,3 +1,4 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import {
@@ -7,7 +8,7 @@ import {
   Wallet,
   Wheat,
 } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 const icons = {
   Wallet,
@@ -40,20 +41,20 @@ export default function KpiCard({ item }: Props) {
         )}
 
         {/* Title */}
-        <Text className="text-black font-semibold text-[14px] text-center">
+        <CsText className="text-black font-semibold text-[14px] text-center">
           {item.title}
-        </Text>
+       </CsText>
 
         {/* Value */}
-        <Text className="text-black font-bold text-[18px] text-center">
+        <CsText className="text-black font-bold text-[18px] text-center">
           {item.value}
-        </Text>
+       </CsText>
 
         {/* Subtitle */}
         {item.subtitle && (
-          <Text className="text-black text-[14px] text-center">
+          <CsText className="text-black text-[14px] text-center">
             {item.subtitle}
-          </Text>
+         </CsText>
         )}
       </View>
     </ZiraatCard>

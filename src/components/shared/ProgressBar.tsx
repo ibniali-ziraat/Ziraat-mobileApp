@@ -1,6 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { useEffect, useRef } from "react";
-import { Animated, Text, View } from "react-native";
+import { Animated, View } from "react-native";
+import CsText from "./CsText";
 
 export default function ProgressBar({ progress }) {
   const anim = useRef(new Animated.Value(0)).current;
@@ -20,9 +21,9 @@ export default function ProgressBar({ progress }) {
 
   return (
     <View style={{ marginVertical: 15 }}>
-      <Text style={{ fontWeight: "600", marginBottom: 5, }}>
+      <CsText style={{ fontWeight: "600", marginBottom: 5, }}>
         Profile Completion: {progress}%
-      </Text>
+     </CsText>
 
       <View
         style={{

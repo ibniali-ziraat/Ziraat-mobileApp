@@ -39,7 +39,8 @@ import {
   Phone,
   PhoneCall,
 } from "lucide-react-native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 import ZiraatCard from "./ZiraatProfileCard";
 
 interface VendorProfileDetailsProps {
@@ -108,7 +109,7 @@ export default function VendorProfileDetails({
           marginBottom: 14,
         }}
       >
-        <Text
+        <CsText
           style={{
             fontSize: 22,
             fontWeight: "700",
@@ -117,7 +118,7 @@ export default function VendorProfileDetails({
           }}
         >
           Vendor Details
-        </Text>
+       </CsText>
 
         <TouchableOpacity
           onPress={onEdit}

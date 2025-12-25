@@ -7,12 +7,12 @@ import {
   FlatList,
   Modal,
   Pressable,
-  Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import { HelperText } from "react-native-paper";
+import CsText from "../../shared/CsText";
 
 interface Option {
   label: string;
@@ -90,7 +90,7 @@ export default function SingleSelectInput({
           <View style={{ marginBottom: 16,  }}>
             {/* Label */}
             {showInputLabel && (
-              <Text
+              <CsText
                 style={{
                   marginBottom: 6,
                   fontSize: 14,
@@ -101,8 +101,8 @@ export default function SingleSelectInput({
                 }}
               >
                 {label}{" "}
-                {!optional && <Text style={{ color: colors.error }}> *</Text>}
-              </Text>
+                {!optional && <CsText style={{ color: colors.error }}> *</CsText>}
+             </CsText>
             )}
 
             {/* Selector */}
@@ -132,7 +132,7 @@ export default function SingleSelectInput({
                 }
               }}
             >
-              <Text
+              <CsText
                 style={{
                   fontSize: 16,
                   color: disabled ? colors.neutral + "88" : colors.darkHover,
@@ -144,9 +144,9 @@ export default function SingleSelectInput({
                   !selectedLabel &&
                   !disabled &&
                   !showInputLabel && (
-                    <Text style={{ color: colors.error }}> *</Text>
+                    <CsText style={{ color: colors.error }}> *</CsText>
                   )}
-              </Text>
+             </CsText>
             </TouchableOpacity>
 
             {liveError && (
@@ -208,7 +208,7 @@ export default function SingleSelectInput({
                         alignItems: "center",
                       }}
                     >
-                      <Text
+                      <CsText
                         style={{
                           fontSize: 16,
                           fontWeight: "500",
@@ -216,7 +216,7 @@ export default function SingleSelectInput({
                         }}
                       >
                         {modalLabel}
-                      </Text>
+                     </CsText>
 
                       <View
                         style={{ flexDirection: "row", alignItems: "center" }}
@@ -311,7 +311,7 @@ export default function SingleSelectInput({
                             hideSearchBar();
                           }}
                         >
-                          <Text
+                          <CsText
                             style={{
                               fontSize: 16,
                               color:
@@ -321,7 +321,7 @@ export default function SingleSelectInput({
                             }}
                           >
                             {item.label}
-                          </Text>
+                         </CsText>
                         </TouchableOpacity>
                       )}
                     />

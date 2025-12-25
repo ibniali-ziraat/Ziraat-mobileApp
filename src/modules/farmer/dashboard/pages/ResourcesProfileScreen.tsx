@@ -8,9 +8,10 @@ import {
   Wallet,
 } from "lucide-react-native";
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
@@ -49,11 +50,11 @@ const MetricCard = ({ title, value, icon }: any) => (
           strokeWidth: 1.3,
         })}
 
-      <Text className="text-[14px] ">{title}</Text>
+      <CsText className="text-[14px] ">{title}</CsText>
 
-      <Text className="text-center text-dark text-[18px] font-semibold">
+      <CsText className="text-center text-dark text-[18px] font-semibold">
         {value}
-      </Text>
+     </CsText>
     </View>
   </ZiraatCard>
 );
@@ -63,8 +64,8 @@ const MetricCard = ({ title, value, icon }: any) => (
 --------------------------------------------------- */
 const SummaryRow = ({ label, value, bold }: any) => (
   <View className="flex-row justify-between py-2">
-    <Text className={bold ? "font-bold text-lg" : ""}>{label}</Text>
-    <Text className={bold ? "font-bold text-lg" : ""}>{value}</Text>
+    <CsText className={bold ? "font-bold text-lg" : ""}>{label}</CsText>
+    <CsText className={bold ? "font-bold text-lg" : ""}>{value}</CsText>
   </View>
 );
 
@@ -73,8 +74,8 @@ const SummaryRow = ({ label, value, bold }: any) => (
 --------------------------------------------------- */
 const EfficiencyTag = ({ label, score }: any) => (
   <View className="flex-row items-center mb-2 justify-between">
-    <Text className="text-l">{label}</Text>
-    <Text className="text-lg font-semibold">{score || "0"}</Text>
+    <CsText className="text-l">{label}</CsText>
+    <CsText className="text-lg font-semibold">{score || "0"}</CsText>
   </View>
 );
 
@@ -88,7 +89,7 @@ const InsightItem = ({ icon, text }: any) => {
     <View className="mb-3 bg-white  py-3 rounded-lg">
       <View className="flex-row ">
         {Icon && <Icon size={26} color={colors.secondary} strokeWidth={1.3} />}
-        <Text className="ml-2 flex-1 text-black">{text}</Text>
+        <CsText className="ml-2 flex-1 text-black">{text}</CsText>
       </View>
     </View>
   );
@@ -135,13 +136,13 @@ export default function InputResourceUsageScreen() {
           className="bg-secondary rounded-xl mt-6 p-4 mb-6"
           onPress={() => setOpenModal(true)}
         >
-          <Text className="text-white text-center text-lg font-semibold">
+          <CsText className="text-white text-center text-lg font-semibold">
             Calculate Efficiency
-          </Text>
+         </CsText>
         </TouchableOpacity>
 
         {/* SUMMARY */}
-        <Text className="text-2xl font-bold mb-4">Resource Summary</Text>
+        <CsText className="text-2xl font-bold mb-4">Resource Summary</CsText>
 
         <ZiraatCard
           width="100%"
@@ -161,9 +162,9 @@ export default function InputResourceUsageScreen() {
         </ZiraatCard>
 
         {/* EFFICIENCY */}
-        <Text className="text-2xl font-bold mt-6 mb-4">
+        <CsText className="text-2xl font-bold mt-6 mb-4">
           Input Efficiency Overview
-        </Text>
+       </CsText>
 
         <ZiraatCard
           width="100%"
@@ -182,11 +183,10 @@ export default function InputResourceUsageScreen() {
         </ZiraatCard>
 
         {/* INSIGHTS */}
-        <Text className="text-2xl font-bold mb-6">Performance Insights</Text>
+        <CsText className="text-2xl font-bold mb-6">Performance Insights</CsText>
 
         <ZiraatCard
           width="100%"
-          height="18%"
           paddingHorizontal={1}
           paddingVertical={1}
           marginBottom={2}

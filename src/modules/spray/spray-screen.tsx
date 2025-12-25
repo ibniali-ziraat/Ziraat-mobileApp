@@ -1,9 +1,10 @@
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import SprayData from "@/src/data/SprayData.json";
 import { Droplets, Edit, Trash2, Trees } from "lucide-react-native";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, View } from "react-native";
 
 const SprayScreen = () => {
   return (
@@ -12,7 +13,11 @@ const SprayScreen = () => {
         data={SprayData}
         keyExtractor={(item) => item.id}
         scrollEnabled={false}
-        contentContainerStyle={{ paddingTop: 20 }}
+        contentContainerStyle={{
+          paddingTop: 20,
+          paddingLeft: 2,
+          paddingRight: 2,
+        }}
         renderItem={({ item }) => (
           <ZiraatCard width="100%" marginBottom={1}>
             <View
@@ -27,12 +32,12 @@ const SprayScreen = () => {
               <View className="flex-row justify-between items-center ">
                 <View className="flex-row items-center gap-2">
                   <Droplets size={20} color={colors.secondary} />
-                  <Text
+                  <CsText
                     className="text-lg font-bold"
                     style={{ color: colors.neutral }}
                   >
                     {item.name}
-                  </Text>
+                 </CsText>
                 </View>
 
                 <View
@@ -41,12 +46,12 @@ const SprayScreen = () => {
                     backgroundColor: colors.secondary,
                   }}
                 >
-                  <Text
+                  <CsText
                     className="text-sm font-bold "
                     style={{ color: colors.light }}
                   >
                     {item.type}
-                  </Text>
+                 </CsText>
                 </View>
               </View>
 
@@ -54,31 +59,31 @@ const SprayScreen = () => {
               <View className="flex-row justify-between items-center mt-3">
                 <View className="flex-row items-center gap-2">
                   <Trees size={15} color={colors.secondary} />
-                  <Text className="text-sm" style={{ color: colors.darkHover }}>
+                  <CsText className="text-sm" style={{ color: colors.darkHover }}>
                     {item.orchardName}
-                  </Text>
+                 </CsText>
                 </View>
 
-                <Text
+                <CsText
                   className="text-md font-semibold"
                   style={{ color: colors.dark }}
                 >
                   {item.price}
-                </Text>
+               </CsText>
               </View>
 
               {/* Bottom Row */}
               <View className="flex-row justify-between items-center mt-3">
-                <Text
+                <CsText
                   className="text-sm pl-1 "
                   style={{ color: colors.darkHover }}
                 >
                   {item.brand} • {item.quantity}
-                </Text>
+               </CsText>
 
-                <Text className="text-sm" style={{ color: colors.darkHover }}>
+                <CsText className="text-sm" style={{ color: colors.darkHover }}>
                   Date: {item.date}
-                </Text>
+               </CsText>
               </View>
 
               {/* Actions */}

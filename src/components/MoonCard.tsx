@@ -1,5 +1,6 @@
 import { Moon } from "lucide-react-native";
-import { Image, Text, View } from "react-native";
+import { Image, View } from "react-native";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -25,9 +26,9 @@ export function MoonCard({
     >
       <View className="flex-row items-center">
         <Moon size={18} color="#c7611f" />
-        <Text className="ml-2 text-sm font-bold tracking-wide text-neutral-400 uppercase">
+        <CsText className="ml-2 text-sm font-bold tracking-wide text-neutral-400 uppercase">
           {phase}
-        </Text>
+       </CsText>
       </View>
 
       <View className="flex-row justify-between items-center mt-2">
@@ -54,8 +55,8 @@ export function MoonCard({
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <View className="flex-row justify-between py-2">
-      <Text className="text-sm text-neutral-400">{label}</Text>
-      <Text className="text-sm text-neutral-300 font-medium">{value}</Text>
+      <CsText className="text-sm text-neutral-400">{label}</CsText>
+      <CsText className="text-sm text-neutral-300 font-medium">{value}</CsText>
     </View>
   );
 }

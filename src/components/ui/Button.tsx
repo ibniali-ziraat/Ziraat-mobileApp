@@ -1,6 +1,6 @@
 // src/components/ui/Button.tsx
 import { colors } from "@/src/constants/colors";
-import { Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 interface ButtonProps {
   title: string;
@@ -27,7 +27,7 @@ export default function Button({
         opacity: disabled ? 0.6 : 1,
       }}
     >
-      <Text
+      <CsText
         style={{
           color: colors.light,
           fontSize: 16,
@@ -35,7 +35,7 @@ export default function Button({
         }}
       >
         {title}
-      </Text>
+     </CsText>
     </TouchableOpacity>
   );
 }

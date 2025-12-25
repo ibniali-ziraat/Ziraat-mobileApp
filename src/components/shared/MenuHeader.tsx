@@ -5,7 +5,8 @@ import { useVendorProfileQuery } from "@/src/hooks/vendorQueryHooks";
 import { router } from "expo-router";
 import { BarChart2, PhoneCall, Store, User } from "lucide-react-native";
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 interface MenuHeaderProps {
   role: "farmer" | "supplier";
@@ -23,13 +24,13 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
     <View className="flex-row items-center justify-between bg-light py-4">
       {/* Title & Subtitle */}
       <View>
-        <Text className="text-xl font-bold" style={{ color: colors.dark }}>
+        <CsText className="text-xl font-bold" style={{ color: colors.dark }}>
           Menu
-        </Text>
+       </CsText>
 
-        <Text className="text-md" style={{ color: colors.neutral }}>
+        <CsText className="text-md" style={{ color: colors.neutral }}>
           {role === "supplier" ? "Supplier Dashboard" : "Farmer Dashboard"}
-        </Text>
+       </CsText>
       </View>
 
       {/* Right Actions */}
@@ -74,7 +75,7 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
               alignSelf: "flex-start",
             }}
           >
-            <Text
+            <CsText
               style={{
                 color: colors.primary,
                 fontSize: 14,
@@ -82,7 +83,7 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
               }}
             >
               Become a Supplier
-            </Text>
+           </CsText>
           </TouchableOpacity>
         ) : role === "farmer" ? (
           <>

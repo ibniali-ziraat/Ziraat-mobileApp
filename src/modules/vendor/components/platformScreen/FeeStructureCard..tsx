@@ -1,12 +1,13 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function FeeStructureCard({ colors }) {
   return (
     <View className="mb-4">
-      <Text className="text-[17px] font-semibold text-gray-900 mb-3">
+      <CsText className="text-[17px] font-semibold text-gray-900 mb-3">
         Fee Structure
-      </Text>
+     </CsText>
 
       <View className="flex-row justify-between">
 
@@ -33,23 +34,23 @@ export default function FeeStructureCard({ colors }) {
               />
             </View>
 
-            <Text className="text-black font-semibold text-[14px]">
+            <CsText className="text-black font-semibold text-[14px]">
               Cash Sales
-            </Text>
+           </CsText>
           </View>
 
           {/* Value */}
-          <Text
+          <CsText
             className="text-[22px] font-bold"
             style={{ color: colors.primaryDark }}
           >
             2.0%
-          </Text>
+         </CsText>
 
           {/* Sub label */}
-          <Text className="text-[11px] text-black mt-1">
+          <CsText className="text-[11px] text-black mt-1">
             Fee Scale • 3 mos
-          </Text>
+         </CsText>
         </View>
 
         {/* -------------------- CREDIT SALES -------------------- */}
@@ -75,23 +76,23 @@ export default function FeeStructureCard({ colors }) {
               />
             </View>
 
-            <Text className="text-black font-semibold text-[14px]">
+            <CsText className="text-black font-semibold text-[14px]">
               Credit Sales
-            </Text>
+           </CsText>
           </View>
 
           {/* Value */}
-          <Text
+          <CsText
             className="text-[22px] font-bold"
             style={{ color: colors.secondaryDark }}
           >
             4.0%
-          </Text>
+         </CsText>
 
           {/* Sub label */}
-          <Text className="text-[11px] text-black mt-1">
+          <CsText className="text-[11px] text-black mt-1">
             Fee Scale • 5 mos
-          </Text>
+         </CsText>
         </View>
 
       </View>

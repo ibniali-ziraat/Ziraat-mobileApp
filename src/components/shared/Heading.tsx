@@ -1,6 +1,7 @@
 // src/components/shared/Heading.tsx
 import { colors } from "@/src/constants/colors";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import CsText from "./CsText";
 
 interface HeadingProps {
   title: string;
@@ -16,10 +17,8 @@ export default function Heading({
   subtitleSize = 15,
 }: HeadingProps) {
   return (
-    <View style={{ marginBottom: 6,
-      
-     }}>
-      <Text
+    <View style={{ marginBottom: 16 }}>
+      <CsText
         style={{
           fontSize: titleSize,
           color: colors.primary,
@@ -29,10 +28,10 @@ export default function Heading({
         }}
       >
         {title}
-      </Text>
+     </CsText>
 
       {subtitle ? (
-        <Text
+        <CsText
           style={{
             fontSize: subtitleSize,
             color: colors.darkHover,
@@ -42,9 +41,7 @@ export default function Heading({
           }}
         >
           {subtitle}
-          
-        </Text>
-        
+       </CsText>
       ) : null}
       {/* Primary Divider */}
       <View

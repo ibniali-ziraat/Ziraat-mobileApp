@@ -1,6 +1,8 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
+import FormHeader from "@/src/components/shared/FormHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
@@ -13,6 +15,7 @@ import { educationSchema } from "@/src/modules/auth/user/schemas/education.schem
 import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
+import { GraduationCap } from "lucide-react-native";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
@@ -66,9 +69,20 @@ export default function EducationScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <BackHeader
-          title="Education"
+          title="Educational Details"
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
+
+
+
+
+
+<FormHeader
+  
+  icon={<GraduationCap size={50} color={colors.secondary} />}
+  description="Please provide details about your highest qualification and educational background."
+/>
+
 
         <EducationSection control={control} errors={errors} />
         <FormActions

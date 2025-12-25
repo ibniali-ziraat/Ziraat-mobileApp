@@ -65,7 +65,7 @@ export default function AddressScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <BackHeader
-          title="Address"
+          title="Address Details"
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
         <AddressSection control={control} errors={errors} data={data} />

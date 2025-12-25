@@ -1,41 +1,64 @@
 import React, { useEffect } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Animated, {
+  Easing,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
+  withSequence,
   withTiming,
 } from "react-native-reanimated";
+import CsText from "./CsText";
 
 type Props = {
   icon: React.ReactNode;
   label: string;
   focused: boolean;
-  pressKey: string | null;
+  pressKey: number;
 };
 
 function TabIcon({ icon, label, focused, pressKey }: Props) {
+  // ICON SCALE
   const scale = useSharedValue(1);
+
+  // BACKGROUND (WhatsApp-style reveal)
   const bgOpacity = useSharedValue(0);
-  const bgScale = useSharedValue(0.2);
+  const bgScaleX = useSharedValue(0);
 
-  // 🔥 Animate ONLY when this tab is pressed
   useEffect(() => {
-    if (!pressKey) return;
-
-    scale.value = 1;
-    scale.value = withSpring(1.15, { damping: 8, stiffness: 160 }, () => {
-      scale.value = withSpring(1);
-    });
-
     if (focused) {
+      // 🔹 RESET first (important for re-trigger)
+      scale.value = 1;
+      bgScaleX.value = 0;
+      bgOpacity.value = 0;
+
+      // 🔹 ICON: smooth zoom out → in
+      scale.value = withSequence(
+        withTiming(1.15, {
+          duration: 400,
+          easing: Easing.out(Easing.quad),
+        }),
+        withTiming(1, {
+          duration: 260,
+          easing: Easing.out(Easing.cubic),
+        })
+      );
+
+      // 🔹 BACKGROUND: horizontal reveal from center
       bgOpacity.value = withTiming(1, { duration: 180 });
-      bgScale.value = withSpring(1);
+      bgScaleX.value = withTiming(1, {
+        duration: 400,
+        easing: Easing.out(Easing.cubic),
+      });
     } else {
+      // 🔻 RESET when tab loses focus (THIS IS THE FIX)
       bgOpacity.value = withTiming(0, { duration: 120 });
-      bgScale.value = withSpring(0.9);
+      bgScaleX.value = withTiming(0, {
+        duration: 160,
+        easing: Easing.in(Easing.cubic),
+      });
+      scale.value = 1;
     }
-  }, [pressKey]);
+  }, [focused, pressKey]);
 
   const iconStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -43,7 +66,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
 
   const bgStyle = useAnimatedStyle(() => ({
     opacity: bgOpacity.value,
-    transform: [{ scale: bgScale.value }],
+    transform: [{ scaleX: bgScaleX.value }],
   }));
 
   return (
@@ -52,28 +75,31 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
         style={{
           width: 60,
           height: 28,
-          alignItems: "center",
           justifyContent: "center",
+          alignItems: "center",
           borderRadius: 16,
+          overflow: "hidden",
         }}
       >
+        {/* Background */}
         <Animated.View
           style={[
             {
               position: "absolute",
-              width: 60,
-              height: 28,
-              borderRadius: 16,
+              width: "100%",
+              height: "100%",
               backgroundColor: "#E7FCE3",
+              borderRadius: 16,
             },
             bgStyle,
           ]}
         />
 
+        {/* Icon */}
         <Animated.View style={iconStyle}>{icon}</Animated.View>
       </View>
 
-      <Text
+      <CsText
         style={{
           fontSize: 12,
           textAlign: "center",
@@ -82,7 +108,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
         numberOfLines={1}
       >
         {label}
-      </Text>
+     </CsText>
     </View>
   );
 }

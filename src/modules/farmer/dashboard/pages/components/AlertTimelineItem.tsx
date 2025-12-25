@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function AlertTimelineItem({
   icon,
@@ -20,14 +21,14 @@ export default function AlertTimelineItem({
           <View>{icon}</View>
 
           {/* MESSAGE */}
-          <Text className="text-[16px] font-semibold text-dark text-center">
+          <CsText className="text-[16px] font-semibold text-dark text-center">
             {message}
-          </Text>
+         </CsText>
 
           {/* TIME */}
-          <Text className="text-sm text-dark text-center">
+          <CsText className="text-sm text-dark text-center">
             {time}
-          </Text>
+         </CsText>
         </View>
       </ZiraatCard>
     </View>
