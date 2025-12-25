@@ -42,7 +42,7 @@ export default function MenuScreen() {
           <Repeat size={20} color="white" />
           <CsText className="text-white font-medium ml-2">
             {roleMode === "farmer" ? "Switch to Supplier" : "Switch to Farmer"}
-         </CsText>
+          </CsText>
         </TouchableOpacity>
       </View>
     </AnimatedTabContent>

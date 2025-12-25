@@ -6,7 +6,7 @@ import { useOrchard } from "@/src/contexts/OrchardContext";
 
 import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import {
@@ -72,6 +72,20 @@ export default function BasicInfoScreen() {
     // }
   };
 
+  const params = useLocalSearchParams<{
+    orchardSize?: string;
+    areaValue?: string;
+    areaUnit?: string;
+    areaLabel?: string;
+  }>();
+
+  /* Apply measured value */
+  useEffect(() => {
+    if (params?.orchardSize) {
+      setValue("orchardSize", params.orchardSize);
+    }
+  }, [params?.orchardSize]);
+
   return (
     <ScreenLayout>
       <BackHeader
@@ -80,7 +94,14 @@ export default function BasicInfoScreen() {
       />
 
       <FormProvider {...form}>
-        <BasicInfo errors={errors} control={control} />
+        <BasicInfo
+          errors={errors}
+          control={control}
+          data={data}
+          orchardSize={params.orchardSize}
+          areaLabel={params.areaLabel}
+          areaUnit={params.areaUnit}
+        />
 
         <FormActions
           cancelLabel="Cancel"

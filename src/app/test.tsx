@@ -2,7 +2,7 @@ import { Picker } from "@react-native-picker/picker";
 import * as Location from "expo-location";
 import { getAreaOfPolygon } from "geolib";
 import { useEffect, useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, Platform, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker, Polygon, PROVIDER_GOOGLE } from "react-native-maps";
 import BackHeader from "../components/shared/BackHeader";
 
@@ -68,7 +68,7 @@ export default function App() {
       <BackHeader />
       <MapView
         style={styles.map}
-        provider={PROVIDER_GOOGLE}
+        provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
         mapType="satellite"
         showsUserLocation
         zoomEnabled

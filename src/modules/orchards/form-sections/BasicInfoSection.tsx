@@ -1,15 +1,23 @@
+import { useEffect } from "react";
+import { View } from "react-native";
+
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
-import { router } from "expo-router";
-import { useEffect } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import OrchardSizeInput from "./OrchardSizeInput";
 
-export default function BasicInfo({ control, errors, data }) {
+export default function BasicInfo({
+  control,
+  errors,
+  data,
+  setValue,
+  orchardSize,
+  areaLabel,
+  areaUnit,
+}) {
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
-  // const { states, districts, tehsils, setSelectedState, setSelectedDistrict } =
-  //   useCascadingLocation();
+
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
 
@@ -17,126 +25,94 @@ export default function BasicInfo({ control, errors, data }) {
     if (data?.district) {
       setSelectedDistrict(data.district);
     }
-  }, [data]);
-  const PLANTATION_PATTERN_OPTIONS = [
-    "Traditional",
-    "High Density",
-    "Ultra High Density",
-    "Other",
-  ].map((x) => ({
-    label: x,
-    value: x,
-  }));
-
-  const OWNERSHIP_TYPE_OPTIONS = [
-    "Self-Owned",
-    "Joint",
-    "Leased",
-    "Rented",
-    "Other",
-  ].map((x) => ({
-    label: x,
-    value: x,
-  }));
+  }, [data?.district]);
 
   return (
-    <View className="flex-1 w-full">
-      <View className="bg-light w-full">
-        <FormInput
-          control={control}
-          name="orchardName"
-          label="Orchard Name"
-          errors={errors?.orchardName?.message}
-        />
-        <FormInput
-          control={control}
-          name="orchardSize"
-          label="Orchard Size (Marlas)"
-          type="phone"
-          errors={errors?.orchardSize?.message}
-        />
-        <SingleSelectInput
-          searchable
-          control={control}
-          name="establishmentYear"
-          label="Establishment Year"
-          modalLabel="Select Year"
-          options={ESTABLISHMENT_YEAR}
-          error={errors?.establishmentYear}
-        />
-        <SingleSelectInput
-          control={control}
-          name="plantationPattern"
-          label="Plantation Pattern"
-          modalLabel="Select Pattern"
-          options={PLANTATION_PATTERN_OPTIONS}
-          error={errors?.plantationPattern}
-        />
-        <SingleSelectInput
-          control={control}
-          name="ownershipType"
-          label="Ownership Type"
-          modalLabel="Ownership Type"
-          options={OWNERSHIP_TYPE_OPTIONS}
-          error={errors?.ownershipType}
-        />
-        <SingleSelectInput
-          control={control}
-          modalLabel="District"
-          name="district"
-          label="District"
-          searchable
-          options={districts.map((d) => ({ label: d, value: d }))}
-          onValueChange={(value) => setSelectedDistrict(value as string)}
-          disabled={!districts.length}
-          error={errors.district}
-        />
-        {/* Tehsil */}
-        <SingleSelectInput
-          control={control}
-          modalLabel="Tehsil"
-          name="tehsil"
-          label="Tehsil"
-          searchable
-          options={tehsils.map((t) => ({ label: t, value: t }))}
-          disabled={!tehsils.length}
-          error={errors.tehsil}
-        />
-        {/* <FormInput
-          control={control}
-          name="zone"
-          label="Zone"
-          errors={errors?.zone?.message}
-        /> */}
-        <FormInput
-          control={control}
-          name="pincode"
-          label="PIN Code"
-          type="phone"
-          errors={errors?.pincode?.message}
-        />
-        {/* <FormInput
-          control={control}
-          name="latitude"
-          label="Latitude"
-          type="phone"
-          errors={errors.latitude?.message}
-        />
+    <View className="bg-light w-full">
+      <FormInput
+        control={control}
+        name="orchardName"
+        label="Orchard Name"
+        errors={errors?.orchardName?.message}
+      />
 
-        <FormInput
-          control={control}
-          name="longitude"
-          label="Longitude"
-          type="phone"
-          errors={errors?.longitude?.message}
-        /> */}
-        <TouchableOpacity onPress={() => router.push("/test2")}>
-          <Text>Measure Plot By Walking</Text>
-        </TouchableOpacity>{" "}
-        <TouchableOpacity onPress={() => router.push("/test")}>
-          <Text>Measure Plot By Tap</Text>
-        </TouchableOpacity>
-      </View>
+      <OrchardSizeInput
+        control={control}
+        errors={errors}
+        measuredValue={orchardSize || data?.orchardSize}
+        areaLabel={areaLabel}
+        areaUnit={areaUnit}
+      />
+
+      <SingleSelectInput
+        searchable
+        control={control}
+        name="establishmentYear"
+        label="Establishment Year"
+        modalLabel="Select Year"
+        options={ESTABLISHMENT_YEAR}
+        error={errors?.establishmentYear}
+      />
+
+      <SingleSelectInput
+        control={control}
+        name="plantationPattern"
+        label="Plantation Pattern"
+        modalLabel="Select Pattern"
+        options={[
+          { label: "Traditional", value: "Traditional" },
+          { label: "High Density", value: "High Density" },
+          { label: "Ultra High Density", value: "Ultra High Density" },
+          { label: "Other", value: "Other" },
+        ]}
+        error={errors?.plantationPattern}
+      />
+
+      <SingleSelectInput
+        control={control}
+        name="ownershipType"
+        label="Ownership Type"
+        modalLabel="Ownership Type"
+        options={[
+          { label: "Self-Owned", value: "Self-Owned" },
+          { label: "Joint", value: "Joint" },
+          { label: "Leased", value: "Leased" },
+          { label: "Rented", value: "Rented" },
+          { label: "Other", value: "Other" },
+        ]}
+        error={errors?.ownershipType}
+      />
+
+      <SingleSelectInput
+        searchable
+        control={control}
+        name="district"
+        label="District"
+        modalLabel="District"
+        options={districts.map((d) => ({ label: d, value: d }))}
+        onValueChange={setSelectedDistrict}
+        disabled={!districts.length}
+        error={errors?.district}
+      />
+
+      <SingleSelectInput
+        searchable
+        control={control}
+        name="tehsil"
+        label="Tehsil"
+        modalLabel="Tehsil"
+        options={tehsils.map((t) => ({ label: t, value: t }))}
+        disabled={!tehsils.length}
+        error={errors?.tehsil}
+      />
+
+      <FormInput
+        control={control}
+        name="pincode"
+        label="PIN Code"
+        type="phone"
+        errors={errors?.pincode?.message}
+      />
     </View>
   );
 }
