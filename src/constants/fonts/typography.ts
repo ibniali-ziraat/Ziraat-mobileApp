@@ -1,6 +1,5 @@
 import { fonts } from "./font";
 import { scale } from "./scale";
-
 const size = {
   xs: scale(12),
   s: scale(14),
@@ -9,7 +8,6 @@ const size = {
   xl: scale(28),
   xxl: scale(36),
 };
-
 const weight = {
   regular: fonts.poppins.regular,
   medium: fonts.poppins.medium,
@@ -55,3 +53,5 @@ export const typography = {
 
   
 } as const;
+ 
+ 

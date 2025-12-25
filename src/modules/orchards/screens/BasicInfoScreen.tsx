@@ -15,6 +15,7 @@ import {
   useUpdateOrchardBasicInfoMutation,
 } from "../../../hooks/useOrchardsQuery";
 import BasicInfo from "../form-sections/BasicInfoSection";
+import { BasicInfoSchema } from "../schemas/BasicInfoSchema";
 
 export default function BasicInfoScreen() {
   const { userId } = useAuth();
@@ -26,14 +27,15 @@ export default function BasicInfoScreen() {
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateOrchardBasicInfoMutation();
 
-  // const form = useZodForm(BasicInfoSchema);
-  const form = useZodForm();
+  const form = useZodForm(BasicInfoSchema);
+  // const form = useZodForm();
   const {
     setValue,
     handleSubmit,
     formState: { errors },
     control,
   } = form;
+  console.log(errors, "errors....");
 
   // Prefill if editing
   useEffect(() => {
