@@ -1,3 +1,15 @@
+import { Tabs } from "expo-router";
+import {
+  Home,
+  LucideDroplets,
+  Menu,
+  ShoppingBag,
+  Trees,
+} from "lucide-react-native";
+import { useState } from "react";
+import { TouchableOpacity } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 import CropHeader from "@/src/components/shared/CropHeader";
 import HomeHeader from "@/src/components/shared/HomeHeader";
 import MenuHeader from "@/src/components/shared/MenuHeader";
@@ -7,107 +19,218 @@ import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
-import { Tabs } from "expo-router";
-import {
-  Home,
-  LucideDroplets,
-  Menu,
-  ShoppingBag,
-  Trees,
-} from "lucide-react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { userToken, roleMode, userId } = useAuth();
-
+  const { roleMode, userId } = useAuth();
   const { data } = useProfileQuery(userId);
+
+  // 🔑 FIX: numeric press trigger
+  const [pressKey, setPressKey] = useState(0);
+  const [activeTab, setActiveTab] = useState<string>("index");
+
   // if (!data || !userToken) return <Loader />;
 
   return (
     <Tabs
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarActiveTintColor: colors.secondary,
+        tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.dark,
+
+        //your earlier changes what you were  doing earlier here i replaced that to ensure working for all devices
+        // tabBarStyle: {
+        //   paddingTop: 12,
+        //   shadowColor: colors.overlay,
+        //   shadowOpacity: 0.1,
+        //   shadowRadius: 5,
+        //   paddingBottom: insets.bottom + 50,
+        // },
+        // optional safety net
+
         tabBarStyle: {
-          paddingTop: 12,
+          height: 64 + Math.max(insets.bottom, 8),
+          paddingBottom: Math.max(insets.bottom, 8),
+          paddingTop: 5,
           shadowColor: colors.overlay,
           shadowOpacity: 0.1,
           shadowRadius: 5,
-          paddingBottom: insets.bottom + 50,
+        },
+
+        tabBarItemStyle: {
+          alignItems: "center",
+          justifyContent: "center",
         },
       }}
     >
+      {/* Home */}
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
           header: () => <HomeHeader title={data?.fullName} />,
-          tabBarIcon: ({ size, color }) => (
-            <TabIcon icon={<Home size={size} color={color} />} label="Home" />
+          tabBarButton: ({ onPress, children }) => (
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={(e) => {
+                setActiveTab("index");
+                setPressKey((prev) => prev + 1); // 🔑 important
+                onPress?.(e);
+              }}
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {children}
+            </TouchableOpacity>
+          ),
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              focused={focused}
+              pressKey={pressKey}
+              icon={<Home size={20} color={color} strokeWidth={2.2} />}
+              label="Home"
+            />
           ),
         }}
       />
 
-      {/* Crops Tab */}
+      {/* Orchards */}
       <Tabs.Screen
         name="orchards"
         options={{
           title: "Orchards",
-          headerShown: false,
           header: () => <CropHeader />,
-          tabBarIcon: ({ size, color }) => (
+          tabBarButton: ({ onPress, children }) => (
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={(e) => {
+                setActiveTab("orchards");
+                setPressKey((prev) => prev + 1);
+                onPress?.(e);
+              }}
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {children}
+            </TouchableOpacity>
+          ),
+          tabBarIcon: ({ color, focused }) => (
             <TabIcon
-              icon={<Trees size={size} color={color} />}
+              focused={focused}
+              pressKey={pressKey}
+              icon={<Trees size={20} color={color} strokeWidth={2.2} />}
               label="Orchards"
             />
           ),
         }}
       />
-      {/* Spray Tab */}
+
+      {/* Spray */}
       <Tabs.Screen
         name="spray"
         options={{
           title: "Spray",
-          headerShown: true,
-
           header: () => <SprayHeader />,
-          tabBarIcon: ({ size, color }) => (
+          tabBarButton: ({ onPress, children }) => (
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={(e) => {
+                setActiveTab("spray");
+                setPressKey((prev) => prev + 1);
+                onPress?.(e);
+              }}
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {children}
+            </TouchableOpacity>
+          ),
+          tabBarIcon: ({ color, focused }) => (
             <TabIcon
-              icon={<LucideDroplets size={size} color={color} />}
+              focused={focused}
+              pressKey={pressKey}
+              icon={
+                <LucideDroplets size={20} color={color} strokeWidth={2.2} />
+              }
               label="Spray"
             />
           ),
         }}
       />
 
-      {/* Products Tab */}
+      {/* Products */}
       <Tabs.Screen
         name="Product"
         options={{
           title: "Products",
-          headerShown: false,
-
           header: () => <ProductHeader />,
-          tabBarIcon: ({ size, color }) => (
+          tabBarButton: ({ onPress, children }) => (
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={(e) => {
+                setActiveTab("Product");
+                setPressKey((prev) => prev + 1);
+                onPress?.(e);
+              }}
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {children}
+            </TouchableOpacity>
+          ),
+          tabBarIcon: ({ color, focused }) => (
             <TabIcon
-              icon={<ShoppingBag size={size} color={color} />}
+              focused={focused}
+              pressKey={pressKey}
+              icon={<ShoppingBag size={20} color={color} strokeWidth={2.2} />}
               label="Products"
             />
           ),
         }}
       />
 
-      {/* Menu Tab */}
+      {/* Menu */}
       <Tabs.Screen
         name="menu"
         options={{
           title: "Menu",
           header: () => <MenuHeader role={roleMode} />,
-
-          tabBarIcon: ({ size, color }) => (
-            <TabIcon icon={<Menu size={size} color={color} />} label="Menu" />
+          tabBarButton: ({ onPress, children }) => (
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={(e) => {
+                setActiveTab("menu");
+                setPressKey((prev) => prev + 1);
+                onPress?.(e);
+              }}
+              style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {children}
+            </TouchableOpacity>
+          ),
+          tabBarIcon: ({ color, focused }) => (
+            <TabIcon
+              focused={focused}
+              pressKey={pressKey}
+              icon={<Menu size={20} color={color} strokeWidth={2.2} />}
+              label="Menu"
+            />
           ),
         }}
       />

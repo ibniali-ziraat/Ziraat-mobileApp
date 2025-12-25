@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function SettlementLogRow({ log }) {
   const color =
@@ -14,15 +15,15 @@ export default function SettlementLogRow({ log }) {
       className="flex-row justify-between py-2 border-b"
       style={{ borderColor: colors.neutral }}
     >
-      <Text style={{ color: colors.dark }}>{log.date}</Text>
+      <CsText style={{ color: colors.dark }}>{log.date}</CsText>
 
-      <Text style={{ color: colors.primaryHover, fontWeight: "bold" }}>
+      <CsText style={{ color: colors.primaryHover, fontWeight: "bold" }}>
         ₹{log.amount.toLocaleString()}
-      </Text>
+     </CsText>
 
-      <Text style={{ color, fontWeight: "600" }}>{log.status}</Text>
+      <CsText style={{ color, fontWeight: "600" }}>{log.status}</CsText>
 
-      <Text style={{ color: colors.darkHover, fontSize: 12 }}>{log.mode}</Text>
+      <CsText style={{ color: colors.darkHover, fontSize: 12 }}>{log.mode}</CsText>
     </View>
   );
 }

@@ -2,7 +2,8 @@ import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
 import { WriteReviewProps } from "@/src/types/write-review.type";
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { TextInput, TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 export default function WriteReview({ onSubmit }:WriteReviewProps) {
   const [rating, setRating] = useState(0);
@@ -28,7 +29,7 @@ export default function WriteReview({ onSubmit }:WriteReviewProps) {
   return (
     <View className="p-4 mt-4 bg-white rounded-2xl shadow border border-neutral">
 
-      <Text className="text-2xl font-bold mb-2">Write a Review</Text>
+      <CsText className="text-2xl font-bold mb-2">Write a Review</CsText>
 
       <TextInput
         className="border border-dark rounded-xl p-3 text-dark h-28"
@@ -40,7 +41,7 @@ export default function WriteReview({ onSubmit }:WriteReviewProps) {
       />
    
       <View className="flex-row items-center my-4">
-        <Text className="text-lg mr-1">Your Rating:</Text>
+        <CsText className="text-lg mr-1">Your Rating:</CsText>
  
         <RatingStars
           rating={rating}
@@ -54,9 +55,9 @@ export default function WriteReview({ onSubmit }:WriteReviewProps) {
         onPress={handleSubmit}
         className="bg-secondary mt-1 p-3 rounded-xl"
       >
-        <Text className="text-center text-white font-semibold">
+        <CsText className="text-center text-white font-semibold">
           Submit Review
-        </Text>
+       </CsText>
       </TouchableOpacity>
     </View>
   );

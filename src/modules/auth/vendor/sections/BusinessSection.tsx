@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
-import { View, Text } from "react-native";
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import { BusinessSectionProps } from "@/src/types/BusinessSection.types";
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
+import { BusinessSectionProps } from "@/src/types/BusinessSection.types";
+import { useEffect } from "react";
+import { View } from "react-native";
 
 export default function BusinessSection({
   control,
@@ -27,7 +28,7 @@ export default function BusinessSection({
   return (
     <View className="bg-light" style={{ padding: 16 }}>
       {/* ---------------- Business Info Section ---------------- */}
-      <Text
+      <CsText
         style={{
           fontSize: 18,
           fontWeight: "700",
@@ -36,7 +37,7 @@ export default function BusinessSection({
         }}
       >
         Business Info
-      </Text>
+     </CsText>
 
       <FormInput
         control={control}
@@ -75,7 +76,7 @@ export default function BusinessSection({
       />
 
       {/* ---------------- Business Address Section ---------------- */}
-      <Text
+      <CsText
         style={{
           fontSize: 18,
           fontWeight: "700",
@@ -84,7 +85,7 @@ export default function BusinessSection({
         }}
       >
         Business Address
-      </Text>
+     </CsText>
 
       {/* State */}
       <SingleSelectInput

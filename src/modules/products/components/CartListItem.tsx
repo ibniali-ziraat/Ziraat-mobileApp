@@ -1,7 +1,8 @@
+import CsText from "@/src/components/shared/CsText";
 import QuantitySelector from "@/src/components/shared/QuantitySelector";
 import { colors } from "@/src/constants/colors";
 import { imageMapper } from "@/src/data/imageMapper";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 export default function CartListItem({
@@ -15,49 +16,49 @@ export default function CartListItem({
     : null;
 
   return (
-    <View className="bg-light rounded-xl shadow-md p-4 mt-3 flex-row items-start">
-      {/* Product Image */}
+    <>
+
       <Image
         source={imageMapper[item?.photos?.[0]]}
-        className="w-20 h-20 rounded-lg"
+        className="w-32 h-24 rounded-lg px-1"
         resizeMode="cover"
       />
 
-      {/* Right Section */}
+
       <View className="ml-4 flex-1">
         {/* Title + Quantity */}
         <View className="flex-row justify-between items-center">
-          <Text className="text-dark font-semibold text-lg flex-1">
+          <CsText className="text-dark flex-1">
             {item.title}
-          </Text>
+          </CsText>
 
           <View className="w-30">
             <QuantitySelector quantity={quantity} setQuantity={onQtyChange} />
           </View>
         </View>
 
-        {/* Category */}
-        <Text className="text-dark text-sm">{item.category}</Text>
 
-        {/* Price + Remove */}
+        <CsText className="text-dark text-sm">{item.category}</CsText>
+
+
         <View className="flex-row items-center justify-between mt-1">
           <View className="flex-row items-center">
             {item.discountPrice ? (
               <>
-                <Text className="text-dark line-through mr-2">
+                <CsText className="text-dark line-through mr-2">
                   ₹{item.price}
-                </Text>
-                <Text className="text-primary font-bold mr-1">
+                </CsText>
+                <CsText className="text-primary font-bold mr-1">
                   ₹{item.discountPrice}
-                </Text>
+                </CsText>
                 {!!discountPercent && (
-                  <Text className="text-secondary text-xs font-semibold">
+                  <CsText className="text-secondary text-xs font-semibold">
                     {discountPercent}% OFF
-                  </Text>
+                  </CsText>
                 )}
               </>
             ) : (
-              <Text className="text-primary font-semibold">₹{item.price}</Text>
+              <CsText className="text-primary font-semibold">₹{item.price}</CsText>
             )}
           </View>
 
@@ -66,6 +67,7 @@ export default function CartListItem({
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </>
+
   );
 }

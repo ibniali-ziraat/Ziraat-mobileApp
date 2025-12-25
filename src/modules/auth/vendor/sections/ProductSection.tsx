@@ -1,8 +1,8 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
+import CsText from "@/src/components/shared/CsText";
 import { useFieldArray, useWatch } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
-import { Text } from "react-native-paper";
 
 export default function ProductSection({ control, errors }) {
   // Static fallback options (converted to {label, value})
@@ -72,7 +72,7 @@ export default function ProductSection({ control, errors }) {
       /> */}
 
       {/* Custom Inputs */}
-      <Text
+      <CsText
         style={{
           fontWeight: "700",
           marginTop: 20,
@@ -81,7 +81,7 @@ export default function ProductSection({ control, errors }) {
         }}
       >
         Other Inputs (Optional)
-      </Text>
+     </CsText>
 
       {fields.map((item, index) => (
         <View
@@ -120,7 +120,7 @@ export default function ProductSection({ control, errors }) {
               borderRadius: 6,
             }}
           >
-            <Text style={{ color: "white" }}>X</Text>
+            <CsText style={{ color: "white" }}>X</CsText>
           </TouchableOpacity>
         </View>
       ))}
@@ -137,7 +137,7 @@ export default function ProductSection({ control, errors }) {
           alignSelf: "flex-start",
         }}
       >
-        <Text style={{ color: "white", fontWeight: "600" }}>+ Add Input</Text>
+        <CsText style={{ color: "white", fontWeight: "600" }}>+ Add Input</CsText>
       </TouchableOpacity>
     </View>
   );

@@ -1,6 +1,7 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 export default function OfferCard({ item, type }) {
   const isVendor = type === "vendor";
@@ -38,20 +39,20 @@ export default function OfferCard({ item, type }) {
 
         {/* TITLE + DESCRIPTION */}
         <View className="flex-1">
-          <Text
+          <CsText
             className="text-[17px] font-semibold"
             style={{ color: colors.dark }}
           >
             {item.title}
-          </Text>
+         </CsText>
 
-          <Text
+          <CsText
             className="text-[13px] mt-1 leading-4"
             style={{ color: colors.dark }}
             numberOfLines={2}
           >
             {item.desc}
-          </Text>
+         </CsText>
         </View>
 
         {/* CHEVRON */}
@@ -67,12 +68,12 @@ export default function OfferCard({ item, type }) {
           borderColor: toneColor,
         }}
       >
-        <Text
+        <CsText
           className="text-[11px] font-semibold"
           style={{ color: toneColor }}
         >
           {item.badge}
-        </Text>
+       </CsText>
       </View>
 
       {/* EXTRA DETAILS */}
@@ -80,23 +81,23 @@ export default function OfferCard({ item, type }) {
         {/* Validity */}
         <View className="flex-row items-center mb-2">
           <Ionicons name="calendar-outline" size={16} color={colors.secondary} />
-          <Text
+          <CsText
             className="ml-2 text-[12px]"
             style={{ color: colors.dark }}
           >
             Valid Till: {item.validity || "31 Dec 2024"}
-          </Text>
+         </CsText>
         </View>
 
         {/* Minimum Order */}
         <View className="flex-row items-center mb-2">
           <Ionicons name="cube-outline" size={16} color={colors.secondary} />
-          <Text
+          <CsText
             className="ml-2 text-[12px]"
             style={{ color: colors.dark }}
           >
             Min Order: {item.minOrder || "₹2,000"}
-          </Text>
+         </CsText>
         </View>
 
         {/* Benefits */}
@@ -112,9 +113,9 @@ export default function OfferCard({ item, type }) {
                   borderColor: toneColor + "40",
                 }}
               >
-                <Text className="text-[10px]" style={{ color: toneColor }}>
+                <CsText className="text-[10px]" style={{ color: toneColor }}>
                   {b}
-                </Text>
+               </CsText>
               </View>
             )
           )}
@@ -124,18 +125,18 @@ export default function OfferCard({ item, type }) {
        {/* OFFER STRENGTH */}
         <View className="mt-4">
           <View className="flex-row justify-between mb-1">
-            <Text
+            <CsText
               className="text-[11px]"
               style={{ color: colors.dark }}
             >
               Offer Strength
-            </Text>
-            <Text
+           </CsText>
+            <CsText
               className="text-[11px] font-semibold"
               style={{ color: toneColor }}
             >
               {item.strength || 70}%
-            </Text>
+           </CsText>
           </View>
 
           <View

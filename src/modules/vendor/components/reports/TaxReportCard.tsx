@@ -1,12 +1,12 @@
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
   Modal,
   Pressable,
-  Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 export default function TaxReportCard() {
@@ -55,9 +55,9 @@ export default function TaxReportCard() {
                 color={colors.secondary}
               />
             </View>
-            <Text className="text-lg font-bold text-gray-900">
+            <CsText className="text-lg font-bold text-gray-900">
               Tax Report (GST)
-            </Text>
+           </CsText>
           </View>
 
           {/* PDF DOWNLOAD BUTTON */}
@@ -67,21 +67,21 @@ export default function TaxReportCard() {
             
           >
             <Ionicons name="download-outline" size={22} color={colors.secondary} />
-            <Text
+            <CsText
               className="ml-2 text-sm font-semibold"
               style={{ color: colors.secondary }}
             >
               PDF
-            </Text>
+           </CsText>
           </TouchableOpacity>
         </View>
 
         {/* TAXABLE AMOUNT */}
         <View className="flex-row justify-between items-center mb-4">
-          <Text className="text-sm text-gray-700">Taxable Amount</Text>
-          <Text className="text-base font-semibold text-gray-900">
+          <CsText className="text-sm text-gray-700">Taxable Amount</CsText>
+          <CsText className="text-base font-semibold text-gray-900">
             ₹{taxable.toLocaleString("en-IN")}
-          </Text>
+         </CsText>
         </View>
 
         {/* TOTAL GST */}
@@ -92,13 +92,13 @@ export default function TaxReportCard() {
               size={22}
               color={colors.primary}
             />
-            <Text className="text-sm text-black ml-2">
+            <CsText className="text-sm text-black ml-2">
               GST ({gstRate}%)
-            </Text>
+           </CsText>
           </View>
-          <Text className="text-base font-semibold text-black">
+          <CsText className="text-base font-semibold text-black">
             ₹{gst.toLocaleString("en-IN")}
-          </Text>
+         </CsText>
         </View>
 
         {/* GST PROGRESS BAR */}
@@ -113,25 +113,25 @@ export default function TaxReportCard() {
             />
           </View>
 
-          <Text className="text-[11px] text-black mt-1">
+          <CsText className="text-[11px] text-black mt-1">
             GST forms {gstPercent}% of total
-          </Text>
+         </CsText>
         </View>
 
         {/* CGST + SGST SPLIT */}
         <View className="flex-row justify-between mb-4">
           <View className="flex-1 mr-2 p-3 rounded-xl bg-gray-100">
-            <Text className="text-xs text-gray-600">CGST (2.5%)</Text>
-            <Text className="text-base font-semibold text-black mt-1">
+            <CsText className="text-xs text-gray-600">CGST (2.5%)</CsText>
+            <CsText className="text-base font-semibold text-black mt-1">
               ₹{cgst.toLocaleString("en-IN")}
-            </Text>
+           </CsText>
           </View>
 
           <View className="flex-1 ml-2 p-3 rounded-xl bg-gray-100">
-            <Text className="text-xs text-gray-600">SGST (2.5%)</Text>
-            <Text className="text-base font-semibold text-black mt-1">
+            <CsText className="text-xs text-gray-600">SGST (2.5%)</CsText>
+            <CsText className="text-base font-semibold text-black mt-1">
               ₹{sgst.toLocaleString("en-IN")}
-            </Text>
+           </CsText>
           </View>
         </View>
 
@@ -147,12 +147,12 @@ export default function TaxReportCard() {
            
           }}
         >
-          <Text className="text-sm font-semibold text-gray-800">
+          <CsText className="text-sm font-semibold text-gray-800">
             Total After GST
-          </Text>
-          <Text className="text-xl font-extrabold" style={{ color: colors.primary }}>
+         </CsText>
+          <CsText className="text-xl font-extrabold" style={{ color: colors.primary }}>
             ₹{total.toLocaleString("en-IN")}
-          </Text>
+         </CsText>
         </TouchableOpacity>
       </View>
 
@@ -166,46 +166,46 @@ export default function TaxReportCard() {
             className="bg-white rounded-t-3xl p-6"
             onPress={() => {}}
           >
-            <Text className="text-lg font-bold text-gray-900 mb-4">
+            <CsText className="text-lg font-bold text-gray-900 mb-4">
               Full Tax Breakdown
-            </Text>
+           </CsText>
 
             <View className="mb-4">
-              <Text className="text-gray-600 text-sm">Taxable Amount</Text>
-              <Text className="text-base font-semibold mt-1">
+              <CsText className="text-gray-600 text-sm">Taxable Amount</CsText>
+              <CsText className="text-base font-semibold mt-1">
                 ₹{taxable.toLocaleString("en-IN")}
-              </Text>
+             </CsText>
             </View>
 
             <View className="mb-4">
-              <Text className="text-gray-600 text-sm">GST (5%)</Text>
-              <Text className="text-base font-semibold mt-1">
+              <CsText className="text-gray-600 text-sm">GST (5%)</CsText>
+              <CsText className="text-base font-semibold mt-1">
                 ₹{gst.toLocaleString("en-IN")}
-              </Text>
+             </CsText>
             </View>
 
             <View className="flex-row justify-between mb-4">
               <View>
-                <Text className="text-gray-600 text-sm">CGST</Text>
-                <Text className="text-base font-semibold mt-1">
+                <CsText className="text-gray-600 text-sm">CGST</CsText>
+                <CsText className="text-base font-semibold mt-1">
                   ₹{cgst.toLocaleString("en-IN")}
-                </Text>
+               </CsText>
               </View>
 
               <View>
-                <Text className="text-gray-600 text-sm">SGST</Text>
-                <Text className="text-base font-semibold mt-1">
+                <CsText className="text-gray-600 text-sm">SGST</CsText>
+                <CsText className="text-base font-semibold mt-1">
                   ₹{sgst.toLocaleString("en-IN")}
-                </Text>
+               </CsText>
               </View>
             </View>
 
             {/* Grand Total */}
             <View className="p-4 rounded-xl bg-gray-100 mt-3">
-              <Text className="text-gray-700 text-sm">Grand Total</Text>
-              <Text className="mt-1 text-xl font-bold text-gray-900">
+              <CsText className="text-gray-700 text-sm">Grand Total</CsText>
+              <CsText className="mt-1 text-xl font-bold text-gray-900">
                 ₹{total.toLocaleString("en-IN")}
-              </Text>
+             </CsText>
             </View>
           </Pressable>
         </Pressable>

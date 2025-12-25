@@ -1,6 +1,7 @@
 import { CloudSun, Droplet, Moon, Sun } from "lucide-react-native";
-import { Dimensions, ScrollView, Text, View } from "react-native";
+import { Dimensions, ScrollView, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 const { width } = Dimensions.get("window");
@@ -56,7 +57,7 @@ export default function HourlyCard() {
             width="100%"
             paddingHorizontal={1.5}
             paddingVertical={1.5}>
-            <Text
+            <CsText
                 style={{
                     color: "#333333",
                     fontSize: 14,
@@ -65,7 +66,7 @@ export default function HourlyCard() {
                 }}
             >
                 Partly cloudy. Highs in the upper 70s and lows in the low 60s.
-            </Text>
+           </CsText>
 
             {/* Divider */}
             <View
@@ -89,7 +90,7 @@ export default function HourlyCard() {
                                     alignItems: "center",
                                 }}
                             >
-                                <Text
+                                <CsText
                                     style={{
                                         fontSize: 11,
                                         color: "#333333",
@@ -97,14 +98,14 @@ export default function HourlyCard() {
                                     }}
                                 >
                                     {item.time}
-                                </Text>
+                               </CsText>
 
                                 <View style={{ marginVertical: 4 }}>
                                     {renderIcon(item.icon)}
                                 </View>
 
                                 {item.label ? (
-                                    <Text
+                                    <CsText
                                         style={{
                                             fontSize: 11,
                                             color: "#333333",
@@ -112,9 +113,9 @@ export default function HourlyCard() {
                                         }}
                                     >
                                         {item.label}
-                                    </Text>
+                                   </CsText>
                                 ) : (
-                                    <Text
+                                    <CsText
                                         style={{
                                             fontSize: 14,
                                             fontWeight: "600",
@@ -123,7 +124,7 @@ export default function HourlyCard() {
                                         }}
                                     >
                                         {item.temp}°
-                                    </Text>
+                                   </CsText>
                                 )}
                             </View>
                         ))}
@@ -159,7 +160,7 @@ export default function HourlyCard() {
                                 }}
                             >
                                 <Droplet size={14} color="#c7611f" />
-                                <Text
+                                <CsText
                                     style={{
                                         fontSize: 11,
                                         color: "#333333",
@@ -167,7 +168,7 @@ export default function HourlyCard() {
                                     }}
                                 >
                                     {item.rain}%
-                                </Text>
+                               </CsText>
                             </View>
                         ))}
                     </View>

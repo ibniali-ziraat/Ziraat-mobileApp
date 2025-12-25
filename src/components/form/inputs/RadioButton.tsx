@@ -1,6 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import { RadioButton } from "react-native-paper";
+import CsText from "../../shared/CsText";
 
 export default function RadioGroup({
   control: controlProp,
@@ -42,9 +43,9 @@ export default function RadioGroup({
 
         return (
           <View style={{ marginBottom: 20 }}>
-            <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 6 }}>
+            <CsText style={{ fontSize: 16, fontWeight: "bold", marginBottom: 6 }}>
               {label}
-            </Text>
+           </CsText>
 
             <RadioButton.Group onValueChange={handleSelect} value={value}>
               {options.map((opt) => (
@@ -53,15 +54,15 @@ export default function RadioGroup({
                   style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
                 >
                   <RadioButton value={opt} />
-                  <Text>{opt}</Text>
+                  <CsText>{opt}</CsText>
                 </View>
               ))}
             </RadioButton.Group>
 
             {liveError && (
-              <Text style={{ color: "red", marginTop: 4 }}>
+              <CsText style={{ color: "red", marginTop: 4 }}>
                 {liveError.message}
-              </Text>
+             </CsText>
             )}
           </View>
         );

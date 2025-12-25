@@ -1,11 +1,12 @@
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Animated, {
   FadeInLeft,
   FadeInUp,
   Layout,
 } from "react-native-reanimated";
+import CsText from "./CsText";
 
 // ROLE COLOR ACCENTS
 const roleAccent = {
@@ -67,14 +68,14 @@ function StatusBadge({ status }) {
         }}
       />
 
-      <Text
+      <CsText
         className="text-[11px] font-semibold"
         style={{
           color: isActive ? colors.primary : colors.error,
         }}
       >
         {status}
-      </Text>
+     </CsText>
     </View>
   );
 }
@@ -93,12 +94,12 @@ function Avatar({ name, color }) {
       className="w-12 h-12 rounded-full items-center justify-center"
       style={{ backgroundColor: color + "22" }}
     >
-      <Text
+      <CsText
         className="font-bold text-base"
         style={{ color }}
       >
         {initials}
-      </Text>
+     </CsText>
     </View>
   );
 }
@@ -115,12 +116,12 @@ export default function TeamCard() {
       {/* HEADER */}
       <View className="flex-row items-center justify-between">
         <View>
-          <Text className="text-lg font-extrabold" style={{ color: colors.dark }}>
+          <CsText className="text-lg font-extrabold" style={{ color: colors.dark }}>
             Delivery Team Overview
-          </Text>
-          <Text className="text-[11px] mt-[2px]" style={{ color: colors.dark }}>
+         </CsText>
+          <CsText className="text-[11px] mt-[2px]" style={{ color: colors.dark }}>
             Team • Roles • Fleet Assignments
-          </Text>
+         </CsText>
         </View>
 
         <Ionicons name="people-circle" size={28} color={colors.primary} />
@@ -153,18 +154,18 @@ export default function TeamCard() {
                   <Avatar name={member.name} color={accent} />
 
                   <View className="ml-3">
-                    <Text className="font-semibold text-sm" style={{ color: colors.dark }}>
+                    <CsText className="font-semibold text-sm" style={{ color: colors.dark }}>
                       {member.name}
-                    </Text>
+                   </CsText>
                     <View className="flex-row items-center mt-[1px]">
                       <Ionicons
                         name={roleIcons[member.role]}
                         size={16}
                         color={accent}
                       />
-                      <Text className="ml-1 text-[11px]" style={{ color: colors.dark }}>
+                      <CsText className="ml-1 text-[11px]" style={{ color: colors.dark }}>
                         {member.role}
-                      </Text>
+                     </CsText>
                     </View>
                   </View>
                 </View>
@@ -180,23 +181,23 @@ export default function TeamCard() {
                   <>
                     <View className="flex-row items-center mt-1">
                       <Ionicons name="car-sport-outline" size={16} color={colors.secondary} />
-                      <Text className="ml-2 text-xs" style={{ color: colors.dark }}>
+                      <CsText className="ml-2 text-xs" style={{ color: colors.dark }}>
                         {member.vehicle.type} — {member.vehicle.model}
-                      </Text>
+                     </CsText>
                     </View>
 
-                    <Text className="ml-8 text-[11px]" style={{ color: colors.dark }}>
+                    <CsText className="ml-8 text-[11px]" style={{ color: colors.dark }}>
                       Reg No: {member.vehicle.regNo}
-                    </Text>
+                   </CsText>
                   </>
                 )}
 
                 {/* MANPOWER */}
                 <View className="flex-row items-center mt-2">
                   <Ionicons name="people-outline" size={16} color={colors.primary} />
-                  <Text className="ml-2 text-xs" style={{ color: colors.dark }}>
+                  <CsText className="ml-2 text-xs" style={{ color: colors.dark }}>
                     Assigned Manpower: {member.manpower}
-                  </Text>
+                 </CsText>
                 </View>
               </View>
             </Animated.View>

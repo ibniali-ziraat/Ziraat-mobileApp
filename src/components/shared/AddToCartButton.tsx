@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { ShoppingCart } from "lucide-react-native";
 import { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
+import CsText from "./CsText";
 
 export default function AddToCartButton({ title = "Add to Cart", onPress }) {
   const [loading, setLoading] = useState(false);
@@ -26,12 +27,12 @@ export default function AddToCartButton({ title = "Add to Cart", onPress }) {
      
       <View className="flex-row justify-center items-center w-full">
         <ShoppingCart size={20} color={colors.dark} />
-        <Text
+        <CsText
           className="text-dark font-semibold text-lg flex-shrink ml-2"
           numberOfLines={1}
         >
           {title}
-        </Text>
+       </CsText>
       </View>
     </TouchableOpacity>
   );

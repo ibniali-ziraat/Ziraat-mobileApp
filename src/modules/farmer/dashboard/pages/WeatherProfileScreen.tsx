@@ -56,12 +56,12 @@ export default function WeatherScreen() {
         <SearchBar search={search} setSearch={setSearch} />
         {/* 
         <View className="mb-1">
-          <Text className="text-dark text-3xl font-semibold">
+          <CsText className="text-dark text-3xl font-semibold">
             {current.location}
-          </Text>
-          <Text className="text-dark mt-1 text-md">
+         </CsText>
+          <CsText className="text-dark mt-1 text-md">
             Updated: {current.lastUpdated}
-          </Text>
+         </CsText>
         </View> */}
 
         <WeatherCard
@@ -106,12 +106,12 @@ export default function WeatherScreen() {
         {/* <PrecipitationCard /> */}
       </View>
       {/* <View className="h-16">
-        <Text className="text-dark text-xl text-center font-semibold">
+        <CsText className="text-dark text-xl text-center font-semibold">
           Weather for Srinagar
-        </Text>
-        <Text className=" mt-3 text-dark text-center text-sm">
+       </CsText>
+        <CsText className=" mt-3 text-dark text-center text-sm">
           Data provided by Zirat Weather Services.
-        </Text>
+       </CsText>
       </View> */}
     </ScreenLayout>
   );

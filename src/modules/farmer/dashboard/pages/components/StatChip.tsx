@@ -1,6 +1,7 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 export default function StatChip({
   Icon,
@@ -28,19 +29,19 @@ export default function StatChip({
         )}
 
         {/* TITLE */}
-        <Text
+        <CsText
           className="text-[14px]  text-center"
           style={{ color: colors.dark }}
         >
           {title}
-        </Text>
+       </CsText>
 
         {/* VALUE */}
-        <Text
+        <CsText
           className={"text-[18px] font-extrabold text-center mt-2"}
         >
           {value}
-        </Text>
+       </CsText>
       </View>
     </ZiraatCard>
   );

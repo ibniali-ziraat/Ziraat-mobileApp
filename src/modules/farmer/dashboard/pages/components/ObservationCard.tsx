@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 
 type ObservationCardProps = {
   title: string;
@@ -20,18 +21,18 @@ const ObservationCard = ({
       marginBottom={1}
     >
       <View className="gap-2">
-        <Text className="text-xl font-semibold">
+        <CsText className="text-xl font-semibold">
           {title}
-        </Text>
+       </CsText>
 
-        <Text className="text-neutral leading-relaxed">
+        <CsText className="text-neutral leading-relaxed">
           {description}
-        </Text>
+       </CsText>
 
         {recommended && (
-          <Text className="text-sm text-primary">
+          <CsText className="text-sm text-primary">
             Recommended: {recommended}
-          </Text>
+         </CsText>
         )}
       </View>
     </ZiraatCard>

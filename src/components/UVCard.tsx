@@ -1,6 +1,7 @@
-import { View, Text } from "react-native";
 import { Sun } from "lucide-react-native";
-import Svg, { Line, Circle } from "react-native-svg";
+import { View } from "react-native";
+import Svg, { Circle, Line } from "react-native-svg";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -22,18 +23,18 @@ export default function UVCard({ value, level, advice }: Props) {
         >
             <View className="flex-row items-center">
                 <Sun size={18} color="#c7611f" />
-                <Text className="ml-1 text-md font-semibold tracking-wide text-dark">
+                <CsText className="ml-1 text-md font-semibold tracking-wide text-dark">
                     UV INDEX
-                </Text>
+               </CsText>
             </View>
 
 
-            <Text className="mt-1 text-3xl font-bold text-dark">
+            <CsText className="mt-1 text-3xl font-bold text-dark">
                 {value}
-            </Text>
-            <Text className="text-md text-dark">
+           </CsText>
+            <CsText className="text-md text-dark">
                 {level} Low
-            </Text>
+           </CsText>
 
 
             <Svg
@@ -56,9 +57,9 @@ export default function UVCard({ value, level, advice }: Props) {
             </Svg>
 
 
-            <Text className="text-sm leading-5 text-dark">
+            <CsText className="text-sm leading-5 text-dark">
                 {advice} Low for the rest of the day.
-            </Text>
+           </CsText>
         </ZiraatCard>
     );
 }

@@ -2,9 +2,10 @@ import { colors } from "@/src/constants/colors";
 import { FormFieldProps } from "@/src/types/formFieldProps";
 import { Asterisk } from "lucide-react-native";
 import { Controller, useFormContext } from "react-hook-form";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { HelperText } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
+import CsText from "../../shared/CsText";
 
 export default function SingleSelectInput({
   control: controlProp,
@@ -53,7 +54,7 @@ export default function SingleSelectInput({
               }}
             >
               <View className="flex-row items-center mb-2">
-                <Text className="text-dark text-xl font-semibold">{label}</Text>
+                <CsText className="text-dark text-xl font-semibold">{label}</CsText>
                 {!optional && (
                   <Asterisk size={14} color={colors.error} className="ml-1" />
                 )}

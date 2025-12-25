@@ -1,4 +1,5 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
@@ -10,7 +11,7 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react-native";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, View } from "react-native";
 import kpis from "../../../../data/kpis.json";
 import tags from "../../../../data/participationTags.json";
 import recentActivities from "../../../../data/recentActivities.json";
@@ -32,9 +33,9 @@ export default function AdvisoryScreen() {
         />
 
         {/* KPIs */}
-        <Text className="mb-2 text-xl font-semibold text-black">
+        <CsText className="mb-2 text-xl font-semibold text-black">
           Key Metrics
-        </Text>
+        </CsText>
 
         <ScrollView
           horizontal
@@ -58,8 +59,8 @@ export default function AdvisoryScreen() {
                   />
                   <View className="absolute bottom-0 h-2/5 w-full bg-dark" />
                   <View className="absolute bottom-3 left-3">
-                    <Text className="font-bold text-light">{item.title}</Text>
-                    <Text className="text-xs text-light">{item.subtitle}</Text>
+                    <CsText className="font-bold text-light">{item.title}</CsText>
+                    <CsText className="text-xs text-light">{item.subtitle}</CsText>
                   </View>
                 </View>
 
@@ -70,18 +71,18 @@ export default function AdvisoryScreen() {
                         {Icon && <Icon size={22} color={colors.secondary} />}
                       </View>
                       <View className="ml-1">
-                        <Text className="font-semibold text-dark">
+                        <CsText className="font-semibold text-dark">
                           {item.title}
-                        </Text>
-                        <Text className="text-xs text-dark">
+                        </CsText>
+                        <CsText className="text-xs text-dark">
                           {item.subtitle}
-                        </Text>
+                        </CsText>
                       </View>
                     </View>
 
-                    <Text className="ml-1 text-lg font-extrabold text-black">
+                    <CsText className="ml-1 text-lg font-extrabold text-black">
                       {item.value}
-                    </Text>
+                    </CsText>
                   </View>
 
                   <View className="mt-4 h-2 w-full overflow-hidden rounded-xl border border-dark">
@@ -106,27 +107,27 @@ export default function AdvisoryScreen() {
           <View className="flex-row items-center justify-between">
             <View className="flex-row items-center">
               <TrendingUp size={30} color={colors.secondary} />
-              <Text className="ml-2 text-xl font-bold text-dark">
+              <CsText className="ml-2 text-xl font-bold text-dark">
                 Overall Engagement Score
-              </Text>
+              </CsText>
             </View>
 
-            <Text className="rounded-full bg-secondary px-3 py-1 font-bold text-light">
+            <CsText className="rounded-full bg-secondary px-3 py-1 font-bold text-light">
               87%
-            </Text>
+            </CsText>
           </View>
 
-          <Text className="mt-4 text-center text-xl font-bold text-dark">
+          <CsText className="mt-4 text-center text-xl font-bold text-dark">
             87 / 100
-          </Text>
+          </CsText>
 
-          <Text className="mt-2 text-center font-bold text-dark">
+          <CsText className="mt-2 text-center font-bold text-dark">
             Excellent — higher than 92% of users.
-          </Text>
+          </CsText>
         </ZiraatCard>
 
         {/* Participation Tags */}
-        <Text className="mt-8 mb-6 text-2xl font-bold">Participation Heat</Text>
+        <CsText className="mt-8 mb-6 text-2xl font-bold">Participation Heat</CsText>
         <View className="mb-6 flex-row flex-wrap gap-3">
           {tags.map((tag) => (
             <Tag key={tag.label} {...tag} />
@@ -141,9 +142,9 @@ export default function AdvisoryScreen() {
           paddingVertical={1}
         >
           <View className="mb-6 ">
-            <Text className="mb-4 text-2xl font-bold text-black">
+            <CsText className="mb-4 text-2xl font-bold text-black">
               Recent Activities
-            </Text>
+            </CsText>
 
             {recentActivities.map((item) => (
               <View
@@ -151,8 +152,8 @@ export default function AdvisoryScreen() {
                 className="mb-3 flex-row items-center justify-between"
               >
                 <View>
-                  <Text className="font-semibold text-dark">{item.type}</Text>
-                  <Text className="text-sm text-dark">{item.id}</Text>
+                  <CsText className="font-semibold text-dark">{item.type}</CsText>
+                  <CsText className="text-sm text-dark">{item.id}</CsText>
                 </View>
                 <StatusBadge status={item.status} />
               </View>
@@ -165,12 +166,12 @@ export default function AdvisoryScreen() {
           <View className="mt-4 flex-row gap-3 p-5">
             <Sparkles size={30} color={colors.secondary} />
             <View className="flex-1">
-              <Text className="text-xl font-extrabold text-black">
+              <CsText className="text-xl font-extrabold text-black">
                 Keep Growing Your Knowledge 🌱
-              </Text>
-              <Text className="mt-1 text-dark">
+              </CsText>
+              <CsText className="mt-1 text-dark">
                 Read articles, engage with the community, and follow advisories.
-              </Text>
+              </CsText>
             </View>
           </View>
         </ZiraatCard>
@@ -189,7 +190,7 @@ const Tag = ({ label }: any) => (
       paddingHorizontal={0.76}
       paddingVertical={0.7}
     >
-      <Text className={`text-sm font-semibold`}>{label}</Text>
+      <CsText className={`text-sm font-semibold`}>{label}</CsText>
     </ZiraatCard>
   </View>
 );
@@ -204,7 +205,7 @@ const StatusBadge = ({ status }: any) => {
 
   return (
     <View className={`rounded-full px-3 py-1 ${styles[status]}`}>
-      <Text className=" text-light">{status}</Text>
+      <CsText className=" text-light">{status}</CsText>
     </View>
   );
 };

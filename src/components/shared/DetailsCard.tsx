@@ -1,12 +1,13 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import CsText from "./CsText";
 
 export default function DetailCard({ title, value }) {
   return (
     <View className="bg-white p-3 rounded-lg">
-      <Text className="text-sm text-gray-500">{title}</Text>
-      <Text className="text-base font-semibold text-gray-800">
+      <CsText className="text-sm text-gray-500">{title}</CsText>
+      <CsText className="text-base font-semibold text-gray-800">
         {value || "N/A"}
-      </Text>
+     </CsText>
     </View>
   );
 }

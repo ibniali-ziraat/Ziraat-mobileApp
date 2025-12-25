@@ -16,14 +16,14 @@ export default function OptionalFutureFields({ control, errors }: any) {
 
   return (
     <View className="flex-1 w-full">
-      {/* <Text className="text-2xl font-bold mb-4 text-center text-primary">
+      {/* <CsText className="text-2xl font-bold mb-4 text-center text-primary">
         Optional / Future-Proof Fields
-      </Text> */}
+     </CsText> */}
 
       <View className="bg-light w-full">
-        {/* <Text className="text-lg font-semibold mb-3 text-primary">
+        {/* <CsText className="text-lg font-semibold mb-3 text-primary">
           Additional Optional Information
-        </Text> */}
+       </CsText> */}
 
         <CheckboxGroup
           control={control}

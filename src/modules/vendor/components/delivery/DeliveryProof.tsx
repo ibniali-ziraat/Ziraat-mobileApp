@@ -1,5 +1,6 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function DeliveryProof({ theme }) {
   return (
@@ -8,9 +9,9 @@ export default function DeliveryProof({ theme }) {
       
     >
       {/* HEADER */}
-      <Text className="text-lg font-bold text-black mb-4">
+      <CsText className="text-lg font-bold text-black mb-4">
         Delivery Proof
-      </Text>
+     </CsText>
 
       {/* STEP INDICATOR */}
       <View className="flex-row items-center mb-5">
@@ -36,12 +37,12 @@ export default function DeliveryProof({ theme }) {
         }}
       >
         <Ionicons name="camera-outline" size={40} color={theme.primaryDark} />
-        <Text className="mt-2 text-gray-900 font-semibold">
+        <CsText className="mt-2 text-gray-900 font-semibold">
           Tap to Upload Photo
-        </Text>
-        <Text className="text-xs text-gray-500 mt-1">
+       </CsText>
+        <CsText className="text-xs text-gray-500 mt-1">
           (Delivery item or doorstep image)
-        </Text>
+       </CsText>
       </TouchableOpacity>
 
       {/* PHOTO PREVIEW */}
@@ -54,7 +55,7 @@ export default function DeliveryProof({ theme }) {
         }}
       >
         <Ionicons name="image-outline" size={40} color="#9ca3af" />
-        <Text className="text-gray-500 text-xs mt-1">No photo uploaded</Text>
+        <CsText className="text-gray-500 text-xs mt-1">No photo uploaded</CsText>
       </View>
 
       {/* SIGNATURE UPLOAD */}
@@ -79,12 +80,12 @@ export default function DeliveryProof({ theme }) {
         </View>
 
         <View>
-          <Text className="text-gray-900 font-semibold text-[15px]">
+          <CsText className="text-gray-900 font-semibold text-[15px]">
             Capture Customer Signature
-          </Text>
-          <Text className="text-[11px] text-gray-500 mt-[2px]">
+         </CsText>
+          <CsText className="text-[11px] text-gray-500 mt-[2px]">
             Opens signature pad
-          </Text>
+         </CsText>
         </View>
       </TouchableOpacity>
 
@@ -98,7 +99,7 @@ export default function DeliveryProof({ theme }) {
         }}
       >
         <Ionicons name="trail-sign-outline" size={40} color="#a1a1aa" />
-        <Text className="text-gray-500 text-xs mt-1">No signature added</Text>
+        <CsText className="text-gray-500 text-xs mt-1">No signature added</CsText>
       </View>
 
       {/* COMPLETION BADGE */}
@@ -106,12 +107,12 @@ export default function DeliveryProof({ theme }) {
         className="self-start px-3 py-[6px] rounded-full"
         style={{ backgroundColor: `${theme.primary}20` }}
       >
-        <Text
+        <CsText
           className="text-xs font-semibold"
           style={{ color: theme.primaryDark }}
         >
           Proof Required • Pending Completion
-        </Text>
+       </CsText>
       </View>
     </View>
   );

@@ -1,7 +1,7 @@
 // components/home/SevenDayForecast.tsx
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 const forecast = [
   { day: "Mon", temp: "29°", low: "15°", rain: "20%", icon: "partly-sunny-outline" },
@@ -53,12 +53,12 @@ function ForecastCard({ item }) {
 >
 
       {/* Day */}
-      <Text
+      <CsText
         className="text-center text-[15px] font-semibold"
         style={{ color: colors.dark }}
       >
         {item.day}
-      </Text>
+     </CsText>
 
       {/* Weather Icon */}
       <View className="items-center my-3">
@@ -75,15 +75,15 @@ function ForecastCard({ item }) {
 
       {/* Temperature */}
       <View className="items-center mt-1 mb-1">
-        <Text
+        <CsText
           className="font-extrabold text-[18px]"
           style={{ color: colors.dark }}
         >
           {item.temp}
-        </Text>
-        <Text className="text-[12px]" style={{ color: colors.dark + "99" }}>
+       </CsText>
+        <CsText className="text-[12px]" style={{ color: colors.dark + "99" }}>
           {item.low}
-        </Text>
+       </CsText>
       </View>
 
       {/* Divider */}
@@ -109,12 +109,12 @@ function ForecastCard({ item }) {
             borderRadius: 12,
           }}
         >
-          <Text
+          <CsText
             className="text-[11px] font-semibold"
             style={{ color: colors.dark }}
           >
             {item.rain}
-          </Text>
+         </CsText>
         </View>
       </View>
     </View>

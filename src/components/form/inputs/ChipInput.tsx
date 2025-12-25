@@ -1,9 +1,10 @@
+import { colors } from "@/src/constants/colors";
+import { Plus, X } from "lucide-react-native"; // Lucide icons
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import { Text, TextInput, View, TouchableOpacity } from "react-native";
-import { X, Plus } from "lucide-react-native"; // Lucide icons
-import { colors } from "@/src/constants/colors";
+import { TextInput, TouchableOpacity, View } from "react-native";
 import { HelperText } from "react-native-paper";
+import CsText from "../../shared/CsText";
 
 interface ChipInputProps {
   control: any;
@@ -43,10 +44,10 @@ export default function ChipInput({
 
         return (
           <View style={{ marginBottom: 10 }}>
-            <Text className="text-dark text-base font-semibold mb-2">
+            <CsText className="text-dark text-base font-semibold mb-2">
               {label}
-              {required && <Text className="text-red-500"> *</Text>}
-            </Text>
+              {required && <CsText className="text-red-500"> *</CsText>}
+           </CsText>
 
             {/* Chips */}
             <View className="flex-row flex-wrap gap-2 mb-2">
@@ -55,7 +56,7 @@ export default function ChipInput({
                   key={item + index}
                   className="flex-row items-center bg-white border border-neutral px-3 py-1 rounded-full"
                 >
-                  <Text className="text-dark text-sm">{item}</Text>
+                  <CsText className="text-dark text-sm">{item}</CsText>
                   <TouchableOpacity
                     className="ml-2"
                     onPress={() => handleRemove(index)}

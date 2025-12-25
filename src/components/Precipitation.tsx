@@ -1,5 +1,6 @@
 import { Droplets } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
@@ -21,22 +22,22 @@ export function Precipitation({
 
             <View className="flex-row items-center mb-1">
                 <Droplets size={16} color="#c7611f" />
-                <Text className="ml-2 text-sm font-bold tracking-wide text-dark">
+                <CsText className="ml-2 text-sm font-bold tracking-wide text-dark">
                     PRECIPITATION
-                </Text>
+                </CsText>
             </View>
 
-            <Text className="text-3xl font-bold text-dark">
+            <CsText className="text-3xl font-bold text-dark">
                 {amount}
-            </Text>
+            </CsText>
 
-            <Text className="text-sm text-dark pt-2">
+            <CsText className="text-sm text-dark pt-2">
                 In last 24 hours
-            </Text>
+            </CsText>
 
-            <Text className="text-xs text-dark pt-2">
+            <CsText className="text-xs text-dark pt-2">
                 {note}
-            </Text>
-        </ZiraatCard>
+            </CsText>
+        </ZiraatCard >
     );
 }

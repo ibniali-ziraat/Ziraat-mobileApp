@@ -1,13 +1,12 @@
+import CsText from "@/src/components/shared/CsText";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
   Modal,
   ScrollView,
   Switch,
-  Text,
-  TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 const colors = {
@@ -129,19 +128,19 @@ export default function UserScreen() {
                   borderColor: active ? colors.secondaryDark : "transparent",
                 }}
               >
-                <Text
+                <CsText
                   className="text-xs font-semibold"
                   style={{ color: active ? colors.secondaryDark : "#777" }}
                 >
                   {item}
-                </Text>
+               </CsText>
               </TouchableOpacity>
             );
           })}
         </View>
 
         {/* TEAM MEMBERS */}
-        <Text className="text-black font-bold text-lg mb-3">Team Members</Text>
+        <CsText className="text-black font-bold text-lg mb-3">Team Members</CsText>
 
         {filteredMembers.map((user) => (
           <View
@@ -156,16 +155,16 @@ export default function UserScreen() {
                   className="w-11 h-11 rounded-full items-center justify-center mr-3"
                   style={{ backgroundColor: colors.secondaryLight }}
                 >
-                  <Text className="font-bold" style={{ color: colors.secondaryDark }}>
+                  <CsText className="font-bold" style={{ color: colors.secondaryDark }}>
                     {getInitials(user.name)}
-                  </Text>
+                 </CsText>
                 </View>
 
                 <View>
-                  <Text className="font-semibold text-black text-sm">
+                  <CsText className="font-semibold text-black text-sm">
                     {user.name}
-                  </Text>
-                  <Text className="text-xs text-black">{user.email}</Text>
+                 </CsText>
+                  <CsText className="text-xs text-black">{user.email}</CsText>
                 </View>
               </View>
 
@@ -175,14 +174,14 @@ export default function UserScreen() {
                   backgroundColor: user.active ? "#e7f5ea" : "#fdeeee",
                 }}
               >
-                <Text
+                <CsText
                   className="text-[11px] font-semibold"
                   style={{
                     color: user.active ? colors.primary : colors.secondaryDark,
                   }}
                 >
                   {user.active ? "Active" : "Disabled"}
-                </Text>
+               </CsText>
               </View>
             </View>
 
@@ -190,20 +189,20 @@ export default function UserScreen() {
               className="mt-3 self-start px-3 py-[4px] rounded-full"
               style={{ backgroundColor: colors.secondaryLight }}
             >
-              <Text
+              <CsText
                 className="text-[11px] font-semibold"
                 style={{ color: colors.secondaryDark }}
               >
                 {user.role}
-              </Text>
+             </CsText>
             </View>
           </View>
         ))}
 
         {/* ROLES ACCORDION */}
-        <Text className="text-black font-bold text-lg mt-5 mb-2">
+        <CsText className="text-black font-bold text-lg mt-5 mb-2">
           Available Roles & Permissions
-        </Text>
+       </CsText>
 
         {[  
           {
@@ -254,8 +253,8 @@ export default function UserScreen() {
                 </View>
 
                 <View className="ml-3">
-                  <Text className="font-semibold text-black">{r.role}</Text>
-                  <Text className="text-xs text-black">{r.desc}</Text>
+                  <CsText className="font-semibold text-black">{r.role}</CsText>
+                  <CsText className="text-xs text-black">{r.desc}</CsText>
                 </View>
               </View>
 
@@ -269,9 +268,9 @@ export default function UserScreen() {
             {openAccordion === i && (
               <View className="mt-3 pl-1">
                 {r.perms.map((p, idx) => (
-                  <Text key={idx} className="text-sm text-black mb-1">
+                  <CsText key={idx} className="text-sm text-black mb-1">
                     • {p}
-                  </Text>
+                 </CsText>
                 ))}
               </View>
             )}
@@ -279,12 +278,12 @@ export default function UserScreen() {
         ))}
 
         {/* ACTIVITY LOG */}
-        <Text className="text-black font-bold text-lg mb-3">Activity Log</Text>
+        <CsText className="text-black font-bold text-lg mb-3">Activity Log</CsText>
 
         {Object.keys(groupedLogs).map((date) => (
           <View key={date} className="mb-4">
 
-            <Text className="text-xs text-black mb-2">{date}</Text>
+            <CsText className="text-xs text-black mb-2">{date}</CsText>
 
             <View className="bg-white rounded-xl border border-gray-200 overflow-hidden">
               {groupedLogs[date].map((l, index) => (
@@ -301,15 +300,15 @@ export default function UserScreen() {
                   <View
                     className="w-9 h-9 rounded-full bg-gray-100 items-center justify-center mr-3"
                   >
-                    <Text className="font-bold text-gray-700">
+                    <CsText className="font-bold text-gray-700">
                       {getLogInitials(l.text)}
-                    </Text>
+                   </CsText>
                   </View>
 
                   {/* Text */}
-                  <Text className="text-gray-800 text-sm flex-1 font-medium">
+                  <CsText className="text-gray-800 text-sm flex-1 font-medium">
                     {l.text}
-                  </Text>
+                 </CsText>
 
                   {/* Icon */}
                   <Ionicons
@@ -320,7 +319,7 @@ export default function UserScreen() {
                   />
 
                   {/* Time */}
-                  <Text className="text-gray-500 text-[11px]">{l.time}</Text>
+                  <CsText className="text-gray-500 text-[11px]">{l.time}</CsText>
                 </View>
               ))}
             </View>
@@ -334,18 +333,18 @@ export default function UserScreen() {
       <Modal visible={showModal} animationType="slide" transparent>
         <View className="flex-1 bg-black/40 justify-end">
           <View className="bg-white rounded-t-3xl p-6">
-            <Text className="text-lg font-semibold text-gray-900 mb-4">
+            <CsText className="text-lg font-semibold text-gray-900 mb-4">
               Add Team Member
-            </Text>
+           </CsText>
 
-            <TextInput
+            <CsTextInput
               placeholder="Full Name"
               className="border border-gray-300 rounded-xl px-4 py-3 mb-3"
               value={newName}
               onChangeText={setNewName}
             />
 
-            <TextInput
+            <CsTextInput
               placeholder="Email Address"
               className="border border-gray-300 rounded-xl px-4 py-3 mb-3"
               value={newEmail}
@@ -354,7 +353,7 @@ export default function UserScreen() {
 
             {/* Role Picker */}
             <View className="border border-gray-300 rounded-xl px-4 py-3 mb-3">
-              <Text className="text-xs text-gray-600 mb-2">Role</Text>
+              <CsText className="text-xs text-gray-600 mb-2">Role</CsText>
 
               {ALL_ROLES.map((role) => (
                 <TouchableOpacity
@@ -362,21 +361,21 @@ export default function UserScreen() {
                   onPress={() => setNewRole(role)}
                   className="py-2"
                 >
-                  <Text
+                  <CsText
                     style={{
                       color: newRole === role ? colors.primary : "#444",
                       fontWeight: newRole === role ? "700" : "400",
                     }}
                   >
                     {role}
-                  </Text>
+                 </CsText>
                 </TouchableOpacity>
               ))}
             </View>
 
             {/* ACTIVE SWITCH */}
             <View className="flex-row items-center justify-between mb-4">
-              <Text className="text-gray-700">Active User</Text>
+              <CsText className="text-gray-700">Active User</CsText>
               <Switch
                 value={newActive}
                 onValueChange={setNewActive}
@@ -391,7 +390,7 @@ export default function UserScreen() {
                 className="px-4 py-3 mr-3"
                 onPress={() => setShowModal(false)}
               >
-                <Text className="text-gray-700 font-semibold">Cancel</Text>
+                <CsText className="text-gray-700 font-semibold">Cancel</CsText>
               </TouchableOpacity>
             </View>
 

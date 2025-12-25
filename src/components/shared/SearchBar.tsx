@@ -1,5 +1,7 @@
+import { colors } from "@/src/constants/colors";
 import { LucideIcon, Search } from "lucide-react-native";
-import { Platform, TextInput, TouchableOpacity, View } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
+import { TextInput } from "react-native-paper";
 
 type Props = {
   search: string;
@@ -15,18 +17,18 @@ export default function SearchBar({
   onIconPress,
 }: Props) {
   return (
-    <View className="w-full flex justify-center items-center pl-1">
+    <View
+      className="w-full pl-1"
+      style={{
+        alignSelf: "stretch", // ✅ important for web
+      }}
+    >
       <View
-        className="
-          flex-row
-          items-center
-          justify-center
-          bg-light
-          rounded-full
-          px-4
-        "
+        className="flex-row items-center bg-light rounded-full px-4"
         style={{
           height: 48,
+          width: "100%", // ✅ stretch on web
+
           // Android shadow
           elevation: Platform.OS === "android" ? 4 : 0,
 
@@ -37,10 +39,15 @@ export default function SearchBar({
             shadowOpacity: 0.15,
             shadowRadius: 3,
           }),
+
+          // Web shadow
+          ...(Platform.OS === "web" && {
+            boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
+          }),
         }}
       >
         {/* Left Icon */}
-        <Search size={20} color="#c7611f" strokeWidth={2} />
+        <Search size={20} color={colors.secondary} strokeWidth={2} />
 
         {/* Input */}
         <TextInput
@@ -50,7 +57,6 @@ export default function SearchBar({
           onChangeText={setSearch}
           autoCorrect={false}
           autoCapitalize="none"
-          // 🔑 Important iOS fixes
           allowFontScaling={false}
           multiline={false}
           style={{
@@ -58,11 +64,7 @@ export default function SearchBar({
             marginLeft: 12,
             fontSize: 16,
             color: "#000",
-
-            // ✅ FIX: control height explicitly
             height: 40,
-
-            // ✅ FIX: consistent padding
             paddingVertical: 0,
             paddingTop: Platform.OS === "ios" ? 1 : 0,
           }}
@@ -71,7 +73,7 @@ export default function SearchBar({
         {/* Right Icon */}
         {RightIcon && (
           <TouchableOpacity onPress={onIconPress}>
-            <RightIcon size={20} color="#555" />
+            <RightIcon size={20} color={colors.secondary} />
           </TouchableOpacity>
         )}
       </View>

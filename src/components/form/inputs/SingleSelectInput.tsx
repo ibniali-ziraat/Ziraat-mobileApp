@@ -1,18 +1,17 @@
 import { colors } from "@/src/constants/colors";
-import { RefreshCcw, XCircle, Search } from "lucide-react-native";
-import { useEffect, useState, useMemo, useRef } from "react";
+import { RefreshCcw, Search, XCircle } from "lucide-react-native";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
   Animated,
   FlatList,
   Modal,
   Pressable,
-  Text,
   TextInput,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
-import { HelperText, Portal } from "react-native-paper";
+import { HelperText } from "react-native-paper";
 
 interface Option {
   label: string;
@@ -87,20 +86,22 @@ export default function SingleSelectInput({
         }, [value, options]);
 
         return (
-          <View style={{ marginBottom: 16 }}>
+          <View style={{ marginBottom: 16, }}>
             {/* Label */}
             {showInputLabel && (
-              <Text
+              <CsText
                 style={{
                   marginBottom: 6,
                   fontSize: 14,
                   fontWeight: "500",
                   color: colors.dark,
+
+
                 }}
               >
                 {label}{" "}
-                {!optional && <Text style={{ color: colors.error }}> *</Text>}
-              </Text>
+                {!optional && <CsText style={{ color: colors.error }}> *</CsText>}
+              </CsText>
             )}
 
             {/* Selector */}
@@ -114,12 +115,14 @@ export default function SingleSelectInput({
                 borderColor: liveError
                   ? colors.error
                   : disabled
-                    ? colors.neutral + "88"
-                    : colors.neutral,
-                borderRadius: 8,
+                    ? colors.darkHover + "88"
+                    : colors.darkHover,
+                borderRadius: 14,
                 paddingHorizontal: 16,
-                paddingVertical: 12,
+                paddingVertical: 14,
                 backgroundColor: colors.light,
+                marginTop: 6,
+
               }}
               onPress={() => {
                 if (!disabled) {
@@ -128,10 +131,11 @@ export default function SingleSelectInput({
                 }
               }}
             >
-              <Text
+              <CsText
                 style={{
                   fontSize: 16,
-                  color: disabled ? colors.neutral + "88" : colors.dark,
+                  color: disabled ? colors.neutral + "88" : colors.darkHover,
+
                 }}
               >
                 {selectedLabel || `${label}`}
@@ -139,9 +143,9 @@ export default function SingleSelectInput({
                   !selectedLabel &&
                   !disabled &&
                   !showInputLabel && (
-                    <Text style={{ color: colors.error }}> *</Text>
+                    <CsText style={{ color: colors.error }}> *</CsText>
                   )}
-              </Text>
+              </CsText>
             </TouchableOpacity>
 
             {liveError && (
@@ -203,7 +207,7 @@ export default function SingleSelectInput({
                         alignItems: "center",
                       }}
                     >
-                      <Text
+                      <CsText
                         style={{
                           fontSize: 16,
                           fontWeight: "500",
@@ -211,7 +215,7 @@ export default function SingleSelectInput({
                         }}
                       >
                         {modalLabel}
-                      </Text>
+                      </CsText>
 
                       <View
                         style={{ flexDirection: "row", alignItems: "center" }}
@@ -306,7 +310,7 @@ export default function SingleSelectInput({
                             hideSearchBar();
                           }}
                         >
-                          <Text
+                          <CsText
                             style={{
                               fontSize: 16,
                               color:
@@ -316,7 +320,7 @@ export default function SingleSelectInput({
                             }}
                           >
                             {item.label}
-                          </Text>
+                          </CsText>
                         </TouchableOpacity>
                       )}
                     />
