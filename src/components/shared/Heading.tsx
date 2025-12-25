@@ -25,12 +25,10 @@ export default function Heading({
           fontSize: titleSize,
           color: colors.primary,
           fontWeight: "semibold",
-         
-          
         }}
       >
         {title}
-     </CsText>
+      </CsText>
 
       {subtitle ? (
         <CsText
@@ -38,8 +36,6 @@ export default function Heading({
             fontSize: subtitleSize,
             color: colors.darkHover,
             marginTop: 7,
-             
-             
           }}
         >
           {subtitle}
@@ -55,10 +51,8 @@ export default function Heading({
           borderRadius: 2,
           backgroundColor: colors.primary,
           marginTop: 9,
-         
         }}
       />
     </View>
-    
   );
 }

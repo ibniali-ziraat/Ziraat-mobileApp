@@ -100,10 +100,10 @@ export default function SoilAndWaterProfile({ control, errors }) {
             >
               <CsText className="text-lg font-semibold text-gray-800">
                 Soil Records
-             </CsText>
+              </CsText>
               <CsText className="text-primary text-sm">
                 {open ? "Hide ▲" : "Show ▼"}
-             </CsText>
+              </CsText>
             </TouchableOpacity>
 
             {open && (
@@ -159,7 +159,7 @@ export default function SoilAndWaterProfile({ control, errors }) {
       <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
         <CsText className="text-lg font-semibold mb-3 text-gray-800">
           Soil Test Report Upload
-       </CsText>
+        </CsText>
 
         <RadioGroup
           control={control}
@@ -182,7 +182,7 @@ export default function SoilAndWaterProfile({ control, errors }) {
       <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
         <CsText className="text-lg font-semibold mb-3 text-gray-800">
           Water Information
-       </CsText>
+        </CsText>
 
         <SingleSelectInput
           control={control}

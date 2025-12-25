@@ -109,7 +109,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
         numberOfLines={1}
       >
         {label}
-     </CsText>
+      </CsText>
     </View>
   );
 }

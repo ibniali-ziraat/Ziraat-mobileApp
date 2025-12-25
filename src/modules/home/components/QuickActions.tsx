@@ -2,6 +2,7 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors"; // use your global theme
 import { typography } from "@/src/constants/fonts/typography";
+import { ROUTES } from "@/src/constants/routes";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { TouchableOpacity, View } from "react-native";
@@ -13,7 +14,7 @@ export default function QuickActions() {
       icon: "add-circle-outline",
       color: colors.primary,
       bg: colors.primary + "15",
-      onPress: () => router.push("/orchards/orchard-registration"),
+      onPress: () => router.push(ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO),
     },
     {
       title: "Log Harvest",
@@ -60,10 +61,9 @@ export default function QuickActions() {
                 padding: 12,
                 borderRadius: 50,
                 marginBottom: 10,
-              
               }}
             >
-              <Ionicons name={item.icon} size={24} color={item.color}  />
+              <Ionicons name={item.icon} size={24} color={item.color} />
             </View>
 
             {/* <CsText
@@ -73,7 +73,7 @@ export default function QuickActions() {
               {item.title}
            </CsText> */}
 
-            <CsText style ={[typography.caption_s_regular]}>{item.title}</CsText>
+            <CsText style ={[typography.Poppins_s_regular]}>{item.title}</CsText>
 
            
           </TouchableOpacity>

@@ -2,6 +2,7 @@ import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import sprayData from "@/src/data/SprayData.json";
 import { Droplets, Edit, Trash2, Trees } from "lucide-react-native";
 import { FlatList, View } from "react-native";
@@ -22,19 +23,16 @@ const SprayScreen = () => {
           <ZiraatCard width="100%" marginBottom={1}>
             <View
               className=" p-5 rounded-2xl"
-              // style={{
-              //   backgroundColor: colors.light,
-              //   borderWidth: 1,
-              //   borderColor: colors.primary,
-              // }}
             >
               {/* Top Row */}
               <View className="flex-row justify-between items-center ">
                 <View className="flex-row items-center gap-2">
                   <Droplets size={20} color={colors.secondary} />
                   <CsText
-                    className="text-lg font-bold"
-                    style={{ color: colors.neutral }}
+                    style={[
+                      typography.Poppins_m_medium,
+                      { color: colors.neutral }
+                    ]}
                   >
                     {item.name}
                  </CsText>
@@ -47,8 +45,10 @@ const SprayScreen = () => {
                   }}
                 >
                   <CsText
-                    className="text-sm font-bold "
-                    style={{ color: colors.light }}
+                     style={[
+                      typography.Poppins_xs_medium,
+                      { color: colors.light }
+                    ]}
                   >
                     {item.type}
                  </CsText>
@@ -59,14 +59,19 @@ const SprayScreen = () => {
               <View className="flex-row justify-between items-center mt-3">
                 <View className="flex-row items-center gap-2">
                   <Trees size={15} color={colors.secondary} />
-                  <CsText className="text-sm" style={{ color: colors.darkHover }}>
+                  <CsText  style={[
+                      typography.Poppins_s_medium,
+                      { color: colors.neutral }
+                    ]}>
                     {item.orchardName}
                  </CsText>
                 </View>
 
                 <CsText
-                  className="text-md font-semibold"
-                  style={{ color: colors.dark }}
+                  style={[
+                      typography.Poppins_s_semibold,
+                      { color: colors.neutral }
+                    ]}
                 >
                   {item.price}
                </CsText>
@@ -76,12 +81,18 @@ const SprayScreen = () => {
               <View className="flex-row justify-between items-center mt-3">
                 <CsText
                   className="text-sm pl-1 "
-                  style={{ color: colors.darkHover }}
+                   style={[
+                      typography.Poppins_xs_regular,
+                      { color: colors.neutral }
+                    ]}
                 >
                   {item.brand} • {item.quantity}
                </CsText>
 
-                <CsText className="text-sm" style={{ color: colors.darkHover }}>
+                <CsText  style={[
+                      typography.Poppins_xs_regular,
+                      { color: colors.neutral }
+                    ]}>
                   Date: {item.date}
                </CsText>
               </View>

@@ -9,7 +9,7 @@ export default function SectionTitle({ title, icon }) {
     <View className="flex-row items-center mb-6 px-1 mt-4">
       <Ionicons name={icon} size={22} color={colors.secondary} />
 
-      <CsText style = {[typography.heading_m_semibold]} className="text-xl  text-black ml-2">{title}</CsText>
+      <CsText style = {[typography.Poppins_m_semibold]} className="text-xl  text-black ml-2">{title}</CsText>
     </View>
   );
 }

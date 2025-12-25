@@ -9,9 +9,6 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="orchardName"
           label="Orchard Name"
-          icon="account"
-          iconColor="secondary"
-          iconSize={20}
           errors={errors?.orchardName?.message}
         />
 
@@ -19,10 +16,7 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="orchardSize"
           label="Orchard Size (Kanals & Marlas)"
-          icon="square"
-          iconColor="secondary"
           type="phone"
-          iconSize={20}
           errors={errors?.orchardSize?.message}
         />
 
@@ -30,10 +24,7 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="establishmentYear"
           label="Establishment Year"
-          icon="calendar"
-          iconColor="secondary"
           type="phone"
-          iconSize={20}
           errors={errors?.establishmentYear?.message}
         />
 
@@ -41,9 +32,6 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="plantationPattern"
           label="Plantation Pattern"
-          icon="tree"
-          iconColor="secondary"
-          iconSize={20}
           errors={errors?.plantationPattern?.message}
         />
 
@@ -51,9 +39,6 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="ownershipType"
           label="Ownership Type"
-          icon="home"
-          iconColor="secondary"
-          iconSize={20}
           errors={errors?.ownershipType?.message}
         />
 
@@ -61,9 +46,6 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="district"
           label="District"
-          icon="map"
-          iconColor="secondary"
-          iconSize={20}
           errors={errors?.district?.message}
         />
 
@@ -71,9 +53,6 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="tehsil"
           label="Tehsil"
-          icon="map-marker"
-          iconColor="secondary"
-          iconSize={20}
           errors={errors?.tehsil?.message}
         />
 
@@ -81,9 +60,6 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="zone"
           label="Zone"
-          icon="map-marker-radius"
-          iconColor="secondary"
-          iconSize={20}
           errors={errors?.zone?.message}
         />
 
@@ -91,21 +67,15 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="pincode"
           label="PIN Code"
-          icon="numeric"
-          iconColor="secondary"
           type="phone"
-          iconSize={20}
           errors={errors?.pincode?.message}
         />
 
-        <FormInput
+        {/* <FormInput
           control={control}
           name="latitude"
           label="Latitude"
-          icon="crosshairs-gps"
-          iconColor="secondary"
           type="phone"
-          iconSize={20}
           errors={errors.latitude?.message}
         />
 
@@ -113,12 +83,9 @@ export default function BasicInfo({ control, errors }) {
           control={control}
           name="longitude"
           label="Longitude"
-          icon="crosshairs"
-          iconColor="secondary"
           type="phone"
-          iconSize={20}
           errors={errors?.longitude?.message}
-        />
+        /> */}
       </View>
     </View>
   );

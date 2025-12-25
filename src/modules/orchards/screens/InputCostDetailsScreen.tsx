@@ -1,19 +1,27 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import { useZodForm } from "@/src/hooks/useZodForm";
-// import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
+import {
+  useCreateInputCostMutation,
+  useInputCostQuery,
+  useUpdateInputCostMutation,
+} from "@/src/hooks/useOrchardsQuery";
+import { useZodForm } from "@/src/hooks/useZodForm";
 import { InputCostDetailsSchema } from "@/src/modules/orchards/schemas/InputCostDetailsSchema";
+import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
-import InputCostDetails from "../form-sections/Input Cost Details";
+import InputCostDetails from "../form-sections/InputCostSection.tsx";
 
 export default function InputCostDetailsScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
-  //   const { data } = useVendorProfileQuery(userData.id);
-  //   const { mutateAsync: save } = useVendorProfileMutation();
-  //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
+  const { data } = useInputCostQuery(0);
+  const { mutateAsync: save, isPending: isSaving } =
+    useCreateInputCostMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useUpdateInputCostMutation();
 
   const form = useZodForm(InputCostDetailsSchema);
   const {
@@ -38,28 +46,24 @@ export default function InputCostDetailsScreen() {
   //     });
   //   }, [data]);
 
-  //   const onSubmit = async (val: any) => {
-  //     try {
-  //       if (data) {
-  //         const payload = { id: vendorData.id, ...val };
-  //         await update(payload);
-  //       } else {
-  //         const payload = { userId: userData.id, ...val };
-  //         const res = await save(payload);
-
-  //         setVendorData({
-  //           profileId: res.id,
-  //         });
-  //       }
-
-  //       router.push("/auth/vendor/vendor-profile-screen");
-  //     } catch (err) {
-  //       showErrorToast("Something went wrong");
-  //       console.error(err);
-  //     }
-  //   };
-  const onSubmit = () => {
-    console.log("subited");
+  const onSubmit = async (val: any) => {
+    router.push(ROUTES.ORCHARDS.REGISTRATION.PLANT_PROTECTION_INFO);
+    // try {
+    //   if (data) {
+    //     const payload = { id: vendorData.id, ...val };
+    //     await update(payload);
+    //   } else {
+    //     const payload = { userId: userData.id, ...val };
+    //     const res = await save(payload);
+    //     setVendorData({
+    //       profileId: res.id,
+    //     });
+    //   }
+    //   router.push("/auth/vendor/vendor-profile-screen");
+    // } catch (err) {
+    //   showErrorToast("Something went wrong");
+    //   console.error(err);
+    // }
   };
 
   return (
@@ -69,9 +73,9 @@ export default function InputCostDetailsScreen() {
         <InputCostDetails errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          // submitLabel={data ? "Update" : "Save"}
+          submitLabel={data ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
-          // disabled={isSaving || isUpdating}
+          disabled={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

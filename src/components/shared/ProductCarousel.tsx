@@ -78,8 +78,8 @@ export default function ProductCarousel({
                   />
 
                   {item.label && (
-                    <View className="absolute top-2 left-2 bg-primary px-2 py-1 rounded-lg">
-                      <CsText style= {[typography.caption_xs_regular]} className="text-white ">
+                    <View className="absolute top-2 left-2 bg-primary px-2 py-1  rounded-lg">
+                      <CsText style= {[typography.Poppins_xs_regular]} className="text-light ">
                         {item.label}
                      </CsText>
                     </View>
@@ -94,7 +94,10 @@ export default function ProductCarousel({
                   >
                     <Heart
                       size={20}
-                      color={colors.dark}
+                      // color={colors.bgColor}
+
+                      color={isInWishlist(item._id) ? colors.secondary : colors.overlay}
+
                       fill={
                         isInWishlist(item._id)
                           ? colors.secondary
@@ -105,7 +108,7 @@ export default function ProductCarousel({
                 </View>
 
                 <CsText
-                style ={[typography.subHeading_m_semibold]}
+                style ={[typography.Poppins_m_semibold]}
                   className="mt-2 w-full px-2"
                   numberOfLines={1}
                 >
@@ -114,7 +117,7 @@ export default function ProductCarousel({
 
                 {item.category && (
                   <CsText
-                  style ={[typography.caption_s_regular]}
+                  style ={[typography.Poppins_s_regular]}
                     className="text-dark  w-full px-2 mt-1"
                     numberOfLines={1}
                   >
@@ -128,14 +131,14 @@ export default function ProductCarousel({
                   {item.discountPrice ? (
                     <>
                       <CsText 
-                      style ={[typography.caption_s_regular]}
+                      style ={[typography.Poppins_s_regular]}
                       
                       className="text-dark line-through pr-3">
                         ₹{item.price}
                      </CsText>
 
                       <CsText 
-                      style ={[typography.caption_s_medium]}
+                      style ={[typography.Poppins_s_medium]}
                       
                       className="text-primary pr-3 ">
                         ₹{item.discountPrice}
@@ -143,7 +146,7 @@ export default function ProductCarousel({
 
                       {discountPercent && (
                         <CsText 
-                        style ={[typography.description_xs_regular]}
+                        style ={[typography.Poppins_xs_regular]}
                         
                         className="text-secondary">
                           {discountPercent}% OFF
@@ -152,7 +155,7 @@ export default function ProductCarousel({
                     </>
                   ) : (
                     <CsText 
-                      style ={[typography.caption_s_medium]}
+                      style ={[typography.Poppins_s_medium]}
                     
                     className="text-primary text-[18px]">
                       ₹{item.price}

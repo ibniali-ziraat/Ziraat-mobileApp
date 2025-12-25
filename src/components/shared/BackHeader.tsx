@@ -29,18 +29,22 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
 
         {/* Title + Description */}
         <View className="flex-1">
-          <CsText  
-style ={[typography.title_l_medium]}          
-          className="text-dark " numberOfLines={1}>
+          <CsText
+            style={[typography.Poppins_m_semibold]}
+            className="text-dark "
+            numberOfLines={1}
+          >
             {title}
-         </CsText>
+          </CsText>
 
           {desc && (
-            <CsText 
-            style ={[typography.caption_s_regular]}
-            className="text-neutral mt-0.5" numberOfLines={2}>
+            <CsText
+              style={[typography.Poppins_s_regular]}
+              className="text-neutral mt-0.5"
+              numberOfLines={2}
+            >
               {desc}
-           </CsText>
+            </CsText>
           )}
         </View>
       </View>

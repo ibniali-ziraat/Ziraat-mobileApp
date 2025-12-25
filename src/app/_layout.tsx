@@ -3,10 +3,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import {
-  MD3LightTheme,
-  PaperProvider,
-} from "react-native-paper";
+import { MD3LightTheme, PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 import {
   SafeAreaView,

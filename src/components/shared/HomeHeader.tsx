@@ -21,11 +21,11 @@ const HomeHeader = () => {
       style={{ borderBottomColor: colors.neutral }}
     >
       <View>
-        <CsText   className="text-md" style={[typography.subHeading_m_semibold,]}>
+        <CsText   className="text-md" style={[typography.Poppins_m_semibold,]}>
           Welcome
         </CsText>
         <CsText   style={[ {color: colors.dark,},
-          typography.subHeading_m_regular,
+          typography.Poppins_m_regular,
 
 
         ]}>

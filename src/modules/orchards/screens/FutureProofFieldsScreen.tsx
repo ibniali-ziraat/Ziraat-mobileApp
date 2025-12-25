@@ -1,19 +1,27 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import { useZodForm } from "@/src/hooks/useZodForm";
-// import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
+import {
+  useCreateOrchardExtraMutation,
+  useOrchardExtraQuery,
+  useUpdateOrchardExtraMutation,
+} from "@/src/hooks/useOrchardsQuery";
+import { useZodForm } from "@/src/hooks/useZodForm";
 import { OptionalFutureFieldsSchema } from "@/src/modules/orchards/schemas/OptionalFutureFieldsSchema";
+import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
-import OptionalFutureFields from "../form-sections/Optional-Future-Proof Fields";
+import OptionalFutureFields from "../form-sections/FutureFieldSection";
 
-export default function OptionalFutureFieldsScreen() {
+export default function FutureProofFieldScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
-  //   const { data } = useVendorProfileQuery(userData.id);
-  //   const { mutateAsync: save } = useVendorProfileMutation();
-  //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
+  const { data } = useOrchardExtraQuery(0);
+  const { mutateAsync: save, isPending: isSaving } =
+    useCreateOrchardExtraMutation();
+  const { mutateAsync: update, isPending: isUpdating } =
+    useUpdateOrchardExtraMutation();
 
   const form = useZodForm(OptionalFutureFieldsSchema);
   const {
@@ -38,28 +46,24 @@ export default function OptionalFutureFieldsScreen() {
   //     });
   //   }, [data]);
 
-  //   const onSubmit = async (val: any) => {
-  //     try {
-  //       if (data) {
-  //         const payload = { id: vendorData.id, ...val };
-  //         await update(payload);
-  //       } else {
-  //         const payload = { userId: userData.id, ...val };
-  //         const res = await save(payload);
-
-  //         setVendorData({
-  //           profileId: res.id,
-  //         });
-  //       }
-
-  //       router.push("/auth/vendor/vendor-profile-screen");
-  //     } catch (err) {
-  //       showErrorToast("Something went wrong");
-  //       console.error(err);
-  //     }
-  //   };
-  const onSubmit = () => {
-    console.log("subited");
+  const onSubmit = async (val: any) => {
+    router.push(ROUTES.ORCHARDS.REGISTRATION.INPUT_COST_INFO);
+    // try {
+    //   if (data) {
+    //     const payload = { id: vendorData.id, ...val };
+    //     await update(payload);
+    //   } else {
+    //     const payload = { userId: userData.id, ...val };
+    //     const res = await save(payload);
+    //     setVendorData({
+    //       profileId: res.id,
+    //     });
+    //   }
+    //   router.push("/auth/vendor/vendor-profile-screen");
+    // } catch (err) {
+    //   showErrorToast("Something went wrong");
+    //   console.error(err);
+    // }
   };
 
   return (
@@ -72,9 +76,9 @@ export default function OptionalFutureFieldsScreen() {
         <OptionalFutureFields errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
-          // submitLabel={data ? "Update" : "Save"}
+          submitLabel={data ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
-          // disabled={isSaving || isUpdating}
+          disabled={isSaving || isUpdating}
         />
       </FormProvider>
     </ScreenLayout>

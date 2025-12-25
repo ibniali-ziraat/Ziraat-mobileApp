@@ -3,18 +3,19 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 // import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { FarmInfrastructureSchema } from "@/src/modules/orchards/schemas/FarmInfrastructureSchema";
+import { SoilWaterProfileSchema } from "@/src/modules/orchards/schemas/SoilWaterProfileSchema";
 import { FormProvider } from "react-hook-form";
-import FarmInfrastructure from "../form-sections/Farm Infrastructure and Resources";
+import SoilAndWaterProfile from "../form-sections/SoilWaterSection";
 
-export default function FarmInfrastuctureScreen() {
+export default function SoilAndWaterProfileScreen() {
+  // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
 
   //   const { data } = useVendorProfileQuery(userData.id);
   //   const { mutateAsync: save } = useVendorProfileMutation();
   //   const { mutateAsync: update } = useVendorProfileUpdateMutation();
 
-  const form = useZodForm(FarmInfrastructureSchema);
+  const form = useZodForm(SoilWaterProfileSchema);
   const {
     setValue,
     handleSubmit,
@@ -62,12 +63,9 @@ export default function FarmInfrastuctureScreen() {
   };
   return (
     <ScreenLayout>
-      <BackHeader
-        title="Orchard Registration"
-        desc=" Farm Infrastructure & Resources"
-      />
+      <BackHeader title="Orchard Registration" desc="Soil and Water Profile" />
       <FormProvider {...form}>
-        <FarmInfrastructure errors={errors} control={control} />
+        <SoilAndWaterProfile errors={errors} control={control} />
         <FormActions
           cancelLabel={"Cancel"}
           // submitLabel={data ? "Update" : "Save"}
