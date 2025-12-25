@@ -23,7 +23,7 @@ export default function WalkMeasureScreen() {
   const marlas = areaHectares * UNIT_CONVERSIONS.marla;
 
   const handlePrimary = () => {
-    if (!areaHectares) return;
+    // if (!areaHectares) return;
 
     if (walking) {
       stop();
@@ -62,7 +62,7 @@ export default function WalkMeasureScreen() {
       <BackHeader title="Back" />
 
       <MeasureMap location={location} points={path} isWalking />
-      <AreaBadge value={area} unit={unit} />
+      <AreaBadge value={displayArea} unit={unit} />
       <MeasureControls
         unit={unit}
         setUnit={setUnit}
