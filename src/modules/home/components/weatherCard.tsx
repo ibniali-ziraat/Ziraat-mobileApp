@@ -12,20 +12,17 @@ export default function WeatherCard({ current }) {
         resizeMode="cover"
         className="w-full rounded-3xl overflow-hidden"
       >
-        <View className="p-6 bg-dark/25 backdrop-blur-3xl rounded-3xl">
+        <View className="p-6 bg-black/25 backdrop-blur-3xl rounded-3xl">
           <View className="flex-row items-end justify-between">
-            <CsText
-              style={[
-                typography.Poppins_xxl_bold,
-              ]}
-              className="text-light "
-            >
+            <CsText variant="bigHeading" className="text-light ">
               {current?.tempC}°
             </CsText>
             <Sun size={65} color="yellow" />
           </View>
 
-          <Text 
+          <CsText variant="title" className="text-light">
+            Feels like {current?.feelsLikeC}° — {current?.condition}
+          </CsText>
 
           style={[typography.Poppins_s_medium
             
@@ -35,21 +32,15 @@ export default function WeatherCard({ current }) {
             Feels like {current?.feelsLikeC}° — {current?.condition}
           </Text>
 
-          <View className="w-full h-[1px] bg-light/30 my-5" />
-
           <View className="flex-row justify-between">
             <View className="items-center gap-1">
               <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light/40">
                 <Droplets size={24} color={colors.light} />
               </View>
-              <CsText 
-              style={[typography.Poppins_s_medium]}
-              className="text-light">
+              <CsText variant="caption" className="text-light">
                 {current?.humidity}%
               </CsText>
-              <CsText 
-              style={[typography.Poppins_s_medium]}
-              className="text-light/70">
+              <CsText variant="subtitle" className="text-light/70">
                 Humidity
               </CsText>
             </View>
@@ -58,31 +49,23 @@ export default function WeatherCard({ current }) {
               <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light/40">
                 <Wind size={24} color={colors.light} />
               </View>
-              <CsText 
-              style={[typography.Poppins_s_medium]}
-               className="text-light">
+              <CsText variant="caption" className="text-white">
                 {current?.windKph} km/h
               </CsText>
-              <CsText 
-              style={[typography.Poppins_s_medium]}
-               className="text-light/70 ">
+              <CsText variant="subtitle" className="text-light/70 ">
                 {current?.windDir}
               </CsText>
             </View>
 
-            <View className="items-center gap-1">
+            <View className="w-24 items-center gap-1 ">
               <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light/40">
                 <CloudLightning size={24} color={colors.light} />
               </View>
-              <CsText 
-              style={[typography.Poppins_s_medium]}
-               className="text-light">
-                Low
+              <CsText variant="caption" className="text-light">
+                {current?.stormRisk}
               </CsText>
-              <CsText 
-              style={[typography.Poppins_s_medium]}
-               className="text-light/70 ">
-                Hail risk
+              <CsText variant="subtitle" className="text-light/70 ">
+                Strom risk
               </CsText>
             </View>
           </View>

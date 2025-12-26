@@ -1,12 +1,20 @@
 import axios from "axios";
 
-const weatherInstance = axios.create({
-  baseURL: "https://api.weatherapi.com/v1/forecast.json/",
-
+export const weatherInstance = axios.create({
+  baseURL: "https://my.meteoblue.com/packages/",
   params: {
-    key: process.env.WEATHER_API_KEY,
+    apikey: "ofd1tkOKm6wVBb5D",
+    format: "json",
   },
 
 });
 
-export default weatherInstance;
+export const weatherImageInstance = axios.create({
+  baseURL: "https://my.meteoblue.com/images", // Root images path
+  params: {
+    apikey: "ofd1tkOKm6wVBb5D",
+    format: "png",
+    dpi: 72,
+    temperature_units: "C",
+  },
+});
