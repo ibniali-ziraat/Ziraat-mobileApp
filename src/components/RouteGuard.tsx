@@ -22,9 +22,6 @@ export default function RouteGuard({ children }: RouteGuardProps) {
       return;
     }
 
-   
-
-    // Clear previous scheduled logout if present
     if (cancelRef.current) {
       cancelRef.current();
       cancelRef.current = null;

@@ -37,13 +37,12 @@ export default function LicenseScreen() {
     Object.entries(data).forEach(([key, value]) => {
       if (value === null || value === undefined) return;
 
-      // 👇 SPECIAL HANDLING FOR FILE
       if (key === "licenseCopyUrl" && typeof value === "string") {
         setValue("licenseCopyUrl", {
           uri: value,
           name: value.split("/").pop() || "License File",
           type: "application/octet-stream",
-          isRemote: true, // 👈 custom flag
+          isRemote: true,
         });
         return;
       }

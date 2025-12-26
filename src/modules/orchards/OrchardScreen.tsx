@@ -9,21 +9,9 @@ import { orchardImagesById } from "@/src/data/orchardImages";
 import { router } from "expo-router";
 import { MoreVertical } from "lucide-react-native";
 import { useState } from "react";
-import {
-  FlatList,
-  Image,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, TouchableOpacity, View } from "react-native";
 
-
-const Detail = ({
-  label,
-  value,
-}: {
-  label: string;
-  value?: string;
-}) => (
+const Detail = ({ label, value }: { label: string; value?: string }) => (
   <View className="flex-row justify-between py-1">
     <CsText style={typography.Poppins_xs_medium}>
       {label}
@@ -33,8 +21,6 @@ const Detail = ({
     </CsText>
   </View>
 );
-
-
 
 export default function MyOrchardsScreen() {
   const [orchards] = useState(orchardsData);
@@ -85,8 +71,16 @@ export default function MyOrchardsScreen() {
               >
                 {item.about}
               </CsText>
+
+              <View className="bg-secondary px-3 py-1 rounded-full">
+                <CsText
+                  className="text-light"
+                  style={typography.caption_xs_semibold}
+                >
+                  {item.about}
+                </CsText>
+              </View>
             </View>
-          </View>
 
 
           <Detail label="Size" value={item.acres} />
