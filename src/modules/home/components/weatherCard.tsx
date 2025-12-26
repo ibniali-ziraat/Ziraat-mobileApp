@@ -24,11 +24,7 @@ export default function WeatherCard({ current }) {
             Feels like {current?.feelsLikeC}° — {current?.condition}
           </CsText>
 
-          style={[typography.Poppins_s_medium
-            
-          ]}
-        
-          className="text-light">
+          <Text style={[typography.Poppins_s_medium]} className="text-light">
             Feels like {current?.feelsLikeC}° — {current?.condition}
           </Text>
 
