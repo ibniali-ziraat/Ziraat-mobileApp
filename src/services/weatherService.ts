@@ -1,10 +1,16 @@
-import weatherInstance from "../api/client/weatherInstance";
+import { weatherInstance } from "../api/client/weatherInstance";
 
-export const fetchWeather = async (query = "pulwama") => {
-  const { data } = await weatherInstance.get(
-    `&q=${query}&days=7&aqi=no&alerts=no`,
-    query
-  );
+export const fetchWeather = async ({ lat, lon, asl }: any) => {
+  // Define the packages you need for your cards
+  const packages = "basic-1h_basic-day_sunmoon_clouds-1h";
+
+  const { data } = await weatherInstance.get(packages, {
+    params: {
+      lat,
+      lon,
+      asl,
+    },
+  });
 
   return data;
 };

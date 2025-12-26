@@ -10,6 +10,60 @@ type Props = {
 };
 
 export default function SunsetCard({ sunset, sunrise }: Props) {
+  // 1. Manual Formatter: Works on all devices without native locale issues
+  const formatTimeManual = (timeStr?: string) => {
+    if (!timeStr || typeof timeStr !== "string" || !timeStr.includes(":"))
+      return "--:--";
+
+    try {
+      // Meteoblue gives "2025-12-25 17:30"
+      // We split by space to get the time part "17:30"
+      const timePart = timeStr.split(" ")[1] || timeStr;
+      let [hours, minutes] = timePart.split(":").map(Number);
+
+      const ampm = hours >= 12 ? "PM" : "AM";
+      const displayHours = hours % 12 || 12; // Convert 0 to 12
+      const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+      return `${displayHours}:${displayMinutes} ${ampm}`;
+    } catch (e) {
+      return "--:--";
+    }
+  };
+
+  // 2. Safe Date Parser for the Progress Dot
+  const parseSafeDate = (dateStr: string) => {
+    if (!dateStr) return null;
+    // Replaces space with 'T' for ISO compliance
+    const isoStr = dateStr.replace(" ", "T");
+    const d = new Date(isoStr);
+    return isNaN(d.getTime()) ? null : d;
+  };
+
+  const calculatePosition = () => {
+    const sunDate = parseSafeDate(sunrise);
+    const setDate = parseSafeDate(sunset);
+
+    if (!sunDate || !setDate) return { x: 80, y: 16 };
+
+    const now = new Date().getTime();
+    const start = sunDate.getTime();
+    const end = setDate.getTime();
+
+    let progress = (now - start) / (end - start);
+    progress = Math.min(Math.max(progress, 0), 1);
+
+    const x = 10 + progress * 140;
+    const t = progress;
+    // Follows the Q80 16 curve exactly
+    const y =
+      Math.pow(1 - t, 2) * 36 + 2 * (1 - t) * t * 16 + Math.pow(t, 2) * 36;
+
+    return { x, y };
+  };
+
+  const { x, y } = calculatePosition();
+
   return (
     <ZiraatCard
       width="48%"
@@ -19,38 +73,34 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
     >
       <View className="flex-row items-center">
         <Sunset size={18} color="#c7611f" />
-        <CsText className="ml-2 text-sm font-semibold tracking-wide text-dark">
-          SUNRISE :6:09AM
-       </CsText>
+        <CsText className="ml-2 text-[10px] font-semibold tracking-wide text-dark">
+          SUNRISE: {formatTimeManual(sunrise)}
+        </CsText>
       </View>
 
+      <View className="items-center justify-center my-1">
+        <Svg
+          width={160}
+          height={48}
+          viewBox="0 0 160 48"
+          style={{ overflow: "visible" }}
+        >
+          <Path
+            d="M10 36 Q80 16 150 36"
+            stroke="#c7611f"
+            strokeWidth={3}
+            fill="none"
+          />
 
-      <CsText className="mt-1 text-2xl font-bold text-dark">
-        {sunset}
-     </CsText>
+          {!isNaN(x) && !isNaN(y) && (
+            <Circle cx={x} cy={y} r="5" fill="#c7611f" />
+          )}
+        </Svg>
+      </View>
 
-
-      <Svg width={160} height={48}>
-
-        <Path
-          d="M10 36 Q80 16 150 36"
-          stroke="#c7611f"
-          strokeWidth={3}
-          fill="none"
-        />
-
-        <Circle
-          cx="100"
-          cy="20"
-          r="4.5"
-          fill="#c7611f"
-        />
-      </Svg>
-
-      {/* SUNRISE LABEL */}
       <CsText className="text-xs text-dark">
-        Sunset: 7:44 PM {sunrise}
-     </CsText>
+        Sunset: {formatTimeManual(sunset)}
+      </CsText>
     </ZiraatCard>
   );
 }

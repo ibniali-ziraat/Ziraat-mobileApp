@@ -3,35 +3,38 @@ import { View } from "react-native";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
-export default function AveragesCard() {
-    return (
-        <ZiraatCard
-            width="48%"
-            paddingHorizontal={1}
-            paddingVertical={1}
-            className="border border-white"
-        >
-            <View className=" flex justify-center">
-                <View className="flex-row items-center mb-1">
-                    <GitGraph size={16} color="#c7611f"/>
-                    <CsText className="ml-2 text-sm font-bold tracking-wide text-dark">
-                        AVERAGES
-                   </CsText>
-                </View>
+type Props = {
+  currentMax?: number;
+  averageMax?: number; // You can pass a static average like 10 for winter
+};
 
-                <CsText className="text-3xl font-bold text-dark">
-                    +1°
-               </CsText>
+export default function AveragesCard({
+  currentMax = 0,
+  averageMax = 10,
+}: Props) {
+  const diff = currentMax - averageMax;
+  const status = diff > 0 ? "Above" : "Below";
 
+  return (
+    <ZiraatCard width="48%" paddingHorizontal={1.4} paddingVertical={1.4}>
+      <View className="flex-row items-center mb-1">
+        <GitGraph size={16} color="#c7611f" />
+        <CsText className="ml-2 text-xs font-bold tracking-wide text-dark uppercase">
+          Averages
+        </CsText>
+      </View>
 
-                <CsText className=" text-xs text-dark pt-2">
-                    Above average daily high.
-               </CsText>
-                <CsText className="text-xs text-dark pt-2">
-                    Today Average --- H:15 --- H:8
+      <CsText className="text-3xl font-bold text-dark">
+        {diff > 0 ? `+${diff}` : diff}°
+      </CsText>
 
-               </CsText>
-            </View>
-        </ZiraatCard>
-    );
+      <CsText className="text-[11px] text-dark pt-2">
+        {status} average daily high.
+      </CsText>
+
+      <CsText className="text-[10px] text-neutral-500 mt-1">
+        Today: {currentMax}° | Avg: {averageMax}°
+      </CsText>
+    </ZiraatCard>
+  );
 }
