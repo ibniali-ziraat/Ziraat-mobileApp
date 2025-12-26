@@ -81,7 +81,7 @@ export default function ProductCarousel({
                     <View className="absolute top-2 left-2 bg-primary px-2 py-1  rounded-lg">
                       <CsText style= {[typography.Poppins_xs_regular]} className="text-light ">
                         {item.label}
-                     </CsText>
+                      </CsText>
                     </View>
                   )}
 
@@ -113,7 +113,7 @@ export default function ProductCarousel({
                   numberOfLines={1}
                 >
                   {item.title}
-               </CsText>
+                </CsText>
 
                 {item.category && (
                   <CsText
@@ -122,7 +122,7 @@ export default function ProductCarousel({
                     numberOfLines={1}
                   >
                     {item.category}
-                 </CsText>
+                  </CsText>
                 )}
 
                 <View className="flex-row items-center pt-2 w-full px-2"
@@ -135,14 +135,14 @@ export default function ProductCarousel({
                       
                       className="text-dark line-through pr-3">
                         ₹{item.price}
-                     </CsText>
+                      </CsText>
 
                       <CsText 
                       style ={[typography.Poppins_s_medium]}
                       
                       className="text-primary pr-3 ">
                         ₹{item.discountPrice}
-                     </CsText>
+                      </CsText>
 
                       {discountPercent && (
                         <CsText 
@@ -150,7 +150,7 @@ export default function ProductCarousel({
                         
                         className="text-secondary">
                           {discountPercent}% OFF
-                       </CsText>
+                        </CsText>
                       )}
                     </>
                   ) : (
@@ -159,7 +159,7 @@ export default function ProductCarousel({
                     
                     className="text-primary text-[18px]">
                       ₹{item.price}
-                   </CsText>
+                    </CsText>
                   )}
                 </View>
 

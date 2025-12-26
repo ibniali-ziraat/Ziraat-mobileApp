@@ -15,6 +15,22 @@ const weight = {
   bold: fonts.poppins.bold,
 };
 
+// const size = {
+//   xs: scale(12),
+//   s: scale(14),
+//   m: scale(16),
+//   l: scale(20),
+//   xl: scale(28),
+//   xxl: scale(36),
+// };
+
+// const weight = {
+//   regular: fonts.poppins.regular,
+//   medium: fonts.poppins.medium,
+//   semibold: fonts.poppins.semibold,
+//   bold: fonts.poppins.bold,
+// };
+
 export type TextVariant =
   `${"heading" | "subHeading" | "title" | "subtitle" | "description" | "caption"}_${"xs" | "s" | "m" | "l" | "xl" | "xxl"}_${"regular" | "medium" | "semibold" | "bold"}`;
 
@@ -45,7 +61,6 @@ export const typography = {
  Poppins_xxl_bold: { fontFamily: weight.bold, fontSize: size.xxl },
 
 
-  
 } as const;
- 
- 
+
+
