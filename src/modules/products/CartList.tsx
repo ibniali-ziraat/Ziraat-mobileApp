@@ -84,17 +84,19 @@ const CartList = () => {
             resizeMode="contain"
           />
 
-          <CsText className="text-xl font-semibold text-dark mb-2">
+          <CsText style={[typography.Poppins_m_medium]}
+            className=" text-dark mb-2">
             Your cart is empty
           </CsText>
 
-          <CsText className="text-center text-dark text-sm mb-6">
+          <CsText style={[typography.Poppins_s_regular]}
+            className="text-center text-dark  mb-6">
             Looks like you haven’t added anything yet.
           </CsText>
 
           <TouchableOpacity
             onPress={handleStartShopping}
-            className="bg-primary py-3 rounded-full shadow-md active:opacity-80"
+            className="bg-primary py-4 px-5 rounded-full shadow-md active:opacity-80"
           >
             <CsText className="text-light">Browse Products</CsText>
           </TouchableOpacity>
@@ -136,13 +138,8 @@ const CartList = () => {
 
 
       <View
-        className="absolute left-0 right-0 bottom-0 bg-light border-t border-lightGray px-4"
-        style={{
-          height: 95,
-          // paddingHorizontal: 16,
-          paddingTop: 12,
-          paddingBottom: 12,
-        }}
+        className="absolute left-0 right-0 bottom-0 bg-light border-t border-light px-4 h-90 pt-10 pb-8"
+
       >
         <BuyNowButton title="Place Order" onPress={handleBuyNow} />
 

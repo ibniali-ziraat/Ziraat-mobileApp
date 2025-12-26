@@ -24,7 +24,6 @@ const SprayScreen = () => {
             <View
               className=" p-5 rounded-2xl"
             >
-              {/* Top Row */}
               <View className="flex-row justify-between items-center ">
                 <View className="flex-row items-center gap-2">
                   <Droplets size={20} color={colors.secondary} />
@@ -54,8 +53,6 @@ const SprayScreen = () => {
                   </CsText>
                 </View>
               </View>
-
-              {/* Middle Row */}
               <View className="flex-row justify-between items-center mt-3">
                 <View className="flex-row items-center gap-2">
                   <Trees size={15} color={colors.secondary} />
@@ -76,8 +73,6 @@ const SprayScreen = () => {
                   {item.price}
                 </CsText>
               </View>
-
-              {/* Bottom Row */}
               <View className="flex-row justify-between items-center mt-3">
                 <CsText
                   className="text-sm pl-1 "
@@ -97,7 +92,6 @@ const SprayScreen = () => {
                 </CsText>
               </View>
 
-              {/* Actions */}
               <View className="flex-row justify-end items-center gap-3 mt-3">
                 <Edit size={20} color={colors.neutral} />
                 <Trash2 size={20} color={colors.error} />

@@ -15,18 +15,12 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-interface Address {
-    id: string;
-    name: string;
-    phone: string;
-    address: string;
-    pincode: string;
-}
+
 
 const AddressPage = () => {
-    const [addresses, setAddresses] = useState<Address[]>([]);
+    const [addresses, setAddresses] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
-    const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+    const [editingAddress, setEditingAddress] = useState(null);
 
     const [form, setForm] = useState({
         name: "",
@@ -115,7 +109,7 @@ const AddressPage = () => {
                         </CsText>
 
                         <CsText className="mt-2">
-                            <CsText className="font-semibold">Mobile </CsText>
+                            <CsText style={[typography.Poppins_s_regular]}>Mobile : </CsText>
                             {item.phone}
                         </CsText>
 
@@ -221,7 +215,8 @@ const AddressPage = () => {
                                 />
                             </View>
 
-                            <CsText className="text-[11px] text-secondary mt-1">
+                            <CsText style={[typography.Poppins_xs_regular]}
+                                className="text-secondary mt-1">
                                 *Please update flat/house no and society/apartment details
                             </CsText>
                         </ScrollView>
@@ -238,7 +233,7 @@ const AddressPage = () => {
                                 onPress={handleSave}
                                 className="flex-1 bg-primary rounded-xl py-3 items-center"
                             >
-                                <CsText className="text-light font-semibold">
+                                <CsText className="text-light" style={[typography.Poppins_s_medium]}>
                                     {editingAddress ? "Update" : "Save"}
                                 </CsText>
                             </TouchableOpacity>
