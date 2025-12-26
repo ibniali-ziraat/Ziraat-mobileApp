@@ -9,6 +9,7 @@ export default function LicenseSection({ control, errors }: FormSectionProps) {
 
   return (
     <View>
+      
       <FormInput
         control={control}
         name="dealerLicenseNumber"

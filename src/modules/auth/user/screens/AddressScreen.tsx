@@ -66,6 +66,7 @@ export default function AddressScreen() {
       <FormProvider {...form}>
         <BackHeader
           title="Address Details"
+          desc="Please provide accurate address details for record-keeping and location verification purposes."
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
         <AddressSection control={control} errors={errors} data={data} />

@@ -1,6 +1,4 @@
-import FormHeader from "@/src/components/shared/FormHeader";
 import { colors } from "@/src/constants/colors";
-import { Briefcase } from "lucide-react-native";
 import { Text, View } from "react-native";
 import FormInput from "../../../../components/form/inputs/FormInput";
 
@@ -74,11 +72,7 @@ export default function ProfessionSection({ control, errors }: Props) {
   return (
     <View style={{ paddingHorizontal: 8 }}>
       
-         <FormHeader
-
-  icon={<Briefcase size={50} color={colors.secondary} />}
-  description="Please provide details about your current profession, organization, role, and work experience. This helps us understand your professional background."
-/>
+       
 
       
       <FormInput

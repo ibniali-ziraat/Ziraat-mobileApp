@@ -26,7 +26,7 @@ export default function AdvisoryScreen() {
 
   return (
     <View className="flex-1 bg-white">
-      <ScreenLayout className="px-5 py-6">
+      <ScreenLayout>
         <BackHeader
           title="Advisory Profile"
           desc="   Track your engagement with advisories, community forums, and expert support."

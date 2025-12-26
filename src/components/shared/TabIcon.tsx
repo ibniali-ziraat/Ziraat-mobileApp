@@ -99,6 +99,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
         <Animated.View style={iconStyle}>{icon}</Animated.View>
       </View>
 
+      {/* Label */}
       <CsText
         style={{
           fontSize: 12,
@@ -108,7 +109,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
         numberOfLines={1}
       >
         {label}
-     </CsText>
+      </CsText>
     </View>
   );
 }

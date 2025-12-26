@@ -135,11 +135,9 @@
 
 
 //@ts-nocheck
-import FormHeader from "@/src/components/shared/FormHeader";
 import { colors } from "@/src/constants/colors";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import * as Location from "expo-location";
-import { MapPin } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import FormInput from "../../../../components/form/inputs/FormInput";
@@ -245,10 +243,11 @@ export default function AddressSection({ control, errors, data }: Props) {
     <View style={{ paddingHorizontal: 8 }}>
       {/* ✅ SECTION HEADING */}
       
-       <FormHeader
-  icon={<MapPin size={50} color={colors.secondary} />}
+       {/* <FormHeader
+  icon={<MapPin size={22} color={colors.secondary} />}
+  title="Add Address Details"
   description="Please provide accurate address details for record-keeping and location verification purposes."
-/>
+/> */}
 
       <SingleSelectInput
         control={control}

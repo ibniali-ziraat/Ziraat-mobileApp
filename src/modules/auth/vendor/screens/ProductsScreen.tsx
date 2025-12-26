@@ -103,6 +103,7 @@ export default function ProductsScreen() {
     <ScreenLayout>
       <BackHeader
         title="Products & Services"
+  desc="List the specific inputs you sell and the authorized brands you stock."
         onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>

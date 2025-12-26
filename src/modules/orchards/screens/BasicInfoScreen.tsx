@@ -4,35 +4,38 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useOrchard } from "@/src/contexts/OrchardContext";
 
+import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
-import { BasicInfoSchema } from "@/src/modules/orchards/schemas/BasicInfoSchema";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import {
-  useCreateOrchardMutation,
+  useCreateOrchardBasinInfoMutation,
   useOrchardsByUserQuery,
-  useUpdateOrchardMutation,
+  useUpdateOrchardBasicInfoMutation,
 } from "../../../hooks/useOrchardsQuery";
-import BasicInfo from "../form-sections/BasicInfo";
+import BasicInfo from "../form-sections/BasicInfoSection";
+import { BasicInfoSchema } from "../schemas/BasicInfoSchema";
 
 export default function BasicInfoScreen() {
   const { userId } = useAuth();
   const { orchardId, setOrchardId } = useOrchard();
 
   const { data } = useOrchardsByUserQuery(userId);
-  const { mutateAsync: save, isPending: isSaving } = useCreateOrchardMutation();
+  const { mutateAsync: save, isPending: isSaving } =
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateOrchardMutation();
+    useUpdateOrchardBasicInfoMutation();
 
   const form = useZodForm(BasicInfoSchema);
+  // const form = useZodForm();
   const {
     setValue,
     handleSubmit,
     formState: { errors },
     control,
   } = form;
+  console.log(errors, "errors....");
 
   // Prefill if editing
   useEffect(() => {
@@ -46,32 +49,34 @@ export default function BasicInfoScreen() {
   }, [data]);
 
   const onSubmit = async (values: any) => {
-    try {
-      let res;
+    router.push(ROUTES.ORCHARDS.REGISTRATION.CROP_INFO);
 
-      if (orchardId) {
-        res = await update({ id: orchardId, ...values });
-        showSuccessToast("Orchard updated");
-      } else {
-        res = await save({ userId, ...values });
-        setOrchardId(res.id);
-        showSuccessToast("Orchard created");
-      }
+    // try {
+    //   let res;
 
-      // move to next step
-      router.push("/orchards/variety");
-    } catch (error: any) {
-      showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard information"
-      );
-    }
+    //   if (orchardId) {
+    //     res = await update({ id: orchardId, ...values });
+    //     showSuccessToast("Orchard updated");
+    //   } else {
+    //     res = await save({ userId, ...values });
+    //     setOrchardId(res.id);
+    //     showSuccessToast("Orchard created");
+    //   }
+
+    //   // move to next step
+    //   router.push("/orchards/variety");
+    // } catch (error: any) {
+    //   showErrorToast(
+    //     error?.response?.data?.message || "Failed to save orchard information"
+    //   );
+    // }
   };
 
   return (
     <ScreenLayout>
       <BackHeader
         title="Orchard Registration"
-        desc="Basic / Mandatory Information"
+        desc="Enter the basic details required to register your orchard successfully."
       />
 
       <FormProvider {...form}>
@@ -80,7 +85,7 @@ export default function BasicInfoScreen() {
         <FormActions
           cancelLabel="Cancel"
           onCancel={() => router.back()}
-          submitLabel={orchardId ? "Update & Continue" : "Save & Continue"}
+          submitLabel={orchardId ? "Update" : "Save"}
           onSubmit={handleSubmit(onSubmit)}
           disabled={isSaving || isUpdating}
           loading={isSaving || isUpdating}
