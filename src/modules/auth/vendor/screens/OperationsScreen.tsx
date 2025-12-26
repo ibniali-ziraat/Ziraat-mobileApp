@@ -89,6 +89,7 @@ export default function OperationsScreen() {
     <ScreenLayout>
       <BackHeader
         title="Operational Details"
+        desc="Provide information about your business operations."
         onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>

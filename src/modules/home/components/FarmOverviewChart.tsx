@@ -1,6 +1,7 @@
 // components/home/FarmOverviewChart.tsx
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import { useState } from "react";
 import { Dimensions, TouchableOpacity, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
@@ -62,7 +63,7 @@ export default function FarmOverviewChart() {
   return (
     <View
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: colors.light,
         padding: 20,
         borderRadius: 22,
         borderWidth: 1,
@@ -78,7 +79,7 @@ export default function FarmOverviewChart() {
       {/* TOGGLE BUTTONS */}
       {/* ---------------------------------------------- */}
       <View className="flex-row justify-end mb-2">
-        <View className="flex-row bg-[#f4f6f3] rounded-full p-1">
+        <View className="flex-row bg-primary/5 rounded-full p-1">
           {["WEEK", "MONTH"].map((opt) => (
             <TouchableOpacity
               key={opt}
@@ -91,10 +92,13 @@ export default function FarmOverviewChart() {
               }}
             >
               <CsText
-                style={{
-                  color: mode === opt ? "#fff" : colors.primary,
-                  fontWeight: "600",
-                }}
+                style={[
+                  typography.Poppins_s_medium,
+                  
+                  { color: mode === opt ? "#fff" : colors.primary,}
+                ]
+                 
+                }
               >
                 {opt === "WEEK" ? "Weekly" : "Monthly"}
              </CsText>
@@ -103,7 +107,9 @@ export default function FarmOverviewChart() {
         </View>
       </View>
 
-      <CsText className="text-xs text-black mb-4">
+      <CsText
+      style={[typography.Poppins_xs_medium]}
+      className="text-xs text-dark mb-4">
         Activity comparison ({mode === "WEEK" ? "This Week vs Last Week" : "This Month vs Last Month"})
      </CsText>
 
@@ -116,7 +122,7 @@ export default function FarmOverviewChart() {
         flatColor
         showValuesOnTopOfBars
         chartConfig={chartConfig}
-        style={{ borderRadius: 16 }}
+        style={{ borderRadius: 16,  }}
       />
 
       
@@ -126,10 +132,15 @@ export default function FarmOverviewChart() {
           const positive = g >= 0;
           return (
             <View key={i} className="items-center">
-              <CsText className="text-gray-700 text-sm font-medium">{label}</CsText>
               <CsText
-                className="font-semibold text-xs mt-1"
-                style={{ color: positive ? colors.secondary : "red" }}
+              style={[typography.Poppins_s_medium]}
+              
+              className="text-neutral-700">{label}</CsText>
+              <CsText
+              style={[typography.Poppins_xs_medium,
+
+                { color: positive ? colors.secondary : "red" }
+              ]}
               >
                 {positive ? `+${g}% ↑` : `${g}% ↓`}
              </CsText>

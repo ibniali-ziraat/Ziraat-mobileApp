@@ -11,10 +11,10 @@ export default function DetailRow({
 }) {
   return (
     <View className="flex-row justify-between py-2">
-      <CsText style={[typography.subtitle_xs_semibold]}>
+      <CsText style={[typography.Poppins_xs_semibold]}>
         {label}
       </CsText>
-      <CsText className="text-right max-w-[60%]" style={[typography.subtitle_xs_medium]}>
+      <CsText className="text-right max-w-[60%]" style={[typography.Poppins_xs_medium]}>
         {value !== undefined && value !== null && value !== ""
           ? String(value)
           : "-"}

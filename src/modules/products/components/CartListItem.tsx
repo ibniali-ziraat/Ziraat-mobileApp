@@ -16,45 +16,45 @@ export default function CartListItem({
     : null;
 
   return (
-    <View className="bg-light rounded-xl shadow-md p-4 mt-3 flex-row items-start">
-      {/* Product Image */}
+    <>
+
       <Image
         source={imageMapper[item?.photos?.[0]]}
-        className="w-20 h-20 rounded-lg"
+        className="w-32 h-24 rounded-lg px-1"
         resizeMode="cover"
       />
 
-      {/* Right Section */}
+
       <View className="ml-4 flex-1">
         {/* Title + Quantity */}
         <View className="flex-row justify-between items-center">
-          <CsText className="text-dark font-semibold text-lg flex-1">
+          <CsText className="text-dark flex-1">
             {item.title}
-         </CsText>
+          </CsText>
 
           <View className="w-30">
             <QuantitySelector quantity={quantity} setQuantity={onQtyChange} />
           </View>
         </View>
 
-        {/* Category */}
+
         <CsText className="text-dark text-sm">{item.category}</CsText>
 
-        {/* Price + Remove */}
+
         <View className="flex-row items-center justify-between mt-1">
           <View className="flex-row items-center">
             {item.discountPrice ? (
               <>
                 <CsText className="text-dark line-through mr-2">
                   ₹{item.price}
-               </CsText>
+                </CsText>
                 <CsText className="text-primary font-bold mr-1">
                   ₹{item.discountPrice}
-               </CsText>
+                </CsText>
                 {!!discountPercent && (
                   <CsText className="text-secondary text-xs font-semibold">
                     {discountPercent}% OFF
-                 </CsText>
+                  </CsText>
                 )}
               </>
             ) : (
@@ -67,6 +67,7 @@ export default function CartListItem({
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </>
+
   );
 }

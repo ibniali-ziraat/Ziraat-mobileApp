@@ -3,8 +3,6 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import observationsData from "@/src/data/observationsData.json";
-import { statTileData } from "@/src/data/statTileData";
 import ObservationCard from "@/src/modules/farmer/dashboard/pages/components/ObservationCard";
 import StatTile from "@/src/modules/farmer/dashboard/pages/components/StatTile";
 import {
@@ -74,7 +72,7 @@ export default function PestDiseaseProfile() {
       {/* HIGH-RISK PESTS */}
       <CsText className="text-2xl font-bold my-4">
         High-Risk Pests Identified
-     </CsText>
+      </CsText>
       {observationsData.highRiskPests.map((item) => (
         <ObservationCard
           key={item.id}
@@ -97,7 +95,7 @@ export default function PestDiseaseProfile() {
       {/* SPRAY SCHEDULE */}
       <CsText className="text-2xl font-bold mt-5 mb-4">
         Spray Schedule & History
-     </CsText>
+      </CsText>
       <View className="bg-white rounded-xl p-4 shadow mb-6">
         {[
           {
@@ -119,12 +117,12 @@ export default function PestDiseaseProfile() {
               className={`font-semibold text-lg ${item.isError ? "text-error" : ""}`}
             >
               {item.title}
-           </CsText>
+            </CsText>
             <CsText
               className={`mt-1 ${item.isError ? "text-error" : "text-neutral"}`}
             >
               {item.description}
-           </CsText>
+            </CsText>
             {index < 2 && <View className="border-t border-neutral-200 my-4" />}
           </View>
         ))}
@@ -133,16 +131,16 @@ export default function PestDiseaseProfile() {
       {/* TREND CHART */}
       <CsText className="text-2xl font-bold mt-6 mb-2">
         Pest & Disease Trend (30 Days)
-     </CsText>
+      </CsText>
       <CsText className="text-base mb-4">
         Chart showing incidence trends to help plan interventions.
-     </CsText>
+      </CsText>
 
       <View className="bg-white rounded-xl p-4 shadow mb-6">
         <CustomBarChart labels={[]} values={[]} type="bar" />
         <CsText className="text-center text-sm text-overlay mt-2">
           (Analytics integration coming soon)
-       </CsText>
+        </CsText>
       </View>
     </ScreenLayout>
   );

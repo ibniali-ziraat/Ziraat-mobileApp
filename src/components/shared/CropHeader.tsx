@@ -1,4 +1,4 @@
-import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import React from "react";
 import { View } from "react-native";
 import CsText from "./CsText";
@@ -12,11 +12,11 @@ const CropsHeader = ({ role = "farmer" }: CropsHeaderProps) => {
     <View className="flex-row items-center justify-between h-16 bg-white">
       {/* Title & Subtitle */}
       <View>
-        <CsText className="text-lg font-bold" style={{ color: colors.dark }}>
+        <CsText style={[typography.Poppins_m_semibold]} className="text-dark">
           Crops
        </CsText>
 
-        <CsText className="text-sm" style={{ color: colors.neutral }}>
+        <CsText  style={[typography.Poppins_xs_regular]} className="text-dark">
           Manage Your Orchards & Fields
        </CsText>
       </View>

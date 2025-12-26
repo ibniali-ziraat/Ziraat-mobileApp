@@ -57,9 +57,8 @@ export default function AboutUs() {
             marginBottom={3}
           >
             <View
-              className={`flex-row ${
-                isEven ? "flex-row" : "flex-row-reverse"
-              } items-stretch`}
+              className={`flex-row ${isEven ? "flex-row" : "flex-row-reverse"
+                } items-stretch`}
             >
               {section.image && (
                 <View className="w-[45%] rounded-xl overflow-hidden">
@@ -82,7 +81,7 @@ export default function AboutUs() {
                   )}
                   <CsText className="ml-2 text-[18px] font-bold text-dark">
                     {section.title}
-                 </CsText>
+                  </CsText>
                 </View>
 
                 {section.content.map((item: string, idx: number) => (
@@ -90,7 +89,7 @@ export default function AboutUs() {
                     <CsText className="mr-2 text-[14px] text-dark">•</CsText>
                     <CsText className="flex-1 text-[14px] text-normal">
                       {item}
-                   </CsText>
+                    </CsText>
                   </View>
                 ))}
               </View>

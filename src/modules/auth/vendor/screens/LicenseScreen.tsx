@@ -83,6 +83,7 @@ export default function LicenseScreen() {
     <ScreenLayout>
       <BackHeader
         title="Licensing & Compliance"
+  desc="Enter your professional license details below."
         onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>
