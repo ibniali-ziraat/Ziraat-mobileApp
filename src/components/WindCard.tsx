@@ -17,15 +17,12 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
       {/* HEADER */}
 
       <View className="w-full flex-row justify-between">
-
-
         <View className="w-36">
-
           <View className="flex-row pb-5">
             <Wind size={16} color="#c7611f" />
             <CsText className="ml-2 text-md font-semibold tracking-wide text-dark">
               WIND
-           </CsText>
+            </CsText>
           </View>
 
           <View className="flex-col">
@@ -33,7 +30,6 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
             <Row label="Gusts" value={`8 kph `} />
             <Row label="Direction" value={`123 ESE `} />
           </View>
-
         </View>
 
         <View className="flex-col items-center">
@@ -42,7 +38,9 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
           </View>
 
           <View>
-            <CsText className="text-sm font-semibold text-dark">{direction}</CsText>
+            <CsText className="text-sm font-semibold text-dark">
+              {direction}
+            </CsText>
           </View>
         </View>
       </View>

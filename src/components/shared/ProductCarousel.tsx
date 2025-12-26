@@ -66,7 +66,7 @@ export default function ProductCarousel({
                     <View className="absolute top-2 left-2 bg-primary px-2 py-1  rounded-lg">
                       <CsText style= {[typography.Poppins_xs_regular]} className="text-light ">
                         {item.label}
-                     </CsText>
+                      </CsText>
                     </View>
                   )}
  
@@ -105,7 +105,7 @@ export default function ProductCarousel({
                     numberOfLines={1}
                   >
                     {item.category}
-                 </CsText>
+                  </CsText>
                 )}
  
                 <View className="flex-row items-center pt-2 w-full px-2"
@@ -133,7 +133,7 @@ export default function ProductCarousel({
                        
                         className="text-secondary">
                           {discountPercent}% OFF
-                       </CsText>
+                        </CsText>
                       )}
                     </>
                   ) : (
@@ -142,7 +142,7 @@ export default function ProductCarousel({
                    
                     className="text-primary">
                       ₹{item.price}
-                   </CsText>
+                    </CsText>
                   )}
                 </View>
  

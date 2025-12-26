@@ -11,20 +11,20 @@ const ProductHeader = () => {
 
   return (
     <View className="flex-row items-center justify-between h-16 bg-light px-4">
-      {/* Title */}
-      <View>
-        <CsText 
-                    style={[typography.Poppins_m_semibold, { color: colors.dark }]}
-        
-        
-        className="text-lg ">Products</CsText>
 
-        <CsText 
-                    style={[typography.Poppins_xs_regular, { color: colors.dark }]}
-        
-        className="text-neutral">
+      <View>
+        <CsText
+          style={[typography.Poppins_m_semibold, { color: colors.dark }]}
+
+
+          className="text-lg ">Products</CsText>
+
+        <CsText
+          style={[typography.Poppins_xs_regular, { color: colors.dark }]}
+
+          className="text-neutral">
           Shop fertilizers, Tools & Supplies
-       </CsText>
+        </CsText>
       </View>
 
       <View className="flex-row items-center space-x-3">

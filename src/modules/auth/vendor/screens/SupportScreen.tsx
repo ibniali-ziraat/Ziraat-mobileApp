@@ -75,6 +75,7 @@ export default function SupportScreen() {
     <ScreenLayout>
       <BackHeader
         title="Support Services"
+        desc="Details about additional support and services you offer to customers."
         onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>

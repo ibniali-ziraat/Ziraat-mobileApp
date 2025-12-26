@@ -74,9 +74,8 @@ const Wishlist = () => {
     <ScreenLayout scrollable={false}>
       <BackHeader
         title="My Wishlist"
-        desc={`${wishlistItems.length} ${
-          wishlistItems.length === 1 ? "item" : "items"
-        } saved`}
+        desc={`${wishlistItems.length} ${wishlistItems.length === 1 ? "item" : "items"
+          } saved`}
       />
 
       <FlatList

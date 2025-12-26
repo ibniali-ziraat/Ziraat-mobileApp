@@ -3,9 +3,6 @@ import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import kpis from "@/src/data/advisoryKpis.json";
-import tags from "@/src/data/participationTags.json";
-import recentActivities from "@/src/data/recentActivities.json";
 import {
   BookOpen,
   MessageCircle,
@@ -15,6 +12,9 @@ import {
   Users,
 } from "lucide-react-native";
 import { Image, ScrollView, View } from "react-native";
+import kpis from "../../../../data/kpis.json";
+import tags from "../../../../data/participationTags.json";
+import recentActivities from "../../../../data/recentActivities.json";
 
 export default function AdvisoryScreen() {
   const ICONS: Record<string, any> = {
@@ -35,7 +35,7 @@ export default function AdvisoryScreen() {
         {/* KPIs */}
         <CsText className="mb-2 text-xl font-semibold text-black">
           Key Metrics
-       </CsText>
+        </CsText>
 
         <ScrollView
           horizontal
@@ -73,16 +73,16 @@ export default function AdvisoryScreen() {
                       <View className="ml-1">
                         <CsText className="font-semibold text-dark">
                           {item.title}
-                       </CsText>
+                        </CsText>
                         <CsText className="text-xs text-dark">
                           {item.subtitle}
-                       </CsText>
+                        </CsText>
                       </View>
                     </View>
 
                     <CsText className="ml-1 text-lg font-extrabold text-black">
                       {item.value}
-                   </CsText>
+                    </CsText>
                   </View>
 
                   <View className="mt-4 h-2 w-full overflow-hidden rounded-xl border border-dark">
@@ -109,21 +109,21 @@ export default function AdvisoryScreen() {
               <TrendingUp size={30} color={colors.secondary} />
               <CsText className="ml-2 text-xl font-bold text-dark">
                 Overall Engagement Score
-             </CsText>
+              </CsText>
             </View>
 
             <CsText className="rounded-full bg-secondary px-3 py-1 font-bold text-light">
               87%
-           </CsText>
+            </CsText>
           </View>
 
           <CsText className="mt-4 text-center text-xl font-bold text-dark">
             87 / 100
-         </CsText>
+          </CsText>
 
           <CsText className="mt-2 text-center font-bold text-dark">
             Excellent — higher than 92% of users.
-         </CsText>
+          </CsText>
         </ZiraatCard>
 
         {/* Participation Tags */}
@@ -144,7 +144,7 @@ export default function AdvisoryScreen() {
           <View className="mb-6 ">
             <CsText className="mb-4 text-2xl font-bold text-black">
               Recent Activities
-           </CsText>
+            </CsText>
 
             {recentActivities.map((item) => (
               <View
@@ -168,10 +168,10 @@ export default function AdvisoryScreen() {
             <View className="flex-1">
               <CsText className="text-xl font-extrabold text-black">
                 Keep Growing Your Knowledge 🌱
-             </CsText>
+              </CsText>
               <CsText className="mt-1 text-dark">
                 Read articles, engage with the community, and follow advisories.
-             </CsText>
+              </CsText>
             </View>
           </View>
         </ZiraatCard>
