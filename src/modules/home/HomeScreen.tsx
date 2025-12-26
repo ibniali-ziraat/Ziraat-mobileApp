@@ -88,7 +88,7 @@ export default function HomeScreen() {
     <AnimatedTabContent>
       <View className="flex-1 bg-white pt-4">
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Weather Card - Now passes dynamic high/low too */}
+          {/* Weather Card */}
           <TouchableOpacity
             onPress={() =>
               router.push({
@@ -100,8 +100,10 @@ export default function HomeScreen() {
             {currentWeather && <WeatherCard current={currentWeather} />}
           </TouchableOpacity>
 
+          {/* Quick Actions */}
           <QuickActions />
 
+          {/* Product Sections */}
           {sections.map((section, index) => (
             <View key={index} className="mb-6">
               <SectionTitle title={section.title} icon="flask-outline" />
@@ -109,10 +111,10 @@ export default function HomeScreen() {
                 items={products.slice(...section.slice)}
                 imageMapper={imageMapper}
               />
-            </TouchableOpacity>
-            {/* Quick Actions */}
-            <QuickActions />
+            </View>
+          ))}
 
+          {/* Farm Overview & Tips */}
           <View className="mb-6">
             <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
             <FarmOverviewChart />

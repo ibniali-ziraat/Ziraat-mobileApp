@@ -18,12 +18,6 @@ import WeatherCard from "@/src/modules/home/components/weatherCard";
 import { useCallback, useState } from "react";
 import { RefreshControl, View } from "react-native";
 
-import FeelsLikeCard from "@/src/components/FeelsLikeCard";
-import { MoonCard } from "@/src/components/MoonCard";
-import PressureCard from "@/src/components/PressureCard";
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import SunsetCard from "@/src/components/SunsetCard";
-import UVCard from "@/src/components/UVCard";
 import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 import { useLocalSearchParams } from "expo-router";

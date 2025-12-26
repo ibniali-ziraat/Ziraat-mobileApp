@@ -6,7 +6,7 @@ import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
   currentMax?: number;
-  averageMax?: number; // You can pass a static average like 10 for winter
+  averageMax?: number; // e.g. seasonal average
 };
 
 export default function AveragesCard({
@@ -15,53 +15,37 @@ export default function AveragesCard({
 }: Props) {
   const diff = currentMax - averageMax;
   const status = diff > 0 ? "Above" : "Below";
-export default function AveragesCard() {
-    return (
-        <ZiraatCard
-            width="48%"
-            paddingHorizontal={1}
-            paddingVertical={1}
-            className="border border-white"
-        >
-            <View className=" flex justify-center">
-                <View className="flex-row items-center mb-1">
-                    <GitGraph size={16} color="#c7611f" />
-                    <CsText
-                        className="text-error"
-
-                        style={[
-                            typography.caption_xs_bold,
-                            { color: "green" }
-                        ]}
-                    >
-                        AVERAGES
-                    </CsText>
-                </View>
-
-                <CsText className="text-3xl font-bold text-dark">
-                    +1°
-                </CsText>
+  const diffColor = diff > 0 ? "#16a34a" : "#dc2626"; // green / red
 
   return (
     <ZiraatCard width="48%" paddingHorizontal={1.4} paddingVertical={1.4}>
-      <View className="flex-row items-center mb-1">
-        <GitGraph size={16} color="#c7611f" />
-        <CsText className="ml-2 text-xs font-bold tracking-wide text-dark uppercase">
-          Averages
+      <View className="flex justify-center">
+        {/* Header */}
+        <View className="flex-row items-center mb-1">
+          <GitGraph size={16} color="#c7611f" />
+          <CsText
+            className="ml-2 text-xs font-bold tracking-wide uppercase"
+            style={typography.caption_xs_bold}
+          >
+            Averages
+          </CsText>
+        </View>
+
+        {/* Value */}
+        <CsText className="text-3xl font-bold" style={{ color: diffColor }}>
+          {diff > 0 ? `+${diff}` : diff}°
+        </CsText>
+
+        {/* Status */}
+        <CsText className="text-[11px] text-dark pt-2">
+          {status} average daily high.
+        </CsText>
+
+        {/* Meta */}
+        <CsText className="text-[10px] text-neutral-500 mt-1">
+          Today: {currentMax}° | Avg: {averageMax}°
         </CsText>
       </View>
-
-      <CsText className="text-3xl font-bold text-dark">
-        {diff > 0 ? `+${diff}` : diff}°
-      </CsText>
-
-      <CsText className="text-[11px] text-dark pt-2">
-        {status} average daily high.
-      </CsText>
-
-      <CsText className="text-[10px] text-neutral-500 mt-1">
-        Today: {currentMax}° | Avg: {averageMax}°
-      </CsText>
     </ZiraatCard>
   );
 }
