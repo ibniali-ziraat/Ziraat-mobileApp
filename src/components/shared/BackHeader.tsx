@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
@@ -28,14 +29,22 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
 
         {/* Title + Description */}
         <View className="flex-1">
-          <CsText className="text-dark font-bold text-2xl" numberOfLines={1}>
+          <CsText
+            style={[typography.Poppins_m_semibold]}
+            className="text-dark "
+            numberOfLines={1}
+          >
             {title}
-         </CsText>
+          </CsText>
 
           {desc && (
-            <CsText className="text-neutral text-md mt-0.5" numberOfLines={2}>
+            <CsText
+              style={[typography.Poppins_s_regular]}
+              className="text-neutral mt-0.5"
+              numberOfLines={2}
+            >
               {desc}
-           </CsText>
+            </CsText>
           )}
         </View>
       </View>

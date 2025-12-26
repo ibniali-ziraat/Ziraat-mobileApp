@@ -1,4 +1,5 @@
 import CsText from "@/src/components/shared/CsText";
+import { typography } from "@/src/constants/fonts/typography";
 import { useRef, useState } from "react";
 import {
   Dimensions,
@@ -43,7 +44,11 @@ export default function ProductDetailCarousel({
 
           {label && (
             <View className="absolute top-3 left-2 bg-primary px-3 py-1 rounded-full">
-              <CsText className="text-light font-semibold text-sm">{label}</CsText>
+              <CsText 
+              style={[typography.caption_xs_regular]}
+              
+              
+              className="text-light">{label}</CsText>
             </View>
           )}
         </View>

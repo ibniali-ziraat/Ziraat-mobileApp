@@ -16,14 +16,13 @@ export default function ShippingOptionList({
         return (
           <TouchableOpacity
             onPress={() => setSelectedOption(item)}
-            className="p-4 mb-2  rounded-xl border border-neutral"
+            className="p-4 mb-2  rounded-xl border border-light"
           >
             <View className="flex-row justify-between items-center">
               <View className="flex-row items-start gap-3">
                 <View
-                  className={`h-5 w-5 rounded-full border-2 ${
-                    isSelected ? "border-secondary" : "border-neutral"
-                  } flex items-center justify-center`}
+                  className={`h-5 w-5 rounded-full border-2 ${isSelected ? "border-secondary" : "border-neutral"
+                    } flex items-center justify-center`}
                 >
                   {isSelected && (
                     <View className="h-2.5 w-2.5 bg-secondary rounded-full" />

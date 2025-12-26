@@ -45,7 +45,7 @@ const Wishlist = () => {
   if (wishlistItems.length === 0) {
 
     return (
-      <View className="flex-1 bg-white"> 
+      <View className="flex-1 bg-white">
         <BackHeader title="My Wishlist" desc="Your selected items" />
 
         <View className="flex-1 justify-center items-center px-6">
@@ -56,11 +56,11 @@ const Wishlist = () => {
           />
           <CsText className="text-2xl font-semibold text-dark mb-2">
             Empty Wishlist
-         </CsText>
+          </CsText>
 
           <CsText className="text-center text-dark/70 mb-6 text-sm">
             Save items you love and view them all in one place.
-         </CsText>
+          </CsText>
 
           <TouchableOpacity
             onPress={handleStartShopping}
@@ -68,7 +68,7 @@ const Wishlist = () => {
           >
             <CsText className="text-white font-semibold text-base">
               Browse Products
-           </CsText>
+            </CsText>
           </TouchableOpacity>
         </View>
       </View>
@@ -77,12 +77,11 @@ const Wishlist = () => {
 
   return (
 
-    <View className="flex-1 bg-white"> 
+    <View className="flex-1 bg-white">
       <BackHeader
         title="My Wishlist"
-        desc={`${wishlistItems.length} ${
-          wishlistItems.length === 1 ? "item" : "items"
-        } saved`}
+        desc={`${wishlistItems.length} ${wishlistItems.length === 1 ? "item" : "items"
+          } saved`}
       />
 
       <FlatList
@@ -90,10 +89,10 @@ const Wishlist = () => {
         keyExtractor={(item) => item._id?.toString()}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
-        ItemSeparatorComponent={() => <View/>}
+        ItemSeparatorComponent={() => <View />}
         renderItem={({ item }) => (
-         
-          <View className="bg-light px-4 "> 
+
+          <View className="bg-light px-4 ">
             <WishlistItem item={item} onRemove={handleRemove} />
           </View>
         )}
@@ -101,7 +100,7 @@ const Wishlist = () => {
           <View className="mt-6 mb-4 px-4">
             <CsText className="text-center text-dark text-sm">
               You have reached the end of your wishlist.
-           </CsText>
+            </CsText>
           </View>
         }
       />

@@ -6,6 +6,7 @@ export const weatherInstance = axios.create({
     apikey: "ofd1tkOKm6wVBb5D",
     format: "json",
   },
+
 });
 
 export const weatherImageInstance = axios.create({

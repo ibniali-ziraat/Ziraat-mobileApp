@@ -38,7 +38,8 @@ export default function StatChip({
 
         {/* VALUE */}
         <CsText
-          className={"text-[18px] font-extrabold text-center mt-2"}
+        variant="semiBoldcaption"
+          className={" text-center mt-2"}
         >
           {value}
        </CsText>

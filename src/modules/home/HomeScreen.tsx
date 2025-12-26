@@ -109,8 +109,9 @@ export default function HomeScreen() {
                 items={products.slice(...section.slice)}
                 imageMapper={imageMapper}
               />
-            </View>
-          ))}
+            </TouchableOpacity>
+            {/* Quick Actions */}
+            <QuickActions />
 
           <View className="mb-6">
             <SectionTitle title="Farm Overview" icon="stats-chart-outline" />

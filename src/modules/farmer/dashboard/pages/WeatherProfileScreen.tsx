@@ -1,10 +1,16 @@
 import AveragesCard from "@/src/components/AveragesCard";
+import FeelsLikeCard from "@/src/components/FeelsLikeCard";
 import HourlyCard from "@/src/components/HourlyCard";
 import HumidityCard from "@/src/components/HumidityCard";
+import { MoonCard } from "@/src/components/MoonCard";
 import { Precipitation } from "@/src/components/Precipitation";
+import PressureCard from "@/src/components/PressureCard";
 import BackHeader from "@/src/components/shared/BackHeader";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SearchBar from "@/src/components/shared/SearchBar";
 import StormCard from "@/src/components/StormCard";
+import SunsetCard from "@/src/components/SunsetCard";
+import UVCard from "@/src/components/UVCard";
 import VisibilityCard from "@/src/components/VisibilityCard";
 import WeeklyCard from "@/src/components/WeeklyCard";
 import WindCard from "@/src/components/WindCard";

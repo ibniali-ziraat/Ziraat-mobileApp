@@ -1,5 +1,6 @@
 import { GitGraph } from "lucide-react-native";
 import { View } from "react-native";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
@@ -14,6 +15,32 @@ export default function AveragesCard({
 }: Props) {
   const diff = currentMax - averageMax;
   const status = diff > 0 ? "Above" : "Below";
+export default function AveragesCard() {
+    return (
+        <ZiraatCard
+            width="48%"
+            paddingHorizontal={1}
+            paddingVertical={1}
+            className="border border-white"
+        >
+            <View className=" flex justify-center">
+                <View className="flex-row items-center mb-1">
+                    <GitGraph size={16} color="#c7611f" />
+                    <CsText
+                        className="text-error"
+
+                        style={[
+                            typography.caption_xs_bold,
+                            { color: "green" }
+                        ]}
+                    >
+                        AVERAGES
+                    </CsText>
+                </View>
+
+                <CsText className="text-3xl font-bold text-dark">
+                    +1°
+                </CsText>
 
   return (
     <ZiraatCard width="48%" paddingHorizontal={1.4} paddingVertical={1.4}>

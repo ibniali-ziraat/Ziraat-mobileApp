@@ -3,7 +3,7 @@ import CsText from "@/src/components/shared/CsText";
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
 import { imageMapper } from "@/src/data/imageMapper";
-import { addToCartList, getCartList } from "@/src/utils/cartlistStore";
+// import { addToCartList, getCartList } from "@/src/utils/cartlistStore";
 import { useRouter } from "expo-router";
 import { X } from "lucide-react-native";
 import { useEffect, useState } from "react";
@@ -81,7 +81,7 @@ const WishlistItem = ({ item, onRemove }) => {
             <View className="flex-row justify-between items-center">
               <CsText className="font-semibold text-[16px]" numberOfLines={1}>
                 {item.title}
-             </CsText>
+              </CsText>
               <Pressable
                 className="rounded-full"
                 onPress={() => onRemove(item._id)}
@@ -93,7 +93,7 @@ const WishlistItem = ({ item, onRemove }) => {
             {item.category && (
               <CsText className="text-dark text-[14px] mt-1" numberOfLines={1}>
                 {item.category}
-             </CsText>
+              </CsText>
             )}
 
             <View className="flex-row items-center mt-2">
@@ -101,20 +101,20 @@ const WishlistItem = ({ item, onRemove }) => {
                 <>
                   <CsText className="text-dark line-through text-[14px] mr-2">
                     ₹{item.price}
-                 </CsText>
+                  </CsText>
                   <CsText className="text-primary font-bold text-[16px] mr-1">
                     ₹{item.discountPrice}
-                 </CsText>
+                  </CsText>
                   {discountPercent && (
                     <CsText className="text-secondary text-[12px] font-semibold">
                       {discountPercent}% OFF
-                   </CsText>
+                    </CsText>
                   )}
                 </>
               ) : (
                 <CsText className="text-primary font-semibold text-[16px]">
                   ₹{item.price}
-               </CsText>
+                </CsText>
               )}
             </View>
 
@@ -122,7 +122,7 @@ const WishlistItem = ({ item, onRemove }) => {
               <RatingStars rating={item.rating} />
               <CsText className="text-sm text-light px-2 rounded-xl bg-primary">
                 {item.inStock ? "In Stock" : "Out of Stock"}
-             </CsText>
+              </CsText>
             </View>
           </View>
 

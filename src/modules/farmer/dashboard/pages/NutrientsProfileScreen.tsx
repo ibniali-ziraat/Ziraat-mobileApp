@@ -1,5 +1,6 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
 import BackHeader from "@/src/components/shared/BackHeader";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { useState } from "react";
@@ -9,7 +10,6 @@ import EnhancedCard from "./components/EnhancedCard";
 
 // ✅ Lucide icons
 import CsText from "@/src/components/shared/CsText";
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import {
   Activity,
   AlertTriangle,
@@ -39,7 +39,7 @@ export default function NutrientsProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <ScreenLayout className="pt-4 px-2">
+    <ScreenLayout>
       <BackHeader
         title="Nutrients Profile"
         desc="Comprehensive insights into soil and water nutrient levels."
@@ -54,10 +54,10 @@ export default function NutrientsProfileScreen() {
           <View className="p-4">
             <CsText className="text-light font-extrabold text-lg">
               Soil, Water & Nutrient
-           </CsText>
+            </CsText>
             <CsText className="text-light mt-1 text-xs">
               Real-time insight into soil health.
-           </CsText>
+            </CsText>
           </View>
         </ImageBackground>
       </View>
@@ -92,7 +92,7 @@ export default function NutrientsProfileScreen() {
       <View className="mt-6 mb-6">
         <CsText className="text-[20px] font-extrabold text-dark mb-4">
           Soil Health Trend
-       </CsText>
+        </CsText>
 
         <ZiraatCard width="100%" paddingHorizontal={2} paddingVertical={2}>
           <CustomBarChart />
