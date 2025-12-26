@@ -76,7 +76,7 @@ export default function BasicInfoScreen() {
     <ScreenLayout>
       <BackHeader
         title="Orchard Registration"
-        desc="Basic / Mandatory Information"
+        desc="Enter the basic details required to register your orchard successfully."
       />
 
       <FormProvider {...form}>

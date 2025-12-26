@@ -2,6 +2,7 @@ import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
+import SprayData from "@/src/data/SprayData.json";
 import { typography } from "@/src/constants/fonts/typography";
 import { Droplets, Edit, Trash2, Trees } from "lucide-react-native";
 import { FlatList, View } from "react-native";

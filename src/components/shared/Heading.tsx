@@ -17,10 +17,7 @@ export default function Heading({
   subtitleSize = 15,
 }: HeadingProps) {
   return (
-    <View style={{
-      marginBottom: 6,
-
-    }}>
+    <View style={{ marginBottom: 16 }}>
       <CsText
         style={{
           fontSize: titleSize,
@@ -40,9 +37,7 @@ export default function Heading({
           }}
         >
           {subtitle}
-
-        </CsText>
-
+       </CsText>
       ) : null}
       {/* Primary Divider */}
       <View

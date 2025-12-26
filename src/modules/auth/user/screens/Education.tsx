@@ -66,9 +66,18 @@ export default function EducationScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <BackHeader
-          title="Education"
+           title="Educational Details"
+  desc="Please provide details about your highest qualification and educational background."
+          
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
+
+
+
+
+
+
+
 
         <EducationSection control={control} errors={errors} />
         <FormActions

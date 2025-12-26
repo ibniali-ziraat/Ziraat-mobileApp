@@ -32,6 +32,7 @@ export default function ProductSection({ control, errors }) {
 
   return (
     <View>
+   
       {/* Inputs Sold */}
       <MultiSelectInput
         name="inputTypes"
