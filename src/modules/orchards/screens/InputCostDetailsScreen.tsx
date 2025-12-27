@@ -6,7 +6,8 @@ import {
   useCreateInputCostMutation,
   useInputCostQuery,
   useUpdateInputCostMutation,
-} from "@/src/hooks/useOrchardsQuery";
+} from "../hooks/useOrchardsQuery";
+
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";

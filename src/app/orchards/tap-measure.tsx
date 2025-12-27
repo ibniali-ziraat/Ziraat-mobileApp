@@ -1,5 +1,5 @@
-import TapMeasureScreen from "@/src/modules/orchards/screens/TapMeasureScreen";
+import MeasureByTap from "@/src/modules/orchards/pages/MeasureByTap";
 
 export default function TapMeasure() {
-  return <TapMeasureScreen />;
+  return <MeasureByTap />;
 }

@@ -6,7 +6,8 @@ import {
   useCreateInfrastructureMutation,
   useInfrastructureQuery,
   useUpdateInfrastructureMutation,
-} from "@/src/hooks/useOrchardsQuery";
+} from "../hooks/useOrchardsQuery";
+
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { router } from "expo-router";
 import { useEffect } from "react";

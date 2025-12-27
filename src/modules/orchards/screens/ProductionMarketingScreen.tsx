@@ -8,7 +8,8 @@ import {
   useCreateProductionMarketingMutation,
   useProductionMarketingQuery,
   useUpdateProductionMarketingMutation,
-} from "@/src/hooks/useOrchardsQuery";
+} from "../hooks/useOrchardsQuery";
+
 import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
 import ProductionMarketing from "../form-sections/ProductionMarketingSection";
