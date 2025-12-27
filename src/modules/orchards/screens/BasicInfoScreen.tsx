@@ -9,12 +9,13 @@ import { useZodForm } from "@/src/hooks/useZodForm";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
+
+import BasicInfo from "../form-sections/BasicInfoSection";
 import {
   useCreateOrchardBasinInfoMutation,
   useOrchardsByUserQuery,
   useUpdateOrchardBasicInfoMutation,
-} from "../../../hooks/useOrchardsQuery";
-import BasicInfo from "../form-sections/BasicInfoSection";
+} from "../hooks/useOrchardsQuery";
 import { BasicInfoSchema } from "../schemas/BasicInfoSchema";
 
 export default function BasicInfoScreen() {

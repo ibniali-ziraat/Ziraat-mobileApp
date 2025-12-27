@@ -8,38 +8,33 @@ import MeasureControls from "../components/MeasureControls";
 import MeasureMap from "../components/MeasureMap";
 import { useAreaCalculation } from "../hooks/useAreaCalculation";
 import { useLocationPermission } from "../hooks/useLocationPermission";
-import { useWalkMeasurement } from "../hooks/useWalkMeasurement";
+import { useTapMeasurement } from "../hooks/useTapMeasurement";
 
-export default function WalkMeasureScreen() {
+export default function MeasureByTap() {
   const location = useLocationPermission();
-  const { path, start, stop, reset } = useWalkMeasurement();
+  const { points, addPoint, reset } = useTapMeasurement();
   const [unit, setUnit] = useState("hectares");
-  const [walking, setWalking] = useState(false);
+
+  const areaHectares = useAreaCalculation(points);
+
   if (!location) return null;
 
-  const areaHectares = useAreaCalculation(path, unit);
-
   const displayArea = (areaHectares * UNIT_CONVERSIONS[unit]).toFixed(3);
+
   const marlas = areaHectares * UNIT_CONVERSIONS.marla;
 
-  const handlePrimary = () => {
-    // if (!areaHectares) return;
+  const applyArea = () => {
+    if (!areaHectares) return;
 
-    if (walking) {
-      stop();
-      router.push({
-        pathname: "/orchards/basic-info",
-        params: {
-          orchardSize: marlas.toFixed(2),
-          areaValue: displayArea,
-          areaUnit: unit,
-          areaLabel: `${displayArea} ${unit}`,
-        },
-      });
-    } else {
-      start();
-    }
-    setWalking(!walking);
+    router.push({
+      pathname: "/orchards/basic-info",
+      params: {
+        orchardSize: marlas.toFixed(2), // ALWAYS marla
+        areaValue: displayArea,
+        areaUnit: unit,
+        areaLabel: `${displayArea} ${unit}`,
+      },
+    });
   };
 
   if (Platform.OS === "web") {
@@ -60,15 +55,18 @@ export default function WalkMeasureScreen() {
   return (
     <>
       <BackHeader title="Back" />
-
-      <MeasureMap location={location} points={path} isWalking />
+      <MeasureMap
+        location={location}
+        points={points}
+        onTap={(e) => addPoint(e.nativeEvent.coordinate)}
+      />
       <AreaBadge value={displayArea} unit={unit} />
       <MeasureControls
         unit={unit}
         setUnit={setUnit}
-        onPrimary={handlePrimary}
+        onPrimary={applyArea}
         onReset={reset}
-        primaryLabel={walking ? "Stop & Apply" : "Start Walking"}
+        primaryLabel="Apply Area"
       />
     </>
   );
