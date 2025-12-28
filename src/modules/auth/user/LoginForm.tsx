@@ -89,7 +89,6 @@ import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 import { useZodForm } from "../../../hooks/useZodForm";
-import { GoogleAuthButton } from "../components/GoogleAuthButton";
 
 export default function LoginForm() {
   const { control, handleSubmit, formState } = useZodForm(LoginSchema);
@@ -162,11 +161,11 @@ export default function LoginForm() {
       </View>
       <Divider label="or sign in with google" />
 
-      <GoogleAuthButton
+      {/* <GoogleAuthButton
         label="Sign in with Google"
         onPress={() => {}}
         disabled={isPending}
-      />
+      /> */}
     </View>
   );
 }

@@ -121,7 +121,6 @@ export default function UserProfileScreen() {
       <ProfileTopHeader
         profilePic={profileData?.profilePic}
         fullName={profileData?.fullName}
-        // onEdit={() => goToSection("profile")}
       />
       {progress < 100 && (
         <ProfileProgressBar
