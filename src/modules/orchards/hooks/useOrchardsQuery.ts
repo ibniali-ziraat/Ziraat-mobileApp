@@ -1,23 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+import { ID } from "@/src/types/global";
 import {
-  // D. Crop & Nutrition
   createCropNutrition,
-  // F. Infrastructure
   createInfrastructure,
-  // H. Input Cost
   createInputCost,
-  // A. Orchard
   createOrchard,
-  // I. Extras
   createOrchardExtra,
-  // B. Variety
   createOrchardVariety,
-  // E. Plant Protection
   createPlantProtection,
-  // G. Production & Marketing
   createProductionMarketing,
-  // C. Soil & Water
   createSoilWater,
   deleteCropNutrition,
   deleteInfrastructure,
@@ -54,14 +46,14 @@ import {
 // 🌳 A. ORCHARD BASIC
 // ====================================================
 //
-export const useOrchardsByUserQuery = (userId) =>
+export const useOrchardsByUserQuery = (userId: ID) =>
   useQuery({
     queryKey: ["orchards", userId],
     queryFn: () => getOrchardsByUser(userId),
     enabled: !!userId,
   });
 
-export const useOrchardByIdQuery = (orchardId) =>
+export const useOrchardByIdQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["orchard", orchardId],
     queryFn: () => getOrchardById(orchardId),
@@ -82,7 +74,7 @@ export const useDeleteOrchardBasicInfoMutation = () =>
 // 🌱 B. VARIETY & PLANTING
 // ====================================================
 //
-export const useOrchardVarietiesQuery = (orchardId) =>
+export const useOrchardVarietiesQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["orchardVarieties", orchardId],
     queryFn: () => getOrchardVarieties(orchardId),
@@ -103,7 +95,7 @@ export const useDeleteVarietyMutation = () =>
 // 🌍 C. SOIL & WATER
 // ====================================================
 //
-export const useSoilWaterQuery = (orchardId) =>
+export const useSoilWaterQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["soilWater", orchardId],
     queryFn: () => getSoilWaterByOrchard(orchardId),
@@ -124,7 +116,7 @@ export const useDeleteSoilWaterMutation = () =>
 // 🌾 D. CROP & NUTRITION
 // ====================================================
 //
-export const useCropNutritionQuery = (orchardId) =>
+export const useCropNutritionQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["cropNutrition", orchardId],
     queryFn: () => getCropNutritionByOrchard(orchardId),
@@ -145,7 +137,7 @@ export const useDeleteCropNutritionMutation = () =>
 // 🐛 E. PLANT PROTECTION
 // ====================================================
 //
-export const usePlantProtectionQuery = (orchardId) =>
+export const usePlantProtectionQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["plantProtection", orchardId],
     queryFn: () => getPlantProtectionByOrchard(orchardId),
@@ -166,7 +158,7 @@ export const useDeletePlantProtectionMutation = () =>
 // 🚜 F. INFRASTRUCTURE
 // ====================================================
 //
-export const useInfrastructureQuery = (orchardId) =>
+export const useInfrastructureQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["infrastructure", orchardId],
     queryFn: () => getInfrastructureByOrchard(orchardId),
@@ -187,7 +179,7 @@ export const useDeleteInfrastructureMutation = () =>
 // 📦 G. PRODUCTION & MARKETING
 // ====================================================
 //
-export const useProductionMarketingQuery = (orchardId) =>
+export const useProductionMarketingQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["productionMarketing", orchardId],
     queryFn: () => getProductionMarketingByOrchard(orchardId),
@@ -208,7 +200,7 @@ export const useDeleteProductionMarketingMutation = () =>
 // 💰 H. INPUT COST
 // ====================================================
 //
-export const useInputCostQuery = (orchardId) =>
+export const useInputCostQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["inputCost", orchardId],
     queryFn: () => getInputCostByOrchard(orchardId),
@@ -229,7 +221,7 @@ export const useDeleteInputCostMutation = () =>
 // 🧩 I. OPTIONAL / FUTURE
 // ====================================================
 //
-export const useOrchardExtraQuery = (orchardId) =>
+export const useOrchardExtraQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["orchardExtra", orchardId],
     queryFn: () => getOrchardExtraByOrchard(orchardId),

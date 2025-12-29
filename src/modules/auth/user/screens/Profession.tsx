@@ -66,7 +66,8 @@ export default function ProfessionScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <BackHeader
-          title="Profession"
+         title="Professional Details"
+  desc="Please provide details about your current profession. "
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
 

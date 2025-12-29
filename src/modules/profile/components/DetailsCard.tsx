@@ -12,7 +12,7 @@ interface DetailItem {
 
 interface DetailsCardProps {
   heading: string;
-  items?: DetailItem[]; // 👈 optional
+  items?: DetailItem[]; 
   onEdit?: () => void;
   onDelete?: () => void;
 

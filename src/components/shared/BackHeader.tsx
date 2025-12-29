@@ -39,7 +39,7 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
 
           {desc && (
             <CsText
-              style={[typography.Poppins_s_regular]}
+              style={[typography.Poppins_xs_regular]}
               className="text-neutral mt-0.5"
               numberOfLines={2}
             >

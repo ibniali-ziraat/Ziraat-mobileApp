@@ -46,7 +46,7 @@ export default function MenuScreen() {
           
           className="text-light font-medium ml-2">
             {roleMode === "farmer" ? "Switch to Supplier" : "Switch to Farmer"}
-         </CsText>
+          </CsText>
         </TouchableOpacity>
       </View>
     </AnimatedTabContent>

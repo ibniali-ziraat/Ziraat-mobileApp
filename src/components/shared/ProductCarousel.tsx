@@ -6,21 +6,15 @@ import {
   FlatList,
   Image,
   Pressable,
-  ToastAndroid,
   View
 } from "react-native";
 import RatingStars from "../../components/shared/RatingStars";
 import { colors } from "../../constants/colors";
-
+ 
 import { typography } from "@/src/constants/fonts/typography";
-import {
-  addToWishlist,
-  isInWishlist,
-  removeFromWishlist,
-} from "@/src/utils/wishlistStore";
 import { router } from "expo-router";
 import CsText from "./CsText";
-
+ 
 export default function ProductCarousel({
   items,
   imageMapper,
@@ -28,25 +22,16 @@ export default function ProductCarousel({
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
   const imageSize = screenWidth * 0.4;
-
+ 
   const getDiscountPercent = (price: number, discountPrice: number) => {
     if (!discountPrice || !price) return null;
     return Math.round(((price - discountPrice) / price) * 100);
   };
-
+ 
   const [refresh, setRefresh] = useState(false);
-
-  const handleHeartPress = (item: any) => {
-    if (isInWishlist(item._id)) {
-      removeFromWishlist(item._id);
-    } else {
-      addToWishlist(item);
-
-      ToastAndroid.show("Added to Wishlist", ToastAndroid.SHORT);
-    }
-    setRefresh(!refresh);
-  };
-
+ 
+ 
+ 
   return (
     <View className="mb-6">
       <FlatList
@@ -59,7 +44,7 @@ export default function ProductCarousel({
             item.price,
             item.discountPrice
           );
-
+ 
           return (
             <Pressable
               onPress={() =>
@@ -76,37 +61,35 @@ export default function ProductCarousel({
                     className="rounded-2xl"
                     style={{ width: imageSize, height: imageSize }}
                   />
-
+ 
                   {item.label && (
                     <View className="absolute top-2 left-2 bg-primary px-2 py-1  rounded-lg">
                       <CsText style= {[typography.Poppins_xs_regular]} className="text-light ">
                         {item.label}
-                     </CsText>
+                      </CsText>
                     </View>
                   )}
-
+ 
                   <Pressable
                     className="absolute top-2 right-2 p-1"
                     onPress={(event) => {
                       event.stopPropagation();
-                      handleHeartPress(item);
+                     
                     }}
                   >
                     <Heart
                       size={20}
                       // color={colors.bgColor}
-
-                      color={isInWishlist(item._id) ? colors.secondary : colors.overlay}
-
-                      fill={
-                        isInWishlist(item._id)
-                          ? colors.secondary
-                          : "transparent"
-                      }
+ 
+                      color={ colors.overlay}
+ 
+                      
+                         
+                      
                     />
                   </Pressable>
                 </View>
-
+ 
                 <CsText
                 style ={[typography.Poppins_m_semibold]}
                   className="mt-2 w-full px-2"
@@ -114,7 +97,7 @@ export default function ProductCarousel({
                 >
                   {item.title}
                </CsText>
-
+ 
                 {item.category && (
                   <CsText
                   style ={[typography.Poppins_s_regular]}
@@ -122,47 +105,47 @@ export default function ProductCarousel({
                     numberOfLines={1}
                   >
                     {item.category}
-                 </CsText>
+                  </CsText>
                 )}
-
+ 
                 <View className="flex-row items-center pt-2 w-full px-2"
-                
+               
                 >
                   {item.discountPrice ? (
                     <>
-                      <CsText 
+                      <CsText
                       style ={[typography.Poppins_s_regular]}
-                      
+                     
                       className="text-dark line-through pr-3">
                         ₹{item.price}
                      </CsText>
-
-                      <CsText 
+ 
+                      <CsText
                       style ={[typography.Poppins_s_medium]}
-                      
+                     
                       className="text-primary pr-3 ">
                         ₹{item.discountPrice}
                      </CsText>
-
+ 
                       {discountPercent && (
-                        <CsText 
+                        <CsText
                         style ={[typography.Poppins_xs_regular]}
-                        
+                       
                         className="text-secondary">
                           {discountPercent}% OFF
-                       </CsText>
+                        </CsText>
                       )}
                     </>
                   ) : (
-                    <CsText 
+                    <CsText
                       style ={[typography.Poppins_s_medium]}
-                    
-                    className="text-primary text-[18px]">
+                   
+                    className="text-primary">
                       ₹{item.price}
-                   </CsText>
+                    </CsText>
                   )}
                 </View>
-
+ 
                 <View className="flex-row items-center justify-between w-full px-2 mt-2">
                   <RatingStars rating={item.rating} />
                 </View>
@@ -174,3 +157,5 @@ export default function ProductCarousel({
     </View>
   );
 }
+ 
+ 

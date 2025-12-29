@@ -9,32 +9,14 @@ import { orchardImagesById } from "@/src/data/orchardImages";
 import { router } from "expo-router";
 import { MoreVertical } from "lucide-react-native";
 import { useState } from "react";
-import {
-  FlatList,
-  Image,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, TouchableOpacity, View } from "react-native";
 
-
-const Detail = ({
-  label,
-  value,
-}: {
-  label: string;
-  value?: string;
-}) => (
+const Detail = ({ label, value }: { label: string; value?: string }) => (
   <View className="flex-row justify-between py-1">
-    <CsText style={typography.Poppins_xs_medium}>
-      {label}
-    </CsText>
-    <CsText style={typography.Poppins_xs_regular}>
-      {value || "-"}
-    </CsText>
+    <CsText style={typography.Poppins_xs_medium}>{label}</CsText>
+    <CsText style={typography.Poppins_xs_regular}>{value || "-"}</CsText>
   </View>
 );
-
-
 
 export default function MyOrchardsScreen() {
   const [orchards] = useState(orchardsData);
@@ -63,32 +45,28 @@ export default function MyOrchardsScreen() {
             />
           )}
 
-
-          <TouchableOpacity
-            className="absolute top-3 right-0 bg-light p-2 mr-4 mt-2 rounded-full shadow z-50"
-          >
+          <TouchableOpacity className="absolute top-3 right-0 bg-light p-2 mr-4 mt-2 rounded-full shadow z-50">
             <MoreVertical size={20} color={colors.dark} />
           </TouchableOpacity>
         </View>
 
-
+        {/* CONTENT */}
         <View className="p-4">
+          {/* Title & Badge */}
           <View className="flex-row justify-between items-center mb-3">
-            <CsText style={typography.Poppins_m_semibold}>
-              {item.name}
-            </CsText>
+            <CsText style={typography.Poppins_m_semibold}>{item.name}</CsText>
 
             <View className="bg-secondary px-3 py-1 rounded-full">
               <CsText
                 className="text-light"
-                style={typography.Poppins_xs_semibold}
+                style={typography.caption_xs_semibold}
               >
                 {item.about}
               </CsText>
             </View>
           </View>
 
-
+          {/* Details */}
           <Detail label="Size" value={item.acres} />
           <Detail label="Establishment Year" value={item.trees} />
           <Detail label="Plantation Pattern" value={item.fruit} />

@@ -1,4 +1,5 @@
-import { View } from "react-native";
+import { colors } from "@/src/constants/colors";
+import { Text, View } from "react-native";
 import FormInput from "../../../../components/form/inputs/FormInput";
 
 interface Props {
@@ -6,9 +7,74 @@ interface Props {
   errors: any;
 }
 
+/* 🔹 SECTION HEADER */
+function SectionHeader({
+  icon,
+  title,
+}: {
+  icon: React.ReactNode;
+  title: string;
+}) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 16,
+      }}
+    >
+      <View style={{ marginRight: 8 }}>{icon}</View>
+      <Text
+        style={{
+          fontSize: 16,
+          fontWeight: "700",
+          color: colors.dark,
+        }}
+      >
+        {title}
+      </Text>
+    </View>
+  );
+}
+
+/* 🔹 FIELD HEADER */
+function FieldHeader({
+  icon,
+  title,
+}: {
+  icon: React.ReactNode;
+  title: string;
+}) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 12,
+        marginBottom: 6,
+      }}
+    >
+      <View style={{ marginRight: 6 }}>{icon}</View>
+      <Text
+        style={{
+          fontSize: 14,
+          fontWeight: "600",
+          color: colors.dark,
+        }}
+      >
+        {title}
+      </Text>
+    </View>
+  );
+}
+
 export default function ProfessionSection({ control, errors }: Props) {
   return (
-    <View>
+    <View style={{ paddingHorizontal: 8 }}>
+      
+       
+
+      
       <FormInput
         control={control}
         name="professionType"
@@ -16,6 +82,7 @@ export default function ProfessionSection({ control, errors }: Props) {
         error={errors.professionType?.message}
       />
 
+      
       <FormInput
         control={control}
         name="organizationName"
@@ -30,6 +97,7 @@ export default function ProfessionSection({ control, errors }: Props) {
         error={errors.designation?.message}
       />
 
+     
       <FormInput
         control={control}
         name="experienceYears"
@@ -38,6 +106,7 @@ export default function ProfessionSection({ control, errors }: Props) {
         error={errors.experienceYears?.message}
       />
 
+     
       <FormInput
         control={control}
         name="skills"

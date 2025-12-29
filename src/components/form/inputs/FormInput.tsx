@@ -42,7 +42,7 @@ export default function FormInput({
               : "default";
 
         return (
-          <View style={{ marginBottom: 16 }}>
+          <View style={{ marginBottom: 6 }}>
             <TextInput
               contentStyle={{ color: colors.dark }} // Use dark color for input text
               mode="outlined"
@@ -81,25 +81,10 @@ export default function FormInput({
               {...props}
             />
 
-            {/* {showError && (
+            {showError && (
               <HelperText type="error" visible style={{ color: colors.error }}>
                 {(fieldError || error)?.message}
-              </HelperText>
-            )} */}
-
-            {showError && (
-              <HelperText
-                type="error"
-                visible
-                style={{
-                  color: colors.error,
-                  paddingVertical: 0,
-                  paddingBottom: 0,
-                  marginTop: 2,
-                  marginBottom: 0,
-                }}
-              >
-                {(fieldError || error)?.message}
+                {/* Required Field */}
               </HelperText>
             )}
           </View>

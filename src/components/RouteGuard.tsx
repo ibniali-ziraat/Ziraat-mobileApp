@@ -15,30 +15,18 @@ export default function RouteGuard({ children }: RouteGuardProps) {
   useEffect(() => {
     if (!initialized) return;
 
-    // No token -> immediate logout and redirect
     if (!userToken) {
-      logoutUser();
+      // logoutUser();
+      // router.replace("/auth/user");
       router.replace("/");
       return;
     }
 
-    if (!userToken) {
-      router.replace("/");
-      return;
-    }
-
-    if (!userToken) {
-      router.replace("/");
-      return;
-    }
-
-    // Clear previous scheduled logout if present
     if (cancelRef.current) {
       cancelRef.current();
       cancelRef.current = null;
     }
 
-    // Schedule auto-logout based on expiry (if parseable)
     cancelRef.current = scheduleAutoLogout(
       userTokenExp,
       () => {
@@ -49,7 +37,6 @@ export default function RouteGuard({ children }: RouteGuardProps) {
       }
     );
 
-    // Cleanup
     return () => {
       if (cancelRef.current) {
         cancelRef.current();

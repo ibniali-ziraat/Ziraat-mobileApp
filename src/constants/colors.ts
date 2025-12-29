@@ -18,6 +18,11 @@ export const colors = {
 },
   cardBorder: "#dbd9d733",
 
+  googleGradient: {
+    colors: ["#4285F4", "#DB4437", "#F4B400", "#0F9D58"],
+    start: { x: 0, y: 0 },
+    end: { x: 1, y: 1 },
+  },
 
   warning: "#f5a623",
   warningHover: "#d98c1c",
