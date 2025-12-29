@@ -43,9 +43,9 @@ export default function ProductDetailCarousel({
           <Image source={source} resizeMode="cover" className="w-full h-full" />
 
           {label && (
-            <View className="absolute top-3 left-2 bg-primary px-3 py-1 rounded-full">
+            <View className="absolute top-3 left-2 bg-primary px-2 py-1 rounded-full">
               <CsText 
-              style={[typography.caption_xs_regular]}
+              style={[typography.Poppins_xs_regular]}
               
               
               className="text-light">{label}</CsText>
@@ -70,11 +70,11 @@ export default function ProductDetailCarousel({
         renderItem={renderItem}
       />
 
-      <View className="absolute bottom-4 w-full flex-row justify-center">
+      <View className="absolute bottom-2 w-full flex-row justify-center">
         {photos.map((_, i) => {
-          const bgColor = currentIndex === i ? "bg-neutral" : "bg-dark"; // fixed colors
+          const bgColor = currentIndex === i ? "bg-secondary" : "bg-light"; // fixed colors
           return (
-            <View key={i} className={`w-3 h-3 rounded-full mx-1 ${bgColor}`} />
+            <View key={i} className={`w-2 h-2 rounded-full mx-1 ${bgColor}`} />
           );
         })}
       </View>

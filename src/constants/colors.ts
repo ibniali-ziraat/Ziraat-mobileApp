@@ -14,11 +14,12 @@ export const colors = {
   bgGradient: {
   colors: ["#FAFAFA", "#F1F1F1", "#ECECEC"],
   locations: [0, 0.6, 1],
+
 },
+  cardBorder: "#dbd9d733",
 
 
   warning: "#f5a623",
   warningHover: "#d98c1c",
   cardShadow: "rgba(0,0,0,0.6)",
-  cardBorder: "",
 };
