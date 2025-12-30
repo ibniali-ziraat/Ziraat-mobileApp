@@ -37,7 +37,7 @@ const aboutUsImages = {
 
 export default function AboutUs() {
   return (
-    <ScreenLayout className="flex-1 bg-light px-4 py-6">
+    <ScreenLayout>
       <BackHeader
         title="About Us"
         desc="Ziraat smart solutions for modern farming"
@@ -57,8 +57,9 @@ export default function AboutUs() {
             marginBottom={3}
           >
             <View
-              className={`flex-row ${isEven ? "flex-row" : "flex-row-reverse"
-                } items-stretch`}
+              className={`flex-row ${
+                isEven ? "flex-row" : "flex-row-reverse"
+              } items-stretch`}
             >
               {section.image && (
                 <View className="w-[45%] rounded-xl overflow-hidden">
