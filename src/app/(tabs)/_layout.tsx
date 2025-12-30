@@ -18,7 +18,7 @@ import SprayHeader from "@/src/components/shared/SprayHeader";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useProfileQuery } from "@/src/modules/auth/user/hooks/userQueryHooks";
+import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();

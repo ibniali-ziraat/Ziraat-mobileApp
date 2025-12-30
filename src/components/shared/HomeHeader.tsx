@@ -2,7 +2,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useProfileQuery } from "@/src/modules/auth/user/hooks/userQueryHooks";
+import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
 import { Bell } from "lucide-react-native";
 import React from "react";

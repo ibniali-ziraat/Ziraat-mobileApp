@@ -15,7 +15,7 @@ import {
   useAddressMutation,
   useAddressQuery,
   useAddressUpdateMutation,
-} from "../hooks/userQueryHooks";
+} from "../../../../hooks/userQueryHooks";
 
 export default function AddressScreen() {
   const { userProfileId } = useAuth();

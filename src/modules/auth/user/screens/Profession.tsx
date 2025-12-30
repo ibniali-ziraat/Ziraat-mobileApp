@@ -8,7 +8,7 @@ import {
   useProfessionMutation,
   useProfessionQuery,
   useProfessionUpdateMutation,
-} from "../hooks/userQueryHooks";
+} from "../../../../hooks/userQueryHooks";
 
 import { professionSchema } from "@/src/modules/auth/user/schemas/profession.schema";
 import ProfessionSection from "@/src/modules/auth/user/sections/ProfessionSection";

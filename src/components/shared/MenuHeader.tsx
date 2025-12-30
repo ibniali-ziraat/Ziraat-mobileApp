@@ -2,7 +2,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useVendorProfileQuery } from "@/src/modules/auth/vendor/hooks/vendorQueryHooks";
+import { useVendorProfileQuery } from "@/src/hooks/vendorQueryHooks";
 import { router } from "expo-router";
 import { BarChart2, PhoneCall, Store, User } from "lucide-react-native";
 import React from "react";
@@ -25,16 +25,13 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
     <View className="flex-row items-center justify-between bg-light py-4">
       {/* Title & Subtitle */}
       <View>
-        <CsText style={[typography.Poppins_l_semibold
-
-          ,{color: colors.dark}
-        ] }>
+        <CsText style={[typography.Poppins_l_semibold, { color: colors.dark }]}>
           Menu
         </CsText>
 
-        <CsText style={[typography.Poppins_s_regular
-
-          ,{ color: colors.neutral }]}>
+        <CsText
+          style={[typography.Poppins_s_regular, { color: colors.neutral }]}
+        >
           {role === "supplier" ? "Supplier Dashboard" : "Farmer Dashboard"}
         </CsText>
       </View>

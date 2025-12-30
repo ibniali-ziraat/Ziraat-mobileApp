@@ -8,7 +8,7 @@ import {
   useVendorProfileMutation,
   useVendorProfileQuery,
   useVendorProfileUpdateMutation,
-} from "../hooks/vendorQueryHooks";
+} from "../../../../hooks/vendorQueryHooks";
 
 import { businessInformationSchema } from "@/src/modules/auth/vendor/schemas/business.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";

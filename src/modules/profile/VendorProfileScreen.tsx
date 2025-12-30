@@ -20,7 +20,7 @@ import {
   useVendorProfileQuery,
   useVendorSupportDeleteMutation,
   useVendorSupportQuery,
-} from "../auth/vendor/hooks/vendorQueryHooks";
+} from "../../hooks/vendorQueryHooks";
 
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { colors } from "@/src/constants/colors";

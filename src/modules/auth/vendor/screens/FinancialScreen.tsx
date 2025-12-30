@@ -8,7 +8,7 @@ import {
   useVendorFinancialMutation,
   useVendorFinancialQuery,
   useVendorFinancialUpdateMutation,
-} from "../hooks/vendorQueryHooks";
+} from "../../../../hooks/vendorQueryHooks";
 
 import { financialPaymentSchema } from "@/src/modules/auth/vendor/schemas/finance.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";

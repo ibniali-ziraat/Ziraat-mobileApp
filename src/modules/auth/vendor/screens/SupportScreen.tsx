@@ -8,7 +8,7 @@ import {
   useVendorSupportMutation,
   useVendorSupportQuery,
   useVendorSupportUpdateMutation,
-} from "../hooks/vendorQueryHooks";
+} from "../../../../hooks/vendorQueryHooks";
 
 import { supportServicesSchema } from "@/src/modules/auth/vendor/schemas/support.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";

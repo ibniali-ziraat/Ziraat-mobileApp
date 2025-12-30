@@ -8,7 +8,7 @@ import {
   useEducationMutation,
   useEducationQuery,
   useEducationUpdateMutation,
-} from "../hooks/userQueryHooks";
+} from "../../../../hooks/userQueryHooks";
 
 import { educationSchema } from "@/src/modules/auth/user/schemas/education.schema";
 import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
