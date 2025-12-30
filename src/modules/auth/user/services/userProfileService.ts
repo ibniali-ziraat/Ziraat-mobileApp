@@ -15,6 +15,23 @@ export const login = async (credentials) => {
   return data;
 };
 
+export const getAuthProviders = async () => {
+  const { data } = await axiosInstance.get(
+    "/api/core/auth/providers",
+    { headers: { "Content-Type": "application/json" } }
+  );
+  return data;
+};
+
+export const googleLogin = async (payload) => {
+  const { data } = await axiosInstance.post(
+    "/api/core/auth/google/login",
+    payload,
+    { headers: { "Content-Type": "application/json" } }
+  );
+  return data;
+};
+
 // ----------------------------------------------------
 // 👤 PROFILE SECTION
 // ----------------------------------------------------
