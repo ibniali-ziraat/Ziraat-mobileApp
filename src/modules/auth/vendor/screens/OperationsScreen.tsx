@@ -14,6 +14,7 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { operationalDetailsSchema } from "@/src/modules/auth/vendor/schemas/operations.schema";
+import { payload } from "@/src/types/payload.types";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import OperationalSection from "../sections/OperationalSection";
@@ -52,7 +53,7 @@ export default function OperationsScreen() {
     setValue("serviceArea", data.serviceAreas?.map((x) => x.placeName) ?? []);
   }, [data]);
 
-  const onSubmit = async (val) => {
+  const onSubmit = async (val: payload) => {
     console.log("submitted: ", val);
 
     const payload = {

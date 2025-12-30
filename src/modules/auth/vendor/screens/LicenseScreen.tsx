@@ -12,6 +12,7 @@ import {
 } from "../../../../hooks/vendorQueryHooks";
 
 import { licensingComplianceSchema } from "@/src/modules/auth/vendor/schemas/licensing.schema";
+import { payload } from "@/src/types/payload.types";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
@@ -55,7 +56,7 @@ export default function LicenseScreen() {
     });
   }, [data]);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: payload) => {
     console.log("logged...");
 
     try {
