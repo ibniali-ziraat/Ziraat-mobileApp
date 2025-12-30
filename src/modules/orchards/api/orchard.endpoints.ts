@@ -2,63 +2,63 @@ const CORE = "/api/core";
 
 export const ORCHARD_ENDPOINTS = {
   orchard: {
-    create: `${CORE}/orchard/create`,
+    create: `${CORE}/orchardProfile`,
     byId: (id: string | number) => `${CORE}/orchard/${id}`,
     byUser: (userId: string | number) =>
       `${CORE}/orchard/GetByUserId?userId=${userId}`,
   },
 
   variety: {
-    create: `${CORE}/orchard-variety/create`,
-    byId: (id: string | number) => `${CORE}/orchard-variety/${id}`,
+    create: `${CORE}/orchardProfile`,
+    byId: (id: string | number) => `${CORE}/orchardProfile/${id}`,
     byOrchard: (orchardId: string | number) =>
-      `${CORE}/orchard-variety/by-orchard/${orchardId}`,
+      `${CORE}/orchardProfile/${orchardId}`,
   },
 
   soil: {
-    create: `${CORE}/orchard-soil/create`,
+    create: `${CORE}/orchardProfile`,
     byId: (id: string | number) => `${CORE}/orchard-soil/${id}`,
     byOrchard: (orchardId: string | number) =>
       `${CORE}/orchard-soil/by-orchard/${orchardId}`,
   },
 
   nutrition: {
-    create: `${CORE}/orchard-nutrition/create`,
+    create: `${CORE}/orchardProfile`,
     byId: (id: string | number) => `${CORE}/orchard-nutrition/${id}`,
     byOrchard: (orchardId: string | number) =>
       `${CORE}/orchard-nutrition/by-orchard/${orchardId}`,
   },
 
   protection: {
-    create: `${CORE}/orchard-protection/create`,
+    create: `${CORE}/orchardProfile`,
     byId: (id: string | number) => `${CORE}/orchard-protection/${id}`,
     byOrchard: (orchardId: string | number) =>
       `${CORE}/orchard-protection/by-orchard/${orchardId}`,
   },
 
   infra: {
-    create: `${CORE}/orchard-infra/create`,
+    create: `${CORE}/orchardProfile`,
     byId: (id: string | number) => `${CORE}/orchard-infra/${id}`,
     byOrchard: (orchardId: string | number) =>
       `${CORE}/orchard-infra/by-orchard/${orchardId}`,
   },
 
   marketing: {
-    create: `${CORE}/orchard-marketing/create`,
+    create: `${CORE}/orchardProfile`,
     byId: (id: string | number) => `${CORE}/orchard-marketing/${id}`,
     byOrchard: (orchardId: string | number) =>
       `${CORE}/orchard-marketing/by-orchard/${orchardId}`,
   },
 
   inputCost: {
-    create: `${CORE}/orchard-inputcost/create`,
+    create: `${CORE}/orchardProfile`,
     byId: (id: string | number) => `${CORE}/orchard-inputcost/${id}`,
     byOrchard: (orchardId: string | number) =>
       `${CORE}/orchard-inputcost/by-orchard/${orchardId}`,
   },
 
   extra: {
-    create: `${CORE}/orchard-extra/create`,
+    create: `${CORE}/orchardProfile`,
     byId: (id: string | number) => `${CORE}/orchard-extra/${id}`,
     byOrchard: (orchardId: string | number) =>
       `${CORE}/orchard-extra/by-orchard/${orchardId}`,

@@ -9,7 +9,8 @@ import {
   useVendorLicenseMutation,
   useVendorLicenseQuery,
   useVendorLicenseUpdateMutation,
-} from "@/src/hooks/vendorQueryHooks";
+} from "../hooks/vendorQueryHooks";
+
 import { licensingComplianceSchema } from "@/src/modules/auth/vendor/schemas/licensing.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";

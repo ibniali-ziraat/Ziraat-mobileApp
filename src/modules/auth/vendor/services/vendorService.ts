@@ -1,5 +1,5 @@
-import axiosInstance from "../api/client/axiosInstance";
-import { safeGet } from "./helpers/safeGet";
+import axiosInstance from "../../../../api/client/axiosInstance";
+import { safeGet } from "../../../../services/helpers/safeGet";
 
 // ----------------------------------------------------
 //  VENDOR PROFILE (Business Info)

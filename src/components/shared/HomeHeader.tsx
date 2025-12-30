@@ -2,7 +2,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useProfileQuery } from "@/src/hooks/userQueryHooks";
+import { useProfileQuery } from "@/src/modules/auth/user/hooks/userQueryHooks";
 import { router } from "expo-router";
 import { Bell } from "lucide-react-native";
 import React from "react";
@@ -21,14 +21,10 @@ const HomeHeader = () => {
       style={{ borderBottomColor: colors.neutral }}
     >
       <View>
-        <CsText   className="text-md" style={[typography.Poppins_m_semibold,]}>
+        <CsText className="text-md" style={[typography.Poppins_m_semibold]}>
           Welcome
         </CsText>
-        <CsText   style={[ {color: colors.dark,},
-          typography.Poppins_m_regular,
-
-
-        ]}>
+        <CsText style={[{ color: colors.dark }, typography.Poppins_m_regular]}>
           {title}
         </CsText>
       </View>

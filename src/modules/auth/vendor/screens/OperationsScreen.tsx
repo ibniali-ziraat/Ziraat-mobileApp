@@ -6,7 +6,7 @@ import {
   useVendorOperationsMutation,
   useVendorOperationsQuery,
   useVendorOperationsUpdateMutation,
-} from "@/src/hooks/vendorQueryHooks";
+} from "../hooks/vendorQueryHooks";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";

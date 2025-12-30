@@ -1,208 +1,290 @@
 import axiosInstance from "@/src/api/client/axiosInstance";
 import { safeGet } from "@/src/services/helpers/safeGet";
-import { ORCHARD_ENDPOINTS as EP } from "../api/orchard.endpoints";
+
+/* ====================================================
+   BASE
+==================================================== */
+const CORE = "/api/core/orchardProfile";
 
 /* ====================================================
    🌳 A. ORCHARD BASIC PROFILE
 ==================================================== */
 export const createOrchard = async (data: any) => {
-  const { data: res } = await axiosInstance.post(EP.orchard.create, data);
+  const { data: res } = await axiosInstance.post(
+    `${CORE}/orchardProfile`,
+    data
+  );
   return res;
 };
 
-export const updateOrchard = async (data: any) => {
-  const { data: res } = await axiosInstance.put(EP.orchard.byId(data.id), data);
+export const updateOrchard = async (orchardId: string | number, data: any) => {
+  const { data: res } = await axiosInstance.put(
+    `${CORE}/orchard/${orchardId}`,
+    data
+  );
   return res;
 };
 
 export const deleteOrchard = async (orchardId: string | number) => {
-  const { data: res } = await axiosInstance.delete(EP.orchard.byId(orchardId));
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchard/${orchardId}`
+  );
   return res;
 };
 
 export const getOrchardById = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(EP.orchard.byId(orchardId)));
+  safeGet(axiosInstance.get(`${CORE}/orchard/${orchardId}`));
 
 export const getOrchardsByUser = async (userId: string | number) =>
-  safeGet(axiosInstance.get(EP.orchard.byUser(userId)));
+  safeGet(axiosInstance.get(`${CORE}/orchard/GetByUserId?userId=${userId}`));
 
 /* ====================================================
    🌱 B. VARIETY & PLANTING
 ==================================================== */
 export const createOrchardVariety = async (data: any) => {
-  const { data: res } = await axiosInstance.post(EP.variety.create, data);
+  const { data: res } = await axiosInstance.post(
+    `${CORE}/orchardProfile`,
+    data
+  );
   return res;
 };
 
-export const updateOrchardVariety = async (data: any) => {
-  const { data: res } = await axiosInstance.put(EP.variety.byId(data.id), data);
+export const updateOrchardVariety = async (id: string | number, data: any) => {
+  const { data: res } = await axiosInstance.put(
+    `${CORE}/orchardProfile/${id}`,
+    data
+  );
   return res;
 };
 
 export const deleteOrchardVariety = async (id: string | number) => {
-  const { data: res } = await axiosInstance.delete(EP.variety.byId(id));
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchardProfile/${id}`
+  );
   return res;
 };
 
 export const getOrchardVarieties = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(EP.variety.byOrchard(orchardId)));
+  safeGet(axiosInstance.get(`${CORE}/orchardProfile/${orchardId}`));
 
 /* ====================================================
    🌍 C. SOIL & WATER
 ==================================================== */
 export const createSoilWater = async (data: any) => {
-  const { data: res } = await axiosInstance.post(EP.soil.create, data);
+  const { data: res } = await axiosInstance.post(
+    `${CORE}/orchardProfile`,
+    data
+  );
   return res;
 };
 
-export const updateSoilWater = async (data: any) => {
-  const { data: res } = await axiosInstance.put(EP.soil.byId(data.id), data);
+export const updateSoilWater = async (id: string | number, data: any) => {
+  const { data: res } = await axiosInstance.put(
+    `${CORE}/orchard-soil/${id}`,
+    data
+  );
   return res;
 };
 
 export const deleteSoilWater = async (id: string | number) => {
-  const { data: res } = await axiosInstance.delete(EP.soil.byId(id));
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchard-soil/${id}`
+  );
   return res;
 };
 
 export const getSoilWaterByOrchard = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(EP.soil.byOrchard(orchardId)));
+  safeGet(axiosInstance.get(`${CORE}/orchard-soil/by-orchard/${orchardId}`));
 
 /* ====================================================
    🌾 D. NUTRITION
 ==================================================== */
 export const createCropNutrition = async (data: any) => {
-  const { data: res } = await axiosInstance.post(EP.nutrition.create, data);
+  const { data: res } = await axiosInstance.post(
+    `${CORE}/orchardProfile`,
+    data
+  );
   return res;
 };
 
-export const updateCropNutrition = async (data: any) => {
+export const updateCropNutrition = async (id: string | number, data: any) => {
   const { data: res } = await axiosInstance.put(
-    EP.nutrition.byId(data.id),
+    `${CORE}/orchard-nutrition/${id}`,
     data
   );
   return res;
 };
 
 export const deleteCropNutrition = async (id: string | number) => {
-  const { data: res } = await axiosInstance.delete(EP.nutrition.byId(id));
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchard-nutrition/${id}`
+  );
   return res;
 };
 
 export const getCropNutritionByOrchard = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(EP.nutrition.byOrchard(orchardId)));
+  safeGet(
+    axiosInstance.get(`${CORE}/orchard-nutrition/by-orchard/${orchardId}`)
+  );
 
 /* ====================================================
    🐛 E. PROTECTION
 ==================================================== */
 export const createPlantProtection = async (data: any) => {
-  const { data: res } = await axiosInstance.post(EP.protection.create, data);
+  const { data: res } = await axiosInstance.post(
+    `${CORE}/orchardProfile`,
+    data
+  );
   return res;
 };
 
-export const updatePlantProtection = async (data: any) => {
+export const updatePlantProtection = async (id: string | number, data: any) => {
   const { data: res } = await axiosInstance.put(
-    EP.protection.byId(data.id),
+    `${CORE}/orchard-protection/${id}`,
     data
   );
   return res;
 };
 
 export const deletePlantProtection = async (id: string | number) => {
-  const { data: res } = await axiosInstance.delete(EP.protection.byId(id));
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchard-protection/${id}`
+  );
   return res;
 };
 
 export const getPlantProtectionByOrchard = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(EP.protection.byOrchard(orchardId)));
+  safeGet(
+    axiosInstance.get(`${CORE}/orchard-protection/by-orchard/${orchardId}`)
+  );
 
 /* ====================================================
-   🚜 F. INFRA
+   🚜 F. INFRASTRUCTURE
 ==================================================== */
 export const createInfrastructure = async (data: any) => {
-  const { data: res } = await axiosInstance.post(EP.infra.create, data);
+  const { data: res } = await axiosInstance.post(
+    `${CORE}/orchardProfile`,
+    data
+  );
   return res;
 };
 
-export const updateInfrastructure = async (data: any) => {
-  const { data: res } = await axiosInstance.put(EP.infra.byId(data.id), data);
+export const updateInfrastructure = async (id: string | number, data: any) => {
+  const { data: res } = await axiosInstance.put(
+    `${CORE}/orchard-infra/${id}`,
+    data
+  );
   return res;
 };
 
 export const deleteInfrastructure = async (id: string | number) => {
-  const { data: res } = await axiosInstance.delete(EP.infra.byId(id));
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchard-infra/${id}`
+  );
   return res;
 };
 
 export const getInfrastructureByOrchard = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(EP.infra.byOrchard(orchardId)));
+  safeGet(axiosInstance.get(`${CORE}/orchard-infra/by-orchard/${orchardId}`));
 
 /* ====================================================
    📦 G. MARKETING
 ==================================================== */
 export const createProductionMarketing = async (data: any) => {
-  const { data: res } = await axiosInstance.post(EP.marketing.create, data);
+  const { data: res } = await axiosInstance.post(
+    `${CORE}/orchardProfile`,
+    data
+  );
   return res;
 };
 
-export const updateProductionMarketing = async (data: any) => {
+export const updateProductionMarketing = async (
+  id: string | number,
+  data: any
+) => {
   const { data: res } = await axiosInstance.put(
-    EP.marketing.byId(data.id),
+    `${CORE}/orchard-marketing/${id}`,
     data
   );
   return res;
 };
 
 export const deleteProductionMarketing = async (id: string | number) => {
-  const { data: res } = await axiosInstance.delete(EP.marketing.byId(id));
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchard-marketing/${id}`
+  );
   return res;
 };
 
 export const getProductionMarketingByOrchard = async (
   orchardId: string | number
-) => safeGet(axiosInstance.get(EP.marketing.byOrchard(orchardId)));
+) =>
+  safeGet(
+    axiosInstance.get(`${CORE}/orchard-marketing/by-orchard/${orchardId}`)
+  );
 
 /* ====================================================
    💰 H. INPUT COST
 ==================================================== */
 export const createInputCost = async (data: any) => {
-  const { data: res } = await axiosInstance.post(EP.inputCost.create, data);
+  const { data: res } = await axiosInstance.post(
+    `${CORE}/orchardProfile`,
+    data
+  );
   return res;
 };
 
-export const updateInputCost = async (data: any) => {
+export const updateInputCost = async (id: string | number, data: any) => {
   const { data: res } = await axiosInstance.put(
-    EP.inputCost.byId(data.id),
+    `${CORE}/orchard-inputcost/${id}`,
     data
   );
   return res;
 };
 
 export const deleteInputCost = async (id: string | number) => {
-  const { data: res } = await axiosInstance.delete(EP.inputCost.byId(id));
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchard-inputcost/${id}`
+  );
   return res;
 };
 
 export const getInputCostByOrchard = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(EP.inputCost.byOrchard(orchardId)));
+  safeGet(
+    axiosInstance.get(`${CORE}/orchard-inputcost/by-orchard/${orchardId}`)
+  );
 
 /* ====================================================
    🧩 I. EXTRA
 ==================================================== */
 export const createOrchardExtra = async (data: any) => {
-  const { data: res } = await axiosInstance.post(EP.extra.create, data);
+  const { data: res } = await axiosInstance.post(
+    `${CORE}/orchardProfile`,
+    data
+  );
   return res;
 };
 
-export const updateOrchardExtra = async (data: any) => {
-  const { data: res } = await axiosInstance.put(EP.extra.byId(data.id), data);
+export const updateOrchardExtra = async (id: string | number, data: any) => {
+  const { data: res } = await axiosInstance.put(
+    `${CORE}/orchard-extra/${id}`,
+    data
+  );
   return res;
 };
 
 export const deleteOrchardExtra = async (id: string | number) => {
-  const { data: res } = await axiosInstance.delete(EP.extra.byId(id));
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchard-extra/${id}`
+  );
   return res;
 };
 
 export const getOrchardExtraByOrchard = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(EP.extra.byOrchard(orchardId)));
+  safeGet(axiosInstance.get(`${CORE}/orchard-extra/by-orchard/${orchardId}`));
+
+/* ====================================================
+   🔎 PROFILE LOOKUP
+==================================================== */
+export const getProfileOrchardId = async (orchardId: string | number) =>
+  safeGet(axiosInstance.get(`${CORE}/user/${orchardId}`));

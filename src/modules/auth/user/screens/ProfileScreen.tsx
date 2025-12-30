@@ -8,7 +8,8 @@ import {
   useProfileMutation,
   useProfileQuery,
   useProfileUpdateMutation,
-} from "@/src/hooks/userQueryHooks";
+} from "../hooks/userQueryHooks";
+
 import { profileSchema } from "@/src/modules/auth/user/schemas/profile.schema";
 import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 import { showSuccessToast } from "@/src/utils/toast";

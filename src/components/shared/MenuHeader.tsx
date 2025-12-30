@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useVendorProfileQuery } from "@/src/hooks/vendorQueryHooks";
+import { useVendorProfileQuery } from "@/src/modules/auth/vendor/hooks/vendorQueryHooks";
 import { router } from "expo-router";
 import { BarChart2, PhoneCall, Store, User } from "lucide-react-native";
 import React from "react";
@@ -26,11 +26,11 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
       <View>
         <CsText className="text-xl font-bold" style={{ color: colors.dark }}>
           Menu
-       </CsText>
+        </CsText>
 
         <CsText className="text-md" style={{ color: colors.neutral }}>
           {role === "supplier" ? "Supplier Dashboard" : "Farmer Dashboard"}
-       </CsText>
+        </CsText>
       </View>
 
       {/* Right Actions */}
@@ -83,7 +83,7 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
               }}
             >
               Become a Supplier
-           </CsText>
+            </CsText>
           </TouchableOpacity>
         ) : role === "farmer" ? (
           <>

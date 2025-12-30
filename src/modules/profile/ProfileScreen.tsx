@@ -10,7 +10,7 @@ import {
   useProfessionDeleteMutation,
   useProfessionQuery,
   useProfileQuery,
-} from "@/src/hooks/userQueryHooks";
+} from "../auth/user/hooks/userQueryHooks";
 
 import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,8 +23,8 @@ import LogoutButton from "@/src/components/ui/LogoutButton";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
 import { useEffect, useState } from "react";
-import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
-import { userRoutes } from "../auth/vendor/config/userRoutes";
+import { userDeleteConfig } from "../auth/user/config/userDeleteConfig";
+import { userRoutes } from "../auth/user/config/userRoutes";
 
 // Icons
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";

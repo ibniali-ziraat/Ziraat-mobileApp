@@ -4,7 +4,8 @@ import {
   useOtpVerifyMutation,
   useProfileMutation,
   useSendOtpMutation,
-} from "@/src/hooks/userQueryHooks";
+} from "../hooks/userQueryHooks";
+
 import OTPSection from "@/src/modules/auth/user/sections/OTPSection";
 import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 
