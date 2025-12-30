@@ -5,10 +5,13 @@ import { ROUTES } from "@/src/constants/routes";
 import {
   useCreateInputCostMutation,
   useInputCostQuery,
+  useOrchardProfileId,
   useUpdateInputCostMutation,
 } from "../hooks/useOrchardsQuery";
 
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
 import InputCostDetails from "../form-sections/InputCostSection";
@@ -18,6 +21,8 @@ export default function InputCostDetailsScreen() {
   // console.log(userProfileData, "userprofiledata");
 
   const { data } = useInputCostQuery(0);
+  const { userId } = useAuth();
+  const { data: orchardProfile } = useOrchardProfileId(userId);
   const { mutateAsync: save, isPending: isSaving } =
     useCreateInputCostMutation();
   const { mutateAsync: update, isPending: isUpdating } =
@@ -47,24 +52,38 @@ export default function InputCostDetailsScreen() {
   //     });
   //   }, [data]);
 
-  const onSubmit = async (val: any) => {
-    router.push(ROUTES.ORCHARDS.REGISTRATION.PLANT_PROTECTION_INFO);
-    // try {
-    //   if (data) {
-    //     const payload = { id: vendorData.id, ...val };
-    //     await update(payload);
-    //   } else {
-    //     const payload = { userId: userData.id, ...val };
-    //     const res = await save(payload);
-    //     setVendorData({
-    //       profileId: res.id,
-    //     });
-    //   }
-    //   router.push("/auth/vendor/vendor-profile-screen");
-    // } catch (err) {
-    //   showErrorToast("Something went wrong");
-    //   console.error(err);
-    // }
+  const onSubmit = async (values: any) => {
+    try {
+      // let res;
+
+      // if (orchardId) {
+      //   res = await update({ id: orchardId, ...values });
+      //   showSuccessToast("Orchard updated");
+      // }
+
+      // else
+
+      //   {
+      const payload = {
+        id: orchardProfile?.[0]?.id,
+        inputCost: {
+          ...values,
+        },
+      };
+
+      // Send payload
+      const res = await save(payload);
+
+      // setOrchardId(res.id);
+      showSuccessToast("Orchard created");
+      // }
+
+      router.push(ROUTES.ORCHARDS.REGISTRATION.PLANT_PROTECTION_INFO);
+    } catch (error: any) {
+      showErrorToast(
+        error?.response?.data?.message || "Failed to save orchard information"
+      );
+    }
   };
 
   return (

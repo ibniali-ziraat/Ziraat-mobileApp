@@ -30,14 +30,20 @@ import {
 // ----------------------------------------------------
 // 🔐 LOGIN
 // ----------------------------------------------------
-export const useLoginMutation = () => useMutation({
-   mutationFn: login });
+export const useLoginMutation = () =>
+  useMutation({
+    mutationFn: login,
+  });
 
-   export const useGetAuthProviders = () => useMutation({
-   mutationFn: getAuthProviders });
+export const useGetAuthProviders = () =>
+  useMutation({
+    mutationFn: getAuthProviders,
+  });
 
-    export const UseGoogleLogin = () => useMutation({
-   mutationFn: googleLogin });
+export const UseGoogleLogin = () =>
+  useMutation({
+    mutationFn: googleLogin,
+  });
 
 export const useSendOtpMutation = () =>
   useMutation({ mutationFn: sendUserOtp });
@@ -121,8 +127,4 @@ export const useProfessionUpdateMutation = () =>
 export const useProfessionDeleteMutation = () =>
   useMutation({ mutationFn: deleteProfessionSection });
 
-
-
-
-export const useCheckUserExists = () =>
-  useMutation({ mutationFn: userExists });
+export const useCheckUserExists = () => useMutation({ mutationFn: userExists });

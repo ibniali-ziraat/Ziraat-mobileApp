@@ -6,7 +6,7 @@ import {
   useVendorProductsMutation,
   useVendorProductsQuery,
   useVendorProductsUpdateMutation,
-} from "@/src/hooks/vendorQueryHooks";
+} from "../../../../hooks/vendorQueryHooks";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
@@ -103,7 +103,7 @@ export default function ProductsScreen() {
     <ScreenLayout>
       <BackHeader
         title="Products & Services"
-  desc="List the specific inputs you sell and the authorized brands you stock."
+        desc="List the specific inputs you sell and the authorized brands you stock."
         onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>

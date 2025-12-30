@@ -8,7 +8,8 @@ import {
   useVendorSupportMutation,
   useVendorSupportQuery,
   useVendorSupportUpdateMutation,
-} from "@/src/hooks/vendorQueryHooks";
+} from "../../../../hooks/vendorQueryHooks";
+
 import { supportServicesSchema } from "@/src/modules/auth/vendor/schemas/support.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";

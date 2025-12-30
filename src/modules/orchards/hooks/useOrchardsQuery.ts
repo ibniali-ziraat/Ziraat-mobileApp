@@ -29,6 +29,7 @@ import {
   getOrchardVarieties,
   getPlantProtectionByOrchard,
   getProductionMarketingByOrchard,
+  getProfileOrchardId,
   getSoilWaterByOrchard,
   updateCropNutrition,
   updateInfrastructure,
@@ -236,3 +237,10 @@ export const useUpdateOrchardExtraMutation = () =>
 
 export const useDeleteOrchardExtraMutation = () =>
   useMutation({ mutationFn: deleteOrchardExtra });
+
+export const useOrchardProfileId = (orchardId: ID) =>
+  useQuery({
+    queryKey: ["orchardProfile", orchardId],
+    queryFn: () => getProfileOrchardId(orchardId),
+    enabled: !!orchardId,
+  });

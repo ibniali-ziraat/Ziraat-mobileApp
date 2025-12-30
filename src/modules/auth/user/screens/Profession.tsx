@@ -8,7 +8,8 @@ import {
   useProfessionMutation,
   useProfessionQuery,
   useProfessionUpdateMutation,
-} from "@/src/hooks/userQueryHooks";
+} from "../../../../hooks/userQueryHooks";
+
 import { professionSchema } from "@/src/modules/auth/user/schemas/profession.schema";
 import ProfessionSection from "@/src/modules/auth/user/sections/ProfessionSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
@@ -66,8 +67,8 @@ export default function ProfessionScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <BackHeader
-         title="Professional Details"
-  desc="Please provide details about your current profession. "
+          title="Professional Details"
+          desc="Please provide details about your current profession. "
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
 

@@ -3,12 +3,14 @@ import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { useFileUploadMutation } from "@/src/hooks/useFileUpload";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorLicenseMutation,
   useVendorLicenseQuery,
   useVendorLicenseUpdateMutation,
-} from "@/src/hooks/vendorQueryHooks";
+} from "../../../../hooks/vendorQueryHooks";
+
 import { licensingComplianceSchema } from "@/src/modules/auth/vendor/schemas/licensing.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
@@ -23,6 +25,8 @@ export default function LicenseScreen() {
   const { mutateAsync: save, isPending: isSaving } = useVendorLicenseMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useVendorLicenseUpdateMutation();
+
+  const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
   const form = useZodForm(licensingComplianceSchema);
   const {
     setValue,
@@ -55,11 +59,24 @@ export default function LicenseScreen() {
     console.log("logged...");
 
     try {
+      let licenseCopyUrl;
+
+      if (values.licenseCopyUrl) {
+        const uploadRes = await uploadFileAsync({
+          file: values.licenseCopyUrl,
+          ownerType: "vendor",
+          ownerId: vendorProfileId,
+          purpose: "license",
+        });
+
+        licenseCopyUrl = uploadRes.url;
+      }
       if (data) {
         const payload = {
           licensingId: data?.id,
           supplierProfileId: vendorProfileId,
           ...values,
+          licenseCopyUrl,
         };
         await update(payload);
         showSuccessToast("License Updated");
@@ -67,6 +84,7 @@ export default function LicenseScreen() {
         const payload = {
           supplierProfileId: vendorProfileId,
           ...values,
+          licenseCopyUrl,
         };
         await save(payload);
         showSuccessToast("License Saved!");
@@ -83,7 +101,7 @@ export default function LicenseScreen() {
     <ScreenLayout>
       <BackHeader
         title="Licensing & Compliance"
-  desc="Enter your professional license details below."
+        desc="Enter your professional license details below."
         onPress={() => router.replace(ROUTES.AUTH.VENDOR_PROFILE)}
       />
       <FormProvider {...form}>

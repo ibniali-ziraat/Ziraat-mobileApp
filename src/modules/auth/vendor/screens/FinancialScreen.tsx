@@ -8,7 +8,8 @@ import {
   useVendorFinancialMutation,
   useVendorFinancialQuery,
   useVendorFinancialUpdateMutation,
-} from "@/src/hooks/vendorQueryHooks";
+} from "../../../../hooks/vendorQueryHooks";
+
 import { financialPaymentSchema } from "@/src/modules/auth/vendor/schemas/finance.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";

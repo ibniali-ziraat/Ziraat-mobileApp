@@ -8,7 +8,8 @@ import {
   useVendorProfileMutation,
   useVendorProfileQuery,
   useVendorProfileUpdateMutation,
-} from "@/src/hooks/vendorQueryHooks";
+} from "../../../../hooks/vendorQueryHooks";
+
 import { businessInformationSchema } from "@/src/modules/auth/vendor/schemas/business.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";

@@ -1,13 +1,10 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-
 import orchardsData from "@/src/data/myOrchardsData.json";
 import { orchardDetailImagesById } from "@/src/data/orchardDetailImages";
-
 import { useLocalSearchParams } from "expo-router";
 import { Image, View } from "react-native";
-
-import CsText from "@/src/components/shared/CsText";
 import AddressDetails from "../components/AddressDetails";
 import BasicInformation from "../components/BasicInformation";
 import CropAndNutrition from "../components/CropAndNutrition";
@@ -22,9 +19,7 @@ import VarietyAndPlanting from "../components/VarietyAndPlanting";
 
 export default function OrchardDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
-
   const orchard = orchardsData.find((item) => item.id === String(id));
-
   if (!orchard) {
     return (
       <View className="flex-1 items-center justify-center">
@@ -32,7 +27,12 @@ export default function OrchardDetail() {
       </View>
     );
   }
-
+  //  const { progress, missingSections } = useProfileProgress({
+  //     profile: profileData,
+  //     address: addressData,
+  //     education: educationData,
+  //     profession: professionData,
+  //   });
   const images = orchardDetailImagesById[String(orchard.id)];
 
   return (
@@ -41,6 +41,18 @@ export default function OrchardDetail() {
         title="Orchard Details"
         desc="Detailed orchard profile and management information"
       />
+      {/* {progress < 100 && (
+              <ProfileProgressBar
+                progress={progress}
+                missingSections={missingSections}
+                completedSections={[
+                  "Profile",
+                  "Address",
+                  "Education",
+                  "Profession",
+                ].filter((s) => !missingSections.includes(s.toLowerCase()))}
+              />
+            )} */}
 
       {images && (
         <View className="flex-row w-full h-60 gap-1 overflow-hidden mt-3 mb-3">

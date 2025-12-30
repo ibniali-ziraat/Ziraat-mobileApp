@@ -25,18 +25,15 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
     <View className="flex-row items-center justify-between bg-light py-4">
       {/* Title & Subtitle */}
       <View>
-        <CsText style={[typography.Poppins_l_semibold
-
-          ,{color: colors.dark}
-        ] }>
+        <CsText style={[typography.Poppins_l_semibold, { color: colors.dark }]}>
           Menu
-       </CsText>
+        </CsText>
 
-        <CsText style={[typography.Poppins_s_regular
-
-          ,{ color: colors.neutral }]}>
+        <CsText
+          style={[typography.Poppins_s_regular, { color: colors.neutral }]}
+        >
           {role === "supplier" ? "Supplier Dashboard" : "Farmer Dashboard"}
-       </CsText>
+        </CsText>
       </View>
 
       {/* Right Actions */}
@@ -89,7 +86,7 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
               }}
             >
               Become a Supplier
-           </CsText>
+            </CsText>
           </TouchableOpacity>
         ) : role === "farmer" ? (
           <>

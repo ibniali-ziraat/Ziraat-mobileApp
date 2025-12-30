@@ -2,23 +2,16 @@ import CsText from "@/src/components/shared/CsText";
 import { typography } from "@/src/constants/fonts/typography";
 import { View } from "react-native";
 
-export default function DetailRow({
-  label,
-  value,
-}: {
+interface DetailRowProps {
   label: string;
-  value?: string | number | null;
-}) {
+  value?: string;
+}
+
+export default function DetailRow({ label, value }: DetailRowProps) {
   return (
-    <View className="flex-row justify-between py-2">
-      <CsText style={[typography.Poppins_xs_semibold]}>
-        {label}
-      </CsText>
-      <CsText className="text-right max-w-[60%]" style={[typography.Poppins_xs_medium]}>
-        {value !== undefined && value !== null && value !== ""
-          ? String(value)
-          : "-"}
-      </CsText>
+    <View className="flex-row justify-between py-1">
+      <CsText style={typography.Poppins_xs_medium}>{label}</CsText>
+      <CsText style={typography.Poppins_xs_regular}>{value || "-"}</CsText>
     </View>
   );
 }
