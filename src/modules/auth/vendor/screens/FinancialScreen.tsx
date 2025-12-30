@@ -11,6 +11,7 @@ import {
 } from "../../../../hooks/vendorQueryHooks";
 
 import { financialPaymentSchema } from "@/src/modules/auth/vendor/schemas/finance.schema";
+import { payload } from "@/src/types/payload.types";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
@@ -53,7 +54,7 @@ export default function FinancialScreen() {
     setValue("sellingViaZiraat", data.sellingViaZiraat || false);
   }, [data]);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: payload) => {
     try {
       const payload = {
         supplierProfileId: vendorProfileId,

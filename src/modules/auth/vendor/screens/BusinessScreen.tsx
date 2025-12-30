@@ -11,6 +11,7 @@ import {
 } from "../../../../hooks/vendorQueryHooks";
 
 import { businessInformationSchema } from "@/src/modules/auth/vendor/schemas/business.schema";
+import { payload } from "@/src/types/payload.types";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
@@ -53,7 +54,9 @@ export default function BusinessScreen() {
 
   console.log(data, "businessdata");
 
-  const onSubmit = async (val: any) => {
+  const onSubmit = async (val: payload) => {
+    console.log(val, "valll");
+
     try {
       if (data) {
         const payload = { id: data.id, ...val, userId: userId };

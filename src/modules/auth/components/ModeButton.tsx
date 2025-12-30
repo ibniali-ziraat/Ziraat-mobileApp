@@ -1,11 +1,6 @@
 import CsText from "@/src/components/shared/CsText";
-import { colors } from "@/src/constants/colors";
 import { TouchableOpacity } from "react-native";
-
-interface ModeButtonProps {
-  title: string;
-  onPress: () => void;
-}
+import { ModeButtonProps } from "../types/auth.types";
 
 export function ModeButton({ title, onPress }: ModeButtonProps) {
   const isRegisterMode = title.includes("Register");
@@ -13,54 +8,23 @@ export function ModeButton({ title, onPress }: ModeButtonProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={{
-        paddingVertical: 4,
-        paddingHorizontal: 20,
-        alignSelf: "center",
-        marginTop: 4,
-        marginBottom: 20,
-        flexDirection: "row",
-      }}
+      className="flex-row self-center mt-1 mb-5 px-5 py-1"
     >
       {isRegisterMode ? (
         <>
-          <CsText
-            style={{
-              color: "#6B7280", // gray
-              fontSize: 13,
-            }}
-          >
+          <CsText className="text-gray-500 text-[12px]">
             Don’t have an account?{" "}
           </CsText>
-          <CsText
-            style={{
-              color: colors.primary,
-              fontWeight: "700",
-              fontSize: 13,
-            }}
-          >
+          <CsText className="text-primary font-bold text-[12px]">
             Register
           </CsText>
         </>
       ) : (
         <>
-          <CsText
-            style={{
-              color: "#6B7280",
-              fontSize: 14,
-            }}
-          >
+          <CsText className="text-gray-500 text-sm">
             Already have an account?{" "}
           </CsText>
-          <CsText
-            style={{
-              color: colors.primary,
-              fontWeight: "700",
-              fontSize: 14,
-            }}
-          >
-            Login
-          </CsText>
+          <CsText className="text-primary font-bold text-sm">Login</CsText>
         </>
       )}
     </TouchableOpacity>

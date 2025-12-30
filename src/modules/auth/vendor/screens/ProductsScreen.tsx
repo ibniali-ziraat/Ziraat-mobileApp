@@ -14,6 +14,7 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { productPortfolioSchema } from "@/src/modules/auth/vendor/schemas/products.schema";
+import { payload } from "@/src/types/payload.types";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import ProductSection from "../sections/ProductSection";
@@ -60,7 +61,7 @@ export default function ProductsScreen() {
   }, [data, setValue]);
 
   // Submit handler
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: payload) => {
     console.log(values, "values...");
 
     const payload = {
