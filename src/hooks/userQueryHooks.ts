@@ -8,9 +8,11 @@ import {
   deleteProfessionSection,
   deleteProfileSection,
   getAddressSection,
+  getAuthProviders,
   getEducationSection,
   getProfessionSection,
   getProfileSection,
+  googleLogin,
   login,
   saveAddressSection,
   saveEducationSection,
@@ -28,7 +30,14 @@ import {
 // ----------------------------------------------------
 // 🔐 LOGIN
 // ----------------------------------------------------
-export const useLoginMutation = () => useMutation({ mutationFn: login });
+export const useLoginMutation = () => useMutation({
+   mutationFn: login });
+
+   export const useGetAuthProviders = () => useMutation({
+   mutationFn: getAuthProviders });
+
+    export const UseGoogleLogin = () => useMutation({
+   mutationFn: googleLogin });
 
 export const useSendOtpMutation = () =>
   useMutation({ mutationFn: sendUserOtp });
