@@ -3,6 +3,7 @@ import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
 import products from "@/src/data/products.json";
+import { useDeleteWishlist, useGetWishlist } from "@/src/hooks/useWishList";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -24,11 +25,21 @@ const Wishlist = () => {
   }, []);
 
 
-  const handleRemove = (id: string) => {
-    setWishlistItems((prev) => prev.filter((item) => item._id !== id));
-  };
+  // const handleRemove = (id: string) => {
+  //   setWishlistItems((prev) => prev.filter((item) => item._id !== id));
+  // };
 
   const handleStartShopping = () => router.push("/Product");
+  const {data ,isLoading , error}=useGetWishlist()
+  console.log(data,"this is comming from tanstckq")
+  console.log(error ,"get error")
+
+  const { mutate: deleteWishlist } = useDeleteWishlist();
+  const handleRemoveFromWishlist = (wishlistId: number) => {
+  deleteWishlist(wishlistId);
+};
+
+
 
  
   if (wishlistItems.length === 0) {
@@ -84,7 +95,7 @@ const Wishlist = () => {
         showsVerticalScrollIndicator={false}
        
         renderItem={({ item }) => (
-          <WishlistItem item={item} onRemove={handleRemove} />
+          <WishlistItem item={item} onRemove={handleRemoveFromWishlist} />
         )}
         ListFooterComponent={
           <View>

@@ -21,7 +21,8 @@
       "Storage: Keep in a cool, dry place away from children and pets. Dispose of containers responsibly."
     ],
     "rating": 2,
-    "dosage": "50–75 ml per acre, diluted in 10–15 liters of water, foliar spray"
+    "dosage": "50–75 ml per acre, diluted in 10–15 liters of water, foliar spray",
+    "quantity":"1"
   },
   {
     "_id": "102",
@@ -51,7 +52,8 @@
       "Storage: Store in a cool, dry place away from sunlight and children."
     ],
     "rating": 4.3,
-    "dosage": "2 g per liter of water, spray 400–500 liters per hectare"
+    "dosage": "2 g per liter of water, spray 400–500 liters per hectare",
+     "quantity":"1"
   },
   {
     "_id": "103",
@@ -80,7 +82,8 @@
       "Storage: Keep away from moisture and direct sunlight."
     ],
     "rating": 4.4,
-    "dosage": "1–2 g per liter of water, foliar spray every 10–14 days"
+    "dosage": "1–2 g per liter of water, foliar spray every 10–14 days",
+     "quantity":"1"
   },
   {
     "_id": "104",
@@ -110,7 +113,8 @@
       "Storage: Store in a cool, dry place away from children and animals."
     ],
     "rating": 4.6,
-    "dosage": "10–15 ml per 10 liters of water, spray on affected crops"
+    "dosage": "10–15 ml per 10 liters of water, spray on affected crops", 
+    "quantity":"1"
   },
   {
     "_id": "105",
@@ -139,7 +143,8 @@
       "Storage: Keep containers tightly closed in a cool, dry place."
     ],
     "rating": 3.9,
-    "dosage": "20–30 ml per 10 liters of water, soil drench or foliar spray"
+    "dosage": "20–30 ml per 10 liters of water, soil drench or foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "106",
@@ -168,7 +173,8 @@
       "Storage: Keep away from children and pets. Store in a cool, dry area."
     ],
     "rating": 4.0,
-    "dosage": "10–15 ml per 10 liters of water, foliar spray"
+    "dosage": "10–15 ml per 10 liters of water, foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "107",
@@ -197,7 +203,8 @@
       "Storage: Store in a cool, dry place."
     ],
     "rating": 4.2,
-    "dosage": "5–10 ml per 10 liters of water, foliar spray"
+    "dosage": "5–10 ml per 10 liters of water, foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "108",
@@ -227,7 +234,8 @@
       "Storage: Store in a cool, dry place away from children."
     ],
     "rating": 4.3,
-    "dosage": "15–20 g per 10 liters of water, foliar spray"
+    "dosage": "15–20 g per 10 liters of water, foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "109",
@@ -257,7 +265,8 @@
       "Storage: Store in a cool, dry place away from sunlight."
     ],
     "rating": 4.4,
-    "dosage": "1 ml per liter of water, foliar spray every 10–14 days"
+    "dosage": "1 ml per liter of water, foliar spray every 10–14 days",
+     "quantity":"1"
   },
   {
     "_id": "110",
@@ -287,7 +296,8 @@
       "Storage: Keep in a cool, dry place away from children."
     ],
     "rating": 3.8,
-    "dosage": "10–20 ml per 10 liters of water, foliar spray"
+    "dosage": "10–20 ml per 10 liters of water, foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "111",
@@ -317,7 +327,8 @@
       "Storage: Store in a dry place away from sunlight and children."
     ],
     "rating": 4.5,
-    "dosage": "4–6 g per 10 liters of water, foliar spray"
+    "dosage": "4–6 g per 10 liters of water, foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "112",
@@ -341,7 +352,8 @@
       "Storage: Store in a cool, dry place."
     ],
     "rating": 4.4,
-    "dosage": "10–15 ml per 10 liters of water, soil drench or foliar spray"
+    "dosage": "10–15 ml per 10 liters of water, soil drench or foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "113",
@@ -371,7 +383,8 @@
       "Storage: Keep in a dry, cool place."
     ],
     "rating": 3.9,
-    "dosage": "5–10 g per 10 liters of water, foliar spray"
+    "dosage": "5–10 g per 10 liters of water, foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "114",
@@ -401,7 +414,8 @@
       "Storage: Store in a cool, dry place."
     ],
     "rating": 4.5,
-    "dosage": "1 ml per liter of water, foliar spray every 15 days"
+    "dosage": "1 ml per liter of water, foliar spray every 15 days",
+     "quantity":"1"
   },
   {
     "_id": "115",
@@ -431,7 +445,8 @@
       "Storage: Keep in a cool, dry place away from children."
     ],
     "rating": 4.4,
-    "dosage": "2 g per liter of water, foliar spray every 10–12 days"
+    "dosage": "2 g per liter of water, foliar spray every 10–12 days",
+     "quantity":"1"
   },
   {
     "_id": "116",
@@ -460,7 +475,8 @@
       "Storage: Keep containers in a cool, dry place."
     ],
     "rating": 4.3,
-    "dosage": "1–2 ml per liter of water, foliar spray"
+    "dosage": "1–2 ml per liter of water, foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "117",
@@ -490,7 +506,8 @@
       "Storage: Keep in a cool, dry place away from sunlight."
     ],
     "rating": 4.4,
-    "dosage": "5–10 ml per 10 liters of water, foliar spray"
+    "dosage": "5–10 ml per 10 liters of water, foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "118",
@@ -518,7 +535,8 @@
       "Storage: Keep in a cool, dry place."
     ],
     "rating": 4.3,
-    "dosage": "5–10 ml per 10 liters of water, foliar spray"
+    "dosage": "5–10 ml per 10 liters of water, foliar spray",
+     "quantity":"1"
   },
   {
     "_id": "119",
@@ -541,7 +559,9 @@
       "Storage: Keep in a cool, dry place away from children."
     ],
     "rating": 4.4,
-    "dosage": "15–20 ml per 10 liters of water, foliar spray"
+    "dosage": "15–20 ml per 10 liters of water, foliar spray",
+    "quantity":"1"
+
   },
   {
     "_id": "120",
@@ -564,7 +584,8 @@
       "Storage: Keep in a cool, dry place."
     ],
     "rating": 4.2,
-    "dosage": "10–15 ml per 10 liters of water, foliar spray"
+    "dosage": "10–15 ml per 10 liters of water, foliar spray",
+    "quantity":"1"
   },
   {
     "_id": "121",
@@ -587,7 +608,8 @@
       "Storage: Keep containers dry and away from sunlight."
     ],
     "rating": 4.4,
-    "dosage": "20 g per 10 liters of water, foliar spray every 7–10 days"
+    "dosage": "20 g per 10 liters of water, foliar spray every 7–10 days",
+    "quantity":"1"
   },
   {
     "_id": "122",
@@ -615,7 +637,8 @@
       "Storage: Keep in a cool, dry place."
     ],
     "rating": 4.3,
-    "dosage": "1 ml per liter of water, foliar spray every 10–14 days"
+    "dosage": "1 ml per liter of water, foliar spray every 10–14 days",
+    "quantity":"1"
   },
   {
     "_id": "123",
@@ -638,7 +661,8 @@
       "Storage: Keep in a cool, dry place away from children."
     ],
     "rating": 4.4,
-    "dosage": "50–75 ml per acre, diluted in 10–15 liters of water, foliar spray"
+    "dosage": "50–75 ml per acre, diluted in 10–15 liters of water, foliar spray",
+    "quantity":"1"
   },
   {
     "_id": "124",
@@ -661,7 +685,8 @@
       "Storage: Store in cool, dry place."
     ],
     "rating": 4.3,
-    "dosage": "4–6 ml per 10 liters of water, foliar spray"
+    "dosage": "4–6 ml per 10 liters of water, foliar spray",
+    "quantity":"1"
   },
   {
     "_id": "125",
@@ -690,7 +715,8 @@
       "Storage: Keep in a cool, dry place away from sunlight."
     ],
     "rating": 4.4,
-    "dosage": "5–10 ml per 10 liters of water, foliar spray"
+    "dosage": "5–10 ml per 10 liters of water, foliar spray",
+    "quantity":"1"
   },
   {
     "_id": "126",
@@ -719,7 +745,8 @@
       "Storage: Store in a cool, dry place."
     ],
     "rating": 4.3,
-    "dosage": "1–2 g per liter of water, foliar spray"
+    "dosage": "1–2 g per liter of water, foliar spray",
+    "quantity":"1"
   },
   {
     "_id": "127",
@@ -747,7 +774,8 @@
       "Storage: Keep in cool, dry place away from sunlight."
     ],
     "rating": 4.3,
-    "dosage": "1 ml per liter of water, foliar spray every 15 days"
+    "dosage": "1 ml per liter of water, foliar spray every 15 days",
+    "quantity":"1"
   },
   {
     "_id": "128",
@@ -770,7 +798,8 @@
       "Storage: Dilute recommended dose and spray foliage."
     ],
     "rating": 4.4,
-    "dosage": "10–15 ml per 10 liters of water, soil drench or foliar spray"
+    "dosage": "10–15 ml per 10 liters of water, soil drench or foliar spray",
+    "quantity":"1"
   },
   {
     "_id": "129",
@@ -798,6 +827,7 @@
       "Storage: Keep in a cool, dry place away from children."
     ],
     "rating": 4.3,
-    "dosage": "10 ml per 10 liters of water, foliar spray"
+    "dosage": "10 ml per 10 liters of water, foliar spray",
+    "quantity":"1"
   }
 ]
