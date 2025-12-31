@@ -8,8 +8,10 @@ import {
   useVendorSupportMutation,
   useVendorSupportQuery,
   useVendorSupportUpdateMutation,
-} from "@/src/hooks/vendorQueryHooks";
+} from "../../../../hooks/vendorQueryHooks";
+
 import { supportServicesSchema } from "@/src/modules/auth/vendor/schemas/support.schema";
+import { payload } from "@/src/types/payload.types";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
@@ -45,7 +47,7 @@ export default function SupportScreen() {
     setValue("vehicleAvailable", data.vehicleAvailable ? "yes" : "no");
   }, [data]);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: payload) => {
     const payload = {
       supplierProfileId: vendorProfileId,
       ...values,

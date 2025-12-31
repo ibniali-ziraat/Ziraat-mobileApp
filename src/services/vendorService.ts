@@ -1,8 +1,9 @@
+// ----------------------------------------------------
+//  VENDOR PROFILE (Business Info)
+
 import axiosInstance from "../api/client/axiosInstance";
 import { safeGet } from "./helpers/safeGet";
 
-// ----------------------------------------------------
-//  VENDOR PROFILE (Business Info)
 // ----------------------------------------------------
 export const saveVendorProfile = async (data) =>
   (await axiosInstance.post("/api/core/BusinessInformation", data)).data;

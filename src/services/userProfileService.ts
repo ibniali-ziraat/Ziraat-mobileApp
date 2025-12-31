@@ -1,7 +1,7 @@
 // src/services/userProfileService.js
 
-import axiosInstance from "../api/client/axiosInstance";
-import { safeGet } from "./helpers/safeGet";
+import axiosInstance from "@/src/api/client/axiosInstance";
+import { safeGet } from "@/src/services/helpers/safeGet";
 
 // ----------------------------------------------------
 // 🔐 LOGIN
@@ -10,6 +10,23 @@ export const login = async (credentials) => {
   const { data } = await axiosInstance.post(
     "/api/core/account/login",
     credentials,
+    { headers: { "Content-Type": "application/json" } }
+  );
+  return data;
+};
+
+export const getAuthProviders = async () => {
+  const { data } = await axiosInstance.get(
+    "/api/core/auth/providers",
+    { headers: { "Content-Type": "application/json" } }
+  );
+  return data;
+};
+
+export const googleLogin = async (payload) => {
+  const { data } = await axiosInstance.post(
+    "/api/core/auth/google/login",
+    payload,
     { headers: { "Content-Type": "application/json" } }
   );
   return data;
@@ -55,12 +72,12 @@ export const verifyUserOtp = async (data) => {
   return response.data;
 };
 
-
 export const sendUserOtp = async (phoneNumber: string) => {
-  const response = await axiosInstance.post("/api/core/otpverification/send", { phoneNumber });
+  const response = await axiosInstance.post("/api/core/otpverification/send", {
+    phoneNumber,
+  });
   return response.data;
 };
-
 
 // ----------------------------------------------------
 // 🏠 ADDRESS SECTION
@@ -148,16 +165,10 @@ export const getProfessionSection = async (profileId) =>
     )
   );
 
-
-
-
-
-
 export const userExists = async (user) => {
   const { data } = await axiosInstance.post(
-    `/api/core/userProfile/CheckExistingEmailandPhoneNumber/`, user
-
+    `/api/core/userProfile/CheckExistingEmailandPhoneNumber/`,
+    user
   );
   return data;
 };
-

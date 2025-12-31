@@ -10,7 +10,7 @@ import { imageMapper } from "../../data/imageMapper";
 import products from "../../data/products.json";
 
 export default function ProductScreen() {
-  console.log(products, "products...");
+  console.log("PRODUCTS:", products);
 
   const sections = [
     { title: "Popular pesticide for Crop Production", slice: [0, 8] },
@@ -22,18 +22,18 @@ export default function ProductScreen() {
   const { mutate, error } = useSaveWishlist();
 
   const handleAddToWishlist = (productId: number) => {
+    console.log("ADDING PRODUCT ID:", productId);
+    console.log("TYPE:", typeof productId); 
+
     mutate({
       productId,
       quantity: 1,
     });
   };
 
-  const handleRemoveFromWishlist = (wishlistId: number) => {
-    console.log("Remove wishlist id:", wishlistId);
-    // deleteWishlist(wishlistId);
-  };
-
-  console.log(error, "mutation error");
+  if (error) {
+    console.log("Wishlist error:", error);
+  }
 
   return (
     <ScreenLayout>
@@ -53,7 +53,6 @@ export default function ProductScreen() {
             items={products.slice(...section.slice)}
             imageMapper={imageMapper}
             onAddToWishlist={handleAddToWishlist}
-            onRemoveFromWishlist={handleRemoveFromWishlist}
           />
         </View>
       ))}

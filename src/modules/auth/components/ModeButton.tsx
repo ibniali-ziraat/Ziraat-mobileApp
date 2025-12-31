@@ -1,0 +1,32 @@
+import CsText from "@/src/components/shared/CsText";
+import { TouchableOpacity } from "react-native";
+import { ModeButtonProps } from "../types/auth.types";
+
+export function ModeButton({ title, onPress }: ModeButtonProps) {
+  const isRegisterMode = title.includes("Register");
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      className="flex-row self-center mt-1 mb-5 px-5 py-1"
+    >
+      {isRegisterMode ? (
+        <>
+          <CsText className="text-gray-500 text-[12px]">
+            Don’t have an account?{" "}
+          </CsText>
+          <CsText className="text-primary font-bold text-[12px]">
+            Register
+          </CsText>
+        </>
+      ) : (
+        <>
+          <CsText className="text-gray-500 text-sm">
+            Already have an account?{" "}
+          </CsText>
+          <CsText className="text-primary font-bold text-sm">Login</CsText>
+        </>
+      )}
+    </TouchableOpacity>
+  );
+}

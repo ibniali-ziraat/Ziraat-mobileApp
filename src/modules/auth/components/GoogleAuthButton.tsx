@@ -26,14 +26,16 @@ export function GoogleAuthButton({
         ${disabled ? "opacity-50" : "active:scale-[0.98]"}
       `}
     >
-      {/* Left Icon */}
       <Image
         source={require("@/assets/images/google-logo.png")}
-        className="w-5 h-5"
         resizeMode="contain"
+        style={{
+          width: 20,
+          height: 20,
+          flexShrink: 0,
+        }}
       />
 
-      {/* Centered Text */}
       <View className="flex-1 items-center">
         <Text className="text-[15px] font-medium text-neutral">{label}</Text>
       </View>

@@ -5,6 +5,9 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import VendorProfileHeader from "@/src/components/shared/VendorProfileHeader";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
+import { showSuccessToast } from "@/src/utils/toast";
+import { useQueryClient } from "@tanstack/react-query";
+import { router } from "expo-router";
 import {
   useVendorFinancialDeleteMutation,
   useVendorFinancialQuery,
@@ -17,10 +20,7 @@ import {
   useVendorProfileQuery,
   useVendorSupportDeleteMutation,
   useVendorSupportQuery,
-} from "@/src/hooks/vendorQueryHooks";
-import { showSuccessToast } from "@/src/utils/toast";
-import { useQueryClient } from "@tanstack/react-query";
-import { router } from "expo-router";
+} from "../../hooks/vendorQueryHooks";
 
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { colors } from "@/src/constants/colors";

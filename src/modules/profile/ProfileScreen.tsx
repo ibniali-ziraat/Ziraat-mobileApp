@@ -10,7 +10,7 @@ import {
   useProfessionDeleteMutation,
   useProfessionQuery,
   useProfileQuery,
-} from "@/src/hooks/userQueryHooks";
+} from "../../hooks/userQueryHooks";
 
 import { showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
@@ -121,7 +121,6 @@ export default function UserProfileScreen() {
       <ProfileTopHeader
         profilePic={profileData?.profilePic}
         fullName={profileData?.fullName}
-        // onEdit={() => goToSection("profile")}
       />
       {progress < 100 && (
         <ProfileProgressBar

@@ -71,7 +71,7 @@ export default function ProductCarousel({
  
                   <Pressable
                     className="absolute top-2 right-2 p-1"
-                  onPress={() => onAddToWishlist(item.id)}
+                  onPress={() => onAddToWishlist(Number(item._id))}
                      >
                     <Heart
                       size={20}
