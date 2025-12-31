@@ -1,6 +1,6 @@
 [
   {
-    "_id": "101",
+    "_id": 101,
     "title": "Buprofezin",
     "category": "Insecticide – IGR",
     "saltComposition": "Buprofezin 25% SC",
@@ -25,7 +25,7 @@
     "quantity":"1"
   },
   {
-    "_id": "102",
+    "_id": 102,
     "title": "Acetamiprid",
     "category": "Insecticide – Neonicotinoid",
     "saltComposition": "Acetamiprid 20% SP",
