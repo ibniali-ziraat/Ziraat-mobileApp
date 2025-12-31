@@ -1,11 +1,9 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
-import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
 
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import CsText from "@/src/components/shared/CsText";
-import { colors } from "@/src/constants/colors";
 import { useFieldArray } from "react-hook-form";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
+import { soilTypeOptions } from "../schemas/SoilWaterProfileSchema";
 
 export default function VarietAndPlatingDetails({ control, errors }) {
   const VARIETIES_LIST = [
@@ -16,10 +14,7 @@ export default function VarietAndPlatingDetails({ control, errors }) {
     "Honeycrisp",
     "Ambri",
     "Other",
-  ].map((x) => ({
-    label: x,
-    value: x,
-  }));
+  ];
 
   const rootstockOptions = [
     { label: "M9", value: "M9" },
@@ -50,12 +45,20 @@ export default function VarietAndPlatingDetails({ control, errors }) {
 
   return (
     <View style={{ padding: 20 }}>
-      <MultiSelectInput
+      {/* <MultiSelectInput
         name="varieties"
         control={control}
         label="Varieties Planted"
         options={VARIETIES_LIST}
         error={errors?.varieties?.message}
+      /> */}
+
+      <SingleSelectInput
+        control={control}
+        name="varietyName"
+        label="Varieties Planted"
+        options={soilTypeOptions.map((v) => ({ label: v, value: v }))}
+        error={errors?.varietyName?.message}
       />
 
       <FormInput
@@ -75,7 +78,7 @@ export default function VarietAndPlatingDetails({ control, errors }) {
       /> */}
 
       {/*  */}
-      <CsText
+      {/* <CsText
         style={{
           fontWeight: "700",
           marginTop: 24,
@@ -171,7 +174,7 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         >
           + Add Variety
         </CsText>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/*  */}
 

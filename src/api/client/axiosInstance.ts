@@ -2,7 +2,7 @@ import { getItem } from "@/src/utils/universalSecureToken";
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://k1wkjxws-44388.inc1.devtunnels.ms",
+  baseURL: "https://cxnfzxht-44388.inc1.devtunnels.ms",
   // baseURL:
   //   "https://ziraatapi-fgfhe3hxf3h9gkg4.centralindia-01.azurewebsites.net",
 
@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async (config) => {
     const token = await getItem("user_token");
-  
+
     if (token) {
       config.headers = config.headers || {};
       config.headers.Authorization = `Bearer ${token}`;

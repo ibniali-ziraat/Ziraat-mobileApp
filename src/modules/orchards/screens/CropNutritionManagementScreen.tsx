@@ -82,8 +82,7 @@ export default function CropNutritionManagementScreen() {
       showSuccessToast("Orchard created");
       // }
 
-      // router.push(ROUTES.TABS.ORCHARDS);
-      router.push(ROUTES.ORCHARDS.REGISTRATION.CROP_INFO);
+      router.push(ROUTES.ORCHARDS.REGISTRATION.FARM_INFO);
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message || "Failed to save orchard information"

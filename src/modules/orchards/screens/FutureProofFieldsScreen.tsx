@@ -81,7 +81,7 @@ export default function FutureProofFieldScreen() {
       // }
 
       // router.push(ROUTES.TABS.ORCHARDS);
-      router.push(ROUTES.ORCHARDS.REGISTRATION.PLANT_PROTECTION_INFO);
+      router.push(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message || "Failed to save orchard information"
