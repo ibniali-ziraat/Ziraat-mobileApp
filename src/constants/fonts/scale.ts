@@ -2,7 +2,7 @@ import { Dimensions, PixelRatio } from "react-native";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
-// Base width = iPhone 11 / Pixel 4
+// Base width = iPhone 11 / Pixel 
 const BASE_WIDTH = 375;
 
 export const scale = (size: number) =>
