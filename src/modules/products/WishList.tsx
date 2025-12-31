@@ -3,6 +3,7 @@ import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
 import products from "@/src/data/products.json";
+import { useGetWishlist } from "@/src/hooks/useWishList";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -29,6 +30,9 @@ const Wishlist = () => {
   };
 
   const handleStartShopping = () => router.push("/Product");
+  const {data ,isLoading , error}=useGetWishlist()
+  console.log(data,"this is comming from tanstckq")
+  console.log(error ,"get error")
 
  
   if (wishlistItems.length === 0) {
