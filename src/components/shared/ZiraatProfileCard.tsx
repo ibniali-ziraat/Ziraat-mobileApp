@@ -4,7 +4,7 @@ export default function ZiraatCard({
   children,
   className = "",
 
-  // padding props
+  // padding props (INNER)
   paddingTop,
   paddingBottom,
   paddingLeft,
@@ -12,19 +12,13 @@ export default function ZiraatCard({
   paddingHorizontal,
   paddingVertical,
 
-  // margin props
+  // margin props (OUTER vertical only)
   marginTop,
   marginBottom,
-  marginLeft,
-  marginRight,
-  marginHorizontal,
   marginVertical,
 
-  // required
-  width,
   height,
 
-  // border
   borderWidth = 0,
   borderColor = "#E6E6E6",
   borderRadius = 12,
@@ -36,11 +30,7 @@ export default function ZiraatCard({
 }) {
   const REM = 16;
 
-  if (!width) {
-    throw new Error("ZiraatCard requires width props.");
-  }
-
-  /* ---------------- PADDING ---------------- */
+  /* ---------------- INNER PADDING ---------------- */
   const computedPadding = {
     paddingTop:
       paddingVertical !== undefined
@@ -71,51 +61,18 @@ export default function ZiraatCard({
         : 0,
   };
 
-  /* ---------------- MARGIN ---------------- */
-  const computedMargin = {
-    marginTop:
-      marginVertical !== undefined
-        ? marginVertical * REM
-        : marginTop
-        ? marginTop * REM
-        : 0,
-
-    marginBottom:
-      marginVertical !== undefined
-        ? marginVertical * REM
-        : marginBottom
-        ? marginBottom * REM
-        : 0,
-
-    marginLeft:
-      marginHorizontal !== undefined
-        ? marginHorizontal * REM
-        : marginLeft
-        ? marginLeft * REM
-        : 0,
-
-    marginRight:
-      marginHorizontal !== undefined
-        ? marginHorizontal * REM
-        : marginRight
-        ? marginRight * REM
-        : 0,
-  };
-
-  const Card = (
+  const CardContent = (
     <View
       className={className}
       style={[
         styles.card,
         {
-          width,
           ...(height ? { height } : {}),
           borderRadius,
           backgroundColor,
           borderWidth,
           borderColor,
           ...computedPadding,
-          ...computedMargin,
         },
         style,
       ]}
@@ -124,33 +81,57 @@ export default function ZiraatCard({
     </View>
   );
 
-  return onPress ? <Pressable onPress={onPress}>{Card}</Pressable> : Card;
+  const Card = onPress ? (
+    <Pressable onPress={onPress}>{CardContent}</Pressable>
+  ) : (
+    CardContent
+  );
+
+  return (
+    <View
+      style={[
+        styles.wrapper,
+        {
+          marginTop: marginVertical ?? marginTop ?? 0,
+          marginBottom: marginVertical ?? marginBottom ?? 0,
+        },
+      ]}
+    >
+      {Card}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
+  /* ---------- OUTER WRAPPER ---------- */
+  wrapper: {
+    paddingHorizontal: 15, 
+    paddingBottom: 15,      
+  },
+
+  /* ---------- CARD ---------- */
   card: {
+    width: "100%",
     backgroundColor: "#FFFFFF",
     borderRadius: 12,
 
     /* ---------- iOS ---------- */
- ...(Platform.OS === "ios" && {
-  shadowColor: "#000",
-  shadowOpacity: 0.25,  // Reduced from 0.12 (Softer)
-  shadowRadius: 3,     // Reduced from 16 (Tighter blur)
-  shadowOffset: {
-    width: 0,
-    height: 4,         // Reduced from 6 (Closer to background)
-  },
-}),
+    ...(Platform.OS === "ios" && {
+      shadowColor: "#000",
+      shadowOpacity: 0.25,
+      shadowRadius: 5,
+      shadowOffset: { width: 0, height: 4 },
+    }),
 
     /* ---------- ANDROID ---------- */
     ...(Platform.OS === "android" && {
-      elevation: 4,
+      elevation: 6,
     }),
 
     /* ---------- WEB ---------- */
     ...(Platform.OS === "web" && {
-      boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.06), 0px 4px 16px rgba(0, 0, 0, 0.08)",
+      boxShadow:
+        "0px 2px 8px rgba(0, 0, 0, 0.06), 0px 4px 16px rgba(0, 0, 0, 0.08)",
     }),
   },
 });
