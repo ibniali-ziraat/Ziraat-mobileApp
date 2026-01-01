@@ -14,12 +14,12 @@ type Props = {
 export default function WindCard({ speed, gusts, degree, direction }: Props) {
   return (
     <ZiraatCard width="100%" paddingHorizontal={1} paddingVertical={1}>
-      {/* HEADER */}
+
 
       <View className="w-full flex-row justify-between">
         <View className="w-36">
           <View className="flex-row pb-5">
-            <Wind size={16} color="#c7611f" />
+            <Wind size={18} color="#c7611f" />
             <CsText className="ml-2 text-md font-semibold tracking-wide text-dark">
               WIND
             </CsText>

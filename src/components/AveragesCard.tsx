@@ -22,9 +22,9 @@ export default function AveragesCard({
       <View className="flex justify-center">
         {/* Header */}
         <View className="flex-row items-center mb-1">
-          <GitGraph size={16} color="#c7611f" />
+          <GitGraph size={18} color="#c7611f" />
           <CsText
-            className="ml-2 text-xs font-bold tracking-wide uppercase"
+            className="ml-2 text-sm font-bold tracking-wide uppercase"
             style={typography.caption_xs_bold}
           >
             Averages
@@ -42,7 +42,7 @@ export default function AveragesCard({
         </CsText>
 
         {/* Meta */}
-        <CsText className="text-[10px] text-neutral-500 mt-1">
+        <CsText className="text-[10px] text-dark mt-1">
           Today: {currentMax}° | Avg: {averageMax}°
         </CsText>
       </View>

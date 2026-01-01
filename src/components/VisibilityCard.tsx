@@ -29,7 +29,7 @@ export default function VisibilityCard({ distance }: Props) {
 
       <CsText className="text-3xl font-bold text-dark">{km} km</CsText>
 
-      <CsText className="mt-2 text-sm leading-5 text-neutral-600">
+      <CsText className="mt-2 text-sm leading-5 text-dark">
         {getNote(distance)}
       </CsText>
     </ZiraatCard>
