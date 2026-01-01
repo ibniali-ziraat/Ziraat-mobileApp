@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 
-// Components
+
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import ProductCarousel from "@/src/components/shared/ProductCarousel";
 import FarmOverviewChart from "./components/FarmOverviewChart";
@@ -16,14 +16,15 @@ import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
 
-// Data & Hooks
 import { imageMapper } from "@/src/data/imageMapper";
 import products from "@/src/data/products.json";
 import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
+import { searchLocation } from "@/src/services/locationService";
 
 export default function HomeScreen() {
   const { coords, loading: locLoading, error: locError } = useLocation();
+
 
   const { data, isLoading } = useWeatherQuery({
     lat: coords?.lat ?? 34.0837,
@@ -31,15 +32,15 @@ export default function HomeScreen() {
     asl: 1593,
   });
 
-  // Calculate the most accurate current weather data
+  //
   const currentWeather = useMemo(() => {
     if (!data) return null;
 
-    // 1. Try to get 'data_current' (Real-time observation)
+
     if (data.data_current) {
       return {
         tempC: data.data_current.temperature,
-        feelsLikeC: Math.round(data.data_current.temperature), // Standard fallback
+        feelsLikeC: Math.round(data.data_current.temperature),
         condition: data.data_current.pictocode,
         humidity: data.data_current.relativehumidity || 0,
         windKph: Math.round(data.data_current.windspeed),
@@ -51,8 +52,7 @@ export default function HomeScreen() {
     }
 
     console.log(data, "the api data ");
-    // 2. Fallback: Find the index in data_1h that matches the current hour
-    // This prevents showing 1.8°C (midnight/early morning) when it's actually 10°C now.
+
     const currentHour = new Date().getHours();
 
     return {
@@ -66,7 +66,7 @@ export default function HomeScreen() {
       lowTemp: Math.round(data.data_day.temperature_min[0]),
       stormRisk:
         data.data_1h.convective_precipitation[currentHour] > 2 &&
-        data.data_1h.windspeed[currentHour] > 3
+          data.data_1h.windspeed[currentHour] > 3
           ? "High"
           : "Low",
     };
@@ -93,11 +93,11 @@ export default function HomeScreen() {
             onPress={() =>
               router.push({
                 pathname: "/dashboards/(farmer)/weather-profile",
-                params: { weatherData: JSON.stringify(currentWeather) },
+                // params: { weatherData: JSON.stringify(currentWeather) },
               })
             }
           >
-            {currentWeather && <WeatherCard current={currentWeather} />}
+            {currentWeather ? <WeatherCard current={currentWeather} city={searchLocation || "Current location"} /> : <WeatherCard />}
           </TouchableOpacity>
 
           {/* Quick Actions */}
