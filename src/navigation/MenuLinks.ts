@@ -9,6 +9,8 @@ export const MenuLinks = {
         { label: "Payment Methods", screen: "settings/farmer/payments" },
         { label: "Saved Addresses", screen: "settings/farmer/addresses" },
         { label: "About Us", screen: "about-us" },
+        { label: "Change Password", screen: "user/change-password" },
+
       ],
     },
   ],
