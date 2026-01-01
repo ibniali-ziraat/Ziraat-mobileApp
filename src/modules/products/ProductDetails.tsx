@@ -6,7 +6,6 @@ import Review from "@/src/components/shared/Review";
 // Removed ScreenLayout
 import { colors } from "@/src/constants/colors";
 import ProductDetailCarousel from "@/src/modules/products/components/ProductDetailCarousel";
-import { addToCartList } from "@/src/utils/cartlistStore";
 import { router, useLocalSearchParams } from "expo-router";
 import { IndianRupee, Package } from "lucide-react-native";
 // Imported FlatList
@@ -14,7 +13,8 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
-import { FlatList, ToastAndroid, View } from "react-native";
+import { useCartItem } from "@/src/hooks/useCartQuery";
+import { FlatList, View } from "react-native";
 import faqData from "../../data/Faq.json";
 import products from "../../data/products.json";
 
@@ -187,6 +187,8 @@ style = {product.discountPrice ? [typography.Poppins_s_regular,
 export default function ProductDetails() {
   const { productId } = useLocalSearchParams();
 
+  const {mutateAsync:save}=useCartItem()
+
   if (!productId) {
     return (
       <ScreenLayout>
@@ -213,23 +215,35 @@ export default function ProductDetails() {
     );
   }
 
+
   const handleAddToCart = async () => {
-    try {
-      await addToCartList({
-        id: String(product._id),
-        title: String(product.title),
-        category: String(product.category),
-        price: String(product.price),
-        discountPrice: product.discountPrice
-          ? String(product.discountPrice)
-          : null,
-        photos: product.photos || [],
-      });
-      ToastAndroid.show("Added to Cart", ToastAndroid.SHORT);
-    } catch (error) {
-      console.error("Add to cart failed:", error);
-      ToastAndroid.show("Failed to add to cart", ToastAndroid.SHORT);
-    }
+     save({
+    
+      productId:product._id , 
+      variationName: "Buprofezin",
+      quantity: 10,
+
+
+    })
+
+   
+    // try {
+    //   await addToCartList({
+    //     id: String(product._id),
+    //     title: String(product.title),
+    //     category: String(product.category),
+    //     price: String(product.price),
+    //     discountPrice: product.discountPrice
+    //       ? String(product.discountPrice)
+    //       : null,
+    //     photos: product.photos || [],
+    //   });
+      
+    //   ToastAndroid.show("Added to Cart", ToastAndroid.SHORT);
+    // } catch (error) {
+    //   console.error("Add to cart failed:", error);
+    //   ToastAndroid.show("Failed to add to cart", ToastAndroid.SHORT);
+    // }
   };
 
   return (

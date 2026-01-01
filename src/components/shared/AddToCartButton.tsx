@@ -19,6 +19,7 @@ export default function AddToCartButton({ title = "Add to Cart", onPress }) {
     }, 300);
   };
 
+ 
   return (
     <ZiraatCard width="100%">
       <TouchableOpacity

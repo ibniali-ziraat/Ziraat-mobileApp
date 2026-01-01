@@ -1,80 +1,79 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import BuyNowButton from "@/src/components/shared/BuyNowButton";
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import {
-  clearCartList,
-  getCartList,
-  removeFromCartList,
-} from "@/src/utils/cartlistStore";
-
 import CsText from "@/src/components/shared/CsText";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import CartListItem from "./components/CartListItem";
+
 import { typography } from "@/src/constants/fonts/typography";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
-  ToastAndroid,
   TouchableOpacity,
   View
 } from "react-native";
-import CartListItem from "./components/CartListItem";
+
+import {
+  useCartQuery,
+  useDeleteCratItem,
+  useUpdateCratItem,
+} from "@/src/hooks/useCartQuery";
+
+const USER_ID = "1";
 
 const CartList = () => {
   const router = useRouter();
 
-  const [cartItems, setCartItems] = useState<any[]>([]);
-  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  
+  const { data, isLoading } = useCartQuery(USER_ID);
+  const cartItems = data ?? [];
 
-  const fetchCart = async () => {
-    try {
-      const list = await getCartList();
-      const data = Array.isArray(list) ? list : [];
+  console.log("CART LIST RESPONSE ", data);
 
-      const qtyObj: Record<string, number> = {};
-      data.forEach((item) => {
-        qtyObj[item.id] = quantities[item.id] || 1;
-      });
+  
+  const { mutateAsync: deleteItem } = useDeleteCratItem();
+  const { mutate: updateItem } = useUpdateCratItem();
 
-      setQuantities(qtyObj);
-      setCartItems(data);
-    } catch (error) {
-      console.log("Error fetching cart:", error);
-    }
+  
+  
+
+  
+  const handleRemoveItem = (cartItemId: number) => {
+    deleteItem({ cartItemId })
+      
   };
 
-  useEffect(() => {
-    fetchCart();
-  }, []);
-
-  const updateQuantity = (id: string, qty: number) => {
-    setQuantities((prev) => ({ ...prev, [id]: qty }));
+  
+  const handleQtyChange = (cartItemId: number, qty: number) => {
+    
+    updateItem({ cartItemId, quantity: qty });
   };
 
-  const handleRemove = async (id: string) => {
-    await removeFromCartList(id);
-    ToastAndroid.show("Removed from cart", ToastAndroid.SHORT);
-    fetchCart();
-  };
-
-  const handleClearCart = async () => {
-    await clearCartList();
-    setCartItems([]);
-    setQuantities({});
-    ToastAndroid.show("Cart cleared", ToastAndroid.SHORT);
+  const handleBuyNow = () => {
+    router.push("/products/address");
   };
 
   const handleStartShopping = () => {
     router.push("/Product");
   };
 
-  const handleBuyNow = () => {
-    router.push("/products/address");
-  };
+  // ⏳ LOADING STATE
+  if (isLoading) {
+    return (
+      <ScreenLayout>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" />
+        </View>
+      </ScreenLayout>
+    );
+  }
+
+  // 🛒 EMPTY CART
   if (cartItems.length === 0) {
     return (
-      <ScreenLayout >
+      <ScreenLayout>
         <BackHeader title="My Cart" desc="Your selected items" />
 
         <View className="flex-1 justify-center items-center">
@@ -84,19 +83,16 @@ const CartList = () => {
             resizeMode="contain"
           />
 
-          <CsText style={[typography.Poppins_m_medium]}
-            className=" text-dark mb-2">
+          <CsText
+            style={[typography.Poppins_m_medium]}
+            className="text-dark mb-2"
+          >
             Your cart is empty
-          </CsText>
-
-          <CsText style={[typography.Poppins_s_regular]}
-            className="text-center text-dark  mb-6">
-            Looks like you haven’t added anything yet.
           </CsText>
 
           <TouchableOpacity
             onPress={handleStartShopping}
-            className="bg-primary py-4 px-5 rounded-full shadow-md active:opacity-80"
+            className="bg-primary py-4 px-5 rounded-full"
           >
             <CsText className="text-light">Browse Products</CsText>
           </TouchableOpacity>
@@ -104,60 +100,36 @@ const CartList = () => {
       </ScreenLayout>
     );
   }
+
+  // 🧾 CART LIST
   return (
     <ScreenLayout scrollable={false}>
       <BackHeader
         title="My Cart"
-        desc={`${cartItems.length} item${cartItems.length > 1 ? "s" : ""} in your cart`}
+        desc={`${cartItems.length} item(s) in your cart`}
       />
-      <View className="flex-1 ">
-        <FlatList
-          data={cartItems}
-          keyExtractor={(item) => item.id.toString()}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingHorizontal: 2,
-            paddingTop: 8,
-            // paddingBottom: 115,
-          }}
-          renderItem={({ item }) => (
-            <ZiraatCard
-              width="100%"
-              paddingRight={0.6}
-              marginBottom={1.2}>
-              <CartListItem
-                item={item}
-                quantity={quantities[item.id]}
-                onQtyChange={(qty) => updateQuantity(item.id, qty)}
-                onRemove={() => handleRemove(item.id)}
-              />
-            </ZiraatCard>
-          )}
-        />
-      </View>
 
+      <FlatList
+        data={cartItems}
+        keyExtractor={(item) => item.id.toString()}
+        showsVerticalScrollIndicator={false}
+        renderItem={({ item }) => (
+          <ZiraatCard width="100%" marginBottom={1.2}>
+            <CartListItem
+              item={item}
+              quantity={item.quantity}
+              onQtyChange={(qty) => handleQtyChange(item.id, qty)}
+              handleRemoveItem={() => handleRemoveItem(item.id)}
+            />
+          </ZiraatCard>
+        )}
+      />
 
-      <View
-        className="absolute left-0 right-0 bottom-0 bg-light border-t border-light px-4 h-90 pt-10 pb-8"
-
-      >
+      <View className="absolute bottom-0 left-0 right-0 bg-light px-4 pt-4 pb-8">
         <BuyNowButton title="Place Order" onPress={handleBuyNow} />
-
-        <TouchableOpacity
-          onPress={handleClearCart}
-          className="mt-2"
-          activeOpacity={0.7}
-        >
-          <CsText
-            style={[typography.Poppins_s_medium]}
-            className="text-center text-dark">
-            Remove all items
-          </CsText>
-        </TouchableOpacity>
       </View>
     </ScreenLayout>
   );
-
 };
 
 export default CartList;
