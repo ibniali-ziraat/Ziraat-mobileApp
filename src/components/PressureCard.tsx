@@ -29,8 +29,8 @@ export default function PressureCard({ value }: Props) {
       {/* Header with Title and Dynamic Value in Right Corner */}
       <View className="flex-row items-center justify-between px-3 mt-1">
         <View className="flex-row items-center">
-          <Gauge size={16} color="#c7611f" />
-          <CsText className="ml-1 text-[13px] font-semibold tracking-wide text-dark">
+          <Gauge size={18} color="#c7611f" />
+          <CsText className="ml-2 text-[13px] font-semibold tracking-wide text-dark">
             PRESSURE
           </CsText>
         </View>
@@ -69,18 +69,18 @@ export default function PressureCard({ value }: Props) {
           style={{ width: RADIUS * 2 + 20 }}
           className="flex-row justify-between -mt-2"
         >
-          <CsText className="text-[9px] font-medium text-neutral-500">
+          <CsText className="text-[10px] font-medium text-dark">
             Low
           </CsText>
-          <CsText className="text-[9px] font-medium text-neutral-500">
+          <CsText className="text-[10px] font-medium text-dark">
             High
           </CsText>
         </View>
         <View className="pt-2">
-          {/* Dynamic Value in the Right Corner */}
-          <CsText className="text-[2px]  text-neutral-500 ">
+
+          <CsText className="text-[15px] font-normal text-dark">
             {Math.round(value)}
-            <CsText className="text-[2px] font-normal text-neutral-500">
+            <CsText className="text-[15px] font-normal text-dark">
               {" "}
               hPa
             </CsText>

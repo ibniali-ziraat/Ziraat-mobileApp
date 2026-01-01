@@ -69,7 +69,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
       width="48%"
       paddingHorizontal={1.4}
       paddingVertical={1.4}
-      className="border border-white"
+      className="border border-light"
     >
       <View className="flex-row items-center">
         <Sunset size={18} color="#c7611f" />
@@ -81,7 +81,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
       <View className="items-center justify-center my-1">
         <Svg
           width={160}
-          height={48}
+          height={50}
           viewBox="0 0 160 48"
           style={{ overflow: "visible" }}
         >
@@ -98,7 +98,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
         </Svg>
       </View>
 
-      <CsText className="text-xs text-dark">
+      <CsText className="text-sm text-dark">
         Sunset: {formatTimeManual(sunset)}
       </CsText>
     </ZiraatCard>
