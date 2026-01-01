@@ -14,7 +14,7 @@ export const scale = (size: number) => {
   // ✅ Moderate scaling for mobile
   const scaleFactor = SCREEN_WIDTH / BASE_WIDTH;
 
-  // Prevent extreme scaling
+  // Prevent extreme scalingn
   const moderatedScale = size + (scaleFactor - 1) * size * 0.5;
 
   return PixelRatio.roundToNearestPixel(moderatedScale);
