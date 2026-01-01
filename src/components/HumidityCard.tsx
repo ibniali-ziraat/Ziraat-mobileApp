@@ -20,7 +20,7 @@ export default function HumidityCard({ value }: Props) {
       width="48%"
       paddingHorizontal={1.4}
       paddingVertical={1.7}
-      className="border border-white"
+      className="border border-light"
     >
       {/* Header */}
       <View className="flex-row items-center justify-between mb-2">
@@ -43,7 +43,7 @@ export default function HumidityCard({ value }: Props) {
       </CsText>
 
       {/* Dynamic User-Friendly Note */}
-      <CsText className="mt-2 text-sm leading-5 text-neutral-600">
+      <CsText className="mt-2 text-sm leading-5 text-dark">
         {getNote(value)}
       </CsText>
     </ZiraatCard>

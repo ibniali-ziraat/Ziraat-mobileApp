@@ -1,16 +1,12 @@
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { orchardImagesById } from "@/src/data/orchardImages";
 import { router } from "expo-router";
 import OrchardDetails from "./OrchardDetails";
-import OrchardImage from "./OrchardImage";
 
 interface OrchardCardProps {
   orchard: any;
 }
 
 export default function OrchardCard({ orchard }: OrchardCardProps) {
-  const imageSource = orchardImagesById[String(orchard.id)];
-
   return (
     <ZiraatCard
       width="100%"
@@ -22,7 +18,6 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
         })
       }
     >
-      <OrchardImage source={imageSource} />
       <OrchardDetails orchard={orchard} />
     </ZiraatCard>
   );

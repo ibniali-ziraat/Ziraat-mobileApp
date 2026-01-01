@@ -59,13 +59,14 @@ export function MoonCard({ phaseValue, illumination, moonrise }: Props) {
   return (
     <ZiraatCard
       width="100%"
-      paddingHorizontal={1.4}
+      marginTop={1}
+      paddingHorizontal={1.3}
       paddingVertical={1.4}
       marginBottom={1}
     >
       <View className="flex-row items-center">
         <Moon size={18} color="#c7611f" />
-        <CsText className="ml-2 text-sm font-bold tracking-wide text-neutral-500 uppercase">
+        <CsText className="ml-2 text-sm font-bold tracking-wide text-dark uppercase">
           {getPhaseName(phaseValue)}
         </CsText>
       </View>

@@ -19,7 +19,7 @@ export default function WindCompass({ speed, degree }: Props) {
                     cy={CENTER}
                     r={RADIUS}
                     stroke="#000000"
-                    strokeWidth={6}
+                    strokeWidth={7}
                     fill="none"
                     strokeDasharray="2 5"
                 />
@@ -44,7 +44,10 @@ export default function WindCompass({ speed, degree }: Props) {
                 </G>
 
 
-                <Circle cx={CENTER} cy={CENTER + 38} r={3.8} fill="#c7611f" />
+
+                {/* <Circle cx={CENTER} cy={CENTER + 38} r={3.8} fill="#c7611f" /> */}
+
+                <Circle cx={CENTER} cy={CENTER} r={3.8} fill="#c7611f" />
 
 
                 <SvgText
@@ -66,6 +69,7 @@ export default function WindCompass({ speed, degree }: Props) {
                 >
                     mph
                 </SvgText>
+
             </Svg>
         </View>
     );
