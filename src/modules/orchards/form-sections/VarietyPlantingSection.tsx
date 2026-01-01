@@ -52,7 +52,6 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         options={VARIETIES_LIST}
         error={errors?.varieties?.message}
       /> */}
-
       <SingleSelectInput
         control={control}
         name="varietyName"
@@ -60,15 +59,13 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         options={soilTypeOptions.map((v) => ({ label: v, value: v }))}
         error={errors?.varietyName?.message}
       />
-
       <FormInput
         control={control}
-        name="totalTrees"
+        name="numberOfTrees"
         label="Total Number of Trees"
         type="phone"
         error={errors.totalTrees?.message}
       />
-
       {/* <FormInput
         control={control}
         name="treesPerVariety"
@@ -76,7 +73,6 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         type="phone"
         error={errors}
       /> */}
-
       {/*  */}
       {/* <CsText
         style={{
@@ -175,18 +171,15 @@ export default function VarietAndPlatingDetails({ control, errors }) {
           + Add Variety
         </CsText>
       </TouchableOpacity> */}
-
       {/*  */}
-
       <SingleSelectInput
         control={control}
-        name="rootstock"
+        name="rootstockUsed"
         label="Rootstock Used"
         options={rootstockOptions}
         modalLabel="Rootstock Used"
         error={errors.rootstock?.message}
       />
-
       <SingleSelectInput
         control={control}
         name="plantDensity"
@@ -195,14 +188,26 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         options={densityOptions}
         error={errors.plantDensity?.message}
       />
-
-      <SingleSelectInput
+      <FormInput
         control={control}
-        name="treeAge"
-        label="Tree Age Distribution"
-        modalLabel="Select Distribution"
-        options={TREE_AGE_DISTRIBUTION}
-        error={errors.treeAge?.message}
+        name="treesLessThan5Years"
+        label="treesLessThan5Years"
+        type="phone"
+        error={errors.totalTrees?.message}
+      />{" "}
+      <FormInput
+        control={control}
+        name="treesFiveToTenYears"
+        label="treesFiveToTenYears"
+        type="phone"
+        error={errors.totalTrees?.message}
+      />{" "}
+      <FormInput
+        control={control}
+        name="treesMoreThan10Years"
+        label="treesMoreThan10Years"
+        type="phone"
+        error={errors.totalTrees?.message}
       />
       {/* 
       <RadioGroup

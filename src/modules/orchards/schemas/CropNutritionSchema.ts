@@ -2,11 +2,7 @@
 import { z } from "zod";
 
 /* ------------------ OPTIONS ------------------ */
-export const fertilizerOptions = [
-  "Organic",
-  "Chemical",
-  "Integrated",
-] as const;
+export const fertilizerOptions = ["Organic", "Chemical", "Integrated"] as const;
 
 export const yesNoOptions = ["Yes", "No"] as const;
 
@@ -17,16 +13,25 @@ export const applicationModeOptions = [
 
 /* ------------------ SCHEMA ------------------ */
 export const CropNutritionSchema = z.object({
-  
-  fertilizerPractice: z.enum(fertilizerOptions, {
-    required_error: "Fertilizer practice is required.",
-    invalid_type_error: "Please select a valid fertilizer practice.",
-  }),
+  // fertilizerPractice: z.enum(fertilizerOptions, {
+  //   required_error: "Fertilizer practice is required.",
+  //   invalid_type_error: "Please select a valid fertilizer practice.",
+  // }),
 
-  fertigation: z.enum(yesNoOptions, {
-    required_error: "Please select fertigation option.",
-    invalid_type_error: "Please select Yes or No.",
-  }),
+  fertilizerPractice: z.string().min(1, "Ownership type is required"),
+
+  // fertigation: z.enum(yesNoOptions, {
+  //   required_error: "Please select fertigation option.",
+  //   invalid_type_error: "Please select Yes or No.",
+  // }),
+
+  fertigation: z.string().min(1, "Ownership type is required"),
+  isMulchingApplied: z.string().min(1, "Ownership type is required"),
+
+  // isMulchingApplied: z.enum(yesNoOptions, {
+  //   required_error: "Please select fertigation option.",
+  //   invalid_type_error: "Please select Yes or No.",
+  // }),
 
   nutritionPlan: z
     .string()
@@ -41,9 +46,7 @@ export const CropNutritionSchema = z.object({
 
   lastFertiliserDate: z.string({
     required_error: "Last fertilizing date is required.",
-  
   }),
-  
 
   applicationMode: z.enum(applicationModeOptions, {
     required_error: "Application mode is required.",

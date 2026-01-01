@@ -43,7 +43,7 @@ export default function PlantProtection({ control, errors }: FormSectionProps) {
         /> */}
 
         <MultiSelectInput
-          name="diseases"
+          name="diseaseHistory"
           control={control}
           label="Disease History"
           options={DISEASE_LIST}
@@ -51,7 +51,7 @@ export default function PlantProtection({ control, errors }: FormSectionProps) {
         />
 
         <MultiSelectInput
-          name="pests"
+          name="pestHistory"
           control={control}
           label="Pest History"
           options={PEST_LIST}
@@ -77,12 +77,12 @@ export default function PlantProtection({ control, errors }: FormSectionProps) {
 
         <SingleSelectInput
           control={control}
-          name="cropInsurance"
+          name="isCropInsuranceCovered"
           modalLabel="Crop Insurance"
           label="Crop Insurance Coverage"
           options={[
-            { value: "yes", label: "Yes" },
-            { value: "no", label: "No" },
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
           ]}
           error={errors.cropInsurance}
         />

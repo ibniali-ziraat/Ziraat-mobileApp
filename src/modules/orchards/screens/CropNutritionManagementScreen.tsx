@@ -56,6 +56,7 @@ export default function CropNutritionManagementScreen() {
 
   const onSubmit = async (values: any) => {
     console.log(values, "values...");
+    router.push(ROUTES.ORCHARDS.REGISTRATION.PRODUCTION_INFO);
 
     try {
       // let res;

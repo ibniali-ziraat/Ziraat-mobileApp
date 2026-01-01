@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { View } from "react-native";
+import { useFormContext, useWatch } from "react-hook-form";
+import { Switch, Text, View } from "react-native";
 
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
@@ -11,24 +12,40 @@ export default function BasicInfo({
   control,
   errors,
   data,
-  setValue,
+
   orchardSize,
   areaLabel,
   areaUnit,
 }) {
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
+  const { setValue } = useFormContext();
 
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
 
+  /* ------------------ Preselect district (edit case) ------------------ */
   useEffect(() => {
     if (data?.district) {
       setSelectedDistrict(data.district);
     }
   }, [data?.district]);
 
+  /* ------------------ Watchers ------------------ */
+  const orchardUnit = useWatch({
+    control,
+    name: "orchardSize.unit",
+  });
+
+  const orchardMode = useWatch({
+    control,
+    name: "orchardSize.mode",
+    defaultValue: "manual",
+  });
+
+  /* ------------------ UI ------------------ */
   return (
     <View className="bg-light w-full">
+      {/* Orchard Name */}
       <FormInput
         control={control}
         name="orchardName"
@@ -36,14 +53,88 @@ export default function BasicInfo({
         errors={errors?.orchardName?.message}
       />
 
-      <OrchardSizeInput
-        control={control}
-        errors={errors}
-        measuredValue={orchardSize || data?.orchardSize}
-        areaLabel={areaLabel}
-        areaUnit={areaUnit}
-      />
+      {/* Orchard Size Switch */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginVertical: 12,
+        }}
+      >
+        <Text style={{ fontSize: 14, fontWeight: "600" }}>
+          Orchard Size Input
+        </Text>
 
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+          <Text style={{ fontSize: 12 }}>Manual</Text>
+          <Switch
+            value={orchardMode === "measure"}
+            onValueChange={(value) => {
+              setValue("orchardSize.mode", value ? "measure" : "manual", {
+                shouldValidate: true,
+              });
+
+              // Cleanup opposite mode values
+              if (value) {
+                setValue("orchardSize.unit", undefined);
+                setValue("orchardSize.value", undefined);
+              } else {
+                setValue("orchardSize.type", undefined);
+              }
+            }}
+          />
+          <Text style={{ fontSize: 12 }}>Measure</Text>
+        </View>
+      </View>
+
+      {/* ------------------ MANUAL MODE ------------------ */}
+      {orchardMode === "manual" && (
+        <View style={{ marginTop: 10 }}>
+          <SingleSelectInput
+            control={control}
+            name="orchardSize.unit"
+            label="Orchard Size Unit"
+            modalLabel="Select Unit"
+            options={[
+              { label: "Marla", value: "marla" },
+              { label: "Kanal", value: "kanal" },
+            ]}
+            error={errors?.orchardSize?.unit}
+          />
+
+          <FormInput
+            control={control}
+            name="orchardSize.value"
+            label={`Orchard Size${
+              orchardUnit
+                ? ` (${orchardUnit === "marla" ? "Marla" : "Kanal"})`
+                : ""
+            }`}
+            type="number"
+            disabled={!orchardUnit}
+            placeholder={
+              !orchardUnit
+                ? "Select unit first"
+                : `Enter size in ${orchardUnit === "marla" ? "Marla" : "Kanal"}`
+            }
+            error={errors?.orchardSize?.value}
+          />
+        </View>
+      )}
+
+      {/* ------------------ MEASURE MODE ------------------ */}
+      {orchardMode === "measure" && (
+        <OrchardSizeInput
+          control={control}
+          errors={errors}
+          measuredValue={orchardSize || data?.orchardSize}
+          areaLabel={areaLabel}
+          areaUnit={areaUnit}
+        />
+      )}
+
+      {/* Establishment Year */}
       <SingleSelectInput
         searchable
         control={control}
@@ -54,6 +145,7 @@ export default function BasicInfo({
         error={errors?.establishmentYear}
       />
 
+      {/* Plantation Pattern */}
       <SingleSelectInput
         control={control}
         name="plantationPattern"
@@ -68,6 +160,7 @@ export default function BasicInfo({
         error={errors?.plantationPattern}
       />
 
+      {/* Ownership Type */}
       <SingleSelectInput
         control={control}
         name="ownershipType"
@@ -83,6 +176,7 @@ export default function BasicInfo({
         error={errors?.ownershipType}
       />
 
+      {/* District */}
       <SingleSelectInput
         searchable
         control={control}
@@ -95,6 +189,7 @@ export default function BasicInfo({
         error={errors?.district}
       />
 
+      {/* Tehsil */}
       <SingleSelectInput
         searchable
         control={control}
@@ -106,6 +201,7 @@ export default function BasicInfo({
         error={errors?.tehsil}
       />
 
+      {/* Pincode */}
       <FormInput
         control={control}
         name="pincode"

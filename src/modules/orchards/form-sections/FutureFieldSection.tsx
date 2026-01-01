@@ -36,7 +36,7 @@ export default function FutureFieldScreen({ control, errors }: any) {
         /> */}
 
         <MultiSelectInput
-          name="govtSchemes"
+          name="governmentSchemesAvailed"
           control={control}
           label="Government Schemes Available"
           options={GOVT_SCHEMES}
@@ -55,9 +55,12 @@ export default function FutureFieldScreen({ control, errors }: any) {
 
         <SingleSelectInput
           control={control}
-          name="fpoMembership"
+          name="isFpoOrCooperativeMember"
           label="FPO / Cooperative Membership"
-          options={yesNoOpt}
+          options={[
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ]}
           error={errors.fpoMembership?.message}
           modalLabel="Select (if any)"
           optional
@@ -81,7 +84,7 @@ export default function FutureFieldScreen({ control, errors }: any) {
         />
 
         <MultiSelectInput
-          name="digitalTools"
+          name="digitalToolsUsed"
           control={control}
           label="Digital Tools Used"
           options={digitalToolOpt}
