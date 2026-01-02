@@ -16,8 +16,7 @@ import { router } from "expo-router";
 import CsText from "./CsText";
  
 export default function ProductCarousel({
-  items,
-  imageMapper,
+  items, imageMapper, onAddToWishlist 
 }: ProductCarouselProps) {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
@@ -72,21 +71,12 @@ export default function ProductCarousel({
  
                   <Pressable
                     className="absolute top-2 right-2 p-1"
-                    onPress={(event) => {
-                      event.stopPropagation();
-                     
-                    }}
-                  >
+                  onPress={() => onAddToWishlist(Number(item._id))}
+                     >
                     <Heart
                       size={20}
-                      // color={colors.bgColor}
- 
                       color={ colors.overlay}
- 
-                      
-                         
-                      
-                    />
+                   />
                   </Pressable>
                 </View>
  

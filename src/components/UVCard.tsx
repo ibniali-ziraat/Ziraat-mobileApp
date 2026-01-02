@@ -1,6 +1,7 @@
 import { Sun } from "lucide-react-native";
 import { View } from "react-native";
 import Svg, { Circle, Line } from "react-native-svg";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
@@ -35,14 +36,14 @@ export default function UVCard({ value }: Props) {
       <View className="w-full ">
         <View className="flex-row items-center">
           <Sun size={18} color="#c7611f" />
-          <CsText className="ml-1 text-md font-semibold text-dark">
+          <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
             UV INDEX
           </CsText>
         </View>
 
-        <CsText className="mt-1 text-3xl font-bold text-dark">{value}</CsText>
+        <CsText style={typography.Poppins_l_medium} className="mt-1 text-dark">{value}</CsText>
 
-        <CsText className="text-md text-dark">{level}</CsText>
+        <CsText style={typography.Poppins_m_regular} className="text-md text-dark">{level}</CsText>
 
         <Svg
           width={BAR_WIDTH}
@@ -80,15 +81,15 @@ export default function UVCard({ value }: Props) {
             x1="120"
             y1="7"
             x2="150"
-            y2="7"
+            y2="8"
             stroke="#A855F7"
             strokeWidth="4"
           />
 
-          <Circle cx={markerX} cy={7} r={4} fill="#c7611f" />
+          <Circle cx={markerX} cy={6} r={5} fill="#c7611f" />
         </Svg>
 
-        <CsText className="text-sm leading-5 text-dark">{advice}</CsText>
+        <CsText style={typography.Poppins_xs_regular} className="text-sm leading-5 text-dark">{advice}</CsText>
       </View>
     </ZiraatCard>
   );

@@ -9,6 +9,7 @@ import {
 import { useEffect, useMemo, useRef } from "react";
 import { Dimensions, ScrollView, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
@@ -16,7 +17,6 @@ const { width } = Dimensions.get("window");
 const ITEM_WIDTH = 70;
 const CHART_HEIGHT = 40;
 
-/* ---------------- WEATHER TYPE LOGIC ---------------- */
 const getWeatherTypeFromPictocode = (
   pictocode?: number,
   isNight?: boolean,
@@ -41,7 +41,6 @@ const getWeatherTypeFromPictocode = (
   }
 };
 
-/* ---------------- ICON MAP ---------------- */
 const renderIcon = (type: string) => {
   switch (type) {
     case "rain":
@@ -55,17 +54,15 @@ const renderIcon = (type: string) => {
   }
 };
 
-/* ---------------- COMPONENT ---------------- */
+
 export default function HourlyCard({ data_1h }) {
   const scrollRef = useRef<ScrollView>(null);
 
-  /* --------- Current hour (IST) --------- */
   const nowIST = new Date().toLocaleString("en-IN", {
     timeZone: "Asia/Kolkata",
   });
   const currentHour = new Date(nowIST).getHours();
 
-  /* --------- 24 HOURS DATA (IST) --------- */
   const HOURS = useMemo(() => {
     return data_1h.time.slice(0, 24).map((time, index) => {
       const date = new Date(time);
@@ -101,7 +98,7 @@ export default function HourlyCard({ data_1h }) {
     });
   }, [data_1h]);
 
-  /* --------- Auto-scroll to current hour --------- */
+
   useEffect(() => {
     const index = HOURS.findIndex((h) => h.isNow);
     if (index !== -1) {
@@ -112,7 +109,7 @@ export default function HourlyCard({ data_1h }) {
     }
   }, [HOURS]);
 
-  /* --------- Temperature Graph --------- */
+
   const { tempPath, feelsPath, points } = useMemo(() => {
     const temps = HOURS.map((h) => h.temp);
     const feels = HOURS.map((h) => h.feelsLike);
@@ -141,10 +138,12 @@ export default function HourlyCard({ data_1h }) {
     };
   }, [HOURS]);
 
-  /* ---------------- UI ---------------- */
+
   return (
-    <ZiraatCard width="100%" paddingHorizontal={1.5} paddingVertical={1.5}>
-      <CsText style={{ fontSize: 14, marginBottom: 12 }}>
+    <ZiraatCard width="100%"
+      paddingHorizontal={1.3}
+      paddingVertical={1.5}>
+      <CsText style={typography.Poppins_m_medium} className="mb-3">
         24-hour forecast (IST)
       </CsText>
 
@@ -154,7 +153,6 @@ export default function HourlyCard({ data_1h }) {
         showsHorizontalScrollIndicator={false}
       >
         <View style={{ width: HOURS.length * ITEM_WIDTH }}>
-          {/* Hour + Icon + Temp */}
           <View style={{ flexDirection: "row" }}>
             {HOURS.map((item, index) => (
               <View
@@ -169,13 +167,13 @@ export default function HourlyCard({ data_1h }) {
                   paddingVertical: 6,
                 }}
               >
-                <CsText style={{ fontSize: 11 }}>{item.time}</CsText>
+                <CsText style={typography.Poppins_s_regular}>{item.time}</CsText>
 
-                <View style={{ marginVertical: 4 }}>
+                <View style={{ marginVertical: 2 }}>
                   {renderIcon(item.icon)}
                 </View>
 
-                <CsText style={{ fontWeight: "600" }}>{item.temp}°</CsText>
+                <CsText style={typography.Poppins_s_regular} className="text-dark">{item.temp}°</CsText>
 
                 <Wind
                   size={14}
@@ -189,11 +187,10 @@ export default function HourlyCard({ data_1h }) {
             ))}
           </View>
 
-          {/* Temperature Graph */}
           <Svg width={HOURS.length * ITEM_WIDTH} height={CHART_HEIGHT}>
             <Path
               d={feelsPath}
-              stroke="#999"
+              stroke="#c7611f"
               strokeWidth={2}
               strokeDasharray="4 4"
               fill="none"
@@ -205,7 +202,7 @@ export default function HourlyCard({ data_1h }) {
             ))}
           </Svg>
 
-          {/* Rain % */}
+
           <View style={{ flexDirection: "row", marginTop: 6 }}>
             {HOURS.map((item, index) => (
               <View
@@ -213,7 +210,7 @@ export default function HourlyCard({ data_1h }) {
                 style={{ width: ITEM_WIDTH, alignItems: "center" }}
               >
                 <Droplet size={14} color="#c7611f" />
-                <CsText style={{ fontSize: 11 }}>{item.rain}%</CsText>
+                <CsText style={typography.Poppins_s_regular}>{item.rain}%</CsText>
               </View>
             ))}
           </View>

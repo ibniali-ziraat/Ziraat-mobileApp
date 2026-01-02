@@ -6,10 +6,13 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
 import {
   useCreateProductionMarketingMutation,
+  useOrchardProfileId,
   useProductionMarketingQuery,
   useUpdateProductionMarketingMutation,
 } from "../hooks/useOrchardsQuery";
 
+import { useAuth } from "@/src/contexts/AuthContext";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
 import ProductionMarketing from "../form-sections/ProductionMarketingSection";
@@ -17,6 +20,8 @@ import ProductionMarketing from "../form-sections/ProductionMarketingSection";
 export default function ProductionAndMarketingScreen() {
   // const { data: userProfileData } = useProfileQuery(userData.id);
   // console.log(userProfileData, "userprofiledata");
+  const { userId } = useAuth();
+  const { data: orchardProfile } = useOrchardProfileId(userId);
 
   const { data } = useProductionMarketingQuery(1);
   const { mutateAsync: save, isPending: isSaving } =
@@ -48,26 +53,37 @@ export default function ProductionAndMarketingScreen() {
   //     });
   //   }, [data]);
 
-  const onSubmit = async (val: any) => {
-    router.push(ROUTES.ORCHARDS.REGISTRATION.SOIL_WATER_INFO);
-    // try {
-    //   if (data) {
-    //     const payload = { id: vendorData.id, ...val };
-    //     await update(payload);
-    //   } else {
-    //     const payload = { userId: userData.id, ...val };
-    //     const res = await save(payload);
+  const onSubmit = async (values: any) => {
+    try {
+      // let res;
 
-    //     setVendorData({
-    //       profileId: res.id,
-    //     });
-    //   }
+      // if (orchardId) {
+      //   res = await update({ id: orchardId, ...values });
+      //   showSuccessToast("Orchard updated");
+      // }
 
-    //   router.push("/auth/vendor/vendor-profile-screen");
-    // } catch (err) {
-    //   showErrorToast("Something went wrong");
-    //   console.error(err);
-    // }
+      // else
+
+      //   {
+      const payload = {
+        id: orchardProfile?.[0]?.id,
+        production: {
+          ...values,
+        },
+      };
+
+      // Send payload
+      const res = await save(payload);
+
+      // setOrchardId(res.id);
+      showSuccessToast("Orchard created");
+      // }
+      router.push(ROUTES.ORCHARDS.REGISTRATION.SOIL_WATER_INFO);
+    } catch (error: any) {
+      showErrorToast(
+        error?.response?.data?.message || "Failed to save orchard information"
+      );
+    }
   };
 
   return (

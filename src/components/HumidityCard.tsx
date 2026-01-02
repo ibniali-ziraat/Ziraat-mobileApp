@@ -1,5 +1,6 @@
 import { Droplets } from "lucide-react-native";
 import { View } from "react-native";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
@@ -8,7 +9,7 @@ type Props = {
 };
 
 export default function HumidityCard({ value }: Props) {
-  // Logic to determine the note based on the pressure/humidity value
+
   const getNote = (val: number) => {
     if (val >= 70) return "The air is quite humid and heavy right now.";
     if (val <= 30) return "The air is very dry and crisp.";
@@ -22,28 +23,27 @@ export default function HumidityCard({ value }: Props) {
       paddingVertical={1.7}
       className="border border-light"
     >
-      {/* Header */}
+
       <View className="flex-row items-center justify-between mb-2">
         <View className="flex-row items-center">
           <Droplets size={18} color="#c7611f" />
-          <CsText className="ml-2 text-md font-semibold tracking-wide text-dark">
+          <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
             HUMIDITY
           </CsText>
         </View>
 
-        {/* Dynamic small value in corner */}
-        <CsText className="text-[12px] font-bold text-dark">
+        <CsText style={typography.Poppins_s_regular} className=" text-dark">
           {Math.round(value)}%
         </CsText>
       </View>
 
-      {/* Main Large Display */}
-      <CsText className="text-3xl font-bold text-dark">
+
+      <CsText style={typography.Poppins_xl_semibold} className=" text-dark">
         {Math.round(value)}%
       </CsText>
 
-      {/* Dynamic User-Friendly Note */}
-      <CsText className="mt-2 text-sm leading-5 text-dark">
+
+      <CsText style={typography.Poppins_xs_regular} className="mt-2 text-dark">
         {getNote(value)}
       </CsText>
     </ZiraatCard>

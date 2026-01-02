@@ -21,14 +21,10 @@ const HomeHeader = () => {
       style={{ borderBottomColor: colors.neutral }}
     >
       <View>
-        <CsText   className="text-md" style={[typography.Poppins_m_semibold,]}>
+        <CsText className="text-md" style={[typography.Poppins_m_semibold]}>
           Welcome
         </CsText>
-        <CsText   style={[ {color: colors.dark,},
-          typography.Poppins_m_regular,
-
-
-        ]}>
+        <CsText style={[{ color: colors.dark }, typography.Poppins_m_regular]}>
           {title}
         </CsText>
       </View>

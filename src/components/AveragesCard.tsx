@@ -15,34 +15,35 @@ export default function AveragesCard({
 }: Props) {
   const diff = currentMax - averageMax;
   const status = diff > 0 ? "Above" : "Below";
-  const diffColor = diff > 0 ? "#16a34a" : "#dc2626"; // green / red
+  const diffColor = diff > 0 ? "#16a34a" : "#dc2626";
 
   return (
-    <ZiraatCard width="48%" paddingHorizontal={1.4} paddingVertical={1.4}>
+    <ZiraatCard width="48%"
+      paddingHorizontal={1.4}
+      paddingVertical={1.4}>
       <View className="flex justify-center">
-        {/* Header */}
+
         <View className="flex-row items-center mb-1">
           <GitGraph size={18} color="#c7611f" />
           <CsText
-            className="ml-2 text-sm font-bold tracking-wide uppercase"
-            style={typography.caption_xs_bold}
+            className="ml-2 text-sm  tracking-wide uppercase"
+            style={typography.Poppins_m_medium}
           >
             Averages
           </CsText>
         </View>
 
-        {/* Value */}
-        <CsText className="text-3xl font-bold" style={{ color: diffColor }}>
+
+
+        <CsText style={typography.Poppins_l_medium} className="text-dark">
           {diff > 0 ? `+${diff}` : diff}°
         </CsText>
 
-        {/* Status */}
-        <CsText className="text-[11px] text-dark pt-2">
+        <CsText style={typography.Poppins_xs_regular} className="mt-1 text-dark">
           {status} average daily high.
         </CsText>
 
-        {/* Meta */}
-        <CsText className="text-[10px] text-dark mt-1">
+        <CsText style={typography.Poppins_xs_regular} className=" text-dark mt-1">
           Today: {currentMax}° | Avg: {averageMax}°
         </CsText>
       </View>

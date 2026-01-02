@@ -1,6 +1,7 @@
 import { Sunset } from "lucide-react-native";
 import { View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
@@ -10,7 +11,7 @@ type Props = {
 };
 
 export default function SunsetCard({ sunset, sunrise }: Props) {
-  // 1. Manual Formatter: Works on all devices without native locale issues
+
   const formatTimeManual = (timeStr?: string) => {
     if (!timeStr || typeof timeStr !== "string" || !timeStr.includes(":"))
       return "--:--";
@@ -22,7 +23,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
       let [hours, minutes] = timePart.split(":").map(Number);
 
       const ampm = hours >= 12 ? "PM" : "AM";
-      const displayHours = hours % 12 || 12; // Convert 0 to 12
+      const displayHours = hours % 12 || 12;
       const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
       return `${displayHours}:${displayMinutes} ${ampm}`;
@@ -31,10 +32,10 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
     }
   };
 
-  // 2. Safe Date Parser for the Progress Dot
+
   const parseSafeDate = (dateStr: string) => {
     if (!dateStr) return null;
-    // Replaces space with 'T' for ISO compliance
+
     const isoStr = dateStr.replace(" ", "T");
     const d = new Date(isoStr);
     return isNaN(d.getTime()) ? null : d;
@@ -55,7 +56,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
 
     const x = 10 + progress * 140;
     const t = progress;
-    // Follows the Q80 16 curve exactly
+
     const y =
       Math.pow(1 - t, 2) * 36 + 2 * (1 - t) * t * 16 + Math.pow(t, 2) * 36;
 
@@ -73,7 +74,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
     >
       <View className="flex-row items-center">
         <Sunset size={18} color="#c7611f" />
-        <CsText className="ml-2 text-[10px] font-semibold tracking-wide text-dark">
+        <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
           SUNRISE: {formatTimeManual(sunrise)}
         </CsText>
       </View>
@@ -98,7 +99,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
         </Svg>
       </View>
 
-      <CsText className="text-sm text-dark">
+      <CsText style={typography.Poppins_s_medium} className="text-dark">
         Sunset: {formatTimeManual(sunset)}
       </CsText>
     </ZiraatCard>

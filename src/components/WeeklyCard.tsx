@@ -9,6 +9,7 @@ import {
   Sun,
 } from "lucide-react-native";
 import { Dimensions, View } from "react-native";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
@@ -31,7 +32,6 @@ type DayForecast = {
   icon: WeatherIcon;
 };
 
-/* ---------------- ICON RENDER ---------------- */
 const renderIcon = (type: WeatherIcon) => {
   const props = { size: 18, color: "#c7611f" };
 
@@ -53,7 +53,7 @@ const renderIcon = (type: WeatherIcon) => {
   }
 };
 
-/* ---------------- API CODE → ICON ---------------- */
+
 const mapPictocodeToIcon = (code: number): WeatherIcon => {
   if (code === 1) return "sun"; // clear
   if (code === 2 || code === 3) return "cloudSun"; // partly cloudy
@@ -68,14 +68,14 @@ const mapPictocodeToIcon = (code: number): WeatherIcon => {
 export default function TenDayForecastCard({ data_day }) {
   //   console.log(data_day, "data from the weeklycard");
 
-  /* ---------------- DYNAMIC DATA ---------------- */
+
   const forecast: DayForecast[] = data_day.time.map((date, index) => ({
     day:
       index === 0
         ? "Today"
         : new Date(date).toLocaleDateString("en-IN", {
-            weekday: "short",
-          }),
+          weekday: "short",
+        }),
     min: Math.round(data_day.temperature_min[index]),
     max: Math.round(data_day.temperature_max[index]),
     icon: mapPictocodeToIcon(data_day.pictocode[index]),
@@ -86,17 +86,15 @@ export default function TenDayForecastCard({ data_day }) {
 
   return (
     <ZiraatCard width="100%" paddingHorizontal={1.5} paddingVertical={1.5}>
-      {/* Header */}
+
       <View
         style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}
       >
         <CalendarDays size={20} color="#c7611f" />
-        <CsText style={{ fontSize: 15, fontWeight: "600", marginLeft: 8 }}>
+        <CsText style={typography.Poppins_m_medium} className="ml-2">
           7-DAY FORECAST
         </CsText>
       </View>
-
-      {/* Rows */}
       {forecast.map((item, index) => {
         const start =
           ((item.min - globalMin) / (globalMax - globalMin)) * BAR_WIDTH;
@@ -112,7 +110,7 @@ export default function TenDayForecastCard({ data_day }) {
                 paddingVertical: 12,
               }}
             >
-              <CsText style={{ width: "18%", fontSize: 16 }}>{item.day}</CsText>
+              <CsText style={typography.Poppins_m_medium}>{item.day}</CsText>
 
               <View style={{ width: "10%", alignItems: "center" }}>
                 {renderIcon(item.icon)}
@@ -144,14 +142,14 @@ export default function TenDayForecastCard({ data_day }) {
               </View>
 
               <CsText
-                style={{ width: "12%", textAlign: "right", fontWeight: "500" }}
-              >
+                style={typography.Poppins_m_medium} className="w-10 text-right">
+
                 {item.max}°
               </CsText>
             </View>
 
             {index !== forecast.length - 1 && (
-              <View style={{ height: 1, backgroundColor: "#222222" }} />
+              <View style={{ height: 1, backgroundColor: "#000000" }} />
             )}
           </View>
         );

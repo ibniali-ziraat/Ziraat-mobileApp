@@ -8,7 +8,8 @@ import {
   useEducationMutation,
   useEducationQuery,
   useEducationUpdateMutation,
-} from "@/src/hooks/userQueryHooks";
+} from "../../../../hooks/userQueryHooks";
+
 import { educationSchema } from "@/src/modules/auth/user/schemas/education.schema";
 import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
@@ -66,18 +67,10 @@ export default function EducationScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <BackHeader
-           title="Educational Details"
-  desc="Please provide details about your highest qualification and educational background."
-          
+          title="Educational Details"
+          desc="Please provide details about your highest qualification and educational background."
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
-
-
-
-
-
-
-
 
         <EducationSection control={control} errors={errors} />
         <FormActions

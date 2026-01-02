@@ -63,7 +63,7 @@ const WishlistItem = ({ item, onRemove }) => {
                   {item.title}
                 </CsText>
 
-                <Pressable onPress={() => onRemove(item._id)}>
+                <Pressable onPress={() => onRemove(item.wishlistId)}>
                   <X size={22} color={colors.dark} />
                 </Pressable>
               </View>

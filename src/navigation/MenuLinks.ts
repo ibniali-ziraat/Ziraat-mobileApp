@@ -10,6 +10,7 @@ export const MenuLinks = {
         { label: "Saved Addresses", screen: "settings/farmer/addresses" },
         { label: "About Us", screen: "about-us" },
         { label: "Change Password", screen: "user/change-password" },
+        { label: "Delete Account", screen: "user/delete-account"},
 
       ],
     },

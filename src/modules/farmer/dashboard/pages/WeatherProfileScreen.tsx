@@ -22,6 +22,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { RefreshControl, View } from "react-native";
 
 import Loader from "@/src/components/shared/Loader";
+import Map from "@/src/components/shared/Map";
 
 export default function WeatherScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -113,7 +114,7 @@ export default function WeatherScreen() {
               <>
                 <WeatherCard
                   current={currentWeather}
-                  city={cityName || "Current location"}
+                  city={cityName || "Srinagar "}
                 />
 
                 {data && <HourlyCard data_1h={data.data_1h} />}
@@ -178,12 +179,7 @@ export default function WeatherScreen() {
           </>
         )}
       </View>
-
-      {/* <Map
-        latitude={finalCoords.lat}
-        longitude={finalCoords.lon}
-        height={200}
-      /> */}
+      <Map />
     </ScreenLayout>
   );
 }
