@@ -1,5 +1,6 @@
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import { WriteReviewProps } from "@/src/types/write-review.type";
 import { useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
@@ -27,11 +28,15 @@ export default function WriteReview({ onSubmit }:WriteReviewProps) {
   };
 
   return (
-    <View className="p-4 mt-4 bg-white rounded-2xl shadow border border-neutral">
+    <View className="p-4 mt-4 bg-light rounded-2xl shadow border border-neutral">
 
-      <CsText className="text-2xl font-bold mb-2">Write a Review</CsText>
+      <CsText
+      style={[typography.Poppins_l_semibold]}
+      className=" mb-2">Write a Review</CsText>
 
       <TextInput
+      style={[typography.Poppins_s_regular]}
+
         className="border border-dark rounded-xl p-3 text-dark h-28"
         placeholder="Share your experience..."
         placeholderTextColor={colors.dark}
@@ -41,7 +46,10 @@ export default function WriteReview({ onSubmit }:WriteReviewProps) {
       />
    
       <View className="flex-row items-center my-4">
-        <CsText className="text-lg mr-1">Your Rating:</CsText>
+        <CsText 
+        style={[typography.Poppins_s_medium]}
+        
+        className="text-lg mr-1">Your Rating:</CsText>
  
         <RatingStars
           rating={rating}
@@ -55,7 +63,10 @@ export default function WriteReview({ onSubmit }:WriteReviewProps) {
         onPress={handleSubmit}
         className="bg-secondary mt-1 p-3 rounded-xl"
       >
-        <CsText className="text-center text-white font-semibold">
+        <CsText 
+        style={[typography.Poppins_s_semibold]}
+        
+        className="text-center text-light font-semibold">
           Submit Review
        </CsText>
       </TouchableOpacity>

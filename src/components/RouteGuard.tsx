@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import { ReactNode, useEffect, useRef } from "react";
 import { View } from "react-native";
+import { colors } from "../constants/colors";
 import { useAuth } from "../contexts/AuthContext";
 import { scheduleAutoLogout } from "../utils/tokenExpiryCheck";
 
@@ -47,5 +48,7 @@ export default function RouteGuard({ children }: RouteGuardProps) {
 
   if (!initialized) return null;
 
-  return <View style={{ flex: 1, backgroundColor: "white" }}>{children}</View>;
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.light }}>{children}</View>
+  );
 }

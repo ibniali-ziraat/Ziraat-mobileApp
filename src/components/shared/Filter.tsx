@@ -16,13 +16,13 @@ export default function Filter({ filter, setFilter }: FilterProps) {
         <TouchableOpacity
           key={f}
           onPress={() => setFilter(f)}
-          className={`px-3 py-2 rounded-xl mr-2 mb-2 shadow-sm rounded border border-neutral ${
-            filter === f ? "bg-secondary": "bg-white"
+          className={`px-3 py-2 rounded-xl mr-2 mb-5 shadow-sm  border border-secondary ${
+            filter === f ? "bg-secondary": "bg-light"
           }`}
         >
           <CsText
             className={`text-sm ${
-              filter === f ? "text-white" : "text-dark"
+              filter === f ? "text-light" : "text-dark"
             }`}
           >
             {f}

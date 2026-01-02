@@ -9,7 +9,7 @@ export default function CartListItem({
   item,
   quantity,
   onQtyChange,
-  onRemove,
+  handleRemoveItem,
 }) {
   const discountPercent = item.discountPrice
     ? Math.round(((item.price - item.discountPrice) / item.price) * 100)
@@ -62,7 +62,7 @@ export default function CartListItem({
             )}
           </View>
 
-          <TouchableOpacity onPress={onRemove} className="p-1 ml-2">
+          <TouchableOpacity onPress={()=> handleRemoveItem} className="p-1 ml-2">
             <Ionicons name="trash-outline" size={20} color={colors.secondary} />
           </TouchableOpacity>
         </View>
