@@ -1,5 +1,6 @@
 import { Wind } from "lucide-react-native";
 import { View } from "react-native";
+import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
@@ -24,7 +25,7 @@ export default function StormCard() {
                             alignItems: "center",
                             marginBottom: 10
                         }}>
-                            <Wind size={18} color="#c7611f" />
+                            <Wind size={18} color={colors.secondary} />
                             <CsText style={typography.Poppins_m_medium}
                                 className="ml-2 tracking-wide"
                             >

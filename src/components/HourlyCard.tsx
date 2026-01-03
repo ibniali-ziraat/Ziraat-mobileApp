@@ -9,6 +9,7 @@ import {
 import { useEffect, useMemo, useRef } from "react";
 import { Dimensions, ScrollView, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
+import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
@@ -44,13 +45,13 @@ const getWeatherTypeFromPictocode = (
 const renderIcon = (type: string) => {
   switch (type) {
     case "rain":
-      return <CloudRain size={20} color="#c7611f" />;
+      return <CloudRain size={20} color={colors.secondary} />;
     case "moon":
-      return <Moon size={20} color="#c7611f" />;
+      return <Moon size={20} color={colors.secondary} />;
     case "cloudSun":
-      return <CloudSun size={20} color="#c7611f" />;
+      return <CloudSun size={20} color={colors.secondary} />;
     default:
-      return <Sun size={20} color="#c7611f" />;
+      return <Sun size={20} color={colors.secondary} />;
   }
 };
 
@@ -177,7 +178,7 @@ export default function HourlyCard({ data_1h }) {
 
                 <Wind
                   size={14}
-                  color="#c7611f"
+                  color={colors.secondary}
                   style={{
                     transform: [{ rotate: `${item.windDir}deg` }],
                     marginTop: 4,
@@ -190,15 +191,15 @@ export default function HourlyCard({ data_1h }) {
           <Svg width={HOURS.length * ITEM_WIDTH} height={CHART_HEIGHT}>
             <Path
               d={feelsPath}
-              stroke="#c7611f"
+              stroke={colors.secondary}
               strokeWidth={2}
               strokeDasharray="4 4"
               fill="none"
             />
-            <Path d={tempPath} stroke="#c7611f" strokeWidth={2} fill="none" />
+            <Path d={tempPath} stroke={colors.secondary} strokeWidth={2} fill="none" />
 
             {points.map((p, i) => (
-              <Circle key={i} cx={p.x} cy={p.y} r={4} fill="#c7611f" />
+              <Circle key={i} cx={p.x} cy={p.y} r={4} fill={colors.secondary} />
             ))}
           </Svg>
 
@@ -209,7 +210,7 @@ export default function HourlyCard({ data_1h }) {
                 key={index}
                 style={{ width: ITEM_WIDTH, alignItems: "center" }}
               >
-                <Droplet size={14} color="#c7611f" />
+                <Droplet size={14} color={colors.secondary} />
                 <CsText style={typography.Poppins_s_regular}>{item.rain}%</CsText>
               </View>
             ))}

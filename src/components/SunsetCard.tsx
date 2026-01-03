@@ -1,6 +1,7 @@
 import { Sunset } from "lucide-react-native";
 import { View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
+import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
@@ -17,8 +18,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
       return "--:--";
 
     try {
-      // Meteoblue gives "2025-12-25 17:30"
-      // We split by space to get the time part "17:30"
+
       const timePart = timeStr.split(" ")[1] || timeStr;
       let [hours, minutes] = timePart.split(":").map(Number);
 
@@ -73,7 +73,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
       className="border border-light"
     >
       <View className="flex-row items-center">
-        <Sunset size={18} color="#c7611f" />
+        <Sunset size={18} color={colors.secondary} />
         <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
           SUNRISE: {formatTimeManual(sunrise)}
         </CsText>
@@ -88,13 +88,13 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
         >
           <Path
             d="M10 36 Q80 16 150 36"
-            stroke="#c7611f"
+            stroke={colors.secondary}
             strokeWidth={3}
             fill="none"
           />
 
           {!isNaN(x) && !isNaN(y) && (
-            <Circle cx={x} cy={y} r="5" fill="#c7611f" />
+            <Circle cx={x} cy={y} r="5" fill={colors.secondary} />
           )}
         </Svg>
       </View>

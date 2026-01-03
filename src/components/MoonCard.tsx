@@ -1,5 +1,6 @@
 import { Moon } from "lucide-react-native";
 import { Image, View } from "react-native";
+import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
@@ -11,7 +12,7 @@ const InfoRow = ({ label, value }: { label: string; value: string }) => (
   </View>
 );
 
-const Divider = () => <View className="h-[1px] bg-neutral-800 opacity-20" />;
+const Divider = () => <View className="h-[1px] bg-overlay opacity-20" />;
 
 type Props = {
   phaseValue?: number;
@@ -65,7 +66,7 @@ export function MoonCard({ phaseValue, illumination, moonrise }: Props) {
       marginBottom={1}
     >
       <View className="flex-row items-center">
-        <Moon size={18} color="#c7611f" />
+        <Moon size={18} color={colors.secondary} />
         <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
           {getPhaseName(phaseValue)}
         </CsText>

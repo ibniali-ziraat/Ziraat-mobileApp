@@ -1,5 +1,6 @@
 import { GitGraph } from "lucide-react-native";
 import { View } from "react-native";
+import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
@@ -15,7 +16,7 @@ export default function AveragesCard({
 }: Props) {
   const diff = currentMax - averageMax;
   const status = diff > 0 ? "Above" : "Below";
-  const diffColor = diff > 0 ? "#16a34a" : "#dc2626";
+  const diffColor = diff > 0 ? colors.primary : colors.error;
 
   return (
     <ZiraatCard width="48%"
@@ -24,7 +25,7 @@ export default function AveragesCard({
       <View className="flex justify-center">
 
         <View className="flex-row items-center mb-1">
-          <GitGraph size={18} color="#c7611f" />
+          <GitGraph size={18} color={colors.secondary} />
           <CsText
             className="ml-2 text-sm  tracking-wide uppercase"
             style={typography.Poppins_m_medium}

@@ -1,5 +1,6 @@
 import { Eye } from "lucide-react-native";
 import { View } from "react-native";
+import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
@@ -22,7 +23,7 @@ export default function VisibilityCard({ distance }: Props) {
   return (
     <ZiraatCard width="48%" paddingHorizontal={1.4} paddingVertical={1.4}>
       <View className="flex-row items-center mb-2">
-        <Eye size={18} color="#c7611f" />
+        <Eye size={18} color={colors.secondary} />
         <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
           VISIBILITY
         </CsText>

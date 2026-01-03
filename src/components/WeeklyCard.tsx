@@ -9,6 +9,7 @@ import {
   Sun,
 } from "lucide-react-native";
 import { Dimensions, View } from "react-native";
+import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
@@ -33,7 +34,7 @@ type DayForecast = {
 };
 
 const renderIcon = (type: WeatherIcon) => {
-  const props = { size: 18, color: "#c7611f" };
+  const props = { size: 18, color: colors.secondary };
 
   switch (type) {
     case "sun":
@@ -90,7 +91,7 @@ export default function TenDayForecastCard({ data_day }) {
       <View
         style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}
       >
-        <CalendarDays size={20} color="#c7611f" />
+        <CalendarDays size={20} color={colors.secondary} />
         <CsText style={typography.Poppins_m_medium} className="ml-2">
           7-DAY FORECAST
         </CsText>
@@ -124,7 +125,7 @@ export default function TenDayForecastCard({ data_day }) {
                 style={{
                   width: BAR_WIDTH,
                   height: 4,
-                  backgroundColor: "#ffffff",
+                  backgroundColor: colors.light,
                   borderRadius: 2,
                   marginHorizontal: 10,
                 }}
@@ -135,7 +136,7 @@ export default function TenDayForecastCard({ data_day }) {
                     left: start,
                     width: range,
                     height: 4,
-                    backgroundColor: "#c7611f",
+                    backgroundColor: colors.secondary,
                     borderRadius: 2,
                   }}
                 />
@@ -149,7 +150,7 @@ export default function TenDayForecastCard({ data_day }) {
             </View>
 
             {index !== forecast.length - 1 && (
-              <View style={{ height: 1, backgroundColor: "#000000" }} />
+              <View style={{ height: 1, backgroundColor: colors.light }} />
             )}
           </View>
         );
