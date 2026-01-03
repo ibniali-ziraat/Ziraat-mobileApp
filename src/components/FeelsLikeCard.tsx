@@ -1,10 +1,12 @@
 import { Thermometer } from "lucide-react-native";
 import { View } from "react-native";
+import { colors } from "../constants/colors";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
-  temp: number; // feels like
+  temp: number;
   actualTemp?: number;
 };
 
@@ -25,15 +27,15 @@ export default function FeelsLikeCard({ temp, actualTemp }: Props) {
       paddingVertical={1}
     >
       <View className="flex-row items-center mb-2">
-        <Thermometer size={18} color="#c7611f" />
-        <CsText className="ml-2 text-sm font-semibold tracking-wide text-dark">
+        <Thermometer size={18} color={colors.secondary} />
+        <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
           Feels Like
         </CsText>
       </View>
 
-      <CsText className="mt-1 text-3xl font-bold text-dark">{temp}°</CsText>
+      <CsText style={typography.Poppins_l_medium} className="mt-1 text-dark">{temp}°</CsText>
 
-      <CsText className="mt-1 text-sm text-dark">{getMessage()}</CsText>
+      <CsText style={typography.Poppins_xs_regular} className="mt-1 text-dark">{getMessage()}</CsText>
     </ZiraatCard>
   );
 }

@@ -1,5 +1,6 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import { CloudLightning, Droplets, Sun, Wind } from "lucide-react-native";
 import { ImageBackground, View } from "react-native";
 
@@ -23,26 +24,26 @@ export default function WeatherCard({ current, city }: WeatherCardProps) {
           resizeMode="cover"
           className="w-full rounded-3xl overflow-hidden"
         >
-          <View className="p-6 bg-black/25 backdrop-blur-3xl rounded-3xl">
+          <View className="p-6 bg-dark backdrop-blur-3xl rounded-3xl">
             <View className="flex-row items-end justify-between">
-              <CsText variant="bigHeading text-xl" className="text-light">
+              <CsText style={typography.Poppins_xl_regular} className="text-light">
                 {city || "Current location"}
               </CsText>
 
-              <CsText variant="subtitle" className="text-light">
+              <CsText style={typography.Poppins_s_regular} className="text-light">
                 Today
               </CsText>
             </View>
 
-            <CsText variant="title" className="text-light mt-2">
+            <CsText style={typography.Poppins_xl_regular} className="text-light mt-2">
               Weather unavailable
             </CsText>
 
-            <CsText variant="subtitle" className="text-light/80 mt-1">
+            <CsText style={typography.Poppins_s_regular} className="text-light mt-1">
               We couldn’t load the weather right now.
             </CsText>
 
-            <CsText variant="caption" className="text-light/60 mt-2">
+            <CsText style={typography.Poppins_s_regular} className="text-light mt-2">
               Please check your connection or try again later.
             </CsText>
           </View>
@@ -51,7 +52,7 @@ export default function WeatherCard({ current, city }: WeatherCardProps) {
     );
   }
 
-  // 🔹 NORMAL RENDER
+
   return (
     <View className="my-6 rounded-3xl overflow-hidden shadow-lg">
       <ImageBackground
@@ -59,70 +60,73 @@ export default function WeatherCard({ current, city }: WeatherCardProps) {
         resizeMode="cover"
         className="w-full rounded-3xl overflow-hidden"
       >
-        <View className="p-6 bg-black/25 backdrop-blur-3xl rounded-3xl">
+        <View className="p-6 bg-dark/10 backdrop-blur-3xl rounded-3xl">
 
-          {/* HEADER */}
+
           <View className="flex-row items-end justify-between">
-            <CsText variant="bigHeading text-xl" className="text-light">
+            <CsText style={typography.Poppins_m_regular} className="text-light">
               {city || "Srinagar"}
-            </CsText>
-
-            <CsText variant="subtitle" className="text-light">
-              Today
             </CsText>
           </View>
 
-          {/* TEMP */}
           <View className="flex-row items-center justify-between">
-            <CsText variant="title" className="text-light">
-              {current?.tempC}°
+            <CsText style={typography.Poppins_xxl_semibold} className="text-light">
+              {current?.tempC}
+              <CsText style={typography.Poppins_l_regular} className="text-light ">
+                °
+              </CsText>
             </CsText>
+
             <Sun size={70} color="yellow" />
           </View>
 
-          {/* CONDITION */}
-          <CsText variant="title" className="text-light">
+
+
+          <CsText
+            className="mb-3 text-light tracking-wide"
+            style={typography.Poppins_m_regular}>
             Feels like {current?.feelsLikeC}° — {current?.condition}
           </CsText>
 
-          {/* INFO */}
           <View className="flex-row justify-between">
-
-            {/* HUMIDITY */}
             <View className="items-center gap-1">
-              <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light/40">
+              <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light">
                 <Droplets size={24} color={colors.light} />
               </View>
-              <CsText variant="caption" className="text-light">
+              <CsText
+                style={typography.Poppins_s_regular} className="text-light"
+              >
                 {current?.humidity}%
               </CsText>
-              <CsText variant="subtitle" className="text-light/70">
+              <CsText
+                style={typography.Poppins_s_regular} className="text-light">
                 Humidity
               </CsText>
             </View>
 
-            {/* WIND */}
+
             <View className="items-center gap-1">
-              <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light/40">
+              <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light">
                 <Wind size={24} color={colors.light} />
               </View>
-              <CsText variant="caption" className="text-light">
+              <CsText style={typography.Poppins_s_regular} className="text-light">
                 {current?.windKph} km/h
               </CsText>
-              <CsText variant="subtitle" className="text-light/70">
+              <CsText
+                style={typography.Poppins_s_regular} className="text-light">
                 {current?.windDir ?? "--"}
               </CsText>
             </View>
 
             {/* STORM */}
             <View className="w-24 items-center gap-1">
-              <View className="w-14 h-14 rounded-full bg-light items-center justify-center border border-light">
+              <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light">
                 <CloudLightning size={24} color={colors.light} />
               </View>
-              <CsText variant="caption" className="text-light">
-                {current?.stormRisk ?? "--"}
+              <CsText style={typography.Poppins_s_regular} className="text-light">
+                {current?.stormRisk ?? "---"}
               </CsText>
-              <CsText variant="subtitle" className="text-light">
+              <CsText style={typography.Poppins_s_regular} className="text-light">
                 Storm risk
               </CsText>
             </View>

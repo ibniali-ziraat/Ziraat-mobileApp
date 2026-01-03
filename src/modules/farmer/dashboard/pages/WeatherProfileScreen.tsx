@@ -6,7 +6,6 @@ import { MoonCard } from "@/src/components/MoonCard";
 import { Precipitation } from "@/src/components/Precipitation";
 import PressureCard from "@/src/components/PressureCard";
 import BackHeader from "@/src/components/shared/BackHeader";
-import Map from "@/src/components/shared/Map";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SearchBar from "@/src/components/shared/SearchBar";
 import StormCard from "@/src/components/StormCard";
@@ -20,10 +19,10 @@ import { useLocationSearch } from "@/src/hooks/useLocationSearch";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 import WeatherCard from "@/src/modules/home/components/weatherCard";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Image, RefreshControl, View } from "react-native";
+import { RefreshControl, View } from "react-native";
 
-import CsText from "@/src/components/shared/CsText";
 import Loader from "@/src/components/shared/Loader";
+import Map from "@/src/components/shared/Map";
 
 export default function WeatherScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -95,31 +94,6 @@ export default function WeatherScreen() {
   const visibilityVal = data?.data_1h?.visibility?.[0] ?? 10000;
   const dayData = data?.data_day;
 
-
-  const renderFallback = () => (
-    <View className="items-center mt-6 px-6">
-      <Image
-        source={require("@/assets/images/weatherError.png")}
-        style={{ width: 220, height: 220 }}
-        resizeMode="contain"
-      />
-
-      <View className="mt-4">
-        <CsText variant="title" className="text-center">
-          Weather data unavailable
-        </CsText>
-
-        <CsText variant="subtitle" className="text-center text-gray-500 mt-1">
-          We couldn’t load weather details right now.
-        </CsText>
-
-        <CsText variant="caption" className="text-center text-gray-400 mt-2">
-          Check your internet connection or try refreshing.
-        </CsText>
-      </View>
-    </View>
-  );
-
   return (
     <ScreenLayout
       className="flex-1"
@@ -136,14 +110,11 @@ export default function WeatherScreen() {
           <Loader />
         ) : (
           <>
-            {(!data || !currentWeather) && renderFallback()}
-
-
             {data && currentWeather && (
               <>
                 <WeatherCard
                   current={currentWeather}
-                  city={cityName || "Current location"}
+                  city={cityName || "Srinagar "}
                 />
 
                 {data && <HourlyCard data_1h={data.data_1h} />}
@@ -208,13 +179,7 @@ export default function WeatherScreen() {
           </>
         )}
       </View>
-
-      <Map
-        location={{
-          latitude: finalCoords.lat,
-          longitude: finalCoords.lon,
-        }}
-      />
+      <Map />
     </ScreenLayout>
   );
 }
