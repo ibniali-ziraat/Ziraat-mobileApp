@@ -23,39 +23,43 @@ const appVersion =
 
 
 const Row = ({ icon, label, onPress, danger = false }) => (
-  <TouchableOpacity
-    onPress={onPress}
-    activeOpacity={0.65}
-    className="flex-row items-center justify-between  py-4"
-  >
-    <View className="flex-row items-center">
-      <View
-        className="w-10 h-10 rounded-full items-center justify-center mr-4"
-        style={{
-          backgroundColor: danger ? "#FEE2E2" : "#F3F4F6",
-        }}
-      >
-        {icon}
-      </View>
-
-      <CsText
-        style={{
-          fontSize: 15,
-          color: danger ? "#DC2626" : colors.dark,
-        }}
-      >
-        {label}
-      </CsText>
+ <TouchableOpacity
+  onPress={onPress}
+  activeOpacity={0.65}
+  className="flex-row items-center justify-between py-4"
+>
+  <View className="flex-row items-center">
+    {/* Icon background */}
+    <View
+      className="w-10 h-10 rounded-full items-center justify-center mr-4"
+      style={{
+        backgroundColor: danger
+          ? `${colors.error}15`     
+          : `${colors.neutral}15`,    
+      }}
+    >
+      {icon}
     </View>
 
-    <ChevronRight
-      size={18}
-      color={danger ? "#DC2626" : "#9CA3AF"}
-    />
-  </TouchableOpacity>
+    <CsText
+      style={{
+        fontSize: 15,
+        color: danger ? colors.error: colors.dark,
+      }}
+    >
+      {label}
+    </CsText>
+  </View>
+
+  <ChevronRight
+    size={18}
+    color={danger ? colors.dark : colors.neutral}
+  />
+</TouchableOpacity>
+
 );
 
-/* ------------------ DIVIDER ------------------ */
+
 const Divider = () => (
   <View
   className="h-[1px] ml-16"
@@ -63,7 +67,7 @@ const Divider = () => (
 />
 );
 
-/* ------------------ SECTION ------------------ */
+
 const Section = ({ title, children }) => (
   <View className="mb-8">
     {title && (
@@ -141,7 +145,7 @@ export default function SettingsPage() {
           <Row
             label="Delete Account"
             danger
-            icon={<Trash2 size={22} color="#DC2626" />}
+            icon={<Trash2 size={22} color={colors.error} />}
             onPress={() => router.push("/user/delete-account")}
           />
         </Section>
