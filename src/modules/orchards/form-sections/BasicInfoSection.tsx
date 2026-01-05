@@ -39,7 +39,7 @@ export default function BasicInfo({
   const orchardMode = useWatch({
     control,
     name: "orchardSize.mode",
-    defaultValue: "manual",
+    defaultValue: "measure",
   });
 
   /* ------------------ UI ------------------ */

@@ -49,9 +49,9 @@ import {
 //
 export const useOrchardsByUserQuery = (userId: ID) =>
   useQuery({
-    queryKey: ["orchards", userId],
-    queryFn: () => getOrchardsByUser(userId),
-    enabled: !!userId,
+    queryKey: ["orchards"],
+    queryFn: () => getOrchardsByUser(),
+    // enabled: !!userId,
   });
 
 export const useOrchardByIdQuery = (orchardId: ID) =>

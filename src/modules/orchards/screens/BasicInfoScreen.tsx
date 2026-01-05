@@ -1,5 +1,6 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
@@ -9,83 +10,79 @@ import { FormProvider } from "react-hook-form";
 
 import { ROUTES } from "@/src/constants/routes";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { v4 as uuidv4 } from "uuid";
+
 import BasicInfo from "../form-sections/BasicInfoSection";
 import {
   useCreateOrchardBasinInfoMutation,
+  useOrchardsByUserQuery,
   useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
+import { v4 as uuidv4 } from "uuid";
+
 export default function BasicInfoScreen() {
-  // const { userId } = useAuth();
-  // const { orchardId, setOrchardId } = useOrchard();
   const params = useLocalSearchParams<{
-    orchardSize?: string;
+    id?: string;
     areaValue?: string;
     areaUnit?: string;
     areaLabel?: string;
   }>();
 
-  // const { data } = useOrchardsByUserQuery(userId);
-  const { mutateAsync: save, isPending: isSaving } =
+  /* -------------------- API -------------------- */
+  const { data: orchardData, isPending } = useOrchardsByUserQuery();
+
+  const orchard = orchardData?.find(
+    (o: any) => String(o.id) === String(params.id)
+  );
+
+  const { mutateAsync: createOrchard, isPending: creating } =
     useCreateOrchardBasinInfoMutation();
-  const { mutateAsync: update, isPending: isUpdating } =
+
+  const { mutateAsync: updateOrchard, isPending: updating } =
     useUpdateOrchardBasicInfoMutation();
 
-  // const form = useZodForm(BasicInfoSchema);
+  /* -------------------- FORM -------------------- */
   const form = useZodForm();
   const {
     setValue,
     handleSubmit,
-    formState: { errors },
     control,
+    formState: { errors },
   } = form;
-  console.log(errors, "errors....");
 
-  // useEffect(() => {
-  //   if (!data) return;
-  //   Object.entries(data).forEach(([key, value]) => {
-  //     if (value !== null && value !== undefined) {
-  //       setValue(key as any, value);
-  //     }
-  //   });
-  //   setOrchardId(data.id);
-  // }, [data]);
+  /* -------------------- PREFILL -------------------- */
+  useEffect(() => {
+    if (!orchard) return;
 
-  // const onSubmit = async (values: any) => {
-  //   console.log(values, "values...");
+    Object.entries(orchard).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        setValue(key as any, value);
+      }
+    });
 
-  //   // router.push(ROUTES.ORCHARDS.REGISTRATION.CROP_INFO);
+    // Prefill orchard size
+    if (orchard.kanals > 0) {
+      setValue("orchardSize.mode", "manual");
+      setValue("orchardSize.unit", "kanal");
+      setValue("orchardSize.value", String(orchard.kanals));
+    } else if (orchard.marlas > 0) {
+      setValue("orchardSize.mode", "manual");
+      setValue("orchardSize.unit", "marla");
+      setValue("orchardSize.value", String(orchard.marlas));
+    }
+  }, [orchard]);
 
-  //   try {
-  //     // let res;
+  /* -------------------- MEASURED AREA -------------------- */
+  useEffect(() => {
+    if (!params?.areaValue) return;
 
-  //     // if (orchardId) {
-  //     //   res = await update({ id: orchardId, ...values });
-  //     //   showSuccessToast("Orchard updated");
-  //     // }
+    setValue("orchardSize.mode", "measure", { shouldValidate: true });
+    setValue("orchardSize.value", params.areaValue, { shouldValidate: true });
+    setValue("orchardSize.unit", params.areaUnit, { shouldValidate: true });
+  }, [params?.areaValue, params?.areaUnit]);
 
-  //     // else
-
-  //     //   {
-  //     // const res = await save(values);
-  //     const res = await save({ orchardId: uuidv4(), ...values });
-  //     // setOrchardId(res.id);
-  //     showSuccessToast("Orchard created");
-  //     // }
-
-  //     // router.push(ROUTES.TABS.ORCHARDS);
-  //     router.push(ROUTES.ORCHARDS.REGISTRATION.CROP_INFO);
-  //   } catch (error: any) {
-  //     showErrorToast(
-  //       error?.response?.data?.message || "Failed to save orchard information"
-  //     );
-  //   }
-  // };
-
+  /* -------------------- SUBMIT -------------------- */
   const onSubmit = async (values: any) => {
-    console.log(values, "values...");
-
     try {
       const {
         orchardSize,
@@ -98,33 +95,23 @@ export default function BasicInfoScreen() {
         pincode,
         latitude = 74.8946,
         longitude = 74.8946,
+        zone,
       } = values;
 
       let kanals = 0;
       let marlas = 0;
 
-      console.log(orchardSize, ",,,,");
-
-      /* ---------------- MANUAL MODE ---------------- */
-      // if (orchardSize.mode === "manual") {
-      if (orchardSize.unit === "kanal") {
-        kanals = Number(orchardSize.value);
+      if (orchardSize.mode === "manual") {
+        if (orchardSize.unit === "kanal") kanals = Number(orchardSize.value);
+        if (orchardSize.unit === "marla") marlas = Number(orchardSize.value);
       }
 
-      if (orchardSize.unit === "marla") {
-        marlas = Number(orchardSize.value);
-      }
-      // }
-
-      /* ---------------- MEASURE MODE ---------------- */
       if (orchardSize.mode === "measure") {
-        // assuming measured value is always returned in marlas
-        // adjust if your measurement screen returns kanals
         marlas = Number(orchardSize.value || 0);
       }
 
       const payload = {
-        orchardId: uuidv4(),
+        orchardId: orchard?.id ?? uuidv4(),
         orchardName,
         kanals,
         marlas,
@@ -133,18 +120,21 @@ export default function BasicInfoScreen() {
         ownershipType,
         district,
         tehsil,
-        zone: values.zone ?? "",
+        zone: zone ?? "",
         pinCode: pincode,
-        latitude: latitude ? Number(latitude) : 0,
-        longitude: longitude ? Number(longitude) : 0,
+        latitude: Number(latitude),
+        longitude: Number(longitude),
       };
 
-      console.log("FINAL PAYLOAD →", payload);
+      if (orchard) {
+        await updateOrchard(payload);
+        showSuccessToast("Orchard updated");
+      } else {
+        await createOrchard(payload);
+        showSuccessToast("Orchard created");
+      }
 
-      await save(payload);
-
-      showSuccessToast("Orchard created");
-      router.push(ROUTES.ORCHARDS.REGISTRATION.CROP_INFO);
+      router.replace(ROUTES.ORCHARDS.DETAIL.replace(":id", payload.orchardId));
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message || "Failed to save orchard information"
@@ -152,39 +142,37 @@ export default function BasicInfoScreen() {
     }
   };
 
-  useEffect(() => {
-    if (params?.orchardSize) {
-      setValue("orchardSize", params.orchardSize);
-    }
-  }, [params?.orchardSize]);
+  /* -------------------- UI -------------------- */
+  if (isPending) return null;
 
   return (
     <ScreenLayout>
       <BackHeader
         title="Orchard Registration"
         desc="Enter the basic details required to register your orchard successfully."
+        onPress={() => router.back()}
       />
 
-      <FormProvider {...form}>
-        <BasicInfo
-          errors={errors}
-          control={control}
-          // data={data}
-          orchardSize={params.orchardSize}
-          areaLabel={params.areaLabel}
-          areaUnit={params.areaUnit}
-        />
+      <ScreenContent>
+        <FormProvider {...form}>
+          <BasicInfo
+            control={control}
+            errors={errors}
+            orchardSize={params.areaValue}
+            areaLabel={params.areaLabel}
+            areaUnit={params.areaUnit}
+          />
 
-        <FormActions
-          cancelLabel="Cancel"
-          onCancel={() => router.back()}
-          // submitLabel={orchardId ? "Update" : "Save"}
-          submitLabel={"Save"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-          loading={isSaving || isUpdating}
-        />
-      </FormProvider>
+          <FormActions
+            cancelLabel="Cancel"
+            onCancel={() => router.back()}
+            submitLabel={orchard ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={creating || updating}
+            loading={creating || updating}
+          />
+        </FormProvider>
+      </ScreenContent>
     </ScreenLayout>
   );
 }

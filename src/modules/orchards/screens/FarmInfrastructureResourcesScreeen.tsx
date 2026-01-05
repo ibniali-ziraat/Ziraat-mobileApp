@@ -1,108 +1,128 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { ROUTES } from "@/src/constants/routes";
-import {
-  useCreateInfrastructureMutation,
-  useInfrastructureQuery,
-  useOrchardProfileId,
-  useUpdateInfrastructureMutation,
-} from "../hooks/useOrchardsQuery";
 
-import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
+
 import FarmInfrastructure from "../form-sections/FarmInfrastructureSection";
+import {
+  useCreateInfrastructureMutation,
+  useOrchardsByUserQuery,
+  useUpdateInfrastructureMutation,
+} from "../hooks/useOrchardsQuery";
 
-export default function FarmInfrastuctureScreen() {
-  // console.log(userProfileData, "userprofiledata");
-  const { userId } = useAuth();
+export default function FarmInfrastructureScreen() {
+  /**
+   * ✅ Single orchard source
+   */
+  const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
 
-  const { data: orchardProfile } = useOrchardProfileId(userId);
+  /**
+   * Assume first orchard (future-safe for multi-orchard support)
+   */
+  const orchard = orchardData?.[0];
+  const infrastructureData = orchard?.infrastructure;
 
-  const { data } = useInfrastructureQuery(11);
+  /**
+   * Mutations
+   */
   const { mutateAsync: save, isPending: isSaving } =
     useCreateInfrastructureMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateInfrastructureMutation();
 
+  /**
+   * Form
+   */
   const form = useZodForm();
-  // const form = useZodForm(FarmInfrastructureSchema);
   const {
     setValue,
     handleSubmit,
-    formState: { errors },
     control,
+    formState: { errors },
   } = form;
 
-  // useEffect(() => {
-  //   if (userProfileData?.id) {
-  //     setUserData({ profileId: userProfileData.id });
-  //   }
-  // }, [userProfileData]);
-
+  /**
+   * ✅ PREFILL FORM IF DATA EXISTS
+   */
   useEffect(() => {
-    if (!data) return;
-    Object.entries(data).forEach(([key, value]) => {
+    if (!infrastructureData) return;
+
+    Object.entries(infrastructureData).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
-        setValue(key, value);
+        setValue(key as any, value);
       }
     });
-  }, [data]);
+  }, [infrastructureData]);
 
+  /**
+   * Submit handler
+   */
   const onSubmit = async (values: any) => {
     try {
-      // let res;
-
-      // if (orchardId) {
-      //   res = await update({ id: orchardId, ...values });
-      //   showSuccessToast("Orchard updated");
-      // }
-
-      // else
-
-      //   {
       const payload = {
-        id: orchardProfile?.[0]?.id,
+        id: orchard?.id,
         infrastructure: {
           ...values,
         },
       };
 
-      // Send payload
-      const res = await save(payload);
+      /**
+       * ✅ UPDATE vs CREATE
+       */
+      if (infrastructureData) {
+        await update(payload);
+        showSuccessToast("Farm infrastructure updated");
+      } else {
+        await save(payload);
+        showSuccessToast("Farm infrastructure saved");
+      }
 
-      // setOrchardId(res.id);
-      showSuccessToast("Orchard created");
-      // }
-
-      // router.push(ROUTES.TABS.ORCHARDS);
       router.push(ROUTES.ORCHARDS.REGISTRATION.INPUT_COST_INFO);
     } catch (error: any) {
       showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard information"
+        error?.response?.data?.message ||
+          "Failed to save farm infrastructure information"
       );
     }
   };
+
+  /**
+   * Loading / Error guards
+   */
+  if (isPending) return null;
+  if (isError) {
+    showErrorToast("Failed to load orchard data");
+    return null;
+  }
 
   return (
     <ScreenLayout>
       <BackHeader
         title="Orchard Registration"
-        desc=" Farm Infrastructure & Resources"
+        desc="Farm Infrastructure & Resources"
       />
-      <FormProvider {...form}>
-        <FarmInfrastructure errors={errors} control={control} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Save"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-        />
-      </FormProvider>
+
+      <ScreenContent>
+        <FormProvider {...form}>
+          <FarmInfrastructure errors={errors} control={control} />
+
+          <FormActions
+            cancelLabel="Cancel"
+            submitLabel={infrastructureData ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </FormProvider>
+      </ScreenContent>
     </ScreenLayout>
   );
 }

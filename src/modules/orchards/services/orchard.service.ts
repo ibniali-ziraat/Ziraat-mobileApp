@@ -36,7 +36,8 @@ export const getOrchardById = async (orchardId: string | number) =>
   safeGet(axiosInstance.get(`${CORE}/orchard/${orchardId}`));
 
 export const getOrchardsByUser = async (userId: string | number) =>
-  safeGet(axiosInstance.get(`${CORE}/orchard/GetByUserId?userId=${userId}`));
+  // safeGet(axiosInstance.get(`${CORE}/orchardProfile/GetByUserId?userId=${userId}`));
+  safeGet(axiosInstance.get(`${CORE}/orchardProfile`));
 
 /* ====================================================
    🌱 B. VARIETY & PLANTING
