@@ -10,6 +10,7 @@ import {
   useProfessionUpdateMutation,
 } from "../../../../hooks/userQueryHooks";
 
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { professionSchema } from "@/src/modules/auth/user/schemas/profession.schema";
 import ProfessionSection from "@/src/modules/auth/user/sections/ProfessionSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
@@ -71,16 +72,17 @@ export default function ProfessionScreen() {
           desc="Please provide details about your current profession. "
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
-
-        <ProfessionSection control={control} errors={errors} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update " : "Add "}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-          loading={isSaving || isUpdating}
-        />
+        <ScreenContent>
+          <ProfessionSection control={control} errors={errors} />
+          <FormActions
+            cancelLabel={"Cancel"}
+            onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+            submitLabel={data ? "Update " : "Add "}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </ScreenContent>
       </FormProvider>
     </ScreenLayout>
   );

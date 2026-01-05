@@ -5,6 +5,7 @@ import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { addressSchema } from "@/src/modules/auth/user/schemas/address.schema";
 import AddressSection from "@/src/modules/auth/user/sections/AddressSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
@@ -70,15 +71,17 @@ export default function AddressScreen() {
           desc="Please provide accurate address details for record-keeping and location verification purposes."
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
-        <AddressSection control={control} errors={errors} data={data} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update" : "Add"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-          loading={isSaving || isUpdating}
-        />
+        <ScreenContent>
+          <AddressSection control={control} errors={errors} data={data} />
+          <FormActions
+            cancelLabel={"Cancel"}
+            onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+            submitLabel={data ? "Update" : "Add"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </ScreenContent>
       </FormProvider>
     </ScreenLayout>
   );

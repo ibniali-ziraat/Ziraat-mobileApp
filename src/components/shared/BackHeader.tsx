@@ -4,6 +4,7 @@ import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
 import CsText from "./CsText";
+import { ScreenContent } from "./ScreenContent";
 
 interface BackHeaderProps {
   title: string;
@@ -15,39 +16,41 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
   const router = useRouter();
 
   return (
-    <View className="bg-light py-4 mb-4">
-      {/* Row */}
-      <View className="flex-row items-center">
-        {/* Back Button */}
-        <TouchableOpacity
-          onPress={onPress ? onPress : () => router.back()}
-          className="p-2 mr-3 rounded-full"
-          activeOpacity={0.7}
-        >
-          <ArrowLeft size={26} color={colors.dark} />
-        </TouchableOpacity>
-
-        {/* Title + Description */}
-        <View className="flex-1">
-          <CsText
-            style={[typography.Poppins_m_semibold]}
-            className="text-dark "
-            numberOfLines={1}
+    <ScreenContent>
+      <View className="bg-light py-4 mb-4">
+        {/* Row */}
+        <View className="flex-row items-center">
+          {/* Back Button */}
+          <TouchableOpacity
+            onPress={onPress ? onPress : () => router.back()}
+            className="p-2 mr-3 rounded-full"
+            activeOpacity={0.7}
           >
-            {title}
-          </CsText>
+            <ArrowLeft size={26} color={colors.dark} />
+          </TouchableOpacity>
 
-          {desc && (
+          {/* Title + Description */}
+          <View className="flex-1">
             <CsText
-              style={[typography.Poppins_xs_regular]}
-              className="text-neutral mt-0.5"
-              numberOfLines={2}
+              style={[typography.Poppins_m_semibold]}
+              className="text-dark "
+              numberOfLines={1}
             >
-              {desc}
+              {title}
             </CsText>
-          )}
+
+            {desc && (
+              <CsText
+                style={[typography.Poppins_xs_regular]}
+                className="text-neutral mt-0.5"
+                numberOfLines={2}
+              >
+                {desc}
+              </CsText>
+            )}
+          </View>
         </View>
       </View>
-    </View>
+    </ScreenContent>
   );
 }

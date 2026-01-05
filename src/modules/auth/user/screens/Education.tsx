@@ -10,6 +10,7 @@ import {
   useEducationUpdateMutation,
 } from "../../../../hooks/userQueryHooks";
 
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { educationSchema } from "@/src/modules/auth/user/schemas/education.schema";
 import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
@@ -72,15 +73,17 @@ export default function EducationScreen() {
           onPress={() => router.replace(ROUTES.USER.PROFILE)}
         />
 
-        <EducationSection control={control} errors={errors} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update" : "Add"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-          loading={isSaving || isUpdating}
-        />
+        <ScreenContent>
+          <EducationSection control={control} errors={errors} />
+          <FormActions
+            cancelLabel={"Cancel"}
+            onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+            submitLabel={data ? "Update" : "Add"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </ScreenContent>
       </FormProvider>
     </ScreenLayout>
   );
