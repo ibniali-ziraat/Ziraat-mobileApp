@@ -26,7 +26,6 @@ export default function ScreenLayout({
             contentContainerStyle={{
               flexGrow: 1,
               paddingBottom: Platform.OS === "android" ? 40 : 100,
-              paddingHorizontal: 5,
               backgroundColor: colors.light,
             }}
             keyboardShouldPersistTaps="handled"
@@ -40,7 +39,6 @@ export default function ScreenLayout({
               flex: 1,
               backgroundColor: colors.light,
               paddingBottom: Platform.OS === "android" ? 40 : 100,
-              paddingHorizontal: 5,
             }}
           >
             {children}

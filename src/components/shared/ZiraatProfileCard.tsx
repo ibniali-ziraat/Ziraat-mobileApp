@@ -105,6 +105,7 @@ export default function ZiraatCard({
 const styles = StyleSheet.create({
   /* ---------- OUTER WRAPPER ---------- */
   wrapper: {
+    marginHorizontal: -15,
     paddingHorizontal: 15,
     paddingBottom: 15,
   },

@@ -1,12 +1,6 @@
 import { router } from "expo-router";
 import { useMemo } from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
-
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import ProductCarousel from "@/src/components/shared/ProductCarousel";
@@ -16,6 +10,8 @@ import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
 
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { imageMapper } from "@/src/data/imageMapper";
 import products from "@/src/data/products.json";
 import { useLocation } from "@/src/hooks/useLocationPermission";
@@ -23,7 +19,6 @@ import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 
 export default function HomeScreen() {
   const { coords, loading: locLoading, error: locError } = useLocation();
-
 
   const { data, isLoading } = useWeatherQuery({
     lat: coords?.lat ?? 34.0837,
@@ -34,7 +29,6 @@ export default function HomeScreen() {
   //
   const currentWeather = useMemo(() => {
     if (!data) return null;
-
 
     if (data.data_current) {
       return {
@@ -65,7 +59,7 @@ export default function HomeScreen() {
       lowTemp: Math.round(data.data_day.temperature_min[0]),
       stormRisk:
         data.data_1h.convective_precipitation[currentHour] > 2 &&
-          data.data_1h.windspeed[currentHour] > 3
+        data.data_1h.windspeed[currentHour] > 3
           ? "High"
           : "Low",
     };
@@ -84,45 +78,50 @@ export default function HomeScreen() {
   }
 
   return (
-    <AnimatedTabContent>
-      <View className="flex-1 bg-white pt-4">
-        <ScrollView showsVerticalScrollIndicator={false}>
+    <ScreenLayout>
+      <ScreenContent>
+        <AnimatedTabContent>
+          <View className="flex-1 bg-white pt-4">
+            <TouchableOpacity
+              onPress={() =>
+                router.push({
+                  pathname: "/dashboards/(farmer)/weather-profile",
+                  // params: { weatherData: JSON.stringify(currentWeather) },
+                })
+              }
+            >
+              {currentWeather ? (
+                <WeatherCard current={currentWeather} />
+              ) : (
+                <WeatherCard />
+              )}
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() =>
-              router.push({
-                pathname: "/dashboards/(farmer)/weather-profile",
-                // params: { weatherData: JSON.stringify(currentWeather) },
-              })
-            }
-          >
-            {currentWeather ? <WeatherCard current={currentWeather} /> : <WeatherCard />}
-          </TouchableOpacity>
+            <QuickActions />
 
+            {sections.map((section, index) => (
+              <View key={index} className="mb-6">
+                <SectionTitle title={section.title} icon="flask-outline" />
+                <ProductCarousel
+                  items={products.slice(...section.slice)}
+                  imageMapper={imageMapper}
+                />
+              </View>
+            ))}
 
-          <QuickActions />
+            <View className="mb-6">
+              <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
+              <FarmOverviewChart />
 
-
-          {sections.map((section, index) => (
-            <View key={index} className="mb-6">
-              <SectionTitle title={section.title} icon="flask-outline" />
-              <ProductCarousel
-                items={products.slice(...section.slice)}
-                imageMapper={imageMapper}
+              <SectionTitle
+                title="Farmer Tips & Awareness"
+                icon="bulb-outline"
               />
+              <FarmerTipsCard />
             </View>
-          ))}
-
-
-          <View className="mb-6">
-            <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
-            <FarmOverviewChart />
-
-            <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
-            <FarmerTipsCard />
           </View>
-        </ScrollView>
-      </View>
-    </AnimatedTabContent>
+        </AnimatedTabContent>
+      </ScreenContent>
+    </ScreenLayout>
   );
 }
