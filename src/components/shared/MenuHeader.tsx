@@ -4,10 +4,11 @@ import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useVendorProfileQuery } from "@/src/hooks/vendorQueryHooks";
 import { router } from "expo-router";
-import { BarChart2, PhoneCall, Store, User } from "lucide-react-native";
+import { BarChart2, Cog, PhoneCall, Store, User } from "lucide-react-native";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import CsText from "./CsText";
+
 
 interface MenuHeaderProps {
   role: "farmer" | "supplier";
@@ -111,6 +112,17 @@ const MenuHeader = ({ role, onToggleRole }: MenuHeaderProps) => {
             >
               <BarChart2 color={colors.secondary} size={20} />
             </TouchableOpacity>
+             {/* Settings */}
+  <TouchableOpacity
+    className="p-2 rounded-full bg-white border"
+    style={{ borderColor: colors.neutral }}
+    onPress={() => router.push({
+      pathname:"/settings/settingsPage",
+    })
+  }
+  >
+    <Cog color={colors.dark} size={20} />
+  </TouchableOpacity>
           </>
         ) : null}
       </View>
