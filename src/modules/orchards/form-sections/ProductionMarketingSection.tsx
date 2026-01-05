@@ -23,6 +23,11 @@ export default function ProductionMarketing({ control, errors }: any) {
     },
   ];
 
+  const YIELD_UNITS = ["BOXES", "CRATES", "KILO GRAMS"].map((x) => ({
+    label: x,
+    value: x,
+  }));
+
   return (
     <View className="flex-1 w-full">
       {/* Page Heading */}
@@ -39,15 +44,38 @@ export default function ProductionMarketing({ control, errors }: any) {
 
         <FormInput
           control={control}
-          name="annualYield"
+          name="averageAnnualYield"
           label="Average Annual Yield (Boxes / Kilos)"
           type="phone"
           error={errors.annualYield?.message}
         />
 
+        {/* <FormInput
+          control={control}
+          name="yieldUnit"
+          label="Average Annual Yield (Boxes / Kilos)"
+          type="phone"
+          error={errors.annualYield?.message}
+        /> */}
+
+        <SingleSelectInput
+          control={control}
+          name="yieldUnit"
+          label="yieldUnit"
+          modalLabel="yieldUnit"
+          options={YIELD_UNITS}
+          error={errors?.soilType?.message}
+        />
+
         <FormDateInput
           control={control}
-          name="peakHarvestSeason"
+          name="peakHarvestFromMonth"
+          label="Peak Harvest Season (Month / Duration)"
+          error={errors.peakHarvestSeason?.message}
+        />
+        <FormDateInput
+          control={control}
+          name="peakHarvestToMonth"
           label="Peak Harvest Season (Month / Duration)"
           error={errors.peakHarvestSeason?.message}
         />
@@ -65,8 +93,17 @@ export default function ProductionMarketing({ control, errors }: any) {
         {/* Buyer Details (OPTIONAL) */}
         <FormInput
           control={control}
-          name="buyerDetails"
-          label="Buyer Details (Optional)"
+          name="buyerName"
+          label="buyerName (Optional)"
+          optional={true}
+          icon="account-box"
+          iconColor="secondary"
+          error={errors.buyerDetails}
+        />
+        <FormInput
+          control={control}
+          name="buyerContact"
+          label="buyerContact (Optional)"
           optional={true}
           icon="account-box"
           iconColor="secondary"

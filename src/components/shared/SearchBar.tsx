@@ -59,11 +59,17 @@ export default function SearchBar({
           autoCapitalize="none"
           allowFontScaling={false}
           multiline={false}
+          outlineColor="transparent"
+          cursorColor={colors.neutral}
+          activeUnderlineColor="transparent"
+          underlineColor="transparent"
+          selectionColor={colors.primary}
+          textColor={colors.dark}
           style={{
+            backgroundColor: "transparent",
             flex: 1,
             marginLeft: 12,
             fontSize: 16,
-            color: "#000",
             height: 40,
             paddingVertical: 0,
             paddingTop: Platform.OS === "ios" ? 1 : 0,

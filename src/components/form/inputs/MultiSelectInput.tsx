@@ -46,7 +46,7 @@ export default function MultiSelectInput({
               style={{ fontSize: 16, fontWeight: "600", color: colors.dark }}
             >
               {label}
-           </CsText>
+            </CsText>
             {!optional && (
               <Asterisk
                 size={14}
@@ -71,14 +71,14 @@ export default function MultiSelectInput({
               style={{ color: value?.length ? colors.dark : colors.neutral }}
             >
               {value?.length ? value.join(", ") : `Select ${label}`}
-           </CsText>
+            </CsText>
           </TouchableOpacity>
 
           {/* Error */}
           {error && (
             <CsText style={{ color: colors.error, fontSize: 12 }}>
               {error.message || error}
-           </CsText>
+            </CsText>
           )}
 
           {/* Modal */}
@@ -127,7 +127,7 @@ export default function MultiSelectInput({
                       >
                         <CsText style={{ marginRight: 10 }}>
                           {selected ? "✓" : ""}
-                       </CsText>
+                        </CsText>
                         <CsText>{item.label}</CsText>
                       </TouchableOpacity>
                     );

@@ -14,42 +14,84 @@ import UVCard from "@/src/components/UVCard";
 import VisibilityCard from "@/src/components/VisibilityCard";
 import WeeklyCard from "@/src/components/WeeklyCard";
 import WindCard from "@/src/components/WindCard";
+import { useLocation } from "@/src/hooks/useLocationPermission";
+import { useLocationSearch } from "@/src/hooks/useLocationSearch";
+import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 import WeatherCard from "@/src/modules/home/components/weatherCard";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { RefreshControl, View } from "react-native";
 
-import { useLocation } from "@/src/hooks/useLocationPermission";
-import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
-import { useLocalSearchParams } from "expo-router";
+import Loader from "@/src/components/shared/Loader";
+import Map from "@/src/components/shared/Map";
 
 export default function WeatherScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const [search, setSearch] = useState("");
+  const [cityName, setCityName] = useState<string | null>(null);
+
+  const { coords } = useLocation();
+
+  const { coords: searchedCoords, name: searchedName, loading } =
+    useLocationSearch(search);
+
+  useEffect(() => {
+    if (searchedName) setCityName(searchedName);
+  }, [searchedName]);
+
+  const finalCoords =
+    searchedCoords ??
+    coords ?? {
+      lat: 34.0837,
+      lon: 74.7973,
+    };
+
+  const { data } = useWeatherQuery({
+    lat: finalCoords.lat,
+    lon: finalCoords.lon,
+    asl: 1593,
+  });
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => setRefreshing(false), 1000);
   }, []);
 
-  const { weatherData } = useLocalSearchParams();
-  const currentWeather = weatherData ? JSON.parse(weatherData as string) : null;
-  const { coords, loading: locLoading, error: locError } = useLocation();
+  const currentWeather = useMemo(() => {
+    if (!data) return null;
 
-  const { data } = useWeatherQuery({
-    lat: coords?.lat ?? 34.0837,
-    lon: coords?.lon ?? 74.7973,
-    asl: 1593,
-  });
+    if (data.data_current) {
+      return {
+        tempC: Math.round(data.data_current.temperature),
+        feelsLikeC: Math.round(data.data_current.temperature),
+        condition: data.data_current.pictocode,
+        humidity: data.data_current.relativehumidity ?? 0,
+        windKph: Math.round(data.data_current.windspeed),
+        windDir: 0,
+        isDaylight: data.data_current.isdaylight,
+        highTemp: Math.round(data.data_day.temperature_max[0]),
+        lowTemp: Math.round(data.data_day.temperature_min[0]),
+      };
+    }
 
-  // console.log(coords, "getting cords ");
+    const hour = new Date().getHours();
+
+    return {
+      tempC: Math.round(data.data_1h.temperature[hour]),
+      feelsLikeC: Math.round(data.data_1h.felttemperature[hour]),
+      condition: data.data_1h.pictocode[hour],
+      humidity: data.data_1h.relativehumidity[hour],
+      windKph: Math.round(data.data_1h.windspeed[hour]),
+      windDir: data.data_1h.winddirection[hour],
+      highTemp: Math.round(data.data_day.temperature_max[0]),
+      lowTemp: Math.round(data.data_day.temperature_min[0]),
+    };
+  }, [data]);
+
   const uvIndex = data?.data_1h?.uvindex?.[0];
   const todayHumidity = data?.data_day?.relativehumidity_mean?.[0] ?? 0;
-
-  // Inside your WeatherScreen function
-  const sunriseTime = data?.data_day?.sunrise?.[0]; // e.g., "2025-12-25 07:15"
-  const sunsetTime = data?.data_day?.sunset?.[0]; // e.g., "2025-12-25 17:30"
-  const visibilityVal = data?.data_1h?.visibility?.[0] ?? 10000; // in meters
-
+  const sunriseTime = data?.data_day?.sunrise?.[0];
+  const sunsetTime = data?.data_day?.sunset?.[0];
+  const visibilityVal = data?.data_1h?.visibility?.[0] ?? 10000;
   const dayData = data?.data_day;
 
   return (
@@ -61,78 +103,83 @@ export default function WeatherScreen() {
     >
       <BackHeader title="Weather" desc="Manage Your Weather & Orchards" />
 
-      <View className="h-fit pb-10">
+      <View className="pb-10">
         <SearchBar search={search} setSearch={setSearch} />
 
-        <WeatherCard current={currentWeather} />
+        {search.length >= 3 && loading ? (
+          <Loader />
+        ) : (
+          <>
+            {data && currentWeather && (
+              <>
+                <WeatherCard
+                  current={currentWeather}
+                  city={cityName || "Srinagar "}
+                />
 
-        {data && <HourlyCard data_1h={data.data_1h} />}
+                {data && <HourlyCard data_1h={data.data_1h} />}
 
-        <StormCard />
+                <StormCard />
 
-        {/* WEEKLY FORECAST */}
-        {data?.data_day && <WeeklyCard data_day={data.data_day} />}
+                {data?.data_day && <WeeklyCard data_day={data.data_day} />}
 
-        {/* FEELS LIKE + UV */}
-        <View className="flex-row justify-between">
-          {data?.data_1h?.felttemperature?.length > 0 && (
-            <FeelsLikeCard
-              temp={Math.round(data.data_1h.felttemperature[0])}
-              actualTemp={Math.round(data.data_1h.temperature[0])}
-            />
-          )}
+                <View className="flex-row justify-between">
+                  {data?.data_1h?.felttemperature?.length > 0 && (
+                    <FeelsLikeCard
+                      temp={Math.round(data.data_1h.felttemperature[0])}
+                      actualTemp={Math.round(data.data_1h.temperature[0])}
+                    />
+                  )}
 
-          {uvIndex !== undefined && <UVCard value={Math.round(uvIndex)} />}
-        </View>
+                  {uvIndex !== undefined && (
+                    <UVCard value={Math.round(uvIndex)} />
+                  )}
+                </View>
 
-        {/* WIND (SAFE GUARDED) */}
-        {data?.data_1h?.windspeed?.length > 0 &&
-          data?.data_1h?.winddirection?.length > 0 && (
-            <WindCard
-              speed={Math.round(data.data_1h.windspeed[0] * 3.6)} // m/s → km/h
-              gusts={Math.round(data.data_1h.windspeed[0] * 3.6 * 1.6)}
-              degree={data.data_1h.winddirection[0]}
-            />
-          )}
+                {data?.data_1h?.windspeed && data?.data_1h?.winddirection && (
+                  <WindCard
+                    speed={Math.round(data.data_1h.windspeed[0] * 3.6)}
+                    gusts={Math.round(
+                      data.data_1h.windspeed[0] * 3.6 * 1.6
+                    )}
+                    degree={data.data_1h.winddirection[0]}
+                  />
+                )}
 
-        <View className="mt-4 flex-row justify-between w-full">
-          {/* <PressureCard value={1028} /> */}
-          {data?.data_1h?.sealevelpressure?.length > 0 && (
-            <PressureCard value={data.data_1h.sealevelpressure[0]} />
-          )}
+                <View className="mt-4 flex-row justify-between">
+                  {data?.data_1h?.sealevelpressure && (
+                    <PressureCard value={data.data_1h.sealevelpressure[0]} />
+                  )}
+                  <HumidityCard value={todayHumidity} />
+                </View>
 
-          {/* <HumidityCard /> */}
-          <HumidityCard value={todayHumidity} />
-        </View>
+                <View className="mt-2 flex-row justify-between">
+                  <VisibilityCard distance={visibilityVal} />
+                  <SunsetCard sunrise={sunriseTime} sunset={sunsetTime} />
+                </View>
 
-        <View className="mt-2 flex-row justify-between mb-3">
-          <VisibilityCard distance={visibilityVal} />
-          <SunsetCard sunrise={sunriseTime} sunset={sunsetTime} />
-        </View>
+                <MoonCard
+                  phaseValue={data?.data_day?.moonphase?.[0]}
+                  illumination={data?.data_day?.moonillumination?.[0]}
+                  moonrise={data?.data_day?.moonrise?.[0]}
+                />
 
-        <MoonCard
-          // Try these alternative keys if the first ones failed
-          phaseValue={
-            data?.data_day?.moonphase?.[0] ?? data?.data_day?.moonphase_day?.[0]
-          }
-          illumination={
-            data?.data_day?.moonillumination?.[0] ??
-            data?.data_day?.moonillumination_day?.[0]
-          }
-          moonrise={data?.data_day?.moonrise?.[0]}
-        />
-
-        <View className="flex-row justify-between">
-          <AveragesCard
-            currentMax={Math.round(dayData?.temperature_max?.[0])}
-            averageMax={8} // Example: standard avg for December
-          />
-          <Precipitation
-            amount={dayData?.precipitation?.[0]}
-            probability={dayData?.precipitation_probability?.[0]}
-          />
-        </View>
+                <View className="flex-row justify-between">
+                  <AveragesCard
+                    currentMax={Math.round(dayData?.temperature_max?.[0])}
+                    averageMax={8}
+                  />
+                  <Precipitation
+                    amount={dayData?.precipitation?.[0]}
+                    probability={dayData?.precipitation_probability?.[0]}
+                  />
+                </View>
+              </>
+            )}
+          </>
+        )}
       </View>
+      <Map />
     </ScreenLayout>
   );
 }

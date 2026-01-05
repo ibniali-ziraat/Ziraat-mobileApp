@@ -4,7 +4,7 @@ import { safeGet } from "@/src/services/helpers/safeGet";
 /* ====================================================
    BASE
 ==================================================== */
-const CORE = "/api/core/orchardProfile";
+const CORE = "/api/core";
 
 /* ====================================================
    🌳 A. ORCHARD BASIC PROFILE
@@ -287,4 +287,4 @@ export const getOrchardExtraByOrchard = async (orchardId: string | number) =>
    🔎 PROFILE LOOKUP
 ==================================================== */
 export const getProfileOrchardId = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(`${CORE}/user/${orchardId}`));
+  safeGet(axiosInstance.get(`${CORE}/orchardProfile/user/${orchardId}`));

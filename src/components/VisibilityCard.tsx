@@ -1,14 +1,16 @@
 import { Eye } from "lucide-react-native";
 import { View } from "react-native";
+import { colors } from "../constants/colors";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
-  distance: number; // raw value from API (meters)
+  distance: number;
 };
 
 export default function VisibilityCard({ distance }: Props) {
-  // Convert meters to KM for readability
+
   const km = (distance / 1000).toFixed(0);
 
   const getNote = (d: number) => {
@@ -21,15 +23,17 @@ export default function VisibilityCard({ distance }: Props) {
   return (
     <ZiraatCard width="48%" paddingHorizontal={1.4} paddingVertical={1.4}>
       <View className="flex-row items-center mb-2">
-        <Eye size={18} color="#c7611f" />
-        <CsText className="ml-2 text-md font-semibold tracking-wide text-dark">
+        <Eye size={18} color={colors.secondary} />
+        <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
           VISIBILITY
         </CsText>
       </View>
 
-      <CsText className="text-3xl font-bold text-dark">{km} km</CsText>
+      <CsText style={typography.Poppins_l_medium} className=" text-dark">
+        {km} km
+      </CsText>
 
-      <CsText className="mt-2 text-sm leading-5 text-neutral-600">
+      <CsText style={typography.Poppins_xs_regular} className="mt-1 text-dark">
         {getNote(distance)}
       </CsText>
     </ZiraatCard>

@@ -1,11 +1,12 @@
 import { Gauge } from "lucide-react-native";
 import { View } from "react-native";
 import Svg, { Circle, G, Line, Path } from "react-native-svg";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
 type Props = {
-  value: number; // This is sealevelpressure from your data
+  value: number;
 };
 
 export default function PressureCard({ value }: Props) {
@@ -13,7 +14,6 @@ export default function PressureCard({ value }: Props) {
   const CENTER = SIZE / 2;
   const RADIUS = 55;
 
-  // Mapping 980hPa (Low) to 1040hPa (High)
   const angle = Math.min(
     Math.max(((value - 980) / (1040 - 980)) * 180 - 90, -90),
     90
@@ -24,22 +24,20 @@ export default function PressureCard({ value }: Props) {
       width="48%"
       paddingHorizontal={1}
       paddingVertical={1}
-      className="border border-white"
+      className="border border-light"
     >
-      {/* Header with Title and Dynamic Value in Right Corner */}
       <View className="flex-row items-center justify-between px-3 mt-1">
         <View className="flex-row items-center">
-          <Gauge size={16} color="#c7611f" />
-          <CsText className="ml-1 text-[13px] font-semibold tracking-wide text-dark">
+          <Gauge size={18} color="#c7611f" />
+          <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
             PRESSURE
           </CsText>
         </View>
       </View>
 
-      {/* Main Gauge Area */}
       <View className="items-center justify-center -mt-2 mb-1">
         <Svg width={SIZE} height={SIZE / 1.6}>
-          {/* Black Dotted Scale */}
+
           <Path
             d={`M ${CENTER - RADIUS} ${CENTER} A ${RADIUS} ${RADIUS} 0 0 1 ${CENTER + RADIUS} ${CENTER}`}
             stroke="#000000"
@@ -69,18 +67,18 @@ export default function PressureCard({ value }: Props) {
           style={{ width: RADIUS * 2 + 20 }}
           className="flex-row justify-between -mt-2"
         >
-          <CsText className="text-[9px] font-medium text-neutral-500">
+          <CsText style={typography.Poppins_xs_regular} className=" text-dark">
             Low
           </CsText>
-          <CsText className="text-[9px] font-medium text-neutral-500">
+          <CsText style={typography.Poppins_xs_regular} className=" text-dark">
             High
           </CsText>
         </View>
         <View className="pt-2">
-          {/* Dynamic Value in the Right Corner */}
-          <CsText className="text-[2px]  text-neutral-500 ">
+
+          <CsText style={typography.Poppins_s_regular} className=" text-dark">
             {Math.round(value)}
-            <CsText className="text-[2px] font-normal text-neutral-500">
+            <CsText style={typography.Poppins_s_regular} className=" text-dark">
               {" "}
               hPa
             </CsText>

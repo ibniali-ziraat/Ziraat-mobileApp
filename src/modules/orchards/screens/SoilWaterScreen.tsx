@@ -69,6 +69,7 @@ export default function SoilAndWaterProfileScreen() {
         id: orchardProfile?.[0]?.id,
         soilAndWater: {
           ...values,
+          soilTestReportUrl: values.soilTestReportUrl.name,
         },
       };
 

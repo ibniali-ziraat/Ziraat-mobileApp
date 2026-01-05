@@ -1,5 +1,7 @@
 import { Moon } from "lucide-react-native";
 import { Image, View } from "react-native";
+import { colors } from "../constants/colors";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 
@@ -10,7 +12,7 @@ const InfoRow = ({ label, value }: { label: string; value: string }) => (
   </View>
 );
 
-const Divider = () => <View className="h-[1px] bg-neutral-800 opacity-20" />;
+const Divider = () => <View className="h-[1px] bg-overlay opacity-20" />;
 
 type Props = {
   phaseValue?: number;
@@ -19,7 +21,7 @@ type Props = {
 };
 
 export function MoonCard({ phaseValue, illumination, moonrise }: Props) {
-  // 1. Helper: Calculate Phase Name
+
   const getPhaseName = (deg?: number) => {
     if (deg === undefined || deg === null) return "Waxing Crescent"; // Sensible default
     if (deg >= 337.5 || deg < 22.5) return "New Moon";
@@ -33,7 +35,6 @@ export function MoonCard({ phaseValue, illumination, moonrise }: Props) {
     return "Moon Phase";
   };
 
-  // 2. Helper: Handle time strings with OR without dates (e.g., "11:04" or "2025-12-25 11:04")
   const formatTimeManual = (timeStr?: string) => {
     if (!timeStr) return "--:--";
     try {
@@ -59,13 +60,14 @@ export function MoonCard({ phaseValue, illumination, moonrise }: Props) {
   return (
     <ZiraatCard
       width="100%"
-      paddingHorizontal={1.4}
+      marginTop={1}
+      paddingHorizontal={1.3}
       paddingVertical={1.4}
       marginBottom={1}
     >
       <View className="flex-row items-center">
-        <Moon size={18} color="#c7611f" />
-        <CsText className="ml-2 text-sm font-bold tracking-wide text-neutral-500 uppercase">
+        <Moon size={18} color={colors.secondary} />
+        <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
           {getPhaseName(phaseValue)}
         </CsText>
       </View>

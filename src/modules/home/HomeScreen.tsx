@@ -1,13 +1,7 @@
 import { router } from "expo-router";
 import { useMemo } from "react";
-import {
-  ActivityIndicator,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 
-// Components
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import ProductCarousel from "@/src/components/shared/ProductCarousel";
 import FarmOverviewChart from "./components/FarmOverviewChart";
@@ -16,7 +10,8 @@ import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
 
-// Data & Hooks
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { imageMapper } from "@/src/data/imageMapper";
 import products from "@/src/data/products.json";
 import { useLocation } from "@/src/hooks/useLocationPermission";
@@ -31,15 +26,14 @@ export default function HomeScreen() {
     asl: 1593,
   });
 
-  // Calculate the most accurate current weather data
+  //
   const currentWeather = useMemo(() => {
     if (!data) return null;
 
-    // 1. Try to get 'data_current' (Real-time observation)
     if (data.data_current) {
       return {
         tempC: data.data_current.temperature,
-        feelsLikeC: Math.round(data.data_current.temperature), // Standard fallback
+        feelsLikeC: Math.round(data.data_current.temperature),
         condition: data.data_current.pictocode,
         humidity: data.data_current.relativehumidity || 0,
         windKph: Math.round(data.data_current.windspeed),
@@ -51,8 +45,7 @@ export default function HomeScreen() {
     }
 
     console.log(data, "the api data ");
-    // 2. Fallback: Find the index in data_1h that matches the current hour
-    // This prevents showing 1.8°C (midnight/early morning) when it's actually 10°C now.
+
     const currentHour = new Date().getHours();
 
     return {
@@ -85,45 +78,50 @@ export default function HomeScreen() {
   }
 
   return (
-    <AnimatedTabContent>
-      <View className="flex-1 bg-white pt-4">
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Weather Card */}
-          <TouchableOpacity
-            onPress={() =>
-              router.push({
-                pathname: "/dashboards/(farmer)/weather-profile",
-                params: { weatherData: JSON.stringify(currentWeather) },
-              })
-            }
-          >
-            {currentWeather && <WeatherCard current={currentWeather} />}
-          </TouchableOpacity>
+    <ScreenLayout>
+      <ScreenContent>
+        <AnimatedTabContent>
+          <View className="flex-1 bg-white pt-4">
+            <TouchableOpacity
+              onPress={() =>
+                router.push({
+                  pathname: "/dashboards/(farmer)/weather-profile",
+                  // params: { weatherData: JSON.stringify(currentWeather) },
+                })
+              }
+            >
+              {currentWeather ? (
+                <WeatherCard current={currentWeather} />
+              ) : (
+                <WeatherCard />
+              )}
+            </TouchableOpacity>
 
-          {/* Quick Actions */}
-          <QuickActions />
+            <QuickActions />
 
-          {/* Product Sections */}
-          {sections.map((section, index) => (
-            <View key={index} className="mb-6">
-              <SectionTitle title={section.title} icon="flask-outline" />
-              <ProductCarousel
-                items={products.slice(...section.slice)}
-                imageMapper={imageMapper}
+            {sections.map((section, index) => (
+              <View key={index} className="mb-6">
+                <SectionTitle title={section.title} icon="flask-outline" />
+                <ProductCarousel
+                  items={products.slice(...section.slice)}
+                  imageMapper={imageMapper}
+                />
+              </View>
+            ))}
+
+            <View className="mb-6">
+              <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
+              <FarmOverviewChart />
+
+              <SectionTitle
+                title="Farmer Tips & Awareness"
+                icon="bulb-outline"
               />
+              <FarmerTipsCard />
             </View>
-          ))}
-
-          {/* Farm Overview & Tips */}
-          <View className="mb-6">
-            <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
-            <FarmOverviewChart />
-
-            <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
-            <FarmerTipsCard />
           </View>
-        </ScrollView>
-      </View>
-    </AnimatedTabContent>
+        </AnimatedTabContent>
+      </ScreenContent>
+    </ScreenLayout>
   );
 }

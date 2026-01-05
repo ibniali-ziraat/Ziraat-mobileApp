@@ -1,5 +1,6 @@
 import { Wind } from "lucide-react-native";
 import { View } from "react-native";
+import { typography } from "../constants/fonts/typography";
 import CsText from "./shared/CsText";
 import ZiraatCard from "./shared/ZiraatProfileCard";
 import WindCompass from "./WindCompass";
@@ -14,13 +15,13 @@ type Props = {
 export default function WindCard({ speed, gusts, degree, direction }: Props) {
   return (
     <ZiraatCard width="100%" paddingHorizontal={1} paddingVertical={1}>
-      {/* HEADER */}
+
 
       <View className="w-full flex-row justify-between">
         <View className="w-36">
           <View className="flex-row pb-5">
-            <Wind size={16} color="#c7611f" />
-            <CsText className="ml-2 text-md font-semibold tracking-wide text-dark">
+            <Wind size={18} color="#c7611f" />
+            <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
               WIND
             </CsText>
           </View>
@@ -38,7 +39,7 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
           </View>
 
           <View>
-            <CsText className="text-sm font-semibold text-dark">
+            <CsText style={typography.Poppins_m_regular} className="text-sm font-semibold text-dark">
               {direction}
             </CsText>
           </View>
@@ -51,8 +52,8 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <View className="flex-row justify-between mb-2">
-      <CsText className="text-sm text-dark">{label}</CsText>
-      <CsText className="text-sm font-medium text-dark">{value}</CsText>
+      <CsText style={typography.Poppins_s_regular} className="text-sm text-dark">{label} - </CsText>
+      <CsText style={typography.Poppins_xs_regular} className="text-sm font-medium text-dark">{value}</CsText>
     </View>
   );
 }

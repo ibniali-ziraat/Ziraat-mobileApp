@@ -10,6 +10,7 @@ import {
   useProfileUpdateMutation,
 } from "../../../../hooks/userQueryHooks";
 
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { profileSchema } from "@/src/modules/auth/user/schemas/profile.schema";
 import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 import { showSuccessToast } from "@/src/utils/toast";
@@ -70,20 +71,19 @@ export default function ProfileScreen() {
         onPress={() => router.replace(ROUTES.USER.PROFILE)}
       />
 
-      <FormProvider {...form}>
-        {/* <ScrollView> */}
-
-        <ProfileSection control={control} errors={errors} data={data} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update " : "Submit"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-          loading={isSaving || isUpdating}
-        />
-        {/* </ScrollView> */}
-      </FormProvider>
+      <ScreenContent>
+        <FormProvider {...form}>
+          <ProfileSection control={control} errors={errors} data={data} />
+          <FormActions
+            cancelLabel={"Cancel"}
+            onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+            submitLabel={data ? "Update " : "Submit"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </FormProvider>
+      </ScreenContent>
     </ScreenLayout>
   );
 }
