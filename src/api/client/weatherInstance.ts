@@ -3,7 +3,7 @@ import axios from "axios";
 export const weatherInstance = axios.create({
   baseURL: "https://my.meteoblue.com/packages/",
   params: {
-    apikey: "ofd1tkOKm6wVBb5D",
+    apikey: "WcaJoxNIZMfPidOm",
     format: "json",
   },
 
