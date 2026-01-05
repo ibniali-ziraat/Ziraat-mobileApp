@@ -2,7 +2,7 @@ import { getItem } from "@/src/utils/universalSecureToken";
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://cxnfzxht-44388.inc1.devtunnels.ms",
+  baseURL: "https://w3l9710s-44388.inc1.devtunnels.ms",
   // baseURL: "https://36r91tcn-44388.inc1.devtunnels.ms",
   // baseURL:
   //   "https://ziraatapi-fgfhe3hxf3h9gkg4.centralindia-01.azurewebsites.net",
