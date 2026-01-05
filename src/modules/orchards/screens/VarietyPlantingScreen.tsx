@@ -67,9 +67,11 @@ export default function VarietyAndPlatingDetailsScreen() {
       //   {
       const payload = {
         id: orchardProfile?.[0]?.id,
-        varieties: {
-          ...values,
-        },
+        varieties: [
+          {
+            ...values,
+          },
+        ],
       };
 
       // Send payload

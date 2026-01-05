@@ -56,6 +56,7 @@ export default function CropNutritionManagementScreen() {
 
   const onSubmit = async (values: any) => {
     console.log(values, "values...");
+    router.push(ROUTES.ORCHARDS.REGISTRATION.PRODUCTION_INFO);
 
     try {
       // let res;
@@ -82,8 +83,7 @@ export default function CropNutritionManagementScreen() {
       showSuccessToast("Orchard created");
       // }
 
-      // router.push(ROUTES.TABS.ORCHARDS);
-      router.push(ROUTES.ORCHARDS.REGISTRATION.CROP_INFO);
+      router.push(ROUTES.ORCHARDS.REGISTRATION.FARM_INFO);
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message || "Failed to save orchard information"

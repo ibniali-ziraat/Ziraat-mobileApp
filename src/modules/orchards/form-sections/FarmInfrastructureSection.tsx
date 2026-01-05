@@ -5,7 +5,6 @@ import { View } from "react-native";
 import FormInput from "@/src/components/form/inputs/FormInput";
 
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
-import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 
 export default function FarmInfrastructureScreen({ control, errors }) {
   const EQUIPMENT_OPTIONS = [
@@ -32,6 +31,11 @@ export default function FarmInfrastructureScreen({ control, errors }) {
     "Other",
   ].map((x) => ({ label: x, value: x }));
 
+  const TOOLS = ["Tractor", "Hoe", "Other"].map((x) => ({
+    label: x,
+    value: x,
+  }));
+
   return (
     <View className="flex-1 w-full">
       <View className="bg-light w-full">
@@ -49,7 +53,6 @@ export default function FarmInfrastructureScreen({ control, errors }) {
           options={EQUIPMENT_OPTIONS}
           error={errors?.equipmentOwned?.message}
         />
-
         {/* 2️⃣ Storage Facilities (REQUIRED) */}
         {/* <CheckboxGroup
           control={control}
@@ -58,15 +61,13 @@ export default function FarmInfrastructureScreen({ control, errors }) {
           options={storageOptions}
           error={errors.storageFacility?.message}
         /> */}
-
         <MultiSelectInput
-          name="storageFacility"
+          name="storageFacilities"
           control={control}
           label="Storage Facilities"
           options={STORAGE_OPTIONS}
           error={errors?.storageFacility?.message}
         />
-
         {/* 3️⃣ Farm Labor (OPTIONAL) */}
         {/* <RadioGroup
           control={control}
@@ -75,8 +76,7 @@ export default function FarmInfrastructureScreen({ control, errors }) {
           options={laborOptions}
           error={errors.farmLabor?.message}
         /> */}
-
-        <SingleSelectInput
+        {/* <SingleSelectInput
           control={control}
           name="farmLabor"
           modalLabel="Farm Labor"
@@ -87,16 +87,46 @@ export default function FarmInfrastructureScreen({ control, errors }) {
             { value: "contract-based", label: "Contract Based" },
           ]}
           error={errors.farmLabor}
-        />
-
-        {/* 4️⃣ Other Tools (OPTIONAL) */}
+        /> */}
         <FormInput
+          control={control}
+          name="permanentLabor"
+          label="permanentLabor"
+          optional={true}
+          icon="tools"
+          error={errors.otherTools?.message}
+        />{" "}
+        <FormInput
+          control={control}
+          name="seasonalLabor"
+          label="seasonalLabor"
+          optional={true}
+          icon="tools"
+          error={errors.otherTools?.message}
+        />{" "}
+        <FormInput
+          control={control}
+          name="contractBasedLabor"
+          label="contractBasedLabor"
+          optional={true}
+          icon="tools"
+          error={errors.otherTools?.message}
+        />
+        {/* 4️⃣ Other Tools (OPTIONAL) */}
+        {/* <FormInput
           control={control}
           name="otherTools"
           label="Other Tools (Pruning Shear, Ladder, Baskets, etc.)"
           optional={true}
           icon="tools"
           error={errors.otherTools?.message}
+        /> */}
+        <MultiSelectInput
+          name="otherTools"
+          control={control}
+          label="Storage Facilities"
+          options={TOOLS}
+          error={errors?.storageFacility?.message}
         />
       </View>
     </View>

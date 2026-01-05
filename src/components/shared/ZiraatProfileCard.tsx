@@ -36,29 +36,29 @@ export default function ZiraatCard({
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingTop
-        ? paddingTop * REM
-        : 0,
+          ? paddingTop * REM
+          : 0,
 
     paddingBottom:
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingBottom
-        ? paddingBottom * REM
-        : 0,
+          ? paddingBottom * REM
+          : 0,
 
     paddingLeft:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingLeft
-        ? paddingLeft * REM
-        : 0,
+          ? paddingLeft * REM
+          : 0,
 
     paddingRight:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingRight
-        ? paddingRight * REM
-        : 0,
+          ? paddingRight * REM
+          : 0,
   };
 
   const CardContent = (
@@ -105,8 +105,8 @@ export default function ZiraatCard({
 const styles = StyleSheet.create({
   /* ---------- OUTER WRAPPER ---------- */
   wrapper: {
-    paddingHorizontal: 15, 
-    paddingBottom: 15,      
+    paddingHorizontal: 15,
+    paddingBottom: 15,
   },
 
   /* ---------- CARD ---------- */

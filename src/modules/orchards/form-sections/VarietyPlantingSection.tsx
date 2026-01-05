@@ -1,11 +1,9 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
-import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
 
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-import CsText from "@/src/components/shared/CsText";
-import { colors } from "@/src/constants/colors";
 import { useFieldArray } from "react-hook-form";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
+import { soilTypeOptions } from "../schemas/SoilWaterProfileSchema";
 
 export default function VarietAndPlatingDetails({ control, errors }) {
   const VARIETIES_LIST = [
@@ -16,10 +14,7 @@ export default function VarietAndPlatingDetails({ control, errors }) {
     "Honeycrisp",
     "Ambri",
     "Other",
-  ].map((x) => ({
-    label: x,
-    value: x,
-  }));
+  ];
 
   const rootstockOptions = [
     { label: "M9", value: "M9" },
@@ -50,22 +45,27 @@ export default function VarietAndPlatingDetails({ control, errors }) {
 
   return (
     <View style={{ padding: 20 }}>
-      <MultiSelectInput
+      {/* <MultiSelectInput
         name="varieties"
         control={control}
         label="Varieties Planted"
         options={VARIETIES_LIST}
         error={errors?.varieties?.message}
+      /> */}
+      <SingleSelectInput
+        control={control}
+        name="varietyName"
+        label="Varieties Planted"
+        options={soilTypeOptions.map((v) => ({ label: v, value: v }))}
+        error={errors?.varietyName?.message}
       />
-
       <FormInput
         control={control}
-        name="totalTrees"
+        name="numberOfTrees"
         label="Total Number of Trees"
         type="phone"
         error={errors.totalTrees?.message}
       />
-
       {/* <FormInput
         control={control}
         name="treesPerVariety"
@@ -73,9 +73,8 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         type="phone"
         error={errors}
       /> */}
-
       {/*  */}
-      <CsText
+      {/* <CsText
         style={{
           fontWeight: "700",
           marginTop: 24,
@@ -171,19 +170,16 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         >
           + Add Variety
         </CsText>
-      </TouchableOpacity>
-
+      </TouchableOpacity> */}
       {/*  */}
-
       <SingleSelectInput
         control={control}
-        name="rootstock"
+        name="rootstockUsed"
         label="Rootstock Used"
         options={rootstockOptions}
         modalLabel="Rootstock Used"
         error={errors.rootstock?.message}
       />
-
       <SingleSelectInput
         control={control}
         name="plantDensity"
@@ -192,14 +188,26 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         options={densityOptions}
         error={errors.plantDensity?.message}
       />
-
-      <SingleSelectInput
+      <FormInput
         control={control}
-        name="treeAge"
-        label="Tree Age Distribution"
-        modalLabel="Select Distribution"
-        options={TREE_AGE_DISTRIBUTION}
-        error={errors.treeAge?.message}
+        name="treesLessThan5Years"
+        label="treesLessThan5Years"
+        type="phone"
+        error={errors.totalTrees?.message}
+      />{" "}
+      <FormInput
+        control={control}
+        name="treesFiveToTenYears"
+        label="treesFiveToTenYears"
+        type="phone"
+        error={errors.totalTrees?.message}
+      />{" "}
+      <FormInput
+        control={control}
+        name="treesMoreThan10Years"
+        label="treesMoreThan10Years"
+        type="phone"
+        error={errors.totalTrees?.message}
       />
       {/* 
       <RadioGroup

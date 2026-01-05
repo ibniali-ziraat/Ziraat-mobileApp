@@ -15,7 +15,7 @@ export default function CropNutrition({ control, errors }) {
       <View className="bg-light w-full">
         <SingleSelectInput
           control={control}
-          name="fertilizerPractice"
+          name="fertilizerPractices"
           label="Fertilizer Practices"
           options={fertilizerOptions.map((v) => ({ label: v, value: v }))}
           error={errors.fertilizerPractice?.message}
@@ -24,20 +24,27 @@ export default function CropNutrition({ control, errors }) {
 
         <SingleSelectInput
           control={control}
-          name="fertilizerPractice"
+          name="hasFertigationFacility"
           label="Fertilizer Practices"
-          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
-          error={errors.fertilizerPractice?.message}
+          options={[
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ]}
+          error={errors.hasFertigationFacility?.message}
           modalLabel="Fertilizer Practices"
         />
 
-        {/* <RadioGroup
+        <SingleSelectInput
           control={control}
-          name="fertigation"
-          label="Fertigation Facilities"
-          options={yesNoOptions}
-          error={errors.fertigation?.message}
-        /> */}
+          name="isMulchingApplied"
+          label="Mulching Applied"
+          options={[
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ]}
+          error={errors.isMulchingApplied?.message}
+          modalLabel="Mulching Applied"
+        />
 
         <FormInput
           control={control}
@@ -47,29 +54,9 @@ export default function CropNutrition({ control, errors }) {
           error={errors.nutritionPlan?.message}
         />
 
-        {/* 4️⃣ Mulching */}
-        {/* <RadioGroup
-          control={control}
-          name="mulching"
-          label="Mulching"
-          options={yesNoOptions}
-          error={errors.mulching?.message}
-        /> */}
-        {/* 
-        <SingleSelectInput
-          control={control}
-          name="nutritionPlan"
-          label="Nutrition Plan"
-          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
-          error={errors.nutritionPlan?.message}
-          modalLabel="Nutrition Plan"
-        /> */}
-
-        {/* 5️⃣ Last Fertilizer Date */}
-
         <FormDateInput
           control={control}
-          name="lastFertiliserDate"
+          name="lastFertilizerApplicationDate"
           label="Last Fertiliser Application Date"
           error={errors.lastFertiliserDate?.message}
         />
@@ -77,7 +64,7 @@ export default function CropNutrition({ control, errors }) {
         {/* 6️⃣ Application Mode */}
         <SingleSelectInput
           control={control}
-          name="applicationMode"
+          name="fertilizerApplicationMode"
           label="Mode of Fertiliser Application"
           options={applicationModeOptions.map((v) => ({ label: v, value: v }))}
           error={errors.applicationMode?.message}

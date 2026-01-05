@@ -1,5 +1,6 @@
 // StepB_BasicInfo.schema.ts
 import { z } from "zod";
+import { soilTypeOptions } from "./SoilWaterProfileSchema";
 
 export const varietiesList = [
   "Red Delicious",
@@ -26,17 +27,13 @@ export const treeAgeOptions = [
 ] as const;
 
 export const VarietyAndPlatingDetailsSchema = z.object({
-  varieties: z
-    .array(z.enum(varietiesList))
-    .min(1, "Please select at least one variety."),
+  varietyName: z.enum(soilTypeOptions),
 
   totalTrees: z.coerce
     .number({
-      invalid_type_error: "Enter a valid number of trees.",
+      invalid_type_error: "Annual yield must be a number.",
     })
-    .int("Total trees must be a whole number.")
-    .positive("Total trees must be greater than zero.")
-    .max(50000, "Please enter a reasonable number of trees (below 50,000)."),
+    .positive("Annual yield must be greater than zero."),
 
   treesPerVariety: z.coerce
     .number({

@@ -14,7 +14,6 @@ import {
   soilTypeOptions,
   waterAvailabilityOptions,
   waterSourceOptions,
-  yesNoOptions,
 } from "@/src/modules/orchards/schemas/SoilWaterProfileSchema";
 
 export default function SoilAndWaterProfile({ control, errors }) {
@@ -65,7 +64,7 @@ export default function SoilAndWaterProfile({ control, errors }) {
         />
 
         <MultiSelectInput
-          name="soilHealth"
+          name="soilHealthStatus"
           control={control}
           label="Soil Health"
           options={SOIL_HEALTH_OPTIONS}
@@ -150,7 +149,10 @@ export default function SoilAndWaterProfile({ control, errors }) {
           name="soilTestRecordsDone"
           label="Soil Test Records Available?"
           modalLabel="Soil Records Available"
-          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
+          options={[
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ]}
           error={errors?.soilTestRecordsDone?.message}
         />
 
@@ -179,21 +181,21 @@ export default function SoilAndWaterProfile({ control, errors }) {
                 />
                 <FormInput
                   control={control}
-                  name="soilN"
+                  name="soilNitrogen"
                   label="Nitrogen (N)"
                   type="phone"
                   error={errors?.soilN}
                 />
                 <FormInput
                   control={control}
-                  name="soilP"
+                  name="soilPhosphorus"
                   label="Phosphorus (P)"
                   type="phone"
                   error={errors?.soilP}
                 />
                 <FormInput
                   control={control}
-                  name="soilK"
+                  name="soilPotassium"
                   label="Potassium (K)"
                   type="phone"
                   error={errors?.soilK}
@@ -223,15 +225,18 @@ export default function SoilAndWaterProfile({ control, errors }) {
           control={control}
           name="soilTestFileToggle"
           label="Upload Soil Test Report?"
-          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
+          options={[
+            { value: true, label: "Yes" },
+            { value: false, label: "No" },
+          ]}
           error={errors?.soilTestFileToggle?.message}
           modalLabel="Soil Test Report"
         />
 
-        {soilTestFileToggle === "Yes" && (
+        {soilTestFileToggle && (
           <FormFileInput
             control={control}
-            name="soilTestFile"
+            name="soilTestReportUrl"
             label="Upload Soil Test Report"
             error={errors?.soilTestFile}
           />

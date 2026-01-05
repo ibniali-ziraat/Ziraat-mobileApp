@@ -1,105 +1,290 @@
+import { useQueryClient } from "@tanstack/react-query";
+import { router, useLocalSearchParams } from "expo-router";
+import { useState } from "react";
+
 import BackHeader from "@/src/components/shared/BackHeader";
-import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
+
+import { colors } from "@/src/constants/colors";
 import orchardsData from "@/src/data/myOrchardsData.json";
-import { orchardDetailImagesById } from "@/src/data/orchardDetailImages";
-import { useLocalSearchParams } from "expo-router";
-import { Image, View } from "react-native";
-import AddressDetails from "../components/AddressDetails";
-import BasicInformation from "../components/BasicInformation";
-import CropAndNutrition from "../components/CropAndNutrition";
-import FarmInfrastructure from "../components/FarmInfrastructure";
-import FutureReadinessAndLinkages from "../components/FutureReadinessAndLinkages";
-import GeoLocation from "../components/GeoLocation";
-import InputCostDetails from "../components/InputCostDetails";
-import PlantProtection from "../components/PlantProtection";
-import ProductionAndMarketing from "../components/ProductionAndMarketing";
-import SoilAndWater from "../components/SoilAndWater";
-import VarietyAndPlanting from "../components/VarietyAndPlanting";
+import { showSuccessToast } from "@/src/utils/toast";
+
+import {
+  orchardDeleteConfig,
+  OrchardDeleteKey,
+} from "../config/orchardDeleteConfig";
+
+// Icons
+import {
+  Droplet,
+  IndianRupee,
+  Leaf,
+  Link,
+  MapPin,
+  Navigation,
+  ShieldCheck,
+  Sprout,
+  TrendingUp,
+  Warehouse,
+} from "lucide-react-native";
+import OrchardDetailsCard from "../components/OrchardDetailsCard";
+import { OrchardRouteKey, orchardRoutes } from "../routes/orchardRoutes";
 
 export default function OrchardDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const orchard = orchardsData.find((item) => item.id === String(id));
-  if (!orchard) {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <CsText>Orchard not found</CsText>
-      </View>
-    );
-  }
-  //  const { progress, missingSections } = useProfileProgress({
-  //     profile: profileData,
-  //     address: addressData,
-  //     education: educationData,
-  //     profession: professionData,
-  //   });
-  const images = orchardDetailImagesById[String(orchard.id)];
+  const queryClient = useQueryClient();
 
+  const orchard = orchardsData.find((o) => o.id === String(id));
+
+  const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
+    null
+  );
+  const [deleting, setDeleting] = useState(false);
+
+  /* -------------------- NAVIGATION -------------------- */
+  const goToSection = (section: OrchardRouteKey) => {
+    router.push({
+      pathname: orchardRoutes[section],
+      params: { id: orchard.id },
+    });
+  };
+
+  /* -------------------- DELETE -------------------- */
+  const handleDelete = async (section: OrchardDeleteKey) => {
+    try {
+      setDeleting(true);
+
+      const config = orchardDeleteConfig[section];
+
+      // 🔴 API call goes here
+      // await deleteOrchardSection({ orchardId: orchard.id, section });
+
+      showSuccessToast(config.success);
+      queryClient.invalidateQueries([config.queryKey, orchard.id]);
+
+      setDeleteSection(null);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  /* -------------------- UI -------------------- */
   return (
-    <ScreenLayout className="flex-1 bg-light">
+    <ScreenLayout>
       <BackHeader
         title="Orchard Details"
         desc="Detailed orchard profile and management information"
       />
-      {/* {progress < 100 && (
-              <ProfileProgressBar
-                progress={progress}
-                missingSections={missingSections}
-                completedSections={[
-                  "Profile",
-                  "Address",
-                  "Education",
-                  "Profession",
-                ].filter((s) => !missingSections.includes(s.toLowerCase()))}
-              />
-            )} */}
 
-      {images && (
-        <View className="flex-row w-full h-60 gap-1 overflow-hidden mt-3 mb-3">
-          <Image
-            source={images[0]}
-            resizeMode="cover"
-            className="w-[55%] h-full rounded-2xl"
-          />
+      {/* BASIC INFORMATION */}
+      <OrchardDetailsCard
+        heading="Basic Information"
+        items={[
+          {
+            title: "Orchard Name",
+            value: orchard.name,
+            icon: <Leaf size={22} color={colors.primary} />,
+          },
+          {
+            title: "Area",
+            value: orchard.area,
+            icon: <Sprout size={22} color={colors.primary} />,
+          },
+        ]}
+        onEdit={() => goToSection("basicInformation")}
+      />
 
-          <View className="w-[45%] h-full gap-2">
-            <Image
-              source={images[1]}
-              resizeMode="cover"
-              className="w-full flex-1 rounded-2xl"
-            />
+      {/* ADDRESS */}
+      <OrchardDetailsCard
+        heading="Address"
+        items={
+          orchard.address
+            ? [
+                {
+                  title: "Village",
+                  value: orchard.address.village,
+                  icon: <MapPin size={22} color={colors.primary} />,
+                },
+                {
+                  title: "District",
+                  value: orchard.address.district,
+                  icon: <Navigation size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={() => goToSection("crop")}
+        onDelete={orchard.address ? () => setDeleteSection("crop") : undefined}
+        onAdd={() => goToSection("crop")}
+        emptyActionLabel="Add Address"
+      />
 
-            <Image
-              source={images[2]}
-              resizeMode="cover"
-              className="w-full flex-1 rounded-2xl"
-            />
-          </View>
-        </View>
-      )}
+      {/* VARIETY & PLANTING */}
+      <OrchardDetailsCard
+        heading="Variety & Planting"
+        items={
+          orchard.variety_and_planting_details
+            ? [
+                {
+                  title: "Variety",
+                  value: orchard.variety_and_planting_details.variety,
+                  icon: <Leaf size={22} color={colors.primary} />,
+                },
+                {
+                  title: "Spacing",
+                  value: orchard.variety_and_planting_details.spacing,
+                  icon: <Sprout size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={() => goToSection("varietyAndPlanting")}
+        onDelete={
+          orchard.variety_and_planting_details
+            ? () => setDeleteSection("varietyAndPlanting")
+            : undefined
+        }
+        onAdd={() => goToSection("varietyAndPlanting")}
+        emptyActionLabel="Add Variety & Planting"
+      />
 
-      <BasicInformation orchard={orchard} />
+      {/* SOIL & WATER */}
+      <OrchardDetailsCard
+        heading="Soil & Water"
+        items={
+          orchard.soil_and_water_profile
+            ? [
+                {
+                  title: "Soil Type",
+                  value: orchard.soil_and_water_profile.soil_type,
+                  icon: <Droplet size={20} color={colors.primary} />,
+                },
+                {
+                  title: "Irrigation",
+                  value: orchard.soil_and_water_profile.irrigation_method,
+                  icon: <Droplet size={20} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={() => goToSection("soilAndWater")}
+        onDelete={
+          orchard.soil_and_water_profile
+            ? () => setDeleteSection("soilAndWater")
+            : undefined
+        }
+        onAdd={() => goToSection("soilAndWater")}
+        emptyActionLabel="Add Soil & Water"
+      />
 
-      <AddressDetails orchard={orchard} />
+      {/* PLANT PROTECTION */}
+      <OrchardDetailsCard
+        heading="Plant Protection"
+        items={
+          orchard.plant_protection_and_health
+            ? [
+                {
+                  title: "Protection Method",
+                  value: orchard.plant_protection_and_health.method,
+                  icon: <ShieldCheck size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={() => goToSection("plantProtection")}
+        onDelete={
+          orchard.plant_protection_and_health
+            ? () => setDeleteSection("plantProtection")
+            : undefined
+        }
+        onAdd={() => goToSection("plantProtection")}
+        emptyActionLabel="Add Plant Protection"
+      />
 
-      <GeoLocation orchard={orchard} />
+      {/* FARM INFRASTRUCTURE */}
+      <OrchardDetailsCard
+        heading="Farm Infrastructure"
+        items={
+          orchard.farm_infrastructure_and_resources
+            ? [
+                {
+                  title: "Storage",
+                  value: orchard.farm_infrastructure_and_resources.storage,
+                  icon: <Warehouse size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={() => goToSection("farmInfrastructure")}
+        onDelete={
+          orchard.farm_infrastructure_and_resources
+            ? () => setDeleteSection("farmInfrastructure")
+            : undefined
+        }
+        onAdd={() => goToSection("farmInfrastructure")}
+        emptyActionLabel="Add Infrastructure"
+      />
 
-      <VarietyAndPlanting data={orchard.variety_and_planting_details} />
+      {/* PRODUCTION & MARKETING */}
+      <OrchardDetailsCard
+        heading="Production & Marketing"
+        items={
+          orchard.production_and_marketing
+            ? [
+                {
+                  title: "Yield",
+                  value: orchard.production_and_marketing.yield,
+                  icon: <TrendingUp size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={() => goToSection("productionAndMarketing")}
+      />
 
-      <SoilAndWater data={orchard.soil_and_water_profile} />
+      {/* INPUT COST */}
+      <OrchardDetailsCard
+        heading="Input Cost Details"
+        items={
+          orchard.input_cost_details
+            ? [
+                {
+                  title: "Total Cost",
+                  value: orchard.input_cost_details.total_cost,
+                  icon: <IndianRupee size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={() => goToSection("inputCost")}
+      />
 
-      <CropAndNutrition data={orchard.crop_and_nutrition_management} />
+      {/* FUTURE READINESS */}
+      <OrchardDetailsCard
+        heading="Future Readiness & Linkages"
+        items={
+          orchard.future_readiness_and_linkages
+            ? [
+                {
+                  title: "Market Linkage",
+                  value: orchard.future_readiness_and_linkages.market_linkage,
+                  icon: <Link size={22} color={colors.primary} />,
+                },
+              ]
+            : []
+        }
+        onEdit={() => goToSection("futureReadiness")}
+      />
 
-      <PlantProtection data={orchard.plant_protection_and_health} />
-
-      <FarmInfrastructure data={orchard.farm_infrastructure_and_resources} />
-
-      <ProductionAndMarketing data={orchard.production_and_marketing} />
-
-      <InputCostDetails data={orchard.input_cost_details} />
-
-      <FutureReadinessAndLinkages
-        data={orchard?.future_readiness_and_linkages}
+      {/* CONFIRM DELETE */}
+      <ConfirmDeleteModal
+        visible={!!deleteSection}
+        title="Confirm deletion"
+        description="Are you sure you want to delete this orchard information?"
+        onCancel={() => setDeleteSection(null)}
+        onConfirm={() => handleDelete(deleteSection!)}
+        loading={deleting}
       />
     </ScreenLayout>
   );
