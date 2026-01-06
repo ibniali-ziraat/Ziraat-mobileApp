@@ -1,23 +1,11 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { router, useLocalSearchParams } from "expo-router";
-import { useState } from "react";
-import { ScrollView, Text } from "react-native";
-
 import BackHeader from "@/src/components/shared/BackHeader";
+import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
-import OrchardDetailsCard from "../components/OrchardDetailsCard";
-
 import { colors } from "@/src/constants/colors";
 import { showSuccessToast } from "@/src/utils/toast";
-import { useOrchardsByUserQuery } from "../hooks/useOrchardsQuery";
-
-import {
-  orchardDeleteConfig,
-  OrchardDeleteKey,
-} from "../config/orchardDeleteConfig";
-
-// Icons
+import { useQueryClient } from "@tanstack/react-query";
+import { router, useLocalSearchParams } from "expo-router";
 import {
   Droplet,
   IndianRupee,
@@ -28,21 +16,27 @@ import {
   Sprout,
   TrendingUp,
 } from "lucide-react-native";
+import { useState } from "react";
+import { ScrollView } from "react-native";
+import OrchardDetailsCard from "../components/OrchardDetailsCard";
+import {
+  orchardDeleteConfig,
+  OrchardDeleteKey,
+} from "../config/orchardDeleteConfig";
+import { useOrchardByIdQuery } from "../hooks/useOrchardsQuery";
 import { orchardRoutes } from "../routes/orchardRoutes";
 
 export default function OrchardDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const queryClient = useQueryClient();
 
-  const { data: orchardData, isPending } = useOrchardsByUserQuery();
-  const orchard = orchardData?.find((o: any) => String(o.id) === String(id));
+  const { data: orchard, isPending } = useOrchardByIdQuery(id);
 
   const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
     null
   );
   const [deleting, setDeleting] = useState(false);
 
-  /* -------------------- HELPERS -------------------- */
   const hasData = (value: any) => {
     if (!value) return false;
     if (Array.isArray(value)) return value.length > 0;
@@ -54,7 +48,6 @@ export default function OrchardDetail() {
     router.push(`${orchardRoutes[section]}?id=${orchard?.id}`);
   };
 
-  /* -------------------- DELETE -------------------- */
   const handleDelete = async (section: OrchardDeleteKey) => {
     try {
       setDeleting(true);
@@ -71,9 +64,7 @@ export default function OrchardDetail() {
     }
   };
 
-  /* -------------------- STATES -------------------- */
-  if (isPending) return <Text>Loading...</Text>;
-  if (!orchard) return <Text>Orchard not found</Text>;
+  if (isPending) return <Loader />;
 
   return (
     <ScreenLayout>
@@ -89,17 +80,17 @@ export default function OrchardDetail() {
           items={[
             {
               title: "Orchard Name",
-              value: orchard.orchardName,
+              value: orchard?.orchardName,
               icon: <Leaf size={20} color={colors.primary} />,
             },
             {
               title: "Area",
-              value: `${orchard.kanals} kanals ${orchard.marlas} marlas`,
+              value: `${orchard?.kanals} kanals ${orchard.marlas} marlas`,
               icon: <Sprout size={20} color={colors.primary} />,
             },
             {
               title: "Ownership",
-              value: orchard.ownershipType,
+              value: orchard?.ownershipType,
               icon: <Leaf size={20} color={colors.primary} />,
             },
           ]}
@@ -109,7 +100,7 @@ export default function OrchardDetail() {
         <OrchardDetailsCard
           heading="Crop Nutrition"
           items={
-            hasData(orchard.cropNutrition)
+            hasData(orchard?.cropNutrition)
               ? [
                   {
                     title: "Fertilizer Practice",

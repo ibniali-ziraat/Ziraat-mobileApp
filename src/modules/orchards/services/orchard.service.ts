@@ -17,9 +17,11 @@ export const createOrchard = async (data: any) => {
   return res;
 };
 
-export const updateOrchard = async (orchardId: string | number, data: any) => {
-  const { data: res } = await axiosInstance.put(
-    `${CORE}/orchard/${orchardId}`,
+export const updateOrchard = async (data: any) => {
+  console.log(data, "data...");
+
+  const { data: res } = await axiosInstance.patch(
+    `${CORE}/orchardProfile/${data.orchardId}`,
     data
   );
   return res;
@@ -33,9 +35,9 @@ export const deleteOrchard = async (orchardId: string | number) => {
 };
 
 export const getOrchardById = async (orchardId: string | number) =>
-  safeGet(axiosInstance.get(`${CORE}/orchard/${orchardId}`));
+  safeGet(axiosInstance.get(`${CORE}/orchardProfile/${orchardId}`));
 
-export const getOrchardsByUser = async (userId: string | number) =>
+export const getOrchardsByUser = async () =>
   // safeGet(axiosInstance.get(`${CORE}/orchardProfile/GetByUserId?userId=${userId}`));
   safeGet(axiosInstance.get(`${CORE}/orchardProfile`));
 

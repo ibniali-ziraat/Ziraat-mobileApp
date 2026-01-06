@@ -47,11 +47,10 @@ import {
 // 🌳 A. ORCHARD BASIC
 // ====================================================
 //
-export const useOrchardsByUserQuery = (userId: ID) =>
+export const useOrchardsByUserQuery = () =>
   useQuery({
     queryKey: ["orchards"],
     queryFn: () => getOrchardsByUser(),
-    // enabled: !!userId,
   });
 
 export const useOrchardByIdQuery = (orchardId: ID) =>
