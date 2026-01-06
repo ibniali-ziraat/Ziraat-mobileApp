@@ -23,7 +23,7 @@ export default function ProductScreen() {
 
   const handleAddToWishlist = (productId: number) => {
     console.log("ADDING PRODUCT ID:", productId);
-    console.log("TYPE:", typeof productId); 
+    console.log("TYPE:", typeof productId);
 
     mutate({
       productId,
@@ -39,7 +39,7 @@ export default function ProductScreen() {
     <ScreenLayout>
       {sections.map((section, index) => (
         <View key={index}>
-          <View className="flex-row items-center mt-6 mb-4">
+          <View className="flex-row items-center mt-6 mb-4 bg">
             <CsText
               style={[typography.Poppins_m_semibold]}
               className="text-dark"

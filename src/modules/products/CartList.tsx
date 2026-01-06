@@ -26,28 +26,28 @@ const USER_ID = "1";
 const CartList = () => {
   const router = useRouter();
 
-  
+
   const { data, isLoading } = useCartQuery(USER_ID);
   const cartItems = data ?? [];
 
   console.log("CART LIST RESPONSE ", data);
 
-  
+
   const { mutateAsync: deleteItem } = useDeleteCratItem();
   const { mutate: updateItem } = useUpdateCratItem();
 
-  
-  
 
-  
+
+
+
   const handleRemoveItem = (cartItemId: number) => {
     deleteItem({ cartItemId })
-      
+
   };
 
-  
+
   const handleQtyChange = (cartItemId: number, qty: number) => {
-    
+
     updateItem({ cartItemId, quantity: qty });
   };
 
@@ -101,7 +101,7 @@ const CartList = () => {
     );
   }
 
-  // 🧾 CART LIST
+
   return (
     <ScreenLayout scrollable={false}>
       <BackHeader
@@ -125,7 +125,7 @@ const CartList = () => {
         )}
       />
 
-      <View className="absolute bottom-0 left-0 right-0 bg-light px-4 pt-4 pb-8">
+      <View className="absolute bottom-0 left-0 right-0 bg-light px-4 pt-4 pb-8 ">
         <BuyNowButton title="Place Order" onPress={handleBuyNow} />
       </View>
     </ScreenLayout>

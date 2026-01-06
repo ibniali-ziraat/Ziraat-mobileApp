@@ -19,18 +19,18 @@ export default function AddToCartButton({ title = "Add to Cart", onPress }) {
     }, 300);
   };
 
- 
+
   return (
     <ZiraatCard width="100%">
       <TouchableOpacity
         onPress={handlePress}
         disabled={loading}
         activeOpacity={0.8}
-        className=" py-3 rounded-lg flex-row justify-center items-center"
+        className=" py-3 rounded-lg flex-row justify-center items-center  "
       >
 
         <View className="flex-row justify-center items-center w-full">
-          <ShoppingCart size={20} color={colors.dark} />
+          <ShoppingCart size={20} color={colors.secondary} />
           <CsText
             className="text-dark  flex-shrink ml-2" style={[typography.Poppins_s_medium]}
             numberOfLines={1}
