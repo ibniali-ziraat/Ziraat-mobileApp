@@ -4,14 +4,15 @@ import {
     FlatList,
     LayoutAnimation,
     Platform,
-    Text,
     TouchableOpacity,
     UIManager,
-    View,
+    View
 } from "react-native";
 
+import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import settingsFaq from "@/src/data/settingFaq.json";
 
 if (Platform.OS === "android") {
@@ -35,7 +36,7 @@ const FaqItem = ({ item }: any) => {
       style={{
         paddingVertical: 14,
         borderBottomWidth: 1,
-        borderColor: "#EEEEEE",
+        borderColor: colors.cardBorder,
       }}
     >
       <TouchableOpacity
@@ -43,19 +44,22 @@ const FaqItem = ({ item }: any) => {
         activeOpacity={0.85}
         style={{ flexDirection: "row", alignItems: "center" }}
       >
-        <Text
-          style={{
+        <CsText style={[typography.Poppins_s_regular,
+
+            {
             flex: 1,
-            fontSize: 14.5,
-            fontWeight: "500",
+           
             color: colors.dark,
             lineHeight: 21,
             paddingRight: 12,
-          }}
+          }
+        ]}
+          
         >
           {item.question}
-        </Text>
+        </CsText>
 
+         
         <ChevronDown
           size={16}
           color={open ? colors.primary : colors.neutral}
@@ -66,17 +70,19 @@ const FaqItem = ({ item }: any) => {
       </TouchableOpacity>
 
       {open && (
-        <Text
-          style={{
+        <CsText  
+          style={[typography.Poppins_xs_regular,
+            {
             marginTop: 10,
-            fontSize: 13,
+          
             lineHeight: 20,
             color: colors.neutral,
             maxWidth: "95%",
-          }}
+            }
+         ]} 
         >
           {item.answer}
-        </Text>
+        </CsText>
       )}
     </View>
   );
@@ -96,15 +102,15 @@ const FaqSettings = () => {
           <ScreenContent>
             <View style={{ paddingTop: 28, paddingBottom: 18 }}>
               {/* TITLE */}
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontWeight: "600",
-                  color: colors.dark,
-                }}
+              <CsText  style={[typography.Poppins_l_semibold,
+            {
+           
+            }
+         ]} 
+                
               >
              FAQs
-              </Text>
+              </CsText>
 
               {/* ACCENT */}
               <View
@@ -119,17 +125,19 @@ const FaqSettings = () => {
               />
 
               {/* SUBTITLE */}
-              <Text
-                style={{
-                  fontSize: 13.5,
+              <CsText
+                style={[typography.Poppins_xs_regular,
+                  
+                  {
                   lineHeight: 20,
                   color: colors.darkHover,
                   maxWidth: "95%",
-                }}
+                  }
+               ] }
               >
                 Find answers about pesticides, crop safety, usage guidelines,
                 and responsible farming practices.
-              </Text>
+              </CsText>
             </View>
           </ScreenContent>
         }
@@ -137,18 +145,19 @@ const FaqSettings = () => {
           <ScreenContent>
             <View style={{ marginTop: 24 }}>
               {/* SECTION TITLE */}
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "600",
-                  color: colors.primary,
+              <CsText
+                style={[typography.Poppins_xs_medium,{
+                     color: colors.primary,
                   marginBottom: 10,
                   textTransform: "uppercase",
                   letterSpacing: 0.8,
-                }}
+                } ]
+                  
+                 
+                }
               >
                 {item.title}
-              </Text>
+              </CsText>
 
               <View
                 style={{
@@ -175,27 +184,22 @@ const FaqSettings = () => {
       padding: 18,
     }}
   >
-    <Text
-      style={{
-        fontSize: 15,
-        fontWeight: "600",
-        color: colors.dark,
-      }}
+    <CsText
+      style={[typography.Poppins_s_semibold,]}
     >
       Need more help?
-    </Text>
+    </CsText>
 
-    <Text
-      style={{
-        fontSize: 13,
+    <CsText
+      style={[typography.Poppins_xs_regular,{
         color: colors.neutral,
         marginTop: 6,
         lineHeight: 18,
-      }}
+      }]}
     >
       Didn’t find what you were looking for? Our support team is just a tap
       away.
-    </Text>
+    </CsText>
 
     <TouchableOpacity
       activeOpacity={0.85}
@@ -210,15 +214,15 @@ const FaqSettings = () => {
         backgroundColor:colors.primary,
       }}
     >
-      <Text
-        style={{
-          color: colors.light,
-          fontSize: 14,
-          fontWeight: "600",
-        }}
+      <CsText
+        style={[typography.Poppins_s_semibold,
+{ color: colors.light,
+          
+          }
+        ]}
       >
         Contact Support
-      </Text>
+      </CsText>
     </TouchableOpacity>
   </View>
 </ScreenContent>

@@ -1,6 +1,8 @@
 
+import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import {
     ChevronRight,
     Facebook,
@@ -13,9 +15,8 @@ import {
 import {
     Linking,
     ScrollView,
-    Text,
     TouchableOpacity,
-    View,
+    View
 } from "react-native";
 
 /* ---------- Contact Row ---------- */
@@ -55,26 +56,24 @@ const ContactRow = ({ icon, title, subtitle, onPress }) => {
 
       {/* Text */}
       <View style={{ marginLeft: 14, flex: 1 }}>
-        <Text
-          style={{
-            fontSize: 15,
+        <CsText
+          style={[typography.Poppins_s_semibold,{ 
             fontWeight: "600",
-            color: colors.dark,
-          }}
+            color: colors.dark,}]}
         >
           {title}
-        </Text>
+        </CsText>
 
-        <Text
-          style={{
-            fontSize: 13,
+        <CsText
+          style={[typography.Poppins_xs_regular,{
+             
             color: colors.dark,
             marginTop: 4,
             opacity: 0.85,
-          }}
+          }]}
         >
           {subtitle}
-        </Text>
+        </CsText>
       </View>
 
       {/* Arrow */}
@@ -94,15 +93,15 @@ export default function ContactUsScreen() {
       <ScreenContent>
         {/* Header */}
         <View style={{ paddingTop: 28, paddingBottom: 22 }}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "600",
-              color: colors.dark,
-            }}
-          >
-            Contact Support
-          </Text>
+           <CsText  style={[typography.Poppins_l_semibold,
+                      {
+                     
+                      }
+                   ]} 
+                          
+                        >
+                       Contact Support
+                        </CsText>
 
           <View
             style={{
@@ -115,16 +114,18 @@ export default function ContactUsScreen() {
             }}
           />
 
-          <Text
-            style={{
-              fontSize: 14,
-              color: colors.dark,
-              lineHeight: 20,
-              opacity: 0.9,
-            }}
-          >
+          <CsText
+                         style={[typography.Poppins_xs_regular,
+                           
+                           {
+                           lineHeight: 20,
+                           color: colors.darkHover,
+                           maxWidth: "95%",
+                           }
+                        ] }
+                       >
             Contact our support team through any of the options below.
-          </Text>
+          </CsText>
         </View>
 
         {/* Contact List */}
@@ -184,28 +185,25 @@ export default function ContactUsScreen() {
             marginBottom: 32,
           }}
         >
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: "600",
-              color: colors.error,
-            }}
+          <CsText
+            style={[typography.Poppins_xs_semibold,{
+                color: colors.error,
+            }]}
           >
             Emergency Safety Notice
-          </Text>
+          </CsText>
 
-          <Text
-            style={{
-              marginTop: 6,
-              fontSize: 13,
+          <CsText
+            style={[typography.Poppins_xs_regular,
+                { marginTop: 6,
+            
               color: colors.error,
               lineHeight: 18,
-              opacity: 0.9,
-            }}
+              opacity: 0.9,}]}
           >
             In case of pesticide poisoning or severe exposure, immediately
             contact local medical services.
-          </Text>
+          </CsText>
         </View>
       </ScreenContent>
     </ScrollView>
