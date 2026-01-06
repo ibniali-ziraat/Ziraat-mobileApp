@@ -21,7 +21,7 @@ const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
 
   useEffect(() => {
-    setWishlistItems(products); 
+    setWishlistItems(products);
   }, []);
 
 
@@ -30,18 +30,17 @@ const Wishlist = () => {
   // };
 
   const handleStartShopping = () => router.push("/Product");
-  const {data ,isLoading , error}=useGetWishlist()
-  console.log(data,"this is comming from tanstckq")
-  console.log(error ,"get error")
+  const { data, isLoading, error } = useGetWishlist()
+
 
   const { mutate: deleteWishlist } = useDeleteWishlist();
   const handleRemoveFromWishlist = (wishlistId: number) => {
-  deleteWishlist(wishlistId);
-};
+    deleteWishlist(wishlistId);
+  };
 
 
 
- 
+
   if (wishlistItems.length === 0) {
     return (
       <View className="flex-1 bg-white">
@@ -93,7 +92,7 @@ const Wishlist = () => {
         data={wishlistItems}
         keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
-       
+
         renderItem={({ item }) => (
           <WishlistItem item={item} onRemove={handleRemoveFromWishlist} />
         )}
@@ -101,7 +100,7 @@ const Wishlist = () => {
           <View>
             <CsText
               className="text-center text-dark"
-              style={typography.Poppins_xs_regular}
+              style={typography.Poppins_s_regular}
             >
               You have reached the end of your wishlist.
             </CsText>

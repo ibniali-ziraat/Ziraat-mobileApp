@@ -8,7 +8,7 @@ export default function ProductCard({ product, onRemove }: any) {
   return (
     <View className="bg-light p-2 rounded-2xl mb-2">
       <View className="flex-row">
-        <View className="w-32 h-32 rounded-xl overflow-hidden mr-3 bg-neutral">
+        <View className="w-32 h-32 rounded-xl overflow-hidden mr-3 bg-error">
           <Image
             source={imageMapper[product.photos[0]]}
             className="w-full h-full"
@@ -20,7 +20,7 @@ export default function ProductCard({ product, onRemove }: any) {
           <View className="flex-row justify-between items-start">
             <CsText className="text-2xl font-bold text-dark flex-1">
               {product.title}
-           </CsText>
+            </CsText>
 
             {onRemove && (
               <Pressable
@@ -34,36 +34,34 @@ export default function ProductCard({ product, onRemove }: any) {
 
           <CsText className="text-lg text-dark mt-1">
             Category: {product.category}
-         </CsText>
+          </CsText>
 
           <View className="flex-row items-center mt-3">
             <IndianRupee size={18} color={colors.dark} />
             <CsText
-              className={`text-xl text-dark ${
-                product.discountPrice ? "line-through" : ""
-              }`}
+              className={`text-xl text-dark ${product.discountPrice ? "line-through" : ""
+                }`}
             >
               {product.price}
-           </CsText>
+            </CsText>
 
             {product.discountPrice && (
               <View className="flex-row items-center ml-2">
                 <IndianRupee size={18} color={colors.dark} />
                 <CsText className="text-2xl font-bold text-dark">
                   {product.discountPrice}
-               </CsText>
+                </CsText>
               </View>
             )}
 
             <CsText
-              className={`text-sm px-2 py-1 rounded-xl ml-2 ${
-                product.inStock
-                  ? "bg-primary text-light"
-                  : "bg-primary text-primary"
-              }`}
+              className={`text-sm px-2 py-1 rounded-xl ml-2 ${product.inStock
+                ? "bg-primary text-light"
+                : "bg-primary text-primary"
+                }`}
             >
               {product.inStock ? "In Stock" : "Out of Stock"}
-           </CsText>
+            </CsText>
           </View>
         </View>
       </View>

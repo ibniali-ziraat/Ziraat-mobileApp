@@ -38,111 +38,110 @@ const WishlistItem = ({ item, onRemove }) => {
   const handleViewCart = () => router.push("/cartlist");
 
   return (
-      
-      <ZiraatCard width="100%" paddingHorizontal={1} paddingVertical={1} marginBottom={2}>
-        <View className="flex-row items-start">
-          {/* IMAGE */}
-          <Image
-            source={imageMapper[item.photos[0]]}
-            style={{
-              width: imageWidth,
-              height: addToCartButtonHeight + 130,
-            }}
-            className="rounded-2xl"
-            resizeMode="cover"
-          />
 
-          <View className="flex-1 ml-4 justify-between">
-            <View>
+    <ZiraatCard width="100%" paddingHorizontal={1} paddingVertical={1} marginBottom={1}
+      paddingBottom={1} paddingTop={1}>
+      <View className="flex-row items-start">
 
-              <View className="flex-row justify-between items-center">
-                <CsText
-                  style={typography.Poppins_m_medium}
-                  numberOfLines={1}
-                >
-                  {item.title}
-                </CsText>
+        <Image
+          source={imageMapper[item.photos[0]]}
+          style={{
+            width: imageWidth,
+            height: addToCartButtonHeight + 130,
+          }}
+          className="rounded-2xl"
+          resizeMode="cover"
+        />
 
-                <Pressable onPress={() => onRemove(item.wishlistId)}>
-                  <X size={22} color={colors.dark} />
-                </Pressable>
-              </View>
+        <View className="flex-1 ml-4 justify-between">
+          <View>
 
+            <View className="flex-row justify-between items-center">
               <CsText
-                className="mt-1"
-                style={typography.Poppins_s_regular}
+                style={typography.Poppins_m_medium}
                 numberOfLines={1}
               >
-                {item.category}
+                {item.title}
               </CsText>
 
-              <View className="flex-row items-center mt-2">
-                {item.discountPrice ? (
-                  <>
-                    <CsText
-                      className="line-through mr-2"
-                      style={typography.Poppins_xs_medium}
-                    >
-                      ₹{item.price}
-                    </CsText>
+              <Pressable onPress={() => onRemove(item.wishlistId)}>
+                <X size={22} color={colors.dark} />
+              </Pressable>
+            </View>
 
-                    <CsText
-                      className="text-primary mr-1"
-                      style={typography.Poppins_m_semibold}
-                    >
-                      ₹{item.discountPrice}
-                    </CsText>
+            <CsText
+              className="mt-1"
+              style={typography.Poppins_s_regular}
+              numberOfLines={1}
+            >
+              {item.category}
+            </CsText>
 
-                    {discountPercent && (
-                      <CsText
-                        className="text-secondary"
-                        style={typography.Poppins_xs_medium}
-                      >
-                        {discountPercent}% OFF
-                      </CsText>
-                    )}
-                  </>
-                ) : (
+            <View className="flex-row items-center mt-2">
+              {item.discountPrice ? (
+                <>
                   <CsText
-                    className="text-primary"
+                    className="line-through mr-2"
                     style={typography.Poppins_xs_medium}
                   >
                     ₹{item.price}
                   </CsText>
-                )}
-              </View>
 
-              {/* RATING + STOCK */}
-              <View className="flex-row items-center justify-between mt-2">
-                <RatingStars rating={item.rating} />
-                <CsText
-                  className={`px-2 rounded-xl text-light ${item.inStock ? "bg-primary" : "bg-dark"
-                    }`}
-                  style={typography.Poppins_xs_regular}
-                >
-                  {item.inStock ? "In Stock" : "Out of Stock"}
-                </CsText>
-              </View>
-            </View>
+                  <CsText
+                    className="text-primary mr-1"
+                    style={typography.Poppins_m_semibold}
+                  >
+                    ₹{item.discountPrice}
+                  </CsText>
 
-            {/* CTA */}
-            <View className="mt-4">
-              {addedToCart ? (
-                <AddToCartButton
-                  title="View Cart"
-                  onPress={handleViewCart}
-                  className="bg-secondary"
-                />
+                  {discountPercent && (
+                    <CsText
+                      className="text-secondary"
+                      style={typography.Poppins_xs_medium}
+                    >
+                      {discountPercent}% OFF
+                    </CsText>
+                  )}
+                </>
               ) : (
-                <AddToCartButton
-                  title="Add to Cart"
-                  onPress={handleAddToCart}
-                />
+                <CsText
+                  className="text-primary"
+                  style={typography.Poppins_xs_medium}
+                >
+                  ₹{item.price}
+                </CsText>
               )}
             </View>
+
+            <View className="flex-row items-center justify-between mt-2">
+              <RatingStars rating={item.rating} />
+              <CsText
+                className={`px-2  text-secondary ${item.inStock ? "" : ""
+                  }`}
+                style={typography.Poppins_xs_bold}
+              >
+                {item.inStock ? "In Stock" : "Out of Stock"}
+              </CsText>
+            </View>
+          </View>
+
+          <View className="mt-8 ">
+            {addedToCart ? (
+              <AddToCartButton
+                title="View Cart"
+                onPress={handleViewCart}
+                className="bg-secondary"
+              />
+            ) : (
+              <AddToCartButton
+                title="Add to Cart"
+                onPress={handleAddToCart}
+              />
+            )}
           </View>
         </View>
-      </ZiraatCard>
+      </View>
+    </ZiraatCard>
 
   );
 };

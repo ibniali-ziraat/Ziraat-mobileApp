@@ -39,16 +39,16 @@ export default function ProductDetailCarousel({
 
     return (
       <View style={{ width: ITEM_WIDTH }}>
-        <View className="w-[90%] aspect-[4/5] rounded-xl overflow-hidden relative">
+        <View className="w-[95%] aspect-[4/5] rounded-xl overflow-hidden relative">
           <Image source={source} resizeMode="cover" className="w-full h-full" />
 
           {label && (
             <View className="absolute top-3 left-2 bg-primary px-2 py-1 rounded-full">
-              <CsText 
-              style={[typography.Poppins_xs_regular]}
-              
-              
-              className="text-light">{label}</CsText>
+              <CsText
+                style={[typography.Poppins_xs_regular]}
+
+
+                className="text-light">{label}</CsText>
             </View>
           )}
         </View>

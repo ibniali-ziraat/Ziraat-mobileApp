@@ -3,7 +3,7 @@ import { View } from "react-native";
 
 export function ScreenContent({ children, className = "" }) {
   return (
-    <View style={{ paddingHorizontal: 15 }} className={className}>
+    <View style={{ paddingHorizontal: 15, }} className={className}>
       {children}
     </View>
   );

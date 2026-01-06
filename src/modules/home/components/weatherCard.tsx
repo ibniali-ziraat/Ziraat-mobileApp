@@ -16,41 +16,41 @@ export default function WeatherCard({ current, city }: WeatherCardProps) {
     typeof current?.humidity === "number";
 
   // 🔻 FALLBACK (API failed / empty / corrupted)
-  if (!hasData) {
-    return (
-      <View className="my-6 rounded-3xl overflow-hidden shadow-lg">
-        <ImageBackground
-          source={require("@/assets/images/weatherBg.png")}
-          resizeMode="cover"
-          className="w-full rounded-3xl overflow-hidden"
-        >
-          <View className="p-6 bg-dark backdrop-blur-3xl rounded-3xl">
-            <View className="flex-row items-end justify-between">
-              <CsText style={typography.Poppins_xl_regular} className="text-light">
-                {city || "Current location"}
-              </CsText>
+  // if (!hasData) {
+  //   return (
+  //     <View className="my-6 rounded-3xl overflow-hidden shadow-lg">
+  //       <ImageBackground
+  //         source={require("@/assets/images/weatherBg.png")}
+  //         resizeMode="cover"
+  //         className="w-full rounded-3xl overflow-hidden"
+  //       >
+  //         <View className="p-6 bg-dark backdrop-blur-3xl rounded-3xl">
+  //           <View className="flex-row items-end justify-between">
+  //             <CsText style={typography.Poppins_xl_regular} className="text-light">
+  //               {city || "Current location"}
+  //             </CsText>
 
-              <CsText style={typography.Poppins_s_regular} className="text-light">
-                Today
-              </CsText>
-            </View>
+  //             <CsText style={typography.Poppins_s_regular} className="text-light">
+  //               Today
+  //             </CsText>
+  //           </View>
 
-            <CsText style={typography.Poppins_xl_regular} className="text-light mt-2">
-              Weather unavailable
-            </CsText>
+  //           <CsText style={typography.Poppins_xl_regular} className="text-light mt-2">
+  //             Weather unavailable
+  //           </CsText>
 
-            <CsText style={typography.Poppins_s_regular} className="text-light mt-1">
-              We couldn’t load the weather right now.
-            </CsText>
+  //           <CsText style={typography.Poppins_s_regular} className="text-light mt-1">
+  //             We couldn’t load the weather right now.
+  //           </CsText>
 
-            <CsText style={typography.Poppins_s_regular} className="text-light mt-2">
-              Please check your connection or try again later.
-            </CsText>
-          </View>
-        </ImageBackground>
-      </View>
-    );
-  }
+  //           <CsText style={typography.Poppins_s_regular} className="text-light mt-2">
+  //             Please check your connection or try again later.
+  //           </CsText>
+  //         </View>
+  //       </ImageBackground>
+  //     </View>
+  //   );
+  // }
 
 
   return (
