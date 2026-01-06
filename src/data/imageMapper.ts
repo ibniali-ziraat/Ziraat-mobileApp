@@ -179,4 +179,5 @@ export const imageMapper = {
   cypermethrin2_2: require("../../assets/images/product-images/Cypermethrin/backimg.png"),
   cypermethrin2_3: require("../../assets/images/product-images/Cypermethrin/ingre.png"),
   cypermethrin2_4: require("../../assets/images/product-images/Cypermethrin/QR.png"),
+
 };

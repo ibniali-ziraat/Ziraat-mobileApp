@@ -11,7 +11,6 @@ import {
   useVendorLicenseUpdateMutation,
 } from "../../../../hooks/vendorQueryHooks";
 
-import { licensingComplianceSchema } from "@/src/modules/auth/vendor/schemas/licensing.schema";
 import { payload } from "@/src/types/payload.types";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
@@ -21,6 +20,7 @@ import LicenseSection from "../sections/LicenseSection";
 
 export default function LicenseScreen() {
   const { vendorProfileId } = useAuth();
+  console.log(vendorProfileId, "vendooo");
 
   const { data } = useVendorLicenseQuery(vendorProfileId);
   const { mutateAsync: save, isPending: isSaving } = useVendorLicenseMutation();
@@ -28,7 +28,8 @@ export default function LicenseScreen() {
     useVendorLicenseUpdateMutation();
 
   const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
-  const form = useZodForm(licensingComplianceSchema);
+  // const form = useZodForm(licensingComplianceSchema);
+  const form = useZodForm();
   const {
     setValue,
     handleSubmit,
@@ -57,17 +58,15 @@ export default function LicenseScreen() {
   }, [data]);
 
   const onSubmit = async (values: payload) => {
-    console.log("logged...");
-
     try {
       let licenseCopyUrl;
 
       if (values.licenseCopyUrl) {
         const uploadRes = await uploadFileAsync({
           file: values.licenseCopyUrl,
-          ownerType: "vendor",
-          ownerId: vendorProfileId,
-          purpose: "license",
+          UserType: "vendor",
+          UserId: vendorProfileId,
+          FileCategory: "license",
         });
 
         licenseCopyUrl = uploadRes.url;

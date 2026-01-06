@@ -1,0 +1,49 @@
+
+{
+  "sections": [
+    {
+      "title": "Orders",
+      "data": [
+        {
+          "question": "How do I place an order?",
+          "answer": "Browse products, add them to your cart, and complete your purchase through checkout."
+        },
+        {
+          "question": "Can I cancel my order?",
+          "answer": "Orders can be cancelled before they are shipped. Check order details for cancellation options."
+        },
+         {
+          "question": "How can I track my order?",
+          "answer": "Once your order is shipped, you can track it from the Orders section using the tracking ID."
+        }
+      
+      ]
+    },
+    {
+      "title": "Payments",
+      "data": [
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept UPI, credit cards, debit cards, and Cash on Delivery on selected orders."
+        },
+        {
+          "question": "Is online payment safe?",
+          "answer": "Yes, all transactions are encrypted and processed through secure payment gateways."
+        }
+      ]
+    },
+    {
+      "title": "Farming & Products",
+      "data": [
+        {
+          "question": "Are your products organic or naturally grown?",
+          "answer": "We follow eco-friendly farming practices. Product-specific details are mentioned on each product page."
+        },
+        {
+          "question": "How should products be stored?",
+          "answer": "Store products in a cool, dry place as mentioned on the product label."
+        }
+      ]
+    }
+  ]
+}

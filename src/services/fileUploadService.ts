@@ -1,21 +1,12 @@
 import axiosInstance from "../api/client/axiosInstance";
 
-export const uploadFile = async (data) => {
+export const uploadFile = async ({ file, UserType, UserId, FileCategory }) => {
   const formData = new FormData();
 
-  formData.append("file", {
-    uri: data.file.uri,
-    name: data.file.name,
-    type: data.file.type,
-  });
+  formData.append("file", file.file);
+  formData.append("UserType", UserType);
+  formData.append("UserId", UserId);
+  formData.append("FileCategory", FileCategory);
 
-  formData.append("ownerType", data.ownerType); // vendor | user
-  formData.append("ownerId", String(data.ownerId));
-  formData.append("purpose", data.purpose); // license | profile | product | ...
-
-  const response = await axiosInstance.post("/api/core/file-upload", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return response.data; // { url }
+  return axiosInstance.post("/api/FileUpload/upload", formData);
 };
