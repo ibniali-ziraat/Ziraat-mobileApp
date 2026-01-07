@@ -7,28 +7,25 @@ import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import FarmInfrastructure from "../form-sections/FarmInfrastructureSection";
 import {
   useCreateInfrastructureMutation,
-  useOrchardsByUserQuery,
-  useUpdateInfrastructureMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function FarmInfrastructureScreen() {
-  /**
-   * ✅ Single orchard source
-   */
-  const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  const { data: orchard, isPending } = useOrchardByIdQuery(Number(id));
 
   /**
    * Assume first orchard (future-safe for multi-orchard support)
    */
-  const orchard = orchardData?.[0];
-  const infrastructureData = orchard?.infrastructure;
 
   /**
    * Mutations
@@ -36,7 +33,7 @@ export default function FarmInfrastructureScreen() {
   const { mutateAsync: save, isPending: isSaving } =
     useCreateInfrastructureMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateInfrastructureMutation();
+    useUpdateOrchardBasicInfoMutation();
 
   /**
    * Form
@@ -53,14 +50,14 @@ export default function FarmInfrastructureScreen() {
    * ✅ PREFILL FORM IF DATA EXISTS
    */
   useEffect(() => {
-    if (!infrastructureData) return;
+    if (!orchard?.infrastructure) return;
 
-    Object.entries(infrastructureData).forEach(([key, value]) => {
+    Object.entries(orchard.infrastructure).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [infrastructureData]);
+  }, [orchard?.infrastructure]);
 
   /**
    * Submit handler
@@ -77,7 +74,7 @@ export default function FarmInfrastructureScreen() {
       /**
        * ✅ UPDATE vs CREATE
        */
-      if (infrastructureData) {
+      if (orchard?.infrastructure) {
         await update(payload);
         showSuccessToast("Farm infrastructure updated");
       } else {
@@ -98,10 +95,6 @@ export default function FarmInfrastructureScreen() {
    * Loading / Error guards
    */
   if (isPending) return null;
-  if (isError) {
-    showErrorToast("Failed to load orchard data");
-    return null;
-  }
 
   return (
     <ScreenLayout>
@@ -116,7 +109,7 @@ export default function FarmInfrastructureScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={infrastructureData ? "Update" : "Save"}
+            submitLabel={orchard?.infrastructure ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

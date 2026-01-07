@@ -26,6 +26,8 @@ export default function FormFileInput({
         copyToCacheDirectory: true,
       });
 
+      console.log(result, "result of file upload");
+
       if (!result.canceled) {
         onChange(result.assets[0]);
       }

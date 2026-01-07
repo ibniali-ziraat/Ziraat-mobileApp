@@ -8,7 +8,6 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
-import { ROUTES } from "@/src/constants/routes";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 import BasicInfo from "../form-sections/BasicInfoSection";
@@ -28,7 +27,6 @@ export default function BasicInfoScreen() {
     areaLabel?: string;
   }>();
 
-  /* -------------------- API -------------------- */
   const { data: orchardData, isPending } = useOrchardsByUserQuery();
 
   const orchard = orchardData?.find(
@@ -41,7 +39,6 @@ export default function BasicInfoScreen() {
   const { mutateAsync: updateOrchard, isPending: updating } =
     useUpdateOrchardBasicInfoMutation();
 
-  /* -------------------- FORM -------------------- */
   const form = useZodForm();
   const {
     setValue,
@@ -50,17 +47,21 @@ export default function BasicInfoScreen() {
     formState: { errors },
   } = form;
 
-  /* -------------------- PREFILL -------------------- */
   useEffect(() => {
     if (!orchard) return;
 
-    Object.entries(orchard).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        setValue(key as any, value);
-      }
-    });
+    setValue("orchardName", orchard.orchardName);
+    setValue("establishmentYear", String(orchard.establishmentYear));
 
-    // Prefill orchard size
+    setValue("plantationPattern", orchard.plantationPattern);
+    setValue("ownershipType", orchard.ownershipType);
+    setValue("district", orchard.district);
+    setValue("tehsil", orchard.tehsil);
+    setValue("zone", orchard.zone ?? "");
+    setValue("pincode", orchard.pinCode);
+    setValue("latitude", orchard.latitude);
+    setValue("longitude", orchard.longitude);
+
     if (orchard.kanals > 0) {
       setValue("orchardSize.mode", "manual");
       setValue("orchardSize.unit", "kanal");
@@ -72,7 +73,6 @@ export default function BasicInfoScreen() {
     }
   }, [orchard]);
 
-  /* -------------------- MEASURED AREA -------------------- */
   useEffect(() => {
     if (!params?.areaValue) return;
 
@@ -81,7 +81,6 @@ export default function BasicInfoScreen() {
     setValue("orchardSize.unit", params.areaUnit, { shouldValidate: true });
   }, [params?.areaValue, params?.areaUnit]);
 
-  /* -------------------- SUBMIT -------------------- */
   const onSubmit = async (values: any) => {
     try {
       const {
@@ -101,21 +100,29 @@ export default function BasicInfoScreen() {
       let kanals = 0;
       let marlas = 0;
 
-      if (orchardSize.mode === "manual") {
-        if (orchardSize.unit === "kanal") kanals = Number(orchardSize.value);
-        if (orchardSize.unit === "marla") marlas = Number(orchardSize.value);
+      // if (orchardSize.mode === "manual") {
+      if (orchardSize.unit === "kanal") {
+        kanals = Number(orchardSize.value);
+        marlas = 0; // FORCE RESET
       }
+
+      if (orchardSize.unit === "marla") {
+        marlas = Number(orchardSize.value);
+        kanals = 0; // FORCE RESET
+      }
+      // }
 
       if (orchardSize.mode === "measure") {
         marlas = Number(orchardSize.value || 0);
+        kanals = 0; // FORCE RESET
       }
 
-      const payload = {
+      const payload: any = {
         orchardId: orchard?.id ?? uuidv4(),
+        kanals: kanals,
+        marlas: marlas,
         orchardName,
-        kanals,
-        marlas,
-        establishmentYear,
+        establishmentYear: Number(establishmentYear),
         plantationPattern,
         ownershipType,
         district,
@@ -134,7 +141,7 @@ export default function BasicInfoScreen() {
         showSuccessToast("Orchard created");
       }
 
-      router.replace(ROUTES.ORCHARDS.DETAIL.replace(":id", payload.orchardId));
+      // router.replace(ROUTES.ORCHARDS.DETAIL.replace(":id", payload.orchardId));
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message || "Failed to save orchard information"
@@ -142,7 +149,6 @@ export default function BasicInfoScreen() {
     }
   };
 
-  /* -------------------- UI -------------------- */
   if (isPending) return null;
 
   return (
@@ -161,6 +167,7 @@ export default function BasicInfoScreen() {
             orchardSize={params.areaValue}
             areaLabel={params.areaLabel}
             areaUnit={params.areaUnit}
+            data={orchard}
           />
 
           <FormActions

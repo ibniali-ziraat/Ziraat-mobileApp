@@ -14,7 +14,11 @@ import {
   MapPin,
   ShieldCheck,
   Sprout,
+  ToolCase,
   TrendingUp,
+  Users,
+  Warehouse,
+  Wrench,
 } from "lucide-react-native";
 import { useState } from "react";
 import { ScrollView } from "react-native";
@@ -31,6 +35,7 @@ export default function OrchardDetail() {
   const queryClient = useQueryClient();
 
   const { data: orchard, isPending } = useOrchardByIdQuery(id);
+  console.log(orchard, "orchard detailsllls");
 
   const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
     null
@@ -95,6 +100,64 @@ export default function OrchardDetail() {
             },
           ]}
           onEdit={() => goToSection("basicInformation")}
+        />
+
+        <OrchardDetailsCard
+          heading="Infrastructure"
+          items={
+            hasData(orchard?.infrastructure)
+              ? [
+                  {
+                    title: "Equipment Owned",
+                    value: orchard?.infrastructure?.equipmentOwned?.length
+                      ? orchard.infrastructure.equipmentOwned.join(", ")
+                      : "—",
+                    icon: <ToolCase size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Storage Facilities",
+                    value: orchard?.infrastructure?.storageFacilities?.length
+                      ? orchard.infrastructure.storageFacilities.join(", ")
+                      : "—",
+                    icon: <Warehouse size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Other Tools",
+                    value: orchard?.infrastructure?.otherTools?.length
+                      ? orchard.infrastructure.otherTools.join(", ")
+                      : "—",
+                    icon: <Wrench size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Permanent Labor",
+                    value: orchard?.infrastructure?.permanentLabor ?? "—",
+                    icon: <Users size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Seasonal Labor",
+                    value: orchard?.infrastructure?.seasonalLabor ?? "—",
+                    icon: <Users size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Contract-based Labor",
+                    value: orchard?.infrastructure?.contractBasedLabor ?? "—",
+                    icon: <Users size={20} color={colors.primary} />,
+                  },
+                ]
+              : []
+          }
+          onEdit={
+            hasData(orchard?.infrastructure)
+              ? () => goToSection("farmInfrastructure")
+              : undefined
+          }
+          onDelete={
+            hasData(orchard?.infrastructure)
+              ? () => setDeleteSection("farmInfrastructure")
+              : undefined
+          }
+          onAdd={() => goToSection("farmInfrastructure")}
+          emptyActionLabel="Add Infrastructure"
         />
 
         <OrchardDetailsCard

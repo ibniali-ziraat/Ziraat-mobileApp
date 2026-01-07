@@ -3,7 +3,10 @@ import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useFileUploadMutation } from "@/src/hooks/useFileUpload";
+import {
+  useFileDeleteMutation,
+  useFileUploadMutation,
+} from "@/src/hooks/useFileUpload";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import {
   useVendorLicenseMutation,
@@ -28,6 +31,8 @@ export default function LicenseScreen() {
     useVendorLicenseUpdateMutation();
 
   const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
+  const { mutateAsync: deleteFileAsync } = useFileDeleteMutation();
+
   // const form = useZodForm(licensingComplianceSchema);
   const form = useZodForm();
   const {
@@ -57,45 +62,131 @@ export default function LicenseScreen() {
     });
   }, [data]);
 
-  const onSubmit = async (values: payload) => {
-    try {
-      let licenseCopyUrl;
+  // const onSubmit = async (values: payload) => {
+  //   console.log(values, "vvv");
 
-      if (values.licenseCopyUrl) {
+  //   try {
+  //     let licenseCopyUrl;
+
+  //     if (values.licenseCopyUrl) {
+  //       const uploadRes = await uploadFileAsync({
+  //         file: values.licenseCopyUrl,
+  //         UserType: "supplier",
+  //         UserId: vendorProfileId,
+  //         FileCategory: "documents",
+  //       });
+
+  //       console.log(uploadRes.data.fileUrl, "uploadRes");
+
+  //       licenseCopyUrl = uploadRes.data.fileUrl;
+  //     }
+
+  //     if (data) {
+  //       const payload = {
+  //         licensingId: data?.id,
+  //         supplierProfileId: vendorProfileId,
+  //         ...values,
+  //         licenseCopyUrl,
+  //       };
+  //       await update(payload);
+  //       showSuccessToast("License Updated");
+  //     } else {
+  //       const payload = {
+  //         supplierProfileId: vendorProfileId,
+  //         ...values,
+  //         licenseCopyUrl,
+  //       };
+  //       await save(payload);
+  //       showSuccessToast("License Saved!");
+  //     }
+
+  //     router.replace(ROUTES.AUTH.VENDOR_PROFILE);
+  //   } catch (err) {
+  //     console.error(err);
+  //     showErrorToast("Error saving license");
+  //   }
+  // };
+
+  const onSubmit = async (values: payload) => {
+    let uploadedBlobName: string | null = null;
+
+    try {
+      let licenseCopyUrl = data?.licenseCopyUrl; // default to existing
+
+      // ----------------------------------
+      // 1. Upload file ONLY if new file
+      // ----------------------------------
+      if (values.licenseCopyUrl && !values.licenseCopyUrl.isRemote) {
         const uploadRes = await uploadFileAsync({
           file: values.licenseCopyUrl,
-          UserType: "vendor",
+          UserType: "supplier",
           UserId: vendorProfileId,
-          FileCategory: "license",
+          FileCategory: "documents",
         });
 
-        licenseCopyUrl = uploadRes.url;
+        licenseCopyUrl = uploadRes.data.fileUrl;
+
+        // extract blob name from URL
+        uploadedBlobName = licenseCopyUrl;
       }
+
+      // ----------------------------------
+      // 2. Save or update license
+      // ----------------------------------
       if (data) {
-        const payload = {
-          licensingId: data?.id,
+        await update({
+          licensingId: data.id,
           supplierProfileId: vendorProfileId,
           ...values,
           licenseCopyUrl,
-        };
-        await update(payload);
+        });
+
         showSuccessToast("License Updated");
       } else {
-        const payload = {
+        await save({
           supplierProfileId: vendorProfileId,
           ...values,
           licenseCopyUrl,
-        };
-        await save(payload);
+        });
+
         showSuccessToast("License Saved!");
       }
 
       router.replace(ROUTES.AUTH.VENDOR_PROFILE);
     } catch (err) {
       console.error(err);
+      if (uploadedBlobName) {
+        try {
+          await deleteFileAsync({ blobName: uploadedBlobName });
+        } catch (deleteErr) {
+          console.error("Failed to rollback uploaded file", deleteErr);
+        }
+      }
+
       showErrorToast("Error saving license");
     }
   };
+
+  // const handleDeleteLicenseFile = async () => {
+  //   const currentFile = form.getValues("licenseCopyUrl");
+
+  //   if (!currentFile) return;
+
+  //   try {
+  //     if (currentFile.isRemote && typeof currentFile.uri === "string") {
+  //       await deleteFileAsync({
+  //         blobName: currentFile.uri,
+  //       });
+  //     }
+
+  //     setValue("licenseCopyUrl", null);
+
+  //     showSuccessToast("License file deleted");
+  //   } catch (err) {
+  //     console.error(err);
+  //     showErrorToast("Failed to delete license file");
+  //   }
+  // };
 
   return (
     <ScreenLayout>
@@ -115,6 +206,8 @@ export default function LicenseScreen() {
           onCancel={() => router.back()}
         />
       </FormProvider>
+
+      {/* <Button onPress={handleDeleteLicenseFile}>handleDeleteLicenseFile</Button> */}
     </ScreenLayout>
   );
 }

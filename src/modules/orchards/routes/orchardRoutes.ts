@@ -6,7 +6,7 @@ export const orchardRoutes = {
   soilAndWater: "orchards/soil-water-info",
   nutrition: "orchards/crop-info",
   plantProtection: "orchards/plant-protection-info",
-  farmInfrastructure: "orchards/farm-infrastructure",
+  farmInfrastructure: "orchards/farm-info",
   productionAndMarketing: "orchards/production-info",
   inputCost: "orchards/inputcost-info",
   futureReadiness: "orchards/future-info",

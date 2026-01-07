@@ -7,39 +7,25 @@ import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import CropNutrition from "../form-sections/CropNutritionSection";
 import {
   useCreateVarietyMutation,
-  useOrchardsByUserQuery,
-  useUpdateVarietyMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function CropNutritionManagementScreen() {
-  /**
-   * ✅ Single API source (same as other sections)
-   */
-  const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
+  const { id } = useLocalSearchParams<{ id: string }>();
 
-  /**
-   * Assume first orchard (adjust if multi-orchard selection is added later)
-   */
-  const orchard = orchardData?.[0];
-  const cropNutritionData = orchard?.cropNutrition;
-
-  /**
-   * Mutations
-   */
+  const { data: orchard, isPending } = useOrchardByIdQuery(Number(id));
   const { mutateAsync: save, isPending: isSaving } = useCreateVarietyMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateVarietyMutation();
+    useUpdateOrchardBasicInfoMutation();
 
-  /**
-   * Form
-   */
   const form = useZodForm();
   const {
     setValue,
@@ -48,18 +34,23 @@ export default function CropNutritionManagementScreen() {
     formState: { errors },
   } = form;
 
-  /**
-   * ✅ PREFILL FORM WHEN API DATA EXISTS
-   */
   useEffect(() => {
-    if (!cropNutritionData) return;
+    if (!orchard?.cropNutrition) return;
 
-    Object.entries(cropNutritionData).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        setValue(key as any, value);
-      }
-    });
-  }, [cropNutritionData]);
+    const cn = orchard.cropNutrition;
+
+    setValue("fertilizerPractices", cn.fertilizerPractices);
+    setValue("hasFertigation", cn.hasFertigation);
+    setValue("nutritionPlan", cn.nutritionPlan);
+    setValue("isMulchingApplied", cn.isMulchingApplied);
+    setValue(
+      "lastFertilizerApplicationDate",
+      cn.lastFertilizerApplicationDate
+        ? cn.lastFertilizerApplicationDate.split("T")[0]
+        : undefined
+    );
+    setValue("fertilizerApplicationMode", cn.fertilizerApplicationMode);
+  }, [orchard?.cropNutrition]);
 
   /**
    * Submit handler
@@ -76,7 +67,7 @@ export default function CropNutritionManagementScreen() {
       /**
        * ✅ UPDATE vs CREATE
        */
-      if (cropNutritionData) {
+      if (orchard.cropNutrition) {
         await update(payload);
         showSuccessToast("Crop & Nutrition updated");
       } else {
@@ -97,10 +88,10 @@ export default function CropNutritionManagementScreen() {
    * Loading / Error states
    */
   if (isPending) return null;
-  if (isError) {
-    showErrorToast("Failed to load orchard data");
-    return null;
-  }
+  // if (isError) {
+  //   showErrorToast("Failed to load orchard data");
+  //   return null;
+  // }
 
   return (
     <ScreenLayout>
@@ -115,7 +106,7 @@ export default function CropNutritionManagementScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={cropNutritionData ? "Update" : "Save"}
+            submitLabel={orchard.cropNutrition ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

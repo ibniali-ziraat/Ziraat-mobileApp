@@ -30,6 +30,19 @@ export default function BasicInfo({
     }
   }, [data?.district]);
 
+  /* ------------------ Preselect tehsil (wait for options) ------------------ */
+  useEffect(() => {
+    if (!data?.tehsil) return;
+    if (!tehsils.length) return;
+
+    // Only set if tehsil exists in loaded options
+    if (tehsils.includes(data.tehsil)) {
+      setValue("tehsil", data.tehsil, {
+        shouldValidate: true,
+      });
+    }
+  }, [tehsils, data?.tehsil]);
+
   /* ------------------ Watchers ------------------ */
   const orchardUnit = useWatch({
     control,
@@ -41,6 +54,20 @@ export default function BasicInfo({
     name: "orchardSize.mode",
     defaultValue: "measure",
   });
+  /* ------------------ Reset opposite unit value ------------------ */
+  useEffect(() => {
+    if (!orchardUnit) return;
+
+    if (orchardUnit === "kanal") {
+      setValue("orchardSize.value", undefined);
+      setValue("orchardSize.marla", undefined);
+    }
+
+    if (orchardUnit === "marla") {
+      setValue("orchardSize.value", undefined);
+      setValue("orchardSize.kanal", undefined);
+    }
+  }, [orchardUnit]);
 
   /* ------------------ UI ------------------ */
   return (
