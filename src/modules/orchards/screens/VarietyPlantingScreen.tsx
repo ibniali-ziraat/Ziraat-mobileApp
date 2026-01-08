@@ -7,39 +7,25 @@ import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import VarietAndPlatingDetails from "../form-sections/VarietyPlantingSection";
 import {
-  useCreateVarietyMutation,
-  useOrchardsByUserQuery,
-  useUpdateVarietyMutation,
+  useCreateOrchardBasinInfoMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function VarietyAndPlatingDetailsScreen() {
-  /**
-   * ✅ Single orchard source
-   */
-  const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
-  const orchard = orchardData?.[0];
+  const { id } = useLocalSearchParams<{ id: string }>();
 
-  /**
-   * Existing variety data
-   */
-  const varietyData = orchard?.varieties?.[0]; // assuming only one variety object per orchard
-
-  /**
-   * Mutations
-   */
-  const { mutateAsync: save, isPending: isSaving } = useCreateVarietyMutation();
+  const { data, isPending } = useOrchardByIdQuery(Number(id));
+  const { mutateAsync: save, isPending: isSaving } =
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateVarietyMutation();
-
-  /**
-   * Form
-   */
+    useUpdateOrchardBasicInfoMutation();
   const form = useZodForm();
   const {
     setValue,
@@ -48,18 +34,13 @@ export default function VarietyAndPlatingDetailsScreen() {
     formState: { errors },
   } = form;
 
-  /**
-   * ✅ Prefill form if data exists
-   */
   useEffect(() => {
-    if (!varietyData) return;
+    if (!data?.varieties?.length) return;
 
-    Object.entries(varietyData).forEach(([key, value]) => {
-      if (value !== null && value !== undefined) {
-        setValue(key as any, value);
-      }
-    });
-  }, [varietyData]);
+    const { id, ...varietyFormValues } = data.varieties[0]; // exclude id
+
+    form.reset(varietyFormValues);
+  }, [data, form]);
 
   /**
    * Submit handler
@@ -67,7 +48,7 @@ export default function VarietyAndPlatingDetailsScreen() {
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: orchard?.id,
+        id: data?.id,
         varieties: [
           {
             ...values,
@@ -75,7 +56,7 @@ export default function VarietyAndPlatingDetailsScreen() {
         ],
       };
 
-      if (varietyData) {
+      if (data.varieties) {
         await update(payload);
         showSuccessToast("Variety & Planting Details updated");
       } else {
@@ -83,7 +64,7 @@ export default function VarietyAndPlatingDetailsScreen() {
         showSuccessToast("Variety & Planting Details saved");
       }
 
-      router.push(ROUTES.ORCHARDS.REGISTRATION.FUTURE_INFO);
+      router.push(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message || "Failed to save variety details"
@@ -95,10 +76,6 @@ export default function VarietyAndPlatingDetailsScreen() {
    * Loading / Error guards
    */
   if (isPending) return null;
-  if (isError) {
-    showErrorToast("Failed to load orchard data");
-    return null;
-  }
 
   return (
     <ScreenLayout>
@@ -111,7 +88,7 @@ export default function VarietyAndPlatingDetailsScreen() {
           <VarietAndPlatingDetails errors={errors} control={control} />
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={varietyData ? "Update" : "Save"}
+            submitLabel={data.varieties.length ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

@@ -7,40 +7,27 @@ import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import InputCostDetails from "../form-sections/InputCostSection";
 import {
-  useCreateInputCostMutation,
-  useOrchardsByUserQuery,
-  useUpdateInputCostMutation,
+  useCreateOrchardBasinInfoMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function InputCostDetailsScreen() {
-  /**
-   * ✅ Single orchard source
-   */
-  const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
-  const orchard = orchardData?.[0];
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data, isPending } = useOrchardByIdQuery(Number(id));
+  console.log(data, "data of orchard is");
 
-  /**
-   * Existing input cost data
-   */
-  const inputCostData = orchard?.inputCost;
-
-  /**
-   * Mutations
-   */
+  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateInputCostMutation();
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateInputCostMutation();
-
-  /**
-   * Form
-   */
+    useUpdateOrchardBasicInfoMutation();
   const form = useZodForm();
   const {
     setValue,
@@ -53,14 +40,14 @@ export default function InputCostDetailsScreen() {
    * ✅ PREFILL FORM IF DATA EXISTS
    */
   useEffect(() => {
-    if (!inputCostData) return;
+    if (!data) return;
 
-    Object.entries(inputCostData).forEach(([key, value]) => {
+    Object.entries(data.inputCost).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [inputCostData]);
+  }, [data]);
 
   /**
    * Submit handler
@@ -68,13 +55,13 @@ export default function InputCostDetailsScreen() {
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: orchard?.id,
+        id: data?.id,
         inputCost: {
           ...values,
         },
       };
 
-      if (inputCostData) {
+      if (data.inputCost) {
         await update(payload);
         showSuccessToast("Orchard input cost updated");
       } else {
@@ -82,7 +69,7 @@ export default function InputCostDetailsScreen() {
         showSuccessToast("Orchard input cost saved");
       }
 
-      router.push(ROUTES.ORCHARDS.REGISTRATION.PLANT_PROTECTION_INFO);
+      router.push(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message || "Failed to save orchard input cost"
@@ -94,10 +81,10 @@ export default function InputCostDetailsScreen() {
    * Loading / Error guards
    */
   if (isPending) return null;
-  if (isError) {
-    showErrorToast("Failed to load orchard data");
-    return null;
-  }
+  // if (isError) {
+  //   showErrorToast("Failed to load orchard data");
+  //   return null;
+  // }
 
   return (
     <ScreenLayout>
@@ -109,7 +96,7 @@ export default function InputCostDetailsScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={inputCostData ? "Update" : "Save"}
+            submitLabel={data.inputCost ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

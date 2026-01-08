@@ -101,6 +101,98 @@ export default function OrchardDetail() {
           ]}
           onEdit={() => goToSection("basicInformation")}
         />
+        <OrchardDetailsCard
+          heading="Location"
+          items={
+            hasData(orchard.district)
+              ? [
+                  {
+                    title: "District",
+                    value: orchard.district,
+                    icon: <MapPin size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Tehsil",
+                    value: orchard.tehsil,
+                    icon: <MapPin size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Pin Code",
+                    value: orchard.pinCode,
+                    icon: <MapPin size={20} color={colors.primary} />,
+                  },
+                ]
+              : []
+          }
+          // onEdit={
+          //   hasData(orchard.district) ? () => goToSection("farm") : undefined
+          // }
+          // onDelete={
+          //   hasData(orchard.district)
+          //     ? () => setDeleteSection("location")
+          //     : undefined
+          // }
+          onAdd={() => goToSection("farm")}
+          emptyActionLabel="Add Location"
+        />
+
+        <OrchardDetailsCard
+          heading="Crop Nutrition"
+          items={
+            hasData(orchard?.cropNutrition)
+              ? [
+                  {
+                    title: "Fertilizer Practice",
+                    value: orchard.cropNutrition?.fertilizerPractices,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Fertigation",
+                    value: orchard.cropNutrition?.hasFertigation ? "Yes" : "No",
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Nutrition Plan",
+                    value: orchard.cropNutrition?.nutritionPlan,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Mulching",
+                    value: orchard.cropNutrition?.isMulchingApplied
+                      ? "Yes"
+                      : "No",
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Last Fertilizer Application Date",
+                    value: orchard.cropNutrition?.lastFertilizerApplicationDate
+                      ? new Date(
+                          orchard.cropNutrition.lastFertilizerApplicationDate
+                        ).toLocaleDateString()
+                      : "-",
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Fertilizer Application Mode",
+                    value: orchard.cropNutrition?.fertilizerApplicationMode,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                ]
+              : []
+          }
+          onEdit={
+            hasData(orchard.district)
+              ? () => goToSection("nutrition")
+              : undefined
+          }
+          onDelete={
+            hasData(orchard.district)
+              ? () => setDeleteSection("nutrition")
+              : undefined
+          }
+          onAdd={() => goToSection("nutrition")}
+          emptyActionLabel="Add Crop Nutrition"
+        />
 
         <OrchardDetailsCard
           heading="Infrastructure"
@@ -160,86 +252,49 @@ export default function OrchardDetail() {
           emptyActionLabel="Add Infrastructure"
         />
 
-        <OrchardDetailsCard
-          heading="Crop Nutrition"
-          items={
-            hasData(orchard?.cropNutrition)
-              ? [
-                  {
-                    title: "Fertilizer Practice",
-                    value: orchard.cropNutrition?.fertilizerPractices,
-                    icon: <Leaf size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Mulching",
-                    value: orchard.cropNutrition?.isMulchingApplied
-                      ? "Yes"
-                      : "No",
-                    icon: <Leaf size={20} color={colors.primary} />,
-                  },
-                ]
-              : []
-          }
-          onEdit={
-            hasData(orchard.district)
-              ? () => goToSection("nutrition")
-              : undefined
-          }
-          onDelete={
-            hasData(orchard.district)
-              ? () => setDeleteSection("nutrition")
-              : undefined
-          }
-          onAdd={() => goToSection("nutrition")}
-          emptyActionLabel="Add Crop Nutrition"
-        />
-
         {/* LOCATION */}
-        <OrchardDetailsCard
-          heading="Location"
-          items={
-            hasData(orchard.district)
-              ? [
-                  {
-                    title: "District",
-                    value: orchard.district,
-                    icon: <MapPin size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Tehsil",
-                    value: orchard.tehsil,
-                    icon: <MapPin size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Pin Code",
-                    value: orchard.pinCode,
-                    icon: <MapPin size={20} color={colors.primary} />,
-                  },
-                ]
-              : []
-          }
-          onEdit={
-            hasData(orchard.district) ? () => goToSection("farm") : undefined
-          }
-          onDelete={
-            hasData(orchard.district)
-              ? () => setDeleteSection("location")
-              : undefined
-          }
-          onAdd={() => goToSection("farm")}
-          emptyActionLabel="Add Location"
-        />
 
-        {/* VARIETY & PLANTING */}
         <OrchardDetailsCard
           heading="Varieties & Planting"
           items={
             hasData(orchard.varieties)
-              ? orchard.varieties.map((v: any) => ({
-                  title: v.varietyName,
-                  value: `Trees: ${v.numberOfTrees}`,
-                  icon: <Leaf size={20} color={colors.primary} />,
-                }))
+              ? orchard.varieties.flatMap((v: any) => [
+                  {
+                    title: "Variety Name",
+                    value: v.varietyName,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Total Trees",
+                    value: v.numberOfTrees,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Rootstock Used",
+                    value: v.rootstockUsed,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Plant Density",
+                    value: v.plantDensity,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Trees (< 5 Years)",
+                    value: v.treesLessThan5Years,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Trees (5–10 Years)",
+                    value: v.treesFiveToTenYears,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Trees (> 10 Years)",
+                    value: v.treesMoreThan10Years,
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                ])
               : []
           }
           onEdit={

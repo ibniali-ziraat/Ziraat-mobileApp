@@ -13,16 +13,17 @@ import { FormProvider } from "react-hook-form";
 
 import CropNutrition from "../form-sections/CropNutritionSection";
 import {
-  useCreateVarietyMutation,
+  useCreateOrchardBasinInfoMutation,
   useOrchardByIdQuery,
   useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function CropNutritionManagementScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-
   const { data: orchard, isPending } = useOrchardByIdQuery(Number(id));
-  const { mutateAsync: save, isPending: isSaving } = useCreateVarietyMutation();
+  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
+  const { mutateAsync: save, isPending: isSaving } =
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateOrchardBasicInfoMutation();
 

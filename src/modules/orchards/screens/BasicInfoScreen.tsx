@@ -17,6 +17,7 @@ import {
   useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
+import { ROUTES } from "@/src/constants/routes";
 import { v4 as uuidv4 } from "uuid";
 
 export default function BasicInfoScreen() {
@@ -28,16 +29,14 @@ export default function BasicInfoScreen() {
   }>();
 
   const { data: orchardData, isPending } = useOrchardsByUserQuery();
+  const { mutateAsync: createOrchard, isPending: creating } =
+    useCreateOrchardBasinInfoMutation();
+  const { mutateAsync: updateOrchard, isPending: updating } =
+    useUpdateOrchardBasicInfoMutation();
 
   const orchard = orchardData?.find(
     (o: any) => String(o.id) === String(params.id)
   );
-
-  const { mutateAsync: createOrchard, isPending: creating } =
-    useCreateOrchardBasinInfoMutation();
-
-  const { mutateAsync: updateOrchard, isPending: updating } =
-    useUpdateOrchardBasicInfoMutation();
 
   const form = useZodForm();
   const {
@@ -141,7 +140,7 @@ export default function BasicInfoScreen() {
         showSuccessToast("Orchard created");
       }
 
-      // router.replace(ROUTES.ORCHARDS.DETAIL.replace(":id", payload.orchardId));
+      router.replace(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message || "Failed to save orchard information"

@@ -13,7 +13,7 @@ import { FormProvider } from "react-hook-form";
 
 import FarmInfrastructure from "../form-sections/FarmInfrastructureSection";
 import {
-  useCreateInfrastructureMutation,
+  useCreateOrchardBasinInfoMutation,
   useOrchardByIdQuery,
   useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
@@ -22,22 +22,11 @@ export default function FarmInfrastructureScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
 
   const { data: orchard, isPending } = useOrchardByIdQuery(Number(id));
-
-  /**
-   * Assume first orchard (future-safe for multi-orchard support)
-   */
-
-  /**
-   * Mutations
-   */
+  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateInfrastructureMutation();
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateOrchardBasicInfoMutation();
-
-  /**
-   * Form
-   */
   const form = useZodForm();
   const {
     setValue,
@@ -81,8 +70,7 @@ export default function FarmInfrastructureScreen() {
         await save(payload);
         showSuccessToast("Farm infrastructure saved");
       }
-
-      router.push(ROUTES.ORCHARDS.REGISTRATION.INPUT_COST_INFO);
+      router.push(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message ||
