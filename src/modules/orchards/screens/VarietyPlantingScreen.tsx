@@ -1,72 +1,54 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import { useZodForm } from "@/src/hooks/useZodForm";
-// import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+
 import { ROUTES } from "@/src/constants/routes";
+import { useZodForm } from "@/src/hooks/useZodForm";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
+import { FormProvider } from "react-hook-form";
+
+import VarietAndPlatingDetails from "../form-sections/VarietyPlantingSection";
 import {
-  useCreateVarietyMutation,
-  useOrchardProfileId,
-  useOrchardVarietiesQuery,
-  useUpdateVarietyMutation,
+  useCreateOrchardBasinInfoMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
-import { useAuth } from "@/src/contexts/AuthContext";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { router } from "expo-router";
-import { FormProvider } from "react-hook-form";
-import VarietAndPlatingDetails from "../form-sections/VarietyPlantingSection";
-
 export default function VarietyAndPlatingDetailsScreen() {
-  // const { data: userProfileData } = useProfileQuery(userData.id);
-  // console.log(userProfileData, "userprofiledata");
+  const { id } = useLocalSearchParams<{ id: string }>();
 
-  const { userId } = useAuth();
-  const { data: orchardProfile } = useOrchardProfileId(userId);
-
-  const { data } = useOrchardVarietiesQuery(1);
-  const { mutateAsync: save, isPending: isSaving } = useCreateVarietyMutation();
+  const { data, isPending } = useOrchardByIdQuery(Number(id));
+  const { mutateAsync: save, isPending: isSaving } =
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateVarietyMutation();
-
+    useUpdateOrchardBasicInfoMutation();
   const form = useZodForm();
-  // const form = useZodForm(VarietyAndPlatingDetailsSchema);
   const {
     setValue,
     handleSubmit,
-    formState: { errors },
     control,
+    formState: { errors },
   } = form;
 
-  // useEffect(() => {
-  //   if (userProfileData?.id) {
-  //     setUserData({ profileId: userProfileData.id });
-  //   }
-  // }, [userProfileData]);
+  useEffect(() => {
+    if (!data?.varieties?.length) return;
 
-  //   useEffect(() => {
-  //     if (!data) return;
-  //     Object.entries(data).forEach(([key, value]) => {
-  //       if (value !== null && value !== undefined) {
-  //         setValue(key, value);
-  //       }
-  //     });
-  //   }, [data]);
+    const { id, ...varietyFormValues } = data.varieties[0]; // exclude id
 
+    form.reset(varietyFormValues);
+  }, [data, form]);
+
+  /**
+   * Submit handler
+   */
   const onSubmit = async (values: any) => {
     try {
-      // let res;
-
-      // if (orchardId) {
-      //   res = await update({ id: orchardId, ...values });
-      //   showSuccessToast("Orchard updated");
-      // }
-
-      // else
-
-      //   {
       const payload = {
-        id: orchardProfile?.[0]?.id,
+        id: data?.id,
         varieties: [
           {
             ...values,
@@ -74,19 +56,26 @@ export default function VarietyAndPlatingDetailsScreen() {
         ],
       };
 
-      // Send payload
-      const res = await save(payload);
+      if (data.varieties) {
+        await update(payload);
+        showSuccessToast("Variety & Planting Details updated");
+      } else {
+        await save(payload);
+        showSuccessToast("Variety & Planting Details saved");
+      }
 
-      // setOrchardId(res.id);
-      showSuccessToast("Orchard created");
-      // }
-      router.push(ROUTES.ORCHARDS.REGISTRATION.FUTURE_INFO);
+      router.push(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard information"
+        error?.response?.data?.message || "Failed to save variety details"
       );
     }
   };
+
+  /**
+   * Loading / Error guards
+   */
+  if (isPending) return null;
 
   return (
     <ScreenLayout>
@@ -94,15 +83,18 @@ export default function VarietyAndPlatingDetailsScreen() {
         title="Orchard Registration"
         desc="Variety And Planting Details"
       />
-      <FormProvider {...form}>
-        <VarietAndPlatingDetails errors={errors} control={control} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Save"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-        />
-      </FormProvider>
+      <ScreenContent>
+        <FormProvider {...form}>
+          <VarietAndPlatingDetails errors={errors} control={control} />
+          <FormActions
+            cancelLabel="Cancel"
+            submitLabel={data.varieties.length ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </FormProvider>
+      </ScreenContent>
     </ScreenLayout>
   );
 }

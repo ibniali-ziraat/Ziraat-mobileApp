@@ -17,7 +17,7 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
 
   return (
     <ScreenContent>
-      <View className="bg-light py-4 mb-4">
+      <View className="bg-light mb-4">
         {/* Row */}
         <View className="flex-row items-center">
           {/* Back Button */}

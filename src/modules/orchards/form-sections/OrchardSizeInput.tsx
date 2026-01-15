@@ -1,7 +1,7 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import { colors } from "@/src/constants/colors";
 import { router } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 export default function OrchardSizeInput({
   control,
@@ -25,9 +25,11 @@ export default function OrchardSizeInput({
     >
       <FormInput
         control={control}
-        name="orchardSize"
-        label={`Orchard Size (${areaUnit || "Marlas"})`}
+        name="orchardSize.value"
+        label={`Orchard Size (${areaUnit})`}
+        // label={`Orchard Size `}
         type="phone"
+        disabled={true}
         errors={errors?.orchardSize?.message}
       />
 
@@ -53,7 +55,7 @@ export default function OrchardSizeInput({
       </View>
 
       <View style={{ flexDirection: "row", gap: 10 }}>
-        <TouchableOpacity
+        <Pressable
           onPress={() => router.push("/orchards/walk-measure")}
           style={{
             flex: 1,
@@ -65,9 +67,9 @@ export default function OrchardSizeInput({
           <Text style={{ color: colors.light, textAlign: "center" }}>
             Measure by Walking
           </Text>
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity
+        <Pressable
           onPress={() => router.push("/orchards/tap-measure")}
           style={{
             flex: 1,
@@ -79,7 +81,7 @@ export default function OrchardSizeInput({
           <Text style={{ color: colors.light, textAlign: "center" }}>
             Measure by Tap
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

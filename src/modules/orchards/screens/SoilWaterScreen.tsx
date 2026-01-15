@@ -1,104 +1,104 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import { useZodForm } from "@/src/hooks/useZodForm";
-// import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+
 import { ROUTES } from "@/src/constants/routes";
+import { useZodForm } from "@/src/hooks/useZodForm";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
+import { FormProvider } from "react-hook-form";
+
+import SoilAndWaterProfile from "../form-sections/SoilWaterSection";
 import {
-  useCreateSoilWaterMutation,
-  useOrchardProfileId,
-  useSoilWaterQuery,
-  useUpdateSoilWaterMutation,
+  useCreateOrchardBasinInfoMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
-import { useAuth } from "@/src/contexts/AuthContext";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { router } from "expo-router";
-import { FormProvider } from "react-hook-form";
-import SoilAndWaterProfile from "../form-sections/SoilWaterSection";
-
 export default function SoilAndWaterProfileScreen() {
-  // const { data: userProfileData } = useProfileQuery(userData.id);
-  // console.log(userProfileData, "userprofiledata");
-  const { userId } = useAuth();
-  const { data: orchardProfile } = useOrchardProfileId(userId);
-
-  const { data } = useSoilWaterQuery(1);
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data, isPending } = useOrchardByIdQuery(Number(id));
+  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateSoilWaterMutation();
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateSoilWaterMutation();
-
-  // const form = useZodForm(SoilWaterProfileSchema);
+    useUpdateOrchardBasicInfoMutation();
   const form = useZodForm();
   const {
     setValue,
     handleSubmit,
-    formState: { errors },
     control,
+    formState: { errors },
   } = form;
 
-  // useEffect(() => {
-  //   if (userProfileData?.id) {
-  //     setUserData({ profileId: userProfileData.id });
-  //   }
-  // }, [userProfileData]);
+  /**
+   * ✅ Prefill form if data exists
+   */
+  useEffect(() => {
+    if (!data) return;
 
-  //   useEffect(() => {
-  //     if (!data) return;
-  //     Object.entries(data).forEach(([key, value]) => {
-  //       if (value !== null && value !== undefined) {
-  //         setValue(key, value);
-  //       }
-  //     });
-  //   }, [data]);
+    Object.entries(data.soilAndWater).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        setValue(key as any, value);
+      }
+    });
+  }, [data]);
 
+  /**
+   * Submit handler
+   */
   const onSubmit = async (values: any) => {
     try {
-      // let res;
-
-      // if (orchardId) {
-      //   res = await update({ id: orchardId, ...values });
-      //   showSuccessToast("Orchard updated");
-      // }
-
-      // else
-
-      //   {
       const payload = {
-        id: orchardProfile?.[0]?.id,
+        id: data?.id,
         soilAndWater: {
           ...values,
-          soilTestReportUrl: values.soilTestReportUrl.name,
+          soilTestReportUrl:
+            values.soilTestReportUrl?.name || values.soilTestReportUrl,
         },
       };
 
-      // Send payload
-      const res = await save(payload);
+      if (data.soilAndWater) {
+        await update(payload);
+        showSuccessToast("Soil & Water Profile updated");
+      } else {
+        await save(payload);
+        showSuccessToast("Soil & Water Profile saved");
+      }
 
-      // setOrchardId(res.id);
-      showSuccessToast("Orchard created");
-      // }
       router.push(ROUTES.ORCHARDS.REGISTRATION.VARIETY_INFO);
     } catch (error: any) {
       showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard information"
+        error?.response?.data?.message || "Failed to save soil & water profile"
       );
     }
   };
 
+  /**
+   * Loading / Error guards
+   */
+  if (isPending) return null;
+
   return (
     <ScreenLayout>
       <BackHeader title="Orchard Registration" desc="Soil and Water Profile" />
-      <FormProvider {...form}>
-        <SoilAndWaterProfile errors={errors} control={control} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Save"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-        />
-      </FormProvider>
+
+      <ScreenContent>
+        <FormProvider {...form}>
+          <SoilAndWaterProfile errors={errors} control={control} />
+
+          <FormActions
+            cancelLabel="Cancel"
+            submitLabel={data.soilAndWater ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </FormProvider>
+      </ScreenContent>
     </ScreenLayout>
   );
 }

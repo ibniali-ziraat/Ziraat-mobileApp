@@ -1,21 +1,32 @@
 import axiosInstance from "../api/client/axiosInstance";
 
-export const uploadFile = async (data) => {
+export const uploadFile = async ({ file, UserType, UserId, FileCategory }) => {
+  console.log(file, "file...");
+
   const formData = new FormData();
 
-  formData.append("file", {
-    uri: data.file.uri,
-    name: data.file.name,
-    type: data.file.type,
+  formData.append("File", {
+    uri: file.uri,
+    name: file.name,
+    type: file.mimeType || "application/octet-stream",
   });
+  formData.append("UserType", UserType);
+  formData.append("UserId", UserId);
+  formData.append("FileCategory", FileCategory);
 
-  formData.append("ownerType", data.ownerType); // vendor | user
-  formData.append("ownerId", String(data.ownerId));
-  formData.append("purpose", data.purpose); // license | profile | product | ...
-
-  const response = await axiosInstance.post("/api/core/file-upload", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+  return axiosInstance.post("/api/FileUpload/upload", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    transformRequest: (data) => {
+      return data; // IMPORTANT: prevent Axios from transforming FormData
+    },
   });
-
-  return response.data; // { url }
 };
+
+export const deleteUploadedFile = async ({ blobName }) =>
+  (
+    await axiosInstance.post("/api/FileUpload/delete", {
+      blobName,
+    })
+  ).data;
