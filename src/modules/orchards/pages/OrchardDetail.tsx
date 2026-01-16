@@ -3,31 +3,44 @@ import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { colors } from "@/src/constants/colors";
-import { showSuccessToast } from "@/src/utils/toast";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { router, useLocalSearchParams } from "expo-router";
 import {
+  AlertCircle,
+  BadgeCheck,
+  Bug,
+  Calendar,
+  CalendarClock,
   Droplet,
+  FileText,
   IndianRupee,
+  Landmark,
   Leaf,
-  Link,
   MapPin,
+  Phone,
+  Shield,
   ShieldCheck,
+  Smartphone,
   Sprout,
+  Store,
   ToolCase,
   TrendingUp,
+  User,
   Users,
   Warehouse,
+  Waves,
   Wrench,
 } from "lucide-react-native";
 import { useState } from "react";
-import { ScrollView } from "react-native";
+import { Pressable, ScrollView, Text } from "react-native";
 import OrchardDetailsCard from "../components/OrchardDetailsCard";
+import { OrchardDeleteKey } from "../config/orchardDeleteConfig";
 import {
-  orchardDeleteConfig,
-  OrchardDeleteKey,
-} from "../config/orchardDeleteConfig";
-import { useOrchardByIdQuery } from "../hooks/useOrchardsQuery";
+  useDeleteOrchardEntire,
+  useDeleteOrchardSection,
+  useOrchardByIdQuery,
+} from "../hooks/useOrchardsQuery";
 import { orchardRoutes } from "../routes/orchardRoutes";
 
 export default function OrchardDetail() {
@@ -35,11 +48,16 @@ export default function OrchardDetail() {
   const queryClient = useQueryClient();
 
   const { data: orchard, isPending } = useOrchardByIdQuery(id);
+  const { mutateAsync: deleteOrchard, isPending: isDeletingOrchard } =
+    useDeleteOrchardEntire();
+
+  const { mutateAsync: deleteOrchardSection } = useDeleteOrchardSection();
   console.log(orchard, "orchard detailsllls");
 
   const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
     null
   );
+  const [deleteWhole, setDeleteWhole] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   const hasData = (value: any) => {
@@ -53,23 +71,103 @@ export default function OrchardDetail() {
     router.push(`${orchardRoutes[section]}?id=${orchard?.id}`);
   };
 
+  console.log(orchard, "orchard....+++++");
+  const getDeletePayload = (section: OrchardDeleteKey) => {
+    switch (section) {
+      case "nutrition":
+        return {
+          ...orchard,
+          cropNutrition: null,
+        };
+
+      case "farmInfrastructure":
+        return {
+          ...orchard,
+          infrastructure: null,
+        };
+
+      case "varieties":
+        return {
+          ...orchard,
+          varieties: null,
+        };
+
+      case "soilAndWater":
+        return {
+          ...orchard,
+          soilAndWater: null,
+        };
+
+      case "plantHealth":
+        return {
+          ...orchard,
+          plantHealth: null,
+        };
+
+      case "production":
+        return {
+          ...orchard,
+          production: null,
+        };
+
+      case "inputCost":
+        return {
+          ...orchard,
+          inputCost: null,
+        };
+
+      case "futureReadiness":
+        return {
+          ...orchard,
+          optionalFields: null,
+        };
+
+      default:
+        throw new Error("Unknown delete section");
+    }
+  };
+
   const handleDelete = async (section: OrchardDeleteKey) => {
     try {
       setDeleting(true);
-      const config = orchardDeleteConfig[section];
 
-      // 🔴 API call here
-      // await deleteOrchardSection({ orchardId: orchard.id, section });
+      const payload = getDeletePayload(section, orchard.id);
+      console.log(payload, "payload...");
 
-      showSuccessToast(config.success);
-      queryClient.invalidateQueries([config.queryKey, orchard.id]);
+      await deleteOrchardSection(payload);
+      // queryClient.invalidateQueries([section, orchard.id], null);
+
+      showSuccessToast("Section deleted successfully");
+
       setDeleteSection(null);
+    } catch (error) {
+      console.error(error);
+      showErrorToast("Failed to delete section");
     } finally {
       setDeleting(false);
     }
   };
 
   if (isPending) return <Loader />;
+
+  const handleDeleteWholeOrchard = async (section: OrchardDeleteKey) => {
+    try {
+      setDeleting(true);
+
+      await deleteOrchard(orchard.id);
+
+      showSuccessToast("orchard deleted successfully");
+
+      queryClient.invalidateQueries(["deleteOrchard", orchard.id]);
+
+      setDeleteSection(null);
+    } catch (error) {
+      console.error(error);
+      showErrorToast("Failed to delete section");
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   return (
     <ScreenLayout>
@@ -186,9 +284,7 @@ export default function OrchardDetail() {
               : undefined
           }
           onDelete={
-            hasData(orchard.district)
-              ? () => setDeleteSection("nutrition")
-              : undefined
+            orchard.district ? () => handleDelete("nutrition") : undefined
           }
           onAdd={() => goToSection("nutrition")}
           emptyActionLabel="Add Crop Nutrition"
@@ -243,9 +339,14 @@ export default function OrchardDetail() {
               ? () => goToSection("farmInfrastructure")
               : undefined
           }
+          // onDelete={
+          //   hasData(orchard?.infrastructure)
+          //     ? () => setDeleteSection("farmInfrastructure")
+          //     : undefined
+          // }
           onDelete={
-            hasData(orchard?.infrastructure)
-              ? () => setDeleteSection("farmInfrastructure")
+            orchard.district
+              ? () => handleDelete("farmInfrastructure")
               : undefined
           }
           onAdd={() => goToSection("farmInfrastructure")}
@@ -311,7 +412,6 @@ export default function OrchardDetail() {
           emptyActionLabel="Add Varieties"
         />
 
-        {/* SOIL & WATER */}
         <OrchardDetailsCard
           heading="Soil & Water"
           items={
@@ -319,13 +419,76 @@ export default function OrchardDetail() {
               ? [
                   {
                     title: "Soil Type",
-                    value: orchard.soilAndWater.soilType,
+                    value: orchard.soilAndWater.soilType || "—",
                     icon: <Droplet size={20} color={colors.primary} />,
                   },
                   {
+                    title: "Soil Health Status",
+                    value: orchard.soilAndWater.soilHealthStatus?.length
+                      ? orchard.soilAndWater.soilHealthStatus.join(", ")
+                      : "—",
+                    icon: <Leaf size={20} color={colors.primary} />,
+                  },
+                  // {
+                  //   title: "Soil pH",
+                  //   value: orchard.soilAndWater.soilPh ?? "—",
+                  //   icon: <Beaker size={20} color={colors.primary} />,
+                  // },
+                  // {
+                  //   title: "Nitrogen (N)",
+                  //   value: orchard.soilAndWater.soilNitrogen ?? "—",
+                  //   icon: <FlaskConicalIcon size={20} color={colors.primary} />,
+                  // },
+                  // {
+                  //   title: "Phosphorus (P)",
+                  //   value: orchard.soilAndWater.soilPhosphorus ?? "—",
+                  //   icon: <FlaskConical size={20} color={colors.primary} />,
+                  // },
+                  // {
+                  //   title: "Potassium (K)",
+                  //   value: orchard.soilAndWater.soilPotassium ?? "—",
+                  //   icon: <FlaskConical size={20} color={colors.primary} />,
+                  // },
+                  // {
+                  //   title: "Organic Carbon",
+                  //   value: orchard.soilAndWater.soilOrganicCarbon ?? "—",
+                  //   icon: <Leaf size={20} color={colors.primary} />,
+                  // },
+                  // {
+                  //   title: "Micronutrients",
+                  //   value: orchard.soilAndWater.soilMicronutrients ?? "—",
+                  //   icon: <Leaf size={20} color={colors.primary} />,
+                  // },
+                  {
+                    title: "Last Soil Test",
+                    value: orchard.soilAndWater.lastSoilTestDate
+                      ? new Date(
+                          orchard.soilAndWater.lastSoilTestDate
+                        ).toLocaleDateString()
+                      : "—",
+                    icon: <Calendar size={20} color={colors.primary} />,
+                  },
+                  {
                     title: "Water Source",
-                    value: orchard.soilAndWater.waterSource,
+                    value: orchard.soilAndWater.waterSource || "—",
                     icon: <Droplet size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Irrigation Method",
+                    value: orchard.soilAndWater.irrigationMethod || "—",
+                    icon: <Waves size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Water Availability",
+                    value: orchard.soilAndWater.waterAvailability || "—",
+                    icon: <AlertCircle size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Soil Test Report",
+                    value: orchard.soilAndWater.soilTestReportUrl
+                      ? "View Report"
+                      : "—",
+                    icon: <FileText size={20} color={colors.primary} />,
                   },
                 ]
               : []
@@ -344,7 +507,6 @@ export default function OrchardDetail() {
           emptyActionLabel="Add Soil & Water"
         />
 
-        {/* PLANT PROTECTION */}
         <OrchardDetailsCard
           heading="Plant Protection"
           items={
@@ -352,13 +514,26 @@ export default function OrchardDetail() {
               ? [
                   {
                     title: "Diseases",
-                    value: orchard.plantHealth.diseaseHistory?.join(", "),
+                    value:
+                      orchard.plantHealth.diseaseHistory?.join(", ") || "-",
                     icon: <ShieldCheck size={20} color={colors.primary} />,
                   },
                   {
                     title: "Pests",
-                    value: orchard.plantHealth.pestHistory?.join(", "),
-                    icon: <ShieldCheck size={20} color={colors.primary} />,
+                    value: orchard.plantHealth.pestHistory?.join(", ") || "-",
+                    icon: <Bug size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Spray Schedule",
+                    value: orchard.plantHealth.spraySchedule?.join(", ") || "-",
+                    icon: <Calendar size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Crop Insurance",
+                    value: orchard.plantHealth.isCropInsuranceCovered
+                      ? "Covered"
+                      : "Not Covered",
+                    icon: <Shield size={20} color={colors.primary} />,
                   },
                 ]
               : []
@@ -385,8 +560,41 @@ export default function OrchardDetail() {
               ? [
                   {
                     title: "Average Yield",
-                    value: orchard.production.averageAnnualYield,
+                    value: `${orchard.production.averageAnnualYield} ${orchard.production.yieldUnit || ""}`,
                     icon: <TrendingUp size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Peak Harvest (From)",
+                    value: orchard.production.peakHarvestFromMonth
+                      ? new Date(
+                          orchard.production.peakHarvestFromMonth
+                        ).toLocaleDateString()
+                      : "-",
+                    icon: <Calendar size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Peak Harvest (To)",
+                    value: orchard.production.peakHarvestToMonth
+                      ? new Date(
+                          orchard.production.peakHarvestToMonth
+                        ).toLocaleDateString()
+                      : "-",
+                    icon: <Calendar size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Selling Preference",
+                    value: orchard.production.sellingPreference || "-",
+                    icon: <Store size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Buyer Name",
+                    value: orchard.production.buyerName || "-",
+                    icon: <User size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Buyer Contact",
+                    value: orchard.production.buyerContact || "-",
+                    icon: <Phone size={20} color={colors.primary} />,
                   },
                 ]
               : []
@@ -413,8 +621,18 @@ export default function OrchardDetail() {
               ? [
                   {
                     title: "Payment Type",
-                    value: orchard.inputCost.paymentType,
+                    value: orchard.inputCost.paymentType || "-",
                     icon: <IndianRupee size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Credit Period",
+                    value: orchard.inputCost.creditPeriod || "-",
+                    icon: <CalendarClock size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Pesticide Supplier Location",
+                    value: orchard.inputCost.pesticideSupplierLocation || "-",
+                    icon: <MapPin size={20} color={colors.primary} />,
                   },
                 ]
               : []
@@ -440,9 +658,32 @@ export default function OrchardDetail() {
             hasData(orchard.optionalFields)
               ? [
                   {
+                    title: "Government Schemes Availed",
+                    value:
+                      orchard.optionalFields.governmentSchemesAvailed?.join(
+                        ", "
+                      ) || "-",
+                    icon: <Landmark size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "FPO / Cooperative Member",
+                    value: orchard.optionalFields.isFpoOrCooperativeMember
+                      ? "Yes"
+                      : "No",
+                    icon: <Users size={20} color={colors.primary} />,
+                  },
+                  {
                     title: "Certifications",
-                    value: orchard.optionalFields.certifications?.join(", "),
-                    icon: <Link size={20} color={colors.primary} />,
+                    value:
+                      orchard.optionalFields.certifications?.join(", ") || "-",
+                    icon: <BadgeCheck size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Digital Tools Used",
+                    value:
+                      orchard.optionalFields.digitalToolsUsed?.join(", ") ||
+                      "-",
+                    icon: <Smartphone size={20} color={colors.primary} />,
                   },
                 ]
               : []
@@ -461,6 +702,17 @@ export default function OrchardDetail() {
           emptyActionLabel="Add Future Readiness"
         />
       </ScrollView>
+      <ScreenLayout>
+        <Pressable
+          onPress={() => setDeleteWhole(true)}
+          className="mx-4 mb-4 flex-row items-center justify-center rounded-xl border border-red-500 py-4"
+        >
+          <AlertCircle size={20} color={colors.error} />
+          <Text className="ml-2 font-semibold text-red-500">
+            Delete Entire Orchard
+          </Text>
+        </Pressable>
+      </ScreenLayout>
 
       <ConfirmDeleteModal
         visible={!!deleteSection}
@@ -469,6 +721,15 @@ export default function OrchardDetail() {
         onCancel={() => setDeleteSection(null)}
         onConfirm={() => handleDelete(deleteSection!)}
         loading={deleting}
+      />
+
+      <ConfirmDeleteModal
+        visible={deleteWhole}
+        title="Delete entire orchard?"
+        description="This action will permanently delete all orchard data. This cannot be undone."
+        onCancel={() => setDeleteWhole(false)}
+        onConfirm={() => handleDeleteWholeOrchard()}
+        loading={isDeletingOrchard}
       />
     </ScreenLayout>
   );

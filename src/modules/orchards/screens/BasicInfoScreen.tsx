@@ -51,7 +51,6 @@ export default function BasicInfoScreen() {
 
     setValue("orchardName", orchard.orchardName);
     setValue("establishmentYear", String(orchard.establishmentYear));
-
     setValue("plantationPattern", orchard.plantationPattern);
     setValue("ownershipType", orchard.ownershipType);
     setValue("district", orchard.district);
@@ -74,7 +73,6 @@ export default function BasicInfoScreen() {
 
   useEffect(() => {
     if (!params?.areaValue) return;
-
     setValue("orchardSize.mode", "measure", { shouldValidate: true });
     setValue("orchardSize.value", params.areaValue, { shouldValidate: true });
     setValue("orchardSize.unit", params.areaUnit, { shouldValidate: true });

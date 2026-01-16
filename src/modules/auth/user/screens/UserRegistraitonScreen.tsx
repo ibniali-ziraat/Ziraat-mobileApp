@@ -55,35 +55,69 @@ export default function UserRegistrationScreen() {
   const onSubmit = async (data: any) => {
     if (step === 0) {
       try {
-        setProfileData(data);
+        const normalizedData = {
+          ...data,
+          email: data.email?.trim() || "ziraat@codestrix.com",
+        };
+
+        setProfileData(normalizedData);
 
         const existsRes = await verifyUserExists({
-          phone: data.phone,
-          email: data.email,
+          phone: normalizedData.phone,
+          email: normalizedData.email,
         });
-
-        console.log(existsRes, "existsres.");
 
         if (existsRes?.success === false) {
           showErrorToast(existsRes.message);
           return;
         }
 
-        const otpRes = await sendOtpMutate(data.phone);
+        const otpRes = await sendOtpMutate(normalizedData.phone);
         if (!otpRes?.success) {
           showErrorToast(otpRes?.message || "Failed to send OTP");
           return;
         }
 
         nextStep();
-      } catch (error) {
-        console.log(error, "error");
-
+      } catch (error: any) {
         showErrorToast(
-          error.response.data.message || "Something went wrong try again later"
+          error?.response?.data?.message ||
+            "Something went wrong try again later"
         );
       }
     }
+
+    // if (step === 0) {
+    //   try {
+    //     setProfileData(data);
+
+    //     const existsRes = await verifyUserExists({
+    //       phone: data.phone,
+    //       email: data.email,
+    //     });
+
+    //     console.log(existsRes, "existsres.");
+
+    //     if (existsRes?.success === false) {
+    //       showErrorToast(existsRes.message);
+    //       return;
+    //     }
+
+    //     const otpRes = await sendOtpMutate(data.phone);
+    //     if (!otpRes?.success) {
+    //       showErrorToast(otpRes?.message || "Failed to send OTP");
+    //       return;
+    //     }
+
+    //     nextStep();
+    //   } catch (error) {
+    //     console.log(error, "error");
+
+    //     showErrorToast(
+    //       error.response.data.message || "Something went wrong try again later"
+    //     );
+    //   }
+    // }
 
     if (step === 1) {
       try {

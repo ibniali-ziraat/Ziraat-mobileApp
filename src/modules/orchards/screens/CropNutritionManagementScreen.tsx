@@ -53,9 +53,6 @@ export default function CropNutritionManagementScreen() {
     setValue("fertilizerApplicationMode", cn.fertilizerApplicationMode);
   }, [orchard?.cropNutrition]);
 
-  /**
-   * Submit handler
-   */
   const onSubmit = async (values: any) => {
     try {
       const payload = {
@@ -65,9 +62,6 @@ export default function CropNutritionManagementScreen() {
         },
       };
 
-      /**
-       * ✅ UPDATE vs CREATE
-       */
       if (orchard.cropNutrition) {
         await update(payload);
         showSuccessToast("Crop & Nutrition updated");

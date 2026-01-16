@@ -37,14 +37,11 @@ export default function VarietyAndPlatingDetailsScreen() {
   useEffect(() => {
     if (!data?.varieties?.length) return;
 
-    const { id, ...varietyFormValues } = data.varieties[0]; // exclude id
+    const { id, ...varietyFormValues } = data.varieties[0];
 
     form.reset(varietyFormValues);
-  }, [data, form]);
+  }, [data?.varieties]);
 
-  /**
-   * Submit handler
-   */
   const onSubmit = async (values: any) => {
     try {
       const payload = {
@@ -56,7 +53,7 @@ export default function VarietyAndPlatingDetailsScreen() {
         ],
       };
 
-      if (data.varieties) {
+      if (data.varieties.length) {
         await update(payload);
         showSuccessToast("Variety & Planting Details updated");
       } else {

@@ -3,7 +3,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { ID } from "@/src/types/global";
 import {
   createOrchard,
-  deleteOrchard,
+  deleteEntireOrchard,
+  deleteOrchardSection,
   getOrchardById,
   getOrchardsByUser,
   updateOrchard,
@@ -33,8 +34,10 @@ export const useCreateOrchardBasinInfoMutation = () =>
 export const useUpdateOrchardBasicInfoMutation = () =>
   useMutation({ mutationFn: updateOrchard });
 
-export const useDeleteOrchardBasicInfoMutation = () =>
-  useMutation({ mutationFn: deleteOrchard });
+export const useDeleteOrchardSection = () =>
+  useMutation({ mutationFn: deleteOrchardSection });
+export const useDeleteOrchardEntire = () =>
+  useMutation({ mutationFn: deleteEntireOrchard });
 
 // //
 // // ====================================================
