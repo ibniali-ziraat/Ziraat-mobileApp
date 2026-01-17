@@ -19,9 +19,19 @@ export const updateOrchard = async (data: any) => {
   return res;
 };
 
-export const deleteOrchard = async (orchardId: string | number) => {
+export const deleteOrchardSection = async (data: any) => {
+  console.log(data, "or data...");
+
+  const { data: res } = await axiosInstance.put(
+    `${CORE}/orchardProfile/${data.id}`,
+    data
+  );
+  return res;
+};
+
+export const deleteEntireOrchard = async (orchardId: string | number) => {
   const { data: res } = await axiosInstance.delete(
-    `${CORE}/orchard/${orchardId}`
+    `${CORE}/orchardProfile/${orchardId}`
   );
   return res;
 };

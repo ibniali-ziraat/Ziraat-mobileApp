@@ -21,7 +21,6 @@ import {
 export default function SoilAndWaterProfileScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data, isPending } = useOrchardByIdQuery(Number(id));
-  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
   const { mutateAsync: save, isPending: isSaving } =
     useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
@@ -34,11 +33,8 @@ export default function SoilAndWaterProfileScreen() {
     formState: { errors },
   } = form;
 
-  /**
-   * ✅ Prefill form if data exists
-   */
   useEffect(() => {
-    if (!data) return;
+    if (!data?.soilAndWater) return;
 
     Object.entries(data.soilAndWater).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
@@ -47,9 +43,6 @@ export default function SoilAndWaterProfileScreen() {
     });
   }, [data]);
 
-  /**
-   * Submit handler
-   */
   const onSubmit = async (values: any) => {
     try {
       const payload = {
@@ -77,9 +70,6 @@ export default function SoilAndWaterProfileScreen() {
     }
   };
 
-  /**
-   * Loading / Error guards
-   */
   if (isPending) return null;
 
   return (

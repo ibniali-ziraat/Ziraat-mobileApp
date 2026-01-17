@@ -2,45 +2,29 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-
 import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-
 import PlantProtection from "../form-sections/PlantProtectionSection";
 import {
-  useCreatePlantProtectionMutation,
-  useOrchardsByUserQuery,
-  useUpdatePlantProtectionMutation,
+  useCreateOrchardBasinInfoMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function PlantProtectionScreen() {
-  /**
-   * ✅ Single orchard source
-   */
-  const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
-  const orchard = orchardData?.[0];
+  const { id } = useLocalSearchParams<{ id: string }>();
 
-  /**
-   * Existing plant health / protection data
-   */
-  const plantHealthData = orchard?.plantHealth;
-
-  /**
-   * Mutations
-   */
+  const { data, isPending } = useOrchardByIdQuery(Number(id));
+  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
   const { mutateAsync: save, isPending: isSaving } =
-    useCreatePlantProtectionMutation();
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdatePlantProtectionMutation();
+    useUpdateOrchardBasicInfoMutation();
 
-  /**
-   * Form
-   */
   const form = useZodForm();
   const {
     setValue,
@@ -49,32 +33,26 @@ export default function PlantProtectionScreen() {
     formState: { errors },
   } = form;
 
-  /**
-   * ✅ PREFILL FORM IF DATA EXISTS
-   */
   useEffect(() => {
-    if (!plantHealthData) return;
+    if (!data?.plantHealth) return;
 
-    Object.entries(plantHealthData).forEach(([key, value]) => {
+    Object.entries(data?.plantHealth).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [plantHealthData]);
+  }, [data?.plantHealth]);
 
-  /**
-   * Submit handler
-   */
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: orchard?.id,
+        id: data?.id,
         plantHealth: {
           ...values,
         },
       };
 
-      if (plantHealthData) {
+      if (data?.plantHealth) {
         await update(payload);
         showSuccessToast("Plant Protection updated");
       } else {
@@ -90,14 +68,7 @@ export default function PlantProtectionScreen() {
     }
   };
 
-  /**
-   * Loading / Error guards
-   */
   if (isPending) return null;
-  if (isError) {
-    showErrorToast("Failed to load orchard data");
-    return null;
-  }
 
   return (
     <ScreenLayout>
@@ -112,7 +83,7 @@ export default function PlantProtectionScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={plantHealthData ? "Update" : "Save"}
+            submitLabel={data?.plantHealth ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

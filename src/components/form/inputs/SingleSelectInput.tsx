@@ -8,7 +8,6 @@ import {
   Modal,
   Pressable,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { HelperText } from "react-native-paper";
@@ -106,7 +105,7 @@ export default function SingleSelectInput({
             )}
 
             {/* Selector */}
-            <TouchableOpacity
+            <Pressable
               disabled={disabled}
               style={{
                 flexDirection: "row",
@@ -118,7 +117,7 @@ export default function SingleSelectInput({
                   : disabled
                     ? colors.darkHover + "88"
                     : colors.darkHover,
-                borderRadius: 14,
+                // borderRadius: 14,
                 paddingHorizontal: 16,
                 paddingVertical: 14,
                 backgroundColor: colors.light,
@@ -145,7 +144,7 @@ export default function SingleSelectInput({
                     <CsText style={{ color: colors.error }}> *</CsText>
                   )}
               </CsText>
-            </TouchableOpacity>
+            </Pressable>
 
             {liveError && (
               <HelperText
@@ -178,7 +177,7 @@ export default function SingleSelectInput({
                     backgroundColor: colors.overlay, // semi-transparent backdrop
                   }}
                   onPress={() => {
-                    setVisible(false);
+                    // setVisible(false);
                     hideSearchBar();
                   }}
                 >
@@ -219,7 +218,7 @@ export default function SingleSelectInput({
                       <View
                         style={{ flexDirection: "row", alignItems: "center" }}
                       >
-                        <TouchableOpacity
+                        <Pressable
                           onPress={() => {
                             onChange("");
                             if (onValueChange) onValueChange("");
@@ -230,7 +229,7 @@ export default function SingleSelectInput({
                           style={{ padding: 6, marginRight: 6 }}
                         >
                           <RefreshCcw size={20} color={colors.primary} />
-                        </TouchableOpacity>
+                        </Pressable>
 
                         <View
                           style={{
@@ -241,7 +240,7 @@ export default function SingleSelectInput({
                           }}
                         />
 
-                        <TouchableOpacity
+                        <Pressable
                           onPress={() => {
                             setVisible(false);
                             hideSearchBar();
@@ -249,7 +248,7 @@ export default function SingleSelectInput({
                           style={{ padding: 6 }}
                         >
                           <XCircle size={20} color={colors.error} />
-                        </TouchableOpacity>
+                        </Pressable>
                       </View>
                     </View>
 
@@ -291,7 +290,7 @@ export default function SingleSelectInput({
                       keyExtractor={(item) => item.value.toString()}
                       keyboardShouldPersistTaps="handled" // <--- KEY FIX
                       renderItem={({ item, index }) => (
-                        <TouchableOpacity
+                        <Pressable
                           style={{
                             paddingTop:
                               index === filteredOptions.length - 1 ? 16 : 16,
@@ -320,7 +319,7 @@ export default function SingleSelectInput({
                           >
                             {item.label}
                           </CsText>
-                        </TouchableOpacity>
+                        </Pressable>
                       )}
                     />
                   </View>

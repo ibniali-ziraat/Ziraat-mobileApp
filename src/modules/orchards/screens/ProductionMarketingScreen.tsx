@@ -7,40 +7,27 @@ import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import ProductionMarketing from "../form-sections/ProductionMarketingSection";
 import {
-  useCreateProductionMarketingMutation,
-  useOrchardsByUserQuery,
-  useUpdateProductionMarketingMutation,
+  useCreateOrchardBasinInfoMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function ProductionAndMarketingScreen() {
-  /**
-   * ✅ Single orchard source
-   */
-  const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
-  const orchard = orchardData?.[0];
+  const { id } = useLocalSearchParams<{ id: string }>();
 
-  /**
-   * Existing production/marketing data
-   */
-  const productionData = orchard?.production;
-
-  /**
-   * Mutations
-   */
+  const { data, isPending } = useOrchardByIdQuery(Number(id));
+  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateProductionMarketingMutation();
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateProductionMarketingMutation();
+    useUpdateOrchardBasicInfoMutation();
 
-  /**
-   * Form
-   */
   const form = useZodForm();
   const {
     setValue,
@@ -49,18 +36,15 @@ export default function ProductionAndMarketingScreen() {
     formState: { errors },
   } = form;
 
-  /**
-   * ✅ Prefill form if data exists
-   */
   useEffect(() => {
-    if (!productionData) return;
+    if (!data?.production) return;
 
-    Object.entries(productionData).forEach(([key, value]) => {
+    Object.entries(data?.production).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [productionData]);
+  }, [data?.production]);
 
   /**
    * Submit handler
@@ -68,13 +52,13 @@ export default function ProductionAndMarketingScreen() {
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: orchard?.id,
+        id: data?.id,
         production: {
           ...values,
         },
       };
 
-      if (productionData) {
+      if (data?.production) {
         await update(payload);
         showSuccessToast("Production & Marketing updated");
       } else {
@@ -95,10 +79,10 @@ export default function ProductionAndMarketingScreen() {
    * Loading / Error guards
    */
   if (isPending) return null;
-  if (isError) {
-    showErrorToast("Failed to load orchard data");
-    return null;
-  }
+  // if (isError) {
+  //   showErrorToast("Failed to load orchard data");
+  //   return null;
+  // }
 
   return (
     <ScreenLayout>
@@ -110,7 +94,7 @@ export default function ProductionAndMarketingScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={productionData ? "Update" : "Save"}
+            submitLabel={data?.production ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

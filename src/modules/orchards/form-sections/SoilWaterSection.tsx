@@ -218,10 +218,19 @@ export default function SoilAndWaterProfile({ control, errors }) {
             )}
           </>
         )}
+
+        {soilTestRecordsDone && (
+          <FormFileInput
+            control={control}
+            name="soilTestReportUrl"
+            label="Upload Soil Test Report"
+            error={errors?.soilTestFile}
+          />
+        )}
       </View>
 
-      <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
-        <SingleSelectInput
+      {/* <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200"> */}
+      {/* <SingleSelectInput
           control={control}
           name="soilTestFileToggle"
           label="Upload Soil Test Report?"
@@ -231,17 +240,9 @@ export default function SoilAndWaterProfile({ control, errors }) {
           ]}
           error={errors?.soilTestFileToggle?.message}
           modalLabel="Soil Test Report"
-        />
+        /> */}
 
-        {soilTestFileToggle && (
-          <FormFileInput
-            control={control}
-            name="soilTestReportUrl"
-            label="Upload Soil Test Report"
-            error={errors?.soilTestFile}
-          />
-        )}
-      </View>
+      {/* </View> */}
     </View>
   );
 }

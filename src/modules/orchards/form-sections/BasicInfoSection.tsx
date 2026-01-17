@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { Switch, Text, View } from "react-native";
+import { View } from "react-native";
 
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
@@ -23,14 +23,12 @@ export default function BasicInfo({
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
 
-  /* ------------------ Preselect district (edit case) ------------------ */
   useEffect(() => {
     if (data?.district) {
       setSelectedDistrict(data.district);
     }
   }, [data?.district]);
 
-  /* ------------------ Preselect tehsil (wait for options) ------------------ */
   useEffect(() => {
     if (!data?.tehsil) return;
     if (!tehsils.length) return;
@@ -52,7 +50,7 @@ export default function BasicInfo({
   const orchardMode = useWatch({
     control,
     name: "orchardSize.mode",
-    defaultValue: "measure",
+    defaultValue: "manual",
   });
   /* ------------------ Reset opposite unit value ------------------ */
   useEffect(() => {
@@ -69,7 +67,6 @@ export default function BasicInfo({
     }
   }, [orchardUnit]);
 
-  /* ------------------ UI ------------------ */
   return (
     <View className="bg-light w-full">
       {/* Orchard Name */}
@@ -81,7 +78,7 @@ export default function BasicInfo({
       />
 
       {/* Orchard Size Switch */}
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -113,11 +110,11 @@ export default function BasicInfo({
           />
           <Text style={{ fontSize: 12 }}>Measure</Text>
         </View>
-      </View>
+      </View> */}
 
       {/* ------------------ MANUAL MODE ------------------ */}
       {orchardMode === "manual" && (
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginVertical: 10 }}>
           <SingleSelectInput
             control={control}
             name="orchardSize.unit"

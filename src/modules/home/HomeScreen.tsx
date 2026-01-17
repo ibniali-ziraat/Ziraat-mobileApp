@@ -1,21 +1,21 @@
 import { router } from "expo-router";
 import { useMemo } from "react";
-import { ActivityIndicator, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
+import Loader from "@/src/components/shared/Loader";
 import ProductCarousel from "@/src/components/shared/ProductCarousel";
-import FarmOverviewChart from "./components/FarmOverviewChart";
-import FarmerTipsCard from "./components/FarmerTipsCard";
-import QuickActions from "./components/QuickActions";
-import SectionTitle from "./components/SectionTitle";
-import WeatherCard from "./components/weatherCard";
-
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { imageMapper } from "@/src/data/imageMapper";
 import products from "@/src/data/products.json";
 import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
+import FarmOverviewChart from "./components/FarmOverviewChart";
+import FarmerTipsCard from "./components/FarmerTipsCard";
+import QuickActions from "./components/QuickActions";
+import SectionTitle from "./components/SectionTitle";
+import WeatherCard from "./components/weatherCard";
 
 export default function HomeScreen() {
   const { coords, loading: locLoading, error: locError } = useLocation();
@@ -70,11 +70,7 @@ export default function HomeScreen() {
   ];
 
   if (locLoading || isLoading) {
-    return (
-      <View className="flex-1 justify-center">
-        <ActivityIndicator size="large" color="#c7611f" />
-      </View>
-    );
+    return <Loader />;
   }
 
   return (

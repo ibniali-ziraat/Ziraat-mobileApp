@@ -40,7 +40,7 @@ export default function InputCostDetailsScreen() {
    * ✅ PREFILL FORM IF DATA EXISTS
    */
   useEffect(() => {
-    if (!data) return;
+    if (!data?.inputCost) return;
 
     Object.entries(data.inputCost).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
@@ -61,7 +61,7 @@ export default function InputCostDetailsScreen() {
         },
       };
 
-      if (data.inputCost) {
+      if (data?.inputCost) {
         await update(payload);
         showSuccessToast("Orchard input cost updated");
       } else {

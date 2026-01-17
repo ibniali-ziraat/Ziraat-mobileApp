@@ -29,6 +29,7 @@ import { userRoutes } from "../auth/vendor/config/userRoutes";
 // Icons
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
+import { DUMMY_EMAIL } from "@/src/constants/constants";
 import { ROUTES } from "@/src/constants/routes";
 import {
   Briefcase,
@@ -144,7 +145,10 @@ export default function UserProfileScreen() {
               ? [
                   {
                     title: "Email",
-                    value: profileData?.email,
+                    value:
+                      profileData?.email === DUMMY_EMAIL
+                        ? "—"
+                        : profileData?.email,
                     icon: <Mail size={22} color={colors.primary} />,
                   },
                   {

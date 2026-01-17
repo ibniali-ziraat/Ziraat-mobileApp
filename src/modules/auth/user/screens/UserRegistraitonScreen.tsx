@@ -14,6 +14,7 @@ import FormActions from "@/src/components/shared/FormActions";
 import AnimatedStepWrapper from "@/src/components/shared/AnimatedStepWrapper";
 import Heading from "@/src/components/shared/Heading";
 import OtpHeading from "@/src/components/shared/OtpHeading";
+import { DUMMY_EMAIL } from "@/src/constants/constants";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
@@ -55,35 +56,69 @@ export default function UserRegistrationScreen() {
   const onSubmit = async (data: any) => {
     if (step === 0) {
       try {
-        setProfileData(data);
+        const normalizedData = {
+          ...data,
+          email: data.email?.trim() || DUMMY_EMAIL,
+        };
+
+        setProfileData(normalizedData);
 
         const existsRes = await verifyUserExists({
-          phone: data.phone,
-          email: data.email,
+          phone: normalizedData.phone,
+          email: normalizedData.email,
         });
-
-        console.log(existsRes, "existsres.");
 
         if (existsRes?.success === false) {
           showErrorToast(existsRes.message);
           return;
         }
 
-        const otpRes = await sendOtpMutate(data.phone);
+        const otpRes = await sendOtpMutate(normalizedData.phone);
         if (!otpRes?.success) {
           showErrorToast(otpRes?.message || "Failed to send OTP");
           return;
         }
 
         nextStep();
-      } catch (error) {
-        console.log(error, "error");
-
+      } catch (error: any) {
         showErrorToast(
-          error.response.data.message || "Something went wrong try again later"
+          error?.response?.data?.message ||
+            "Something went wrong try again later"
         );
       }
     }
+
+    // if (step === 0) {
+    //   try {
+    //     setProfileData(data);
+
+    //     const existsRes = await verifyUserExists({
+    //       phone: data.phone,
+    //       email: data.email,
+    //     });
+
+    //     console.log(existsRes, "existsres.");
+
+    //     if (existsRes?.success === false) {
+    //       showErrorToast(existsRes.message);
+    //       return;
+    //     }
+
+    //     const otpRes = await sendOtpMutate(data.phone);
+    //     if (!otpRes?.success) {
+    //       showErrorToast(otpRes?.message || "Failed to send OTP");
+    //       return;
+    //     }
+
+    //     nextStep();
+    //   } catch (error) {
+    //     console.log(error, "error");
+
+    //     showErrorToast(
+    //       error.response.data.message || "Something went wrong try again later"
+    //     );
+    //   }
+    // }
 
     if (step === 1) {
       try {

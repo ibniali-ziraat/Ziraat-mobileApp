@@ -23,7 +23,7 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
           {/* Back Button */}
           <TouchableOpacity
             onPress={onPress ? onPress : () => router.back()}
-            className="p-2 mr-3 rounded-full"
+            className="p-2 mr-3 rounded-full pl-0"
             activeOpacity={0.7}
           >
             <ArrowLeft size={26} color={colors.dark} />
