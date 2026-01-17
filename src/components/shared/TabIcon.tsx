@@ -70,10 +70,11 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
   }));
 
   return (
-    <View style={{ alignItems: "center", width: 60 }}>
+    <View>
       <View
         style={{
-          width: 60,
+          // width: 60,
+          flex: 1,
           height: 28,
           justifyContent: "center",
           alignItems: "center",
@@ -102,9 +103,9 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
       {/* Label */}
       <CsText
         style={{
-          fontSize: 12,
+          fontSize: 14,
           textAlign: "center",
-          fontWeight: focused ? "700" : "400",
+          fontWeight: focused ? "600" : "400",
         }}
         numberOfLines={1}
       >

@@ -1,6 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import { useEffect, useRef } from "react";
-import { Animated, Easing, Image, View } from "react-native";
+import { Animated, Easing, View } from "react-native";
 
 export default function Loader() {
   // Logo animation
@@ -80,7 +80,7 @@ export default function Loader() {
       style={{ backgroundColor: colors.light }}
     >
       {/* Logo */}
-      <Animated.View
+      {/* <Animated.View
         style={{
           transform: [{ scale }],
         }}
@@ -93,10 +93,10 @@ export default function Loader() {
             height: 200,
           }}
         />
-      </Animated.View>
+      </Animated.View> */}
 
       {/* Dots */}
-      {/* <View
+      <View
         style={{
           flexDirection: "row",
           marginTop: 0,
@@ -117,7 +117,7 @@ export default function Loader() {
             ]}
           />
         ))}
-      </View> */}
+      </View>
     </View>
   );
 }

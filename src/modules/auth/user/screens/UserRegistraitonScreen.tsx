@@ -14,6 +14,7 @@ import FormActions from "@/src/components/shared/FormActions";
 import AnimatedStepWrapper from "@/src/components/shared/AnimatedStepWrapper";
 import Heading from "@/src/components/shared/Heading";
 import OtpHeading from "@/src/components/shared/OtpHeading";
+import { DUMMY_EMAIL } from "@/src/constants/constants";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
@@ -57,7 +58,7 @@ export default function UserRegistrationScreen() {
       try {
         const normalizedData = {
           ...data,
-          email: data.email?.trim() || "ziraat@codestrix.com",
+          email: data.email?.trim() || DUMMY_EMAIL,
         };
 
         setProfileData(normalizedData);

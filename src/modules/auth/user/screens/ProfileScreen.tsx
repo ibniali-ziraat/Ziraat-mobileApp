@@ -11,6 +11,7 @@ import {
 } from "../../../../hooks/userQueryHooks";
 
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import { DUMMY_EMAIL } from "@/src/constants/constants";
 import { profileSchema } from "@/src/modules/auth/user/schemas/profile.schema";
 import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 import { showSuccessToast } from "@/src/utils/toast";
@@ -34,11 +35,25 @@ export default function ProfileScreen() {
     formState: { errors },
   } = form;
 
+  // useEffect(() => {
+  //   if (!data) return;
+
+  //   Object.entries(data).forEach(([k, v]) => {
+  //     setValue(k, v != null ? String(v) : ""); // convert numbers to strings
+  //   });
+
+  //   setUserProfileId(data?.id);
+  // }, [data]);
+
   useEffect(() => {
     if (!data) return;
 
     Object.entries(data).forEach(([k, v]) => {
-      setValue(k, v != null ? String(v) : ""); // convert numbers to strings
+      if (k === "email" && v === DUMMY_EMAIL) {
+        setValue(k, "");
+      } else {
+        setValue(k, v != null ? String(v) : ""); // convert numbers to strings
+      }
     });
 
     setUserProfileId(data?.id);
@@ -46,7 +61,12 @@ export default function ProfileScreen() {
 
   const onSubmit = async (values) => {
     try {
-      const payload = { id: data?.id, userId: userId, ...values };
+      const payload = {
+        id: data?.id,
+        userId: userId,
+        ...values,
+        email: values.email?.trim() || DUMMY_EMAIL,
+      };
       if (data) {
         await update(payload);
         showSuccessToast("Profile Updated");
