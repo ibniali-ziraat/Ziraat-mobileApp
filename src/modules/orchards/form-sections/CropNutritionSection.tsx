@@ -24,8 +24,9 @@ export default function CropNutrition({ control, errors }) {
 
         <SingleSelectInput
           control={control}
-          name="hasFertigationFacility"
-          label="Fertilizer Practices"
+          name="hasFertigation"
+          // name="hasFertigationFacility"
+          label="Fertigation Facility"
           options={[
             { value: true, label: "Yes" },
             { value: false, label: "No" },

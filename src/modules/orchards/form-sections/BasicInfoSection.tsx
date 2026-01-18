@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { Switch, Text, View } from "react-native";
+import { View } from "react-native";
 
 import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
@@ -23,12 +23,23 @@ export default function BasicInfo({
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
 
-  /* ------------------ Preselect district (edit case) ------------------ */
   useEffect(() => {
     if (data?.district) {
       setSelectedDistrict(data.district);
     }
   }, [data?.district]);
+
+  useEffect(() => {
+    if (!data?.tehsil) return;
+    if (!tehsils.length) return;
+
+    // Only set if tehsil exists in loaded options
+    if (tehsils.includes(data.tehsil)) {
+      setValue("tehsil", data.tehsil, {
+        shouldValidate: true,
+      });
+    }
+  }, [tehsils, data?.tehsil]);
 
   /* ------------------ Watchers ------------------ */
   const orchardUnit = useWatch({
@@ -41,8 +52,21 @@ export default function BasicInfo({
     name: "orchardSize.mode",
     defaultValue: "manual",
   });
+  /* ------------------ Reset opposite unit value ------------------ */
+  useEffect(() => {
+    if (!orchardUnit) return;
 
-  /* ------------------ UI ------------------ */
+    if (orchardUnit === "kanal") {
+      setValue("orchardSize.value", undefined);
+      setValue("orchardSize.marla", undefined);
+    }
+
+    if (orchardUnit === "marla") {
+      setValue("orchardSize.value", undefined);
+      setValue("orchardSize.kanal", undefined);
+    }
+  }, [orchardUnit]);
+
   return (
     <View className="bg-light w-full">
       {/* Orchard Name */}
@@ -54,7 +78,7 @@ export default function BasicInfo({
       />
 
       {/* Orchard Size Switch */}
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -86,11 +110,11 @@ export default function BasicInfo({
           />
           <Text style={{ fontSize: 12 }}>Measure</Text>
         </View>
-      </View>
+      </View> */}
 
       {/* ------------------ MANUAL MODE ------------------ */}
       {orchardMode === "manual" && (
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginVertical: 10 }}>
           <SingleSelectInput
             control={control}
             name="orchardSize.unit"

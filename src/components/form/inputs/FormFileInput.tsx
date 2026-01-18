@@ -26,6 +26,8 @@ export default function FormFileInput({
         copyToCacheDirectory: true,
       });
 
+      console.log(result, "result of file upload");
+
       if (!result.canceled) {
         onChange(result.assets[0]);
       }
@@ -98,7 +100,7 @@ export default function FormFileInput({
                   {hasFile
                     ? value?.name.split(" ")[0] // Display the file name if available
                     : `${label}${optional ? " (Optional)" : ""}`}
-               </CsText>
+                </CsText>
               </TouchableOpacity>
 
               <View style={{ flexDirection: "row", gap: 14 }}>

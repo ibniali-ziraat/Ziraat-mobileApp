@@ -1,4 +1,5 @@
 import CsText from "@/src/components/shared/CsText";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
 import { useSaveWishlist } from "@/src/hooks/useWishList";
@@ -37,25 +38,27 @@ export default function ProductScreen() {
 
   return (
     <ScreenLayout>
-      {sections.map((section, index) => (
-        <View key={index}>
-          <View className="flex-row items-center mt-6 mb-4 bg">
-            <CsText
-              style={[typography.Poppins_m_semibold]}
-              className="text-dark"
-            >
-              {section.title}
-            </CsText>
-            <ChevronRight size={20} color={colors.dark} className="ml-1" />
-          </View>
+      <ScreenContent>
+        {sections.map((section, index) => (
+          <View key={index}>
+            <View className="flex-row items-center mt-6 mb-4 bg">
+              <CsText
+                style={[typography.Poppins_m_semibold]}
+                className="text-dark"
+              >
+                {section.title}
+              </CsText>
+              <ChevronRight size={20} color={colors.dark} className="ml-1" />
+            </View>
 
-          <ProductCarousel
-            items={products.slice(...section.slice)}
-            imageMapper={imageMapper}
-            onAddToWishlist={handleAddToWishlist}
-          />
-        </View>
-      ))}
+            <ProductCarousel
+              items={products.slice(...section.slice)}
+              imageMapper={imageMapper}
+              onAddToWishlist={handleAddToWishlist}
+            />
+          </View>
+        ))}
+      </ScreenContent>
     </ScreenLayout>
   );
 }

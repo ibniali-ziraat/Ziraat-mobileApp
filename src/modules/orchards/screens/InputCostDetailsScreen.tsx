@@ -1,103 +1,108 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { ROUTES } from "@/src/constants/routes";
-import {
-  useCreateInputCostMutation,
-  useInputCostQuery,
-  useOrchardProfileId,
-  useUpdateInputCostMutation,
-} from "../hooks/useOrchardsQuery";
 
-import { useAuth } from "@/src/contexts/AuthContext";
+import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { router } from "expo-router";
+
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
+
 import InputCostDetails from "../form-sections/InputCostSection";
+import {
+  useCreateOrchardBasinInfoMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
+} from "../hooks/useOrchardsQuery";
 
 export default function InputCostDetailsScreen() {
-  // const { data: userProfileData } = useProfileQuery(userData.id);
-  // console.log(userProfileData, "userprofiledata");
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data, isPending } = useOrchardByIdQuery(Number(id));
+  console.log(data, "data of orchard is");
 
-  const { data } = useInputCostQuery(0);
-  const { userId } = useAuth();
-  const { data: orchardProfile } = useOrchardProfileId(userId);
+  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateInputCostMutation();
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateInputCostMutation();
-
-  // const form = useZodForm(InputCostDetailsSchema);
+    useUpdateOrchardBasicInfoMutation();
   const form = useZodForm();
   const {
     setValue,
     handleSubmit,
-    formState: { errors },
     control,
+    formState: { errors },
   } = form;
 
-  // useEffect(() => {
-  //   if (userProfileData?.id) {
-  //     setUserData({ profileId: userProfileData.id });
-  //   }
-  // }, [userProfileData]);
+  /**
+   * ✅ PREFILL FORM IF DATA EXISTS
+   */
+  useEffect(() => {
+    if (!data?.inputCost) return;
 
-  //   useEffect(() => {
-  //     if (!data) return;
-  //     Object.entries(data).forEach(([key, value]) => {
-  //       if (value !== null && value !== undefined) {
-  //         setValue(key, value);
-  //       }
-  //     });
-  //   }, [data]);
+    Object.entries(data.inputCost).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        setValue(key as any, value);
+      }
+    });
+  }, [data]);
 
+  /**
+   * Submit handler
+   */
   const onSubmit = async (values: any) => {
     try {
-      // let res;
-
-      // if (orchardId) {
-      //   res = await update({ id: orchardId, ...values });
-      //   showSuccessToast("Orchard updated");
-      // }
-
-      // else
-
-      //   {
       const payload = {
-        id: orchardProfile?.[0]?.id,
+        id: data?.id,
         inputCost: {
           ...values,
         },
       };
 
-      // Send payload
-      const res = await save(payload);
+      if (data?.inputCost) {
+        await update(payload);
+        showSuccessToast("Orchard input cost updated");
+      } else {
+        await save(payload);
+        showSuccessToast("Orchard input cost saved");
+      }
 
-      // setOrchardId(res.id);
-      showSuccessToast("Orchard created");
-      // }
-
-      router.push(ROUTES.ORCHARDS.REGISTRATION.PLANT_PROTECTION_INFO);
+      router.push(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard information"
+        error?.response?.data?.message || "Failed to save orchard input cost"
       );
     }
   };
 
+  /**
+   * Loading / Error guards
+   */
+  if (isPending) return null;
+  // if (isError) {
+  //   showErrorToast("Failed to load orchard data");
+  //   return null;
+  // }
+
   return (
     <ScreenLayout>
-      <BackHeader title="Orchard Registration" desc=" Input Cost Details" />
-      <FormProvider {...form}>
-        <InputCostDetails errors={errors} control={control} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Save"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-        />
-      </FormProvider>
+      <BackHeader title="Orchard Registration" desc="Input Cost Details" />
+
+      <ScreenContent>
+        <FormProvider {...form}>
+          <InputCostDetails errors={errors} control={control} />
+
+          <FormActions
+            cancelLabel="Cancel"
+            submitLabel={data.inputCost ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </FormProvider>
+      </ScreenContent>
     </ScreenLayout>
   );
 }

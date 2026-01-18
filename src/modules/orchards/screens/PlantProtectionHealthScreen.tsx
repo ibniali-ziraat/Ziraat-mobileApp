@@ -1,90 +1,74 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import { useZodForm } from "@/src/hooks/useZodForm";
-// import { businessInformationSchema } from "@/src/schemas/vendor/business.schema";
 import FormActions from "@/src/components/shared/FormActions";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { ROUTES } from "@/src/constants/routes";
-import {
-  useCreatePlantProtectionMutation,
-  useOrchardProfileId,
-  usePlantProtectionQuery,
-  useUpdatePlantProtectionMutation,
-} from "../hooks/useOrchardsQuery";
-
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import PlantProtection from "../form-sections/PlantProtectionSection";
+import {
+  useCreateOrchardBasinInfoMutation,
+  useOrchardByIdQuery,
+  useUpdateOrchardBasicInfoMutation,
+} from "../hooks/useOrchardsQuery";
 
 export default function PlantProtectionScreen() {
-  // const { data: userProfileData } = useProfileQuery(userData.id);
-  // console.log(userProfileData, "userprofiledata");
-  const { userId } = useAuth();
-  const { data: orchardProfile } = useOrchardProfileId(userId);
-  const { data } = usePlantProtectionQuery(1);
+  const { id } = useLocalSearchParams<{ id: string }>();
+
+  const { data, isPending } = useOrchardByIdQuery(Number(id));
+  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
   const { mutateAsync: save, isPending: isSaving } =
-    useCreatePlantProtectionMutation();
+    useCreateOrchardBasinInfoMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdatePlantProtectionMutation();
+    useUpdateOrchardBasicInfoMutation();
 
   const form = useZodForm();
-  // const form = useZodForm(PlantProtectionSchema);
   const {
     setValue,
     handleSubmit,
-    formState: { errors },
     control,
+    formState: { errors },
   } = form;
 
-  // useEffect(() => {
-  //   if (userProfileData?.id) {
-  //     setUserData({ profileId: userProfileData.id });
-  //   }
-  // }, [userProfileData]);
+  useEffect(() => {
+    if (!data?.plantHealth) return;
 
-  //   useEffect(() => {
-  //     if (!data) return;
-  //     Object.entries(data).forEach(([key, value]) => {
-  //       if (value !== null && value !== undefined) {
-  //         setValue(key, value);
-  //       }
-  //     });
-  //   }, [data]);
+    Object.entries(data?.plantHealth).forEach(([key, value]) => {
+      if (value !== null && value !== undefined) {
+        setValue(key as any, value);
+      }
+    });
+  }, [data?.plantHealth]);
 
   const onSubmit = async (values: any) => {
     try {
-      // let res;
-
-      // if (orchardId) {
-      //   res = await update({ id: orchardId, ...values });
-      //   showSuccessToast("Orchard updated");
-      // }
-
-      // else
-
-      //   {
       const payload = {
-        id: orchardProfile?.[0]?.id,
+        id: data?.id,
         plantHealth: {
           ...values,
         },
       };
 
-      // Send payload
-      const res = await save(payload);
-
-      // setOrchardId(res.id);
-      showSuccessToast("Orchard created");
-      // }
+      if (data?.plantHealth) {
+        await update(payload);
+        showSuccessToast("Plant Protection updated");
+      } else {
+        await save(payload);
+        showSuccessToast("Plant Protection saved");
+      }
 
       router.push(ROUTES.ORCHARDS.REGISTRATION.PRODUCTION_INFO);
     } catch (error: any) {
       showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard information"
+        error?.response?.data?.message || "Failed to save plant protection"
       );
     }
   };
+
+  if (isPending) return null;
 
   return (
     <ScreenLayout>
@@ -92,15 +76,20 @@ export default function PlantProtectionScreen() {
         title="Orchard Registration"
         desc="Plant Protection & Health"
       />
-      <FormProvider {...form}>
-        <PlantProtection errors={errors} control={control} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          submitLabel={data ? "Update" : "Save"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-        />
-      </FormProvider>
+
+      <ScreenContent>
+        <FormProvider {...form}>
+          <PlantProtection errors={errors} control={control} />
+
+          <FormActions
+            cancelLabel="Cancel"
+            submitLabel={data?.plantHealth ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </FormProvider>
+      </ScreenContent>
     </ScreenLayout>
   );
 }

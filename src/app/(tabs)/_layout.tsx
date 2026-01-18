@@ -7,11 +7,12 @@ import {
   Trees,
 } from "lucide-react-native";
 import { useState } from "react";
-import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import CropHeader from "@/src/components/shared/CropHeader";
 import HomeHeader from "@/src/components/shared/HomeHeader";
+import Loader from "@/src/components/shared/Loader";
 import MenuHeader from "@/src/components/shared/MenuHeader";
 import ProductHeader from "@/src/components/shared/ProductHeader";
 import SprayHeader from "@/src/components/shared/SprayHeader";
@@ -22,14 +23,14 @@ import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { roleMode, userId } = useAuth();
+  const { roleMode, userId, userToken } = useAuth();
   const { data } = useProfileQuery(userId);
 
   // 🔑 FIX: numeric press trigger
   const [pressKey, setPressKey] = useState(0);
   const [activeTab, setActiveTab] = useState<string>("index");
 
-  // if (!data || !userToken) return <Loader />;
+  if (!data || !userId || !userToken) return <Loader />;
 
   return (
     <Tabs
@@ -69,7 +70,7 @@ export default function TabLayout() {
           title: "Home",
           header: () => <HomeHeader title={data?.fullName} />,
           tabBarButton: ({ onPress, children }) => (
-            <TouchableOpacity
+            <Pressable
               activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("index");
@@ -83,13 +84,13 @@ export default function TabLayout() {
               }}
             >
               {children}
-            </TouchableOpacity>
+            </Pressable>
           ),
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<Home size={20} color={color} strokeWidth={2.2} />}
+              icon={<Home size={24} color={color} strokeWidth={2.2} />}
               label="Home"
             />
           ),
@@ -103,7 +104,7 @@ export default function TabLayout() {
           title: "Orchards",
           header: () => <CropHeader />,
           tabBarButton: ({ onPress, children }) => (
-            <TouchableOpacity
+            <Pressable
               activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("orchards");
@@ -117,13 +118,13 @@ export default function TabLayout() {
               }}
             >
               {children}
-            </TouchableOpacity>
+            </Pressable>
           ),
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<Trees size={20} color={color} strokeWidth={2.2} />}
+              icon={<Trees size={24} color={color} strokeWidth={2.2} />}
               label="Orchards"
             />
           ),
@@ -137,7 +138,7 @@ export default function TabLayout() {
           title: "Spray",
           header: () => <SprayHeader />,
           tabBarButton: ({ onPress, children }) => (
-            <TouchableOpacity
+            <Pressable
               activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("spray");
@@ -151,14 +152,14 @@ export default function TabLayout() {
               }}
             >
               {children}
-            </TouchableOpacity>
+            </Pressable>
           ),
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
               pressKey={pressKey}
               icon={
-                <LucideDroplets size={20} color={color} strokeWidth={2.2} />
+                <LucideDroplets size={24} color={color} strokeWidth={2.2} />
               }
               label="Spray"
             />
@@ -173,7 +174,7 @@ export default function TabLayout() {
           title: "Products",
           header: () => <ProductHeader />,
           tabBarButton: ({ onPress, children }) => (
-            <TouchableOpacity
+            <Pressable
               activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("Product");
@@ -187,13 +188,13 @@ export default function TabLayout() {
               }}
             >
               {children}
-            </TouchableOpacity>
+            </Pressable>
           ),
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<ShoppingBag size={20} color={color} strokeWidth={2.2} />}
+              icon={<ShoppingBag size={24} color={color} strokeWidth={2.2} />}
               label="Products"
             />
           ),
@@ -207,7 +208,7 @@ export default function TabLayout() {
           title: "Menu",
           header: () => <MenuHeader role={roleMode} />,
           tabBarButton: ({ onPress, children }) => (
-            <TouchableOpacity
+            <Pressable
               activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("menu");
@@ -221,13 +222,13 @@ export default function TabLayout() {
               }}
             >
               {children}
-            </TouchableOpacity>
+            </Pressable>
           ),
           tabBarIcon: ({ color, focused }) => (
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<Menu size={20} color={color} strokeWidth={2.2} />}
+              icon={<Menu size={24} color={color} strokeWidth={2.2} />}
               label="Menu"
             />
           ),

@@ -17,13 +17,13 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
 
   return (
     <ScreenContent>
-      <View className="bg-light py-4 mb-4">
+      <View className="bg-light mb-4">
         {/* Row */}
         <View className="flex-row items-center">
           {/* Back Button */}
           <TouchableOpacity
             onPress={onPress ? onPress : () => router.back()}
-            className="p-2 mr-3 rounded-full"
+            className="p-2 mr-3 rounded-full pl-0"
             activeOpacity={0.7}
           >
             <ArrowLeft size={26} color={colors.dark} />

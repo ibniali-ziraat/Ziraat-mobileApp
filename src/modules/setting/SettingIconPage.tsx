@@ -4,14 +4,14 @@ import { colors } from "@/src/constants/colors";
 import Constants from "expo-constants";
 import { router } from "expo-router";
 import {
-    Bell,
-    BookOpen,
-    ChevronRight,
-    HelpCircle,
-    Lock,
-    PhoneCall,
-    Trash2,
-    User,
+  ChevronRight,
+  FileText,
+  HelpCircle,
+  Lock,
+  PhoneCall,
+  Shield,
+  Trash2,
+  User
 } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
 
@@ -110,34 +110,43 @@ export default function SettingsPage() {
           />
           <Divider />
 
-          <Row
-            label="Notifications"
-            icon={<Bell size={22} color={colors.neutral} />}
-            onPress={() => router.push("/user/notifications")}
-          />
+          
         </Section>
 
         {/* Support */}
         <Section title="Support & FAQs">
           <Row
-            label="Search FAQ"
-            icon={<HelpCircle size={22} color={colors.neutral} />}
-            onPress={() => router.push("/support/faq")}
-          />
-          <Divider />
-
-          <Row
             label="Contact Support"
             icon={<PhoneCall size={22} color={colors.neutral} />}
-            onPress={() => router.push("/support/contact")}
+            onPress={() => router.push("/contact-Support")}
+          />
+           <Divider />
+         
+
+          <Row
+            label="FAQs"
+            icon={<HelpCircle size={22} color={colors.neutral} />}
+            onPress={() => router.push("/faq")}
+          />
+
+         
+        </Section>
+        <Section title="Privacy & Security">
+          <Row
+            label="Privacy Policy"
+            icon={<Shield size={22} color={colors.neutral} />}
+            onPress={() => router.push("/user/privacy")}
           />
           <Divider />
 
           <Row
-            label="Help Center"
-            icon={<BookOpen size={22} color={colors.neutral} />}
-            onPress={() => router.push("/support/help-center")}
+            label="Terms & Conditions"
+            icon={<FileText size={22} color={colors.neutral} />}
+            onPress={() => router.push("/user/condition")}
           />
+          <Divider />
+
+          
         </Section>
 
         {/* Account Management */}
