@@ -1,3 +1,4 @@
+
 import { Tabs } from "expo-router";
 import {
   Home,
@@ -7,12 +8,11 @@ import {
   Trees,
 } from "lucide-react-native";
 import { useState } from "react";
-import { Pressable } from "react-native";
+import { Platform, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import CropHeader from "@/src/components/shared/CropHeader";
 import HomeHeader from "@/src/components/shared/HomeHeader";
-import Loader from "@/src/components/shared/Loader";
 import MenuHeader from "@/src/components/shared/MenuHeader";
 import ProductHeader from "@/src/components/shared/ProductHeader";
 import SprayHeader from "@/src/components/shared/SprayHeader";
@@ -26,11 +26,8 @@ export default function TabLayout() {
   const { roleMode, userId, userToken } = useAuth();
   const { data } = useProfileQuery(userId);
 
-  // 🔑 FIX: numeric press trigger
   const [pressKey, setPressKey] = useState(0);
   const [activeTab, setActiveTab] = useState<string>("index");
-
-  // if (!data || !userId || !userToken) return <Loader />;
 
   return (
     <Tabs
@@ -48,18 +45,37 @@ export default function TabLayout() {
         //   paddingBottom: insets.bottom + 50,
         // },
 
+       
         tabBarStyle: {
-          height: 64 + Math.max(insets.bottom, 8),
-          paddingBottom: Math.max(insets.bottom, 8),
-          paddingTop: 5,
-          shadowColor: colors.overlay,
-          shadowOpacity: 0.1,
-          shadowRadius: 5,
+          position: "absolute",
+         
+
+          // Floating spacing from bottom
+          bottom: Platform.OS === "ios" ? Math.max(insets.bottom, 10) : 12,
+
+          height: 72,
+        
+
+          backgroundColor: colors.bgColor,
+          borderTopWidth: 0,
+
+          // Premium shadow
+          shadowColor: "#000",
+          shadowOpacity: 0.08,
+          shadowRadius: 18,
+          shadowOffset: { width: 0, height: 10 },
+          elevation: 18,
+
+          // Smooth inner spacing
+          paddingHorizontal: 10,
+          paddingTop: 10,
+          paddingBottom: 10,
         },
 
         tabBarItemStyle: {
-          alignItems: "center",
+          flex: 1,
           justifyContent: "center",
+          alignItems: "center",
         },
       }}
     >
@@ -71,17 +87,19 @@ export default function TabLayout() {
           header: () => <HomeHeader title={data?.fullName} />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
-              activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("index");
-                setPressKey((prev) => prev + 1); // 🔑 important
+                setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
-              style={{
+              style={({ pressed }) => ({
                 flex: 1,
+                width: "100%",
+                height: "100%",
                 alignItems: "center",
                 justifyContent: "center",
-              }}
+                opacity: pressed ? 0.7 : 1,
+              })}
             >
               {children}
             </Pressable>
@@ -90,7 +108,7 @@ export default function TabLayout() {
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<Home size={24} color={color} strokeWidth={2.2} />}
+              icon={<Home size={22} color={color} strokeWidth={2.2} />}
               label="Home"
             />
           ),
@@ -105,17 +123,19 @@ export default function TabLayout() {
           header: () => <CropHeader />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
-              activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("orchards");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
-              style={{
+              style={({ pressed }) => ({
                 flex: 1,
+                width: "100%",
+                height: "100%",
                 alignItems: "center",
                 justifyContent: "center",
-              }}
+                opacity: pressed ? 0.7 : 1,
+              })}
             >
               {children}
             </Pressable>
@@ -124,7 +144,7 @@ export default function TabLayout() {
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<Trees size={24} color={color} strokeWidth={2.2} />}
+              icon={<Trees size={22} color={color} strokeWidth={2.2} />}
               label="Orchards"
             />
           ),
@@ -139,17 +159,19 @@ export default function TabLayout() {
           header: () => <SprayHeader />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
-              activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("spray");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
-              style={{
+              style={({ pressed }) => ({
                 flex: 1,
+                width: "100%",
+                height: "100%",
                 alignItems: "center",
                 justifyContent: "center",
-              }}
+                opacity: pressed ? 0.7 : 1,
+              })}
             >
               {children}
             </Pressable>
@@ -159,7 +181,7 @@ export default function TabLayout() {
               focused={focused}
               pressKey={pressKey}
               icon={
-                <LucideDroplets size={24} color={color} strokeWidth={2.2} />
+                <LucideDroplets size={22} color={color} strokeWidth={2.2} />
               }
               label="Spray"
             />
@@ -175,17 +197,19 @@ export default function TabLayout() {
           header: () => <ProductHeader />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
-              activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("Product");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
-              style={{
+              style={({ pressed }) => ({
                 flex: 1,
+                width: "100%",
+                height: "100%",
                 alignItems: "center",
                 justifyContent: "center",
-              }}
+                opacity: pressed ? 0.7 : 1,
+              })}
             >
               {children}
             </Pressable>
@@ -194,7 +218,7 @@ export default function TabLayout() {
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<ShoppingBag size={24} color={color} strokeWidth={2.2} />}
+              icon={<ShoppingBag size={22} color={color} strokeWidth={2.2} />}
               label="Products"
             />
           ),
@@ -209,17 +233,19 @@ export default function TabLayout() {
           header: () => <MenuHeader role={roleMode} />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
-              activeOpacity={1}
               onPress={(e) => {
                 setActiveTab("menu");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
-              style={{
+              style={({ pressed }) => ({
                 flex: 1,
+                width: "100%",
+                height: "100%",
                 alignItems: "center",
                 justifyContent: "center",
-              }}
+                opacity: pressed ? 0.7 : 1,
+              })}
             >
               {children}
             </Pressable>
@@ -228,7 +254,7 @@ export default function TabLayout() {
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<Menu size={24} color={color} strokeWidth={2.2} />}
+              icon={<Menu size={22} color={color} strokeWidth={2.2} />}
               label="Menu"
             />
           ),
