@@ -34,7 +34,7 @@ export default function KpiCard({ item }: Props) {
 
   return (
     <ZiraatCard width="49%" paddingVertical={2} paddingHorizontal={2}>
-      <View className="h-48 items-center justify-evenly">
+      <View className="h-40 items-center justify-evenly">
         {/* Icon */}
         {Icon && (
           <Icon size={38} color={colors.secondary} strokeWidth={1.3} />
@@ -43,18 +43,18 @@ export default function KpiCard({ item }: Props) {
         {/* Title */}
         <CsText className="text-black font-semibold text-[14px] text-center">
           {item.title}
-       </CsText>
+        </CsText>
 
         {/* Value */}
         <CsText className="text-black font-bold text-[18px] text-center">
           {item.value}
-       </CsText>
+        </CsText>
 
         {/* Subtitle */}
         {item.subtitle && (
           <CsText className="text-black text-[14px] text-center">
             {item.subtitle}
-         </CsText>
+          </CsText>
         )}
       </View>
     </ZiraatCard>

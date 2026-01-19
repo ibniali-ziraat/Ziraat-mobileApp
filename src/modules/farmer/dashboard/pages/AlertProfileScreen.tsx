@@ -10,11 +10,10 @@ import AlertCategoryCard from "./components/AlertCategoryCard";
 import AlertSummaryCard from "./components/AlertSummaryCard";
 import AlertTimelineItem from "./components/AlertTimelineItem";
 import HeaderBanner from "./components/HeaderBanner";
-
-// ✅ Lucide icons
 import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import * as LucideIcons from "lucide-react-native";
+import { typography } from "@/src/constants/fonts/typography";
 
 export default function AlertsTrackingScreen() {
   const renderIcon = (item: any, size = 36) => {
@@ -29,15 +28,12 @@ export default function AlertsTrackingScreen() {
 
   return (
     <ScreenLayout className="flex-1 bg-light px-2">
-      <BackHeader
-        title="Alerts Dashboard"
-        desc="Real-time warnings • Risk insights • Advisory actions"
-      />
+
 
       <HeaderBanner />
 
       {/* Alert Summary */}
-      <CsText className="text-2xl font-bold mb-2">Alert Summary</CsText>
+      <CsText style={typography.Poppins_m_semibold} className="text-2xl  mb-2">Alert Summary</CsText>
       <View className="flex-row flex-wrap justify-between ">
         {summaryData.map((item) => (
           <AlertSummaryCard
@@ -50,8 +46,7 @@ export default function AlertsTrackingScreen() {
         ))}
       </View>
 
-      {/* Alert Categories */}
-      <CsText className="text-2xl font-bold mt-4 mb-4">Alert Categories</CsText>
+      <CsText style={typography.Poppins_m_semibold} className="text-2xl  mt-4 mb-4">Alert Categories</CsText>
       <View className="flex-row flex-wrap justify-between">
         {categoriesData.map((item) => (
           <AlertCategoryCard
@@ -62,10 +57,9 @@ export default function AlertsTrackingScreen() {
         ))}
       </View>
 
-      {/* Timeline */}
-      <CsText className="text-2xl font-bold mt-2 mb-4">
+      <CsText style={typography.Poppins_m_semibold} className="text-2xl mt-2 mb-4">
         Recent Alert Timeline
-     </CsText>
+      </CsText>
       <View className="flex-row flex-wrap justify-between">
         {timelineData.map((item, index) => (
           <AlertTimelineItem

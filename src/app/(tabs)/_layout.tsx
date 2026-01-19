@@ -30,7 +30,7 @@ export default function TabLayout() {
   const [pressKey, setPressKey] = useState(0);
   const [activeTab, setActiveTab] = useState<string>("index");
 
-  if (!data || !userId || !userToken) return <Loader />;
+  // if (!data || !userId || !userToken) return <Loader />;
 
   return (
     <Tabs

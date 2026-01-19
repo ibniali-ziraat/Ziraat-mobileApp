@@ -7,12 +7,12 @@ export default function StatChip({
   Icon,
   title,
   value,
- 
+
 }: any) {
   return (
     <ZiraatCard
       width="49%"
-      height={160}
+      height={150}
       paddingHorizontal={1}
       paddingVertical={1}
       marginBottom={1}
@@ -34,15 +34,15 @@ export default function StatChip({
           style={{ color: colors.dark }}
         >
           {title}
-       </CsText>
+        </CsText>
 
         {/* VALUE */}
         <CsText
-        variant="semiBoldcaption"
+          variant="semiBoldcaption"
           className={" text-center mt-2"}
         >
           {value}
-       </CsText>
+        </CsText>
       </View>
     </ZiraatCard>
   );

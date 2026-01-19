@@ -1,5 +1,6 @@
 import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { typography } from "@/src/constants/fonts/typography";
 import { View } from "react-native";
 
 export default function AlertSummaryCard({
@@ -17,26 +18,26 @@ export default function AlertSummaryCard({
         paddingVertical={2}
       >
         <View className="h-20 items-center justify-between">
-          {/* ICON */}
+
           <View>{icon}</View>
 
-          {/* TITLE */}
-          <CsText className="text-[16px] font-semibold text-dark text-center">
-            {title}
-         </CsText>
 
-          {/* VALUE */}
+          <CsText style={typography.Poppins_m_semibold} className="text-[16px] text-dark text-center">
+            {title}
+          </CsText>
+
+
           {value && (
-            <CsText className="text-[18px] font-bold text-black text-center">
+            <CsText style={typography.Poppins_m_medium} className="text-[18px] text-dark text-center">
               {value}
-           </CsText>
+            </CsText>
           )}
 
-          {/* SUBTITLE */}
+
           {subtitle && (
-            <CsText className="text-sm text-neutral-500 text-center">
+            <CsText style={typography.Poppins_m_semibold} className=" text-dark text-center">
               {subtitle}
-           </CsText>
+            </CsText>
           )}
         </View>
       </ZiraatCard>

@@ -69,7 +69,6 @@ export default function DashboardPage() {
         <CsText className="p-4 text-dark">No Screen Found</CsText>
       )}
 
-      {/* Bottom Tabs */}
       <View
         className="absolute bottom-5 left-0 right-0"
         style={{ bottom: insets.bottom + 10 }}
@@ -111,9 +110,8 @@ export default function DashboardPage() {
                   )}
 
                   <CsText
-                    className={`text-[10px] mt-1 text-center ${
-                      isActive ? "text-primary font-semibold" : "text-dark"
-                    }`}
+                    className={`text-[10px] mt-1 text-center ${isActive ? "text-primary font-semibold" : "text-dark"
+                      }`}
                     numberOfLines={1}
                     ellipsizeMode="tail"
                   >

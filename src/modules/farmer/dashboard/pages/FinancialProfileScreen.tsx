@@ -3,14 +3,16 @@ import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import { Dimensions, View } from "react-native";
+import { useWindowDimensions, View } from "react-native";
 import { BarChart, LineChart as CurveChart } from "react-native-chart-kit";
+
 import kpis from "../../../../data/kpis.json";
 import recentInsights from "../../../../data/recentInsights.json";
 import InsightItem from "./components/InsightItem";
 import KpiCard from "./components/KpiCard";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import { typography } from "@/src/constants/fonts/typography";
 
-const screenWidth = Dimensions.get("window").width - 90;
 
 const revenueVsCostData = {
   labels: ["Cost", "Revenue"],
@@ -28,108 +30,94 @@ const netProfitTrendData = {
 };
 
 export default function FinancialPerformanceScreen() {
-  return (
-    <View className="flex-1 bg-white">
-      <ScreenLayout>
-        <BackHeader
-          title="Financial & Yield Performance"
-          desc="Visualize earnings, expenses & yield progress for smarter decisions."
-        />
+  const { width } = useWindowDimensions();
 
-        {/* KPI Cards */}
-        <View className="flex-row flex-wrap justify-between gap-y-4">
+  const chartWidth = Math.max(width - 70, 280);
+
+  return (
+    <ScreenLayout scrollable>
+      <ScreenContent className="pt-4 pb-10">
+
+        <View className="flex-row flex-wrap justify-between mt-4">
           {kpis.map((item) => (
-            <KpiCard key={item.id} item={item} />
+            <View key={item.id} className="w-[48%] mb-3">
+              <KpiCard item={item} />
+            </View>
           ))}
         </View>
 
-        {/* Revenue vs Cost Chart */}
-        <ZiraatCard
-          width="100%"
-          height={300}
-          paddingVertical={1}
-          paddingHorizontal={0.75}
-          marginTop={2}
-        >
-          {/* Header */}
-          <View className="mb-6">
-            <CsText className="mt-1 text-[18px] font-bold text-black">
+
+        <View className="w-full mt-4">
+          <ZiraatCard width="100%" paddingVertical={1} paddingHorizontal={1}>
+            <CsText style={typography.Poppins_m_semibold} className="text-[18px]  text-dark mb-4">
               Revenue vs Cost
-           </CsText>
-          </View>
+            </CsText>
 
-          {/* Chart */}
-          <View className="items-center">
-            <BarChart
-              data={revenueVsCostData}
-              width={screenWidth - 32}
-              height={200}
-              chartConfig={{
-                backgroundColor: "#ffffff",
-                backgroundGradientFrom: "#ffffff",
-                backgroundGradientTo: "#ffffff",
-                decimalPlaces: 0,
-                color: () => colors.secondary,
-              }}
-              style={{ borderRadius: 12 }}
-            />
-          </View>
-        </ZiraatCard>
+            <View style={{ width: "100%", overflow: "hidden" }}>
+              <BarChart
+                data={revenueVsCostData}
+                width={chartWidth}
+                height={220}
+                fromZero
+                showValuesOnTopOfBars
+                chartConfig={{
+                  backgroundColor: "#ffffff",
+                  backgroundGradientFrom: "#ffffff",
+                  backgroundGradientTo: "#ffffff",
+                  decimalPlaces: 0,
+                  color: () => colors.secondary,
+                  labelColor: () => "#111",
+                }}
+                style={{ borderRadius: 12 }}
+              />
+            </View>
+          </ZiraatCard>
+        </View>
 
-        {/* Net Profit Trend */}
-        <ZiraatCard
-          width="100%"
-          height={300}
-          paddingVertical={1}
-          paddingHorizontal={0.75}
-          marginTop={2}
-        >
-          {/* Header */}
-          <View className="mb-8">
-            <CsText className="mt-1 text-[16px] font-bold text-black">
+
+        <View className="w-full mt-4">
+          <ZiraatCard width="100%" paddingVertical={1} paddingHorizontal={1}>
+            <CsText style={typography.Poppins_m_semibold} className="text-[16px]  text-dark mb-4">
               Net Profit Trend (6 Months)
-           </CsText>
-          </View>
+            </CsText>
 
-          {/* Chart */}
-          <View className="items-center">
-            <CurveChart
-              data={netProfitTrendData}
-              width={screenWidth - 32}
-              height={200}
-              bezier
-              chartConfig={{
-                backgroundColor: "#ffffff",
-                backgroundGradientFrom: "#ffffff",
-                backgroundGradientTo: "#ffffff",
-                decimalPlaces: 0,
-                color: () => "#c7611f",
-              }}
-              style={{ borderRadius: 12 }}
-            />
-          </View>
-        </ZiraatCard>
+            <View style={{ width: "100%", overflow: "hidden" }}>
+              <CurveChart
+                data={netProfitTrendData}
+                width={chartWidth}
+                height={220}
+                bezier
+                fromZero
+                chartConfig={{
+                  backgroundColor: "#ffffff",
+                  backgroundGradientFrom: "#ffffff",
+                  backgroundGradientTo: "#ffffff",
+                  decimalPlaces: 0,
+                  color: () => "#c7611f",
+                  labelColor: () => "#111",
+                }}
+                style={{ borderRadius: 12 }}
+              />
+            </View>
+          </ZiraatCard>
+        </View>
 
-        {/* Recent Financial Insights */}
-        <ZiraatCard
-          width="100%"
-          height="11%"
-          paddingVertical={1}
-          paddingHorizontal={1}
-          marginTop={2}
-          marginBottom={2}
-        >
-          <CsText className="font-bold  text-black text-[18px] mb-8">
-            Recent Financial Insights
-         </CsText>
 
-          <View>
-            {recentInsights.map((item) => (
-              <InsightItem key={item.id} item={item} />
-            ))}
-          </View>
-        </ZiraatCard>
-      </ScreenLayout>
-    </View>
+        <View className="w-full mt-4">
+
+          <ZiraatCard width="100%" paddingVertical={1} paddingHorizontal={1}>
+            <CsText style={typography.Poppins_m_semibold} className=" text-dark text-[18px] mb-4">
+              Recent Financial Insights
+            </CsText>
+
+            <View>
+              {recentInsights.map((item) => (
+                <InsightItem key={item.id} item={item} />
+              ))}
+            </View>
+          </ZiraatCard>
+        </View>
+      </ScreenContent>
+    </ScreenLayout>
   );
 }
