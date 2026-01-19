@@ -1,3 +1,5 @@
+
+
 import React, { useEffect } from "react";
 import { View } from "react-native";
 import Animated, {
@@ -24,39 +26,55 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
   const bgOpacity = useSharedValue(0);
   const bgScaleX = useSharedValue(0);
 
+  // LABEL FADE + SLIDE
+  const labelOpacity = useSharedValue(focused ? 1 : 0.7);
+  const labelTranslateY = useSharedValue(focused ? 0 : 1);
+
   useEffect(() => {
     if (focused) {
-      // 🔹 RESET first (important for re-trigger)
+     
       scale.value = 1;
       bgScaleX.value = 0;
       bgOpacity.value = 0;
 
-      // 🔹 ICON: smooth zoom out → in
+     
       scale.value = withSequence(
-        withTiming(1.15, {
-          duration: 400,
+        withTiming(1.12, {
+          duration: 220,
           easing: Easing.out(Easing.quad),
         }),
         withTiming(1, {
-          duration: 260,
+          duration: 180,
           easing: Easing.out(Easing.cubic),
         })
       );
 
       // 🔹 BACKGROUND: horizontal reveal from center
-      bgOpacity.value = withTiming(1, { duration: 180 });
+      bgOpacity.value = withTiming(1, { duration: 160 });
       bgScaleX.value = withTiming(1, {
-        duration: 400,
+        duration: 260,
+        easing: Easing.out(Easing.cubic),
+      });
+
+      // 🔹 LABEL: fade + slide in
+      labelOpacity.value = withTiming(1, { duration: 180 });
+      labelTranslateY.value = withTiming(0, {
+        duration: 180,
         easing: Easing.out(Easing.cubic),
       });
     } else {
-      // 🔻 RESET when tab loses focus (THIS IS THE FIX)
+     
       bgOpacity.value = withTiming(0, { duration: 120 });
       bgScaleX.value = withTiming(0, {
         duration: 160,
         easing: Easing.in(Easing.cubic),
       });
+
       scale.value = 1;
+
+     
+      labelOpacity.value = withTiming(0.7, { duration: 160 });
+      labelTranslateY.value = withTiming(1, { duration: 160 });
     }
   }, [focused, pressKey]);
 
@@ -69,16 +87,27 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
     transform: [{ scaleX: bgScaleX.value }],
   }));
 
+  const labelStyle = useAnimatedStyle(() => ({
+    opacity: labelOpacity.value,
+    transform: [{ translateY: labelTranslateY.value }],
+  }));
+
   return (
-    <View>
+    <View
+      style={{
+        width: 70, 
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      {/* Icon Box */}
       <View
         style={{
-          // width: 60,
-          flex: 1,
-          height: 28,
+          width: 65, 
+          height: 33, 
           justifyContent: "center",
           alignItems: "center",
-          borderRadius: 16,
+          borderRadius: 18,
           overflow: "hidden",
         }}
       >
@@ -90,7 +119,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
               width: "100%",
               height: "100%",
               backgroundColor: "#E7FCE3",
-              borderRadius: 16,
+              borderRadius: 18,
             },
             bgStyle,
           ]}
@@ -101,16 +130,18 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
       </View>
 
       {/* Label */}
-      <CsText
-        style={{
-          fontSize: 14,
-          textAlign: "center",
-          fontWeight: focused ? "600" : "400",
-        }}
-        numberOfLines={1}
-      >
-        {label}
-      </CsText>
+      <Animated.View style={[{ marginTop: 4 }, labelStyle]}>
+        <CsText
+          style={{
+            fontSize: 13, 
+            textAlign: "center",
+            fontWeight: focused ? "600" : "400",
+          }}
+          numberOfLines={1}
+        >
+          {label}
+        </CsText>
+      </Animated.View>
     </View>
   );
 }

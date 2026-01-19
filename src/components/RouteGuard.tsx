@@ -18,8 +18,8 @@ export default function RouteGuard({ children }: RouteGuardProps) {
 
     if (!userToken) {
       logoutUser();
-      router.replace("/auth/user");
-      // router.replace("/");
+      // router.replace("/auth/user");
+      router.replace("/");
       return;
     }
 
