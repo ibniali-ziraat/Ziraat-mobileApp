@@ -7,8 +7,6 @@ import { useState } from "react";
 import { ImageBackground, View } from "react-native";
 import cardsDataJson from "../../../../data/cardsData.json";
 import EnhancedCard from "./components/EnhancedCard";
-
-// ✅ Lucide icons
 import CsText from "@/src/components/shared/CsText";
 import {
   Activity,
@@ -17,9 +15,11 @@ import {
   Droplets,
   Gauge,
   Leaf,
+  LineChart,
   Recycle,
   Sprout,
 } from "lucide-react-native";
+import { typography } from "@/src/constants/fonts/typography";
 
 const ICON_MAP: Record<string, any> = {
   Leaf,
@@ -33,64 +33,52 @@ const ICON_MAP: Record<string, any> = {
 };
 
 const singleHeaderImage =
-  "https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg";
+  "https://images.pexels.com/photos/4207906/pexels-photo-4207906.jpeg";
 
 export default function NutrientsProfileScreen() {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <ScreenLayout>
-      <BackHeader
-        title="Nutrients Profile"
-        desc="Comprehensive insights into soil and water nutrient levels."
-      />
 
-      {/* Header */}
       <View className="overflow-hidden pb-6 rounded-xl">
         <ImageBackground
           source={{ uri: singleHeaderImage }}
           className="w-full h-56 rounded-xl overflow-hidden"
         >
           <View className="p-4">
-            <CsText className="text-light font-extrabold text-lg">
+            <CsText style={typography.Poppins_l_bold} className="text-light">
               Soil, Water & Nutrient
             </CsText>
-            <CsText className="text-light mt-1 text-xs">
+            <CsText style={typography.Poppins_s_regular} className="text-light mt-2">
               Real-time insight into soil health.
             </CsText>
           </View>
         </ImageBackground>
       </View>
 
-      {/* Cards */}
       <View className="flex-row flex-wrap justify-between mt-4">
         {cardsDataJson.map((card, index) => {
           const Icon = ICON_MAP[card.icon];
 
           return (
-            <EnhancedCard
-              key={index}
-              title={card.title}
-              value={card.value}
-              icon={
-                Icon ? (
-                  <Icon size={30} color={colors.secondary} strokeWidth={1.3} />
-                ) : null
-              }
-              onPress={
-                card.onPress === "modal"
-                  ? () => setModalVisible(true)
-                  : undefined
-              }
-              width="100%"
-            />
+            <View key={index} className="w-[48%] mb-3">
+              <EnhancedCard
+                title={card.title}
+                value={card.value}
+                icon={
+                  Icon ? (
+                    <Icon size={30} color={colors.secondary} strokeWidth={1.3} />
+                  ) : null
+                }
+              />
+            </View>
           );
         })}
       </View>
 
-      {/* Chart */}
       <View className="mt-6 mb-6">
-        <CsText className="text-[20px] font-extrabold text-dark mb-4">
+        <CsText style={typography.Poppins_m_semibold} className="text-[20px]  text-dark mb-4">
           Soil Health Trend
         </CsText>
 

@@ -1,5 +1,6 @@
 import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { typography } from "@/src/constants/fonts/typography";
 import { View } from "react-native";
 
 const StatTile = ({ title, value, footer, icon }) => {
@@ -11,28 +12,27 @@ const StatTile = ({ title, value, footer, icon }) => {
       marginBottom={0.5}
     >
       <View className="items-center justify-evenly h-60">
-        {/* ICON */}
+
         {icon && (
           <View className="p-3 rounded-xl bg-light">
             {icon}
           </View>
         )}
 
-        {/* TITLE */}
-        <CsText className="text-[14px] font-semibold text-black">
-          {title}
-       </CsText>
 
-        {/* VALUE */}
+        <CsText style={typography.Poppins_s_medium} className="text-[14px]  text-black">
+          {title}
+        </CsText>
+
+
         <CsText className="text-[18px] text-dark">
           {value}
-       </CsText>
+        </CsText>
 
-        {/* FOOTER */}
         {footer && (
-          <CsText className="text-[14px] font-semibold text-center">
+          <CsText style={typography.Poppins_m_regular} className="text-[14px] text-center">
             {footer}
-         </CsText>
+          </CsText>
         )}
       </View>
     </ZiraatCard>

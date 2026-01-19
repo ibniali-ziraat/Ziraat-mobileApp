@@ -23,18 +23,18 @@ export default function AlertSummaryCard({
           {/* TITLE */}
           <CsText className="text-[14px] font-semibold text-dark text-center">
             {title}
-         </CsText>
+          </CsText>
 
           {/* VALUE */}
           <CsText className="text-[18px] font-bold text-black text-center">
             {value}
-         </CsText>
+          </CsText>
 
           {/* SUBTITLE */}
           {subtitle && (
-            <CsText className="text-sm text-neutral-500 text-center">
+            <CsText className="text-sm text-dark text-center">
               {subtitle}
-           </CsText>
+            </CsText>
           )}
         </View>
       </ZiraatCard>
