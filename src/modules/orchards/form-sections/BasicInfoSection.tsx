@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { View } from "react-native";
 
@@ -12,7 +12,6 @@ export default function BasicInfo({
   control,
   errors,
   data,
-
   orchardSize,
   areaLabel,
   areaUnit,
@@ -20,6 +19,11 @@ export default function BasicInfo({
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
   const { setValue } = useFormContext();
 
+  /* ------------------ Hydration Guards ------------------ */
+  const unitHydrated = useRef(false);
+  const modeHydrated = useRef(false);
+
+  /* ------------------ Location ------------------ */
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
 
@@ -30,14 +34,10 @@ export default function BasicInfo({
   }, [data?.district]);
 
   useEffect(() => {
-    if (!data?.tehsil) return;
-    if (!tehsils.length) return;
+    if (!data?.tehsil || !tehsils.length) return;
 
-    // Only set if tehsil exists in loaded options
     if (tehsils.includes(data.tehsil)) {
-      setValue("tehsil", data.tehsil, {
-        shouldValidate: true,
-      });
+      setValue("tehsil", data.tehsil, { shouldValidate: true });
     }
   }, [tehsils, data?.tehsil]);
 
@@ -52,21 +52,38 @@ export default function BasicInfo({
     name: "orchardSize.mode",
     defaultValue: "manual",
   });
-  /* ------------------ Reset opposite unit value ------------------ */
+
+  /* ------------------ SAFE RESET LOGIC ------------------ */
+
+  // Reset value ONLY when user changes unit
   useEffect(() => {
     if (!orchardUnit) return;
 
-    if (orchardUnit === "kanal") {
-      setValue("orchardSize.value", undefined);
-      setValue("orchardSize.marla", undefined);
+    if (!unitHydrated.current) {
+      unitHydrated.current = true;
+      return;
     }
 
-    if (orchardUnit === "marla") {
-      setValue("orchardSize.value", undefined);
-      setValue("orchardSize.kanal", undefined);
-    }
+    setValue("orchardSize.value", "", {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
   }, [orchardUnit]);
 
+  // Reset unit + value ONLY when user changes mode
+  useEffect(() => {
+    if (!orchardMode) return;
+
+    if (!modeHydrated.current) {
+      modeHydrated.current = true;
+      return;
+    }
+
+    setValue("orchardSize.unit", undefined);
+    setValue("orchardSize.value", "");
+  }, [orchardMode]);
+
+  /* ------------------ UI ------------------ */
   return (
     <View className="bg-light w-full">
       {/* Orchard Name */}
@@ -76,41 +93,6 @@ export default function BasicInfo({
         label="Orchard Name"
         errors={errors?.orchardName?.message}
       />
-
-      {/* Orchard Size Switch */}
-      {/* <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginVertical: 12,
-        }}
-      >
-        <Text style={{ fontSize: 14, fontWeight: "600" }}>
-          Orchard Size Input
-        </Text>
-
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-          <Text style={{ fontSize: 12 }}>Manual</Text>
-          <Switch
-            value={orchardMode === "measure"}
-            onValueChange={(value) => {
-              setValue("orchardSize.mode", value ? "measure" : "manual", {
-                shouldValidate: true,
-              });
-
-              // Cleanup opposite mode values
-              if (value) {
-                setValue("orchardSize.unit", undefined);
-                setValue("orchardSize.value", undefined);
-              } else {
-                setValue("orchardSize.type", undefined);
-              }
-            }}
-          />
-          <Text style={{ fontSize: 12 }}>Measure</Text>
-        </View>
-      </View> */}
 
       {/* ------------------ MANUAL MODE ------------------ */}
       {orchardMode === "manual" && (

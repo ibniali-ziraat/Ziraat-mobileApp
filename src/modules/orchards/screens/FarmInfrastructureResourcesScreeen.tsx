@@ -7,26 +7,31 @@ import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
+import { useAuth } from "@/src/contexts/AuthContext";
 import FarmInfrastructure from "../form-sections/FarmInfrastructureSection";
 import {
-  useCreateOrchardBasinInfoMutation,
-  useOrchardByIdQuery,
-  useUpdateOrchardBasicInfoMutation,
+  useCreateInfrastructureMutation,
+  useInfrastructureQuery,
+  useUpdateInfrastructureMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function FarmInfrastructureScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { orchardProfileId } = useAuth();
+  console.log(orchardProfileId, "orchardprofile id in orchard.service");
 
-  const { data: orchard, isPending } = useOrchardByIdQuery(Number(id));
-  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
+  const { data: infrastructureData } = useInfrastructureQuery(
+    orchardProfileId!,
+  );
+  console.log(infrastructureData, "crop nutrition data...");
+
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateOrchardBasinInfoMutation();
+    useCreateInfrastructureMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateOrchardBasicInfoMutation();
+    useUpdateInfrastructureMutation();
   const form = useZodForm();
   const {
     setValue,
@@ -39,14 +44,14 @@ export default function FarmInfrastructureScreen() {
    * ✅ PREFILL FORM IF DATA EXISTS
    */
   useEffect(() => {
-    if (!orchard?.infrastructure) return;
+    if (!infrastructureData) return;
 
-    Object.entries(orchard.infrastructure).forEach(([key, value]) => {
+    Object.entries(infrastructureData).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [orchard?.infrastructure]);
+  }, [infrastructureData]);
 
   /**
    * Submit handler
@@ -54,27 +59,26 @@ export default function FarmInfrastructureScreen() {
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: orchard?.id,
-        infrastructure: {
-          ...values,
-        },
+        id: infrastructureData?.id,
+        orchardProfileId: orchardProfileId!,
+        ...values,
       };
 
       /**
        * ✅ UPDATE vs CREATE
        */
-      if (orchard?.infrastructure) {
+      if (infrastructureData) {
         await update(payload);
         showSuccessToast("Farm infrastructure updated");
       } else {
         await save(payload);
         showSuccessToast("Farm infrastructure saved");
       }
-      router.push(ROUTES.TABS.ORCHARDS);
+      router.replace(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message ||
-          "Failed to save farm infrastructure information"
+          "Failed to save farm infrastructure information",
       );
     }
   };
@@ -82,7 +86,7 @@ export default function FarmInfrastructureScreen() {
   /**
    * Loading / Error guards
    */
-  if (isPending) return null;
+  // if (isPending) return null;
 
   return (
     <ScreenLayout>
@@ -97,7 +101,8 @@ export default function FarmInfrastructureScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={orchard?.infrastructure ? "Update" : "Save"}
+            submitLabel={infrastructureData ? "Update" : "Save"}
+            onCancel={() => router.back()}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

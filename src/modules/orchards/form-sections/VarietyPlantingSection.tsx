@@ -56,6 +56,7 @@ export default function VarietAndPlatingDetails({ control, errors }) {
         control={control}
         name="varietyName"
         label="Varieties Planted"
+        modalLabel="Varieties"
         options={soilTypeOptions.map((v) => ({ label: v, value: v }))}
         error={errors?.varietyName?.message}
       />

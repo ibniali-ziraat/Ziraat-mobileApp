@@ -1,13 +1,20 @@
 import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SearchBar from "@/src/components/shared/SearchBar";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useRouter } from "expo-router";
+import { useEffect } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import OrchardCard from "../components/OrchardCard";
 import { useOrchardsByUserQuery } from "../hooks/useOrchardsQuery";
 
 export default function MyOrchardsScreen() {
   const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
+
+  const { setOrchardProfileId, orchardProfileId } = useAuth();
+  useEffect(() => {
+    setOrchardProfileId(orchardData?.id ?? null);
+  }, [orchardData]);
   const router = useRouter();
 
   if (isPending) return <Loader />;

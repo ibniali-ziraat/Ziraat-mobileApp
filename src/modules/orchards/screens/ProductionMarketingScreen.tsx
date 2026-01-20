@@ -3,30 +3,34 @@ import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
-import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
+import { useAuth } from "@/src/contexts/AuthContext";
 import ProductionMarketing from "../form-sections/ProductionMarketingSection";
 import {
-  useCreateOrchardBasinInfoMutation,
-  useOrchardByIdQuery,
-  useUpdateOrchardBasicInfoMutation,
+  useCreateProductionMarketingMutation,
+  useProductionMarketingQuery,
+  useUpdateProductionMarketingMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function ProductionAndMarketingScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { orchardProfileId } = useAuth();
+  console.log(orchardProfileId, "orchardprofile id in orchard.service");
 
-  const { data, isPending } = useOrchardByIdQuery(Number(id));
-  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
+  const { data: ProductionMarketingData } = useProductionMarketingQuery(
+    orchardProfileId!,
+  );
+  console.log(ProductionMarketingData, "crop nutrition data...");
+
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateOrchardBasinInfoMutation();
+    useCreateProductionMarketingMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateOrchardBasicInfoMutation();
+    useUpdateProductionMarketingMutation();
 
   const form = useZodForm();
   const {
@@ -37,14 +41,14 @@ export default function ProductionAndMarketingScreen() {
   } = form;
 
   useEffect(() => {
-    if (!data?.production) return;
+    if (!ProductionMarketingData) return;
 
-    Object.entries(data?.production).forEach(([key, value]) => {
+    Object.entries(ProductionMarketingData).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [data?.production]);
+  }, [ProductionMarketingData]);
 
   /**
    * Submit handler
@@ -52,25 +56,25 @@ export default function ProductionAndMarketingScreen() {
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: data?.id,
-        production: {
-          ...values,
-        },
+        id: ProductionMarketingData?.id,
+        orchardProfileId: orchardProfileId,
+        ...values,
       };
 
-      if (data?.production) {
+      if (ProductionMarketingData) {
         await update(payload);
         showSuccessToast("Production & Marketing updated");
       } else {
         await save(payload);
         showSuccessToast("Production & Marketing saved");
       }
+      router.back();
 
-      router.push(ROUTES.ORCHARDS.REGISTRATION.SOIL_WATER_INFO);
+      // router.push(ROUTES.ORCHARDS.REGISTRATION.SOIL_WATER_INFO);
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message ||
-          "Failed to save production & marketing info"
+          "Failed to save production & marketing info",
       );
     }
   };
@@ -78,7 +82,7 @@ export default function ProductionAndMarketingScreen() {
   /**
    * Loading / Error guards
    */
-  if (isPending) return null;
+  // if (isPending) return null;
   // if (isError) {
   //   showErrorToast("Failed to load orchard data");
   //   return null;
@@ -94,8 +98,11 @@ export default function ProductionAndMarketingScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={data?.production ? "Update" : "Save"}
+            submitLabel={
+              ProductionMarketingData?.length > 0 ? "Update" : "Save"
+            }
             onSubmit={handleSubmit(onSubmit)}
+            onCancel={() => router.back()}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}
           />

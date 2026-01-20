@@ -6,6 +6,8 @@ interface AuthContextType {
   vendorToken: string | null;
   userTokenExp: string | null;
 
+  orchardProfileId: number | null;
+
   userId: number | null;
   vendorId: number | null;
 
@@ -21,6 +23,7 @@ interface AuthContextType {
 
   setUserId: (v: number | null) => Promise<void>;
   setVendorId: (v: number | null) => void;
+  setOrchardProfileId: (v: number | null) => void;
 
   setUserProfileId: (v: number | null) => void;
   setVendorProfileId: (v: number | null) => void;
@@ -37,6 +40,9 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const AuthProvider = ({ children }: any) => {
   const [userToken, setUserTokenState] = useState<string | null>(null);
   const [vendorToken, setVendorTokenState] = useState<string | null>(null);
+  const [orchardProfileId, setOrchardProfileIdState] = useState<number | null>(
+    null,
+  );
 
   const [userId, setUserIdState] = useState<number | null>(null);
   const [vendorId, setVendorIdState] = useState<number | null>(null);
@@ -44,11 +50,11 @@ export const AuthProvider = ({ children }: any) => {
 
   const [userProfileId, setUserProfileIdState] = useState<number | null>(null);
   const [vendorProfileId, setVendorProfileIdState] = useState<number | null>(
-    null
+    null,
   );
 
   const [roleMode, setRoleModeState] = useState<"farmer" | "supplier">(
-    "farmer"
+    "farmer",
   );
   const [initialized, setInitialized] = useState(false);
 
@@ -124,6 +130,9 @@ export const AuthProvider = ({ children }: any) => {
   const setVendorProfileId = (v: number | null) => setVendorProfileIdState(v);
 
   const setRoleMode = (mode: "farmer" | "supplier") => setRoleModeState(mode);
+  const setOrchardProfileId = (v: number | null) => {
+    setOrchardProfileIdState(v);
+  };
 
   // ---------------- LOGOUT ----------------
   const logoutUser = async () => {
@@ -136,6 +145,7 @@ export const AuthProvider = ({ children }: any) => {
     setUserTokenExpState(null);
 
     setUserProfileIdState(null);
+    setOrchardProfileIdState(null);
 
     // router.replace("/auth/user");
   };
@@ -157,6 +167,7 @@ export const AuthProvider = ({ children }: any) => {
         userToken,
         vendorToken,
         userTokenExp,
+        orchardProfileId,
         setUserTokenExp,
         userId,
         vendorId,
@@ -170,6 +181,7 @@ export const AuthProvider = ({ children }: any) => {
         setVendorId,
         setUserProfileId,
         setVendorProfileId,
+        setOrchardProfileId,
         setRoleMode,
         logoutUser,
         logoutVendor,

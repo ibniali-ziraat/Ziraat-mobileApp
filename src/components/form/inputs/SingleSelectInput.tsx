@@ -29,6 +29,7 @@ interface DropdownProps {
   onValueChange?: (value: string | number) => void;
   disabled?: boolean;
   searchable?: boolean;
+  showInputLabel?: boolean;
 }
 
 export default function SingleSelectInput({
@@ -97,7 +98,7 @@ export default function SingleSelectInput({
                   color: colors.dark,
                 }}
               >
-                {label}{" "}
+                {label}
                 {!optional && (
                   <CsText style={{ color: colors.error }}> *</CsText>
                 )}
@@ -108,20 +109,15 @@ export default function SingleSelectInput({
             <Pressable
               disabled={disabled}
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
                 borderWidth: liveError ? 2 : 1,
                 borderColor: liveError
                   ? colors.error
                   : disabled
                     ? colors.darkHover + "88"
                     : colors.darkHover,
-                // borderRadius: 14,
                 paddingHorizontal: 16,
                 paddingVertical: 14,
                 backgroundColor: colors.light,
-                marginTop: 6,
               }}
               onPress={() => {
                 if (!disabled) {
@@ -136,28 +132,12 @@ export default function SingleSelectInput({
                   color: disabled ? colors.neutral + "88" : colors.darkHover,
                 }}
               >
-                {selectedLabel || `${label}`}
-                {!optional &&
-                  !selectedLabel &&
-                  !disabled &&
-                  !showInputLabel && (
-                    <CsText style={{ color: colors.error }}> *</CsText>
-                  )}
+                {selectedLabel || label}
               </CsText>
             </Pressable>
 
             {liveError && (
-              <HelperText
-                type="error"
-                visible
-                style={{
-                  color: colors.error,
-                  paddingVertical: 0,
-                  paddingBottom: 0,
-                  marginTop: 2,
-                  marginBottom: 0,
-                }}
-              >
+              <HelperText type="error" visible>
                 Required Field
               </HelperText>
             )}
@@ -165,31 +145,37 @@ export default function SingleSelectInput({
             {/* Modal */}
             {!disabled && (
               <Modal visible={visible} transparent animationType="slide">
-                <Pressable
+                <View
                   style={{
-                    position: "absolute",
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
+                    flex: 1,
+                    backgroundColor: colors.overlay,
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: colors.overlay, // semi-transparent backdrop
-                  }}
-                  onPress={() => {
-                    // setVisible(false);
-                    hideSearchBar();
                   }}
                 >
+                  {/* Backdrop */}
+                  <Pressable
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                    }}
+                    onPress={() => {
+                      setVisible(false);
+                      hideSearchBar();
+                    }}
+                  />
+
+                  {/* Modal Content */}
                   <View
+                    pointerEvents="box-none"
                     style={{
                       width: "80%",
                       backgroundColor: colors.light,
                       borderRadius: 16,
                       maxHeight: 400,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 4,
                       elevation: 5,
                       paddingBottom: 12,
                     }}
@@ -199,46 +185,27 @@ export default function SingleSelectInput({
                       style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
-                        borderBottomColor: colors.neutral,
                         flexDirection: "row",
                         justifyContent: "space-between",
                         alignItems: "center",
                       }}
                     >
-                      <CsText
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "500",
-                          color: colors.dark,
-                        }}
-                      >
+                      <CsText style={{ fontSize: 16, fontWeight: "500" }}>
                         {modalLabel}
                       </CsText>
 
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
+                      <View style={{ flexDirection: "row" }}>
                         <Pressable
                           onPress={() => {
                             onChange("");
-                            if (onValueChange) onValueChange("");
+                            onValueChange?.("");
                             setSelectedLabel("");
-                            setVisible(false);
-                            hideSearchBar();
+                            // hideSearchBar();
                           }}
-                          style={{ padding: 6, marginRight: 6 }}
+                          style={{ padding: 6 }}
                         >
                           <RefreshCcw size={20} color={colors.primary} />
                         </Pressable>
-
-                        <View
-                          style={{
-                            width: 1,
-                            height: 20,
-                            backgroundColor: colors.neutral,
-                            marginHorizontal: 6,
-                          }}
-                        />
 
                         <Pressable
                           onPress={() => {
@@ -252,7 +219,7 @@ export default function SingleSelectInput({
                       </View>
                     </View>
 
-                    {/* Search Bar */}
+                    {/* Search */}
                     {searchable && (
                       <Animated.View style={{ opacity: fadeAnim }}>
                         <View
@@ -263,47 +230,45 @@ export default function SingleSelectInput({
                             borderWidth: 1,
                             borderColor: colors.neutral,
                             borderRadius: 8,
-                            backgroundColor: colors.light,
                             paddingHorizontal: 8,
                           }}
                         >
-                          <Search size={20} color={colors.neutral} />
+                          <Search size={18} color={colors.neutral} />
                           <TextInput
                             value={searchText}
                             onChangeText={setSearchText}
                             placeholder={`Search ${label}`}
+                            underlineColorAndroid="transparent"
+                            selectionColor="transparent"
                             style={{
                               flex: 1,
                               paddingVertical: 8,
                               paddingHorizontal: 8,
                               fontSize: 16,
                               color: colors.dark,
+                              backgroundColor: "transparent",
+                              borderWidth: 0,
                             }}
                           />
                         </View>
                       </Animated.View>
                     )}
 
-                    {/* Options List */}
+                    {/* Options */}
                     <FlatList
                       data={filteredOptions}
                       keyExtractor={(item) => item.value.toString()}
-                      keyboardShouldPersistTaps="handled" // <--- KEY FIX
-                      renderItem={({ item, index }) => (
+                      keyboardShouldPersistTaps="handled"
+                      renderItem={({ item }) => (
                         <Pressable
                           style={{
-                            paddingTop:
-                              index === filteredOptions.length - 1 ? 16 : 16,
-                            paddingBottom:
-                              index === filteredOptions.length - 1 ? 8 : 16,
-                            paddingHorizontal: 20,
-                            borderBottomWidth:
-                              index === filteredOptions.length - 1 ? 0 : 1,
+                            padding: 16,
+                            borderBottomWidth: 1,
                             borderBottomColor: colors.neutral,
                           }}
                           onPress={() => {
                             onChange(item.value);
-                            if (onValueChange) onValueChange(item.value);
+                            onValueChange?.(item.value);
                             setVisible(false);
                             hideSearchBar();
                           }}
@@ -323,7 +288,7 @@ export default function SingleSelectInput({
                       )}
                     />
                   </View>
-                </Pressable>
+                </View>
               </Modal>
             )}
           </View>

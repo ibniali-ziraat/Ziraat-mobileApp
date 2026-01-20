@@ -32,30 +32,83 @@ import {
   Waves,
   Wrench,
 } from "lucide-react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text } from "react-native";
 import OrchardDetailsCard from "../components/OrchardDetailsCard";
 import { OrchardDeleteKey } from "../config/orchardDeleteConfig";
+
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import {
-  useDeleteOrchardEntire,
-  useDeleteOrchardSection,
+  useCropNutritionQuery,
+  useDeleteInfrastructureMutation,
+  useDeleteInputCostMutation,
+  useDeleteOrchardEntireMutation,
+  useDeleteOrchardExtraMutation,
+  useDeleteOrchardSectionMutation,
+  useDeletePlantProtectionMutation,
+  useDeleteProductionMarketingMutation,
+  useDeleteSoilWaterMutation,
+  useDeleteVarietyMutation,
+  useInfrastructureQuery,
+  useInputCostQuery,
   useOrchardByIdQuery,
+  useOrchardExtraQuery,
+  usePlantProtectionQuery,
+  useProductionMarketingQuery,
+  useSoilWaterQuery,
 } from "../hooks/useOrchardsQuery";
 import { orchardRoutes } from "../routes/orchardRoutes";
 
 export default function OrchardDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { setOrchardProfileId, orchardProfileId } = useAuth();
   const queryClient = useQueryClient();
+
+  const { mutateAsync: deleteNutrition } = useDeleteOrchardSectionMutation();
+
+  const { mutateAsync: deleteInfrastructure } =
+    useDeleteInfrastructureMutation();
+
+  const { mutateAsync: deleteVarieties } = useDeleteVarietyMutation();
+
+  const { mutateAsync: deleteSoilWater } = useDeleteSoilWaterMutation();
+
+  const { mutateAsync: deletePlantHealth } = useDeletePlantProtectionMutation();
+
+  const { mutateAsync: deleteProduction } =
+    useDeleteProductionMarketingMutation();
+
+  const { mutateAsync: deleteInputCost } = useDeleteInputCostMutation();
+
+  const { mutateAsync: deleteFutureReadiness } =
+    useDeleteOrchardExtraMutation();
 
   const { data: orchard, isPending } = useOrchardByIdQuery(id);
   const { mutateAsync: deleteOrchard, isPending: isDeletingOrchard } =
-    useDeleteOrchardEntire();
+    useDeleteOrchardEntireMutation();
+  const { data: cropNutritionData } = useCropNutritionQuery(orchardProfileId!);
 
-  const { mutateAsync: deleteOrchardSection } = useDeleteOrchardSection();
-  console.log(orchard, "orchard detailsllls");
+  const { data: plantProtectionData } = usePlantProtectionQuery(
+    orchardProfileId!,
+  );
+
+  const { data: infrastructureData } = useInfrastructureQuery(
+    orchardProfileId!,
+  );
+
+  const { data: plantProductionData } = useProductionMarketingQuery(
+    orchardProfileId!,
+  );
+
+  const { data: extraData } = useOrchardExtraQuery(orchardProfileId!);
+  const { data: inputCostData } = useInputCostQuery(orchardProfileId!);
+  const { data: varietiesData } = useDeleteInputCostMutation();
+
+  const { data: soilWaterData } = useSoilWaterQuery(orchardProfileId!);
 
   const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
-    null
+    null,
   );
   const [deleteWhole, setDeleteWhole] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -71,74 +124,38 @@ export default function OrchardDetail() {
     router.push(`${orchardRoutes[section]}?id=${orchard?.id}`);
   };
 
-  console.log(orchard, "orchard....+++++");
-  const getDeletePayload = (section: OrchardDeleteKey) => {
-    switch (section) {
-      case "nutrition":
-        return {
-          ...orchard,
-          cropNutrition: null,
-        };
+  useEffect(() => {
+    setOrchardProfileId(orchard?.id ?? null);
+  }, [orchard]);
 
-      case "farmInfrastructure":
-        return {
-          ...orchard,
-          infrastructure: null,
-        };
-
-      case "varieties":
-        return {
-          ...orchard,
-          varieties: null,
-        };
-
-      case "soilAndWater":
-        return {
-          ...orchard,
-          soilAndWater: null,
-        };
-
-      case "plantHealth":
-        return {
-          ...orchard,
-          plantHealth: null,
-        };
-
-      case "production":
-        return {
-          ...orchard,
-          production: null,
-        };
-
-      case "inputCost":
-        return {
-          ...orchard,
-          inputCost: null,
-        };
-
-      case "futureReadiness":
-        return {
-          ...orchard,
-          optionalFields: null,
-        };
-
-      default:
-        throw new Error("Unknown delete section");
-    }
+  const deleteSectionMap: Record<
+    OrchardDeleteKey,
+    (orchardId: string) => Promise<any>
+  > = {
+    nutrition: deleteNutrition,
+    farmInfrastructure: deleteInfrastructure,
+    varieties: deleteVarieties,
+    soilAndWater: deleteSoilWater,
+    plantHealth: deletePlantHealth,
+    production: deleteProduction,
+    inputCost: deleteInputCost,
+    futureReadiness: deleteFutureReadiness,
   };
 
   const handleDelete = async (section: OrchardDeleteKey) => {
     try {
       setDeleting(true);
 
-      const payload = getDeletePayload(section, orchard.id);
-      console.log(payload, "payload...");
+      const deleteFn = deleteSectionMap[section];
+      if (!deleteFn) throw new Error("Invalid delete section");
 
-      await deleteOrchardSection(payload);
-      // queryClient.invalidateQueries([section, orchard.id], null);
+      await deleteFn(orchardProfileId!);
+
+      queryClient.invalidateQueries({
+        queryKey: ["orchard", orchardProfileId],
+      });
 
       showSuccessToast("Section deleted successfully");
-
       setDeleteSection(null);
     } catch (error) {
       console.error(error);
@@ -154,7 +171,7 @@ export default function OrchardDetail() {
     try {
       setDeleting(true);
 
-      await deleteOrchard(orchard.id);
+      await deleteOrchard(orchardProfileId!);
 
       showSuccessToast("orchard deleted successfully");
 
@@ -188,7 +205,13 @@ export default function OrchardDetail() {
             },
             {
               title: "Area",
-              value: `${orchard?.kanals} kanals ${orchard.marlas} marlas`,
+              value:
+                orchard?.kanals > 0
+                  ? `${orchard.kanals} kanals`
+                  : orchard?.marlas > 0
+                    ? `${orchard.marlas} marlas`
+                    : "",
+
               icon: <Sprout size={20} color={colors.primary} />,
             },
             {
@@ -202,16 +225,16 @@ export default function OrchardDetail() {
         <OrchardDetailsCard
           heading="Location"
           items={
-            hasData(orchard.district)
+            hasData(orchard?.district)
               ? [
                   {
                     title: "District",
-                    value: orchard.district,
+                    value: orchard?.district,
                     icon: <MapPin size={20} color={colors.primary} />,
                   },
                   {
                     title: "Tehsil",
-                    value: orchard.tehsil,
+                    value: orchard?.tehsil,
                     icon: <MapPin size={20} color={colors.primary} />,
                   },
                   {
@@ -237,115 +260,113 @@ export default function OrchardDetail() {
         <OrchardDetailsCard
           heading="Crop Nutrition"
           items={
-            hasData(orchard?.cropNutrition)
+            hasData(cropNutritionData)
               ? [
                   {
                     title: "Fertilizer Practice",
-                    value: orchard.cropNutrition?.fertilizerPractices,
+                    value: cropNutritionData?.fertilizerPractices,
                     icon: <Leaf size={20} color={colors.primary} />,
                   },
                   {
                     title: "Fertigation",
-                    value: orchard.cropNutrition?.hasFertigation ? "Yes" : "No",
+                    value: cropNutritionData?.hasFertigation ? "Yes" : "No",
                     icon: <Leaf size={20} color={colors.primary} />,
                   },
                   {
                     title: "Nutrition Plan",
-                    value: orchard.cropNutrition?.nutritionPlan,
+                    value: cropNutritionData?.nutritionPlan,
                     icon: <Leaf size={20} color={colors.primary} />,
                   },
                   {
                     title: "Mulching",
-                    value: orchard.cropNutrition?.isMulchingApplied
-                      ? "Yes"
-                      : "No",
+                    value: cropNutritionData?.isMulchingApplied ? "Yes" : "No",
                     icon: <Leaf size={20} color={colors.primary} />,
                   },
                   {
                     title: "Last Fertilizer Application Date",
-                    value: orchard.cropNutrition?.lastFertilizerApplicationDate
+                    value: cropNutritionData?.lastFertilizerApplicationDate
                       ? new Date(
-                          orchard.cropNutrition.lastFertilizerApplicationDate
+                          cropNutritionData.lastFertilizerApplicationDate,
                         ).toLocaleDateString()
                       : "-",
                     icon: <Leaf size={20} color={colors.primary} />,
                   },
                   {
                     title: "Fertilizer Application Mode",
-                    value: orchard.cropNutrition?.fertilizerApplicationMode,
+                    value: cropNutritionData?.fertilizerApplicationMode,
                     icon: <Leaf size={20} color={colors.primary} />,
                   },
                 ]
               : []
           }
           onEdit={
-            hasData(orchard.district)
+            hasData(orchard?.district)
               ? () => goToSection("nutrition")
               : undefined
           }
           onDelete={
-            orchard.district ? () => handleDelete("nutrition") : undefined
+            orchard?.district ? () => handleDelete("nutrition") : undefined
           }
-          onAdd={() => goToSection("nutrition")}
+          onAdd={() => router.push(ROUTES.ORCHARDS.REGISTRATION.CROP_INFO)}
           emptyActionLabel="Add Crop Nutrition"
         />
 
         <OrchardDetailsCard
           heading="Infrastructure"
           items={
-            hasData(orchard?.infrastructure)
+            hasData(infrastructureData)
               ? [
                   {
                     title: "Equipment Owned",
-                    value: orchard?.infrastructure?.equipmentOwned?.length
-                      ? orchard.infrastructure.equipmentOwned.join(", ")
+                    value: infrastructureData?.equipmentOwned?.length
+                      ? infrastructureData.equipmentOwned.join(", ")
                       : "—",
                     icon: <ToolCase size={20} color={colors.primary} />,
                   },
                   {
                     title: "Storage Facilities",
-                    value: orchard?.infrastructure?.storageFacilities?.length
-                      ? orchard.infrastructure.storageFacilities.join(", ")
+                    value: infrastructureData?.storageFacilities?.length
+                      ? infrastructureData.storageFacilities.join(", ")
                       : "—",
                     icon: <Warehouse size={20} color={colors.primary} />,
                   },
                   {
                     title: "Other Tools",
-                    value: orchard?.infrastructure?.otherTools?.length
-                      ? orchard.infrastructure.otherTools.join(", ")
+                    value: infrastructureData?.otherTools?.length
+                      ? infrastructureData.otherTools.join(", ")
                       : "—",
                     icon: <Wrench size={20} color={colors.primary} />,
                   },
                   {
                     title: "Permanent Labor",
-                    value: orchard?.infrastructure?.permanentLabor ?? "—",
+                    value: infrastructureData?.permanentLabor ?? "—",
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
                     title: "Seasonal Labor",
-                    value: orchard?.infrastructure?.seasonalLabor ?? "—",
+                    value: infrastructureData?.seasonalLabor ?? "—",
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
                     title: "Contract-based Labor",
-                    value: orchard?.infrastructure?.contractBasedLabor ?? "—",
+                    value: infrastructureData?.contractBasedLabor ?? "—",
                     icon: <Users size={20} color={colors.primary} />,
                   },
                 ]
               : []
           }
           onEdit={
-            hasData(orchard?.infrastructure)
+            hasData(infrastructureData)
               ? () => goToSection("farmInfrastructure")
               : undefined
           }
           // onDelete={
-          //   hasData(orchard?.infrastructure)
+          //   hasData(infrastructureData)
           //     ? () => setDeleteSection("farmInfrastructure")
           //     : undefined
           // }
           onDelete={
-            orchard.district
+            orchard?.district
               ? () => handleDelete("farmInfrastructure")
               : undefined
           }
@@ -358,8 +379,8 @@ export default function OrchardDetail() {
         <OrchardDetailsCard
           heading="Varieties & Planting"
           items={
-            hasData(orchard.varieties)
-              ? orchard.varieties.flatMap((v: any) => [
+            hasData(varietiesData)
+              ? varietiesData.flatMap((v: any) => [
                   {
                     title: "Variety Name",
                     value: v.varietyName,
@@ -399,12 +420,12 @@ export default function OrchardDetail() {
               : []
           }
           onEdit={
-            hasData(orchard.varieties)
+            hasData(orchard?.varieties)
               ? () => goToSection("varietyAndPlanting")
               : undefined
           }
           onDelete={
-            hasData(orchard.varieties)
+            hasData(orchard?.varieties)
               ? () => setDeleteSection("varieties")
               : undefined
           }
@@ -415,17 +436,17 @@ export default function OrchardDetail() {
         <OrchardDetailsCard
           heading="Soil & Water"
           items={
-            hasData(orchard.soilAndWater)
+            hasData(soilWaterData)
               ? [
                   {
                     title: "Soil Type",
-                    value: orchard.soilAndWater.soilType || "—",
+                    value: soilWaterData.soilType || "—",
                     icon: <Droplet size={20} color={colors.primary} />,
                   },
                   {
                     title: "Soil Health Status",
-                    value: orchard.soilAndWater.soilHealthStatus?.length
-                      ? orchard.soilAndWater.soilHealthStatus.join(", ")
+                    value: soilWaterData.soilHealthStatus?.length
+                      ? soilWaterData.soilHealthStatus.join(", ")
                       : "—",
                     icon: <Leaf size={20} color={colors.primary} />,
                   },
@@ -461,31 +482,31 @@ export default function OrchardDetail() {
                   // },
                   {
                     title: "Last Soil Test",
-                    value: orchard.soilAndWater.lastSoilTestDate
+                    value: soilWaterData.lastSoilTestDate
                       ? new Date(
-                          orchard.soilAndWater.lastSoilTestDate
+                          soilWaterData.lastSoilTestDate,
                         ).toLocaleDateString()
                       : "—",
                     icon: <Calendar size={20} color={colors.primary} />,
                   },
                   {
                     title: "Water Source",
-                    value: orchard.soilAndWater.waterSource || "—",
+                    value: soilWaterData.waterSource || "—",
                     icon: <Droplet size={20} color={colors.primary} />,
                   },
                   {
                     title: "Irrigation Method",
-                    value: orchard.soilAndWater.irrigationMethod || "—",
+                    value: soilWaterData.irrigationMethod || "—",
                     icon: <Waves size={20} color={colors.primary} />,
                   },
                   {
                     title: "Water Availability",
-                    value: orchard.soilAndWater.waterAvailability || "—",
+                    value: soilWaterData.waterAvailability || "—",
                     icon: <AlertCircle size={20} color={colors.primary} />,
                   },
                   {
                     title: "Soil Test Report",
-                    value: orchard.soilAndWater.soilTestReportUrl
+                    value: soilWaterData.soilTestReportUrl
                       ? "View Report"
                       : "—",
                     icon: <FileText size={20} color={colors.primary} />,
@@ -494,12 +515,12 @@ export default function OrchardDetail() {
               : []
           }
           onEdit={
-            hasData(orchard.soilAndWater)
+            hasData(soilWaterData)
               ? () => goToSection("soilAndWater")
               : undefined
           }
           onDelete={
-            hasData(orchard.soilAndWater)
+            hasData(soilWaterData)
               ? () => setDeleteSection("soilAndWater")
               : undefined
           }
@@ -510,27 +531,27 @@ export default function OrchardDetail() {
         <OrchardDetailsCard
           heading="Plant Protection"
           items={
-            hasData(orchard.plantHealth)
+            hasData(plantProtectionData)
               ? [
                   {
                     title: "Diseases",
                     value:
-                      orchard.plantHealth.diseaseHistory?.join(", ") || "-",
+                      plantProtectionData.diseaseHistory?.join(", ") || "-",
                     icon: <ShieldCheck size={20} color={colors.primary} />,
                   },
                   {
                     title: "Pests",
-                    value: orchard.plantHealth.pestHistory?.join(", ") || "-",
+                    value: plantProtectionData.pestHistory?.join(", ") || "-",
                     icon: <Bug size={20} color={colors.primary} />,
                   },
                   {
                     title: "Spray Schedule",
-                    value: orchard.plantHealth.spraySchedule?.join(", ") || "-",
+                    value: plantProtectionData.spraySchedule?.join(", ") || "-",
                     icon: <Calendar size={20} color={colors.primary} />,
                   },
                   {
                     title: "Crop Insurance",
-                    value: orchard.plantHealth.isCropInsuranceCovered
+                    value: plantProtectionData.isCropInsuranceCovered
                       ? "Covered"
                       : "Not Covered",
                     icon: <Shield size={20} color={colors.primary} />,
@@ -539,12 +560,12 @@ export default function OrchardDetail() {
               : []
           }
           onEdit={
-            hasData(orchard.plantHealth)
+            hasData(orchard?.plantHealth)
               ? () => goToSection("plantProtection")
               : undefined
           }
           onDelete={
-            hasData(orchard.plantHealth)
+            hasData(orchard?.plantHealth)
               ? () => setDeleteSection("plantHealth")
               : undefined
           }
@@ -556,56 +577,56 @@ export default function OrchardDetail() {
         <OrchardDetailsCard
           heading="Production & Marketing"
           items={
-            hasData(orchard.production)
+            hasData(plantProductionData)
               ? [
                   {
                     title: "Average Yield",
-                    value: `${orchard.production.averageAnnualYield} ${orchard.production.yieldUnit || ""}`,
+                    value: `${plantProductionData.averageAnnualYield} ${plantProductionData.yieldUnit || ""}`,
                     icon: <TrendingUp size={20} color={colors.primary} />,
                   },
                   {
                     title: "Peak Harvest (From)",
-                    value: orchard.production.peakHarvestFromMonth
+                    value: plantProductionData.peakHarvestFromMonth
                       ? new Date(
-                          orchard.production.peakHarvestFromMonth
+                          plantProductionData.peakHarvestFromMonth,
                         ).toLocaleDateString()
                       : "-",
                     icon: <Calendar size={20} color={colors.primary} />,
                   },
                   {
                     title: "Peak Harvest (To)",
-                    value: orchard.production.peakHarvestToMonth
+                    value: plantProductionData.peakHarvestToMonth
                       ? new Date(
-                          orchard.production.peakHarvestToMonth
+                          plantProductionData.peakHarvestToMonth,
                         ).toLocaleDateString()
                       : "-",
                     icon: <Calendar size={20} color={colors.primary} />,
                   },
                   {
                     title: "Selling Preference",
-                    value: orchard.production.sellingPreference || "-",
+                    value: plantProductionData.sellingPreference || "-",
                     icon: <Store size={20} color={colors.primary} />,
                   },
                   {
                     title: "Buyer Name",
-                    value: orchard.production.buyerName || "-",
+                    value: plantProductionData.buyerName || "-",
                     icon: <User size={20} color={colors.primary} />,
                   },
                   {
                     title: "Buyer Contact",
-                    value: orchard.production.buyerContact || "-",
+                    value: plantProductionData.buyerContact || "-",
                     icon: <Phone size={20} color={colors.primary} />,
                   },
                 ]
               : []
           }
           onEdit={
-            hasData(orchard.production)
+            hasData(plantProductionData)
               ? () => goToSection("productionAndMarketing")
               : undefined
           }
           onDelete={
-            hasData(orchard.production)
+            hasData(plantProductionData)
               ? () => setDeleteSection("production")
               : undefined
           }
@@ -617,33 +638,31 @@ export default function OrchardDetail() {
         <OrchardDetailsCard
           heading="Input Cost"
           items={
-            hasData(orchard.inputCost)
+            hasData(inputCostData)
               ? [
                   {
                     title: "Payment Type",
-                    value: orchard.inputCost.paymentType || "-",
+                    value: inputCostData.paymentType || "-",
                     icon: <IndianRupee size={20} color={colors.primary} />,
                   },
                   {
                     title: "Credit Period",
-                    value: orchard.inputCost.creditPeriod || "-",
+                    value: inputCostData.creditPeriod || "-",
                     icon: <CalendarClock size={20} color={colors.primary} />,
                   },
                   {
                     title: "Pesticide Supplier Location",
-                    value: orchard.inputCost.pesticideSupplierLocation || "-",
+                    value: inputCostData.pesticideSupplierLocation || "-",
                     icon: <MapPin size={20} color={colors.primary} />,
                   },
                 ]
               : []
           }
           onEdit={
-            hasData(orchard.inputCost)
-              ? () => goToSection("inputCost")
-              : undefined
+            hasData(inputCostData) ? () => goToSection("inputCost") : undefined
           }
           onDelete={
-            hasData(orchard.inputCost)
+            hasData(inputCostData)
               ? () => setDeleteSection("inputCost")
               : undefined
           }
@@ -655,46 +674,39 @@ export default function OrchardDetail() {
         <OrchardDetailsCard
           heading="Future Readiness"
           items={
-            hasData(orchard.optionalFields)
+            hasData(extraData)
               ? [
                   {
                     title: "Government Schemes Availed",
                     value:
-                      orchard.optionalFields.governmentSchemesAvailed?.join(
-                        ", "
-                      ) || "-",
+                      extraData.governmentSchemesAvailed?.join(", ") || "-",
                     icon: <Landmark size={20} color={colors.primary} />,
                   },
                   {
                     title: "FPO / Cooperative Member",
-                    value: orchard.optionalFields.isFpoOrCooperativeMember
-                      ? "Yes"
-                      : "No",
+                    value: extraData.isFpoOrCooperativeMember ? "Yes" : "No",
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
                     title: "Certifications",
-                    value:
-                      orchard.optionalFields.certifications?.join(", ") || "-",
+                    value: extraData.certifications?.join(", ") || "-",
                     icon: <BadgeCheck size={20} color={colors.primary} />,
                   },
                   {
                     title: "Digital Tools Used",
-                    value:
-                      orchard.optionalFields.digitalToolsUsed?.join(", ") ||
-                      "-",
+                    value: extraData.digitalToolsUsed?.join(", ") || "-",
                     icon: <Smartphone size={20} color={colors.primary} />,
                   },
                 ]
               : []
           }
           onEdit={
-            hasData(orchard.optionalFields)
+            hasData(extraData)
               ? () => goToSection("futureReadiness")
               : undefined
           }
           onDelete={
-            hasData(orchard.optionalFields)
+            hasData(extraData)
               ? () => setDeleteSection("futureReadiness")
               : undefined
           }
