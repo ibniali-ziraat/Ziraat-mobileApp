@@ -7,24 +7,29 @@ import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
+import { useAuth } from "@/src/contexts/AuthContext";
 import SoilAndWaterProfile from "../form-sections/SoilWaterSection";
 import {
-  useCreateOrchardBasinInfoMutation,
-  useOrchardByIdQuery,
-  useUpdateOrchardBasicInfoMutation,
+  useCreateSoilWaterMutation,
+  useSoilWaterQuery,
+  useUpdateSoilWaterMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function SoilAndWaterProfileScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const { data, isPending } = useOrchardByIdQuery(Number(id));
+  const { orchardProfileId } = useAuth();
+  console.log(orchardProfileId, "orchardprofile id in orchard.service");
+
+  const { data: soilWaterData } = useSoilWaterQuery(orchardProfileId!);
+  console.log(soilWaterData, "crop nutrition data...");
+
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateOrchardBasinInfoMutation();
+    useCreateSoilWaterMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateOrchardBasicInfoMutation();
+    useUpdateSoilWaterMutation();
   const form = useZodForm();
   const {
     setValue,
@@ -34,27 +39,26 @@ export default function SoilAndWaterProfileScreen() {
   } = form;
 
   useEffect(() => {
-    if (!data?.soilAndWater) return;
+    if (!soilWaterData) return;
 
-    Object.entries(data.soilAndWater).forEach(([key, value]) => {
+    Object.entries(soilWaterData).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [data]);
+  }, [soilWaterData]);
 
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: data?.id,
-        soilAndWater: {
-          ...values,
-          soilTestReportUrl:
-            values.soilTestReportUrl?.name || values.soilTestReportUrl,
-        },
+        id: soilWaterData?.id,
+        orchardProfileId,
+        ...values,
+        soilTestReportUrl:
+          values.soilTestReportUrl?.name || values.soilTestReportUrl,
       };
 
-      if (data.soilAndWater) {
+      if (soilWaterData) {
         await update(payload);
         showSuccessToast("Soil & Water Profile updated");
       } else {
@@ -62,15 +66,15 @@ export default function SoilAndWaterProfileScreen() {
         showSuccessToast("Soil & Water Profile saved");
       }
 
-      router.push(ROUTES.ORCHARDS.REGISTRATION.VARIETY_INFO);
+      router.push(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
-        error?.response?.data?.message || "Failed to save soil & water profile"
+        error?.response?.data?.message || "Failed to save soil & water profile",
       );
     }
   };
 
-  if (isPending) return null;
+  // if (isPending) return null;
 
   return (
     <ScreenLayout>
@@ -82,7 +86,8 @@ export default function SoilAndWaterProfileScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={data.soilAndWater ? "Update" : "Save"}
+            onCancel={() => router.replace(ROUTES.TABS.ORCHARDS)}
+            submitLabel={soilWaterData ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

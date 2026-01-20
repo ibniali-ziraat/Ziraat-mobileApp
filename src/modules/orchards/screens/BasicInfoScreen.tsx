@@ -4,39 +4,33 @@ import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 import BasicInfo from "../form-sections/BasicInfoSection";
-import {
-  useCreateOrchardBasinInfoMutation,
-  useOrchardsByUserQuery,
-  useUpdateOrchardBasicInfoMutation,
-} from "../hooks/useOrchardsQuery";
 
 import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { v4 as uuidv4 } from "uuid";
+import {
+  useCreateOrchardMutation,
+  useOrchardsByUserQuery,
+  useUpdateOrchardMutation,
+} from "../hooks/useOrchardsQuery";
 
 export default function BasicInfoScreen() {
-  const params = useLocalSearchParams<{
-    id?: string;
-    areaValue?: string;
-    areaUnit?: string;
-    areaLabel?: string;
-  }>();
+  const { data, isPending } = useOrchardsByUserQuery();
+  const orchard = data?.[0];
+  const { orchardProfileId } = useAuth();
+  console.log(orchardProfileId, "orchardprofile id in orchard.service");
 
-  const { data: orchardData, isPending } = useOrchardsByUserQuery();
   const { mutateAsync: createOrchard, isPending: creating } =
-    useCreateOrchardBasinInfoMutation();
+    useCreateOrchardMutation();
   const { mutateAsync: updateOrchard, isPending: updating } =
-    useUpdateOrchardBasicInfoMutation();
-
-  const orchard = orchardData?.find(
-    (o: any) => String(o.id) === String(params.id)
-  );
+    useUpdateOrchardMutation();
 
   const form = useZodForm();
   const {
@@ -51,6 +45,7 @@ export default function BasicInfoScreen() {
 
     setValue("orchardName", orchard.orchardName);
     setValue("establishmentYear", String(orchard.establishmentYear));
+
     setValue("plantationPattern", orchard.plantationPattern);
     setValue("ownershipType", orchard.ownershipType);
     setValue("district", orchard.district);
@@ -72,11 +67,12 @@ export default function BasicInfoScreen() {
   }, [orchard]);
 
   useEffect(() => {
-    if (!params?.areaValue) return;
+    if (!data?.areaValue) return;
+
     setValue("orchardSize.mode", "measure", { shouldValidate: true });
-    setValue("orchardSize.value", params.areaValue, { shouldValidate: true });
-    setValue("orchardSize.unit", params.areaUnit, { shouldValidate: true });
-  }, [params?.areaValue, params?.areaUnit]);
+    setValue("orchardSize.value", data.areaValue, { shouldValidate: true });
+    setValue("orchardSize.unit", data.areaUnit, { shouldValidate: true });
+  }, [data?.areaValue, data?.areaUnit]);
 
   const onSubmit = async (values: any) => {
     try {
@@ -141,7 +137,7 @@ export default function BasicInfoScreen() {
       router.replace(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard information"
+        error?.response?.data?.message || "Failed to save orchard information",
       );
     }
   };
@@ -161,16 +157,16 @@ export default function BasicInfoScreen() {
           <BasicInfo
             control={control}
             errors={errors}
-            orchardSize={params.areaValue}
-            areaLabel={params.areaLabel}
-            areaUnit={params.areaUnit}
-            data={orchard}
+            orchardSize={data.areaValue}
+            areaLabel={data.areaLabel}
+            areaUnit={data.areaUnit}
+            data={data}
           />
 
           <FormActions
             cancelLabel="Cancel"
             onCancel={() => router.back()}
-            submitLabel={orchard ? "Update" : "Save"}
+            submitLabel={data.length > 0 ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={creating || updating}
             loading={creating || updating}

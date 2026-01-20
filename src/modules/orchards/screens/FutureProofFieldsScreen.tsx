@@ -7,26 +7,28 @@ import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
+import { useAuth } from "@/src/contexts/AuthContext";
 import OptionalFutureFields from "../form-sections/FutureFieldSection";
 import {
-  useCreateOrchardBasinInfoMutation,
-  useOrchardByIdQuery,
-  useUpdateOrchardBasicInfoMutation,
+  useCreateOrchardExtraMutation,
+  useOrchardExtraQuery,
+  useUpdateOrchardExtraMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function FutureProofFieldScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { orchardProfileId } = useAuth();
+  console.log(orchardProfileId, "orchardprofile id in orchard.service");
 
-  const { data, isPending } = useOrchardByIdQuery(Number(id));
-  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
+  const { data: orchardExtraData } = useOrchardExtraQuery(orchardProfileId!);
+
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateOrchardBasinInfoMutation();
+    useCreateOrchardExtraMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateOrchardBasicInfoMutation();
+    useUpdateOrchardExtraMutation();
   const form = useZodForm();
   const {
     setValue,
@@ -39,14 +41,14 @@ export default function FutureProofFieldScreen() {
    * ✅ PREFILL FORM IF DATA EXISTS
    */
   useEffect(() => {
-    if (!data?.optionalFields) return;
+    if (!orchardExtraData) return;
 
-    Object.entries(data.optionalFields).forEach(([key, value]) => {
+    Object.entries(orchardExtraData).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [data?.optionalFields]);
+  }, [orchardExtraData]);
 
   /**
    * Submit handler
@@ -54,16 +56,12 @@ export default function FutureProofFieldScreen() {
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: data?.id,
-        optionalFields: {
-          ...values,
-        },
+        id: orchardExtraData?.id,
+        ...values,
+        orchardProfileId,
       };
 
-      /**
-       * ✅ UPDATE vs CREATE
-       */
-      if (data?.optionalFields) {
+      if (orchardExtraData) {
         await update(payload);
         showSuccessToast("Orchard optional fields updated");
       } else {
@@ -75,12 +73,12 @@ export default function FutureProofFieldScreen() {
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message ||
-          "Failed to save orchard optional fields"
+          "Failed to save orchard optional fields",
       );
     }
   };
 
-  if (isPending) return null;
+  // if (isPending) return null;
 
   return (
     <ScreenLayout>
@@ -95,8 +93,9 @@ export default function FutureProofFieldScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={data?.optionalFields ? "Update" : "Save"}
+            submitLabel={orchardExtraData ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
+            onCancel={() => router.back()}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}
           />

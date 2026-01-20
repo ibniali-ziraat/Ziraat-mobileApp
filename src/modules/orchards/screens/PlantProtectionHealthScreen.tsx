@@ -2,28 +2,32 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 import PlantProtection from "../form-sections/PlantProtectionSection";
 import {
-  useCreateOrchardBasinInfoMutation,
-  useOrchardByIdQuery,
-  useUpdateOrchardBasicInfoMutation,
+  useCreatePlantProtectionMutation,
+  usePlantProtectionQuery,
+  useUpdatePlantProtectionMutation,
 } from "../hooks/useOrchardsQuery";
 
 export default function PlantProtectionScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { orchardProfileId } = useAuth();
+  console.log(orchardProfileId, "orchardprofile id in orchard.service");
 
-  const { data, isPending } = useOrchardByIdQuery(Number(id));
-  // const { data: orchardData, isPending } = useOrchardsByUserQuery();
+  const { data: cropNutritionData } = usePlantProtectionQuery(
+    orchardProfileId!,
+  );
+  console.log(cropNutritionData, "crop nutrition data...");
+
   const { mutateAsync: save, isPending: isSaving } =
-    useCreateOrchardBasinInfoMutation();
+    useCreatePlantProtectionMutation();
   const { mutateAsync: update, isPending: isUpdating } =
-    useUpdateOrchardBasicInfoMutation();
+    useUpdatePlantProtectionMutation();
 
   const form = useZodForm();
   const {
@@ -34,25 +38,25 @@ export default function PlantProtectionScreen() {
   } = form;
 
   useEffect(() => {
-    if (!data?.plantHealth) return;
+    if (!cropNutritionData) return;
 
-    Object.entries(data?.plantHealth).forEach(([key, value]) => {
+    Object.entries(cropNutritionData).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [data?.plantHealth]);
+  }, [cropNutritionData]);
 
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: data?.id,
-        plantHealth: {
-          ...values,
-        },
+        id: cropNutritionData?.id,
+
+        ...values,
+        orchardProfileId: orchardProfileId,
       };
 
-      if (data?.plantHealth) {
+      if (cropNutritionData) {
         await update(payload);
         showSuccessToast("Plant Protection updated");
       } else {
@@ -60,15 +64,15 @@ export default function PlantProtectionScreen() {
         showSuccessToast("Plant Protection saved");
       }
 
-      router.push(ROUTES.ORCHARDS.REGISTRATION.PRODUCTION_INFO);
+      router.back();
     } catch (error: any) {
       showErrorToast(
-        error?.response?.data?.message || "Failed to save plant protection"
+        error?.response?.data?.message || "Failed to save plant protection",
       );
     }
   };
 
-  if (isPending) return null;
+  // if (isPending) return null;
 
   return (
     <ScreenLayout>
@@ -83,8 +87,9 @@ export default function PlantProtectionScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={data?.plantHealth ? "Update" : "Save"}
+            submitLabel={cropNutritionData?.length > 0 ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
+            onCancel={() => router.back()}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}
           />

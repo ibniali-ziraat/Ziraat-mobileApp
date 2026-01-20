@@ -26,7 +26,13 @@ export default function OrchardDetails({ orchard }: OrchardDetailsProps) {
       {/* Details */}
       <DetailRow
         label="Size"
-        value={`${orchard.kanals} kanals ${orchard.marlas} marlas`}
+        value={
+          orchard?.kanals > 0
+            ? `${orchard.kanals} kanals`
+            : orchard?.marlas > 0
+              ? `${orchard.marlas} marlas`
+              : ""
+        }
       />
 
       <DetailRow label="Establishment Year" value={orchard.establishmentYear} />
