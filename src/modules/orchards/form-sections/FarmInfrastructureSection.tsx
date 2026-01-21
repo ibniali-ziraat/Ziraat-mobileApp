@@ -94,6 +94,7 @@ export default function FarmInfrastructureScreen({ control, errors }) {
           label="permanentLabor"
           optional={true}
           icon="tools"
+          type="phone"
           error={errors.otherTools?.message}
         />{" "}
         <FormInput
@@ -102,6 +103,7 @@ export default function FarmInfrastructureScreen({ control, errors }) {
           label="seasonalLabor"
           optional={true}
           icon="tools"
+          type="phone"
           error={errors.otherTools?.message}
         />{" "}
         <FormInput
@@ -110,6 +112,7 @@ export default function FarmInfrastructureScreen({ control, errors }) {
           label="contractBasedLabor"
           optional={true}
           icon="tools"
+          type="phone"
           error={errors.otherTools?.message}
         />
         {/* 4️⃣ Other Tools (OPTIONAL) */}

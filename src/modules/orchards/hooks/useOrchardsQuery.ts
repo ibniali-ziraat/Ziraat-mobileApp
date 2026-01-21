@@ -20,6 +20,7 @@ import {
   createProductionMarketing,
   // C. SOIL & WATER
   createSoilWater,
+  deleteAllVarieties,
   deleteCropNutrition,
   deleteEntireOrchard,
   deleteInfrastructure,
@@ -140,6 +141,12 @@ export const useDeleteVarietyMutation = () => {
   return useMutation({
     mutationFn: deleteOrchardVariety,
     onSuccess: () => qc.invalidateQueries({ queryKey: ["orchardVarieties"] }),
+  });
+};
+
+export const useDeleteAllVarietiesMutation = () => {
+  return useMutation({
+    mutationFn: deleteAllVarieties,
   });
 };
 

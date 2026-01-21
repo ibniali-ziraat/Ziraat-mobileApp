@@ -39,6 +39,7 @@ import { OrchardDeleteKey } from "../config/orchardDeleteConfig";
 
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
+import VarietiesCard from "../components/VarietyDetailsCard";
 import {
   useCropNutritionQuery,
   useDeleteInfrastructureMutation,
@@ -54,6 +55,7 @@ import {
   useInputCostQuery,
   useOrchardByIdQuery,
   useOrchardExtraQuery,
+  useOrchardVarietiesQuery,
   usePlantProtectionQuery,
   useProductionMarketingQuery,
   useSoilWaterQuery,
@@ -65,12 +67,16 @@ export default function OrchardDetail() {
   const { setOrchardProfileId, orchardProfileId } = useAuth();
   const queryClient = useQueryClient();
 
+  const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
+    null,
+  );
+
+  const [varietyToDelete, setVarietyToDelete] = useState<number | null>(null);
+
   const { mutateAsync: deleteNutrition } = useDeleteOrchardSectionMutation();
 
   const { mutateAsync: deleteInfrastructure } =
     useDeleteInfrastructureMutation();
-
-  const { mutateAsync: deleteVarieties } = useDeleteVarietyMutation();
 
   const { mutateAsync: deleteSoilWater } = useDeleteSoilWaterMutation();
 
@@ -103,13 +109,16 @@ export default function OrchardDetail() {
 
   const { data: extraData } = useOrchardExtraQuery(orchardProfileId!);
   const { data: inputCostData } = useInputCostQuery(orchardProfileId!);
-  const { data: varietiesData } = useDeleteInputCostMutation();
+  const { data: varietiesData } = useOrchardVarietiesQuery(orchardProfileId!);
+  const { mutateAsync: deleteVariety } = useDeleteVarietyMutation();
+
+  console.log(varietiesData, "varieties data....");
 
   const { data: soilWaterData } = useSoilWaterQuery(orchardProfileId!);
 
-  const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
-    null,
-  );
+  // const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
+  //   null,
+  // );
   const [deleteWhole, setDeleteWhole] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -120,8 +129,11 @@ export default function OrchardDetail() {
     return true;
   };
 
-  const goToSection = (section: OrchardRouteKey) => {
-    router.push(`${orchardRoutes[section]}?id=${orchard?.id}`);
+  const goToSection = (
+    section: OrchardRouteKey,
+    varietyId: number | string,
+  ) => {
+    router.push(`${orchardRoutes[section]}?varietyId=${varietyId}`);
   };
 
   useEffect(() => {
@@ -134,7 +146,7 @@ export default function OrchardDetail() {
   > = {
     nutrition: deleteNutrition,
     farmInfrastructure: deleteInfrastructure,
-    varieties: deleteVarieties,
+    // varieties: deleteVarieties,
     soilAndWater: deleteSoilWater,
     plantHealth: deletePlantHealth,
     production: deleteProduction,
@@ -167,6 +179,31 @@ export default function OrchardDetail() {
 
   if (isPending) return <Loader />;
 
+  const handleDeleteSingleVariety = async () => {
+    if (!varietyToDelete) return;
+
+    try {
+      setDeleting(true);
+
+      await deleteVariety({
+        id: orchardProfileId!, // ✅ orchard id
+        varietyId: varietyToDelete, // ✅ variety id
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ["orchard", orchardProfileId],
+      });
+
+      showSuccessToast("Variety deleted successfully");
+      setVarietyToDelete(null);
+    } catch (error) {
+      console.error(error);
+      showErrorToast("Failed to delete variety");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const handleDeleteWholeOrchard = async (section: OrchardDeleteKey) => {
     try {
       setDeleting(true);
@@ -178,9 +215,31 @@ export default function OrchardDetail() {
       queryClient.invalidateQueries(["deleteOrchard", orchard.id]);
 
       setDeleteSection(null);
+      setDeleting(false);
+      router.replace(ROUTES.TABS.ORCHARDS);
     } catch (error) {
       console.error(error);
       showErrorToast("Failed to delete section");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteAllVarieties = async () => {
+    try {
+      setDeleting(true);
+
+      await deleteAllVarieties(orchardProfileId!);
+
+      queryClient.invalidateQueries({
+        queryKey: ["orchard", orchardProfileId],
+      });
+
+      showSuccessToast("All varieties deleted successfully");
+      setDeleteSection(null);
+    } catch (error) {
+      console.error(error);
+      showErrorToast("Failed to delete varieties");
     } finally {
       setDeleting(false);
     }
@@ -374,63 +433,11 @@ export default function OrchardDetail() {
           emptyActionLabel="Add Infrastructure"
         />
 
-        {/* LOCATION */}
-
-        <OrchardDetailsCard
-          heading="Varieties & Planting"
-          items={
-            hasData(varietiesData)
-              ? varietiesData.flatMap((v: any) => [
-                  {
-                    title: "Variety Name",
-                    value: v.varietyName,
-                    icon: <Leaf size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Total Trees",
-                    value: v.numberOfTrees,
-                    icon: <Leaf size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Rootstock Used",
-                    value: v.rootstockUsed,
-                    icon: <Leaf size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Plant Density",
-                    value: v.plantDensity,
-                    icon: <Leaf size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Trees (< 5 Years)",
-                    value: v.treesLessThan5Years,
-                    icon: <Leaf size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Trees (5–10 Years)",
-                    value: v.treesFiveToTenYears,
-                    icon: <Leaf size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Trees (> 10 Years)",
-                    value: v.treesMoreThan10Years,
-                    icon: <Leaf size={20} color={colors.primary} />,
-                  },
-                ])
-              : []
-          }
-          onEdit={
-            hasData(orchard?.varieties)
-              ? () => goToSection("varietyAndPlanting")
-              : undefined
-          }
-          onDelete={
-            hasData(orchard?.varieties)
-              ? () => setDeleteSection("varieties")
-              : undefined
-          }
+        <VarietiesCard
+          varietiesData={varietiesData || []}
           onAdd={() => goToSection("varietyAndPlanting")}
-          emptyActionLabel="Add Varieties"
+          onEdit={(id) => goToSection("varietyAndPlanting", id)}
+          onDelete={(id) => setVarietyToDelete(id)}
         />
 
         <OrchardDetailsCard
@@ -742,6 +749,22 @@ export default function OrchardDetail() {
         onCancel={() => setDeleteWhole(false)}
         onConfirm={() => handleDeleteWholeOrchard()}
         loading={isDeletingOrchard}
+      />
+      <ConfirmDeleteModal
+        visible={!!varietyToDelete}
+        title="Delete Variety?"
+        description="Are you sure you want to delete this variety?"
+        onCancel={() => setVarietyToDelete(null)}
+        onConfirm={handleDeleteSingleVariety}
+        loading={deleting}
+      />
+      <ConfirmDeleteModal
+        visible={deleteSection === "varieties"}
+        title="Delete all varieties?"
+        description="This will delete all varieties in this orchard."
+        onCancel={() => setDeleteSection(null)}
+        onConfirm={handleDeleteAllVarieties}
+        loading={deleting}
       />
     </ScreenLayout>
   );

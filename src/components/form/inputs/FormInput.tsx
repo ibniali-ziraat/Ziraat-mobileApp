@@ -53,7 +53,14 @@ export default function FormInput({
                 const isNumericOnly =
                   resolvedKeyboard === "phone-pad" ||
                   resolvedKeyboard === "numeric";
-                onChange(isNumericOnly ? text.replace(/\D/g, "") : text);
+                // onChange(isNumericOnly ? text.replace(/\D/g, "") : text);
+                onChange(
+                  isNumericOnly
+                    ? text === ""
+                      ? null
+                      : Number(text.replace(/\D/g, ""))
+                    : text,
+                );
               }}
               secureTextEntry={isSecure && !showPassword}
               keyboardType={resolvedKeyboard}

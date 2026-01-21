@@ -1,8 +1,9 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
+import { useEffect } from "react";
 import { useFieldArray } from "react-hook-form";
-import { View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { soilTypeOptions } from "../schemas/SoilWaterProfileSchema";
 
 export default function VarietAndPlatingDetails({ control, errors }) {
@@ -38,186 +39,117 @@ export default function VarietAndPlatingDetails({ control, errors }) {
     value: x,
   }));
 
+  // const { fields, append, remove } = useFieldArray({
+  //   control,
+  //   name: "customInputs",
+  // });
+
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "customInputs",
+    name: "varieties",
   });
+
+  useEffect(() => {
+    if (fields.length === 0) {
+      append({
+        varietyName: "",
+        numberOfTrees: "",
+        rootstockUsed: "",
+        plantDensity: "",
+        treesLessThan5Years: "",
+        treesFiveToTenYears: "",
+        treesMoreThan10Years: "",
+      });
+    }
+  }, [fields.length, append]);
 
   return (
     <View style={{ padding: 20 }}>
-      {/* <MultiSelectInput
-        name="varieties"
-        control={control}
-        label="Varieties Planted"
-        options={VARIETIES_LIST}
-        error={errors?.varieties?.message}
-      /> */}
-      <SingleSelectInput
-        control={control}
-        name="varietyName"
-        label="Varieties Planted"
-        modalLabel="Varieties"
-        options={soilTypeOptions.map((v) => ({ label: v, value: v }))}
-        error={errors?.varietyName?.message}
-      />
-      <FormInput
-        control={control}
-        name="numberOfTrees"
-        label="Total Number of Trees"
-        type="phone"
-        error={errors.totalTrees?.message}
-      />
-      {/* <FormInput
-        control={control}
-        name="treesPerVariety"
-        label="Trees Per Variety"
-        type="phone"
-        error={errors}
-      /> */}
-      {/*  */}
-      {/* <CsText
-        style={{
-          fontWeight: "700",
-          marginTop: 24,
-          fontSize: 18,
-          marginBottom: 12,
-          color: colors.neutral,
-        }}
-      >
-        Trees Per Variety
-      </CsText>
-
-      {fields.map((item, index) => (
+      {fields.map((field, index) => (
         <View
-          key={item.id}
+          key={field.id}
           style={{
-            backgroundColor: colors.light,
-            borderRadius: 10,
+            marginBottom: 20,
             padding: 12,
-            marginBottom: 12,
-            borderWidth: 1,
-            borderColor: colors.bgGradient.colors[2],
-            shadowColor: colors.cardShadow,
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            elevation: 2,
+            borderRadius: 10,
+            backgroundColor: "#fff",
           }}
         >
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "flex-end",
-              gap: 10,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <FormInput
-                control={control}
-                name={`customInputs[${index}].productName`}
-                label="Variety Name"
-                error={errors.customInputs?.[index]?.productName?.message}
-              />
-            </View>
+          <SingleSelectInput
+            control={control}
+            name={`varieties.${index}.varietyName`}
+            label="Variety Name"
+            options={soilTypeOptions.map((v) => ({ label: v, value: v }))}
+            error={errors?.varieties?.[index]?.varietyName?.message}
+          />
 
-            <View style={{ width: 90 }}>
-              <FormInput
-                control={control}
-                name={`customInputs[${index}].stockQuantity`}
-                label="Trees"
-                type="phone"
-                error={errors.customInputs?.[index]?.stockQuantity?.message}
-              />
-            </View>
+          <FormInput
+            control={control}
+            name={`varieties.${index}.numberOfTrees`}
+            label="Total Trees"
+            type="phone"
+          />
 
-            <TouchableOpacity
-              onPress={() => remove(index)}
-              style={{
-                backgroundColor: colors.error,
-                height: 40,
-                width: 40,
-                borderRadius: 8,
-                alignItems: "center",
-                justifyContent: "center",
-                marginBottom: 4,
-              }}
-            >
-              <CsText style={{ color: colors.light, fontWeight: "700" }}>
-                ✕
-              </CsText>
-            </TouchableOpacity>
-          </View>
+          <SingleSelectInput
+            control={control}
+            name={`varieties.${index}.rootstockUsed`}
+            label="Rootstock Used"
+            options={rootstockOptions}
+          />
+
+          <SingleSelectInput
+            control={control}
+            name={`varieties.${index}.plantDensity`}
+            label="Plant Density"
+            options={densityOptions}
+          />
+
+          <FormInput
+            control={control}
+            name={`varieties.${index}.treesLessThan5Years`}
+            label="Trees (<5 Years)"
+            type="phone"
+          />
+
+          <FormInput
+            control={control}
+            name={`varieties.${index}.treesFiveToTenYears`}
+            label="Trees (5–10 Years)"
+            type="phone"
+          />
+
+          <FormInput
+            control={control}
+            name={`varieties.${index}.treesMoreThan10Years`}
+            label="Trees (>10 Years)"
+            type="phone"
+          />
+
+          {fields.length > 1 && (
+            <Pressable onPress={() => remove(index)}>
+              <Text style={{ color: "red", marginTop: 8 }}>Remove Variety</Text>
+            </Pressable>
+          )}
         </View>
       ))}
 
-      <TouchableOpacity
+      <Pressable
         onPress={() =>
-          append({ productName: "", stockQuantity: "", unit: null })
+          append({
+            varietyName: "",
+            numberOfTrees: "",
+            rootstockUsed: "",
+            plantDensity: "",
+            treesLessThan5Years: "",
+            treesFiveToTenYears: "",
+            treesMoreThan10Years: "",
+          })
         }
-        style={{
-          marginTop: 12,
-          backgroundColor: colors.primary,
-          paddingVertical: 10,
-          paddingHorizontal: 16,
-          borderRadius: 8,
-          alignSelf: "flex-start",
-        }}
       >
-        <CsText
-          style={{
-            color: colors.light,
-            fontWeight: "600",
-            fontSize: 14,
-          }}
-        >
-          + Add Variety
-        </CsText>
-      </TouchableOpacity> */}
-      {/*  */}
-      <SingleSelectInput
-        control={control}
-        name="rootstockUsed"
-        label="Rootstock Used"
-        options={rootstockOptions}
-        modalLabel="Rootstock Used"
-        error={errors.rootstock?.message}
-      />
-      <SingleSelectInput
-        control={control}
-        name="plantDensity"
-        label="Plant Density"
-        modalLabel="Plant Density"
-        options={densityOptions}
-        error={errors.plantDensity?.message}
-      />
-      <FormInput
-        control={control}
-        name="treesLessThan5Years"
-        label="treesLessThan5Years"
-        type="phone"
-        error={errors.totalTrees?.message}
-      />{" "}
-      <FormInput
-        control={control}
-        name="treesFiveToTenYears"
-        label="treesFiveToTenYears"
-        type="phone"
-        error={errors.totalTrees?.message}
-      />{" "}
-      <FormInput
-        control={control}
-        name="treesMoreThan10Years"
-        label="treesMoreThan10Years"
-        type="phone"
-        error={errors.totalTrees?.message}
-      />
-      {/* 
-      <RadioGroup
-        control={control}
-        name="treeAge"
-        label="Tree Age Distribution"
-        options={treeAgeOptions}
-        error={errors.treeAge}
-      /> */}
+        {/* <Text style={{ color: "green", fontWeight: "600" }}>
+          + Add Another Variety
+        </Text> */}
+      </Pressable>
     </View>
   );
 }

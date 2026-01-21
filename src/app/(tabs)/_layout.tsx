@@ -1,4 +1,3 @@
-
 import { Tabs } from "expo-router";
 import {
   Home,
@@ -25,6 +24,7 @@ export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const { roleMode, userId, userToken } = useAuth();
   const { data } = useProfileQuery(userId);
+  // if (!data) return <Loader />;
 
   const [pressKey, setPressKey] = useState(0);
   const [activeTab, setActiveTab] = useState<string>("index");
@@ -45,21 +45,16 @@ export default function TabLayout() {
         //   paddingBottom: insets.bottom + 50,
         // },
 
-       
         tabBarStyle: {
           position: "absolute",
-         
 
-          // Floating spacing from bottom
-          bottom: Platform.OS === "ios" ? Math.max(insets.bottom, 10) : 12,
+          bottom: Platform.OS === "ios" ? Math.max(insets.bottom, 10) : 0,
 
           height: 72,
-        
 
           backgroundColor: colors.bgColor,
           borderTopWidth: 0,
 
-          // Premium shadow
           shadowColor: "#000",
           shadowOpacity: 0.08,
           shadowRadius: 18,

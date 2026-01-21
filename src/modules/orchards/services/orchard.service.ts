@@ -53,23 +53,36 @@ export const getOrchardsByUser = async () =>
 //
 export const createOrchardVariety = async (data: any) => {
   const { data: res } = await axiosInstance.post(
-    `${CORE}/orchard/${data[0].orchardProfileId}/varieties/bulk`,
+    `${CORE}/orchard/${data.orchardProfileId}/varieties`,
     data,
   );
   return res;
 };
 
 export const updateOrchardVariety = async (data: any) => {
-  console.log(data, "data .......");
+  console.log(data.orchardProfileId, "data 0000");
 
   const { data: res } = await axiosInstance.put(
-    `${CORE}/orchard/${data.orchardProfileId}/varieties/${data.id}`,
+    `${CORE}/orchard/${data.orchardProfileId}/varieties/${Number(data.id)}`,
     data,
   );
   return res;
 };
 
-export const deleteOrchardVariety = async (id: string | number) => {
+export const deleteOrchardVariety = async ({
+  id,
+  varietyId,
+}: {
+  id: string | number;
+  varietyId: number;
+}) => {
+  const { data: res } = await axiosInstance.delete(
+    `${CORE}/orchard/${id}/varieties/${varietyId}`,
+  );
+  return res;
+};
+
+export const deleteAllVarieties = async (id: string | number) => {
   const { data: res } = await axiosInstance.delete(
     `${CORE}/orchard-variety/${id}`,
   );
@@ -204,7 +217,7 @@ export const updateInfrastructure = async (data: any) => {
 
 export const deleteInfrastructure = async (id: string | number) => {
   const { data: res } = await axiosInstance.delete(
-    `${CORE}/orchard-infra/${id}`,
+    `${CORE}/orchard/${id}/infrastructure`,
   );
   return res;
 };
