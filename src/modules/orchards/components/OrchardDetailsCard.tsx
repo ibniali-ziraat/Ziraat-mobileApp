@@ -1,4 +1,5 @@
 import CsText from "@/src/components/shared/CsText";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { PencilLine, Plus, Trash2 } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
@@ -29,7 +30,11 @@ export default function OrchardDetailsCard({
   const isEmpty = items.length === 0;
 
   return (
-    <View
+  <ScreenContent
+    
+   >
+    
+     <View
       className="mb-5 rounded-2xl border"
       style={{
         borderColor: colors.cardBorder,
@@ -131,5 +136,7 @@ export default function OrchardDetailsCard({
         )}
       </View>
     </View>
+ 
+  </ScreenContent>
   );
 }

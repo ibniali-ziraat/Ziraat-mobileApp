@@ -10,27 +10,31 @@ import {
   AlertCircle,
   BadgeCheck,
   Bug,
+  Building2,
   Calendar,
   CalendarClock,
   Droplet,
   FileText,
+  Hash,
   IndianRupee,
   Landmark,
   Leaf,
+  Map,
   MapPin,
   Phone,
+  Ruler,
   Shield,
   ShieldCheck,
   Smartphone,
-  Sprout,
   Store,
   ToolCase,
   TrendingUp,
   User,
+  User2,
   Users,
   Warehouse,
   Waves,
-  Wrench,
+  Wrench
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text } from "react-native";
@@ -260,7 +264,7 @@ export default function OrchardDetail() {
             {
               title: "Orchard Name",
               value: orchard?.orchardName,
-              icon: <Leaf size={20} color={colors.primary} />,
+              icon: <User2 size={20} color={colors.primary} />,
             },
             {
               title: "Area",
@@ -271,12 +275,12 @@ export default function OrchardDetail() {
                     ? `${orchard.marlas} marlas`
                     : "",
 
-              icon: <Sprout size={20} color={colors.primary} />,
+              icon: <Ruler size={20} color={colors.primary} />,
             },
             {
               title: "Ownership",
               value: orchard?.ownershipType,
-              icon: <Leaf size={20} color={colors.primary} />,
+              icon: <Map size={20} color={colors.primary} />,
             },
           ]}
           onEdit={() => goToSection("basicInformation")}
@@ -289,7 +293,7 @@ export default function OrchardDetail() {
                   {
                     title: "District",
                     value: orchard?.district,
-                    icon: <MapPin size={20} color={colors.primary} />,
+                    icon: <Building2 size={20} color={colors.primary} />,
                   },
                   {
                     title: "Tehsil",
@@ -299,7 +303,7 @@ export default function OrchardDetail() {
                   {
                     title: "Pin Code",
                     value: orchard.pinCode,
-                    icon: <MapPin size={20} color={colors.primary} />,
+                    icon: <Hash size={20} color={colors.primary} />,
                   },
                 ]
               : []
@@ -723,11 +727,14 @@ export default function OrchardDetail() {
       </ScrollView>
       <ScreenLayout>
         <Pressable
+         style={{backgroundColor:colors.light}}
           onPress={() => setDeleteWhole(true)}
-          className="mx-4 mb-4 flex-row items-center justify-center rounded-xl border border-red-500 py-4"
+          className="mx-4 mb-4 mt-6 flex-row items-center justify-center rounded-xl border border-red-500 py-4"
         >
           <AlertCircle size={20} color={colors.error} />
-          <Text className="ml-2 font-semibold text-red-500">
+          <Text
+          style={{color:colors.error}}
+          className="ml-2 font-semibold ">
             Delete Entire Orchard
           </Text>
         </Pressable>
