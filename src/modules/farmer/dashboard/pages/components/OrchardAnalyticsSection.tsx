@@ -1,8 +1,5 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
-import PrecipitationMap from "@/src/components/PrecipitationMap";
 import CsText from "@/src/components/shared/CsText";
-import Map from "@/src/components/shared/Map.native";
-import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
@@ -34,13 +31,10 @@ export default function OrchardAnalyticsSection({ orchards = [], admin }: any) {
 
   return (
     <View className="w-full" style={{ backgroundColor: colors.bgColor }}>
-      {/* ✅ Productivity */}
+     
       <View className="w-full mb-4">
         <ZiraatCard
-          width="100%"
-          height={openYield ? 120 : 100}
-          paddingHorizontal={1}
-          paddingVertical={1}
+         width="100%"  paddingHorizontal={1} paddingVertical={1}
         >
           <View className="flex-row justify-between mb-2">
             <CsText style={typography.Poppins_m_semibold} className="text-[14px]">
@@ -79,7 +73,7 @@ export default function OrchardAnalyticsSection({ orchards = [], admin }: any) {
         </ZiraatCard>
       </View>
 
-      {/* ✅ Graph */}
+
       <View className="w-full mb-4">
         <ZiraatCard width="100%" height={330} paddingHorizontal={1} paddingVertical={1}>
           <CsText
@@ -108,7 +102,8 @@ export default function OrchardAnalyticsSection({ orchards = [], admin }: any) {
             Action Plan (Next 7 Days)
           </CsText>
 
-          <ZiraatCard>
+          <ZiraatCard
+           width="100%"  paddingHorizontal={1} paddingVertical={1} >
             <View
               className="w-full rounded-xl  py-3 mb-3"
             >
@@ -130,7 +125,8 @@ export default function OrchardAnalyticsSection({ orchards = [], admin }: any) {
             </View>
           </ZiraatCard>
 
-          <ZiraatCard>
+          <ZiraatCard
+           width="100%"  paddingHorizontal={1} paddingVertical={1} className="mt-5">
             <View
               className="w-full rounded-xl py-3 mb-3"
             >
@@ -152,7 +148,8 @@ export default function OrchardAnalyticsSection({ orchards = [], admin }: any) {
           </ZiraatCard>
 
 
-          <ZiraatCard>
+          <ZiraatCard
+           width="100%"  paddingHorizontal={1} paddingVertical={1} className="mt-5">
             <View
               className="w-full rounded-xl py-3"
 

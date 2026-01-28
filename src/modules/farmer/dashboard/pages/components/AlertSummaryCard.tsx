@@ -10,32 +10,39 @@ export default function AlertSummaryCard({
   delay = 0,
 }: any) {
   return (
-    <View className="w-[49%] h-60 mb-4">
-      <ZiraatCard
-        width="100%"
-        paddingHorizontal={2}
-        paddingVertical={2}
-      >
-        <View className="h-full items-center justify-between">
-          {/* ICON */}
-          <View>{icon}</View>
+    <View className="w-full mb-3">
+      <ZiraatCard paddingHorizontal={1} paddingVertical={1}>
+        <View className="flex-row items-start">
 
-          {/* TITLE */}
-          <CsText className="text-[14px] font-semibold text-dark text-center">
-            {title}
-          </CsText>
+          {/* ICON / INDICATOR */}
+          <View
+            className="w-[10px] h-[10px] rounded-full items-center justify-center mr-3"
+          
+          >
+            {icon}
+          </View>
 
-          {/* VALUE */}
-          <CsText className="text-[18px] font-bold text-black text-center">
-            {value}
-          </CsText>
-
-          {/* SUBTITLE */}
-          {subtitle && (
-            <CsText className="text-sm text-dark text-center">
-              {subtitle}
+          {/* CONTENT */}
+          <View className="flex-1">
+            {/* TITLE */}
+            <CsText className="text-[18px] font-semibold text-dark">
+              {title}
             </CsText>
-          )}
+
+            {/* VALUE */}
+            {value && (
+              <CsText className="text-[12px] font-bold text-dark mt-1">
+                {value}
+              </CsText>
+            )}
+
+            {/* SUBTITLE */}
+            {subtitle && (
+              <CsText className="text-[15px] text-neutral mt-1">
+                {subtitle}
+              </CsText>
+            )}
+          </View>
         </View>
       </ZiraatCard>
     </View>

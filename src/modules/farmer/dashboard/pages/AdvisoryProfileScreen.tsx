@@ -1,7 +1,9 @@
 import CsText from "@/src/components/shared/CsText";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import {
   BookOpen,
   MessageCircle,
@@ -14,8 +16,6 @@ import { Image, ScrollView, View, useWindowDimensions } from "react-native";
 import kpis from "../../../../data/kpis.json";
 import tags from "../../../../data/participationTags.json";
 import recentActivities from "../../../../data/recentActivities.json";
-import { typography } from "@/src/constants/fonts/typography";
-import { ScreenContent } from "@/src/components/shared/ScreenContent";
 
 
 

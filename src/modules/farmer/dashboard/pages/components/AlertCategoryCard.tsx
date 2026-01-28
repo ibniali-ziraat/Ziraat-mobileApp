@@ -11,31 +11,41 @@ export default function AlertSummaryCard({
   delay = 0,
 }: any) {
   return (
-    <View className="w-[48%] h-48">
-      <ZiraatCard
-        width="100%"
-        paddingHorizontal={2}
-        paddingVertical={2}
-      >
-        <View className="h-20 items-center justify-between">
+    <View className="w-[48%] mb-4">
+      <ZiraatCard width="100%" paddingHorizontal={3} paddingVertical={3}>
+        <View className="items-center justify-between min-h-[160px]">
 
-          <View>{icon}</View>
+          {/* ICON */}
+     <View className="mb-2 w-[20px] h-[20px] items-center justify-center">
+  {icon}
+</View>
 
 
-          <CsText style={typography.Poppins_m_semibold} className="text-[16px] text-dark text-center">
+
+          {/* TITLE */}
+          <CsText
+            style={typography.Poppins_m_semibold}
+            className="text-[14px] text-dark text-center"
+          >
             {title}
           </CsText>
 
-
+          {/* VALUE */}
           {value && (
-            <CsText style={typography.Poppins_m_medium} className="text-[18px] text-dark text-center">
+            <CsText
+              style={typography.Poppins_l_semibold}
+              className="text-[22px] text-dark text-center mt-1"
+            >
               {value}
             </CsText>
           )}
 
-
+          {/* SUBTITLE */}
           {subtitle && (
-            <CsText style={typography.Poppins_m_semibold} className=" text-dark text-center">
+            <CsText
+              style={typography.Poppins_s_medium}
+              className="text-[12px] text-neutral text-center mt-1"
+            >
               {subtitle}
             </CsText>
           )}

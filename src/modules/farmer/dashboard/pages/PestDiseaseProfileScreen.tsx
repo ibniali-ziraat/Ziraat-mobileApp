@@ -1,13 +1,14 @@
-import CustomBarChart from "@/src/components/charts/CustomBarChart"
+import CustomBarChart from "@/src/components/charts/CustomBarChart";
 import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import observationsData from "@/src/data/observationsData.json";
 import { statTileData } from "@/src/data/statTileData";
 import ObservationCard from "@/src/modules/farmer/dashboard/pages/components/ObservationCard";
 import StatTile from "@/src/modules/farmer/dashboard/pages/components/StatTile";
-import observationsData from "@/src/data/observationsData.json";
 
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import {
   Activity,
   AlertCircle,
@@ -41,7 +42,8 @@ export default function PestDiseaseProfile() {
 
   return (
     <ScreenLayout >
-      <View className="flex-row flex-wrap justify-between">
+   <ScreenContent>
+       <View className="flex-row flex-wrap justify-between">
         {statTileData.map((item) => {
           const content = (
             <StatTile
@@ -144,6 +146,7 @@ export default function PestDiseaseProfile() {
           (Analytics integration coming soon)
         </CsText>
       </View>
+   </ScreenContent>
     </ScreenLayout>
   );
 }

@@ -109,6 +109,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
           alignItems: "center",
           borderRadius: 18,
           overflow: "hidden",
+         
         }}
       >
         {/* Background */}

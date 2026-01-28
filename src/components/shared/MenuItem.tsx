@@ -10,7 +10,7 @@ export default function MenuItem({ label, onPress }) {
       className="py-3 "
       style={{ borderBottomWidth: 0.2, borderBottomColor: colors.cardShadow }}
     >
-      <CsText style={[typography.Poppins_m_medium]} className=" text-dark">
+      <CsText style={[typography.Poppins_m_medium]} className=" text-black">
         {label}
       </CsText>
     </Pressable>
