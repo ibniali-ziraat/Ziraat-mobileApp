@@ -10,13 +10,13 @@ export default function MenuList() {
       <ScrollView style={{ flex: 1, padding: 16 }}>
         <SectionTitle title="E-Commerce" />
         <MenuItem
-          label="Marketplace"
+          label="Marketplace"menu
           onPress={() => router.push("/marketplace")}
         />
-        <MenuItem label="My Orders" onPress={() => router.push("/orders")} />
-        <MenuItem label="My Cart" onPress={() => router.push("/cart")} />
-        <MenuItem label="Wishlist" onPress={() => router.push("/wishlist")} />
-        <MenuItem label="Profile" onPress={() => router.push("/profile")} />
+        <MenuItem label="My Orders" onPress={() => router.push("/orders")}/>
+        <MenuItem label="My Cart" onPress={() => router.push("/cart")}/>
+        <MenuItem label="Wishlist" onPress={() => router.push("/wishlist")}/>
+        <MenuItem label="Profile" onPress={() => router.push("/profile")}/>
         <MenuItem
           label="Saved Addresses"
           onPress={() => router.push("/addresses")}
@@ -25,7 +25,7 @@ export default function MenuList() {
           label="Payment Methods"
           onPress={() => router.push("/payments")}
         />
-        <MenuItem label="Support" onPress={() => router.push("/support")} />
+        <MenuItem label="Support" onPress={() => router.push("/support")}/>
 
         {menuGroups.map((group) => (
           <View key={group.title} style={{ marginTop: 28 }}>

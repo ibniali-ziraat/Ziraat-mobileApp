@@ -1,13 +1,10 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
-import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
-import { useState } from "react";
-import { ImageBackground, View } from "react-native";
-import cardsDataJson from "../../../../data/cardsData.json";
-import EnhancedCard from "./components/EnhancedCard";
-import CsText from "@/src/components/shared/CsText";
+import { typography } from "@/src/constants/fonts/typography";
 import {
   Activity,
   AlertTriangle,
@@ -15,11 +12,13 @@ import {
   Droplets,
   Gauge,
   Leaf,
-  LineChart,
   Recycle,
-  Sprout,
+  Sprout
 } from "lucide-react-native";
-import { typography } from "@/src/constants/fonts/typography";
+import { useState } from "react";
+import { ImageBackground, View } from "react-native";
+import cardsDataJson from "../../../../data/cardsData.json";
+import EnhancedCard from "./components/EnhancedCard";
 
 const ICON_MAP: Record<string, any> = {
   Leaf,
@@ -41,7 +40,8 @@ export default function NutrientsProfileScreen() {
   return (
     <ScreenLayout>
 
-      <View className="overflow-hidden pb-6 rounded-xl">
+    <ScreenContent>
+        <View className="overflow-hidden pb-6 rounded-xl">
         <ImageBackground
           source={{ uri: singleHeaderImage }}
           className="w-full h-56 rounded-xl overflow-hidden"
@@ -87,6 +87,7 @@ export default function NutrientsProfileScreen() {
           <CsText className="text-center text-md mt-2">(pH, EC & NPK trend)</CsText>
         </ZiraatCard>
       </View>
+    </ScreenContent>
     </ScreenLayout>
   );
 }

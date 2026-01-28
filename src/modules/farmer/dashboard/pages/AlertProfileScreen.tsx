@@ -1,4 +1,3 @@
-import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
 import categoriesData from "../../../../data/alertCategoriesData.json";
 import summaryData from "../../../../data/alertSummaryData.json";
@@ -6,14 +5,15 @@ import timelineData from "../../../../data/alertTimelineData.json";
 
 import { View } from "react-native";
 
+import CsText from "@/src/components/shared/CsText";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { typography } from "@/src/constants/fonts/typography";
+import * as LucideIcons from "lucide-react-native";
 import AlertCategoryCard from "./components/AlertCategoryCard";
 import AlertSummaryCard from "./components/AlertSummaryCard";
 import AlertTimelineItem from "./components/AlertTimelineItem";
 import HeaderBanner from "./components/HeaderBanner";
-import CsText from "@/src/components/shared/CsText";
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import * as LucideIcons from "lucide-react-native";
-import { typography } from "@/src/constants/fonts/typography";
 
 export default function AlertsTrackingScreen() {
   const renderIcon = (item: any, size = 36) => {
@@ -27,12 +27,13 @@ export default function AlertsTrackingScreen() {
   };
 
   return (
-    <ScreenLayout className="flex-1 bg-light px-2">
-
+    <ScreenLayout className="flex-1 bg-light p-4">
+<ScreenContent>
 
       <HeaderBanner />
 
-      {/* Alert Summary */}
+     
+       {/* Alert Summary */}
       <CsText style={typography.Poppins_m_semibold} className="text-2xl  mb-2">Alert Summary</CsText>
       <View className="flex-row flex-wrap justify-between ">
         {summaryData.map((item) => (
@@ -71,6 +72,7 @@ export default function AlertsTrackingScreen() {
           />
         ))}
       </View>
+     </ScreenContent>
     </ScreenLayout>
   );
 }
