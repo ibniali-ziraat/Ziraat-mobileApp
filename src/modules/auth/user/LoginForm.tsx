@@ -5,7 +5,6 @@ import Heading from "@/src/components/shared/Heading";
 import { typography } from "@/src/constants/fonts/typography";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
-import { LoginSchema } from "@/src/schemas/login.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
@@ -13,7 +12,7 @@ import { useZodForm } from "../../../hooks/useZodForm";
 import { GoogleAuthButton } from "../components/GoogleAuthButton";
 
 export default function LoginForm() {
-  const { control, handleSubmit, formState } = useZodForm(LoginSchema);
+  const { control, handleSubmit, formState } = useZodForm();
   const { errors } = formState;
 
   const { setUserToken, setUserId } = useAuth();
