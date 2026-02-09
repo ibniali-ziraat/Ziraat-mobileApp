@@ -4,60 +4,135 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
 import { useSaveWishlist } from "@/src/hooks/useWishList";
 import { ChevronRight } from "lucide-react-native";
+import { useEffect, useState } from "react";
 import { View } from "react-native";
-import ProductCarousel from "../../components/shared/ProductCarousel";
-import { colors } from "../../constants/colors";
-import { imageMapper } from "../../data/imageMapper";
-import products from "../../data/products.json";
+
+import AllProductsCarousel from "./components/AllProductsCarousel";
+import FilterBottomSheet from "./components/FilterBottomSheet";
+import FilteredProductsCarousel from "./components/FilteredProductsCarousel";
+import ProductSearchBar from "./components/ProductSearchBar";
+
+import { useProductsData } from "./hooks/data/useProductsData";
+import { useProductSearch } from "./hooks/queries/useProductsQuery";
 
 export default function ProductScreen() {
-  console.log("PRODUCTS:", products);
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState(search);
+  const [filters, setFilters] = useState({});
+  const [filterOpen, setFilterOpen] = useState(false);
 
-  const sections = [
-    { title: "Popular pesticide for Crop Production", slice: [0, 8] },
-    { title: "Upcoming Pesticide Solution for Next Season", slice: [8, 15] },
-    { title: "Herbicide For effective Weed Control", slice: [15, 22] },
-    { title: "Fungicide For safeguard Your Crops", slice: [22, 29] },
-  ];
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedSearch(search), 500);
+    return () => clearTimeout(handler);
+  }, [search]);
 
-  const { mutate, error } = useSaveWishlist();
+  const { products: allProducts = [] } = useProductsData();
 
-  const handleAddToWishlist = (productId: number) => {
-    console.log("ADDING PRODUCT ID:", productId);
-    console.log("TYPE:", typeof productId);
+  const { data: filteredProductsData = {} } = useProductSearch({
+    query: debouncedSearch,
+    ...filters,
+  });
+  const filteredProducts = Array.isArray(filteredProductsData?.products)
+    ? filteredProductsData.products
+    : [];
 
-    mutate({
-      productId,
-      quantity: 1,
-    });
+  const { mutate } = useSaveWishlist();
+  const handleAddToWishlist = (productId: string | number) => {
+    mutate({ productId, quantity: 1 });
   };
 
-  if (error) {
-    console.log("Wishlist error:", error);
-  }
+  const isFilterActive = Object.keys(filters).length > 0 || debouncedSearch;
 
   return (
     <ScreenLayout>
       <ScreenContent>
-        {sections.map((section, index) => (
-          <View key={index}>
-            <View className="flex-row items-center mt-6 mb-4 bg">
-              <CsText
-                style={[typography.Poppins_m_semibold]}
-                className="text-dark"
-              >
-                {section.title}
-              </CsText>
-              <ChevronRight size={20} color={colors.dark} className="ml-1" />
-            </View>
+        <ProductSearchBar
+          search={search}
+          setSearch={setSearch}
+          onFilterPress={() => setFilterOpen(true)}
+        />
 
-            <ProductCarousel
-              items={products.slice(...section.slice)}
-              imageMapper={imageMapper}
-              onAddToWishlist={handleAddToWishlist}
-            />
-          </View>
-        ))}
+        {/* Filter Bottom Sheet */}
+        <FilterBottomSheet
+          visible={filterOpen}
+          onClose={() => setFilterOpen(false)}
+          onApplyFilters={(f) => {
+            setFilters(f);
+            setSearch(f.query || "");
+          }}
+        />
+
+        {isFilterActive ? (
+          filteredProducts.length > 0 ? (
+            <View className="mt-6">
+              <View className="flex-row items-center mb-4">
+                <CsText style={typography.Poppins_m_semibold}>
+                  Filtered Products
+                </CsText>
+                <ChevronRight size={20} />
+              </View>
+              <FilteredProductsCarousel
+                items={filteredProducts}
+                onAddToWishlist={handleAddToWishlist}
+              />
+            </View>
+          ) : (
+            <CsText className="mt-6" style={typography.Poppins_s_medium}>
+              No products found
+            </CsText>
+          )
+        ) : (
+          <>
+            <View className="mt-6">
+              <View className="flex-row items-center mb-4">
+                <CsText style={typography.Poppins_m_semibold}>
+                  All Products
+                </CsText>
+                <ChevronRight size={20} />
+              </View>
+              <AllProductsCarousel
+                items={allProducts}
+                onAddToWishlist={handleAddToWishlist}
+              />
+            </View>{" "}
+            <View className="mt-6">
+              <View className="flex-row items-center mb-4">
+                <CsText style={typography.Poppins_m_semibold}>
+                  All Products
+                </CsText>
+                <ChevronRight size={20} />
+              </View>
+              <AllProductsCarousel
+                items={allProducts}
+                onAddToWishlist={handleAddToWishlist}
+              />
+            </View>{" "}
+            <View className="mt-6">
+              <View className="flex-row items-center mb-4">
+                <CsText style={typography.Poppins_m_semibold}>
+                  All Products
+                </CsText>
+                <ChevronRight size={20} />
+              </View>
+              <AllProductsCarousel
+                items={allProducts}
+                onAddToWishlist={handleAddToWishlist}
+              />
+            </View>{" "}
+            <View className="mt-6">
+              <View className="flex-row items-center mb-4">
+                <CsText style={typography.Poppins_m_semibold}>
+                  All Products
+                </CsText>
+                <ChevronRight size={20} />
+              </View>
+              <AllProductsCarousel
+                items={allProducts}
+                onAddToWishlist={handleAddToWishlist}
+              />
+            </View>
+          </>
+        )}
       </ScreenContent>
     </ScreenLayout>
   );
