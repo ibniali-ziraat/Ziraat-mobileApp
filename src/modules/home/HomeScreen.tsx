@@ -3,14 +3,14 @@ import { useMemo } from "react";
 import { TouchableOpacity, View } from "react-native";
 
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
-import Loader from "@/src/components/shared/Loader";
-import ProductCarousel from "@/src/components/shared/ProductCarousel";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { imageMapper } from "@/src/data/imageMapper";
-import products from "@/src/data/products.json";
+
 import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
+
+import ProductCarousel from "@/src/components/shared/ProductCarousel";
+import { useProductsData } from "../products/hooks/data/useProductsData";
 import FarmOverviewChart from "./components/FarmOverviewChart";
 import FarmerTipsCard from "./components/FarmerTipsCard";
 import QuickActions from "./components/QuickActions";
@@ -18,59 +18,30 @@ import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
 
 export default function HomeScreen() {
-  const { coords, loading: locLoading, error: locError } = useLocation();
+  const { coords, loading: locLoading } = useLocation();
+  const { products, isLoading: productsLoading } = useProductsData();
 
-  const { data, isLoading } = useWeatherQuery({
+  const { data, isLoading: weatherLoading } = useWeatherQuery({
     lat: coords?.lat ?? 34.0837,
     lon: coords?.lon ?? 74.7973,
     asl: 1593,
   });
 
-  //
   const currentWeather = useMemo(() => {
     if (!data) return null;
-
     if (data.data_current) {
       return {
         tempC: data.data_current.temperature,
-        feelsLikeC: Math.round(data.data_current.temperature),
         condition: data.data_current.pictocode,
-        humidity: data.data_current.relativehumidity || 0,
-        windKph: Math.round(data.data_current.windspeed),
-        windDir: 0,
-        isDaylight: data.data_current.isdaylight,
         highTemp: Math.round(data.data_day.temperature_max[0]),
         lowTemp: Math.round(data.data_day.temperature_min[0]),
       };
     }
-
-    console.log(data, "the api data ");
-
-    const currentHour = new Date().getHours();
-
-    return {
-      tempC: data.data_1h.temperature[currentHour],
-      feelsLikeC: Math.round(data.data_1h.felttemperature[currentHour]),
-      condition: data.data_1h.pictocode[currentHour],
-      humidity: data.data_1h.relativehumidity[currentHour],
-      windKph: Math.round(data.data_1h.windspeed[currentHour]),
-      windDir: data.data_1h.winddirection[currentHour],
-      highTemp: Math.round(data.data_day.temperature_max[0]),
-      lowTemp: Math.round(data.data_day.temperature_min[0]),
-      stormRisk:
-        data.data_1h.convective_precipitation[currentHour] > 2 &&
-        data.data_1h.windspeed[currentHour] > 3
-          ? "High"
-          : "Low",
-    };
+    return null;
   }, [data]);
 
-  const sections = [
-    { title: "Top Pesticides for Healthy Crop Growth", slice: [0, 8] },
-  ];
-
-  if (locLoading || isLoading) {
-    return <Loader />;
+  if (locLoading || weatherLoading || productsLoading) {
+    return null; // Loader
   }
 
   return (
@@ -80,41 +51,26 @@ export default function HomeScreen() {
           <View className="flex-1 bg-white pt-4">
             <TouchableOpacity
               onPress={() =>
-                router.push({
-                  pathname: "/dashboards/(farmer)/weather-profile",
-                  // params: { weatherData: JSON.stringify(currentWeather) },
-                })
+                router.push("/dashboards/(farmer)/weather-profile")
               }
             >
-              {currentWeather ? (
-                <WeatherCard current={currentWeather} />
-              ) : (
-                <WeatherCard />
-              )}
+              <WeatherCard current={currentWeather} />
             </TouchableOpacity>
 
             <QuickActions />
 
-            {sections.map((section, index) => (
-              <View key={index} className="mb-6">
-                <SectionTitle title={section.title} icon="flask-outline" />
-                <ProductCarousel
-                  items={products.slice(...section.slice)}
-                  imageMapper={imageMapper}
-                />
-              </View>
-            ))}
+            <SectionTitle
+              title="Top Pesticides for Healthy Crop Growth"
+              icon="flask-outline"
+            />
 
-            <View className="mb-6">
-              <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
-              <FarmOverviewChart />
+            <ProductCarousel items={products.slice(0, 8)} />
 
-              <SectionTitle
-                title="Farmer Tips & Awareness"
-                icon="bulb-outline"
-              />
-              <FarmerTipsCard />
-            </View>
+            <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
+            <FarmOverviewChart />
+
+            <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
+            <FarmerTipsCard />
           </View>
         </AnimatedTabContent>
       </ScreenContent>
