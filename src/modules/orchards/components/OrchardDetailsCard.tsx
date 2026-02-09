@@ -42,7 +42,7 @@ export default function OrchardDetailsCard({
       }}
     >
       {/* HEADER */}
-      <View className="flex-row items-center justify-between px-4 pt-4">
+      <View className="flex-row items-center justify-between  pt-4">
         <View className="flex-row items-center gap-3">
           {/* Orchard marker */}
           <View
@@ -75,7 +75,7 @@ export default function OrchardDetailsCard({
       </View>
 
       {/* CONTENT */}
-      <View className="px-4 pb-4 pt-4">
+      <View className=" pb-4 pt-4">
         {isEmpty ? (
           <TouchableOpacity
             onPress={onAdd}

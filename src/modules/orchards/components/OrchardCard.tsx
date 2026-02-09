@@ -12,6 +12,7 @@ interface OrchardCardProps {
 export default function OrchardCard({ orchard }: OrchardCardProps) {
   return (
     <ScreenContent>
+     
       <View className="mb-3">
         <Pressable
           onPress={() =>

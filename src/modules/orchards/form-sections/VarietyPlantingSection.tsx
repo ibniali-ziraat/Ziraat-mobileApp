@@ -64,7 +64,7 @@ export default function VarietAndPlatingDetails({ control, errors }) {
   }, [fields.length, append]);
 
   return (
-    <View style={{ padding: 20 }}>
+    <View style={{ paddingVertical: 20}}>
       {fields.map((field, index) => (
         <View
           key={field.id}

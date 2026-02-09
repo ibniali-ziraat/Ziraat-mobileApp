@@ -20,7 +20,7 @@ export default function SearchBar({
     <View
       className="w-full pl-1"
       style={{
-        alignSelf: "stretch", // ✅ important for web
+        alignSelf: "stretch", 
       }}
     >
       <View
