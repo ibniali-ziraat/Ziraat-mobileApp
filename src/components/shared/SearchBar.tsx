@@ -23,7 +23,9 @@ export default function SearchBar({
       onPress={pressable ? onPress : undefined}
       disabled={!pressable}
       className="w-full pl-1"
-      style={{ alignSelf: "stretch" }}
+      style={{
+        alignSelf: "stretch", 
+      }}
     >
       <View
         pointerEvents={pressable ? "none" : "auto"} // 🔑 KEY
