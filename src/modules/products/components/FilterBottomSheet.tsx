@@ -69,7 +69,7 @@ export default function FilterBottomSheet({
         {/* Content */}
         <ScrollView className="mt-4">
           <FilterSection title="Brand">
-            {["Bayer", "Syngenta", "UPL"].map((item) => (
+            {["Kashmiri-Papermachie", "Textiles", "WoodCraft"].map((item) => (
               <FilterChip
                 key={item}
                 label={item}
@@ -81,7 +81,7 @@ export default function FilterBottomSheet({
 
           {/* Category */}
           <FilterSection title="Category">
-            {["Pesticide", "Herbicide", "Fungicide"].map((item) => (
+            {["HandiCraft", "Textiles", "WoodCraft"].map((item) => (
               <FilterChip
                 key={item}
                 label={item}
@@ -143,8 +143,8 @@ export default function FilterBottomSheet({
                 style={{ height: 40, width: "100%" }}
               >
                 <Picker.Item label="None" value={null} />
-                <Picker.Item label="Price: Low to High" value="price_asc" />
-                <Picker.Item label="Price: High to Low" value="price_desc" />
+                <Picker.Item label="Price: Low to High" value="price-asc" />
+                <Picker.Item label="Price: High to Low" value="price-desc" />
               </Picker>
             </View>
           </View>

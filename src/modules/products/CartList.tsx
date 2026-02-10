@@ -12,43 +12,24 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
-
-import {
-  useCartQuery,
-  useDeleteCratItem,
-  useUpdateCratItem,
-} from "@/src/hooks/useCartQuery";
-
-const USER_ID = "1";
+import { useCart } from "./hooks/data/useCart";
 
 const CartList = () => {
   const router = useRouter();
 
+  const { cart, isLoading, updateCartItem, removeFromCart } = useCart();
 
-  const { data, isLoading } = useCartQuery(USER_ID);
-  const cartItems = data ?? [];
-
-  console.log("CART LIST RESPONSE ", data);
-
-
-  const { mutateAsync: deleteItem } = useDeleteCratItem();
-  const { mutate: updateItem } = useUpdateCratItem();
-
-
-
-
-
-  const handleRemoveItem = (cartItemId: number) => {
-    deleteItem({ cartItemId })
-
+  const handleRemoveItem = async (id: number) => {
+    await removeFromCart({ id });
   };
 
-
   const handleQtyChange = (cartItemId: number, qty: number) => {
-
-    updateItem({ cartItemId, quantity: qty });
+    updateCartItem({
+      id: cartItemId,
+      quantity: qty,
+    });
   };
 
   const handleBuyNow = () => {
@@ -59,7 +40,7 @@ const CartList = () => {
     router.push("/Product");
   };
 
-  // ⏳ LOADING STATE
+  /* ================= LOADING ================= */
   if (isLoading) {
     return (
       <ScreenLayout>
@@ -70,8 +51,8 @@ const CartList = () => {
     );
   }
 
-  // 🛒 EMPTY CART
-  if (cartItems.length === 0) {
+  /* ================= EMPTY ================= */
+  if (!cart || cart.length === 0) {
     return (
       <ScreenLayout>
         <BackHeader title="My Cart" desc="Your selected items" />
@@ -84,7 +65,7 @@ const CartList = () => {
           />
 
           <CsText
-            style={[typography.Poppins_m_medium]}
+            style={typography.Poppins_m_medium}
             className="text-dark mb-2"
           >
             Your cart is empty
@@ -101,16 +82,16 @@ const CartList = () => {
     );
   }
 
-
+  /* ================= LIST ================= */
   return (
     <ScreenLayout scrollable={false}>
       <BackHeader
         title="My Cart"
-        desc={`${cartItems.length} item(s) in your cart`}
+        desc={`${cart.length} ${cart.length === 1 ? "item" : "items"} in your cart`}
       />
 
       <FlatList
-        data={cartItems}
+        data={cart}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
@@ -125,7 +106,7 @@ const CartList = () => {
         )}
       />
 
-      <View className="absolute bottom-0 left-0 right-0 bg-light px-4 pt-4 pb-8 ">
+      <View className="absolute bottom-0 left-0 right-0 bg-light px-4 pt-4 pb-8">
         <BuyNowButton title="Place Order" onPress={handleBuyNow} />
       </View>
     </ScreenLayout>

@@ -7,7 +7,7 @@ import SummaryCard from "@/src/components/shared/SummaryCard";
 import { usePayment } from "@/src/hooks/usePayment";
 import ProductCard from "@/src/modules/products/components/ProductCard";
 import ShippingOptionList from "@/src/modules/products/components/ShippingOptionList";
-import { useBuyProductMutation } from "@/src/modules/products/hooks/queries/useProductsQuery";
+import { useBuyProductMutation } from "@/src/modules/products/hooks/queries/products.queries";
 import { addToCartList } from "@/src/utils/cartlistStore";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";

@@ -2,24 +2,47 @@ import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
-import { useSaveWishlist } from "@/src/hooks/useWishList";
-import { ChevronRight } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
-import AllProductsCarousel from "./components/AllProductsCarousel";
 import FilterBottomSheet from "./components/FilterBottomSheet";
-import FilteredProductsCarousel from "./components/FilteredProductsCarousel";
 import ProductSearchBar from "./components/ProductSearchBar";
 
+import AllProductsCarousal from "./components/AllProductsCarousel";
 import { useProductsData } from "./hooks/data/useProductsData";
-import { useProductSearch } from "./hooks/queries/useProductsQuery";
+import { useWishlist } from "./hooks/data/useWishlist";
+import { useProductSearch } from "./hooks/queries/products.queries";
 
 export default function ProductScreen() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [filters, setFilters] = useState({});
   const [filterOpen, setFilterOpen] = useState(false);
+
+  const {
+    wishlist,
+    isWishlistBusy,
+    addToWishlist,
+    removeFromWishlist,
+    isAdding,
+    isRemoving,
+  } = useWishlist();
+
+  const handleWishlistToggle = async (productId: number) => {
+    const wishlistItem = wishlist.find((item) => item.productId === productId);
+    if (wishlistItem) {
+      await removeFromWishlist(wishlistItem.id);
+    } else {
+      await addToWishlist({ productId });
+    }
+  };
+  const handleAddToWishlist = async (productId: string) => {
+    await addToWishlist({ productId });
+  };
+
+  const handleRemoveFromWishlist = async (id: number) => {
+    await removeFromWishlist({ id });
+  };
 
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(search), 500);
@@ -32,106 +55,47 @@ export default function ProductScreen() {
     query: debouncedSearch,
     ...filters,
   });
+
   const filteredProducts = Array.isArray(filteredProductsData?.products)
     ? filteredProductsData.products
     : [];
 
-  const { mutate } = useSaveWishlist();
-  const handleAddToWishlist = (productId: string | number) => {
-    mutate({ productId, quantity: 1 });
-  };
-
-  const isFilterActive = Object.keys(filters).length > 0 || debouncedSearch;
+  const displayedProducts =
+    Object.keys(filters).length > 0 || debouncedSearch
+      ? filteredProducts
+      : allProducts;
 
   return (
     <ScreenLayout>
       <ScreenContent>
+        {/* Search & Filters */}
         <ProductSearchBar
           search={search}
           setSearch={setSearch}
           onFilterPress={() => setFilterOpen(true)}
         />
 
-        {/* Filter Bottom Sheet */}
         <FilterBottomSheet
           visible={filterOpen}
           onClose={() => setFilterOpen(false)}
-          onApplyFilters={(f) => {
-            setFilters(f);
-            setSearch(f.query || "");
-          }}
+          onApplyFilters={setFilters}
         />
 
-        {isFilterActive ? (
-          filteredProducts.length > 0 ? (
-            <View className="mt-6">
-              <View className="flex-row items-center mb-4">
-                <CsText style={typography.Poppins_m_semibold}>
-                  Filtered Products
-                </CsText>
-                <ChevronRight size={20} />
-              </View>
-              <FilteredProductsCarousel
-                items={filteredProducts}
-                onAddToWishlist={handleAddToWishlist}
-              />
-            </View>
-          ) : (
-            <CsText className="mt-6" style={typography.Poppins_s_medium}>
-              No products found
-            </CsText>
-          )
+        {/* Products Carousel */}
+        {displayedProducts.length > 0 ? (
+          <View className="mt-6">
+            <AllProductsCarousal
+              items={displayedProducts}
+              wishlistItems={wishlist}
+              onAddToWishlist={handleAddToWishlist}
+              onRemoveFromWishlist={handleRemoveFromWishlist}
+              isWishlistBusy={isWishlistBusy}
+            />
+          </View>
         ) : (
-          <>
-            <View className="mt-6">
-              <View className="flex-row items-center mb-4">
-                <CsText style={typography.Poppins_m_semibold}>
-                  All Products
-                </CsText>
-                <ChevronRight size={20} />
-              </View>
-              <AllProductsCarousel
-                items={allProducts}
-                onAddToWishlist={handleAddToWishlist}
-              />
-            </View>{" "}
-            <View className="mt-6">
-              <View className="flex-row items-center mb-4">
-                <CsText style={typography.Poppins_m_semibold}>
-                  All Products
-                </CsText>
-                <ChevronRight size={20} />
-              </View>
-              <AllProductsCarousel
-                items={allProducts}
-                onAddToWishlist={handleAddToWishlist}
-              />
-            </View>{" "}
-            <View className="mt-6">
-              <View className="flex-row items-center mb-4">
-                <CsText style={typography.Poppins_m_semibold}>
-                  All Products
-                </CsText>
-                <ChevronRight size={20} />
-              </View>
-              <AllProductsCarousel
-                items={allProducts}
-                onAddToWishlist={handleAddToWishlist}
-              />
-            </View>{" "}
-            <View className="mt-6">
-              <View className="flex-row items-center mb-4">
-                <CsText style={typography.Poppins_m_semibold}>
-                  All Products
-                </CsText>
-                <ChevronRight size={20} />
-              </View>
-              <AllProductsCarousel
-                items={allProducts}
-                onAddToWishlist={handleAddToWishlist}
-              />
-            </View>
-          </>
+          <CsText className="mt-6" style={typography.Poppins_s_medium}>
+            No products found
+          </CsText>
         )}
       </ScreenContent>
     </ScreenLayout>

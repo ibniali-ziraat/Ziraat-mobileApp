@@ -1,20 +1,22 @@
 import CsText from "@/src/components/shared/CsText";
 import RatingStars from "@/src/components/shared/RatingStars";
 import { typography } from "@/src/constants/fonts/typography";
-import { NormalizedProduct } from "@/src/domain/product/product.types";
 import { router } from "expo-router";
+import { Heart } from "lucide-react-native";
 import { Dimensions, FlatList, Image, Pressable, View } from "react-native";
 
-type Props = {
-  items: NormalizedProduct[];
-  onAddToWishlist?: (id: string) => void;
-};
-
-export default function AllProductsCarousal({ items, onAddToWishlist }: Props) {
-  console.log(items, "items in p carousal");
-
+export default function AllProductsCarousal({
+  items,
+  wishlistItems = [],
+  onAddToWishlist,
+  onRemoveFromWishlist,
+  isWishlistBusy,
+}) {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
+
+  const getWishlistItem = (productId: string) =>
+    wishlistItems.find((w: any) => String(w.productId) === String(productId));
 
   return (
     <FlatList
@@ -22,43 +24,73 @@ export default function AllProductsCarousal({ items, onAddToWishlist }: Props) {
       data={items}
       keyExtractor={(item) => item._id}
       showsHorizontalScrollIndicator={false}
-      renderItem={({ item }) => (
-        <Pressable
-          onPress={() =>
-            router.push({
-              pathname: "/products/single-product-details",
-              params: { productId: item._id },
-            })
-          }
-        >
+      renderItem={({ item }) => {
+        const wishlistItem = getWishlistItem(item._id);
+        const isWishlisted = Boolean(wishlistItem);
+
+        return (
           <View style={{ width: cardWidth }} className="mr-3">
-            <Image
-              source={{
-                uri:
-                  item.photos && item.photos.length > 0
-                    ? item.photos[0]
-                    : "https://via.placeholder.com/150", // fallback image
-              }}
-              className="rounded-2xl"
-              style={{ width: "100%", height: cardWidth }}
-            />
+            {/* ✅ IMAGE + HEART */}
+            <View className="relative">
+              {/* 🔹 ONLY THIS navigates */}
+              <Pressable
+                onPress={() =>
+                  router.push({
+                    pathname: "/products/single-product-details",
+                    params: { productId: item._id },
+                  })
+                }
+              >
+                <Image
+                  source={{ uri: item.photos?.[0] || item.thumbnailUrl }}
+                  className="rounded-2xl"
+                  style={{ width: "100%", height: cardWidth }}
+                />
+              </Pressable>
 
-            <CsText
-              style={typography.Poppins_m_semibold}
-              numberOfLines={1}
-              className="mt-2"
+              {/* ❤️ HEART — NO NAVIGATION */}
+              <Pressable
+                hitSlop={10}
+                disabled={isWishlistBusy}
+                onPress={() => {
+                  if (isWishlisted) {
+                    onRemoveFromWishlist?.(wishlistItem.id); // wishlist id
+                  } else {
+                    onAddToWishlist?.(item._id); // product id
+                  }
+                }}
+                className="absolute top-2 right-2 bg-white/90 p-2 rounded-full"
+              >
+                <Heart
+                  size={18}
+                  color={isWishlisted ? "#E11D48" : "#9CA3AF"}
+                  fill={isWishlisted ? "#E11D48" : "none"}
+                />
+              </Pressable>
+            </View>
+
+            {/* 🔹 TITLE → NAVIGATES */}
+            <Pressable
+              onPress={() =>
+                router.push({
+                  pathname: "/products/single-product-details",
+                  params: { productId: item._id },
+                })
+              }
             >
-              {item.title}
-            </CsText>
+              <CsText style={typography.Poppins_m_semibold} numberOfLines={1}>
+                {item.title || item.name}
+              </CsText>
 
-            <CsText style={typography.Poppins_s_medium}>
-              ₹{item.discountPrice ?? item.price}
-            </CsText>
+              <CsText style={typography.Poppins_s_medium}>
+                ₹{item.discountPrice ?? item.price}
+              </CsText>
+            </Pressable>
 
-            <RatingStars rating={item.rating} />
+            <RatingStars rating={item.rating || item.ratingAverage} />
           </View>
-        </Pressable>
-      )}
+        );
+      }}
     />
   );
 }

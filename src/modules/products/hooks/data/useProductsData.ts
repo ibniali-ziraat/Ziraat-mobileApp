@@ -1,5 +1,5 @@
 import { normalizeProduct } from "@/src/domain/product/product.normalizer";
-import { useProductsQuery } from "@/src/modules/products/hooks/queries/useProductsQuery";
+import { useProductsQuery } from "@/src/modules/products/hooks/queries/products.queries";
 import { useMemo } from "react";
 
 export const useProductsData = () => {
