@@ -20,6 +20,8 @@ export const useCart = () => {
   /* ================= ADD ================= */
   const addMutation = useAddCartItem();
   const addToCart = async (payload: any) => {
+    if (addMutation.isPending) return;
+
     await queryClient.cancelQueries({ queryKey: ["cart"] });
     const previous = queryClient.getQueryData(["cart"]);
 
@@ -41,6 +43,8 @@ export const useCart = () => {
   /* ================= REMOVE ================= */
   const deleteMutation = useDeleteCartItem();
   const removeFromCart = async ({ id }: { id: number }) => {
+    if (deleteMutation.isPending) return;
+
     await queryClient.cancelQueries({ queryKey: ["cart"] });
     const previous = queryClient.getQueryData(["cart"]);
 
@@ -62,6 +66,8 @@ export const useCart = () => {
   /* ================= UPDATE ================= */
   const updateMutation = useUpdateCartItem();
   const updateCartItem = async (payload: any) => {
+    if (updateMutation.isPending) return;
+
     await updateMutation.mutateAsync(payload);
     queryClient.invalidateQueries({ queryKey: ["cart"] });
   };
@@ -73,16 +79,34 @@ export const useCart = () => {
   const getCartItemByProduct = (productId: number) =>
     items.find((item: any) => item.productId === productId);
 
+  /* ================= LOADING STATES ================= */
+  const isLoadingCart = cartQuery.isLoading || cartQuery.isFetching;
+  const isAdding = addMutation.isPending;
+  const isRemoving = deleteMutation.isPending;
+  const isUpdating = updateMutation.isPending;
+
+  // Global cart busy flag
+  const isCartBusy = isLoadingCart || isAdding || isRemoving || isUpdating;
+
   return {
     cart: items,
 
-    isLoading: cartQuery.isLoading,
-    isFetching: cartQuery.isFetching,
+    /* Query states */
+    isLoadingCart,
+    isFetchingCart: cartQuery.isFetching,
     isError: cartQuery.isError,
 
+    /* Mutation states */
+    isAdding,
+    isRemoving,
+    isUpdating,
+    isCartBusy,
+
+    /* Helpers */
     isInCart,
     getCartItemByProduct,
 
+    /* Actions */
     addToCart,
     removeFromCart,
     updateCartItem,

@@ -5,27 +5,16 @@ import { router } from "expo-router";
 import { Heart } from "lucide-react-native";
 import { Dimensions, FlatList, Image, Pressable, View } from "react-native";
 
-// type Props = {
-//   items: NormalizedProduct[];
-//   onAddToWishlist?: (id: string) => void;
-// };
-
-// type Props = {
-//   items: NormalizedProduct[];
-//   onAddToWishlist?: (id: string) => void;
-//   isInWishlist?: (id: string) => boolean;
-// };
-
 export default function AllProductsCarousal({
   items,
   wishlistItems = [],
   onAddToWishlist,
   onRemoveFromWishlist,
+  isWishlistBusy,
 }) {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
 
-  /** 🔎 Find wishlist item by productId */
   const getWishlistItem = (productId: string) =>
     wishlistItems.find((w: any) => String(w.productId) === String(productId));
 
@@ -40,54 +29,66 @@ export default function AllProductsCarousal({
         const isWishlisted = Boolean(wishlistItem);
 
         return (
-          <Pressable
-            onPress={() =>
-              router.push({
-                pathname: "/products/single-product-details",
-                params: { productId: item._id },
-              })
-            }
-          >
-            <View style={{ width: cardWidth }} className="mr-3">
-              <View className="relative">
+          <View style={{ width: cardWidth }} className="mr-3">
+            {/* ✅ IMAGE + HEART */}
+            <View className="relative">
+              {/* 🔹 ONLY THIS navigates */}
+              <Pressable
+                onPress={() =>
+                  router.push({
+                    pathname: "/products/single-product-details",
+                    params: { productId: item._id },
+                  })
+                }
+              >
                 <Image
-                  source={{ uri: item.photos?.[0] }}
+                  source={{ uri: item.photos?.[0] || item.thumbnailUrl }}
                   className="rounded-2xl"
                   style={{ width: "100%", height: cardWidth }}
                 />
+              </Pressable>
 
-                <Pressable
-                  hitSlop={10}
-                  onPress={(e) => {
-                    e.stopPropagation();
+              {/* ❤️ HEART — NO NAVIGATION */}
+              <Pressable
+                hitSlop={10}
+                disabled={isWishlistBusy}
+                onPress={() => {
+                  if (isWishlisted) {
+                    onRemoveFromWishlist?.(wishlistItem.id); // wishlist id
+                  } else {
+                    onAddToWishlist?.(item._id); // product id
+                  }
+                }}
+                className="absolute top-2 right-2 bg-white/90 p-2 rounded-full"
+              >
+                <Heart
+                  size={18}
+                  color={isWishlisted ? "#E11D48" : "#9CA3AF"}
+                  fill={isWishlisted ? "#E11D48" : "none"}
+                />
+              </Pressable>
+            </View>
 
-                    if (isWishlisted) {
-                      onRemoveFromWishlist?.(wishlistItem.id); // ✅ wishlist id
-                    } else {
-                      onAddToWishlist?.(item._id); // ✅ product id
-                    }
-                  }}
-                  className="absolute top-2 right-2 bg-white/90 p-2 rounded-full"
-                >
-                  <Heart
-                    size={18}
-                    color={isWishlisted ? "#E11D48" : "#9CA3AF"}
-                    fill={isWishlisted ? "#E11D48" : "none"}
-                  />
-                </Pressable>
-              </View>
-
+            {/* 🔹 TITLE → NAVIGATES */}
+            <Pressable
+              onPress={() =>
+                router.push({
+                  pathname: "/products/single-product-details",
+                  params: { productId: item._id },
+                })
+              }
+            >
               <CsText style={typography.Poppins_m_semibold} numberOfLines={1}>
-                {item.title}
+                {item.title || item.name}
               </CsText>
 
               <CsText style={typography.Poppins_s_medium}>
                 ₹{item.discountPrice ?? item.price}
               </CsText>
+            </Pressable>
 
-              <RatingStars rating={item.rating} />
-            </View>
-          </Pressable>
+            <RatingStars rating={item.rating || item.ratingAverage} />
+          </View>
         );
       }}
     />

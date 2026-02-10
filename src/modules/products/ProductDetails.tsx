@@ -30,7 +30,15 @@ export default function ProductDetails() {
 
   const { data: product, isLoading, isError } = useProductByIdQuery(productId);
 
-  const { cart, addToCart, removeFromCart } = useCart();
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    isCartBusy,
+    isAdding,
+    isRemoving,
+    updateCartItem,
+  } = useCart();
 
   /* ================= DERIVED ================= */
   const cartItem = cart.find((item) => item.productId === product?.id);
@@ -120,6 +128,7 @@ export default function ProductDetails() {
         isInCart={isInCart}
         onAddToCart={handleAddToCart}
         onRemoveFromCart={handleRemoveFromCart}
+        isCartBusy={isCartBusy}
       />
     </>
   );

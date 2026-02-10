@@ -6,18 +6,32 @@ import { View } from "react-native";
 type Props = {
   product: any;
   quantity: number;
+  isInCart: boolean;
+  isCartBusy: boolean;
   onAddToCart: () => void;
+  onRemoveFromCart: () => void;
 };
+
 export default function ProductStickyBar({
   product,
   quantity,
   isInCart,
+  isCartBusy,
   onAddToCart,
   onRemoveFromCart,
 }: Props) {
+  const handleCartPress = () => {
+    if (isInCart) {
+      onRemoveFromCart();
+    } else {
+      onAddToCart();
+    }
+  };
+
   return (
     <View className="absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg">
       <View className="flex-row">
+        {/* Buy Now */}
         <View className="flex-1 mr-2">
           <BuyNowButton
             onPress={() =>
@@ -32,20 +46,14 @@ export default function ProductStickyBar({
           />
         </View>
 
+        {/* Single Add/Remove Button */}
         <View className="flex-1">
-          {isInCart ? (
-            <AddToCartButton
-              title="Remove from Cart"
-              onPress={onRemoveFromCart}
-              variant="danger"
-            />
-          ) : (
-            <AddToCartButton
-              title="Add to Cart"
-              onPress={onAddToCart}
-              disabled={!product.isAllowToOrder}
-            />
-          )}
+          <AddToCartButton
+            title={isInCart ? "Remove from Cart" : "Add to Cart"}
+            onPress={handleCartPress}
+            disabled={isCartBusy}
+            variant={isInCart ? "danger" : "primary"} // optional styling
+          />
         </View>
       </View>
     </View>

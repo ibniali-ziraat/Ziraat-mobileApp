@@ -5,9 +5,6 @@ import {
   useSaveWishlist,
 } from "../queries/wishlist.queries";
 
-/**
- * SINGLE SOURCE OF TRUTH — WISHLIST
- */
 export const useWishlist = () => {
   const queryClient = useQueryClient();
 
@@ -21,22 +18,14 @@ export const useWishlist = () => {
   /* ================= ADD ================= */
   const addMutation = useSaveWishlist();
 
-  const addToWishlist = async (payload: any) => {
-    const previous = queryClient.getQueryData(["wishlist"]);
-
-    queryClient.setQueryData(["wishlist"], (old: any) => ({
-      ...old,
-      items: {
-        ...(old?.items ?? {}),
-        data: [...(old?.items?.data ?? []), payload],
-      },
-    }));
+  const addToWishlist = async (payload: {
+    productId: number;
+    quantity: number;
+  }) => {
+    if (addMutation.isPending) return;
 
     try {
       await addMutation.mutateAsync(payload);
-    } catch (e) {
-      queryClient.setQueryData(["wishlist"], previous);
-      throw e;
     } finally {
       queryClient.invalidateQueries({ queryKey: ["wishlist"] });
     }
@@ -45,39 +34,55 @@ export const useWishlist = () => {
   /* ================= REMOVE ================= */
   const deleteMutation = useDeleteWishlist();
 
-  const removeFromWishlist = async (productId: number) => {
-    const previous = queryClient.getQueryData(["wishlist"]);
-
-    queryClient.setQueryData(["wishlist"], (old: any) => ({
-      ...old,
-      items: {
-        ...(old?.items ?? {}),
-        data: old?.items?.data?.filter(
-          (item: any) => item.productId !== productId,
-        ),
-      },
-    }));
+  const removeFromWishlist = async (wishlistItemId?: number) => {
+    if (!wishlistItemId || deleteMutation.isPending) return;
 
     try {
-      await deleteMutation.mutateAsync(productId); // ✅ FIX
-    } catch (e) {
-      queryClient.setQueryData(["wishlist"], previous);
-      throw e;
+      await deleteMutation.mutateAsync(wishlistItemId);
     } finally {
       queryClient.invalidateQueries({ queryKey: ["wishlist"] });
     }
   };
 
-  const isInWishlist = (productId: string) =>
+  /* ================= HELPERS ================= */
+
+  const isInWishlist = (productId: string | number) =>
     items.some((item: any) => String(item.productId) === String(productId));
+
+  const getWishlistItemId = (productId: string | number) => {
+    const match = items.find(
+      (item: any) => String(item.productId) === String(productId),
+    );
+    return match?.id;
+  };
+
+  /* ================= LOADING STATES ================= */
+
+  const isLoadingWishlist = wishlistQuery.isLoading || wishlistQuery.isFetching;
+  const isAdding = addMutation.isPending;
+  const isRemoving = deleteMutation.isPending;
+
+  // Global loading (ANY wishlist action)
+  const isWishlistBusy = isLoadingWishlist || isAdding || isRemoving;
 
   return {
     wishlist: items,
-    isLoading: wishlistQuery.isLoading,
-    isFetching: wishlistQuery.isFetching,
+
+    /* Query states */
+    isLoadingWishlist,
+    isFetchingWishlist: wishlistQuery.isFetching,
     isError: wishlistQuery.isError,
 
+    /* Mutation states */
+    isAdding,
+    isRemoving,
+    isWishlistBusy,
+
+    /* Helpers */
     isInWishlist,
+    getWishlistItemId,
+
+    /* Actions */
     addToWishlist,
     removeFromWishlist,
   };

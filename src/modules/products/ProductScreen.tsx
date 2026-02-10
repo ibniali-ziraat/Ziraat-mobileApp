@@ -5,11 +5,10 @@ import { typography } from "@/src/constants/fonts/typography";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 
-import AllProductsCarousel from "./components/AllProductsCarousel";
 import FilterBottomSheet from "./components/FilterBottomSheet";
-import FilteredProductsCarousel from "./components/FilteredProductsCarousel";
 import ProductSearchBar from "./components/ProductSearchBar";
 
+import AllProductsCarousal from "./components/AllProductsCarousel";
 import { useProductsData } from "./hooks/data/useProductsData";
 import { useWishlist } from "./hooks/data/useWishlist";
 import { useProductSearch } from "./hooks/queries/products.queries";
@@ -20,8 +19,23 @@ export default function ProductScreen() {
   const [filters, setFilters] = useState({});
   const [filterOpen, setFilterOpen] = useState(false);
 
-  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const {
+    wishlist,
+    isWishlistBusy,
+    addToWishlist,
+    removeFromWishlist,
+    isAdding,
+    isRemoving,
+  } = useWishlist();
 
+  const handleWishlistToggle = async (productId: number) => {
+    const wishlistItem = wishlist.find((item) => item.productId === productId);
+    if (wishlistItem) {
+      await removeFromWishlist(wishlistItem.id);
+    } else {
+      await addToWishlist({ productId });
+    }
+  };
   const handleAddToWishlist = async (productId: string) => {
     await addToWishlist({ productId });
   };
@@ -46,11 +60,15 @@ export default function ProductScreen() {
     ? filteredProductsData.products
     : [];
 
-  const isFilterActive = Object.keys(filters).length > 0 || debouncedSearch;
+  const displayedProducts =
+    Object.keys(filters).length > 0 || debouncedSearch
+      ? filteredProducts
+      : allProducts;
 
   return (
     <ScreenLayout>
       <ScreenContent>
+        {/* Search & Filters */}
         <ProductSearchBar
           search={search}
           setSearch={setSearch}
@@ -63,29 +81,21 @@ export default function ProductScreen() {
           onApplyFilters={setFilters}
         />
 
-        {isFilterActive ? (
-          filteredProducts.length > 0 ? (
-            <View className="mt-6">
-              <FilteredProductsCarousel
-                items={filteredProducts}
-                onAddToWishlist={handleWishlistToggle}
-                isInWishlist={isInWishlist}
-              />
-            </View>
-          ) : (
-            <CsText className="mt-6" style={typography.Poppins_s_medium}>
-              No products found
-            </CsText>
-          )
-        ) : (
+        {/* Products Carousel */}
+        {displayedProducts.length > 0 ? (
           <View className="mt-6">
-            <AllProductsCarousel
-              items={allProducts}
+            <AllProductsCarousal
+              items={displayedProducts}
               wishlistItems={wishlist}
               onAddToWishlist={handleAddToWishlist}
               onRemoveFromWishlist={handleRemoveFromWishlist}
+              isWishlistBusy={isWishlistBusy}
             />
           </View>
+        ) : (
+          <CsText className="mt-6" style={typography.Poppins_s_medium}>
+            No products found
+          </CsText>
         )}
       </ScreenContent>
     </ScreenLayout>

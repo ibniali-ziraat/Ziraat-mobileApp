@@ -123,9 +123,9 @@ export default function FarmerTipsCard() {
                   </View>
 
                   <CsText 
-                  style={[typography.Poppins_s_medium]}
+                  style={[typography.Poppins_s_medium,]}
                   
-                  className="ml-3  text-dark ">
+                  className="ml-3   ">
                     {tip.title}
                  </CsText>
                 </View>
@@ -147,7 +147,9 @@ export default function FarmerTipsCard() {
 
                   {/* Weather Warning */}
                   {warning && (
-                    <CsText className="text-xs text-error mt-2">{warning}</CsText>
+                    <CsText 
+                    style={{color:colors.error}}
+                    className="text-xs  mt-2">{warning}</CsText>
                   )}
 
                   
