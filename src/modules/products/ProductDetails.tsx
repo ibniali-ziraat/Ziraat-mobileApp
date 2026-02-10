@@ -21,16 +21,39 @@ import ProductFaq from "@/src/components/shared/ProductFaq";
 import Review from "@/src/components/shared/Review";
 import faqData from "../../data/Faq.json";
 
-import { useCartItem } from "@/src/hooks/useCartQuery";
-import { useProductByIdQuery } from "./hooks/queries/useProductsQuery";
+import { useCart } from "./hooks/data/useCart";
+import { useProductByIdQuery } from "./hooks/queries/products.queries";
 
 export default function ProductDetails() {
   const { productId } = useLocalSearchParams();
-  const { mutateAsync: save } = useCartItem();
-  const { data: product, isLoading, isError } = useProductByIdQuery(productId);
-
   const [quantity, setQuantity] = useState(1);
 
+  const { data: product, isLoading, isError } = useProductByIdQuery(productId);
+
+  const { cart, addToCart, removeFromCart } = useCart();
+
+  /* ================= DERIVED ================= */
+  const cartItem = cart.find((item) => item.productId === product?.id);
+
+  const isInCart = Boolean(cartItem);
+
+  /* ================= HANDLERS ================= */
+  const handleAddToCart = async () => {
+    if (!product) return;
+
+    await addToCart({
+      productId: product.id,
+      variationName: "",
+      quantity,
+    });
+  };
+
+  const handleRemoveFromCart = async () => {
+    if (!cartItem) return;
+    await removeFromCart({ id: cartItem.id });
+  };
+
+  /* ================= LOADING ================= */
   if (isLoading) {
     return (
       <ScreenLayout>
@@ -39,6 +62,7 @@ export default function ProductDetails() {
     );
   }
 
+  /* ================= ERROR ================= */
   if (isError || !product) {
     return (
       <ScreenLayout>
@@ -49,14 +73,7 @@ export default function ProductDetails() {
     );
   }
 
-  const handleAddToCart = async () => {
-    await save({
-      productId: product.id,
-      variationName: "",
-      quantity,
-    });
-  };
-
+  /* ================= UI ================= */
   return (
     <>
       <ScreenLayout>
@@ -73,7 +90,6 @@ export default function ProductDetails() {
                 <ProductPriceCard product={product} />
                 <ProductMeta product={product} />
 
-                {/* 🔢 QUANTITY */}
                 <ProductQuantitySelector
                   quantity={quantity}
                   setQuantity={setQuantity}
@@ -101,7 +117,9 @@ export default function ProductDetails() {
       <ProductStickyBar
         product={product}
         quantity={quantity}
+        isInCart={isInCart}
         onAddToCart={handleAddToCart}
+        onRemoveFromCart={handleRemoveFromCart}
       />
     </>
   );

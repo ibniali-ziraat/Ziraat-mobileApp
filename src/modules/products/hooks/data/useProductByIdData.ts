@@ -1,6 +1,6 @@
 import { normalizeSingleProduct } from "@/src/domain/product/product.normalizer";
 import { useMemo } from "react";
-import { useProductByIdQuery } from "../queries/useProductsQuery";
+import { useProductByIdQuery } from "../queries/products.queries";
 
 export const useProductByIdData = (productId?: string | string[]) => {
   const query = useProductByIdQuery(productId);

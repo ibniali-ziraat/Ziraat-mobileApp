@@ -8,11 +8,12 @@ type Props = {
   quantity: number;
   onAddToCart: () => void;
 };
-
 export default function ProductStickyBar({
   product,
   quantity,
+  isInCart,
   onAddToCart,
+  onRemoveFromCart,
 }: Props) {
   return (
     <View className="absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg">
@@ -32,10 +33,19 @@ export default function ProductStickyBar({
         </View>
 
         <View className="flex-1">
-          <AddToCartButton
-            onPress={onAddToCart}
-            disabled={!product.isAllowToOrder}
-          />
+          {isInCart ? (
+            <AddToCartButton
+              title="Remove from Cart"
+              onPress={onRemoveFromCart}
+              variant="danger"
+            />
+          ) : (
+            <AddToCartButton
+              title="Add to Cart"
+              onPress={onAddToCart}
+              disabled={!product.isAllowToOrder}
+            />
+          )}
         </View>
       </View>
     </View>
