@@ -10,6 +10,7 @@ import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 
 import ProductCarousel from "@/src/components/shared/ProductCarousel";
+import { colors } from "@/src/constants/colors";
 import { useProductsData } from "../products/hooks/data/useProductsData";
 import FarmOverviewChart from "./components/FarmOverviewChart";
 import FarmerTipsCard from "./components/FarmerTipsCard";
@@ -48,7 +49,9 @@ export default function HomeScreen() {
     <ScreenLayout>
       <ScreenContent>
         <AnimatedTabContent>
-          <View className="flex-1 bg-white pt-4">
+          <View
+          style={{backgroundColor:colors.light}}
+           className="flex-1  pt-4">
             <TouchableOpacity
               onPress={() =>
                 router.push("/dashboards/(farmer)/weather-profile")
@@ -61,12 +64,16 @@ export default function HomeScreen() {
 
             <SectionTitle
               title="Top Pesticides for Healthy Crop Growth"
-              icon="flask-outline"
+            icon="cube-outline"       
+
             />
 
             <ProductCarousel items={products.slice(0, 8)} />
 
-            <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
+            <SectionTitle
+             
+             title="Farm Overview"
+              icon="stats-chart-outline" />
             <FarmOverviewChart />
 
             <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
