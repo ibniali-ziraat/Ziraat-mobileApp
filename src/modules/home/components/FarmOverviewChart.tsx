@@ -73,6 +73,7 @@ export default function FarmOverviewChart() {
         shadowRadius: 8,
         elevation: 2,
         marginBottom: 18,
+        marginTop:6,
       }}
     >
       {/* ---------------------------------------------- */}
