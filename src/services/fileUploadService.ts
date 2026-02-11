@@ -1,28 +1,46 @@
 import axiosInstance from "../api/client/axiosInstance";
 
-export const uploadFile = async ({ file, UserType, UserId, FileCategory }) => {
-  console.log(file, "file...");
-
+// uploadFile.ts
+export const uploadFile = async ({
+  file,
+  UserType,
+  UserId,
+  FileCategory,
+}: {
+  file: { uri: string; name: string; mimeType: string };
+  UserType: string;
+  UserId: string;
+  FileCategory: string;
+}) => {
   const formData = new FormData();
 
+  // The key must be "File" (case sensitive) to match your backend
   formData.append("File", {
     uri: file.uri,
     name: file.name,
-    type: file.mimeType || "application/octet-stream",
-  });
+    type: file.mimeType,
+  } as any);
+
   formData.append("UserType", UserType);
-  formData.append("UserId", UserId);
   formData.append("FileCategory", FileCategory);
+  formData.append("UserId", UserId.toString()); 
 
   return axiosInstance.post("/api/FileUpload/upload", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
-    transformRequest: (data) => {
-      return data; // IMPORTANT: prevent Axios from transforming FormData
-    },
   });
 };
+
+
+
+
+
+
+
+
+
+
 
 export const deleteUploadedFile = async ({ blobName }) =>
   (
@@ -30,3 +48,22 @@ export const deleteUploadedFile = async ({ blobName }) =>
       blobName,
     })
   ).data;
+
+
+  interface UpdateProfilePayload {
+  id: string | number;
+  fullName?: string;
+  email?: string;
+  phone?: string;
+  age?: number;
+  gender?: string;
+  profilePic?: string;
+  [key: string]: any;
+}
+
+export const updateProfileSection = async (payload: UpdateProfilePayload) => {
+  return await axiosInstance.put(
+    `/api/core/userProfile/${payload.id}`, // URL ID
+    payload // Body ID
+  );
+};

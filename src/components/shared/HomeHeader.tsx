@@ -6,7 +6,7 @@ import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
 import { Bell } from "lucide-react-native";
 import React from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import CsText from "./CsText";
 import { ScreenContent } from "./ScreenContent";
 
@@ -29,7 +29,7 @@ const HomeHeader = () => {
           <CsText
             style={[{ color: colors.dark }, typography.Poppins_m_regular]}
           >
-            {title}
+            {title.toUpperCase()}
           </CsText>
         </View>
 
@@ -42,12 +42,16 @@ const HomeHeader = () => {
             <Bell size={24} color={colors.secondary} />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push(ROUTES.USER.PROFILE)}>
-            <Image
-              source={{ uri: "https://i.pravatar.cc/100?img=2" }}
-              className="w-10 h-10 rounded-full"
-            />
-          </TouchableOpacity>
+         <TouchableOpacity onPress={() => router.push(ROUTES.USER.PROFILE)}>
+
+    <View 
+      className="w-10 h-10 rounded-full items-center justify-center bg-secondary"
+    >
+      <CsText className="text-white font-bold uppercase text-lg">
+        {data?.fullName ? data.fullName.charAt(0) : "U"}
+      </CsText>
+    </View>
+</TouchableOpacity>
         </View>
       </View>
     </ScreenContent>

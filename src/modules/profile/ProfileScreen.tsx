@@ -56,7 +56,7 @@ export default function UserProfileScreen() {
   const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data: profileData } = useProfileQuery(userId);
+  const { data: profileData , refetch} = useProfileQuery(userId);
   console.log(profileData, "profileData......");
 
   const { data: addressData } = useAddressQuery(userProfileId);
@@ -121,10 +121,11 @@ export default function UserProfileScreen() {
         onPress={() => router.push(ROUTES.TABS.HOME)}
       />
       <ScreenContent>
-        <ProfileTopHeader
-          profilePic={profileData?.profilePic}
-          fullName={profileData?.fullName}
-        />
+<ProfileTopHeader
+  profilePic={profileData?.profilePic}
+  fullName={profileData?.fullName}
+  profileData={profileData} // <--- Pass the WHOLE object here
+/>
         {progress < 100 && (
           <ProfileProgressBar
             progress={progress}
