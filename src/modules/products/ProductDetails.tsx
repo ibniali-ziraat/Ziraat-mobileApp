@@ -21,6 +21,7 @@ import ProductFaq from "@/src/components/shared/ProductFaq";
 import Review from "@/src/components/shared/Review";
 import faqData from "../../data/Faq.json";
 
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useCart } from "./hooks/data/useCart";
 import { useProductByIdQuery } from "./hooks/queries/products.queries";
 
@@ -54,11 +55,13 @@ export default function ProductDetails() {
       variationName: "",
       quantity,
     });
+    toast.success("Added to cart");
   };
 
   const handleRemoveFromCart = async () => {
     if (!cartItem) return;
     await removeFromCart({ id: cartItem.id });
+    toast.success("Removed from cart");
   };
 
   /* ================= LOADING ================= */
