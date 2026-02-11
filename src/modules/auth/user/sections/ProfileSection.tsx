@@ -44,7 +44,7 @@ export default function ProfileSection({
           name="phone"
           label="Mobile Number"
           error={errors.phone?.message}
-          type="phone"
+          // type="phone"
         />
       )}
 

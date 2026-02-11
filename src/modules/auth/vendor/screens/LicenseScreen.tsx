@@ -27,6 +27,7 @@ export default function LicenseScreen() {
 
   const { data } = useVendorLicenseQuery(vendorProfileId);
   const { mutateAsync: save, isPending: isSaving } = useVendorLicenseMutation();
+
   const { mutateAsync: update, isPending: isUpdating } =
     useVendorLicenseUpdateMutation();
 
@@ -118,8 +119,8 @@ export default function LicenseScreen() {
       // ----------------------------------
       if (values.licenseCopyUrl && !values.licenseCopyUrl.isRemote) {
         const uploadRes = await uploadFileAsync({
-          file: values.licenseCopyUrl,
-          UserType: "supplier",
+          yUrl,
+          UserType: "supplfile: values.licenseCopier",
           UserId: vendorProfileId,
           FileCategory: "documents",
         });

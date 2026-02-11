@@ -5,13 +5,16 @@ import { Feather } from "@expo/vector-icons";
 import { Image, TouchableOpacity, View } from "react-native";
 
 export default function ProfileHeader({ data, onEdit }) {
+
+  console.log(data, "data at profile header");
+  
   return (
     <View className="items-center mb-6">
       {/* Profile Image */}
       <View className="relative mb-4">
         <Image
           source={{
-            uri: data?.profilePic || "https://placehold.co/200x200",
+            uri: data?.profilePic || "",
           }}
           className="w-28 h-28 rounded-full"
           style={{

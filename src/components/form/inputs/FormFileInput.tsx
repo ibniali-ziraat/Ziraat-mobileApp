@@ -1,5 +1,6 @@
 import { colors } from "@/src/constants/colors"; // Import root colors
 import { FormFieldProps } from "@/src/types/formFieldProps";
+import { showErrorToast } from "@/src/utils/toast"; // adjust path if needed
 import * as DocumentPicker from "expo-document-picker";
 import { Eye, Upload, X } from "lucide-react-native";
 import { useState } from "react";
@@ -8,6 +9,7 @@ import { TouchableOpacity, View } from "react-native";
 import { HelperText } from "react-native-paper";
 import CsText from "../../shared/CsText";
 import FilePreviewModal from "../../shared/FilePreviewModal";
+
 
 export default function FormFileInput({
   control,
@@ -37,21 +39,16 @@ export default function FormFileInput({
   };
 
   // Function to handle file preview (only for images)
-  const previewFile = (fileUri) => {
-    if (!fileUri) return;
-    const fileExtension = fileUri.split(".").pop()?.toLowerCase();
-    if (
-      fileExtension === "jpg" ||
-      fileExtension === "jpeg" ||
-      fileExtension === "png" ||
-      fileExtension === "gif"
-    ) {
-      setImageUri(fileUri); // Set the image URI to show in modal
-      setIsModalVisible(true); // Show modal
-    } else {
-      alert("File type not supported for preview");
-    }
-  };
+ const previewFile = (file: any) => {
+  if (!file?.uri) return;
+
+  if (file.mimeType?.startsWith("image/")) {
+    setImageUri(file.uri);
+    setIsModalVisible(true);
+  } else {
+    showErrorToast("Preview is available only for image files");
+  }
+};
 
   const closeModal = () => {
     setIsModalVisible(false); // Close the modal
@@ -107,8 +104,7 @@ export default function FormFileInput({
                 {hasFile ? (
                   <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity
-                      onPress={() => previewFile(value.uri)}
-                      style={{ marginRight: 14 }}
+onPress={() => previewFile(value)}                      style={{ marginRight: 14 }}
                     >
                       <Eye size={22} color={colors.primary} />
                     </TouchableOpacity>
@@ -130,21 +126,15 @@ export default function FormFileInput({
             </View>
 
             {/* ERROR TEXT (only if required) */}
-            {showError && (
-              <HelperText
-                type="error"
-                visible
-                style={{
-                  color: colors.error,
-                  paddingVertical: 0,
-                  paddingBottom: 0,
-                  marginTop: 2,
-                  marginBottom: 0,
-                }}
-              >
-                Required Field
-              </HelperText>
-            )}
+          {(fieldError || error) && (
+  <HelperText
+    type="error"
+    visible
+    style={{ color: colors.error, marginTop: 2 }}
+  >
+    {fieldError?.message || error}
+  </HelperText>
+)}
 
             {/* File preview modal */}
             <FilePreviewModal
