@@ -1,6 +1,14 @@
 import CsText from "@/src/components/shared/CsText";
+import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { View } from "react-native";
+import {
+  CalendarDays,
+  Leaf,
+  Ruler,
+  User
+} from "lucide-react-native";
+import { useRef } from "react";
+import { Animated, Pressable, View } from "react-native";
 
 interface DetailRowProps {
   label: string;
@@ -9,33 +17,101 @@ interface DetailRowProps {
 }
 
 export default function DetailRow({ label, value, isLast }: DetailRowProps) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const onPressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.97,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const onPressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 4,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const getIcon = () => {
+    switch (label) {
+      case "Size":
+        return <Ruler size={16} color={colors.primary} />;
+      case "Established":
+        return <CalendarDays size={16} color={colors.primary} />;
+      case "Plantation":
+        return <Leaf size={16} color={colors.primary} />;
+      case "Ownership":
+        return <User size={16} color={colors.primary} />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <View className="py-3">
-      <View className="flex-row justify-between items-start">
-        {/* Label */}
-        <View className="w-[45%] flex-row items-center">
-          <View  
-         />
+    <Animated.View style={{ transform: [{ scale }] }}>
 
-          <CsText style={typography.Poppins_xs_medium} numberOfLines={1}>
-            {label}:
-          </CsText>
+      <Pressable
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+        className="py-3  rounded-xl "
+      >
+
+        <View className="flex-row justify-between items-center">
+
+          {/* LEFT */}
+
+          <View className="w-[45%] flex-row items-center">
+
+            <View
+              className="h-7 w-7 rounded-full items-center justify-center mr-2"
+              style={{ backgroundColor: colors.primary + "15" }}
+            >
+              {getIcon()}
+            </View>
+
+            <CsText
+              style={[
+                typography.Poppins_xs_medium,
+                { color: colors.dark }
+              ]}
+              numberOfLines={1}
+            >
+              {label}
+            </CsText>
+
+          </View>
+
+          {/* RIGHT */}
+
+          <View className="w-[55%] items-end">
+
+            <CsText
+              style={[
+                typography.Poppins_xs_medium,
+                {
+                  color: colors.dark,
+                  backgroundColor: colors.primary + "10",
+                  paddingHorizontal: 6,
+                  paddingVertical: 2,
+                  borderRadius: 6,
+                }
+              ]}
+              className="text-right"
+              numberOfLines={2}
+            >
+              {value || "-"}
+            </CsText>
+
+          </View>
+
         </View>
 
-        {/* Value */}
-        <View className="w-[55%] items-end">
-          <CsText
-            style={typography.Poppins_xs_medium}
-            className="text-[var(--color-black)] text-right"
-            numberOfLines={2}
-          >
-            {value || "-"}
-          </CsText>
-        </View>
-      </View>
+      </Pressable>
 
-      {/* Divider (hide on last row) */}
-      {!isLast && <View className="h-[1px] bg-gray-200 mt-3" />}
-    </View>
+      {!isLast && <View className="h-px mx-2" />}
+
+    </Animated.View>
   );
 }

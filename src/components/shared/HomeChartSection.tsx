@@ -45,6 +45,7 @@ export default function HomeChartSection() {
           fontWeight: "700",
           color: "#2d6b06",
           marginBottom: 10,
+          
         }}
       >
         Farm Overview

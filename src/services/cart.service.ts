@@ -25,30 +25,20 @@ export interface DeleteCartPayload {
 
 // GET list
 export const getCartItems = async () => {
-  return safeGet(
-    axiosInstance.get("/cart/list/")
-  );
+  return safeGet(axiosInstance.get("/cart/list/"));
 };
 
-// ADD 
+// ADD
 export const saveCartItems = async (payload: AddToCartPayload) => {
-  return safeGet(
-    axiosInstance.post("/cart/add-item", payload)
-  );
+  return safeGet(axiosInstance.post("/cart/add-item", payload));
 };
 
-// UPDATE 
+// UPDATE
 export const updateCartItems = async (payload: UpdateCartPayload) => {
-  return safeGet(
-    axiosInstance.put("/cart/update-item-quantity", payload)
-  );
+  return safeGet(axiosInstance.post("/cart/update-item-quantity", payload));
 };
 
 //DELETE
-export const deleteCartItems = async (payload: DeleteCartPayload) => {
-  return safeGet(
-    axiosInstance.post(`/cart/remove-item${payload.cartItemId}`, {
-      data: payload,
-    })
-  );
+export const deleteCartItems = async ({ id }: DeleteCartPayload) => {
+  return safeGet(axiosInstance.post(`/cart/remove-item`, id));
 };

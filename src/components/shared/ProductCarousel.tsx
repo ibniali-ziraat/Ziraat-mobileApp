@@ -1,141 +1,64 @@
-import { ProductCarouselProps } from "@/src/types/product-carousel.type";
-import { Heart } from "lucide-react-native";
-import { useState } from "react";
-import { Dimensions, FlatList, Image, Pressable, View } from "react-native";
-import RatingStars from "../../components/shared/RatingStars";
-import { colors } from "../../constants/colors";
-
+import CsText from "@/src/components/shared/CsText";
+import RatingStars from "@/src/components/shared/RatingStars";
 import { typography } from "@/src/constants/fonts/typography";
+import { NormalizedProduct } from "@/src/domain/product/product.types";
 import { router } from "expo-router";
-import CsText from "./CsText";
+import { Dimensions, FlatList, Image, Pressable, View } from "react-native";
 
-export default function ProductCarousel({
-  items,
-  imageMapper,
-  onAddToWishlist,
-}: ProductCarouselProps) {
+type Props = {
+  items: NormalizedProduct[];
+  onAddToWishlist?: (id: string) => void;
+};
+
+export default function ProductCarousel({ items, onAddToWishlist }: Props) {
+  console.log(items, "items in p carousal");
+
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
-  const imageSize = screenWidth * 0.4;
-
-  const getDiscountPercent = (price: number, discountPrice: number) => {
-    if (!discountPrice || !price) return null;
-    return Math.round(((price - discountPrice) / price) * 100);
-  };
-
-  const [refresh, setRefresh] = useState(false);
 
   return (
-    <View className="mb-6">
-      <FlatList
-        horizontal
-        data={items}
-        keyExtractor={(item) => item._id}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => {
-          const discountPercent = getDiscountPercent(
-            item.price,
-            item.discountPrice
-          );
+    <FlatList
+      horizontal
+      data={items}
+      keyExtractor={(item) => item._id}
+      showsHorizontalScrollIndicator={false}
+      renderItem={({ item }) => (
+        <Pressable
+          onPress={() =>
+            router.push({
+              pathname: "/products/single-product-details",
+              params: { productId: item._id },
+            })
+          }
+        >
+          <View style={{ width: cardWidth }} className="mr-3">
+            <Image
+              source={{
+                uri:
+                  item.photos && item.photos.length > 0
+                    ? item.photos[0]
+                    : "https://via.placeholder.com/150", // fallback image
+              }}
+              className="rounded-2xl"
+              style={{ width: "100%", height: cardWidth }}
+            />
 
-          return (
-            <Pressable
-              onPress={() =>
-                router.push({
-                  pathname: "/products/single-product-details",
-                  params: { productId: item._id },
-                })
-              }
+            <CsText
+              style={typography.Poppins_m_semibold}
+              numberOfLines={1}
+              className="mt-2"
             >
-              <View className="mr-2" style={{ width: cardWidth }}>
-                <View className="relative">
-                  <Image
-                    source={imageMapper[item.photos[0]]}
-                    className="rounded-2xl"
-                    style={{ width: imageSize, height: imageSize }}
-                  />
+              {item.title}
+            </CsText>
 
-                  {item.label && (
-                    <View className="absolute top-2 left-2 bg-primary px-2 py-1  rounded-lg">
-                      <CsText
-                        style={[typography.Poppins_xs_regular]}
-                        className="text-light "
-                      >
-                        {item.label}
-                      </CsText>
-                    </View>
-                  )}
+            <CsText style={typography.Poppins_s_medium}>
+              ₹{item.discountPrice ?? item.price}
+            </CsText>
 
-                  <Pressable
-                    className="absolute top-2 right-4 p-1"
-                    onPress={() => onAddToWishlist(Number(item._id))}
-                  >
-                    <Heart size={20} color={colors.light} />
-                  </Pressable>
-                </View>
-
-                <CsText
-                  style={[typography.Poppins_m_semibold]}
-                  className="mt-2 w-full px-2"
-                  numberOfLines={1}
-                >
-                  {item.title}
-                </CsText>
-
-                {item.category && (
-                  <CsText
-                    style={[typography.Poppins_s_regular]}
-                    className="text-dark  w-full px-2 mt-1"
-                    numberOfLines={1}
-                  >
-                    {item.category}
-                  </CsText>
-                )}
-
-                <View className="flex-row items-center pt-2 w-full px-2">
-                  {item.discountPrice ? (
-                    <>
-                      <CsText
-                        style={[typography.Poppins_s_regular]}
-                        className="text-dark line-through pr-3"
-                      >
-                        ₹{item.price}
-                      </CsText>
-
-                      <CsText
-                        style={[typography.Poppins_s_medium]}
-                        className="text-primary pr-3 "
-                      >
-                        ₹{item.discountPrice}
-                      </CsText>
-
-                      {discountPercent && (
-                        <CsText
-                          style={[typography.Poppins_xs_regular]}
-                          className="text-secondary"
-                        >
-                          {discountPercent}% OFF
-                        </CsText>
-                      )}
-                    </>
-                  ) : (
-                    <CsText
-                      style={[typography.Poppins_s_medium]}
-                      className="text-primary"
-                    >
-                      ₹{item.price}
-                    </CsText>
-                  )}
-                </View>
-
-                <View className="flex-row items-center justify-between w-full px-2 mt-2">
-                  <RatingStars rating={item.rating} />
-                </View>
-              </View>
-            </Pressable>
-          );
-        }}
-      />
-    </View>
+            <RatingStars rating={item.rating} />
+          </View>
+        </Pressable>
+      )}
+    />
   );
 }

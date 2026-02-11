@@ -1,13 +1,13 @@
 import CsText from "@/src/components/shared/CsText";
 import { typography } from "@/src/constants/fonts/typography";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   Dimensions,
   FlatList,
   Image,
   NativeScrollEvent,
   NativeSyntheticEvent,
-  View
+  View,
 } from "react-native";
 import { imageMapper } from "../../../data/imageMapper";
 
@@ -23,7 +23,6 @@ export default function ProductDetailCarousel({
   label?: string;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef<FlatList>(null);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / width);
@@ -31,11 +30,14 @@ export default function ProductDetailCarousel({
   };
 
   const renderItem = ({ item }: { item: string }) => {
-    const imgSource = imageMapper[item];
-    if (!imgSource) return null;
+    // ✅ support both local mapped images and remote URLs
+    const mappedImage = imageMapper[item];
 
-    const source =
-      typeof imgSource === "string" ? { uri: imgSource } : imgSource;
+    const source = mappedImage
+      ? typeof mappedImage === "string"
+        ? { uri: mappedImage }
+        : mappedImage
+      : { uri: item }; // ✅ fallback to remote URL
 
     return (
       <View style={{ width: ITEM_WIDTH }}>
@@ -45,10 +47,11 @@ export default function ProductDetailCarousel({
           {label && (
             <View className="absolute top-3 left-2 bg-primary px-2 py-1 rounded-full">
               <CsText
-                style={[typography.Poppins_xs_regular]}
-
-
-                className="text-light">{label}</CsText>
+                style={typography.Poppins_xs_regular}
+                className="text-light"
+              >
+                {label}
+              </CsText>
             </View>
           )}
         </View>
@@ -68,15 +71,19 @@ export default function ProductDetailCarousel({
         onScroll={handleScroll}
         scrollEventThrottle={16}
         renderItem={renderItem}
+        keyExtractor={(_, index) => String(index)}
       />
 
+      {/* DOT INDICATOR */}
       <View className="absolute bottom-2 w-full flex-row justify-center">
-        {photos.map((_, i) => {
-          const bgColor = currentIndex === i ? "bg-secondary" : "bg-light"; // fixed colors
-          return (
-            <View key={i} className={`w-2 h-2 rounded-full mx-1 ${bgColor}`} />
-          );
-        })}
+        {photos.map((_, i) => (
+          <View
+            key={i}
+            className={`w-2 h-2 rounded-full mx-1 ${
+              currentIndex === i ? "bg-secondary" : "bg-light"
+            }`}
+          />
+        ))}
       </View>
     </View>
   );

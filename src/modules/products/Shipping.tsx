@@ -5,9 +5,9 @@ import CsText from "@/src/components/shared/CsText";
 import PaymentSelector from "@/src/components/shared/PaymentSelector";
 import SummaryCard from "@/src/components/shared/SummaryCard";
 import { usePayment } from "@/src/hooks/usePayment";
-import { useBuyProductMutation } from "@/src/hooks/useProductsQuery";
 import ProductCard from "@/src/modules/products/components/ProductCard";
 import ShippingOptionList from "@/src/modules/products/components/ShippingOptionList";
+import { useBuyProductMutation } from "@/src/modules/products/hooks/queries/products.queries";
 import { addToCartList } from "@/src/utils/cartlistStore";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
@@ -18,7 +18,7 @@ const renderShippingHeader = (
   quantity,
   setQuantity,
   selectedOption,
-  setSelectedOption
+  setSelectedOption,
 ) => (
   <>
     <ProductCard product={product} />
@@ -37,7 +37,7 @@ const renderShippingFooter = (
   paymentMethod,
   setPaymentMethod,
   handleAddToCart,
-  handleBuyNow
+  handleBuyNow,
 ) => {
   const isButtonEnabled = !!selectedOption && !!paymentMethod;
   const finalPrice = getFinalPrice();
@@ -161,7 +161,7 @@ export default function Shipping() {
           quantity,
           setQuantity,
           selectedOption,
-          setSelectedOption
+          setSelectedOption,
         )}
         ListFooterComponent={renderShippingFooter(
           quantity,
@@ -171,7 +171,7 @@ export default function Shipping() {
           paymentMethod,
           setPaymentMethod,
           handleAddToCart,
-          handleBuyNow
+          handleBuyNow,
         )}
       />
     </View>

@@ -1,5 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { useCart } from "@/src/modules/products/hooks/data/useCart";
+import { useWishlist } from "@/src/modules/products/hooks/data/useWishlist";
 import { useRouter } from "expo-router";
 import { Heart, ShoppingCart } from "lucide-react-native";
 import React from "react";
@@ -9,9 +11,12 @@ import CsText from "./CsText";
 const ProductHeader = () => {
   const router = useRouter();
 
-  // static counts (replace with real values later)
-  const wishlistCount = 3;
-  const cartCount = 5;
+  /** ✅ SINGLE SOURCE OF TRUTH */
+  const { cart } = useCart();
+  const { wishlist } = useWishlist();
+
+  const cartCount = cart.length;
+  const wishlistCount = wishlist.length;
 
   return (
     <View className="flex-row items-center justify-between h-16 bg-light px-4">
@@ -32,7 +37,7 @@ const ProductHeader = () => {
       </View>
 
       <View className="flex-row items-center space-x-3">
-        {/* Wishlist */}
+        {/* ❤️ Wishlist */}
         <TouchableOpacity
           onPress={() => router.push("/products/wishlist")}
           className="p-2 relative mr-2"
@@ -42,7 +47,7 @@ const ProductHeader = () => {
           {wishlistCount > 0 && (
             <View className="absolute -top-1 -right-1 bg-secondary rounded-full h-5 w-5 items-center justify-center">
               <CsText
-                style={[typography.Poppins_s_regular, { color: colors.light }]}
+                style={[typography.Poppins_xs_medium, { color: colors.light }]}
               >
                 {wishlistCount}
               </CsText>
@@ -50,6 +55,7 @@ const ProductHeader = () => {
           )}
         </TouchableOpacity>
 
+        {/* 🛒 Cart */}
         <TouchableOpacity
           onPress={() => router.push("/products/cartlist")}
           className="p-2 relative"
@@ -59,7 +65,7 @@ const ProductHeader = () => {
           {cartCount > 0 && (
             <View className="absolute -top-1 -right-1 bg-primary h-5 w-5 rounded-full items-center justify-center">
               <CsText
-                style={[typography.Poppins_s_regular, { color: colors.light }]}
+                style={[typography.Poppins_xs_medium, { color: colors.light }]}
               >
                 {cartCount}
               </CsText>

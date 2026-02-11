@@ -9,30 +9,32 @@ type Props = {
   RightIcon?: LucideIcon;
   onIconPress?: () => void;
 };
-
 export default function SearchBar({
-  search,
+  search = "",
   setSearch,
   RightIcon,
   onIconPress,
+  onPress,
+  pressable = false,
 }: Props) {
   return (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={pressable ? onPress : undefined}
+      disabled={!pressable}
       className="w-full pl-1"
       style={{
-        alignSelf: "stretch", // ✅ important for web
+        alignSelf: "stretch", 
       }}
     >
       <View
+        pointerEvents={pressable ? "none" : "auto"} // 🔑 KEY
         className="flex-row items-center bg-light rounded-full px-4"
         style={{
           height: 48,
-          width: "100%", // ✅ stretch on web
-
-          // Android shadow
+          width: "100%",
           elevation: Platform.OS === "android" ? 4 : 0,
 
-          // iOS shadow
           ...(Platform.OS === "ios" && {
             shadowColor: "#000",
             shadowOffset: { width: 0, height: 1 },
@@ -40,28 +42,23 @@ export default function SearchBar({
             shadowRadius: 3,
           }),
 
-          // Web shadow
           ...(Platform.OS === "web" && {
             boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
           }),
         }}
       >
-        {/* Left Icon */}
         <Search size={20} color={colors.secondary} strokeWidth={2} />
 
-        {/* Input */}
         <TextInput
-          placeholder="Search..."
+          placeholder="Search products, brands, crops"
           placeholderTextColor="#999"
           value={search}
           onChangeText={setSearch}
+          editable={!pressable} // 🔑 disables typing when trigger
           autoCorrect={false}
           autoCapitalize="none"
-          allowFontScaling={false}
-          multiline={false}
           outlineColor="transparent"
           cursorColor={colors.neutral}
-          activeUnderlineColor="transparent"
           underlineColor="transparent"
           selectionColor={colors.primary}
           textColor={colors.dark}
@@ -76,13 +73,12 @@ export default function SearchBar({
           }}
         />
 
-        {/* Right Icon */}
         {RightIcon && (
           <TouchableOpacity onPress={onIconPress}>
             <RightIcon size={20} color={colors.secondary} />
           </TouchableOpacity>
         )}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }

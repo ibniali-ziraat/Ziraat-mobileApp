@@ -1,4 +1,3 @@
-import BackHeader from "@/src/components/shared/BackHeader";
 import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
@@ -41,6 +40,7 @@ import { Pressable, ScrollView, Text } from "react-native";
 import OrchardDetailsCard from "../components/OrchardDetailsCard";
 import { OrchardDeleteKey } from "../config/orchardDeleteConfig";
 
+import BackHeader from "@/src/components/shared/BackHeader";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import VarietiesCard from "../components/VarietyDetailsCard";
@@ -251,11 +251,11 @@ export default function OrchardDetail() {
 
   return (
     <ScreenLayout>
-      <BackHeader
-        title="Orchard Details"
-        desc="Detailed orchard profile and management information"
-      />
-
+      
+<BackHeader
+                   title="  Orchard Information"
+                  
+                 />
       <ScrollView>
         {/* BASIC INFORMATION */}
         <OrchardDetailsCard
@@ -727,9 +727,9 @@ export default function OrchardDetail() {
       </ScrollView>
       <ScreenLayout>
         <Pressable
-         style={{backgroundColor:colors.light}}
+         style={{backgroundColor:colors.light,borderColor:colors.error}}
           onPress={() => setDeleteWhole(true)}
-          className="mx-4 mb-4 mt-6 flex-row items-center justify-center rounded-xl border border-red-500 py-4"
+          className="mx-4 mb-4  flex-row items-center justify-center rounded-xl border py-4"
         >
           <AlertCircle size={20} color={colors.error} />
           <Text

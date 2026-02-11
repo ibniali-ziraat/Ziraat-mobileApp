@@ -1,77 +1,11 @@
-// import Loader from "@/src/components/shared/Loader";
-// import ScreenLayout from "@/src/components/shared/ScreenLayout";
-// import SearchBar from "@/src/components/shared/SearchBar";
-// import { useAuth } from "@/src/contexts/AuthContext";
-// import { useRouter } from "expo-router";
-// import { useEffect } from "react";
-// import { FlatList, Pressable, Text, View } from "react-native";
-// import OrchardCard from "../components/OrchardCard";
-// import { useOrchardsByUserQuery } from "../hooks/useOrchardsQuery";
-
-// export default function MyOrchardsScreen() {
-//   const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
-
-//   const { setOrchardProfileId, orchardProfileId } = useAuth();
-//   useEffect(() => {
-//     setOrchardProfileId(orchardData?.id ?? null);
-//   }, [orchardData]);
-//   const router = useRouter();
-
-//   if (isPending) return <Loader />;
-//   if (isError) return <Loader />;
-
-//   const hasNoOrchards = !orchardData || orchardData.length === 0;
-
-//   return (
-//     <ScreenLayout scrollable>
-//       <View className="bg-light flex-1">
-//         {hasNoOrchards ? (
-//           <View className="flex-1 justify-center items-center px-6">
-//             <Text className="text-xl font-semibold text-center mb-2">
-//               🌱 No Orchards Added Yet
-//             </Text>
-
-//             <Text className="text-base text-gray-600 text-center mb-6">
-//               Start by adding your orchard to track crops, manage activities,
-//               and grow smarter.
-//             </Text>
-
-//             <Pressable
-//               onPress={() => router.push("/orchards/basic-info")}
-//               className="bg-primary px-6 py-3 rounded-xl"
-//             >
-//               <Text className="text-white font-semibold text-base">
-//                 Add Your First Orchard
-//               </Text>
-//             </Pressable>
-//           </View>
-//         ) : (
-//           <FlatList
-//             data={orchardData}
-//             keyExtractor={(item) => String(item.id)}
-//             renderItem={({ item }) => <OrchardCard orchard={item} />}
-//             showsVerticalScrollIndicator={false}
-//             ListHeaderComponent={
-//               <View className="my-4 mx-1">
-//                 <SearchBar />
-//               </View>
-//             }
-//           />
-//         )}
-//       </View>
-//     </ScreenLayout>
-//   );
-// }
-
-
 import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SearchBar from "@/src/components/shared/SearchBar";
 
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useRouter } from "expo-router";
+import { TreePalm } from "lucide-react-native";
 import { useEffect } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import OrchardCard from "../components/OrchardCard";
@@ -80,10 +14,12 @@ import { useOrchardsByUserQuery } from "../hooks/useOrchardsQuery";
 export default function MyOrchardsScreen() {
   const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
 
-  const { setOrchardProfileId, orchardProfileId } = useAuth();
+  const { setOrchardProfileId } = useAuth();
+
   useEffect(() => {
     setOrchardProfileId(orchardData?.id ?? null);
   }, [orchardData]);
+
   const router = useRouter();
 
   if (isPending) return <Loader />;
@@ -93,86 +29,141 @@ export default function MyOrchardsScreen() {
 
   return (
     <ScreenLayout scrollable>
-      <View className="bg-[var(--color-white)] flex-1">
-        {hasNoOrchards ? (
-          <View className="flex-1 justify-center items-center px-5 py-10">
-            <ZiraatCard paddingVertical={1.5} paddingHorizontal={1.25} borderRadius={22}>
-              <View className="items-center">
-                <View className="h-14 w-14 rounded-2xl bg-green-50 items-center justify-center mb-4">
-                  <Text className="text-2xl">🌱</Text>
-                </View>
+      
+      <View 
+      style={{backgroundColor:colors.light}}
+      className="flex-1 ">
 
-                <Text  style={{ color: colors.dark }}
-                className="text-[20px] font-semibold text-center mb-2">
-                  No Orchards Added Yet
+        {/* EMPTY STATE */}
+
+        {hasNoOrchards ? (
+          <View className="flex-1 justify-center items-center px-6">
+
+       
+              <View className="items-center">
+
+      <View className=" rounded-3xl  items-center justify-center mb-6 shadow-sm">
+  <TreePalm
+  style={{ color: colors.primary }}
+  size={40}  />
+</View>
+
+
+
+                <Text
+                  style={{ color: colors.dark }}
+                  className="text-[22px] font-bold text-center mb-2"
+                >
+                  Start Your First Orchard
                 </Text>
 
-                <Text  style={{ color: colors.dark }}
-                className="text-[14px] leading-5 text-center mb-6">
-                  Start by adding your orchard to track crops, manage activities,
-                  and grow smarter.
+                <Text
+                  style={{ color: colors.dark }}
+                  className="text-[14px] leading-6 text-center mb-7 opacity-70"
+                >
+                  Add your orchard to manage crops, monitor growth, and keep everything organized in one place.
                 </Text>
 
                 <Pressable
                   onPress={() => router.push("/orchards/basic-info")}
                   style={{ backgroundColor: colors.primary }}
-                  className="px-6 py-3 rounded-2xl w-full active:opacity-90"
+                  className="px-6 py-4 rounded-2xl w-full active:scale-95 shadow-md"
                 >
                   <Text
                     style={{ color: colors.light }}
-                   className=" font-semibold text-[15px] text-center">
-                    Add Your First Orchard
+                    className="font-semibold text-[16px] text-center"
+                  >
+                    + Add Orchard
                   </Text>
                 </Pressable>
 
                 <Text
                   style={{ color: colors.dark }}
-                 className="text-xs text-center mt-4">
+                  className="text-xs text-center mt-5 opacity-50"
+                >
                   You can add multiple orchards anytime.
                 </Text>
+
               </View>
-            </ZiraatCard>
+           
+
           </View>
         ) : (
-          <View className="flex-1 px-4 pt-4">
-            {/* Header */}
-            {/* <View className="mb-3">
-              <Text 
-               style={{ color: colors.dark }}
-              className="text-[22px] font-bold ">
-                My Orchards
-              </Text>
-              <Text 
-               style={{ color: colors.dark }}
-              className="text-[13px]  mt-1">
-                Manage your orchards and track activities
-              </Text>
-            </View> */}
+
+          /* LIST STATE */
+
+          <View className="flex-1 px-4 pt-3">
+
+            {/* Title */}
+
+         
 
             <FlatList
               data={orchardData}
               keyExtractor={(item) => String(item.id)}
               renderItem={({ item }) => (
-                <View className="mb-3">
-                
-                    <OrchardCard orchard={item} />
-                 
+                <View className="mb-4">
+                  <OrchardCard orchard={item} />
                 </View>
               )}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 24 }}
+              contentContainerStyle={{ paddingBottom: 120 }}
               ListHeaderComponent={
-                <View className="mb-6 mt-3">
-                
-                    <SearchBar />
-                 
+                <View 
+                style={{backgroundColor:colors.light}} 
+                className="mb-4 mt-2  ">
+                  <SearchBar />
                 </View>
               }
             />
+
+            {/* Floating Add Button */}
+
+           <Pressable
+  onPress={() => router.push("/orchards/basic-info")}
+  className="absolute bottom-6 right-6 rounded-full"
+  style={({ pressed }) => ({
+    transform: [{ scale: pressed ? 0.94 : 1 }],
+  })}
+>
+
+  {/* Outer Glow */}
+
+  <View
+    className="h-16 w-16 rounded-full items-center justify-center"
+    style={{
+      backgroundColor: colors.primary + "20",
+    }}
+  >
+
+    {/* Main Button */}
+
+    <View
+      className="h-14 w-14 rounded-full items-center justify-center shadow-lg"
+      style={{ backgroundColor: colors.primary }}
+    >
+      <Text
+  style={{
+    color: colors.light,
+    lineHeight: 32,
+    transform: [{ translateY: -1 }],
+  }}
+  className="text-3xl font-semibold"
+>
+  +
+</Text>
+
+    </View>
+
+  </View>
+
+</Pressable>
+
+
           </View>
         )}
+
       </View>
     </ScreenLayout>
   );
 }
-

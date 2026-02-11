@@ -14,6 +14,7 @@ import BasicInfo from "../form-sections/BasicInfoSection";
 
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { View } from "react-native";
 import { v4 as uuidv4 } from "uuid";
 import {
   useCreateOrchardMutation,
@@ -25,7 +26,6 @@ export default function BasicInfoScreen() {
   const { data, isPending } = useOrchardsByUserQuery();
   const orchard = data?.[0];
   const { orchardProfileId } = useAuth();
-  console.log(orchardProfileId, "orchardprofile id in orchard.service");
 
   const { mutateAsync: createOrchard, isPending: creating } =
     useCreateOrchardMutation();
@@ -45,7 +45,6 @@ export default function BasicInfoScreen() {
 
     setValue("orchardName", orchard.orchardName);
     setValue("establishmentYear", String(orchard.establishmentYear));
-
     setValue("plantationPattern", orchard.plantationPattern);
     setValue("ownershipType", orchard.ownershipType);
     setValue("district", orchard.district);
@@ -93,27 +92,25 @@ export default function BasicInfoScreen() {
       let kanals = 0;
       let marlas = 0;
 
-      // if (orchardSize.mode === "manual") {
       if (orchardSize.unit === "kanal") {
         kanals = Number(orchardSize.value);
-        marlas = 0; // FORCE RESET
+        marlas = 0;
       }
 
       if (orchardSize.unit === "marla") {
         marlas = Number(orchardSize.value);
-        kanals = 0; // FORCE RESET
+        kanals = 0;
       }
-      // }
 
       if (orchardSize.mode === "measure") {
         marlas = Number(orchardSize.value || 0);
-        kanals = 0; // FORCE RESET
+        kanals = 0;
       }
 
       const payload: any = {
         orchardId: orchard?.id ?? uuidv4(),
-        kanals: kanals,
-        marlas: marlas,
+        kanals,
+        marlas,
         orchardName,
         establishmentYear: Number(establishmentYear),
         plantationPattern,
@@ -146,33 +143,55 @@ export default function BasicInfoScreen() {
 
   return (
     <ScreenLayout>
+
       <BackHeader
         title="Orchard Registration"
         desc="Enter the basic details required to register your orchard successfully."
         onPress={() => router.back()}
       />
 
-      <ScreenContent>
-        <FormProvider {...form}>
-          <BasicInfo
-            control={control}
-            errors={errors}
-            orchardSize={data.areaValue}
-            areaLabel={data.areaLabel}
-            areaUnit={data.areaUnit}
-            data={data}
-          />
+      {/* Soft page background */}
 
-          <FormActions
-            cancelLabel="Cancel"
-            onCancel={() => router.back()}
-            submitLabel={data.length > 0 ? "Update" : "Save"}
-            onSubmit={handleSubmit(onSubmit)}
-            disabled={creating || updating}
-            loading={creating || updating}
-          />
-        </FormProvider>
+      <ScreenContent>
+        <View className=" rounded-t-3xl pt-5">
+
+          <FormProvider {...form}>
+
+            {/* Form Card */}
+
+            <View className="">
+
+              <BasicInfo
+                control={control}
+                errors={errors}
+                orchardSize={data.areaValue}
+                areaLabel={data.areaLabel}
+                areaUnit={data.areaUnit}
+                data={data}
+              />
+
+            </View>
+
+            {/* Sticky Action Feel */}
+
+            <View className=" rounded-3xl px-4 py-4 ">
+
+              <FormActions
+                cancelLabel="Cancel"
+                onCancel={() => router.back()}
+                submitLabel={data.length > 0 ? "Update" : "Save"}
+                onSubmit={handleSubmit(onSubmit)}
+                disabled={creating || updating}
+                loading={creating || updating}
+              />
+
+            </View>
+
+          </FormProvider>
+
+        </View>
       </ScreenContent>
+
     </ScreenLayout>
   );
 }

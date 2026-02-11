@@ -2,46 +2,65 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
-import products from "@/src/data/products.json";
-import { useDeleteWishlist, useGetWishlist } from "@/src/hooks/useWishList";
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import WishlistItem from "./components/WishListItem";
-
-
+import { useCart } from "./hooks/data/useCart";
+import { useWishlist } from "./hooks/data/useWishlist";
 
 const Wishlist = () => {
   const router = useRouter();
-  const [wishlistItems, setWishlistItems] = useState([]);
 
-  useEffect(() => {
-    setWishlistItems(products);
-  }, []);
+  const {
+    wishlist = [],
+    isLoading,
+    removeFromWishlist,
+    addToWishlist,
+  } = useWishlist();
+  const { cart, addToCart, removeFromCart } = useCart();
 
-
-  // const handleRemove = (id: string) => {
-  //   setWishlistItems((prev) => prev.filter((item) => item._id !== id));
-  // };
+  console.log(wishlist, "wishlist data....");
 
   const handleStartShopping = () => router.push("/Product");
-  const { data, isLoading, error } = useGetWishlist()
 
-
-  const { mutate: deleteWishlist } = useDeleteWishlist();
-  const handleRemoveFromWishlist = (wishlistId: number) => {
-    deleteWishlist(wishlistId);
+  const handleRemoveFromWishlist = async (id: string) => {
+    await removeFromWishlist({ id });
+    toast.success("Removed from cart");
   };
 
+  const handleAddToCart = async (product) => {
+    console.log(product, "product....wishlist");
 
+    if (!product) return;
 
+    await addToCart({
+      productId: product.productId,
+      variationName: "",
+      quantity: product.quantity,
+    });
+    toast.success("Item added to cart");
+  };
 
-  if (wishlistItems.length === 0) {
+  /* ================= LOADING ================= */
+  if (isLoading) {
+    return (
+      <ScreenLayout>
+        <View className="flex-1 justify-center items-center">
+          <ActivityIndicator size="large" />
+        </View>
+      </ScreenLayout>
+    );
+  }
+
+  /* ================= EMPTY ================= */
+  if (!wishlist || wishlist?.length === 0) {
     return (
       <View className="flex-1 bg-white">
         <BackHeader title="My Wishlist" desc="Your selected items" />
@@ -64,7 +83,7 @@ const Wishlist = () => {
             Save items you love and view them all in one place.
           </CsText>
 
-          <TouchableOpacity
+          <Pressable
             onPress={handleStartShopping}
             className="bg-primary px-8 py-3 rounded-full"
           >
@@ -74,30 +93,37 @@ const Wishlist = () => {
             >
               Browse Products
             </CsText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     );
   }
 
+  /* ================= LIST ================= */
   return (
     <ScreenLayout scrollable={false}>
       <BackHeader
         title="My Wishlist"
-        desc={`${wishlistItems.length} ${wishlistItems.length === 1 ? "item" : "items"
-          } saved`}
+        desc={`${wishlist.length} ${
+          wishlist.length === 1 ? "item" : "items"
+        } saved`}
       />
 
       <FlatList
-        data={wishlistItems}
-        keyExtractor={(item) => item._id}
+        data={wishlist}
+        keyExtractor={(item: any) =>
+          item.productId?.toString() ?? item.id?.toString()
+        }
         showsVerticalScrollIndicator={false}
-
         renderItem={({ item }) => (
-          <WishlistItem item={item} onRemove={handleRemoveFromWishlist} />
+          <WishlistItem
+            item={item}
+            onRemove={() => handleRemoveFromWishlist(item.id)}
+            onAddToCart={handleAddToCart}
+          />
         )}
         ListFooterComponent={
-          <View>
+          <View className="py-6">
             <CsText
               className="text-center text-dark"
               style={typography.Poppins_s_regular}
