@@ -30,10 +30,12 @@ const Wishlist = () => {
   };
 
   const handleAddToCart = async (product) => {
+    console.log(product, "product....wishlist");
+
     if (!product) return;
 
     await addToCart({
-      productId: product.id,
+      productId: product.productId,
       variationName: "",
       quantity: product.quantity,
     });

@@ -35,7 +35,7 @@ export const saveCartItems = async (payload: AddToCartPayload) => {
 
 // UPDATE
 export const updateCartItems = async (payload: UpdateCartPayload) => {
-  return safeGet(axiosInstance.put("/cart/update-item-quantity", payload));
+  return safeGet(axiosInstance.post("/cart/update-item-quantity", payload));
 };
 
 //DELETE
