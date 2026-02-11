@@ -2,12 +2,13 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
   FlatList,
   Image,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 import WishlistItem from "./components/WishListItem";
@@ -17,8 +18,12 @@ import { useWishlist } from "./hooks/data/useWishlist";
 const Wishlist = () => {
   const router = useRouter();
 
-  const { wishlist, isLoading, removeFromWishlist, addToWishlist } =
-    useWishlist();
+  const {
+    wishlist = [],
+    isLoading,
+    removeFromWishlist,
+    addToWishlist,
+  } = useWishlist();
   const { cart, addToCart, removeFromCart } = useCart();
 
   console.log(wishlist, "wishlist data....");
@@ -27,6 +32,7 @@ const Wishlist = () => {
 
   const handleRemoveFromWishlist = async (id: string) => {
     await removeFromWishlist({ id });
+    toast.success("Removed from cart");
   };
 
   const handleAddToCart = async (product) => {
@@ -39,6 +45,7 @@ const Wishlist = () => {
       variationName: "",
       quantity: product.quantity,
     });
+    toast.success("Item added to cart");
   };
 
   /* ================= LOADING ================= */
@@ -76,7 +83,7 @@ const Wishlist = () => {
             Save items you love and view them all in one place.
           </CsText>
 
-          <TouchableOpacity
+          <Pressable
             onPress={handleStartShopping}
             className="bg-primary px-8 py-3 rounded-full"
           >
@@ -86,7 +93,7 @@ const Wishlist = () => {
             >
               Browse Products
             </CsText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     );

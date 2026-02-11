@@ -115,7 +115,7 @@ export default function RootLayout() {
         </DisableBackWrapper>
       </AppProvider>
 
-      <Toasts defaultPosition={ToastPosition.TOP} />
+      <Toasts defaultPosition={ToastPosition.BOTTOM} />
     </GestureHandlerRootView>
   );
 }

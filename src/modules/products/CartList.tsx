@@ -6,6 +6,7 @@ import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import CartListItem from "./components/CartListItem";
 
 import { typography } from "@/src/constants/fonts/typography";
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useRouter } from "expo-router";
 import {
   ActivityIndicator,
@@ -22,6 +23,7 @@ const CartList = () => {
 
   const handleRemoveItem = async (id) => {
     await removeFromCart({ id });
+    toast.success("Removed from cart");
   };
 
   const handleQtyChange = (cartItemId, qty) => {
