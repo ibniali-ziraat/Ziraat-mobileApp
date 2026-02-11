@@ -18,16 +18,15 @@ import { useCart } from "./hooks/data/useCart";
 
 const CartList = () => {
   const router = useRouter();
-
   const { cart, isLoading, updateCartItem, removeFromCart } = useCart();
 
-  const handleRemoveItem = async (id: number) => {
+  const handleRemoveItem = async (id) => {
     await removeFromCart({ id });
   };
 
-  const handleQtyChange = (cartItemId: number, qty: number) => {
+  const handleQtyChange = (cartItemId, qty) => {
     updateCartItem({
-      id: cartItemId,
+      cartItemId,
       quantity: qty,
     });
   };
@@ -40,7 +39,7 @@ const CartList = () => {
     router.push("/Product");
   };
 
-  /* ================= LOADING ================= */
+  /* ============== LOADING ============== */
   if (isLoading) {
     return (
       <ScreenLayout>
@@ -51,7 +50,7 @@ const CartList = () => {
     );
   }
 
-  /* ================= EMPTY ================= */
+  /* ============== EMPTY ============== */
   if (!cart || cart.length === 0) {
     return (
       <ScreenLayout>
@@ -82,18 +81,21 @@ const CartList = () => {
     );
   }
 
-  /* ================= LIST ================= */
+  /* ============== LIST ============== */
   return (
     <ScreenLayout scrollable={false}>
       <BackHeader
         title="My Cart"
-        desc={`${cart.length} ${cart.length === 1 ? "item" : "items"} in your cart`}
+        desc={`${cart.length} ${
+          cart.length === 1 ? "item" : "items"
+        } in your cart`}
       />
 
       <FlatList
         data={cart}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 120 }}
         renderItem={({ item }) => (
           <ZiraatCard width="100%" marginBottom={1.2}>
             <CartListItem

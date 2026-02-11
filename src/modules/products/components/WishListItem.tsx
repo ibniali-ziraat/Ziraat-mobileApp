@@ -8,15 +8,22 @@ import { useRouter } from "expo-router";
 import { X } from "lucide-react-native";
 import { useState } from "react";
 import { Dimensions, Image, Pressable, View } from "react-native";
+import { useCart } from "../hooks/data/useCart";
+import { useWishlist } from "../hooks/data/useWishlist";
 
 const screenWidth = Dimensions.get("window").width;
 const imageWidth = screenWidth * 0.4;
 const addToCartButtonHeight = 40;
 
 const WishlistItem = ({ item, onRemove, onAddToCart }) => {
-  const [quantity, setQuantity] = useState(item.quantity ?? 1);
-  const [addedToCart, setAddedToCart] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  // const [addedToCart, setAddedToCart] = useState(false);
   const router = useRouter();
+  const { wishlist, isLoading, removeFromWishlist, addToWishlist } =
+    useWishlist();
+  const { isInCart } = useCart();
+
+  const inCart = isInCart(item.productId);
 
   const increaseQty = () => setQuantity((q) => q + 1);
   const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
@@ -26,10 +33,11 @@ const WishlistItem = ({ item, onRemove, onAddToCart }) => {
       productId: item.productId,
       quantity,
     });
-    setAddedToCart(true);
+    await removeFromWishlist({ id: item.id });
+    // setAddedToCart(true);
   };
 
-  const handleViewCart = () => router.push("/cartlist");
+  const handleViewCart = () => router.push("/products/cartlist");
 
   return (
     <ZiraatCard width="100%" paddingHorizontal={1} paddingVertical={1}>
@@ -79,15 +87,7 @@ const WishlistItem = ({ item, onRemove, onAddToCart }) => {
 
           {/* ADD TO CART */}
           <View className="mt-6">
-            {addedToCart ? (
-              <AddToCartButton
-                title="View Cart"
-                onPress={handleViewCart}
-                className="bg-secondary"
-              />
-            ) : (
-              <AddToCartButton title="Add to Cart" onPress={handleAddToCart} />
-            )}
+            <AddToCartButton title="Add to Cart" onPress={handleAddToCart} />
           </View>
         </View>
       </View>
