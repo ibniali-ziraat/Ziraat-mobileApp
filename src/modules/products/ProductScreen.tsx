@@ -2,12 +2,14 @@ import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
 
 import FilterBottomSheet from "./components/FilterBottomSheet";
 import ProductSearchBar from "./components/ProductSearchBar";
 
+import { useDebounce } from "@/src/hooks/useDebounce";
+import { toast } from "@backpackapp-io/react-native-toast";
 import AllProductsCarousal from "./components/AllProductsCarousel";
 import { useProductsData } from "./hooks/data/useProductsData";
 import { useWishlist } from "./hooks/data/useWishlist";
@@ -15,9 +17,9 @@ import { useProductSearch } from "./hooks/queries/products.queries";
 
 export default function ProductScreen() {
   const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [filters, setFilters] = useState({});
   const [filterOpen, setFilterOpen] = useState(false);
+  const debouncedSearch = useDebounce(search, 500);
 
   const {
     wishlist,
@@ -28,28 +30,17 @@ export default function ProductScreen() {
     isRemoving,
   } = useWishlist();
 
-  const handleWishlistToggle = async (productId: number) => {
-    const wishlistItem = wishlist.find((item) => item.productId === productId);
-    if (wishlistItem) {
-      await removeFromWishlist(wishlistItem.id);
-    } else {
-      await addToWishlist({ productId });
-    }
-  };
   const handleAddToWishlist = async (productId: string) => {
     await addToWishlist({ productId });
+    toast.success("Added to wishlist");
   };
 
   const handleRemoveFromWishlist = async (id: number) => {
     await removeFromWishlist({ id });
+    toast.success("Removed from wishlist");
   };
 
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedSearch(search), 500);
-    return () => clearTimeout(handler);
-  }, [search]);
-
-  const { products: allProducts = [] } = useProductsData();
+  const { products: allProducts = [], filterOptions = [] } = useProductsData();
 
   const { data: filteredProductsData = {} } = useProductSearch({
     query: debouncedSearch,
@@ -79,6 +70,7 @@ export default function ProductScreen() {
           visible={filterOpen}
           onClose={() => setFilterOpen(false)}
           onApplyFilters={setFilters}
+          filterOptions={filterOptions}
         />
 
         {/* Products Carousel */}

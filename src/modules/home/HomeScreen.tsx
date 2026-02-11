@@ -9,9 +9,11 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 
-import ProductCarousel from "@/src/components/shared/ProductCarousel";
 import { colors } from "@/src/constants/colors";
+import { toast } from "@backpackapp-io/react-native-toast";
+import AllProductsCarousal from "../products/components/AllProductsCarousel";
 import { useProductsData } from "../products/hooks/data/useProductsData";
+import { useWishlist } from "../products/hooks/data/useWishlist";
 import FarmOverviewChart from "./components/FarmOverviewChart";
 import FarmerTipsCard from "./components/FarmerTipsCard";
 import QuickActions from "./components/QuickActions";
@@ -20,7 +22,20 @@ import WeatherCard from "./components/weatherCard";
 
 export default function HomeScreen() {
   const { coords, loading: locLoading } = useLocation();
-  const { products, isLoading: productsLoading } = useProductsData();
+  const {
+    wishlist,
+    isWishlistBusy,
+    addToWishlist,
+    removeFromWishlist,
+    isAdding,
+    isRemoving,
+  } = useWishlist();
+  // const { products, isLoading: productsLoading } = useProductsData();
+  const {
+    products: allProducts = [],
+    filterOptions = [],
+    isLoading: productsLoading,
+  } = useProductsData();
 
   const { data, isLoading: weatherLoading } = useWeatherQuery({
     lat: coords?.lat ?? 34.0837,
@@ -45,13 +60,24 @@ export default function HomeScreen() {
     return null; // Loader
   }
 
+  const handleAddToWishlist = async (productId: string) => {
+    await addToWishlist({ productId });
+    toast.success("Added to wishlist");
+  };
+
+  const handleRemoveFromWishlist = async (id: number) => {
+    await removeFromWishlist({ id });
+    toast.success("Removed from wishlist");
+  };
+
   return (
     <ScreenLayout>
       <ScreenContent>
         <AnimatedTabContent>
           <View
-          style={{backgroundColor:colors.light}}
-           className="flex-1  pt-4">
+            style={{ backgroundColor: colors.light }}
+            className="flex-1  pt-4"
+          >
             <TouchableOpacity
               onPress={() =>
                 router.push("/dashboards/(farmer)/weather-profile")
@@ -64,16 +90,20 @@ export default function HomeScreen() {
 
             <SectionTitle
               title="Top Pesticides for Healthy Crop Growth"
-            icon="cube-outline"       
-
+              icon="cube-outline"
             />
 
-            <ProductCarousel items={products.slice(0, 8)} />
+            {/* <ProductCarousel items={products.slice(0, 8)} /> */}
 
-            <SectionTitle
-             
-             title="Farm Overview"
-              icon="stats-chart-outline" />
+            <AllProductsCarousal
+              items={allProducts}
+              wishlistItems={wishlist}
+              onAddToWishlist={handleAddToWishlist}
+              onRemoveFromWishlist={handleRemoveFromWishlist}
+              isWishlistBusy={isWishlistBusy}
+            />
+
+            <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
             <FarmOverviewChart />
 
             <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
