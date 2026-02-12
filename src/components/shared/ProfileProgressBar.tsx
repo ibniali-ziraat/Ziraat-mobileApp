@@ -3,10 +3,9 @@ import { CheckCircle, XCircle } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { Animated, View } from "react-native";
 import CsText from "./CsText";
-import ZiraatCard from "./ZiraatProfileCard";
 
 interface ProgressBarProps {
-  progress: number;
+  progress: number; // expect 0–100
   missingSections: string[];
   completedSections?: string[];
 }
@@ -16,64 +15,100 @@ export default function ProfileProgressBar({
   missingSections,
   completedSections = [],
 }: ProgressBarProps) {
-  const anim = useRef(new Animated.Value(0)).current;
+  const barAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    Animated.timing(anim, {
+    Animated.timing(barAnim, {
       toValue: progress,
-      duration: 600,
+      duration: 800,
       useNativeDriver: false,
     }).start();
   }, [progress]);
 
-  const animatedWidth = anim.interpolate({
+  const animatedWidth = barAnim.interpolate({
     inputRange: [0, 100],
     outputRange: ["0%", "100%"],
   });
 
-  // Sections in UI order
   const allSections = [...completedSections, ...missingSections];
+  const isComplete = Math.round(progress) === 100;
 
   return (
-    <ZiraatCard width="100%" paddingHorizontal={1} marginBottom={0.5}>
+    <View
+      style={{
+        backgroundColor: "#fff",
+        borderRadius: 22,
+        padding: 18,
+        marginBottom: 12,
+
+        shadowColor: isComplete ? colors.primary : "#000",
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: isComplete ? 0.18 : 0.08,
+        shadowRadius: 10,
+
+        elevation: 4,
+        borderWidth: 1,
+        borderColor: isComplete ? colors.primary + "55" : "#F0F0F0",
+      }}
+    >
       {/* HEADER */}
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
+          alignItems: "center",
           marginBottom: 12,
         }}
       >
-        <CsText
-          style={{
-            marginTop: 19,
-            fontSize: 22,
-            fontWeight: "700",
-            color: colors.dark,
-            letterSpacing: 0.4,
-          }}
-        >
-          Profile Completion
-       </CsText>
+        <View>
+          <CsText
+            style={{
+              fontSize: 19,
+              fontWeight: "600",
+              color: colors.dark,
+            }}
+          >
+            Profile Completion
+          </CsText>
 
-        <CsText
+          <CsText
+            style={{
+              fontSize: 12,
+              color: colors.neutral,
+              marginTop: 2,
+            }}
+          >
+            Finish remaining sections
+          </CsText>
+        </View>
+
+        {/* INTEGER % ONLY */}
+        <View
           style={{
-            fontWeight: "700",
-            fontSize: 16,
-            color: colors.primary,
-            marginTop: 19,
+            backgroundColor: colors.primary + "15",
+            paddingHorizontal: 12,
+            paddingVertical: 6,
+            borderRadius: 14,
           }}
         >
-          {progress}%
-       </CsText>
+          <CsText
+            style={{
+              fontSize: 14,
+              fontWeight: "800",
+              color: colors.primary,
+            }}
+          >
+            {Math.round(progress)}%
+          </CsText>
+        </View>
       </View>
 
-      {/* ANIMATED PROGRESS BAR */}
+      {/* PROGRESS BAR */}
       <View
         style={{
-          height: 5,
-          borderRadius: 10,
-          backgroundColor: colors.neutral + "33",
+          height: 6,
+          borderRadius: 20,
+          backgroundColor: "#EFEFEF",
           overflow: "hidden",
           marginBottom: 20,
         }}
@@ -83,18 +118,17 @@ export default function ProfileProgressBar({
             height: "100%",
             width: animatedWidth,
             backgroundColor: colors.primary,
-            borderRadius: 10,
+            borderRadius: 20,
           }}
         />
       </View>
 
-      {/* SECTION STATUS (3 items per row) */}
+      {/* SECTION PILLS */}
       <View
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          // spacing between rows and columns
-          marginHorizontal: -8,
+          gap: 17,
         }}
       >
         {allSections.map((section) => {
@@ -104,38 +138,62 @@ export default function ProfileProgressBar({
             <View
               key={section}
               style={{
-                width: "33.333%",
-                paddingHorizontal: 8,
-                marginBottom: 12,
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: 12,
+                paddingVertical: 7,
+                borderRadius: 16,
+                borderWidth: 1,
+                borderColor: isCompleted
+                  ? colors.primary + "40"
+                  : "#F5B7B1",
+                backgroundColor: isCompleted
+                  ? colors.primary + "12"
+                  : "#FFF3F3",
               }}
             >
-              <View
+              {isCompleted ? (
+                <CheckCircle size={16} color={colors.primary} />
+              ) : (
+                <XCircle size={16} color="#d9534f" />
+              )}
+
+              <CsText
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 8,
+                  marginLeft: 6,
+                  fontSize: 13,
+                  fontWeight: "600",
+                  color: isCompleted ? colors.dark : "#d9534f",
                 }}
               >
-                {isCompleted ? (
-                  <CheckCircle size={18} color={colors.primary} />
-                ) : (
-                  <XCircle size={18} color="#d9534f" />
-                )}
-
-                <CsText
-                  style={{
-                    fontSize: 14,
-                    color: isCompleted ? colors.dark : "#d9534f",
-                    fontWeight: isCompleted ? "600" : "500",
-                  }}
-                >
-                  {section.charAt(0).toUpperCase() + section.slice(1)}
-               </CsText>
-              </View>
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </CsText>
             </View>
           );
         })}
       </View>
-    </ZiraatCard>
+
+      {/* SUCCESS */}
+      {isComplete && (
+        <View
+          style={{
+            marginTop: 18,
+            padding: 12,
+            borderRadius: 14,
+            backgroundColor: colors.primary + "15",
+            alignItems: "center",
+          }}
+        >
+          <CsText
+            style={{
+              fontWeight: "600",
+              color: colors.primary,
+            }}
+          >
+            Profile completed
+          </CsText>
+        </View>
+      )}
+    </View>
   );
 }
