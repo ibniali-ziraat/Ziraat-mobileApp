@@ -22,12 +22,17 @@ import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { roleMode, userId, userToken } = useAuth();
+  const { roleMode, userId } = useAuth();
   const { data } = useProfileQuery(userId);
-  // if (!data) return <Loader />;
 
   const [pressKey, setPressKey] = useState(0);
   const [activeTab, setActiveTab] = useState<string>("index");
+
+  // ✅ Platform helpers
+  const isIOS = Platform.OS === "ios";
+  const isAndroid = Platform.OS === "android";
+  const hasAndroidNavBar = isAndroid && insets.bottom > 0;
+  const isGestureNav = isAndroid && insets.bottom === 0;
 
   return (
     <Tabs
@@ -35,37 +40,38 @@ export default function TabLayout() {
         tabBarShowLabel: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.dark,
+        tabBarHideOnKeyboard: true,
 
-        //your earlier changes what you were  doing earlier here i replaced that to ensure working for all devices
-        // tabBarStyle: {
-        //   paddingTop: 12,
-        //   shadowColor: colors.overlay,
-        //   shadowOpacity: 0.1,
-        //   shadowRadius: 5,
-        //   paddingBottom: insets.bottom + 50,
-        // },
+  tabBarStyle: {
+  position: "absolute",
+  bottom: 0,
 
-        tabBarStyle: {
-          position: "absolute",
+  height: 60 + insets.bottom,
 
-          bottom: Platform.OS === "ios" ? Math.max(insets.bottom, 10) : 0,
+  backgroundColor: colors.bgColor,
+  borderTopWidth: 0,
 
-          height: 72,
+  shadowColor: "#000",
+  shadowOpacity: 0.08,
+  shadowRadius: 18,
+  shadowOffset: { width: 0, height: 10 },
+  elevation: 18,
 
-          backgroundColor: colors.bgColor,
-          borderTopWidth: 0,
+  paddingHorizontal: 10,
 
-          shadowColor: "#000",
-          shadowOpacity: 0.08,
-          shadowRadius: 18,
-          shadowOffset: { width: 0, height: 10 },
-          elevation: 18,
+  // ✅ Slight lift for gesture nav
+  paddingTop: isGestureNav ? 14 : 10,
 
-          // Smooth inner spacing
-          paddingHorizontal: 10,
-          paddingTop: 10,
-          paddingBottom: 10,
-        },
+  paddingBottom: isIOS
+    ? Math.max(insets.bottom, 6)   // ✅ LESS padding on iOS
+    : hasAndroidNavBar
+    ? insets.bottom
+    : isGestureNav
+    ? 16
+    : 10,
+},
+
+
 
         tabBarItemStyle: {
           flex: 1,
@@ -176,7 +182,11 @@ export default function TabLayout() {
               focused={focused}
               pressKey={pressKey}
               icon={
-                <LucideDroplets size={22} color={color} strokeWidth={2.2} />
+                <LucideDroplets
+                  size={22}
+                  color={color}
+                  strokeWidth={2.2}
+                />
               }
               label="Spray"
             />
