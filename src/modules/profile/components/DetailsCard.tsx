@@ -1,5 +1,4 @@
 import CsText from "@/src/components/shared/CsText";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { PencilLine, Plus, Trash2 } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
@@ -12,11 +11,10 @@ interface DetailItem {
 
 interface DetailsCardProps {
   heading: string;
-  items?: DetailItem[]; 
+  items?: DetailItem[];
   onEdit?: () => void;
   onDelete?: () => void;
 
-  /** Empty state */
   onAdd?: () => void;
   emptyActionLabel?: string;
 }
@@ -32,11 +30,24 @@ export default function DetailsCard({
   const isEmpty = items.length === 0;
 
   return (
-    <ZiraatCard
-      width="100%"
-      paddingHorizontal={1}
-      paddingVertical={1}
-      marginVertical={0.5}
+    <View
+      style={{
+        backgroundColor: "#fff",
+        borderRadius: 16,
+        padding: 16,
+        marginVertical: 8,
+
+        
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.08,
+        shadowRadius: 1,
+
+        elevation: 3,
+
+        borderWidth: 1,
+        borderColor: "#F0F0F0",
+      }}
     >
       {/* Header */}
       <View
@@ -50,20 +61,21 @@ export default function DetailsCard({
         <CsText
           style={{
             fontSize: 18,
-            fontWeight: "500",
+            fontWeight: "600",
             color: colors.dark,
           }}
         >
           {heading}
-       </CsText>
+        </CsText>
 
         {!isEmpty && (
-          <View style={{ flexDirection: "row", gap: 10 }}>
+          <View style={{ flexDirection: "row", gap: 12 }}>
             {onEdit && (
               <TouchableOpacity onPress={onEdit}>
                 <PencilLine size={18} color={colors.primary} />
               </TouchableOpacity>
             )}
+
             {onDelete && (
               <TouchableOpacity onPress={onDelete}>
                 <Trash2 size={18} color="#E53935" />
@@ -73,40 +85,69 @@ export default function DetailsCard({
         )}
       </View>
 
-      {/* EMPTY STATE */}
       {isEmpty ? (
-        <TouchableOpacity
-          onPress={onAdd}
-          activeOpacity={0.8}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-          }}
-        >
-          <Plus size={14} color={colors.primary} />
-          <CsText
-            style={{
-              marginLeft: 4,
-              fontSize: 14,
-              fontWeight: "600",
-              color: colors.primary,
-            }}
-          >
-            {emptyActionLabel}
-         </CsText>
-        </TouchableOpacity>
-      ) : (
-        /* ROWS */
-        <View style={{ gap: 22 }}>
+  <TouchableOpacity
+    onPress={onAdd}
+    activeOpacity={0.85}
+    style={{
+      alignItems: "center",
+      justifyContent: "center",
+      paddingVertical: 15,
+      borderRadius: 14,
+      borderWidth: 1.5,
+      borderStyle: "dashed",
+      borderColor: colors.primary + "55",
+      backgroundColor: colors.primary + "08",
+    }}
+  >
+    {/* Icon bubble */}
+    <View
+      style={{
+        width: 33,
+        height: 33,
+        borderRadius: 22,
+        backgroundColor: colors.primary + "20",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 10,
+      }}
+    >
+      <Plus size={20} color={colors.primary} />
+    </View>
+
+    <CsText
+      style={{
+        fontSize: 15,
+        fontWeight: "700",
+        color: colors.primary,
+      }}
+    >
+      {emptyActionLabel}
+    </CsText>
+
+    <CsText
+      style={{
+        fontSize: 12,
+        color: colors.neutral,
+        marginTop: 4,
+        textAlign: "center",
+      }}
+    >
+      Tap to add information
+    </CsText>
+  </TouchableOpacity>
+) : (
+
+        <View style={{ gap: 20 }}>
           {items.map((item, index) => (
             <View key={item.title}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View
                   style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 14,
-                    backgroundColor: colors.primary + "18",
+                    width: 44,
+                    height: 44,
+                    borderRadius: 12,
+                    backgroundColor: colors.primary + "15",
                     alignItems: "center",
                     justifyContent: "center",
                     marginRight: 14,
@@ -124,26 +165,26 @@ export default function DetailsCard({
                     }}
                   >
                     {item.title}
-                 </CsText>
+                  </CsText>
+
                   <CsText
                     style={{
                       color: colors.neutral,
                       fontSize: 14,
-                      flexWrap: "wrap", // ← allow line wrap
                     }}
                   >
                     {item.value || "—"}
-                 </CsText>
+                  </CsText>
                 </View>
               </View>
 
               {index < items.length - 1 && (
                 <View
                   style={{
-                    marginLeft: 62,
-                    marginTop: 6,
+                    marginLeft: 58,
+                    marginTop: 10,
                     height: 1,
-                    backgroundColor: colors.neutral + "30",
+                    backgroundColor: "#EFEFEF",
                   }}
                 />
               )}
@@ -151,6 +192,6 @@ export default function DetailsCard({
           ))}
         </View>
       )}
-    </ZiraatCard>
+    </View>
   );
 }
