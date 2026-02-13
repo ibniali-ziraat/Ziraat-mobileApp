@@ -11,7 +11,6 @@ import { typography } from "@/src/constants/fonts/typography";
 
 import ProductDescription from "./components/ProductDescription";
 import ProductHeader from "./components/ProductHeader";
-import ProductMeta from "./components/ProductMeta";
 import ProductPriceCard from "./components/ProductPriceCard";
 import ProductQuantitySelector from "./components/ProductQuantitySelector";
 import ProductSpecifications from "./components/ProductSpecifications";
@@ -99,7 +98,7 @@ export default function ProductDetails() {
               <>
                 <ProductHeader product={product} />
                 <ProductPriceCard product={product} />
-                <ProductMeta product={product} />
+                {/* <ProductMeta product={product} /> */}
 
                 <ProductQuantitySelector
                   quantity={quantity}

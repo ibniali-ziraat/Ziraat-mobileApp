@@ -15,17 +15,37 @@ export default function ProductSearchBar({
   onFilterPress,
 }: Props) {
   return (
-    <View className="flex-row items-center gap-2">
-      <View className="flex-1">
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+
+        borderRadius: 16,
+       
+
+       
+      }}
+    >
+      {/* SEARCH */}
+      <View style={{ flex: 1 }}>
         <SearchBar search={search} setSearch={setSearch} />
       </View>
 
+      {/* FILTER */}
       <TouchableOpacity
         onPress={onFilterPress}
-        className="h-12 w-12 rounded-full bg-light items-center justify-center"
-        style={{ elevation: 3 }}
+        activeOpacity={0.85}
+        style={{
+          width: 44,
+          height: 44,
+          borderRadius: 14,
+          backgroundColor: colors.secondary + "12",
+          alignItems: "center",
+          justifyContent: "center",
+          marginLeft: 10,
+        }}
       >
-        <SlidersHorizontal size={20} color={colors.secondary} />
+        <SlidersHorizontal size={21} color={colors.secondary} />
       </TouchableOpacity>
     </View>
   );

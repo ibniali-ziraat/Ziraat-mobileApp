@@ -5,7 +5,7 @@ import { stripHtml } from "../utils/stripHtml";
 
 export default function ProductDescription({ product }: any) {
   return (
-    <View className="px-4 mt-6">
+    <View className=" mt-6">
       {product.shortDescription && (
         <>
           <CsText style={typography.Poppins_m_semibold}>Overview</CsText>
