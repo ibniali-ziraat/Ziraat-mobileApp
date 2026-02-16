@@ -55,7 +55,6 @@ export default function BasicInfo({
 
   /* ------------------ SAFE RESET LOGIC ------------------ */
 
-  // Reset value ONLY when user changes unit
   useEffect(() => {
     if (!orchardUnit) return;
 
@@ -70,7 +69,6 @@ export default function BasicInfo({
     });
   }, [orchardUnit]);
 
-  // Reset unit + value ONLY when user changes mode
   useEffect(() => {
     if (!orchardMode) return;
 
@@ -91,10 +89,10 @@ export default function BasicInfo({
         control={control}
         name="orchardName"
         label="Orchard Name"
-        errors={errors?.orchardName?.message}
+        error={errors?.orchardName?.message}
       />
 
-      {/* ------------------ MANUAL MODE ------------------ */}
+      {/* ---------------- MANUAL MODE ---------------- */}
       {orchardMode === "manual" && (
         <View style={{ marginVertical: 10 }}>
           <SingleSelectInput
@@ -106,7 +104,7 @@ export default function BasicInfo({
               { label: "Marla", value: "marla" },
               { label: "Kanal", value: "kanal" },
             ]}
-            error={errors?.orchardSize?.unit}
+            error={errors?.orchardSize?.unit?.message}
           />
 
           <FormInput
@@ -124,12 +122,12 @@ export default function BasicInfo({
                 ? "Select unit first"
                 : `Enter size in ${orchardUnit === "marla" ? "Marla" : "Kanal"}`
             }
-            error={errors?.orchardSize?.value}
+            error={errors?.orchardSize?.value?.message}
           />
         </View>
       )}
 
-      {/* ------------------ MEASURE MODE ------------------ */}
+      {/* ---------------- MEASURE MODE ---------------- */}
       {orchardMode === "measure" && (
         <OrchardSizeInput
           control={control}
@@ -148,7 +146,7 @@ export default function BasicInfo({
         label="Establishment Year"
         modalLabel="Select Year"
         options={ESTABLISHMENT_YEAR}
-        error={errors?.establishmentYear}
+        error={errors?.establishmentYear?.message}
       />
 
       {/* Plantation Pattern */}
@@ -163,7 +161,7 @@ export default function BasicInfo({
           { label: "Ultra High Density", value: "Ultra High Density" },
           { label: "Other", value: "Other" },
         ]}
-        error={errors?.plantationPattern}
+        error={errors?.plantationPattern?.message}
       />
 
       {/* Ownership Type */}
@@ -179,7 +177,7 @@ export default function BasicInfo({
           { label: "Rented", value: "Rented" },
           { label: "Other", value: "Other" },
         ]}
-        error={errors?.ownershipType}
+        error={errors?.ownershipType?.message}
       />
 
       {/* District */}
@@ -192,7 +190,7 @@ export default function BasicInfo({
         options={districts.map((d) => ({ label: d, value: d }))}
         onValueChange={setSelectedDistrict}
         disabled={!districts.length}
-        error={errors?.district}
+        error={errors?.district?.message}
       />
 
       {/* Tehsil */}
@@ -204,16 +202,16 @@ export default function BasicInfo({
         modalLabel="Tehsil"
         options={tehsils.map((t) => ({ label: t, value: t }))}
         disabled={!tehsils.length}
-        error={errors?.tehsil}
+        error={errors?.tehsil?.message}
       />
 
-      {/* Pincode */}
+      {/* PIN Code */}
       <FormInput
         control={control}
         name="pincode"
         label="PIN Code"
         type="phone"
-        errors={errors?.pincode?.message}
+        error={errors?.pincode?.message}
       />
     </View>
   );

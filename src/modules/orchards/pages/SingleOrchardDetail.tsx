@@ -33,7 +33,7 @@ import {
   Users,
   Warehouse,
   Waves,
-  Wrench
+  Wrench,
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text } from "react-native";
@@ -116,7 +116,7 @@ export default function OrchardDetail() {
   const { data: varietiesData } = useOrchardVarietiesQuery(orchardProfileId!);
   const { mutateAsync: deleteVariety } = useDeleteVarietyMutation();
 
-  console.log(varietiesData, "varieties data....");
+  // console.log(varietiesData, "varieties data....");
 
   const { data: soilWaterData } = useSoilWaterQuery(orchardProfileId!);
 
@@ -251,11 +251,7 @@ export default function OrchardDetail() {
 
   return (
     <ScreenLayout>
-      
-<BackHeader
-                   title="  Orchard Information"
-                  
-                 />
+      <BackHeader title="  Orchard Information" />
       <ScrollView>
         {/* BASIC INFORMATION */}
         <OrchardDetailsCard
@@ -283,7 +279,15 @@ export default function OrchardDetail() {
               icon: <Map size={20} color={colors.primary} />,
             },
           ]}
-          onEdit={() => goToSection("basicInformation")}
+          onEdit={() =>
+            router.push({
+              pathname: "/orchards/basic-info",
+              params: {
+                mode: "edit",
+                id: String(orchardProfileId),
+              },
+            })
+          }
         />
         <OrchardDetailsCard
           heading="Location"
@@ -727,14 +731,12 @@ export default function OrchardDetail() {
       </ScrollView>
       <ScreenLayout>
         <Pressable
-         style={{backgroundColor:colors.light,borderColor:colors.error}}
+          style={{ backgroundColor: colors.light, borderColor: colors.error }}
           onPress={() => setDeleteWhole(true)}
           className="mx-4 mb-4  flex-row items-center justify-center rounded-xl border py-4"
         >
           <AlertCircle size={20} color={colors.error} />
-          <Text
-          style={{color:colors.error}}
-          className="ml-2 font-semibold ">
+          <Text style={{ color: colors.error }} className="ml-2 font-semibold ">
             Delete Entire Orchard
           </Text>
         </Pressable>

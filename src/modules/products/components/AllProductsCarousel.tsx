@@ -16,6 +16,8 @@ export default function AllProductsCarousal({
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
 
+  // console.log(items, "items data+++");
+
   const getWishlistItem = (productId: string) =>
     wishlistItems.find((w: any) => String(w.productId) === String(productId));
 

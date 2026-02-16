@@ -53,7 +53,7 @@ const currentYear = new Date().getFullYear();
 
 export const OrchardSizeSchema = z
   .object({
-    mode: z.enum(["manual", "measure"]),
+    mode: z.enum(["manual", "measure"]).default("manual"),
 
     unit: z.enum(["marla", "kanal"]).optional(),
 
@@ -62,30 +62,29 @@ export const OrchardSizeSchema = z
     type: z.enum(["walk", "tap"]).optional(),
   })
   .superRefine((data, ctx) => {
-    /* ---------------- MANUAL MODE ---------------- */
     if (data.mode === "manual") {
       if (!data.unit) {
         ctx.addIssue({
-          path: ["unit"],
+          path: ["orchardSize", "unit"],
           message: "Unit is required",
           code: z.ZodIssueCode.custom,
         });
       }
 
-      if (!data.value) {
+      if (data.value === undefined) {
+        // ✅ FIXED
         ctx.addIssue({
-          path: ["value"],
+          path: ["orchardSize", "value"],
           message: "Orchard size is required",
           code: z.ZodIssueCode.custom,
         });
       }
     }
 
-    /* ---------------- MEASURE MODE ---------------- */
     if (data.mode === "measure") {
       if (!data.type) {
         ctx.addIssue({
-          path: ["type"],
+          path: ["orchardSize", "type"],
           message: "Measurement method is required",
           code: z.ZodIssueCode.custom,
         });
@@ -114,6 +113,6 @@ export const BasicInfoSchema = z.object({
 
   tehsil: z.string().min(1, "Tehsil is required"),
 
-  pincode: z.string().regex(/^\d{6}$/, "Enter Valid Pincode"),
+  pincode: z.coerce.string().regex(/^\d{6}$/, "Enter Valid Pincode"),
 });
 export type BasicInfoSchemaType = z.infer<typeof BasicInfoSchema>;

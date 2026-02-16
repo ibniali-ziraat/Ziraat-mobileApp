@@ -21,10 +21,10 @@ import {
 
 export default function CropNutritionManagementScreen() {
   const { orchardProfileId } = useAuth();
-  console.log(orchardProfileId, "orchardprofile id in orchard.service");
+  // console.log(orchardProfileId, "orchardprofile id in orchard.service");
 
   const { data: cropNutritionData } = useCropNutritionQuery(orchardProfileId!);
-  console.log(cropNutritionData, "crop nutrition data...");
+  // console.log(cropNutritionData, "crop nutrition data...");
 
   const { mutateAsync: save, isPending: isSaving } =
     useCreateCropNutritionMutation();
