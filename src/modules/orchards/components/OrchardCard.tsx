@@ -1,6 +1,5 @@
 
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { router } from "expo-router";
 import { Pressable, View } from "react-native";
 import OrchardDetails from "./OrchardDetails";
@@ -23,15 +22,8 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
           }
           className="active:opacity-90"
         >
-          <ZiraatCard
-            width="100%"
-            marginBottom={2}
-           
-           
-          
-          >
+        
             <OrchardDetails orchard={orchard} />
-          </ZiraatCard>
         </Pressable>
       </View>
     </ScreenContent>

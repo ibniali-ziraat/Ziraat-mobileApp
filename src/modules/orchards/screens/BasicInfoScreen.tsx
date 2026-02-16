@@ -1,126 +1,104 @@
+import "react-native-get-random-values"; // ✅ ALWAYS FIRST
+
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-
 import BasicInfo from "../form-sections/BasicInfoSection";
 
 import { ROUTES } from "@/src/constants/routes";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { View } from "react-native";
 import { v4 as uuidv4 } from "uuid";
+
 import {
   useCreateOrchardMutation,
   useOrchardsByUserQuery,
   useUpdateOrchardMutation,
 } from "../hooks/useOrchardsQuery";
+import { BasicInfoSchema } from "../schemas/BasicInfoSchema";
 
 export default function BasicInfoScreen() {
   const { data, isPending } = useOrchardsByUserQuery();
-  const orchard = data?.[0];
-  const { orchardProfileId } = useAuth();
+
+  const { mode, id } = useLocalSearchParams<{
+    mode?: string;
+    id?: string;
+  }>();
+
+  const isEditMode = mode === "edit";
+
+  const orchard = isEditMode
+    ? data?.find((o: any) => String(o.id) === String(id))
+    : null;
 
   const { mutateAsync: createOrchard, isPending: creating } =
     useCreateOrchardMutation();
+
   const { mutateAsync: updateOrchard, isPending: updating } =
     useUpdateOrchardMutation();
 
-  const form = useZodForm();
+  const form = useZodForm(BasicInfoSchema);
+
   const {
     setValue,
     handleSubmit,
     control,
+    reset, // ✅ IMPORTANT
     formState: { errors },
   } = form;
 
+  /* ✅ RESET FORM WHEN MODE CHANGES */
   useEffect(() => {
-    if (!orchard) return;
-
-    setValue("orchardName", orchard.orchardName);
-    setValue("establishmentYear", String(orchard.establishmentYear));
-    setValue("plantationPattern", orchard.plantationPattern);
-    setValue("ownershipType", orchard.ownershipType);
-    setValue("district", orchard.district);
-    setValue("tehsil", orchard.tehsil);
-    setValue("zone", orchard.zone ?? "");
-    setValue("pincode", orchard.pinCode);
-    setValue("latitude", orchard.latitude);
-    setValue("longitude", orchard.longitude);
-
-    if (orchard.kanals > 0) {
-      setValue("orchardSize.mode", "manual");
-      setValue("orchardSize.unit", "kanal");
-      setValue("orchardSize.value", String(orchard.kanals));
-    } else if (orchard.marlas > 0) {
-      setValue("orchardSize.mode", "manual");
-      setValue("orchardSize.unit", "marla");
-      setValue("orchardSize.value", String(orchard.marlas));
+    if (!isEditMode) {
+      reset(); // 🧹 Clear old edit values when creating new orchard
     }
-  }, [orchard]);
+  }, [isEditMode]);
 
+  /* ✅ PREFILL ONLY EDIT MODE */
   useEffect(() => {
-    if (!data?.areaValue) return;
+    if (!isEditMode || !orchard) return;
 
-    setValue("orchardSize.mode", "measure", { shouldValidate: true });
-    setValue("orchardSize.value", data.areaValue, { shouldValidate: true });
-    setValue("orchardSize.unit", data.areaUnit, { shouldValidate: true });
-  }, [data?.areaValue, data?.areaUnit]);
+    console.log("🌳 Prefilling orchard:", orchard);
+
+    reset({
+      orchardName: orchard.orchardName ?? "",
+      establishmentYear: String(orchard.establishmentYear ?? ""),
+      plantationPattern: orchard.plantationPattern ?? "",
+      ownershipType: orchard.ownershipType ?? "",
+      district: orchard.district ?? "",
+      tehsil: orchard.tehsil ?? "",
+      zone: orchard.zone ?? "",
+      pincode: orchard.pinCode ?? "",
+
+      orchardSize: {
+        mode: "manual",
+        unit:
+          orchard.kanals > 0
+            ? "kanal"
+            : orchard.marlas > 0
+              ? "marla"
+              : undefined,
+        value:
+          orchard.kanals > 0
+            ? orchard.kanals
+            : orchard.marlas > 0
+              ? orchard.marlas
+              : undefined,
+      },
+    });
+  }, [isEditMode, orchard]);
 
   const onSubmit = async (values: any) => {
     try {
-      const {
-        orchardSize,
-        orchardName,
-        establishmentYear,
-        plantationPattern,
-        ownershipType,
-        district,
-        tehsil,
-        pincode,
-        latitude = 74.8946,
-        longitude = 74.8946,
-        zone,
-      } = values;
-
-      let kanals = 0;
-      let marlas = 0;
-
-      if (orchardSize.unit === "kanal") {
-        kanals = Number(orchardSize.value);
-        marlas = 0;
-      }
-
-      if (orchardSize.unit === "marla") {
-        marlas = Number(orchardSize.value);
-        kanals = 0;
-      }
-
-      if (orchardSize.mode === "measure") {
-        marlas = Number(orchardSize.value || 0);
-        kanals = 0;
-      }
-
-      const payload: any = {
+      const payload = {
         orchardId: orchard?.id ?? uuidv4(),
-        kanals,
-        marlas,
-        orchardName,
-        establishmentYear: Number(establishmentYear),
-        plantationPattern,
-        ownershipType,
-        district,
-        tehsil,
-        zone: zone ?? "",
-        pinCode: pincode,
-        latitude: Number(latitude),
-        longitude: Number(longitude),
+        ...values,
       };
 
       if (orchard) {
@@ -133,8 +111,12 @@ export default function BasicInfoScreen() {
 
       router.replace(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
+      console.log("❌ ERROR:", error);
+      console.log("❌ STATUS:", error?.response?.status);
+      console.log("❌ DATA:", error?.response?.data);
+
       showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard information",
+        error?.response?.data?.message || "Failed to save orchard",
       );
     }
   };
@@ -143,55 +125,26 @@ export default function BasicInfoScreen() {
 
   return (
     <ScreenLayout>
-
       <BackHeader
-        title="Orchard Registration"
-        desc="Enter the basic details required to register your orchard successfully."
+        title={isEditMode ? "Edit Orchard" : "Add Orchard"}
+        desc="Enter orchard details"
         onPress={() => router.back()}
       />
 
-      {/* Soft page background */}
-
       <ScreenContent>
-        <View className=" rounded-t-3xl pt-5">
+        <FormProvider {...form}>
+          <BasicInfo control={control} errors={errors} data={orchard} />
 
-          <FormProvider {...form}>
-
-            {/* Form Card */}
-
-            <View className="">
-
-              <BasicInfo
-                control={control}
-                errors={errors}
-                orchardSize={data.areaValue}
-                areaLabel={data.areaLabel}
-                areaUnit={data.areaUnit}
-                data={data}
-              />
-
-            </View>
-
-            {/* Sticky Action Feel */}
-
-            <View className=" rounded-3xl px-4 py-4 ">
-
-              <FormActions
-                cancelLabel="Cancel"
-                onCancel={() => router.back()}
-                submitLabel={data.length > 0 ? "Update" : "Save"}
-                onSubmit={handleSubmit(onSubmit)}
-                disabled={creating || updating}
-                loading={creating || updating}
-              />
-
-            </View>
-
-          </FormProvider>
-
-        </View>
+          <FormActions
+            cancelLabel="Cancel"
+            onCancel={() => router.back()}
+            submitLabel={isEditMode ? "Update" : "Save"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={creating || updating}
+            loading={creating || updating}
+          />
+        </FormProvider>
       </ScreenContent>
-
     </ScreenLayout>
   );
 }

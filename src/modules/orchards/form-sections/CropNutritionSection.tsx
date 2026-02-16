@@ -53,13 +53,15 @@ export default function CropNutrition({ control, errors }) {
           label="Nutrition Plan"
           icon="book-open-page-variant"
           error={errors.nutritionPlan?.message}
+          optional={true}
         />
 
         <FormDateInput
           control={control}
           name="lastFertilizerApplicationDate"
-          label="Last Fertiliser Application Date"
+          label="Last Fertiliser Date"
           error={errors.lastFertiliserDate?.message}
+          optional={true}
         />
 
         {/* 6️⃣ Application Mode */}
