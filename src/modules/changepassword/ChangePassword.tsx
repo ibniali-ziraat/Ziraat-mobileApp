@@ -1,92 +1,222 @@
+import { Eye, EyeOff, ShieldCheck } from "lucide-react-native";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import {
+  ActivityIndicator,
+  Animated,
+  Modal,
+  Pressable,
+  View,
+} from "react-native";
+
 import FormInput from "@/src/components/form/inputs/FormInput";
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { useChangePassword } from "@/src/hooks/useChangePassword";
-import { useForm } from "react-hook-form";
-import { ActivityIndicator, TouchableOpacity, View } from "react-native";
-
+import { useChangeCurrentPassword } from "@/src/hooks/useChangeCurrentPassword";
 
 type FormValues = {
-    oldPassword: string;
-    newPassword: string;
-    confirmPassword: string;
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
 };
 
 export default function ChangePasswordScreen() {
-    const {
-        control,
-        handleSubmit,
-        reset,
-        formState: { errors },
-    } = useForm<FormValues>();
+  const [showOld, setShowOld] = useState(false);
+  const [showNew, setShowNew] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
-    const changePassword = useChangePassword();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalText, setModalText] = useState("");
 
-    const onSubmit = (values: FormValues) => {
-        if (values.newPassword !== values.confirmPassword)
-            return alert("Passwords do not match");
+  const scale = useRef(new Animated.Value(1)).current;
+  const fade = useRef(new Animated.Value(0)).current;
 
-        if (values.oldPassword === values.newPassword)
-            return alert("New password must be different");
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>();
 
-        changePassword.mutate(
-            {
-                oldPassword: values.oldPassword,
-                newPassword: values.newPassword,
-            },
-            { onSuccess: () => reset() }
-        );
-    };
+  const changePassword = useChangeCurrentPassword();
 
-    return (
-        <View className="flex-1 bg-light px-4">
-            <BackHeader
-                title="Change Password"
-                desc="Update your account password securely"
-            />
+  useEffect(() => {
+    Animated.timing(fade, {
+      toValue: 1,
+      duration: 350,
+      useNativeDriver: true,
+    }).start();
+  }, []);
 
-            <View className="bg-light rounded-2xl p-4">
+  const showPopup = (msg: string) => {
+    setModalText(msg);
+    setModalVisible(true);
+  };
 
-                <FormInput
-                    control={control}
-                    name="oldPassword"
-                    label="Current Password"
-                    type="password"
-                    error={errors?.oldPassword}
-                />
+  const onSubmit = (values: FormValues) => {
+    // Local validation
+    if (values.newPassword !== values.confirmPassword) {
+      reset();
+      return showPopup("Passwords do not match");
+    }
 
-                <FormInput
-                    control={control}
-                    name="newPassword"
-                    label="New Password"
-                    type="password"
-                    error={errors?.newPassword}
-                />
+    if (values.oldPassword === values.newPassword) {
+      reset();
+      return showPopup("New password must be different");
+    }
 
-                <FormInput
-                    control={control}
-                    name="confirmPassword"
-                    label="Confirm New Password"
-                    type="password"
-                    error={errors?.confirmPassword}
-                />
+  
+    changePassword.mutate(
+      {
+       oldPassword: values.oldPassword,
+  newPassword: values.newPassword,
+  confirmPassword: values.confirmPassword,
+      },
+      {
+        onSuccess: () => {
+          reset();
+          showPopup("Password updated successfully");
+        },
 
-                <TouchableOpacity
-                    onPress={handleSubmit(onSubmit)}
-                    disabled={changePassword.isPending}
-                    className="bg-primary py-3 rounded-2xl mt-2 items-center"
-                    activeOpacity={0.8}
-                >
-                    {changePassword.isPending ? (
-                        <ActivityIndicator color={colors.light} />
-                    ) : (
-                        <CsText className="text-light font-medium">
-                            Change Password
-                        </CsText>
-                    )}
-                </TouchableOpacity>
-            </View>
-        </View>
+        onError: (err: any) => {
+          showPopup(
+            err?.response?.data?.message || "Something went wrong"
+          );
+        },
+      }
     );
+  };
+
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.light }}>
+      <View className="flex-1 px-4">
+        <BackHeader title="Change Password" desc="Security Settings" />
+
+        <Animated.View
+          style={{ opacity: fade }}
+          className="rounded-3xl p-5 mt-4"
+        >
+          <View className="items-center mb-6">
+            <View className="bg-primary/10 p-4 rounded-full">
+              <ShieldCheck size={28} color={colors.primary} />
+            </View>
+
+            <CsText className="mt-2 text-lg font-semibold">
+              Change Password
+            </CsText>
+
+            <CsText
+              style={{ color: colors.darkHover }}
+              className="text-xs mt-1"
+            >
+              Keep your account secure
+            </CsText>
+          </View>
+
+          <FormInput
+            control={control}
+            name="oldPassword"
+            label="Current Password"
+            rules={{ required: "Current password is required" }}
+            type={showOld ? "text" : "password"}
+            error={errors?.oldPassword}
+            rightIcon={
+              <Pressable onPress={() => setShowOld(!showOld)}>
+                {showOld ? <EyeOff size={18} /> : <Eye size={18} />}
+              </Pressable>
+            }
+          />
+
+          <FormInput
+            control={control}
+            name="newPassword"
+            label="New Password"
+            rules={{ required: "New password is required" }}
+            type={showNew ? "text" : "password"}
+            error={errors?.newPassword}
+            rightIcon={
+              <Pressable onPress={() => setShowNew(!showNew)}>
+                {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
+              </Pressable>
+            }
+          />
+
+          <FormInput
+            control={control}
+            name="confirmPassword"
+            label="Confirm Password"
+            rules={{ required: "Confirm password is required" }}
+            type={showConfirm ? "text" : "password"}
+            error={errors?.confirmPassword}
+            rightIcon={
+              <Pressable onPress={() => setShowConfirm(!showConfirm)}>
+                {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
+              </Pressable>
+            }
+          />
+
+          <Animated.View style={{ transform: [{ scale }] }}>
+            <Pressable
+              onPress={handleSubmit(onSubmit)}
+              onPressIn={() =>
+                Animated.spring(scale, {
+                  toValue: 0.96,
+                  useNativeDriver: true,
+                }).start()
+              }
+              onPressOut={() =>
+                Animated.spring(scale, {
+                  toValue: 1,
+                  useNativeDriver: true,
+                }).start()
+              }
+              disabled={changePassword.isPending}
+              className="mt-4 py-4 rounded-2xl items-center"
+              style={{
+                backgroundColor: colors.primary,
+                opacity: changePassword.isPending ? 0.6 : 1,
+                shadowColor: colors.primary,
+                shadowOpacity: 0.35,
+                shadowRadius: 10,
+                elevation: 4,
+              }}
+            >
+              {changePassword.isPending ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <CsText
+                  style={{ color: colors.light }}
+                  className="font-semibold text-base"
+                >
+                  Save Changes
+                </CsText>
+              )}
+            </Pressable>
+          </Animated.View>
+        </Animated.View>
+      </View>
+
+      {/* Popup */}
+
+      <Modal transparent visible={modalVisible} animationType="fade">
+        <View className="flex-1 justify-center items-center bg-black/40 px-8">
+          <View
+            style={{ backgroundColor: colors.light }}
+            className="rounded-xl p-5 w-full"
+          >
+            <CsText>{modalText}</CsText>
+
+            <Pressable
+              style={{ backgroundColor: colors.primary }}
+              onPress={() => setModalVisible(false)}
+              className="mt-4 py-3 rounded-xl items-center"
+            >
+              <CsText style={{ color: colors.light }}>OK</CsText>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+    </View>
+  );
 }

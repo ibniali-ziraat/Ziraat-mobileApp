@@ -1,4 +1,5 @@
-import { colors } from "@/src/constants/colors"; // Importing colors from root
+import CsText from "@/src/components/shared/CsText";
+import { colors } from "@/src/constants/colors";
 import { FormSectionProps } from "@/src/types/formSectionProps";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
@@ -14,18 +15,19 @@ export default function FormInput({
   defaultValue = "",
   error,
   keyboardType,
+  rules,
   ...props
-}: FormSectionProps) {
+}: FormSectionProps & { rules?: any }) {
   const [showPassword, setShowPassword] = useState(false);
 
   const isSecure = type === "password";
-
   const labelWithRequired = !optional ? `${label} *` : label;
 
   return (
     <Controller
       control={control}
       name={name}
+      rules={rules}
       defaultValue={defaultValue}
       render={({
         field: { onChange, value, onBlur },
@@ -36,62 +38,78 @@ export default function FormInput({
         const resolvedKeyboard = keyboardType
           ? keyboardType
           : type === "email"
-            ? "email-address"
-            : type === "phone"
-              ? "phone-pad"
-              : "default";
+          ? "email-address"
+          : type === "phone"
+          ? "phone-pad"
+          : "default";
 
         return (
-          <View style={{ marginBottom: 6 }}>
-            <TextInput
-              contentStyle={{ color: colors.dark }} // Use dark color for input text
-              mode="outlined"
-              label={labelWithRequired} // Use label with required asterisk
-              value={value}
-              onBlur={onBlur}
-              onChangeText={(text) => {
-                const isNumericOnly =
-                  resolvedKeyboard === "phone-pad" ||
-                  resolvedKeyboard === "numeric";
-                // onChange(isNumericOnly ? text.replace(/\D/g, "") : text);
-                onChange(
-                  isNumericOnly
-                    ? text === ""
-                      ? null
-                      : Number(text.replace(/\D/g, ""))
-                    : text,
-                );
-              }}
-              secureTextEntry={isSecure && !showPassword}
-              keyboardType={resolvedKeyboard}
-              error={showError}
-              right={
-                isSecure ? (
-                  <TextInput.Icon
-                    icon={showPassword ? "eye-off" : "eye"}
-                    onPress={() => setShowPassword((p) => !p)}
-                  />
-                ) : undefined
-              }
+          <View style={{ marginBottom: 9 }}>
+            <CsText style={{ color: colors.dark }} className="mb-1  text-base">
+              {labelWithRequired}
+            </CsText>
+
+            <View
               style={{
-                backgroundColor: colors.light, // Use light color for background
-                borderColor: colors.primary, // Set border color to primary
+                borderRadius: 16,
+                backgroundColor: "#fafafa",
+                shadowColor: "#000",
+                shadowOpacity: 0.04,
+                shadowRadius: 6,
+                elevation: 1,
               }}
-              theme={{
-                colors: {
-                  primary: colors.primary, // Set primary color for outline
-                  placeholder: colors.neutral, // Placeholder text color
-                  text: colors.dark, // Input text color
-                  error: colors.error, // Error color
-                },
-              }}
-              {...props}
-            />
+            >
+              <TextInput
+                contentStyle={{ color: colors.dark, paddingVertical: 14 }}
+                mode="outlined"
+                value={value}
+                onBlur={onBlur}
+                onChangeText={(text) => {
+                  const isNumericOnly =
+                    resolvedKeyboard === "phone-pad" ||
+                    resolvedKeyboard === "numeric";
+
+                  onChange(
+                    isNumericOnly
+                      ? text === ""
+                        ? null
+                        : Number(text.replace(/\D/g, ""))
+                      : text
+                  );
+                }}
+                secureTextEntry={isSecure && !showPassword}
+                keyboardType={resolvedKeyboard}
+                error={showError}
+                right={
+                  isSecure ? (
+                    <TextInput.Icon
+                      icon={showPassword ? "eye-off" : "eye"}
+                      onPress={() => setShowPassword((p) => !p)}
+                      forceTextInputFocus={false}
+                    />
+                  ) : undefined
+                }
+                style={{ backgroundColor: "transparent", borderRadius: 16 }}
+                theme={{
+                  roundness: 16,
+                  colors: {
+                    primary: colors.primary,
+                    placeholder: "#9ca3af",
+                    text: colors.dark,
+                    error: colors.error,
+                  },
+                }}
+                {...props}
+              />
+            </View>
 
             {showError && (
-              <HelperText type="error" visible style={{ color: colors.error }}>
+              <HelperText
+                type="error"
+                visible
+                style={{ color: colors.error, marginTop: 4 }}
+              >
                 {(fieldError || error)?.message}
-                {/* Required Field */}
               </HelperText>
             )}
           </View>
@@ -100,6 +118,9 @@ export default function FormInput({
     />
   );
 }
+
+
+
 
 // import { colors } from "@/src/constants/colors";
 // import { FormSectionProps } from "@/src/types/formSectionProps";
