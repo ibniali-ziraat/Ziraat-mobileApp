@@ -1,9 +1,10 @@
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { useState } from "react";
-import { View } from "react-native";
+import { Pressable, View } from "react-native";
 
 import FilterBottomSheet from "./components/FilterBottomSheet";
 import ProductSearchBar from "./components/ProductSearchBar";
@@ -19,16 +20,11 @@ export default function ProductScreen() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({});
   const [filterOpen, setFilterOpen] = useState(false);
+
   const debouncedSearch = useDebounce(search, 500);
 
-  const {
-    wishlist,
-    isWishlistBusy,
-    addToWishlist,
-    removeFromWishlist,
-    isAdding,
-    isRemoving,
-  } = useWishlist();
+  const { wishlist, isWishlistBusy, addToWishlist, removeFromWishlist } =
+    useWishlist();
 
   const handleAddToWishlist = async (productId: string) => {
     await addToWishlist({ productId });
@@ -40,7 +36,8 @@ export default function ProductScreen() {
     toast.success("Removed from wishlist");
   };
 
-  const { products: allProducts = [], filterOptions = [] } = useProductsData();
+  const { products: allProducts = [], filterOptions = [] } =
+    useProductsData();
 
   const { data: filteredProductsData = {} } = useProductSearch({
     query: debouncedSearch,
@@ -51,15 +48,21 @@ export default function ProductScreen() {
     ? filteredProductsData.products
     : [];
 
-  const displayedProducts =
-    Object.keys(filters).length > 0 || debouncedSearch
-      ? filteredProducts
-      : allProducts;
+  const isFiltering = Object.keys(filters).length > 0 || debouncedSearch;
+
+  const displayedProducts = isFiltering ? filteredProducts : allProducts;
+
+  const handleReset = () => {
+    setFilters({});
+    setSearch("");
+    toast.success("Filters cleared");
+  };
 
   return (
     <ScreenLayout>
       <ScreenContent>
-        {/* Search & Filters */}
+
+        {/* SEARCH + FILTER */}
         <ProductSearchBar
           search={search}
           setSearch={setSearch}
@@ -73,7 +76,8 @@ export default function ProductScreen() {
           filterOptions={filterOptions}
         />
 
-        {/* Products Carousel */}
+        {/* ================= PRODUCTS / EMPTY ================= */}
+
         {displayedProducts.length > 0 ? (
           <View className="mt-6">
             <AllProductsCarousal
@@ -84,11 +88,38 @@ export default function ProductScreen() {
               isWishlistBusy={isWishlistBusy}
             />
           </View>
-        ) : (
-          <CsText className="mt-6" style={typography.Poppins_s_medium}>
-            No products found
-          </CsText>
-        )}
+        ) : isFiltering ? (
+          /* EMPTY FILTER RESULT */
+          <View className="mt-20 items-center">
+
+            <CsText style={typography.Poppins_m_semibold}>
+              No products found
+            </CsText>
+
+            <CsText
+              className="opacity-60 mt-2 mb-5 text-center"
+              style={typography.Poppins_s_regular}
+            >
+              Try changing filters or search.
+            </CsText>
+
+            <Pressable
+              onPress={handleReset}
+              style={{
+                backgroundColor: colors.primary,
+                paddingHorizontal: 24,
+                paddingVertical: 10,
+                borderRadius: 25,
+              }}
+            >
+              <CsText style={{ color: "#fff", fontWeight: "600" }}>
+                Reset Filters
+              </CsText>
+            </Pressable>
+
+          </View>
+        ) : null}
+
       </ScreenContent>
     </ScreenLayout>
   );

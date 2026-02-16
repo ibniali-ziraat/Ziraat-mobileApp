@@ -1,32 +1,27 @@
 import AddToCartButton from "@/src/components/shared/AddToCartButton";
 import CsText from "@/src/components/shared/CsText";
-import QuantitySelector from "@/src/components/shared/QuantitySelector";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { useRouter } from "expo-router";
 import { X } from "lucide-react-native";
 import { useState } from "react";
-import { Dimensions, Image, Pressable, View } from "react-native";
-import { useCart } from "../hooks/data/useCart";
+import {
+  Image,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useWishlist } from "../hooks/data/useWishlist";
-
-const screenWidth = Dimensions.get("window").width;
-const imageWidth = screenWidth * 0.4;
-const addToCartButtonHeight = 40;
 
 const WishlistItem = ({ item, onRemove, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
-  // const [addedToCart, setAddedToCart] = useState(false);
-  const router = useRouter();
-  const { wishlist, isLoading, removeFromWishlist, addToWishlist } =
-    useWishlist();
-  const { isInCart } = useCart();
+  const [showQtyModal, setShowQtyModal] = useState(false);
+  const { removeFromWishlist } = useWishlist();
 
-  const inCart = isInCart(item.productId);
-
-  const increaseQty = () => setQuantity((q) => q + 1);
-  const decreaseQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
+  const selectQty = (q: number) => {
+    setQuantity(q);
+    setShowQtyModal(false);
+  };
 
   const handleAddToCart = async () => {
     await onAddToCart({
@@ -34,64 +29,145 @@ const WishlistItem = ({ item, onRemove, onAddToCart }) => {
       quantity,
     });
     await removeFromWishlist({ id: item.id });
-    // setAddedToCart(true);
   };
 
-  const handleViewCart = () => router.push("/products/cartlist");
-
   return (
-    <ZiraatCard width="100%" paddingHorizontal={1} paddingVertical={1}>
-      <View className="flex-row items-start">
-        {/* IMAGE */}
-        <Image
-          source={{ uri: item.productImage }}
+    <>
+      {/* GRID CARD WRAPPER */}
+      <View className="w-1/2 p-3">
+
+        <View
+          className="rounded-2xl p-3"
           style={{
-            width: imageWidth,
-            height: addToCartButtonHeight + 130,
+            backgroundColor: colors.light,
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.08,
+            shadowRadius: 10,
+            elevation: 5,
           }}
-          className="rounded-2xl"
-          resizeMode="cover"
-        />
+        >
 
-        <View className="flex-1 ml-4 justify-between">
-          <View>
-            {/* TITLE + REMOVE */}
-            <View className="flex-row justify-between items-center">
-              <CsText style={typography.Poppins_m_medium} numberOfLines={2}>
-                {item.productName}
-              </CsText>
+          {/* FLOATING REMOVE */}
+          <Pressable
+            onPress={() => onRemove(item.id)}
+            className="absolute top-2 right-2 z-10 p-1.5 rounded-full"
+            style={{
+              backgroundColor: "#fff",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 2 },
+              shadowOpacity: 0.1,
+              shadowRadius: 4,
+              elevation: 8,
+            }}
+          >
+            <X size={14} color={colors.dark} />
+          </Pressable>
 
-              <Pressable onPress={() => onRemove(item.id)}>
-                <X size={22} color={colors.dark} />
-              </Pressable>
-            </View>
+          {/* IMAGE */}
+          <Image
+            source={{ uri: item.productImage }}
+            className="w-full h-44 rounded-xl"
+            resizeMode="cover"
+          />
 
-            {/* PRODUCT ID */}
+          {/* CONTENT */}
+          <View className="mt-3">
+
             <CsText
-              className="mt-1 text-gray-500"
-              style={typography.Poppins_xs_regular}
+              style={typography.Poppins_s_medium}
+              numberOfLines={2}
             >
-              Product ID: {item.productId}
+              {item.productName}
             </CsText>
 
-            {/* QUANTITY SELECTOR */}
+            {/* QTY SELECTOR */}
+            <Pressable
+              onPress={() => setShowQtyModal(true)}
+              className="self-start mt-2  py-1.5 rounded-lg"
+              style={{
+                backgroundColor: colors.lightHover,
+              }}
+            >
+              <CsText className="text-xs font-semibold">
+                Qty {quantity} ▾
+              </CsText>
+            </Pressable>
+
+            {/* BUTTON */}
             <View className="mt-3">
-              <QuantitySelector
-                value={quantity}
-                onIncrease={increaseQty}
-                onDecrease={decreaseQty}
-                min={1}
+              <AddToCartButton
+                title="Move to Cart"
+                onPress={handleAddToCart}
+                height={36}
               />
             </View>
-          </View>
 
-          {/* ADD TO CART */}
-          <View className="mt-6">
-            <AddToCartButton title="Add to Cart" onPress={handleAddToCart} />
           </View>
         </View>
       </View>
-    </ZiraatCard>
+
+      {/* QTY MODAL */}
+      <Modal
+        transparent
+        visible={showQtyModal}
+        animationType="slide"
+        onRequestClose={() => setShowQtyModal(false)}
+      >
+        <Pressable
+          className="flex-1 justify-end"
+          onPress={() => setShowQtyModal(false)}
+          style={{ backgroundColor: "rgba(0,0,0,0.25)" }}
+        >
+          <View
+            style={{ backgroundColor: colors.light }}
+            className="rounded-t-3xl p-6"
+          >
+            <CsText
+              style={typography.Poppins_m_semibold}
+              className="mb-4"
+            >
+              Select Quantity
+            </CsText>
+
+            <View className="flex-row flex-wrap">
+              {[...Array(10)].map((_, i) => {
+                const q = i + 1;
+                const active = q === quantity;
+
+                return (
+                  <TouchableOpacity
+                    key={q}
+                    onPress={() => selectQty(q)}
+                    className="w-1/5 items-center mb-4"
+                  >
+                    <View
+                      className="h-10 w-10 rounded-full items-center justify-center"
+                      style={{
+                        backgroundColor: active
+                          ? colors.primary
+                          : colors.lightHover,
+                      }}
+                    >
+                      <CsText
+                        style={{
+                          color: active
+                            ? colors.light
+                            : colors.dark,
+                        }}
+                      >
+                        {q}
+                      </CsText>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+            </View>
+
+          </View>
+        </Pressable>
+      </Modal>
+    </>
   );
 };
 

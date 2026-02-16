@@ -6,7 +6,12 @@ export const addressSchema = z.object({
   tehsil: z.string().min(1, "Tehsil is required"),
   village: z.string().min(1, "Village is required"),
   pincode: z
-    .string()
-    .nonempty("Pincode is required") // 1️⃣ Empty check first
-    .regex(/^[1-9][0-9]{5}$/, "Enter a valid 6 digit pincode"),
+    .number({
+      required_error: "Pincode is required",
+      invalid_type_error: "Pincode must be a number",
+    })
+    .int("Pincode must be an integer")
+    .refine((val) => val >= 100000 && val <= 999999, {
+      message: "Enter a valid 6 digit pincode",
+    }),
 });
