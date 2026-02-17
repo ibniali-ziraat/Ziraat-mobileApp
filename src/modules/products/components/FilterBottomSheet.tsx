@@ -1,13 +1,17 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/fonts/typography";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
-import { Picker } from "@react-native-picker/picker";
-import { X } from "lucide-react-native";
+import { Check, X } from "lucide-react-native";
 import { useState } from "react";
-import { Dimensions, Modal, Pressable, ScrollView, View } from "react-native";
+import {
+  Dimensions,
+  Modal,
+  Pressable,
+  ScrollView,
+  View,
+} from "react-native";
 
-const { height } = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 /* ===================== TYPES ===================== */
 
@@ -32,7 +36,6 @@ type FilterOptions = {
     name: string;
     slug: string;
     count: number;
-    parentId?: number | null;
   }[];
   price: {
     minPrice: number;
@@ -47,7 +50,7 @@ type Props = {
   filterOptions: FilterOptions;
 };
 
-/* ===================== COMPONENT ===================== */
+/* ===================== MAIN ===================== */
 
 export default function FilterBottomSheet({
   visible,
@@ -55,8 +58,8 @@ export default function FilterBottomSheet({
   onApplyFilters,
   filterOptions,
 }: Props) {
-  const [brand, setBrand] = useState<string | null>(null);
-  const [category, setCategory] = useState<string | null>(null);
+  const [brand, setBrand] = useState<string[]>([]);
+  const [category, setCategory] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<number[]>([
     filterOptions.price.minPrice,
     filterOptions.price.maxPrice,
@@ -65,102 +68,127 @@ export default function FilterBottomSheet({
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
-      <Pressable onPress={onClose} className="flex-1 bg-black/40" />
+      <Pressable onPress={onClose} style={overlay} />
 
-      <View
-        className="bg-white rounded-t-2xl px-4"
-        style={{ height: height * 0.65 }}
-      >
-        {/* Header */}
-        <View className="flex-row items-center justify-between py-4 border-b border-gray-200">
-          <CsText style={typography.Poppins_m_semibold}>Filters</CsText>
+      <View style={sheet}>
+        {/* HANDLE */}
+        <View style={handle} />
+
+        {/* HEADER */}
+        <View style={header}>
+          <CsText style={title}>Filters</CsText>
           <Pressable onPress={onClose}>
-            <X size={22} color={colors.dark} />
+            <X size={22} />
           </Pressable>
         </View>
 
-        <ScrollView className="mt-4">
-          {/* ================= BRAND ================= */}
-          <FilterSection title="Brand">
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* BRAND */}
+          <Section title="Brand">
             {filterOptions.brands.map((item) => (
-              <FilterChip
-                key={item.id}
-                label={`${item.name} (${item.count})`}
-                selected={brand === item.slug}
-                onPress={() => setBrand(brand === item.slug ? null : item.slug)}
-              />
-            ))}
-          </FilterSection>
-
-          {/* ================= CATEGORY ================= */}
-          <FilterSection title="Category">
-            {filterOptions.categories.map((item) => (
-              <FilterChip
-                key={item.id}
-                label={`${item.name} (${item.count})`}
-                selected={category === item.slug}
+              <Item
+                key={item.slug}
+                label={item.name}
+                count={item.count}
+                selected={brand.includes(item.slug)}
                 onPress={() =>
-                  setCategory(category === item.slug ? null : item.slug)
+                  setBrand((prev) =>
+                    prev.includes(item.slug)
+                      ? prev.filter((b) => b !== item.slug)
+                      : [...prev, item.slug]
+                  )
                 }
               />
             ))}
-          </FilterSection>
+          </Section>
 
-          {/* ================= PRICE RANGE ================= */}
-          <View className="mb-6">
-            <CsText style={typography.Poppins_s_semibold}>Price Range</CsText>
+          {/* CATEGORY */}
+          <Section title="Category">
+            {filterOptions.categories.map((item) => (
+              <Item
+                key={item.slug}
+                label={item.name}
+                count={item.count}
+                selected={category.includes(item.slug)}
+                onPress={() =>
+                  setCategory((prev) =>
+                    prev.includes(item.slug)
+                      ? prev.filter((c) => c !== item.slug)
+                      : [...prev, item.slug]
+                  )
+                }
+              />
+            ))}
+          </Section>
 
-            <View className="flex-row justify-between mt-2">
-              <CsText>₹{priceRange[0]}</CsText>
-              <CsText>₹{priceRange[1]}</CsText>
+          {/* PRICE */}
+          <Section title="Price Range">
+            <View style={{ flexDirection: "row", gap: 8, marginBottom: 10 }}>
+              <PricePill label={`₹${priceRange[0]}`} />
+              <PricePill label={`₹${priceRange[1]}`} />
             </View>
 
             <MultiSlider
               values={priceRange}
               min={filterOptions.price.minPrice}
               max={filterOptions.price.maxPrice}
-              step={500}
               onValuesChange={setPriceRange}
+              sliderLength={width - 64}
               selectedStyle={{ backgroundColor: colors.primary }}
-              unselectedStyle={{ backgroundColor: "#ddd" }}
-              markerStyle={{ backgroundColor: colors.primary }}
-              containerStyle={{ marginTop: 10 }}
+              unselectedStyle={{ backgroundColor: "#E5E5E5" }}
+              markerStyle={marker}
             />
-          </View>
+          </Section>
 
-          {/* ================= SORT ================= */}
-          <View className="mb-4">
-            <CsText style={typography.Poppins_s_semibold}>Sort By</CsText>
-            <View style={pickerWrapperStyle}>
-              <Picker
-                selectedValue={sort}
-                onValueChange={(value) => setSort(value)}
-              >
-                <Picker.Item label="None" value={null} />
-                <Picker.Item label="Price: Low to High" value="price-asc" />
-                <Picker.Item label="Price: High to Low" value="price-desc" />
-              </Picker>
-            </View>
-          </View>
+          {/* SORT */}
+          <Section title="Sort By">
+            <Item label="None" selected={!sort} onPress={() => setSort(null)} />
+            <Item
+              label="Low → High"
+              selected={sort === "price-asc"}
+              onPress={() => setSort("price-asc")}
+            />
+            <Item
+              label="High → Low"
+              selected={sort === "price-desc"}
+              onPress={() => setSort("price-desc")}
+            />
+          </Section>
         </ScrollView>
 
-        {/* Footer */}
-        <View className="py-4 border-t border-gray-200">
+        {/* FOOTER */}
+        <View style={footer}>
           <Pressable
-            className="bg-primary py-3 rounded-xl items-center"
+            style={resetBtn}
+            onPress={() => {
+              setBrand([]);
+              setCategory([]);
+              setSort(null);
+              setPriceRange([
+                filterOptions.price.minPrice,
+                filterOptions.price.maxPrice,
+              ]);
+            }}
+          >
+            <CsText>Reset</CsText>
+          </Pressable>
+
+          <Pressable
+            style={applyBtn}
             onPress={() => {
               onApplyFilters({
-                brand: brand || undefined,
-                category: category || undefined,
+                brand: brand.length ? brand.join(",") : undefined,
+                category: category.length ? category.join(",") : undefined,
                 minPrice: priceRange[0],
                 maxPrice: priceRange[1],
                 sort: sort || undefined,
-                page: 1,
               });
               onClose();
             }}
           >
-            <CsText className="text-white">Apply Filters</CsText>
+            <CsText style={{ color: "#fff", fontWeight: "700" }}>
+              Apply Filters
+            </CsText>
           </Pressable>
         </View>
       </View>
@@ -168,31 +196,125 @@ export default function FilterBottomSheet({
   );
 }
 
-/* ===================== REUSABLE ===================== */
+/* ================= COMPONENTS ================= */
 
-const FilterSection = ({ title, children }) => (
-  <View className="mb-6">
-    <CsText style={typography.Poppins_s_semibold} className="mb-3">
-      {title}
-    </CsText>
-    <View className="flex-row flex-wrap gap-2">{children}</View>
+const Section = ({ title, children }) => (
+  <View style={section}>
+    <CsText style={sectionTitle}>{title}</CsText>
+    {children}
   </View>
 );
 
-const FilterChip = ({ label, selected, onPress }) => (
-  <Pressable
-    onPress={onPress}
-    className={`px-4 py-2 rounded-full border ${
-      selected ? "bg-primary border-primary" : "border-gray-300"
-    }`}
-  >
-    <CsText className={selected ? "text-white" : "text-dark"}>{label}</CsText>
+const Item = ({ label, count, selected, onPress }) => (
+  <Pressable onPress={onPress} style={row}>
+    <View style={checkbox}>
+      {selected && <Check size={14} color={colors.primary} />}
+    </View>
+
+    <CsText style={{ flex: 1 }}>{label}</CsText>
+
+    {count !== undefined && (
+      <CsText style={{ color: colors.neutral }}>{count}</CsText>
+    )}
   </Pressable>
 );
 
-const pickerWrapperStyle = {
-  borderWidth: 1,
-  borderColor: "#ccc",
-  borderRadius: 8,
+const PricePill = ({ label }) => (
+  <View style={pill}>
+    <CsText style={{ color: colors.primary }}>{label}</CsText>
+  </View>
+);
+
+/* ================= STYLES ================= */
+
+const overlay = { flex: 1, backgroundColor: "rgba(0,0,0,.4)" };
+
+const sheet = {
+  height: height * 0.8,
+  backgroundColor: "#fff",
+  borderTopLeftRadius: 24,
+  borderTopRightRadius: 24,
+  padding: 16,
+  elevation: 10,
+};
+
+const handle = {
+  width: 40,
+  height: 4,
+  backgroundColor: "#ddd",
+  borderRadius: 2,
+  alignSelf: "center",
+  marginBottom: 10,
+};
+
+const header = {
+  flexDirection: "row",
+  justifyContent: "space-between",
+  marginBottom: 12,
+};
+
+const title = { fontSize: 18, fontWeight: "700" };
+
+const section = {
+ 
+  borderRadius: 14,
+  padding: 12,
+  marginBottom: 8,
+};
+
+const sectionTitle = { fontWeight: "700", marginBottom: 8 };
+
+const row = {
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 12,
+  paddingVertical: 10,
+};
+
+const checkbox = {
+  height: 18,
+  width: 18,
+  borderRadius: 4,
+  borderWidth: 1.5,
+  borderColor: colors.primary,
+  backgroundColor: "#fff",
+  alignItems: "center",
+  justifyContent: "center",
+};
+
+const marker = {
+  backgroundColor: colors.primary,
+  height: 20,
+  width: 20,
+  borderRadius: 10,
+};
+
+const pill = {
+  paddingHorizontal: 10,
+  paddingVertical: 4,
+  borderRadius: 10,
+  backgroundColor: colors.primary + "15",
+};
+
+const footer = {
+  flexDirection: "row",
+  gap: 10,
   marginTop: 6,
+};
+
+const resetBtn = {
+  flex: 1,
+  borderWidth: 1,
+  borderColor: "#DDD",
+  borderRadius: 12,
+  padding: 12,
+  alignItems: "center",
+};
+
+const applyBtn = {
+  flex: 1,
+  backgroundColor: colors.primary,
+  borderRadius: 12,
+  padding: 12,
+  alignItems: "center",
 };

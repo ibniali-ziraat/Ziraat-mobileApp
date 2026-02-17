@@ -26,7 +26,9 @@ export default function ConfirmDeleteModal({
   return (
     <Modal transparent visible={visible} animationType="fade">
       <View className="flex-1 justify-center items-center bg-black/50 px-6">
-        <View className="w-full rounded-2xl bg-light p-6">
+        <View 
+         style={{backgroundColor:colors.light}}
+        className="w-full rounded-2xl p-6">
           {/* Title */}
           <CsText
             className="text-lg font-semibold mb-2"
@@ -54,7 +56,9 @@ export default function ConfirmDeleteModal({
               className="px-4 py-2 rounded-lg"
               style={{ backgroundColor: colors.error }}
             >
-              <CsText className="text-light font-semibold">
+              <CsText 
+              style={{color:colors.light}}
+              className="font-semibold">
                 {loading ? "Deleting..." : confirmText}
              </CsText>
             </Pressable>

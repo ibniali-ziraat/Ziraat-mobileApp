@@ -16,44 +16,69 @@ export default function ProductQuantitySelector({
   max,
 }: Props) {
   const increment = () => {
-    if (!max || quantity < max) {
-      setQuantity(quantity + 1);
-    }
+    if (!max || quantity < max) setQuantity(quantity + 1);
   };
 
   const decrement = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
+    if (quantity > 1) setQuantity(quantity - 1);
   };
 
+  const isMax = max && quantity >= max;
+
   return (
-    <View className="flex-row items-center mt-4 px-4">
-      <CsText style={typography.Poppins_m_semibold} className="mr-4">
-        Quantity
-      </CsText>
+    <View className=" mx-4">
 
-      <View className="flex-row items-center bg-white rounded-full shadow-sm">
-        <TouchableOpacity
-          onPress={decrement}
-          disabled={quantity === 1}
-          className={`p-3 ${quantity === 1 ? "opacity-40" : ""}`}
+      <View className="flex-row items-center justify-between">
+
+        {/* Label */}
+        <CsText
+          style={[typography.Poppins_m_semibold, { color: colors.dark }]}
         >
-          <Minus size={18} color={colors.dark} />
-        </TouchableOpacity>
-
-        <CsText style={typography.Poppins_m_semibold} className="px-4">
-          {quantity}
+          Quantity
         </CsText>
 
-        <TouchableOpacity
-          onPress={increment}
-          disabled={!!max && quantity >= max}
-          className={`p-3 ${max && quantity >= max ? "opacity-40" : ""}`}
+        {/* Controls */}
+        <View className="flex-row items-center border rounded-xl"
+          style={{ borderColor: colors.dark + "20" }}
         >
-          <Plus size={18} color={colors.dark} />
-        </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={decrement}
+            disabled={quantity === 1}
+            className="p-3"
+            style={{ opacity: quantity === 1 ? 0.3 : 1 }}
+          >
+            <Minus size={18} color={colors.dark} />
+          </TouchableOpacity>
+
+          <View className="px-4">
+            <CsText
+              style={[typography.Poppins_m_semibold, { color: colors.dark }]}
+            >
+              {quantity}
+            </CsText>
+          </View>
+
+          <TouchableOpacity
+            onPress={increment}
+            disabled={!!isMax}
+            className="p-3"
+            style={{ opacity: isMax ? 0.3 : 1 }}
+          >
+            <Plus size={18} color={colors.primary} />
+          </TouchableOpacity>
+
+        </View>
       </View>
+
+      {isMax && (
+        <CsText
+          style={{ color: colors.dark, opacity: 0.5 }}
+          className="text-xs mt-1"
+        >
+          Max quantity reached
+        </CsText>
+      )}
     </View>
   );
 }

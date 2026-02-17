@@ -9,7 +9,7 @@ export default function ProductSpecifications({ product }: any) {
   if (!product.specification && !product.attributes?.length) return null;
 
   return (
-    <View className="px-4 mt-6">
+    <View className=" mt-6">
       <CsText style={typography.Poppins_m_semibold}>Specifications</CsText>
 
       {product.specification && (

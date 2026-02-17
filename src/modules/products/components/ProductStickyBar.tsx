@@ -1,5 +1,6 @@
 import AddToCartButton from "@/src/components/shared/AddToCartButton";
 import BuyNowButton from "@/src/components/shared/BuyNowButton";
+import { colors } from "@/src/constants/colors";
 import { router } from "expo-router";
 import { View } from "react-native";
 
@@ -21,18 +22,37 @@ export default function ProductStickyBar({
   onRemoveFromCart,
 }: Props) {
   const handleCartPress = () => {
-    if (isInCart) {
-      onRemoveFromCart();
-    } else {
-      onAddToCart();
-    }
+    isInCart ? onRemoveFromCart() : onAddToCart();
   };
 
   return (
-    <View className="absolute bottom-0 left-0 right-0 bg-white p-4 shadow-lg">
-      <View className="flex-row">
+    <View
+      className="absolute bottom-0 left-0 right-0 pt-3 px-4 pb-5"
+      style={{
+        backgroundColor: colors.light,
+        shadowColor: colors.dark,
+        shadowOffset: { width: 0, height: -4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 12,
+        elevation: 10,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+      }}
+    >
+      {/* Top Divider */}
+      <View
+        className="absolute top-0 left-0 right-0"
+        style={{
+          height: 1,
+          backgroundColor: colors.dark,
+          opacity: 0.08,
+        }}
+      />
+
+      <View className="flex-row mt-2">
+
         {/* Buy Now */}
-        <View className="flex-1 mr-2">
+        <View className="flex-1 mr-3">
           <BuyNowButton
             onPress={() =>
               router.push({
@@ -46,15 +66,17 @@ export default function ProductStickyBar({
           />
         </View>
 
-        {/* Single Add/Remove Button */}
+        {/* Add / Remove */}
         <View className="flex-1">
           <AddToCartButton
             title={isInCart ? "Remove from Cart" : "Add to Cart"}
-            onPress={handleCartPress}
-            disabled={isCartBusy}
-            variant={isInCart ? "danger" : "primary"} // optional styling
+    onPress={handleCartPress}
+    disabled={isCartBusy}
+    loading={isCartBusy}   
+    variant={isInCart ? "danger" : "primary"}
           />
         </View>
+
       </View>
     </View>
   );

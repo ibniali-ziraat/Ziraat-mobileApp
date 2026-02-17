@@ -1,6 +1,7 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useRouter } from "expo-router";
@@ -22,22 +23,18 @@ const Wishlist = () => {
     wishlist = [],
     isLoading,
     removeFromWishlist,
-    addToWishlist,
   } = useWishlist();
-  const { cart, addToCart, removeFromCart } = useCart();
 
-  console.log(wishlist, "wishlist data....");
+  const { addToCart } = useCart();
 
   const handleStartShopping = () => router.push("/Product");
 
   const handleRemoveFromWishlist = async (id: string) => {
     await removeFromWishlist({ id });
-    toast.success("Removed from cart");
+    toast.success("Removed from wishlist");
   };
 
   const handleAddToCart = async (product) => {
-    console.log(product, "product....wishlist");
-
     if (!product) return;
 
     await addToCart({
@@ -45,6 +42,7 @@ const Wishlist = () => {
       variationName: "",
       quantity: product.quantity,
     });
+
     toast.success("Item added to cart");
   };
 
@@ -53,22 +51,23 @@ const Wishlist = () => {
     return (
       <ScreenLayout>
         <View className="flex-1 justify-center items-center">
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       </ScreenLayout>
     );
   }
 
   /* ================= EMPTY ================= */
-  if (!wishlist || wishlist?.length === 0) {
+  if (!wishlist || wishlist.length === 0) {
     return (
-      <View className="flex-1 bg-white">
+      <View style={{ backgroundColor: colors.lightHover }} className="flex-1">
         <BackHeader title="My Wishlist" desc="Your selected items" />
 
-        <View className="flex-1 justify-center items-center px-6">
+        <View className="flex-1 justify-center items-center px-8">
+
           <Image
             source={require("@/assets/images/empty-wishlist.png")}
-            className="w-56 h-56 mb-6"
+            className="w-32 h-32 mb-6"
             resizeMode="contain"
           />
 
@@ -77,23 +76,28 @@ const Wishlist = () => {
           </CsText>
 
           <CsText
-            className="text-center mb-6"
+            className="text-center mb-6 opacity-60"
             style={typography.Poppins_m_regular}
           >
             Save items you love and view them all in one place.
           </CsText>
 
           <Pressable
+            style={{ backgroundColor: colors.primary }}
             onPress={handleStartShopping}
-            className="bg-primary px-8 py-3 rounded-full"
+            className="px-10 py-3 rounded-full"
           >
-            <CsText
-              className="text-light"
-              style={typography.Poppins_m_semibold}
-            >
-              Browse Products
-            </CsText>
+           <CsText
+  style={[
+    typography.Poppins_m_semibold,
+    { color: colors.light },
+  ]}
+>
+  Browse Products
+</CsText>
+
           </Pressable>
+
         </View>
       </View>
     );
@@ -101,39 +105,49 @@ const Wishlist = () => {
 
   /* ================= LIST ================= */
   return (
-    <ScreenLayout scrollable={false}>
-      <BackHeader
-        title="My Wishlist"
-        desc={`${wishlist.length} ${
-          wishlist.length === 1 ? "item" : "items"
-        } saved`}
-      />
+  
+      <View style={{ backgroundColor: colors.light }} className="flex-1">
 
-      <FlatList
-        data={wishlist}
-        keyExtractor={(item: any) =>
-          item.productId?.toString() ?? item.id?.toString()
-        }
-        showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <WishlistItem
-            item={item}
-            onRemove={() => handleRemoveFromWishlist(item.id)}
-            onAddToCart={handleAddToCart}
-          />
-        )}
-        ListFooterComponent={
-          <View className="py-6">
-            <CsText
-              className="text-center text-dark"
-              style={typography.Poppins_s_regular}
-            >
-              You have reached the end of your wishlist.
-            </CsText>
-          </View>
-        }
-      />
-    </ScreenLayout>
+        <BackHeader
+          title="My Wishlist"
+          desc={`${wishlist.length} ${
+            wishlist.length === 1 ? "item" : "items"
+          } saved`}
+        />
+
+        <FlatList
+          data={wishlist}
+          numColumns={2}
+          keyExtractor={(item: any) =>
+            item.productId?.toString() ?? item.id?.toString()
+          }
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+        
+            paddingTop: 8,
+            paddingBottom: 50,
+          }}
+          renderItem={({ item }) => (
+            <WishlistItem
+              item={item}
+              onRemove={() => handleRemoveFromWishlist(item.id)}
+              onAddToCart={handleAddToCart}
+            />
+          )}
+          ListFooterComponent={
+            <View className="py-8 w-full">
+              <CsText
+                className="text-center opacity-50"
+                style={typography.Poppins_s_regular}
+              >
+                You’ve reached the end of your wishlist
+              </CsText>
+            </View>
+          }
+        />
+
+      </View>
+  
   );
 };
 

@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import CsText from "@/src/components/shared/CsText";
-import QuantitySelector from "@/src/components/shared/QuantitySelector";
 import { colors } from "@/src/constants/colors";
 
 export default function CartListItem({
@@ -13,90 +18,185 @@ export default function CartListItem({
   handleRemoveItem,
 }) {
   const [quantity, setQuantity] = useState(apiQuantity ?? 1);
+  const [showQtyModal, setShowQtyModal] = useState(false);
 
-  // Sync quantity when cart updates from API
   useEffect(() => {
     setQuantity(apiQuantity ?? 1);
   }, [apiQuantity]);
 
-  const increaseQty = () => {
-    const newQty = quantity + 1;
-    setQuantity(newQty);
-    onQtyChange(newQty);
+  const selectQty = (q: number) => {
+    setQuantity(q);
+    onQtyChange(q);
+    setShowQtyModal(false);
   };
 
-  const decreaseQty = () => {
-    if (quantity > 1) {
-      const newQty = quantity - 1;
-      setQuantity(newQty);
-      onQtyChange(newQty);
-    }
-  };
+  const price =
+    item?.calculatedProductPrice?.price ?? item?.productPrice ?? 0;
 
-  const price = item?.calculatedProductPrice?.price ?? item.productPrice;
-  const oldPrice = item?.calculatedProductPrice?.oldPrice;
+  const oldPrice = item?.calculatedProductPrice?.oldPrice ?? 0;
 
-  const discountPercent =
-    oldPrice && price
+  const discount =
+    oldPrice > price
       ? Math.round(((oldPrice - price) / oldPrice) * 100)
-      : null;
+      : 0;
+
+  const totalPrice = price * quantity;
 
   return (
-    <View className="flex-row p-3 bg-white rounded-xl">
-      {/* Image */}
-      <Image
-        source={{ uri: item.productImage }}
-        className="w-32 h-24 rounded-lg"
-        resizeMode="cover"
-      />
+    <>
+      {/* CARD */}
+      <View
+        className="mb-5 flex-row px-4 py-3 rounded-lg "
+        style={{
+          borderWidth: 1,
+          borderColor: colors.secondary + "40",
+          backgroundColor: colors.light,
+        }}
+      >
 
-      <View className="ml-4 flex-1">
-        {/* Title + Quantity */}
-        <View className="flex-row justify-between items-center">
-          <CsText className="text-dark flex-1 font-medium">
-            {item.productName}
-          </CsText>
+        {/* IMAGE */}
+        <Image
+          source={{ uri: item?.productImage }}
+          className="w-24 h-32 rounded-md"
+          resizeMode="cover"
+        />
 
-          <QuantitySelector
-            value={quantity}
-            onIncrease={increaseQty}
-            onDecrease={decreaseQty}
-            min={1}
-          />
-        </View>
+        {/* CONTENT */}
+        <View className="ml-4 flex-1">
 
-        {/* Stock */}
-        <CsText className="text-xs text-dark mt-1">
-          {item.isProductAvailabeToOrder ? "In Stock" : "Out of Stock"}
-        </CsText>
+          {/* TITLE + DELETE */}
+          <View className="flex-row justify-between items-start">
+            <CsText
+              className="text-sm font-medium flex-1 pr-2"
+              numberOfLines={2}
+            >
+              {item?.productName}
+            </CsText>
 
-        {/* Price + Remove */}
-        <View className="flex-row items-center justify-between mt-2">
-          <View className="flex-row items-center">
-            {oldPrice ? (
-              <>
-                <CsText className="line-through mr-2 text-sm">
-                  ₹{oldPrice}
-                </CsText>
-                <CsText className="text-primary font-bold mr-1">
-                  ₹{price}
-                </CsText>
-                {!!discountPercent && (
-                  <CsText className="text-secondary text-xs font-semibold">
-                    {discountPercent}% OFF
-                  </CsText>
-                )}
-              </>
-            ) : (
-              <CsText className="text-primary font-semibold">₹{price}</CsText>
-            )}
+            <Pressable
+              onPress={handleRemoveItem}
+              className="p-1 rounded-full"
+              style={{ backgroundColor: colors.lightHover }}
+            >
+              <Ionicons
+                name="close"
+                size={16}
+                color={colors.darkHover}
+              />
+            </Pressable>
           </View>
 
-          <TouchableOpacity onPress={handleRemoveItem}>
-            <Ionicons name="trash-outline" size={20} color={colors.secondary} />
-          </TouchableOpacity>
+          {/* DISCOUNT PILL */}
+          {discount > 0 && (
+            <View
+              className="self-start mt-1 px-2 py-0.5 rounded-full"
+              style={{ backgroundColor: colors.secondary + "20" }}
+            >
+              <CsText
+                className="text-xs font-semibold"
+                style={{ color: colors.secondary }}
+              >
+                {discount}% OFF
+              </CsText>
+            </View>
+          )}
+
+          {/* QTY */}
+          <Pressable
+            onPress={() => setShowQtyModal(true)}
+            className="self-start mt-2  py-1.5 rounded-md"
+            style={{ backgroundColor: colors.lightHover }}
+          >
+            <CsText className="text-xs font-semibold">
+              Qty {quantity} ▾
+            </CsText>
+          </Pressable>
+
+          {/* PRICE */}
+          <View className="flex-row items-center mt-3">
+            {oldPrice > price && (
+              <CsText
+                className="text-xs line-through mr-2"
+                style={{ color: colors.darkHover }}
+              >
+                ₹{oldPrice}
+              </CsText>
+            )}
+
+            <CsText
+              className="text-base font-semibold"
+              style={{ color: colors.primary }}
+            >
+              ₹{price}
+            </CsText>
+          </View>
+
+          {/* TOTAL */}
+          {quantity > 1 && (
+            <CsText
+              className="text-xs mt-1"
+              style={{ color: colors.darkHover }}
+            >
+              Total ₹{totalPrice}
+            </CsText>
+          )}
         </View>
       </View>
-    </View>
+
+      {/* QTY MODAL */}
+      <Modal
+        transparent
+        visible={showQtyModal}
+        animationType="slide"
+        onRequestClose={() => setShowQtyModal(false)}
+      >
+        <Pressable
+          className="flex-1 justify-end"
+          onPress={() => setShowQtyModal(false)}
+          style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
+        >
+          <View className="bg-white rounded-t-3xl p-5">
+
+            <CsText className="font-semibold mb-4">
+              Select Quantity
+            </CsText>
+
+            <View className="flex-row flex-wrap">
+              {[...Array(10)].map((_, i) => {
+                const q = i + 1;
+                const active = q === quantity;
+
+                return (
+                  <TouchableOpacity
+                    key={q}
+                    onPress={() => selectQty(q)}
+                    className="w-1/5 items-center mb-4"
+                  >
+                    <View
+                      className="h-10 w-10 rounded-full items-center justify-center"
+                      style={{
+                        backgroundColor: active
+                          ? colors.primary
+                          : colors.lightHover,
+                      }}
+                    >
+                      <CsText
+                        style={{
+                          color: active ? colors.light : colors.dark,
+                        }}
+                      >
+                        {q}
+                      </CsText>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
+
+            </View>
+
+          </View>
+        </Pressable>
+      </Modal>
+    </>
   );
 }

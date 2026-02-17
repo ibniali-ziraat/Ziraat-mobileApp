@@ -1,0 +1,215 @@
+import React, { useState } from "react";
+import {
+  KeyboardTypeOptions,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+
+import { Ionicons } from "@expo/vector-icons";
+import { Controller, useFormContext } from "react-hook-form";
+
+import { colors } from "@/src/constants/colors";
+import { fonts } from "@/src/constants/fonts/font";
+import { FormInputProps } from "./types";
+
+const FormTextInput: React.FC<FormInputProps> = ({
+  name,
+  label,
+  type = "text",
+  error,
+  required = false,
+  countryCode = "+91",
+  placeholder,
+}) => {
+  const { control } = useFormContext();
+  if (!control) return null;
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+
+  const getKeyboardType = (): KeyboardTypeOptions => {
+    switch (type) {
+      case "phone":
+      case "age":
+      case "pincode":
+      case "bankaccount":
+        return "numeric";
+
+      case "email":
+        return "email-address";
+
+      default:
+        return "default";
+    }
+  };
+
+  const sanitizeInput = (text: string): string => {
+    switch (type) {
+      case "phone":
+        return text.replace(/\D/g, "").slice(0, 10);
+
+      case "age":
+        return text.replace(/\D/g, "").slice(0, 3);
+
+      case "pincode":
+        return text.replace(/\D/g, "").slice(0, 6);
+
+      case "bankaccount":
+        return text.replace(/\D/g, "").slice(0, 18);
+
+      case "gst":
+        return text
+          .toUpperCase()
+          .replace(/[^A-Z0-9]/g, "")
+          .slice(0, 15);
+
+      case "pan":
+        return text
+          .toUpperCase()
+          .replace(/[^A-Z0-9]/g, "")
+          .slice(0, 10);
+
+      case "ifsc":
+        return text
+          .toUpperCase()
+          .replace(/[^A-Z0-9]/g, "")
+          .slice(0, 11);
+
+      case "email":
+        return text
+          .replace(/[^a-zA-Z0-9@._-]/g, "")
+          .replace(/@(?=.*@)/g, "")
+          .slice(0, 32);
+
+      case "name":
+        return text.replace(/[^a-zA-Z\s]/g, "").slice(0, 32);
+
+      case "password":
+        return text.slice(0, 24);
+
+      default:
+        return text;
+    }
+  };
+
+  return (
+    <Controller
+      control={control}
+      name={name}
+      defaultValue=""
+      render={({ field: { onChange, value } }) => {
+        const hasError = !!error;
+
+        const borderColor = hasError
+          ? colors.error
+          : isFocused
+            ? colors.primary
+            : colors.cardBorder;
+
+        return (
+          <View style={styles.container}>
+            {/* Label */}
+            <View style={styles.labelRow}>
+              <Text style={styles.label}>{label}</Text>
+
+              {required && <Text style={styles.required}> *</Text>}
+            </View>
+
+            {/* Input */}
+            <View style={[styles.inputContainer, { borderColor }]}>
+              {type === "phone" && (
+                <Text style={styles.countryCode}>{countryCode}</Text>
+              )}
+
+              <TextInput
+                style={styles.input}
+                value={value}
+                placeholder={placeholder || label}
+                placeholderTextColor={colors.darkHover}
+                keyboardType={getKeyboardType()}
+                secureTextEntry={type === "password" && !showPassword}
+                onChangeText={(text) => onChange(sanitizeInput(text))}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                underlineColorAndroid="transparent"
+                selectionColor={colors.primary}
+              />
+
+              {type === "password" && (
+                <Pressable onPress={() => setShowPassword(!showPassword)}>
+                  <Ionicons
+                    name={showPassword ? "eye" : "eye-off"}
+                    size={20}
+                    color={colors.darkHover}
+                  />
+                </Pressable>
+              )}
+            </View>
+
+            {/* Error */}
+            {hasError && <Text style={styles.error}>{error?.message}</Text>}
+          </View>
+        );
+      }}
+    />
+  );
+};
+
+export default FormTextInput;
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 18,
+  },
+
+  labelRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 6,
+  },
+
+  label: {
+    fontSize: 14,
+    color: colors.neutral,
+    fontFamily: fonts.poppins.medium,
+  },
+
+  required: {
+    color: colors.error,
+    fontFamily: fonts.poppins.medium,
+  },
+
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    height: 54,
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    backgroundColor: colors.light,
+  },
+
+  input: {
+    flex: 1,
+    fontSize: 15,
+    color: colors.dark,
+    fontFamily: fonts.poppins.regular,
+  },
+
+  countryCode: {
+    marginRight: 8,
+    color: colors.warning,
+    fontFamily: fonts.poppins.medium,
+    fontSize: 15,
+  },
+
+  error: {
+    color: colors.error,
+    marginTop: 6,
+    fontSize: 12,
+    fontFamily: fonts.poppins.regular,
+  },
+});
