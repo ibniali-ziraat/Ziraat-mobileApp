@@ -11,9 +11,10 @@ import {
   PhoneCall,
   Shield,
   Trash2,
-  User
+  User,
 } from "lucide-react-native";
-import { TouchableOpacity, View } from "react-native";
+import { useRef } from "react";
+import { Animated, Pressable, View } from "react-native";
 
 
 const appVersion =
@@ -21,76 +22,104 @@ const appVersion =
   Constants.manifest?.version ??
   "1.0.0";
 
+/* ---------------- ROW ---------------- */
 
-const Row = ({ icon, label, onPress, danger = false }) => (
- <TouchableOpacity
-  onPress={onPress}
-  activeOpacity={0.65}
-  className="flex-row items-center justify-between py-4"
->
-  <View className="flex-row items-center">
-    {/* Icon background */}
-    <View
-      className="w-10 h-10 rounded-full items-center justify-center mr-4"
-      style={{
-        backgroundColor: danger
-          ? `${colors.error}15`     
-          : `${colors.neutral}15`,    
-      }}
-    >
-      {icon}
-    </View>
+const Row = ({ icon, label, onPress, danger = false }) => {
+  const scale = useRef(new Animated.Value(1)).current;
 
-    <CsText
-      style={{
-        fontSize: 15,
-        color: danger ? colors.error: colors.dark,
-      }}
-    >
-      {label}
-    </CsText>
-  </View>
+  return (
+    <Animated.View style={{ transform: [{ scale }] }}>
+      <Pressable
+        onPress={onPress}
+        onPressIn={() =>
+          Animated.spring(scale, {
+            toValue: 0.97,
+            useNativeDriver: true,
+          }).start()
+        }
+        onPressOut={() =>
+          Animated.spring(scale, {
+            toValue: 1,
+            useNativeDriver: true,
+          }).start()
+        }
+        className="flex-row items-center justify-between py-4 px-4"
+      >
+        <View className="flex-row items-center">
+          {/* Icon bubble */}
+          <View
+            className="w-10 h-10 rounded-full items-center justify-center mr-4"
+            style={{
+              backgroundColor: danger
+                ? `${colors.error}15`
+                : `${colors.neutral}15`,
+            }}
+          >
+            {icon}
+          </View>
 
-  <ChevronRight
-    size={18}
-    color={danger ? colors.dark : colors.neutral}
-  />
-</TouchableOpacity>
+          <CsText
+            style={{
+              fontSize: 15,
+              color: danger ? colors.error : colors.dark,
+            }}
+          >
+            {label}
+          </CsText>
+        </View>
 
-);
+        <ChevronRight
+          size={18}
+          color={colors.neutral}
+          style={{ opacity: 0.6 }}
+        />
+      </Pressable>
+    </Animated.View>
+  );
+};
 
+/* ---------------- DIVIDER ---------------- */
 
 const Divider = () => (
   <View
-  className="h-[1px] ml-16"
-  style={{ backgroundColor: `${colors.neutral}20` }}
-/>
+    className="h-[1px] ml-16"
+    style={{ backgroundColor: `${colors.neutral}15` }}
+  />
 );
 
+/* ---------------- SECTION ---------------- */
 
 const Section = ({ title, children }) => (
   <View className="mb-8">
     {title && (
-      <CsText className="text-xs font-semibold mb-2 uppercase" >
-       
+      <CsText
+        className="text-xs font-semibold mb-2 uppercase ml-1"
+        style={{ color: colors.neutral }}
+      >
         {title}
       </CsText>
     )}
 
     <View
-  className="rounded-2xl shadow-sm overflow-hidden"
-  style={{ backgroundColor: colors.light }}
->
-  {children}
-</View>
+      className="rounded-2xl overflow-hidden"
+      style={{
+        backgroundColor: colors.light,
+        shadowColor: "#000",
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+        elevation: 2,
+      }}
+    >
+      {children}
+    </View>
   </View>
 );
 
-/* ------------------ SETTINGS PAGE ------------------ */
+/* ---------------- SETTINGS PAGE ---------------- */
+
 export default function SettingsPage() {
   return (
-    <View className="flex-1"
-    style={{backgroundColor:colors.light}}>
+    <View className="flex-1" style={{ backgroundColor: colors.light }}>
       <BackHeader title="Settings & Support" desc="Settings Hub" />
 
       <View className="px-4 mt-5">
@@ -108,9 +137,6 @@ export default function SettingsPage() {
             icon={<Lock size={22} color={colors.neutral} />}
             onPress={() => router.push("/user/change-password")}
           />
-          <Divider />
-
-          
         </Section>
 
         {/* Support */}
@@ -120,17 +146,16 @@ export default function SettingsPage() {
             icon={<PhoneCall size={22} color={colors.neutral} />}
             onPress={() => router.push("/contact-Support")}
           />
-           <Divider />
-         
+          <Divider />
 
           <Row
             label="FAQs"
             icon={<HelpCircle size={22} color={colors.neutral} />}
             onPress={() => router.push("/faq")}
           />
-
-         
         </Section>
+
+        {/* Privacy */}
         <Section title="Privacy & Security">
           <Row
             label="Privacy Policy"
@@ -144,12 +169,9 @@ export default function SettingsPage() {
             icon={<FileText size={22} color={colors.neutral} />}
             onPress={() => router.push("/user/condition")}
           />
-          <Divider />
-
-          
         </Section>
 
-        {/* Account Management */}
+        {/* Danger */}
         <Section title="Account Management">
           <Row
             label="Delete Account"
@@ -159,8 +181,8 @@ export default function SettingsPage() {
           />
         </Section>
 
-        {/* App Version (Centered, System Style) */}
-        <View className="items-center mt-10 mb-4">
+        {/* VERSION */}
+        <View className="items-center mt-10 mb-2">
           <CsText
             style={{
               fontSize: 12,
@@ -172,7 +194,7 @@ export default function SettingsPage() {
           </CsText>
         </View>
 
-        {/* Footer */}
+        {/* FOOTER */}
         <View className="items-center mb-4">
           <CsText style={{ fontSize: 12, color: colors.neutral }}>
             © 2026 Ziraat • Smart Farming Solutions
