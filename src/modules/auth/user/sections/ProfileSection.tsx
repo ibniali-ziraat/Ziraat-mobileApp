@@ -1,7 +1,7 @@
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { FormSectionProps } from "@/src/types/formSectionProps";
 import { useEffect } from "react";
 import { View } from "react-native";
-import FormInput from "../../../../components/form/inputs/FormInput";
 import SingleSelectInput from "../../../../components/form/inputs/SingleSelectInput";
 
 export default function ProfileSection({
@@ -22,38 +22,38 @@ export default function ProfileSection({
 
   return (
     <View>
-      <FormInput
-        control={control}
+      <FormTextInput
         name="fullName"
         label="Full Name"
-        error={errors?.fullName?.message}
+        type="name"
+        error={errors?.fullName}
+        required
       />
+      {!data && (
+        <FormTextInput
+          name="phone"
+          label="Mobile Number"
+          error={errors.phone}
+          type="phone"
+          required
+        />
+      )}
 
-      <FormInput
-        control={control}
+      <FormTextInput
         name="email"
         label="Email (Optional)"
         error={errors.email}
         optional
         type="email"
+        required
       />
 
-      {!data && (
-        <FormInput
-          control={control}
-          name="phone"
-          label="Mobile Number"
-          error={errors.phone?.message}
-          // type="phone"
-        />
-      )}
-
-      <FormInput
-        control={control}
+      <FormTextInput
         name="age"
         label="Age"
-        error={errors.age?.message}
-        type="phone"
+        error={errors.age}
+        type="age"
+        required
       />
 
       <SingleSelectInput
@@ -71,19 +71,21 @@ export default function ProfileSection({
 
       {!data && (
         <>
-          <FormInput
+          <FormTextInput
             control={control}
             name="password"
             label="Password"
-            error={errors.password?.message}
+            error={errors.password}
             type="password"
+            required
           />
-          <FormInput
+          <FormTextInput
             control={control}
             name="confirmPassword"
             label="Confirm Password"
-            error={errors.confirmPassword?.message}
+            error={errors.confirmPassword}
             type="password"
+            required
           />
         </>
       )}

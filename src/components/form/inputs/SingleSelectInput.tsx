@@ -53,7 +53,7 @@ export default function SingleSelectInput({
   const filteredOptions = useMemo(() => {
     if (!searchable || !searchText) return options;
     return options.filter((o) =>
-      o.label.toLowerCase().includes(searchText.toLowerCase())
+      o.label.toLowerCase().includes(searchText.toLowerCase()),
     );
   }, [options, searchText, searchable]);
 
@@ -109,15 +109,16 @@ export default function SingleSelectInput({
             <Pressable
               disabled={disabled}
               style={{
-                borderWidth: liveError ? 2 : 1,
+                borderWidth: liveError ? 1 : 1,
                 borderColor: liveError
                   ? colors.error
                   : disabled
-                    ? colors.darkHover + "88"
+                    ? colors.darkHover
                     : colors.darkHover,
                 paddingHorizontal: 16,
                 paddingVertical: 14,
                 backgroundColor: colors.light,
+                borderRadius: 10,
               }}
               onPress={() => {
                 if (!disabled) {
@@ -137,7 +138,11 @@ export default function SingleSelectInput({
             </Pressable>
 
             {liveError && (
-              <HelperText type="error" visible>
+              <HelperText
+                type="error"
+                visible
+                style={{ color: colors.error, paddingHorizontal: 0 }}
+              >
                 Required Field
               </HelperText>
             )}

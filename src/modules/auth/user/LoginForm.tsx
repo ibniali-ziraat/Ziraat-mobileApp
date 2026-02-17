@@ -1,18 +1,21 @@
-import FormInput from "@/src/components/form/inputs/FormInput";
 import { Divider } from "@/src/components/shared/Divider";
 import FormActions from "@/src/components/shared/FormActions";
 import Heading from "@/src/components/shared/Heading";
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { typography } from "@/src/constants/fonts/typography";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useLoginMutation } from "@/src/hooks/userQueryHooks";
+import { LoginSchema } from "@/src/schemas/login.schema";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
+import { FormProvider } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 import { useZodForm } from "../../../hooks/useZodForm";
 import { GoogleAuthButton } from "../components/GoogleAuthButton";
 
 export default function LoginForm() {
-  const { control, handleSubmit, formState } = useZodForm();
+  const methods = useZodForm(LoginSchema);
+  const { control, handleSubmit, formState } = methods;
   const { errors } = formState;
 
   const { setUserToken, setUserId } = useAuth();
@@ -41,51 +44,57 @@ export default function LoginForm() {
   };
 
   return (
-    <View className="bg-light px-4">
-      <Heading title="Let's Sign in." subtitle="Welcome back to your account" />
+    <FormProvider {...methods}>
+      <View className="bg-light px-4">
+        <Heading
+          title="Let's Sign in."
+          subtitle="Welcome back to your account"
+        />
 
-      <FormInput
-        control={control}
-        name="mobileNumber"
-        label="Phone Number"
-        type="phone"
-        error={errors.mobileNumber}
-      />
+        <FormTextInput
+          name="mobileNumber"
+          label="Phone Number"
+          type="phone"
+          placeholder="0000000000"
+          error={errors.mobileNumber}
+          required
+        />
 
-      <FormInput
-        control={control}
-        name="password"
-        label="Password"
-        type="password"
-        error={errors.password}
-      />
+        <FormTextInput
+          name="password"
+          label="Password"
+          type="password"
+          placeholder="Password"
+          error={errors.password}
+          required
+        />
 
-     
-      <Pressable
-        className="items-end mt-2"
-        onPress={() => router.push("/user/forget-password")}
-      >
-        <Text className="text-primary" style={typography.Poppins_s_regular}>
-          Forgot password?
-        </Text>
-      </Pressable>
+        <Pressable
+          className="items-end mt-2"
+          onPress={() => router.push("/user/forget-password")}
+        >
+          <Text className="text-primary" style={typography.Poppins_s_regular}>
+            Forgot password?
+          </Text>
+        </Pressable>
 
-      <View className="mb-3 mt-4">
-        <FormActions
-          submitLabel="Login"
-          onSubmit={handleSubmit(onSubmit)}
+        <View className="mb-3 mt-4">
+          <FormActions
+            submitLabel="Login"
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isPending}
+            loading={isPending}
+          />
+        </View>
+
+        <Divider label="or sign in with google" />
+
+        <GoogleAuthButton
+          label="Sign in with Google"
+          onPress={() => {}}
           disabled={isPending}
-          loading={isPending}
         />
       </View>
-
-      <Divider label="or sign in with google" />
-
-      <GoogleAuthButton
-        label="Sign in with Google"
-        onPress={() => {}}
-        disabled={isPending}
-      />
-    </View>
+    </FormProvider>
   );
 }
