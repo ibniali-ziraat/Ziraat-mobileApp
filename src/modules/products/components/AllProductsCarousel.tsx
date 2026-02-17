@@ -1,9 +1,15 @@
-import CsText from "@/src/components/shared/CsText";
 import RatingStars from "@/src/components/shared/RatingStars";
 import { typography } from "@/src/constants/fonts/typography";
 import { router } from "expo-router";
 import { Heart } from "lucide-react-native";
-import { Dimensions, FlatList, Image, Pressable, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 
 export default function AllProductsCarousal({
   items,
@@ -15,7 +21,7 @@ export default function AllProductsCarousal({
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
 
-  // console.log(items, "items data+++");
+  console.log(items, "items data+++ in all products carousal");
 
   const getWishlistItem = (productId: string) =>
     wishlistItems.find((w: any) => String(w.productId) === String(productId));
@@ -50,7 +56,7 @@ export default function AllProductsCarousal({
                 />
               </Pressable>
 
-              {/* ❤️ HEART — NO NAVIGATION */}
+              {/* HEART — NO NAVIGATION */}
               <Pressable
                 hitSlop={10}
                 disabled={isWishlistBusy}
@@ -80,13 +86,13 @@ export default function AllProductsCarousal({
                 })
               }
             >
-              <CsText style={typography.Poppins_m_semibold} numberOfLines={1}>
+              <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
                 {item.title || item.name}
-              </CsText>
+              </Text>
 
-              <CsText style={typography.Poppins_s_medium}>
+              <Text style={typography.Poppins_s_medium}>
                 ₹{item.discountPrice ?? item.price}
-              </CsText>
+              </Text>
             </Pressable>
 
             <RatingStars rating={item.rating || item.ratingAverage} />

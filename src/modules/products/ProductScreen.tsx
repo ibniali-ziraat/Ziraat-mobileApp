@@ -42,6 +42,8 @@ export default function ProductScreen() {
 
   const { products: allProducts = [], filterOptions = [] } = useProductsData();
 
+  console.log(allProducts, "all products...");
+
   const { data: filteredProductsData = {} } = useProductSearch({
     query: debouncedSearch,
     ...filters,
