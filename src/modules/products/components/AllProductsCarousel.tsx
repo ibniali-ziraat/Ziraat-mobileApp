@@ -1,10 +1,16 @@
-import CsText from "@/src/components/shared/CsText";
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { router } from "expo-router";
 import { Heart } from "lucide-react-native";
-import { Dimensions, FlatList, Image, Pressable, View } from "react-native";
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 
 export default function AllProductsCarousal({
   items,
@@ -16,7 +22,7 @@ export default function AllProductsCarousal({
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
 
-  // console.log(items, "items data+++");
+  console.log(items, "items data+++ in all products carousal");
 
   const getWishlistItem = (productId: string) =>
     wishlistItems.find((w: any) => String(w.productId) === String(productId));
@@ -75,7 +81,11 @@ export default function AllProductsCarousal({
                 />
               </Pressable>
 
+<<<<<<< HEAD
+              {/* HEART — NO NAVIGATION */}
+=======
               {/* HEART */}
+>>>>>>> 0a3936c9de2fa9e847f56d6250a340390cc2ac4a
               <Pressable
                 hitSlop={10}
                 disabled={isWishlistBusy}
@@ -120,14 +130,23 @@ export default function AllProductsCarousal({
                 })
               }
             >
+<<<<<<< HEAD
+              <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
+=======
               <CsText
                 style={typography.Poppins_s_semibold}
                 numberOfLines={2}
                 className="mt-2"
               >
+>>>>>>> 0a3936c9de2fa9e847f56d6250a340390cc2ac4a
                 {item.title || item.name}
-              </CsText>
+              </Text>
 
+<<<<<<< HEAD
+              <Text style={typography.Poppins_s_medium}>
+                ₹{item.discountPrice ?? item.price}
+              </Text>
+=======
               {/* PRICE */}
               <View className="flex-row items-center mt-1">
 
@@ -148,6 +167,7 @@ export default function AllProductsCarousal({
                 )}
 
               </View>
+>>>>>>> 0a3936c9de2fa9e847f56d6250a340390cc2ac4a
             </Pressable>
 
             {/* RATING */}
