@@ -22,6 +22,7 @@ export interface FormInputProps {
   required?: boolean;
   countryCode?: string;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 export interface FormOtpInputProps {

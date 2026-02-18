@@ -1,4 +1,4 @@
-import FormInput from "@/src/components/form/inputs/FormInput";
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { colors } from "@/src/constants/colors";
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
@@ -23,14 +23,14 @@ export default function OrchardSizeInput({
         shadowRadius: 6,
       }}
     >
-      <FormInput
-        control={control}
+      <FormTextInput
         name="orchardSize.value"
         label={`Orchard Size (${areaUnit})`}
         // label={`Orchard Size `}
-        type="phone"
+        type="pincode"
         disabled={true}
-        errors={errors?.orchardSize?.message}
+        required
+        errors={errors?.orchardSize}
       />
 
       <View
