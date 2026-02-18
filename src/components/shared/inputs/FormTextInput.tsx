@@ -23,6 +23,7 @@ const FormTextInput: React.FC<FormInputProps> = ({
   required = false,
   countryCode = "+91",
   placeholder,
+  disabled = false,
 }) => {
   const { control } = useFormContext();
   if (!control) return null;
@@ -136,6 +137,8 @@ const FormTextInput: React.FC<FormInputProps> = ({
                 onBlur={() => setIsFocused(false)}
                 underlineColorAndroid="transparent"
                 selectionColor={colors.primary}
+                editable={!disabled}
+                pointerEvents={disabled ? "none" : "auto"}
               />
 
               {type === "password" && (

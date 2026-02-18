@@ -81,9 +81,13 @@ export const ageValidator = z
 export const fullNameValidator = z
   .string()
   .min(1, "Required Field")
-  .min(3, "Full Name must be at least 3 characters");
+  .min(3, "Name must be at least 3 characters");
 export const otpValidator = z
   .string()
   .regex(/^[0-9]{6}$/, "Enter a valid 6-digit OTP");
 
 export const loginPasswordValidator = z.string().min(1, "Required Field");
+export const pincodeValidator = z
+  .string()
+  .nonempty("Required Field")
+  .regex(/^[1-9][0-9]{5}$/, "Enter a valid 6 digit pincode");

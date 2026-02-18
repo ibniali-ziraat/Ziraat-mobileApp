@@ -51,7 +51,6 @@ export default function AllProductsCarousal({
 
         return (
           <View style={{ width: cardWidth }} className="mr-4">
-
             {/* IMAGE CARD */}
             <View
               className="rounded-2xl overflow-hidden"
@@ -64,7 +63,6 @@ export default function AllProductsCarousal({
                 elevation: 2,
               }}
             >
-
               {/* IMAGE */}
               <Pressable
                 onPress={() =>
@@ -81,11 +79,7 @@ export default function AllProductsCarousal({
                 />
               </Pressable>
 
-<<<<<<< HEAD
               {/* HEART — NO NAVIGATION */}
-=======
-              {/* HEART */}
->>>>>>> 0a3936c9de2fa9e847f56d6250a340390cc2ac4a
               <Pressable
                 hitSlop={10}
                 disabled={isWishlistBusy}
@@ -112,13 +106,13 @@ export default function AllProductsCarousal({
                   style={{ backgroundColor: colors.secondary }}
                 >
                   <CsText
-                  style={{color:colors.light}}
-                   className="text-xs  font-semibold">
+                    style={{ color: colors.light }}
+                    className="text-xs  font-semibold"
+                  >
                     {discount}% OFF
                   </CsText>
                 </View>
               )}
-
             </View>
 
             {/* CONTENT */}
@@ -130,51 +124,19 @@ export default function AllProductsCarousal({
                 })
               }
             >
-<<<<<<< HEAD
               <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
-=======
-              <CsText
-                style={typography.Poppins_s_semibold}
-                numberOfLines={2}
-                className="mt-2"
-              >
->>>>>>> 0a3936c9de2fa9e847f56d6250a340390cc2ac4a
                 {item.title || item.name}
               </Text>
 
-<<<<<<< HEAD
               <Text style={typography.Poppins_s_medium}>
                 ₹{item.discountPrice ?? item.price}
               </Text>
-=======
-              {/* PRICE */}
-              <View className="flex-row items-center mt-1">
-
-                <CsText
-                  style={{ color: colors.primary }}
-                  className="font-semibold mr-2"
-                >
-                  ₹{price}
-                </CsText>
-
-                {oldPrice && (
-                  <CsText
-                    className="text-xs line-through"
-                    style={{ color: colors.darkHover }}
-                  >
-                    ₹{oldPrice}
-                  </CsText>
-                )}
-
-              </View>
->>>>>>> 0a3936c9de2fa9e847f56d6250a340390cc2ac4a
             </Pressable>
 
             {/* RATING */}
             <View className="mt-1">
               <RatingStars rating={item.rating || item.ratingAverage} />
             </View>
-
           </View>
         );
       }}

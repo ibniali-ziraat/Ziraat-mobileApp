@@ -1,54 +1,6 @@
+import { fullNameValidator, pincodeValidator } from "@/src/lib/validation";
 import { z } from "zod";
 
-// const currentYear = new Date().getFullYear();
-
-// export const BasicInfoSchema = z.object({
-//   orchardName: z.string().min(3, "Required Field"),
-
-//   orchardSize: z.coerce.number().int().min(1, "Required Field"),
-
-//   establishmentYear: z.coerce
-//     .number({
-//       invalid_type_error: "Establishment year must be a number",
-//     })
-//     .int("Year must be a whole number")
-//     .min(1900, "Year must be between 1900 and current year")
-//     .max(currentYear, `Year cannot exceed ${currentYear}`),
-
-//   plantationPattern: z.string().min(1, "Plantation pattern is required"),
-
-//   ownershipType: z.string().min(1, "Ownership type is required"),
-
-//   district: z.string().min(1, "District is required"),
-
-//   tehsil: z.string().min(1, "Tehsil is required"),
-
-//   // zone: z.string().min(3, "zone is required"),
-
-//   pincode: z.string().regex(/^\d{6}$/, "Enter Valid Pincode"),
-
-//   // latitude: z
-//   //   .string()
-//   //   .min(1, "Latitude is required.")
-//   //   .refine((val) => !isNaN(parseFloat(val)), "Latitude must be a number.")
-//   //   .transform(Number)
-//   //   .refine(
-//   //     (val) => val >= -90 && val <= 90,
-//   //     "Latitude must be between -90 and 90."
-//   //   ),
-
-//   // longitude: z
-//   //   .string()
-//   //   .min(1, "Longitude is required.")
-//   //   .refine((val) => !isNaN(parseFloat(val)), "Longitude must be a number.")
-//   //   .transform(Number)
-//   //   .refine(
-//   //     (val) => val >= -180 && val <= 180,
-//   //     "Longitude must be between -180 and 180."
-//   //   ),
-// });
-
-// export type OrchardSchemaType = z.infer<typeof orchardSchema>;
 const currentYear = new Date().getFullYear();
 
 export const OrchardSizeSchema = z
@@ -72,7 +24,6 @@ export const OrchardSizeSchema = z
       }
 
       if (data.value === undefined) {
-        // ✅ FIXED
         ctx.addIssue({
           path: ["orchardSize", "value"],
           message: "Orchard size is required",
@@ -92,27 +43,55 @@ export const OrchardSizeSchema = z
     }
   });
 
-export const BasicInfoSchema = z.object({
-  orchardName: z.string().min(3, "Required Field"),
+export const BasicInfoSchema = z
+  .object({
+    orchardName: fullNameValidator,
 
-  orchardSize: OrchardSizeSchema,
+    orchardUnit: z.enum(["marlas", "kanals"], {
+      required_error: "Unit is required",
+    }),
 
-  establishmentYear: z.coerce
-    .number({
-      invalid_type_error: "Establishment year must be a number",
-    })
-    .int("Year must be a whole number")
-    .min(1900, "Year must be between 1900 and current year")
-    .max(currentYear, `Year cannot exceed ${currentYear}`),
+    marlas: z.string().optional(),
+    kanals: z.string().optional(),
 
-  plantationPattern: z.string().min(1, "Plantation pattern is required"),
+    establishmentYear: z.coerce
+      .number({
+        invalid_type_error: "Establishment year must be a number",
+      })
+      .int("Year must be a whole number")
+      .min(1900, "Year must be between 1900 and current year")
+      .max(currentYear, `Year cannot exceed ${currentYear}`),
 
-  ownershipType: z.string().min(1, "Ownership type is required"),
+    plantationPattern: z.string().min(1, "Plantation pattern is required"),
 
-  district: z.string().min(1, "District is required"),
+    ownershipType: z.string().min(1, "Ownership type is required"),
 
-  tehsil: z.string().min(1, "Tehsil is required"),
+    district: z.string().min(1, "District is required"),
 
-  pincode: z.coerce.string().regex(/^\d{6}$/, "Enter Valid Pincode"),
-});
+    tehsil: z.string().min(1, "Tehsil is required"),
+
+    pincode: pincodeValidator,
+  })
+  .superRefine((data, ctx) => {
+    if (data.orchardUnit === "marlas") {
+      if (!data.marlas || data.marlas.trim() === "") {
+        ctx.addIssue({
+          path: ["marlas"],
+          message: "Required Field",
+          code: z.ZodIssueCode.custom,
+        });
+      }
+    }
+
+    if (data.orchardUnit === "kanals") {
+      if (!data.kanals || data.kanals.trim() === "") {
+        ctx.addIssue({
+          path: ["kanals"],
+          message: "Required Field",
+          code: z.ZodIssueCode.custom,
+        });
+      }
+    }
+  });
+
 export type BasicInfoSchemaType = z.infer<typeof BasicInfoSchema>;
