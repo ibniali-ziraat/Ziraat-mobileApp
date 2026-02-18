@@ -91,3 +91,55 @@ export const pincodeValidator = z
   .string()
   .nonempty("Required Field")
   .regex(/^[1-9][0-9]{5}$/, "Enter a valid 6 digit pincode");
+
+export const multiSelectRequired = (message = "Required Field") =>
+  z.preprocess(
+    (val) => {
+      if (val === undefined || val === null) return [];
+      return val;
+    },
+    z.array(z.string()).min(1, message),
+  );
+
+export const multiSelectOptional = () =>
+  z.preprocess((val) => {
+    if (val === undefined || val === null) return [];
+    return val;
+  }, z.array(z.string()));
+
+/* REQUIRED single select */
+export const singleSelectRequired = (message = "Required Field") =>
+  z.preprocess(
+    (val) => {
+      if (val === undefined || val === null) return "";
+      return val;
+    },
+    z.string().min(1, message),
+  );
+
+/* OPTIONAL single select */
+export const singleSelectOptional = () =>
+  z.preprocess((val) => {
+    if (val === undefined || val === null) return "";
+    return val;
+  }, z.string().optional());
+
+export const countValidator = (message = "Required Field", required = true) => {
+  if (!required) {
+    return z.number().optional();
+  }
+
+  return z.number().min(1, message);
+};
+
+export const numberField = (message = "Required Field") =>
+  z.preprocess(
+    (val) => {
+      if (val === "" || val === null || val === undefined) return undefined;
+      return Number(val);
+    },
+    z.number({
+      required_error: message,
+      invalid_type_error: "Must be a valid number",
+    }),
+  );

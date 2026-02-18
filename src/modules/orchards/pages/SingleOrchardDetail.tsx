@@ -406,17 +406,17 @@ export default function OrchardDetail() {
                   },
                   {
                     title: "Permanent Labor",
-                    value: infrastructureData?.permanentLabor ?? "—",
+                    value: infrastructureData?.permanentLabor,
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
                     title: "Seasonal Labor",
-                    value: infrastructureData?.seasonalLabor ?? "—",
+                    value: infrastructureData?.seasonalLabor,
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
                     title: "Contract-based Labor",
-                    value: infrastructureData?.contractBasedLabor ?? "—",
+                    value: infrastructureData?.contractBasedLabor,
                     icon: <Users size={20} color={colors.primary} />,
                   },
                 ]
@@ -467,32 +467,32 @@ export default function OrchardDetail() {
                   },
                   // {
                   //   title: "Soil pH",
-                  //   value: orchard.soilAndWater.soilPh ?? "—",
+                  //   value: orchard.soilAndWater.soilPh ,
                   //   icon: <Beaker size={20} color={colors.primary} />,
                   // },
                   // {
                   //   title: "Nitrogen (N)",
-                  //   value: orchard.soilAndWater.soilNitrogen ?? "—",
+                  //   value: orchard.soilAndWater.soilNitrogen ,
                   //   icon: <FlaskConicalIcon size={20} color={colors.primary} />,
                   // },
                   // {
                   //   title: "Phosphorus (P)",
-                  //   value: orchard.soilAndWater.soilPhosphorus ?? "—",
+                  //   value: orchard.soilAndWater.soilPhosphorus ,
                   //   icon: <FlaskConical size={20} color={colors.primary} />,
                   // },
                   // {
                   //   title: "Potassium (K)",
-                  //   value: orchard.soilAndWater.soilPotassium ?? "—",
+                  //   value: orchard.soilAndWater.soilPotassium ,
                   //   icon: <FlaskConical size={20} color={colors.primary} />,
                   // },
                   // {
                   //   title: "Organic Carbon",
-                  //   value: orchard.soilAndWater.soilOrganicCarbon ?? "—",
+                  //   value: orchard.soilAndWater.soilOrganicCarbon ,
                   //   icon: <Leaf size={20} color={colors.primary} />,
                   // },
                   // {
                   //   title: "Micronutrients",
-                  //   value: orchard.soilAndWater.soilMicronutrients ?? "—",
+                  //   value: orchard.soilAndWater.soilMicronutrients ,
                   //   icon: <Leaf size={20} color={colors.primary} />,
                   // },
                   {

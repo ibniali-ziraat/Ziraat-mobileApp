@@ -5,7 +5,7 @@ import { Controller } from "react-hook-form";
 import { Platform, TouchableOpacity, View } from "react-native";
 import { HelperText, TextInput } from "react-native-paper";
 
-export default function FormDatePicker({
+export default function FormDateInput({
   control,
   name,
   label,
@@ -14,6 +14,7 @@ export default function FormDatePicker({
 }) {
   const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
+  console.log(error, "date error");
 
   // Normalize backend dates: "2025-12-10T00:00:00" → "2025-12-10"
   const normalizeDate = (date) => {
@@ -51,7 +52,7 @@ export default function FormDatePicker({
                     marginBottom: 8,
                     fontSize: 14,
                     fontWeight: "500",
-                    color: showError ? colors.error : colors.dark,
+                    color: colors.dark,
                   }}
                 >
                   {label}
@@ -145,7 +146,7 @@ export default function FormDatePicker({
                       marginBottom: 0,
                     }}
                   >
-                    Required Field
+                    {showError}
                   </HelperText>
                 )}
               </>
