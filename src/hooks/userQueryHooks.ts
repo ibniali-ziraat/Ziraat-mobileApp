@@ -2,6 +2,7 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+import { resetPasswordService } from "../services/forgetPassword";
 import {
   deleteAddressSection,
   deleteEducationSection,
@@ -50,6 +51,13 @@ export const useSendOtpMutation = () =>
 
 export const useOtpVerifyMutation = () =>
   useMutation({ mutationFn: verifyUserOtp });
+
+export const useResetPasswordMutation = () =>
+  useMutation({
+    mutationFn: resetPasswordService,
+  });
+
+
 
 // ----------------------------------------------------
 // 👤 PROFILE

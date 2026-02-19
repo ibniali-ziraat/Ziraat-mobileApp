@@ -81,7 +81,7 @@ export default function MyOrchardsScreen() {
             </View>
           </View>
         ) : (
-          <View className="flex-1 px-4 pt-3">
+          <View className="flex-1  pt-3">
             <FlatList
               scrollEnabled={false}
               data={orchardData}
