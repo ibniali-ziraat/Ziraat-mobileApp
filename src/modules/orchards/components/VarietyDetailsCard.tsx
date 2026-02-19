@@ -1,191 +1,6 @@
-// import { ScreenContent } from "@/src/components/shared/ScreenContent";
-// import { colors } from "@/src/constants/colors";
-// import { Edit, Trash2 } from "lucide-react-native";
-// import { Pressable, Text, View } from "react-native";
-
-// function VarietiesCard({
-//   varietiesData,
-//   onAdd,
-//   onEdit,
-//   onDelete,
-// }: {
-//   varietiesData: any[];
-//   onAdd: () => void;
-//   onEdit: (id: number) => void;
-//   onDelete: (id: number) => void;
-// }) {
-//   return (
-//     <ScreenContent>
-//       <View
-//         style={{
-//           marginVertical: 12,
-//           padding: 16,
-//           backgroundColor: colors.light,
-//           borderRadius: 16,
-//           borderWidth: 1,
-//           borderColor: colors.cardBorder,
-//         }}
-//       >
-//         {/* ===== HEADER WITH GREEN ACCENT ===== */}
-//         <View
-//           style={{
-//             flexDirection: "row",
-//             alignItems: "center",
-//             marginBottom: 18,
-//           }}
-//         >
-//           {/* Light green accent bar */}
-//           <View
-//             style={{
-//               width: 5,
-//               height: 26,
-//               borderRadius: 7,
-//               backgroundColor:colors.primary,
-//               marginRight: 10,
-//             }}
-//           />
-
-//           <View>
-//             <Text
-//               style={{
-//                 fontSize: 17,
-//                 fontWeight: "600",
-//                 color: colors.dark,
-//               }}
-//             >
-//               Varieties & Planting
-//             </Text>
-
-//             <View
-            
-//             />
-//           </View>
-//         </View>
-
-//         {/* ===== EMPTY STATE ===== */}
-//         {varietiesData.length === 0 && (
-//           <Pressable
-//             onPress={onAdd}
-//             style={{
-//               paddingVertical: 12,
-//               borderRadius: 10,
-//               alignItems: "center",
-//               backgroundColor: `${colors.primary}15`,
-//               borderWidth: 1,
-//               borderColor: `${colors.primary}40`,
-//             }}
-//           >
-//             <Text
-//               style={{
-//                 color: colors.primary,
-//                 fontWeight: "600",
-//               }}
-//             >
-//               Add Variety
-//             </Text>
-//           </Pressable>
-//         )}
-
-//         {/* ===== VARIETY LIST ===== */}
-//         {varietiesData.map((v) => (
-//           <View
-//             key={v.id}
-//             style={{
-//               marginBottom: 14,
-//               padding: 14,
-//               backgroundColor: colors.light,
-//               borderRadius: 14,
-//               borderWidth: 1,
-//               borderColor: colors.cardBorder,
-//             }}
-//           >
-//             {/* Title + actions */}
-//             <View
-//               style={{
-//                 flexDirection: "row",
-//                 justifyContent: "space-between",
-//                 alignItems: "center",
-//                 marginBottom: 10,
-//               }}
-//             >
-//               <Text
-//                 style={{
-//                   fontSize: 16,
-//                   fontWeight: "600",
-//                   color: colors.dark,
-//                 }}
-//               >
-//                 {v.varietyName}
-//               </Text>
-
-//               <View style={{ flexDirection: "row", gap: 16 }}>
-//                 <Pressable onPress={() => onEdit(v.id)}>
-//                   <Edit size={18} color={colors.primary} />
-//                 </Pressable>
-//                 <Pressable onPress={() => onDelete(v.id)}>
-//                   <Trash2 size={18} color={colors.error} />
-//                 </Pressable>
-//               </View>
-//             </View>
-
-//             {/* Details */}
-//             <InfoRow label="Total Trees" value={v.numberOfTrees} />
-//             <InfoRow label="Rootstock Used" value={v.rootstockUsed} />
-//             <InfoRow label="Plant Density" value={v.plantDensity} />
-//             <InfoRow label="Trees < 5 Years" value={v.treesLessThan5Years} />
-//             <InfoRow label="Trees 5–10 Years" value={v.treesFiveToTenYears} />
-//             <InfoRow label="Trees > 10 Years" value={v.treesMoreThan10Years} />
-//           </View>
-//         ))}
-
-//         {/* ===== ADD MORE ===== */}
-//         {varietiesData.length > 0 && (
-//           <Pressable
-//             onPress={onAdd}
-//             style={{
-//               marginTop: 8,
-//               paddingVertical: 12,
-//               borderRadius: 10,
-//               alignItems: "center",
-//               backgroundColor: colors.primary,
-//             }}
-//           >
-//             <Text style={{ color: colors.light, fontWeight: "600" }}>
-//               Add More Variety
-//             </Text>
-//           </Pressable>
-//         )}
-//       </View>
-//     </ScreenContent>
-//   );
-// }
-
-// /* ===== SMALL HELPER ROW ===== */
-// function InfoRow({ label, value }: { label: string; value: any }) {
-//   return (
-//     <View
-//       style={{
-//         flexDirection: "row",
-//         justifyContent: "space-between",
-//         marginBottom: 6,
-//       }}
-//     >
-//       <Text style={{ color: colors.neutral, fontSize: 13 }}>
-//         {label}
-//       </Text>
-//       <Text style={{ color: colors.dark, fontWeight: "500" }}>
-//         {value ?? "—"}
-//       </Text>
-//     </View>
-//   );
-// }
-
-// export default VarietiesCard;
-
-
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
-import { Edit, Trash2 } from "lucide-react-native";
+import { Edit, Plus, Trash2 } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 function VarietiesCard({
@@ -204,98 +19,68 @@ function VarietiesCard({
       <View
         style={{
           marginVertical: 14,
-          padding: 18,
-       
-          borderRadius: 18,
+          padding: 20,
+          borderRadius: 22,
+          backgroundColor: colors.light,
           borderWidth: 1,
           borderColor: colors.cardBorder,
           shadowColor: "#000",
-          shadowOpacity: 0.04,
-          shadowRadius: 10,
-          elevation: 2,
+          shadowOpacity: 0.06,
+          shadowRadius: 14,
+          shadowOffset: { width: 0, height: 6 },
+          elevation: 4,
         }}
       >
-        {/* ===== HEADER WITH GREEN ACCENT ===== */}
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginBottom: 20,
-          }}
-        >
+        {/* HEADER */}
+        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 22 }}>
           <View
             style={{
-              width: 5,
-              height: 28,
+              width: 6,
+              height: 32,
               borderRadius: 4,
-              backgroundColor:colors.primary,
-              marginRight: 12,
+              backgroundColor: colors.primary,
+              marginRight: 14,
             }}
           />
 
-          <View>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "600",
-                color: colors.dark,
-                letterSpacing: 0.2,
-              }}
-            >
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: 18, fontWeight: "700", color: colors.dark }}>
               Varieties & Planting
             </Text>
-
-            <Text
-              style={{
-                marginTop: 2,
-                fontSize: 12,
-                color: colors.neutral,
-              }}
-            >
+            <Text style={{ fontSize: 12, color: colors.neutral }}>
               Variety-wise plantation details
             </Text>
           </View>
         </View>
 
-        {/* ===== EMPTY STATE ===== */}
+        {/* EMPTY STATE */}
         {varietiesData.length === 0 && (
           <Pressable
             onPress={onAdd}
-            style={{
-              paddingVertical: 14,
-              borderRadius: 12,
+            style={({ pressed }) => ({
+              paddingVertical: 16,
+              borderRadius: 14,
               alignItems: "center",
               backgroundColor: `${colors.primary}12`,
               borderWidth: 1,
-              borderColor: `${colors.primary}35`,
-            }}
+              borderColor: `${colors.primary}40`,
+              transform: [{ scale: pressed ? 0.98 : 1 }],
+            })}
           >
-            <Text
-              style={{
-                color: colors.primary,
-                fontWeight: "600",
-                fontSize: 14,
-              }}
-            >
-              Add Variety
+            <Text style={{ color: colors.primary, fontWeight: "700" }}>
+              + Add Variety
             </Text>
           </Pressable>
         )}
 
-        {/* ===== VARIETY LIST ===== */}
         {varietiesData.map((v) => (
           <View
             key={v.id}
             style={{
-              marginBottom: 16,
-              padding: 16,
-              backgroundColor: colors.light,
-              borderRadius: 16,
-              borderWidth: 1,
-              borderColor: colors.cardBorder,
+             
             }}
           >
-            {/* Title + actions */}
+            {/* TITLE + ACTIONS */}
             <View
               style={{
                 flexDirection: "row",
@@ -304,69 +89,88 @@ function VarietiesCard({
                 marginBottom: 12,
               }}
             >
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "600",
-                  color: colors.dark,
-                }}
-              >
+              <Text style={{ fontSize: 16, fontWeight: "700", color: colors.dark }}>
                 {v.varietyName}
               </Text>
 
-              <View style={{ flexDirection: "row", gap: 14 }}>
-                <Pressable onPress={() => onEdit(v.id)}>
-                  <Edit size={17} color={colors.neutral} />
-                </Pressable>
-                <Pressable onPress={() => onDelete(v.id)}>
-                  <Trash2 size={17} color={colors.error} />
-                </Pressable>
+              <View style={{ flexDirection: "row", gap: 12 }}>
+                <ActionIcon onPress={() => onEdit(v.id)}>
+                  <Edit size={16} color={colors.primary} />
+                </ActionIcon>
+
+                <ActionIcon onPress={() => onDelete(v.id)}>
+                  <Trash2 size={16} color={colors.error} />
+                </ActionIcon>
               </View>
             </View>
 
-            {/* Divider */}
-            <View
-              style={{
-                height: 1,
-                backgroundColor: colors.cardBorder,
-                opacity: 0.6,
-                marginBottom: 12,
-              }}
-            />
-
-            {/* Details */}
+            {/* MAIN INFO */}
             <InfoRow label="Total Trees" value={v.numberOfTrees} />
             <InfoRow label="Rootstock Used" value={v.rootstockUsed} />
             <InfoRow label="Plant Density" value={v.plantDensity} />
 
-            {/* Age Groups */}
-            <View style={{ marginTop: 10 }}>
-              <AgeRow label="< 5 Years" value={v.treesLessThan5Years} />
-              <AgeRow label="5 – 10 Years" value={v.treesFiveToTenYears} />
-              <AgeRow label="> 10 Years" value={v.treesMoreThan10Years} />
+            {/* TREE AGE GROUPS */}
+            <View
+              style={{
+                marginTop: 16,
+                
+                borderRadius: 16,
+                backgroundColor: `${colors.primary}06`,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 13,
+                  fontWeight: "700",
+                  color: colors.dark,
+                  marginBottom: 10,
+                }}
+              >
+                Tree Age Groups
+              </Text>
+
+              <AgeChip
+                label="🌱 Young Trees"
+                subtitle="Below 5 years"
+                value={v.treesLessThan5Years}
+               bg={`${colors.primary}15`}
+              />
+
+              <AgeChip
+                label="🌿 Mature Trees"
+                subtitle="5 – 10 years"
+                value={v.treesFiveToTenYears}
+                bg={`${colors.primary}15`}
+              />
+
+              <AgeChip
+                label="🌳 Old Trees"
+                subtitle="Above 10 years"
+                value={v.treesMoreThan10Years}
+                bg={`${colors.primary}15`}
+              />
             </View>
           </View>
         ))}
 
-        {/* ===== ADD MORE ===== */}
+        {/* ADD MORE */}
         {varietiesData.length > 0 && (
           <Pressable
             onPress={onAdd}
-            style={{
-              marginTop: 10,
-              paddingVertical: 14,
-              borderRadius: 12,
+            style={({ pressed }) => ({
+              marginTop: 6,
+              paddingVertical: 16,
+              borderRadius: 14,
               alignItems: "center",
               backgroundColor: colors.primary,
-            }}
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: 6,
+              transform: [{ scale: pressed ? 0.98 : 1 }],
+            })}
           >
-            <Text
-              style={{
-                color: colors.light,
-                fontWeight: "600",
-                fontSize: 14,
-              }}
-            >
+            <Plus size={16} color="#fff" />
+            <Text style={{ color: "#fff", fontWeight: "700" }}>
               Add More Variety
             </Text>
           </Pressable>
@@ -376,54 +180,84 @@ function VarietiesCard({
   );
 }
 
-/* ===== INFO ROW ===== */
-function InfoRow({ label, value }: { label: string; value: any }) {
+/* ACTION ICON */
+function ActionIcon({ children, onPress }: any) {
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginBottom: 6,
-      }}
+    <Pressable
+      onPress={onPress}
+      style={({ pressed }) => ({
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: "#f3f4f6",
+        alignItems: "center",
+        justifyContent: "center",
+        transform: [{ scale: pressed ? 0.9 : 1 }],
+      })}
     >
-      <Text style={{ color: colors.neutral, fontSize: 13 }}>
-        {label}
-      </Text>
-      <Text style={{ color: colors.dark, fontWeight: "500" }}>
-        {value ?? "—"}
-      </Text>
+      {children}
+    </Pressable>
+  );
+}
+
+/* INFO ROW */
+function InfoRow({ label, value }: any) {
+  return (
+    <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
+      <Text style={{ color: colors.neutral, fontSize: 13 }}>{label}</Text>
+      <Text style={{ color: colors.dark, fontWeight: "600" }}>{value ?? "—"}</Text>
     </View>
   );
 }
 
-/* ===== AGE ROW (SUBTLE BADGE FEEL) ===== */
-function AgeRow({ label, value }: { label: string; value: any }) {
+/* AGE CHIP */
+function AgeChip({
+  label,
+  subtitle,
+  value,
+  bg,
+}: {
+  label: string;
+  subtitle: string;
+  value: any;
+  bg: string;
+}) {
   return (
     <View
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 4,
+        alignItems: "center",
+        marginBottom: 8,
+        padding: 10,
+        borderRadius: 12,
+        backgroundColor: bg,
       }}
-    >
-      <Text style={{ fontSize: 12, color: colors.neutral }}>
-        {label}
-      </Text>
+    >   
+      <View>
+        <Text style={{ fontSize: 13, fontWeight: "600", color: colors.dark }}>
+          {label}
+        </Text>
+        <Text style={{ fontSize: 11, color: colors.neutral }}>
+          {subtitle}
+        </Text>
+      </View>
+
       <View
         style={{
-          paddingHorizontal: 8,
-          paddingVertical: 2,
+          minWidth: 34,
+          height: 28,
           borderRadius: 999,
-          backgroundColor: `${colors.primary}12`,
+          backgroundColor: "#fff",
+          alignItems: "center",
+          justifyContent: "center",
+          shadowColor: "#000",
+          shadowOpacity: 0.05,
+          shadowRadius: 4,
+          elevation: 2,
         }}
       >
-        <Text
-          style={{
-            fontSize: 12,
-            fontWeight: "600",
-            color: colors.primary,
-          }}
-        >
+        <Text style={{ fontWeight: "700", color: colors.primary }}>
           {value ?? "—"}
         </Text>
       </View>

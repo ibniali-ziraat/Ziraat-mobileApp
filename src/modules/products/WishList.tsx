@@ -10,6 +10,7 @@ import {
   FlatList,
   Image,
   Pressable,
+  RefreshControl,
   View,
 } from "react-native";
 import WishlistItem from "./components/WishListItem";
@@ -23,6 +24,7 @@ const Wishlist = () => {
     wishlist = [],
     isLoading,
     removeFromWishlist,
+    refetch,
   } = useWishlist();
 
   const { addToCart } = useCart();
@@ -60,44 +62,41 @@ const Wishlist = () => {
   /* ================= EMPTY ================= */
   if (!wishlist || wishlist.length === 0) {
     return (
-      <View style={{ backgroundColor: colors.lightHover }} className="flex-1">
-        <BackHeader title="My Wishlist" desc="Your selected items" />
+      <View style={{ backgroundColor: colors.light }} className="flex-1">
+        <BackHeader title="My Wishlist" desc="Your saved items" />
 
-        <View className="flex-1 justify-center items-center px-8">
-
+        <View className="flex-1 justify-center items-center px-12">
           <Image
             source={require("@/assets/images/empty-wishlist.png")}
-            className="w-32 h-32 mb-6"
+            style={{ width: 110, height: 110 }}
             resizeMode="contain"
           />
 
-          <CsText style={typography.Poppins_l_semibold} className="mb-2">
-            Empty Wishlist
+          <CsText style={typography.Poppins_l_semibold} className="mt-5">
+            Your wishlist is empty
           </CsText>
 
           <CsText
-            className="text-center mb-6 opacity-60"
+            className="text-center mt-2 mb-8 opacity-60"
             style={typography.Poppins_m_regular}
           >
-            Save items you love and view them all in one place.
+            Save products you love and find them easily here.
           </CsText>
 
           <Pressable
             style={{ backgroundColor: colors.primary }}
             onPress={handleStartShopping}
-            className="px-10 py-3 rounded-full"
+            className="px-12 py-3 rounded-full active:scale-95"
           >
-           <CsText
-  style={[
-    typography.Poppins_m_semibold,
-    { color: colors.light },
-  ]}
->
-  Browse Products
-</CsText>
-
+            <CsText
+              style={[
+                typography.Poppins_m_semibold,
+                { color: colors.light },
+              ]}
+            >
+              Browse Products
+            </CsText>
           </Pressable>
-
         </View>
       </View>
     );
@@ -105,49 +104,55 @@ const Wishlist = () => {
 
   /* ================= LIST ================= */
   return (
-  
-      <View style={{ backgroundColor: colors.light }} className="flex-1">
+    <View style={{ backgroundColor: colors.light }} className="flex-1">
+      <BackHeader
+        title="My Wishlist"
+        desc={`${wishlist.length} ${
+          wishlist.length === 1 ? "item" : "items"
+        } saved`}
+      />
 
-        <BackHeader
-          title="My Wishlist"
-          desc={`${wishlist.length} ${
-            wishlist.length === 1 ? "item" : "items"
-          } saved`}
-        />
-
-        <FlatList
-          data={wishlist}
-          numColumns={2}
-          keyExtractor={(item: any) =>
-            item.productId?.toString() ?? item.id?.toString()
-          }
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-        
-            paddingTop: 8,
-            paddingBottom: 50,
-          }}
-          renderItem={({ item }) => (
-            <WishlistItem
-              item={item}
-              onRemove={() => handleRemoveFromWishlist(item.id)}
-              onAddToCart={handleAddToCart}
-            />
-          )}
-          ListFooterComponent={
-            <View className="py-8 w-full">
-              <CsText
-                className="text-center opacity-50"
-                style={typography.Poppins_s_regular}
-              >
-                You’ve reached the end of your wishlist
-              </CsText>
-            </View>
-          }
-        />
-
-      </View>
-  
+      <FlatList
+        data={wishlist}
+        numColumns={2}
+        keyExtractor={(item: any, index) =>
+          item.productId?.toString() ?? index.toString()
+        }
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={refetch}
+            tintColor={colors.primary}
+          />
+        }
+        columnWrapperStyle={{
+          paddingHorizontal: 10,
+          justifyContent: "space-between",
+        }}
+        contentContainerStyle={{
+          paddingTop: 8,
+          paddingBottom: 80,
+        }}
+        renderItem={({ item }) => (
+          <WishlistItem
+            item={item}
+            onRemove={() => handleRemoveFromWishlist(item.id)}
+            onAddToCart={handleAddToCart}
+          />
+        )}
+        ListFooterComponent={
+          <View className="py-12 w-full">
+            <CsText
+              className="text-center opacity-40"
+              style={typography.Poppins_s_regular}
+            >
+              You’ve reached the end
+            </CsText>
+          </View>
+        }
+      />
+    </View>
   );
 };
 

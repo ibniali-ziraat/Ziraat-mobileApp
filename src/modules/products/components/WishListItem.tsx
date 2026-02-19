@@ -1,26 +1,25 @@
-import AddToCartButton from "@/src/components/shared/AddToCartButton";
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { X } from "lucide-react-native";
+import { Minus, Plus, ShoppingBag, X } from "lucide-react-native";
 import { useState } from "react";
-import {
-  Image,
-  Modal,
-  Pressable,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, Pressable, View } from "react-native";
 import { useWishlist } from "../hooks/data/useWishlist";
+
+const IMAGE_HEIGHT = 175;
+const CARD_HEIGHT = 320;
+
 
 const WishlistItem = ({ item, onRemove, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
-  const [showQtyModal, setShowQtyModal] = useState(false);
   const { removeFromWishlist } = useWishlist();
 
-  const selectQty = (q: number) => {
-    setQuantity(q);
-    setShowQtyModal(false);
+  const decrease = () => {
+    if (quantity > 1) setQuantity((p) => p - 1);
+  };
+
+  const increase = () => {
+    setQuantity((p) => p + 1);
   };
 
   const handleAddToCart = async () => {
@@ -32,142 +31,125 @@ const WishlistItem = ({ item, onRemove, onAddToCart }) => {
   };
 
   return (
-    <>
-      {/* GRID CARD WRAPPER */}
-      <View className="w-1/2 p-3">
+   <View className="w-1/2 px-1 mb-6">
 
-        <View
-          className="rounded-2xl p-3"
-          style={{
-            backgroundColor: colors.light,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.08,
-            shadowRadius: 10,
-            elevation: 5,
-          }}
+      <View
+        style={{
+          height: CARD_HEIGHT,
+          backgroundColor: colors.light,
+          borderWidth: 2,
+          borderColor: "#ededed",
+        }}
+      >
+        {/* REMOVE */}
+        <Pressable
+          onPress={() => onRemove(item.id)}
+          className="absolute right-2 top-2 z-10"
         >
+          <X size={14} color="#222" />
+        </Pressable>
 
-          {/* FLOATING REMOVE */}
-          <Pressable
-            onPress={() => onRemove(item.id)}
-            className="absolute top-2 right-2 z-10 p-1.5 rounded-full"
-            style={{
-              backgroundColor: "#fff",
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.1,
-              shadowRadius: 4,
-              elevation: 8,
-            }}
-          >
-            <X size={14} color={colors.dark} />
-          </Pressable>
-
-          {/* IMAGE */}
+        {/* IMAGE */}
+        <View style={{ height: IMAGE_HEIGHT }}>
           <Image
             source={{ uri: item.productImage }}
-            className="w-full h-44 rounded-xl"
             resizeMode="cover"
+            style={{ width: "100%", height: "100%" }}
           />
-
-          {/* CONTENT */}
-          <View className="mt-3">
-
-            <CsText
-              style={typography.Poppins_s_medium}
-              numberOfLines={2}
-            >
-              {item.productName}
-            </CsText>
-
-            {/* QTY SELECTOR */}
-            <Pressable
-              onPress={() => setShowQtyModal(true)}
-              className="self-start mt-2  py-1.5 rounded-lg"
-              style={{
-                backgroundColor: colors.lightHover,
-              }}
-            >
-              <CsText className="text-xs font-semibold">
-                Qty {quantity} ▾
-              </CsText>
-            </Pressable>
-
-            {/* BUTTON */}
-            <View className="mt-3">
-              <AddToCartButton
-                title="Move to Cart"
-                onPress={handleAddToCart}
-                height={36}
-              />
-            </View>
-
-          </View>
         </View>
+
+        {/* BODY */}
+       {/* BODY */}
+<View className=" pt-2 ">
+
+  <View className="px-3">
+
+    {/* TITLE (LOCKED HEIGHT) */}
+    <View style={{ minHeight: 34 }}>
+      <CsText
+        numberOfLines={2}
+        ellipsizeMode="tail"
+        style={[typography.Poppins_xs_medium, { color: "#111" }]}
+      >
+        {item.productName}
+      </CsText>
+    </View>
+
+    {/* SMALL GAP */}
+    <View style={{ height: 6 }} />
+
+    {/* QTY CONTROL */}
+    <View
+      className="flex-row items-center"
+      style={{
+        borderWidth: 1,
+        borderColor: "#e5e5e5",
+        alignSelf: "flex-start",
+      }}
+    >
+      <Pressable
+        onPress={decrease}
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 6,
+          opacity: quantity === 1 ? 0.4 : 1,
+        }}
+      >
+        <Minus size={12} color={colors.dark} />
+      </Pressable>
+
+      <View
+        style={{
+          borderLeftWidth: 1,
+          borderRightWidth: 1,
+          borderColor: "#e5e5e5",
+          paddingHorizontal: 12,
+          paddingVertical: 4,
+        }}
+      >
+        <CsText style={{ fontSize: 12, color: "#111" }}>
+          Qty {quantity}
+        </CsText>
       </View>
 
-      {/* QTY MODAL */}
-      <Modal
-        transparent
-        visible={showQtyModal}
-        animationType="slide"
-        onRequestClose={() => setShowQtyModal(false)}
+      <Pressable
+        onPress={increase}
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 6,
+        }}
       >
-        <Pressable
-          className="flex-1 justify-end"
-          onPress={() => setShowQtyModal(false)}
-          style={{ backgroundColor: "rgba(0,0,0,0.25)" }}
-        >
-          <View
-            style={{ backgroundColor: colors.light }}
-            className="rounded-t-3xl p-6"
-          >
-            <CsText
-              style={typography.Poppins_m_semibold}
-              className="mb-4"
-            >
-              Select Quantity
-            </CsText>
+        <Plus size={12} color={colors.dark} />
+      </Pressable>
+    </View>
 
-            <View className="flex-row flex-wrap">
-              {[...Array(10)].map((_, i) => {
-                const q = i + 1;
-                const active = q === quantity;
+  </View>
 
-                return (
-                  <TouchableOpacity
-                    key={q}
-                    onPress={() => selectQty(q)}
-                    className="w-1/5 items-center mb-4"
-                  >
-                    <View
-                      className="h-10 w-10 rounded-full items-center justify-center"
-                      style={{
-                        backgroundColor: active
-                          ? colors.primary
-                          : colors.lightHover,
-                      }}
-                    >
-                      <CsText
-                        style={{
-                          color: active
-                            ? colors.light
-                            : colors.dark,
-                        }}
-                      >
-                        {q}
-                      </CsText>
-                    </View>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
+  {/* BUTTON (NO EXTRA MARGIN) */}
+  <Pressable
+    onPress={handleAddToCart}
+    className="pt-6 pb-5 border-t items-center active:opacity-70"
+    style={{ borderColor: "#e5e5e5", marginTop: 6 }}
+  >
+    <View className="flex-row items-center">
+      <ShoppingBag size={16} color={colors.secondary} />
+      <CsText
+        className="ml-2"
+        style={{
+          color: colors.secondary,
+          letterSpacing: 0.6,
+          fontFamily: typography.Poppins_m_semibold?.fontFamily,
+        }}
+      >
+        MOVE TO BAG
+      </CsText>
+    </View>
+  </Pressable>
 
-          </View>
-        </Pressable>
-      </Modal>
-    </>
+</View>
+
+      </View>
+    </View>
   );
 };
 

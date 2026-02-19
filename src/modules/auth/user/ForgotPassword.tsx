@@ -1,13 +1,25 @@
 import FormInput from "@/src/components/form/inputs/FormInput";
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { typography } from "@/src/constants/fonts/typography";
-import { useOtpVerifyMutation, useSendOtpMutation } from "@/src/hooks/userQueryHooks";
+import { colors } from "@/src/constants/colors";
+import {
+  useOtpVerifyMutation,
+  useResetPasswordMutation,
+  useSendOtpMutation,
+} from "@/src/hooks/userQueryHooks";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+import { router } from "expo-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Image, Pressable, Text, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 
 type ForgotPasswordForm = {
   phoneNumber: string;
@@ -28,33 +40,25 @@ export default function ForgotPasswordScreen() {
     },
   });
 
+  const { mutateAsync: sendOtpMutate, isPending: isSendingOtp } =
+    useSendOtpMutation();
 
-    const { mutateAsync: sendOtpMutate, isPending: isSendingOtp } =
-      useSendOtpMutation();
+  const { mutateAsync: verifyOtpMutate, isPending: isOtpPending } =
+    useOtpVerifyMutation();
 
-         const { mutateAsync: verifyOtpMutate, isPending: isOtpPending } =
-          useOtpVerifyMutation();
+  const { mutateAsync: resetPasswordMutate, isPending: isResetting } =
+    useResetPasswordMutation();
 
-  /* -------------------- HANDLERS -------------------- */
-
+  /* SEND OTP */
   const handleSendOtp = async () => {
     const phone = getValues("phoneNumber");
-
-    if (!phone) {
-      showErrorToast("Phone number is required");
-      return;
-    }
+    if (!phone) return showErrorToast("Phone number is required");
 
     try {
+      const res = await sendOtpMutate(phone);
+      if (!res?.success)
+        return showErrorToast(res?.message || "Failed to send OTP");
 
-            const otpRes = await sendOtpMutate(phone);
-              if (!otpRes?.success) {
-                showErrorToast(otpRes?.message || "Failed to send OTP");
-                return;
-              }
-
-              console.log(otpRes,"otpres....");
-              
       showSuccessToast("OTP sent successfully");
       setStep("otp");
     } catch {
@@ -62,17 +66,12 @@ export default function ForgotPasswordScreen() {
     }
   };
 
+  /* VERIFY OTP */
   const handleVerifyOtp = async () => {
     const { phoneNumber, otp } = getValues();
-
-    if (!otp) {
-      showErrorToast("OTP is required");
-      return;
-    }
+    if (!otp) return showErrorToast("OTP is required");
 
     try {
-
-    
       await verifyOtpMutate({ phoneNumber, otp });
       showSuccessToast("OTP verified");
       setStep("reset");
@@ -81,91 +80,121 @@ export default function ForgotPasswordScreen() {
     }
   };
 
-  // const handleResetPassword = async () => {
-  //   const { phoneNumber, password, confirmPassword } = getValues();
+  /* RESET PASSWORD */
+  const handleResetPassword = async () => {
+    const { phoneNumber, password, confirmPassword } = getValues();
 
-  //   if (!password || !confirmPassword) {
-  //     showErrorToast("All fields are required");
-  //     return;
-  //   }
+    if (!password || !confirmPassword)
+      return showErrorToast("All fields required");
 
-  //   if (password !== confirmPassword) {
-  //     showErrorToast("Passwords do not match");
-  //     return;
-  //   }
+    if (password !== confirmPassword)
+      return showErrorToast("Passwords do not match");
 
-  //   try {
-  //     await resetPassword({ phoneNumber, password });
-  //     showSuccessToast("Password changed successfully");
-  //     reset();
-  //     router.replace("/login");
-  //   } catch {
-  //     showErrorToast("Failed to reset password");
-  //   }
-  // };
+    try {
+      const res = await resetPasswordMutate({ phoneNumber, password });
 
-  /* -------------------- UI -------------------- */
+      if (!res?.success)
+        return showErrorToast(res?.message || "Reset failed");
+
+      showSuccessToast("Password updated successfully");
+      reset();
+      router.replace("/login");
+    } catch {
+      showErrorToast("Failed to reset password");
+    }
+  };
 
   return (
-    <View className="flex-1 bg-light">
-      <BackHeader
-        title="Forgot Password"
-        desc="Recover your account securely"
-      />
+    <KeyboardAvoidingView
+      style={{ flex: 1, backgroundColor: colors.light }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <BackHeader title="Forgot Password" desc="Recover your account securely" />
 
       <ScreenLayout>
-        <View className="flex-1 justify-center">
+        <View className="flex-1 justify-center px-5">
+
           {/* LOGO */}
-          <View
-            style={{
-              alignItems: "center",
-              marginBottom: 40,
-              marginTop: -150,
-            }}
-          >
+          <View className="items-center mb-6">
             <Image
               source={require("@/assets/images/logo.jpeg")}
-              style={{ width: 180, height: 170, resizeMode: "contain" }}
+              style={{ width: 110, height: 100, resizeMode: "contain" }}
             />
           </View>
 
+          {/* STEP INDICATOR */}
+          <View className="flex-row justify-center mb-5 space-x-2">
+            {["phone", "otp", "reset"].map((s) => (
+              <View
+                key={s}
+                className="h-1 w-10 rounded-full"
+                style={{
+                  backgroundColor:
+                    step === s ? colors.primary : colors.cardShadow,
+                  opacity: step === s ? 1 : 0.4,
+                }}
+              />
+            ))}
+          </View>
+
           {/* CARD */}
-          <ZiraatCard width="100%" paddingHorizontal={1} paddingVertical={2}>
-            {/* PHONE STEP */}
+          <View
+            style={{
+              backgroundColor: "#fff",
+              borderRadius: 26,
+              padding: 24,
+              shadowColor: "#000",
+              shadowOpacity: 0.08,
+              shadowRadius: 20,
+              elevation: 6,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "700",
+                textAlign: "center",
+                color: colors.dark,
+              }}
+            >
+              {step === "phone"
+                ? "Verify Phone"
+                : step === "otp"
+                ? "Enter OTP"
+                : "Reset Password"}
+            </Text>
+
+            <Text
+              style={{
+                fontSize: 13,
+                color: colors.neutral,
+                textAlign: "center",
+                marginTop: 4,
+                marginBottom: 16,
+              }}
+            >
+              {step === "phone"
+                ? "We’ll send a verification code"
+                : step === "otp"
+                ? "Enter the 6 digit code"
+                : "Choose a strong password"}
+            </Text>
+
             {step === "phone" && (
               <>
-                <Text
-                  className="mb-3"
-                  style={typography.Poppins_s_regular}
-                >
-                  Enter your registered phone number. For your security,
-                  we’ll send a one-time password (OTP) to this number.
-                </Text>
-
-                <FormInput
-                  control={control}
-                  name="phoneNumber"
-                  label="Phone Number"
-                  type="phone"
-                />
-
-                <Pressable
-                  className="bg-primary py-3 rounded-xl mt-4"
-                  onPress={handleSendOtp}
-                >
-                  <Text
-                    className="text-light text-center"
-                    style={typography.Poppins_m_medium}
-                  >
-                    Send OTP
-                  </Text>
-                </Pressable>
+                <FormInput control={control} name="phoneNumber" label="Phone" />
+                <PrimaryButton loading={isSendingOtp} onPress={handleSendOtp}>
+                  Continue
+                </PrimaryButton>
               </>
             )}
 
-            {/* OTP STEP */}
             {step === "otp" && (
               <>
+                <FormInput control={control} name="otp" label="OTP" />
+                <PrimaryButton loading={isOtpPending} onPress={handleVerifyOtp}>
+                  Verify OTP
+                </PrimaryButton>
                 <Text
                   className="mb-3"
                   style={typography.Poppins_s_regular}
@@ -195,17 +224,8 @@ export default function ForgotPasswordScreen() {
               </>
             )}
 
-            {/* RESET PASSWORD STEP */}
             {step === "reset" && (
               <>
-                <Text
-                  className="mb-3"
-                  style={typography.Poppins_s_regular}
-                >
-                  Create a new password for your account. Make sure it’s
-                  strong and easy for you to remember.
-                </Text>
-
                 <FormInput
                   control={control}
                   name="password"
@@ -213,6 +233,18 @@ export default function ForgotPasswordScreen() {
                   type="password"
                 />
 
+                <View className="mt-4">
+                  <FormInput
+                    control={control}
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    type="password"
+                  />
+                </View>
+
+                <PrimaryButton loading={isResetting} onPress={handleResetPassword}>
+                  Update Password
+                </PrimaryButton>
                 <FormInput
                   control={control}
                   name="confirmPassword"
@@ -233,9 +265,43 @@ export default function ForgotPasswordScreen() {
                 </Pressable>
               </>
             )}
-          </ZiraatCard>
+
+            <Text
+              style={{
+                fontSize: 11,
+                color: colors.neutral,
+                textAlign: "center",
+                marginTop: 18,
+              }}
+            >
+              🔒 Your information is secure
+            </Text>
+          </View>
         </View>
       </ScreenLayout>
-    </View>
+    </KeyboardAvoidingView>
+  );
+}
+
+/* PRIMARY BUTTON */
+function PrimaryButton({ children, loading, onPress }: any) {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={{
+        backgroundColor: colors.primary,
+        paddingVertical: 14,
+        borderRadius: 14,
+        marginTop: 20,
+      }}
+    >
+      {loading ? (
+        <ActivityIndicator color="#fff" />
+      ) : (
+        <Text style={{ color: "#fff", textAlign: "center", fontWeight: "700" }}>
+          {children}
+        </Text>
+      )}
+    </Pressable>
   );
 }

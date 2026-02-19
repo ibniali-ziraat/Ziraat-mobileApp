@@ -92,7 +92,7 @@ export default function DetailRow({ label, value, isLast }: DetailRowProps) {
                 typography.Poppins_xs_medium,
                 {
                   color: colors.dark,
-                  backgroundColor: colors.primary + "10",
+                
                   paddingHorizontal: 6,
                   paddingVertical: 2,
                   borderRadius: 6,

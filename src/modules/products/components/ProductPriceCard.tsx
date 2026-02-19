@@ -20,7 +20,7 @@ export default function ProductPriceCard({ product }: any) {
       style={{
         backgroundColor: colors.light,
         borderWidth: 1,
-        borderColor: colors.lightHover,
+        borderColor: colors.light,
       }}
     >
       {/* PRICE + STOCK ROW */}
