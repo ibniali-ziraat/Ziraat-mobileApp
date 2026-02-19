@@ -18,6 +18,7 @@ import {
   useInfrastructureQuery,
   useUpdateInfrastructureMutation,
 } from "../hooks/useOrchardsQuery";
+import { FarmInfrastructureSchema } from "../schemas/FarmInfrastructureSchema";
 
 export default function FarmInfrastructureScreen() {
   const { orchardProfileId } = useAuth();
@@ -32,7 +33,7 @@ export default function FarmInfrastructureScreen() {
     useCreateInfrastructureMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateInfrastructureMutation();
-  const form = useZodForm();
+  const form = useZodForm(FarmInfrastructureSchema);
   const {
     setValue,
     handleSubmit,

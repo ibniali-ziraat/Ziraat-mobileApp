@@ -3,46 +3,6 @@ import { z } from "zod";
 
 const currentYear = new Date().getFullYear();
 
-export const OrchardSizeSchema = z
-  .object({
-    mode: z.enum(["manual", "measure"]).default("manual"),
-
-    unit: z.enum(["marla", "kanal"]).optional(),
-
-    value: z.coerce.number().positive().optional(),
-
-    type: z.enum(["walk", "tap"]).optional(),
-  })
-  .superRefine((data, ctx) => {
-    if (data.mode === "manual") {
-      if (!data.unit) {
-        ctx.addIssue({
-          path: ["orchardSize", "unit"],
-          message: "Unit is required",
-          code: z.ZodIssueCode.custom,
-        });
-      }
-
-      if (data.value === undefined) {
-        ctx.addIssue({
-          path: ["orchardSize", "value"],
-          message: "Orchard size is required",
-          code: z.ZodIssueCode.custom,
-        });
-      }
-    }
-
-    if (data.mode === "measure") {
-      if (!data.type) {
-        ctx.addIssue({
-          path: ["orchardSize", "type"],
-          message: "Measurement method is required",
-          code: z.ZodIssueCode.custom,
-        });
-      }
-    }
-  });
-
 export const BasicInfoSchema = z
   .object({
     orchardName: fullNameValidator,

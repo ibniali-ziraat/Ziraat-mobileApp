@@ -1,7 +1,7 @@
 // StepF_FarmInfrastructure.schema.ts
+import { countValidator, multiSelectRequired } from "@/src/lib/validation";
 import { z } from "zod";
 
-/* -------------------- OPTIONS -------------------- */
 export const equipmentOptions = [
   "Tractor",
   "Sprayer",
@@ -30,23 +30,13 @@ export const laborOptions = [
 
 /* -------------------- SCHEMA -------------------- */
 export const FarmInfrastructureSchema = z.object({
-  /* REQUIRED: Equipment Owned (at least 1) */
-  equipmentOwned: z
-    .array(z.enum(equipmentOptions))
-    .min(1, "Select at least one equipment."),
+  equipmentOwned: multiSelectRequired(),
 
-  /* REQUIRED: Storage Facility (at least 1) */
-  storageFacility: z
-    .array(z.enum(storageOptions))
-    .min(1, "Select at least one storage facility."),
+  storageFacilities: multiSelectRequired(),
 
-  /* OPTIONAL: Farm Labor */
-  farmLabor: z.enum(laborOptions).optional().nullable(),
+  permanentLabor: countValidator(),
+  seasonalLabor: countValidator(),
+  contractBasedLabor: countValidator(),
 
-  /* OPTIONAL: Other Tools */
-  otherTools: z.string().max(200, "Too long").optional().nullable(),
+  otherTools: multiSelectRequired(),
 });
-
-export type StepFFarmInfrastructureType = z.infer<
-  typeof stepFFarmInfrastructureSchema
->;

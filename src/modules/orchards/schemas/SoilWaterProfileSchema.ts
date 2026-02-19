@@ -1,97 +1,66 @@
+import {
+  multiSelectOptional,
+  numberField,
+  singleSelectRequired,
+} from "@/src/lib/validation";
 import { z } from "zod";
 
-export const yesNoOptions = ["Yes", "No"] as const;
-
+/* Options */
 export const soilTypeOptions = [
-  "Sandy Clay Loam",
-  "Sandy Loam",
-  "Sandy Clay",
+  "Clay",
   "Sandy",
-  "Silt Loam",
-  "Heavy Clay",
-  "Silt Clay",
-  "Silt",
-  "Silt Clay Loam",
-  "Not getting",
-] as const;
-
-export const soilHealthOptions = ["Acidic", "Alkaline", "Not Known"] as const;
+  "Loamy",
+  "Silty",
+  "Peaty",
+  "Chalky",
+];
 
 export const waterSourceOptions = [
   "Canal",
   "Borewell",
+  "Open Well",
+  "River",
+  "Pond",
   "Rainfed",
-  "Spring",
-  "Other",
-] as const;
+];
 
-export const irrigationOptions = ["Drip", "Sprinkler", "Flood", "None"] as const;
+export const irrigationOptions = ["Drip", "Sprinkler", "Flood", "Manual"];
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-export const waterAvailabilityOptions = [
-  "Round-the-year",
-  "Seasonal",
-  "Not available",
-] as const;
+export const waterAvailabilityOptions = ["Year-round", "Seasonal", "Limited"];
 
 export const SoilWaterProfileSchema = z
   .object({
-    soilType: z.enum(soilTypeOptions),
-    soilHealth: z.enum(soilHealthOptions),
+    soilType: singleSelectRequired("Soil type is required"),
 
-    lastSoilTestDone: z.enum(yesNoOptions),
-    lastSoilTestDate: z.string().optional().nullable(),
+    soilHealthStatus: multiSelectOptional(),
 
-    soilTestRecordsDone: z.enum(yesNoOptions),
+    lastSoilTestDate: z.string().optional(),
 
-    soilPH: z.string().optional(),
-    soilN: z.string().optional(),
-    soilP: z.string().optional(),
-    soilK: z.string().optional(),
-    soilOrganicCarbon: z.string().optional(),
+    waterSource: singleSelectRequired("Water source is required"),
+
+    irrigationMethod: singleSelectRequired("Irrigation method is required"),
+
+    waterAvailability: singleSelectRequired("Water availability is required"),
+
+    soilTestRecordsDone: z.boolean(),
+
+    soilPH: numberField().optional(),
+    soilNitrogen: numberField().optional(),
+    soilPhosphorus: numberField().optional(),
+    soilPotassium: numberField().optional(),
+    soilOrganicCarbon: numberField().optional(),
+
     soilMicronutrients: z.string().optional(),
 
-    soilTestFileToggle: z.enum(yesNoOptions),
-    soilTestFile: z.any().optional(),
-
-    waterSource: z.enum(waterSourceOptions),
-    irrigationMethod: z.enum(irrigationOptions),
-    waterAvailability: z.enum(waterAvailabilityOptions),
+    soilTestReportUrl: z.preprocess((val) => val ?? null, z.any().nullable()),
   })
-
   .superRefine((data, ctx) => {
-    // Last Soil Test Date Required
-    if (data.lastSoilTestDone === "Yes" && !data.lastSoilTestDate) {
+    if (data.soilTestRecordsDone === true && !data.soilTestReportUrl) {
       ctx.addIssue({
-        path: ["lastSoilTestDate"],
-        message: "Please select the soil test date",
-      });
-    }
-
-    // Soil Test Records Required
-    if (data.soilTestRecordsDone === "Yes") {
-      const requiredFields = [
-        ["soilPH", "pH is required"],
-        ["soilN", "Nitrogen is required"],
-        ["soilP", "Phosphorus is required"],
-        ["soilK", "Potassium is required"],
-        ["soilOrganicCarbon", "Organic Carbon is required"],
-        ["soilMicronutrients", "Micronutrients required"],
-      ];
-
-      requiredFields.forEach(([path, msg]) => {
-        if (!data[path]) {
-          ctx.addIssue({ path: [path], message: msg });
-        }
-      });
-    }
-
-    // File Upload Required
-    if (data.soilTestFileToggle === "Yes" && !data.soilTestFile) {
-      ctx.addIssue({
-        path: ["soilTestFile"],
-        message: "Upload Soil Test Report",
+        path: ["soilTestReportUrl"],
+        code: z.ZodIssueCode.custom,
+        message: "Required Field",
       });
     }
   });
-
-export type StepCSoilWaterType = z.infer<typeof stepCSoilWaterSchema>;

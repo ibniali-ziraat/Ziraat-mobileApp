@@ -1,7 +1,6 @@
-// StepD_CropNutrition.schema.ts
+import { fullNameValidator } from "@/src/lib/validation";
 import { z } from "zod";
 
-/* ------------------ OPTIONS ------------------ */
 export const fertilizerOptions = ["Organic", "Chemical", "Integrated"] as const;
 
 export const yesNoOptions = ["Yes", "No"] as const;
@@ -11,47 +10,21 @@ export const applicationModeOptions = [
   "Foliar Application",
 ] as const;
 
-/* ------------------ SCHEMA ------------------ */
 export const CropNutritionSchema = z.object({
-  // fertilizerPractice: z.enum(fertilizerOptions, {
-  //   required_error: "Fertilizer practice is required.",
-  //   invalid_type_error: "Please select a valid fertilizer practice.",
-  // }),
-
-  fertilizerPractice: z.string().min(1, "Ownership type is required"),
-
-  // fertigation: z.enum(yesNoOptions, {
-  //   required_error: "Please select fertigation option.",
-  //   invalid_type_error: "Please select Yes or No.",
-  // }),
-
-  fertigation: z.string().min(1, "Ownership type is required"),
-  isMulchingApplied: z.string().min(1, "Ownership type is required"),
-
-  // isMulchingApplied: z.enum(yesNoOptions, {
-  //   required_error: "Please select fertigation option.",
-  //   invalid_type_error: "Please select Yes or No.",
-  // }),
-
-  nutritionPlan: z
-    .string()
-    .max(500, "Nutrition plan description is too long.")
-    .optional()
-    .nullable(),
-
-  mulching: z.enum(yesNoOptions, {
-    required_error: "Please select mulching option.",
-    invalid_type_error: "Please select Yes or No.",
+  fertilizerPractices: z.string().min(1, "Required Field"),
+  hasFertigation: z.boolean({
+    required_error: "Required Field",
   }),
-
-  lastFertiliserDate: z.string({
-    required_error: "Last fertilizing date is required.",
+  isMulchingApplied: z.boolean({
+    required_error: "Required Field",
   }),
+  nutritionPlan: fullNameValidator,
+  lastFertilizerApplicationDate: z
+    .string({
+      required_error: "Required Field",
+      invalid_type_error: "Required Field",
+    })
+    .min(1, "Required Field"),
 
-  applicationMode: z.enum(applicationModeOptions, {
-    required_error: "Application mode is required.",
-    invalid_type_error: "Please select a valid mode of application.",
-  }),
+  fertilizerApplicationMode: z.string().min(1, "Required Field"),
 });
-
-export type StepDCropNutritionType = z.infer<typeof stepDCropNutritionSchema>;

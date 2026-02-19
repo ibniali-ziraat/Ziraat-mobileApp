@@ -25,7 +25,6 @@ export default function CropNutrition({ control, errors }) {
         <SingleSelectInput
           control={control}
           name="hasFertigation"
-          // name="hasFertigationFacility"
           label="Fertigation Facility"
           options={[
             { value: true, label: "Yes" },
@@ -52,14 +51,15 @@ export default function CropNutrition({ control, errors }) {
           label="Nutrition Plan"
           icon="book-open-page-variant"
           error={errors.nutritionPlan}
-          type="address"
+          type="name"
+          required
         />
 
         <FormDateInput
           control={control}
           name="lastFertilizerApplicationDate"
           label="Last Fertiliser Date"
-          error={errors.lastFertiliserDate?.message}
+          error={errors.lastFertilizerApplicationDate}
           optional={true}
         />
 

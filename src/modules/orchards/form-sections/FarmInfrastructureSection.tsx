@@ -2,9 +2,8 @@
 
 import { View } from "react-native";
 
-import FormInput from "@/src/components/form/inputs/FormInput";
-
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 
 export default function FarmInfrastructureScreen({ control, errors }) {
   const EQUIPMENT_OPTIONS = [
@@ -39,13 +38,6 @@ export default function FarmInfrastructureScreen({ control, errors }) {
   return (
     <View className="flex-1 w-full">
       <View className="bg-light w-full">
-        {/* <CheckboxGroup
-          control={control}
-          name="equipmentOwned"
-          label="Equipment Owned"
-          options={equipmentOptions}
-          error={errors.equipmentOwned?.message}
-        /> */}
         <MultiSelectInput
           name="equipmentOwned"
           control={control}
@@ -53,83 +45,41 @@ export default function FarmInfrastructureScreen({ control, errors }) {
           options={EQUIPMENT_OPTIONS}
           error={errors?.equipmentOwned?.message}
         />
-        {/* 2️⃣ Storage Facilities (REQUIRED) */}
-        {/* <CheckboxGroup
-          control={control}
-          name="storageFacility"
-          label="Storage Facilities"
-          options={storageOptions}
-          error={errors.storageFacility?.message}
-        /> */}
         <MultiSelectInput
           name="storageFacilities"
           control={control}
           label="Storage Facilities"
           options={STORAGE_OPTIONS}
-          error={errors?.storageFacility?.message}
+          error={errors?.storageFacilities?.message}
         />
-        {/* 3️⃣ Farm Labor (OPTIONAL) */}
-        {/* <RadioGroup
-          control={control}
-          name="farmLabor"
-          label="Farm Labor (Optional)"
-          options={laborOptions}
-          error={errors.farmLabor?.message}
-        /> */}
-        {/* <SingleSelectInput
-          control={control}
-          name="farmLabor"
-          modalLabel="Farm Labor"
-          label="Farm Labor (Optional)"
-          options={[
-            { value: "permanent", label: "Permanent" },
-            { value: "seasonal", label: "Seasonal" },
-            { value: "contract-based", label: "Contract Based" },
-          ]}
-          error={errors.farmLabor}
-        /> */}
-        <FormInput
-          control={control}
+        <FormTextInput
           name="permanentLabor"
-          label="permanentLabor"
-          optional={true}
-          icon="tools"
-          type="phone"
-          error={errors.otherTools?.message}
+          label="Permanent Labour"
+          placeholder="Labours"
+          type="age"
+          error={errors.permanentLabor}
+          required
         />{" "}
-        <FormInput
-          control={control}
+        <FormTextInput
           name="seasonalLabor"
-          label="seasonalLabor"
-          optional={true}
-          icon="tools"
-          type="phone"
-          error={errors.otherTools?.message}
+          label="Seasonal Labor"
+          type="age"
+          error={errors.seasonalLabor}
+          required
         />{" "}
-        <FormInput
-          control={control}
+        <FormTextInput
           name="contractBasedLabor"
-          label="contractBasedLabor"
-          optional={true}
-          icon="tools"
-          type="phone"
-          error={errors.otherTools?.message}
+          label="Contract Based Labor"
+          type="age"
+          error={errors.contractBasedLabor}
+          required
         />
-        {/* 4️⃣ Other Tools (OPTIONAL) */}
-        {/* <FormInput
-          control={control}
-          name="otherTools"
-          label="Other Tools (Pruning Shear, Ladder, Baskets, etc.)"
-          optional={true}
-          icon="tools"
-          error={errors.otherTools?.message}
-        /> */}
         <MultiSelectInput
           name="otherTools"
           control={control}
-          label="Storage Facilities"
+          label="Tools"
           options={TOOLS}
-          error={errors?.storageFacility?.message}
+          error={errors?.otherTools?.message}
         />
       </View>
     </View>

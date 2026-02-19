@@ -63,7 +63,17 @@ export const passwordValidator = z
 export const phoneValidator = z
   .string()
   .min(1, "Required Field")
-  .regex(/^[0-9]{10}$/, "Enter a valid 10-digit mobile number");
+  .regex(/^[0-9]{10}$/, "Enter a valid phone number");
+export const optionalPhoneValidator = z.preprocess(
+  (val) => {
+    if (val === "" || val === null) return undefined;
+    return val;
+  },
+  z
+    .string()
+    .regex(/^[0-9]{10}$/, "Enter a valid phone number")
+    .optional(),
+);
 
 export const nameValidator = z
   .string()
@@ -91,3 +101,167 @@ export const pincodeValidator = z
   .string()
   .nonempty("Required Field")
   .regex(/^[1-9][0-9]{5}$/, "Enter a valid 6 digit pincode");
+
+export const multiSelectRequired = (message = "Required Field") =>
+  z.preprocess(
+    (val) => {
+      if (val === undefined || val === null) return [];
+      return val;
+    },
+    z.array(z.string()).min(1, message),
+  );
+
+export const multiSelectOptional = () =>
+  z.preprocess((val) => {
+    if (val === undefined || val === null) return [];
+    return val;
+  }, z.array(z.string()));
+
+/* REQUIRED single select */
+export const singleSelectRequired = (message = "Required Field") =>
+  z.preprocess(
+    (val) => {
+      if (val === undefined || val === null) return "";
+      return val;
+    },
+    z.string().min(1, message),
+  );
+
+/* OPTIONAL single select */
+export const singleSelectOptional = () =>
+  z.preprocess((val) => {
+    if (val === undefined || val === null) return "";
+    return val;
+  }, z.string().optional());
+
+export const countValidator = (message = "Required Field", required = true) => {
+  if (!required) {
+    return z.number().optional();
+  }
+
+  return z.number().min(1, message);
+};
+
+export const numberField = (message = "Required Field") =>
+  z.preprocess(
+    (val) => {
+      if (val === "" || val === null || val === undefined) return undefined;
+      return Number(val);
+    },
+    z.number({
+      required_error: message,
+      invalid_type_error: "Must be a valid number",
+    }),
+  );
+
+/**
+ * =============================
+ * BASE REQUIRED STRING
+ * =============================
+ */
+export const requiredString = (message = "Required Field") =>
+  z.preprocess(
+    (val) => (val === null || val === undefined ? "" : val),
+    z.string().trim().min(1, message),
+  );
+
+/**
+ * =============================
+ * OPTIONAL STRING
+ * =============================
+ */
+export const optionalString = () =>
+  z.preprocess(
+    (val) => (val === null || val === undefined ? "" : val),
+    z.string().optional(),
+  );
+
+export const optionalEmail = () =>
+  z.string().trim().email("Invalid email address").optional().or(z.literal(""));
+
+/**
+ * =============================
+]
+/**
+ * =============================
+ * NAME
+ * =============================
+ */
+export const requiredName = (message = "Required Field") =>
+  requiredString(message).min(3, "Minimum 3 characters required");
+
+/**
+ * =============================
+ * PASSWORD
+ * =============================
+ */
+export const requiredPassword = (message = "Required Field") =>
+  requiredString(message);
+
+export const strongPassword = () =>
+  requiredString().regex(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{7,}$/,
+    "Password must include uppercase, lowercase, number, and special character",
+  );
+
+/**
+ * =============================
+ * PINCODE
+ * =============================
+ */
+export const requiredPincode = () =>
+  requiredString().regex(/^[1-9][0-9]{5}$/, "Enter valid 6 digit pincode");
+
+/**
+ * =============================
+ * AGE
+ * =============================
+
+
+/**
+ * optional number
+ */
+export const optionalNumberField = () =>
+  z.preprocess((val) => {
+    if (val === "" || val === null || val === undefined) return undefined;
+    return Number(val);
+  }, z.number().optional());
+
+/**
+ * =============================
+ * MULTI SELECT
+ * =============================
+ */
+
+/**
+ * =============================
+ * BOOLEAN SELECT (Yes/No)
+ * =============================
+ */
+export const booleanRequired = (message = "Required Field") =>
+  z.preprocess(
+    (val) => {
+      if (val === "true") return true;
+      if (val === "false") return false;
+      return val;
+    },
+    z.boolean({
+      required_error: message,
+      invalid_type_error: message,
+    }),
+  );
+
+export const booleanOptional = () =>
+  z.preprocess((val) => {
+    if (val === "true") return true;
+    if (val === "false") return false;
+    return val;
+  }, z.boolean().optional());
+export const requiredDate = (message = "Required Field") =>
+  z
+    .string({
+      required_error: message,
+    })
+    .min(1, message);
+
+export const optionalDate = () => z.string().optional();
