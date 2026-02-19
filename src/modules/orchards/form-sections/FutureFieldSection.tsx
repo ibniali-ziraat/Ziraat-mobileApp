@@ -2,49 +2,13 @@ import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { View } from "react-native";
 
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
-
-import { yesNoOptions } from "../schemas/CropNutritionSchema";
+import {
+  certOpts,
+  digitalToolOpt,
+  GOVT_SCHEMES,
+} from "../constants/orchardOptions";
 
 export default function FutureFieldScreen({ control, errors }: any) {
-  const schemeOptions = [
-    "Subsidy",
-    "Crop Insurance",
-    "Horticulture Mission Support",
-    "PM-Kisan Support",
-    "Other",
-  ] as const;
-
-  const certificationOptions = [
-    "Organic",
-    "GAP",
-    "Fair Trade",
-    "Global GAP",
-    "Other",
-  ] as const;
-
-  const digitalToolOptions = [
-    "Weather Apps",
-    "Advisory Apps",
-    "Farm Management Tools",
-    "Soil Health Apps",
-    "Mobile-based Irrigation Advisory",
-    "Other",
-  ] as const;
-  const digitalToolOpt = digitalToolOptions.map((x) => ({
-    label: x,
-    value: x,
-  }));
-  const certOpts = certificationOptions.map((x) => ({ label: x, value: x }));
-  const yesNoOpt = yesNoOptions.map((x) => ({ label: x, value: x }));
-
-  const GOVT_SCHEMES = [
-    "Subsidy",
-    "Crop Insurance",
-    "Horticulture Mission Support",
-    "PM-Kisan Support",
-    "Other",
-  ].map((x) => ({ label: x, value: x }));
-
   return (
     <View className="flex-1 w-full">
       <View className="bg-light w-full">

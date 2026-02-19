@@ -4,37 +4,13 @@ import { View } from "react-native";
 
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
+import {
+  EQUIPMENT_OPTIONS,
+  STORAGE_OPTIONS,
+  TOOLS,
+} from "../constants/orchardOptions";
 
 export default function FarmInfrastructureScreen({ control, errors }) {
-  const EQUIPMENT_OPTIONS = [
-    "Tractor",
-    "Sprayer",
-    "Grading Line",
-    "Power Weeder",
-    "Weather Station",
-    "Sensors",
-    "Rotavator",
-    "Plough",
-    "Other",
-  ].map((x) => ({ label: x, value: x }));
-
-  const STORAGE_OPTIONS = [
-    "Tractor",
-    "Sprayer",
-    "Grading Line",
-    "Power Weeder",
-    "Weather Station",
-    "Sensors",
-    "Rotavator",
-    "Plough",
-    "Other",
-  ].map((x) => ({ label: x, value: x }));
-
-  const TOOLS = ["Tractor", "Hoe", "Other"].map((x) => ({
-    label: x,
-    value: x,
-  }));
-
   return (
     <View className="flex-1 w-full">
       <View className="bg-light w-full">
@@ -42,6 +18,7 @@ export default function FarmInfrastructureScreen({ control, errors }) {
           name="equipmentOwned"
           control={control}
           label="Equipment Owned"
+          placeholder="Equipment Owned"
           options={EQUIPMENT_OPTIONS}
           error={errors?.equipmentOwned?.message}
         />

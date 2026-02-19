@@ -5,27 +5,13 @@ import ChipInput from "@/src/components/form/inputs/ChipInput";
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { FormSectionProps } from "@/src/types/formSectionProps";
+import {
+  DISEASE_LIST,
+  PEST_LIST,
+  YES_NO_OPTIONS,
+} from "../constants/orchardOptions";
 
 export default function PlantProtection({ control, errors }: FormSectionProps) {
-  const insuranceOptions = ["Yes", "No"];
-  const DISEASE_LIST = [
-    "Scab",
-    "Alternaria",
-    "Powdery Mildew",
-    "Fire Blight",
-    "Marssonina",
-    "Root Rot",
-  ].map((x) => ({ label: x, value: x }));
-
-  const PEST_LIST = [
-    "Aphids",
-    "Mites",
-    "Codling Moth",
-    "Leaf Miner",
-    "San Jose Scale",
-    "Borers",
-  ].map((x) => ({ label: x, value: x }));
-
   return (
     <View className="flex-1 w-full">
       <View className="bg-light w-full">
@@ -62,10 +48,7 @@ export default function PlantProtection({ control, errors }: FormSectionProps) {
           name="isCropInsuranceCovered"
           modalLabel="Crop Insurance"
           label="Crop Insurance Coverage"
-          options={[
-            { value: true, label: "Yes" },
-            { value: false, label: "No" },
-          ]}
+          options={YES_NO_OPTIONS}
           error={errors.cropInsurance}
         />
       </View>

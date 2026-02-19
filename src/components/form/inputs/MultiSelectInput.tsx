@@ -12,7 +12,7 @@ export default function MultiSelectInput({
   options = [],
   error,
   optional = false,
-  placeholder,
+  placeholder = label,
 }: FormFieldProps) {
   const [visible, setVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
