@@ -51,6 +51,7 @@ export default function AllProductsCarousal({
 
         return (
           <View style={{ width: cardWidth }} className="mr-4">
+
             {/* IMAGE CARD */}
             <View
               className="rounded-2xl overflow-hidden"
@@ -63,6 +64,7 @@ export default function AllProductsCarousal({
                 elevation: 2,
               }}
             >
+
               {/* IMAGE */}
               <Pressable
                 onPress={() =>
@@ -105,14 +107,14 @@ export default function AllProductsCarousal({
                   className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md"
                   style={{ backgroundColor: colors.secondary }}
                 >
-                  <CsText
-                    style={{ color: colors.light }}
-                    className="text-xs  font-semibold"
-                  >
+                  <Text
+                  style={{color:colors.light}}
+                   className="text-xs  font-semibold">
                     {discount}% OFF
-                  </CsText>
+                  </Text>
                 </View>
               )}
+
             </View>
 
             {/* CONTENT */}
@@ -137,6 +139,7 @@ export default function AllProductsCarousal({
             <View className="mt-1">
               <RatingStars rating={item.rating || item.ratingAverage} />
             </View>
+
           </View>
         );
       }}
