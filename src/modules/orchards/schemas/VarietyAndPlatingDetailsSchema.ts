@@ -8,9 +8,9 @@ export const VarietyAndPlatingDetailsSchema = z.object({
 
       numberOfTrees: numberField(),
 
-      // rootstockUsed: z.string().optional(),
+      rootstockUsed: z.string().optional(),
 
-      // plantDensity: z.string().optional(),
+      plantDensity: z.string().optional(),
 
       treesLessThan5Years: numberField(),
 

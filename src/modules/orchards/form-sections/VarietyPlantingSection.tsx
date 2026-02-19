@@ -94,6 +94,32 @@ export default function VarietAndPlatingDetails({ control, errors }) {
               required
               error={varietyError?.treesLessThan5Years}
             />
+            <SingleSelectInput
+              control={control}
+              optional
+              name={`varieties.${index}.rootstockUsed`}
+              label="Rootstock Used"
+              options={[
+                { label: "M9", value: "M9" },
+                { label: "MM106", value: "MM106" },
+                { label: "Seedling", value: "Seedling" },
+                { label: "Other", value: "Other" },
+              ]}
+              // error={errors?.varieties?.[index]?.rootstockUsed?.message}
+            />
+
+            <SingleSelectInput
+              control={control}
+              optional
+              name={`varieties.${index}.plantDensity`}
+              label="Plant Density"
+              options={[
+                { label: "High Density", value: "High Density" },
+                { label: "Medium Density", value: "Medium Density" },
+                { label: "Traditional", value: "Traditional" },
+              ]}
+              // error={errors?.varieties?.[index]?.plantDensity?.message}
+            />
 
             <FormTextInput
               name={`varieties.${index}.treesFiveToTenYears`}

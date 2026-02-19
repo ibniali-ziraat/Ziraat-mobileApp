@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useWatch } from "react-hook-form";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
 import FormFileInput from "@/src/components/form/inputs/FormFileInput";
-import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
@@ -17,6 +16,8 @@ import {
 } from "@/src/modules/orchards/schemas/SoilWaterProfileSchema";
 
 export default function SoilAndWaterProfile({ control, errors }) {
+  console.log(errors, "errors in soilandwatertest");
+
   const SOIL_HEALTH_OPTIONS = [
     "Strongly Acidic",
     "Moderately Acidic",
@@ -66,45 +67,21 @@ export default function SoilAndWaterProfile({ control, errors }) {
         <MultiSelectInput
           name="soilHealthStatus"
           control={control}
-          label="Soil Health"
+          label="Soil Health (optional)"
+          placeholder="Select Soil Health"
           options={SOIL_HEALTH_OPTIONS}
-          error={errors?.soilHealth?.message}
+          optional
+
+          // error={errors?.soilHealth?.message}
         />
 
-        {/* <SingleSelectInput
-          control={control}
-          name="lastSoilTestDone"
-          label="Last Soil Test Done?"
-          modalLabel="Soil Type"
-          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
-          error={errors?.lastSoilTestDone?.message}
-        /> */}
-
-        {/* <RadioGroup
-          control={control}
-          name="lastSoilTestDone"
-          label="Last Soil Test Done?"
-          options={yesNoOptions}
-          error={errors?.lastSoilTestDone?.message}
-        /> */}
-
-        {/* {lastSoilTestDone === "Yes" && ( */}
         <FormDateInput
           control={control}
           name="lastSoilTestDate"
-          label="Latest Soil Test Date"
+          label="Latest Soil Test Date (optional)"
           error={errors?.lastSoilTestDate?.message}
+          optional
         />
-        {/* )} */}
-
-        {/* <SingleSelectInput
-          control={control}
-          name="lastSoilTestDate"
-          label="Last Soil Test Done?"
-          modalLabel="Soil Type"
-          options={yesNoOptions.map((v) => ({ label: v, value: v }))}
-          error={errors?.lastSoilTestDate?.message}
-        /> */}
       </View>
 
       <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
@@ -156,7 +133,7 @@ export default function SoilAndWaterProfile({ control, errors }) {
           error={errors?.soilTestRecordsDone?.message}
         />
 
-        {soilTestRecordsDone === "Yes" && (
+        {/* {soilTestRecordsDone === true && (
           <>
             <TouchableOpacity
               onPress={() => setOpen((prev) => !prev)}
@@ -172,42 +149,42 @@ export default function SoilAndWaterProfile({ control, errors }) {
 
             {open && (
               <View className="mt-2">
-                <FormInput
+                <FormTextInput
                   control={control}
                   name="soilPH"
                   label="Soil pH (0–14)"
-                  type="phone"
+                  type="pincode"
                   error={errors?.soilPH}
                 />
-                <FormInput
+                <FormTextInput
                   control={control}
                   name="soilNitrogen"
                   label="Nitrogen (N)"
-                  type="phone"
+                  type="pincode"
                   error={errors?.soilN}
                 />
-                <FormInput
+                <FormTextInput
                   control={control}
                   name="soilPhosphorus"
                   label="Phosphorus (P)"
-                  type="phone"
+                  type="pincode"
                   error={errors?.soilP}
                 />
-                <FormInput
+                <FormTextInput
                   control={control}
                   name="soilPotassium"
                   label="Potassium (K)"
-                  type="phone"
+                  type="pincode"
                   error={errors?.soilK}
                 />
-                <FormInput
+                <FormTextInput
                   control={control}
                   name="soilOrganicCarbon"
                   label="Organic Carbon (%)"
-                  type="phone"
+                  type="pincode"
                   error={errors?.soilOrganicCarbon}
                 />
-                <FormInput
+                <FormTextInput
                   control={control}
                   name="soilMicronutrients"
                   label="Micronutrients"
@@ -217,32 +194,17 @@ export default function SoilAndWaterProfile({ control, errors }) {
               </View>
             )}
           </>
-        )}
+        )} */}
 
         {soilTestRecordsDone && (
           <FormFileInput
             control={control}
             name="soilTestReportUrl"
             label="Upload Soil Test Report"
-            error={errors?.soilTestFile}
+            error={errors?.soilTestReportUrl}
           />
         )}
       </View>
-
-      {/* <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200"> */}
-      {/* <SingleSelectInput
-          control={control}
-          name="soilTestFileToggle"
-          label="Upload Soil Test Report?"
-          options={[
-            { value: true, label: "Yes" },
-            { value: false, label: "No" },
-          ]}
-          error={errors?.soilTestFileToggle?.message}
-          modalLabel="Soil Test Report"
-        /> */}
-
-      {/* </View> */}
     </View>
   );
 }

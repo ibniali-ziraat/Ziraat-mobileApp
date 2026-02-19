@@ -17,6 +17,7 @@ import {
   useProductionMarketingQuery,
   useUpdateProductionMarketingMutation,
 } from "../hooks/useOrchardsQuery";
+import { ProductionMarketingSchema } from "../schemas/ProductionMarketingSchema";
 
 export default function ProductionAndMarketingScreen() {
   const { orchardProfileId } = useAuth();
@@ -32,7 +33,7 @@ export default function ProductionAndMarketingScreen() {
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateProductionMarketingMutation();
 
-  const form = useZodForm();
+  const form = useZodForm(ProductionMarketingSchema);
   const {
     setValue,
     handleSubmit,

@@ -575,12 +575,12 @@ export default function OrchardDetail() {
               : []
           }
           onEdit={
-            hasData(orchard?.plantHealth)
+            hasData(plantProtectionData)
               ? () => goToSection("plantProtection")
               : undefined
           }
           onDelete={
-            hasData(orchard?.plantHealth)
+            hasData(plantProtectionData)
               ? () => setDeleteSection("plantHealth")
               : undefined
           }

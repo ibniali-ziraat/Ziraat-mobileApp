@@ -14,22 +14,23 @@ import {
   usePlantProtectionQuery,
   useUpdatePlantProtectionMutation,
 } from "../hooks/useOrchardsQuery";
+import { PlantProtectionSchema } from "../schemas/PlantProtectionSchema";
 
 export default function PlantProtectionScreen() {
   const { orchardProfileId } = useAuth();
   console.log(orchardProfileId, "orchardprofile id in orchard.service");
 
-  const { data: cropNutritionData } = usePlantProtectionQuery(
+  const { data: plantProtectionData } = usePlantProtectionQuery(
     orchardProfileId!,
   );
-  console.log(cropNutritionData, "crop nutrition data...");
+  console.log(plantProtectionData, "plantprotection data...");
 
   const { mutateAsync: save, isPending: isSaving } =
     useCreatePlantProtectionMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdatePlantProtectionMutation();
 
-  const form = useZodForm();
+  const form = useZodForm(PlantProtectionSchema);
   const {
     setValue,
     handleSubmit,
@@ -38,25 +39,24 @@ export default function PlantProtectionScreen() {
   } = form;
 
   useEffect(() => {
-    if (!cropNutritionData) return;
+    if (!plantProtectionData) return;
 
-    Object.entries(cropNutritionData).forEach(([key, value]) => {
+    Object.entries(plantProtectionData).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
         setValue(key as any, value);
       }
     });
-  }, [cropNutritionData]);
+  }, [plantProtectionData]);
 
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        id: cropNutritionData?.id,
-
+        id: plantProtectionData?.id,
         ...values,
         orchardProfileId: orchardProfileId,
       };
 
-      if (cropNutritionData) {
+      if (plantProtectionData) {
         await update(payload);
         showSuccessToast("Plant Protection updated");
       } else {
@@ -87,7 +87,7 @@ export default function PlantProtectionScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={cropNutritionData?.length > 0 ? "Update" : "Save"}
+            submitLabel={plantProtectionData?.length > 0 ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             onCancel={() => router.back()}
             disabled={isSaving || isUpdating}

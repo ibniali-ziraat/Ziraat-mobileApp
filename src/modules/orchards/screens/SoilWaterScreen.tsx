@@ -18,6 +18,7 @@ import {
   useSoilWaterQuery,
   useUpdateSoilWaterMutation,
 } from "../hooks/useOrchardsQuery";
+import { SoilWaterProfileSchema } from "../schemas/SoilWaterProfileSchema";
 
 export default function SoilAndWaterProfileScreen() {
   const { orchardProfileId } = useAuth();
@@ -30,7 +31,7 @@ export default function SoilAndWaterProfileScreen() {
     useCreateSoilWaterMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateSoilWaterMutation();
-  const form = useZodForm();
+  const form = useZodForm(SoilWaterProfileSchema);
   const {
     setValue,
     handleSubmit,
