@@ -1,4 +1,8 @@
-import React, { useState } from "react";
+import { colors } from "@/src/constants/colors";
+import { fonts } from "@/src/constants/fonts/font";
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import {
   KeyboardTypeOptions,
   Pressable,
@@ -8,14 +12,7 @@ import {
   View,
 } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
-import { Controller, useFormContext } from "react-hook-form";
-
-import { colors } from "@/src/constants/colors";
-import { fonts } from "@/src/constants/fonts/font";
-import { FormInputProps } from "./types";
-
-const FormTextInput: React.FC<FormInputProps> = ({
+const FormTextInput = ({
   name,
   label,
   type = "text",
@@ -108,7 +105,7 @@ const FormTextInput: React.FC<FormInputProps> = ({
           ? colors.error
           : isFocused
             ? colors.primary
-            : colors.cardBorder;
+            : colors.neutral;
 
         return (
           <View style={styles.container}>
@@ -129,7 +126,7 @@ const FormTextInput: React.FC<FormInputProps> = ({
                 style={styles.input}
                 value={value}
                 placeholder={placeholder || label}
-                placeholderTextColor={colors.darkHover}
+                placeholderTextColor={colors.neutral}
                 keyboardType={getKeyboardType()}
                 secureTextEntry={type === "password" && !showPassword}
                 onChangeText={(text) => onChange(sanitizeInput(text))}
@@ -176,7 +173,7 @@ const styles = StyleSheet.create({
 
   label: {
     fontSize: 14,
-    color: colors.neutral,
+    color: colors.dark,
     fontFamily: fonts.poppins.medium,
   },
 
@@ -204,7 +201,7 @@ const styles = StyleSheet.create({
 
   countryCode: {
     marginRight: 8,
-    color: colors.warning,
+    color: colors.darkHover,
     fontFamily: fonts.poppins.medium,
     fontSize: 15,
   },

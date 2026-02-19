@@ -186,7 +186,7 @@ export default function ForgotPasswordScreen() {
                   onPress={handleVerifyOtp}
                 >
                   <Text
-                    className="text-light text-center"
+                    className="text-dark text-center"
                     style={typography.Poppins_m_medium}
                   >
                     Verify OTP
@@ -225,7 +225,7 @@ export default function ForgotPasswordScreen() {
                   onPress={()=>{}}
                 >
                   <Text
-                    className="text-light text-center"
+                    className="text-dark text-center"
                     style={typography.Poppins_m_medium}
                   >
                     Submit
