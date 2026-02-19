@@ -1,6 +1,6 @@
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
-import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { View } from "react-native";
 
 export default function CropNutrition({ control, errors }) {
@@ -25,7 +25,6 @@ export default function CropNutrition({ control, errors }) {
         <SingleSelectInput
           control={control}
           name="hasFertigation"
-          // name="hasFertigationFacility"
           label="Fertigation Facility"
           options={[
             { value: true, label: "Yes" },
@@ -47,20 +46,20 @@ export default function CropNutrition({ control, errors }) {
           modalLabel="Mulching Applied"
         />
 
-        <FormInput
-          control={control}
+        <FormTextInput
           name="nutritionPlan"
           label="Nutrition Plan"
           icon="book-open-page-variant"
-          error={errors.nutritionPlan?.message}
-          optional={true}
+          error={errors.nutritionPlan}
+          type="name"
+          required
         />
 
         <FormDateInput
           control={control}
           name="lastFertilizerApplicationDate"
           label="Last Fertiliser Date"
-          error={errors.lastFertiliserDate?.message}
+          error={errors.lastFertilizerApplicationDate}
           optional={true}
         />
 

@@ -29,43 +29,25 @@ export default function PlantProtection({ control, errors }: FormSectionProps) {
   return (
     <View className="flex-1 w-full">
       <View className="bg-light w-full">
-        {/* <CsText className="text-lg font-semibold mb-3 text-primary">
-          Plant Protection & Health
-       </CsText> */}
-
-        {/* 1️⃣ Disease History */}
-        {/* <CheckboxGroup
-          control={control}
-          name="diseases"
-          label="Disease History"
-          options={diseaseList}
-          error={errors.diseases?.message}
-        /> */}
-
         <MultiSelectInput
           name="diseaseHistory"
           control={control}
-          label="Disease History"
+          label="Disease History (optional)"
+          placeholder="Disease History"
           options={DISEASE_LIST}
           error={errors?.diseases?.message}
+          optional
         />
 
         <MultiSelectInput
           name="pestHistory"
           control={control}
-          label="Pest History"
+          label="Pest History (optional)"
+          placeholder="Pest History"
           options={PEST_LIST}
           error={errors?.pests?.message}
+          optional
         />
-
-        {/* <FormInput
-          control={control}
-          name="spraySchedule"
-          label="Spray Schedule (Optional)"
-          optional={true}
-          icon="calendar-clock"
-          error={errors.spraySchedule?.message}
-        /> */}
 
         <ChipInput
           control={control}

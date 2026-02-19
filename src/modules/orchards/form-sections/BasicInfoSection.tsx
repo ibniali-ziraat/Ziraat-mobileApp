@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { View } from "react-native";
 
-import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
 import OrchardSizeInput from "./OrchardSizeInput";
@@ -18,6 +18,8 @@ export default function BasicInfo({
 }) {
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
   const { setValue } = useFormContext();
+
+  console.log(errors, "errors in ....basicsection");
 
   /* ------------------ Hydration Guards ------------------ */
   const unitHydrated = useRef(false);
@@ -44,7 +46,7 @@ export default function BasicInfo({
   /* ------------------ Watchers ------------------ */
   const orchardUnit = useWatch({
     control,
-    name: "orchardSize.unit",
+    name: "orchardUnit",
   });
 
   const orchardMode = useWatch({
@@ -81,53 +83,56 @@ export default function BasicInfo({
     setValue("orchardSize.value", "");
   }, [orchardMode]);
 
-  /* ------------------ UI ------------------ */
   return (
     <View className="bg-light w-full">
-      {/* Orchard Name */}
-      <FormInput
-        control={control}
+      <FormTextInput
         name="orchardName"
         label="Orchard Name"
-        error={errors?.orchardName?.message}
+        type="name"
+        placeholder="Enter your orchard name"
+        required
+        error={errors?.orchardName}
       />
 
-      {/* ---------------- MANUAL MODE ---------------- */}
       {orchardMode === "manual" && (
         <View style={{ marginVertical: 10 }}>
+          {/* Unit selector */}
           <SingleSelectInput
             control={control}
-            name="orchardSize.unit"
+            name="orchardUnit"
             label="Orchard Size Unit"
             modalLabel="Select Unit"
             options={[
-              { label: "Marla", value: "marla" },
-              { label: "Kanal", value: "kanal" },
+              { label: "Marlas", value: "marlas" },
+              { label: "Kanals", value: "kanals" },
             ]}
-            error={errors?.orchardSize?.unit?.message}
+            error={errors?.orchardUnit}
           />
 
-          <FormInput
-            control={control}
-            name="orchardSize.value"
-            label={`Orchard Size${
-              orchardUnit
-                ? ` (${orchardUnit === "marla" ? "Marla" : "Kanal"})`
-                : ""
-            }`}
-            type="number"
-            disabled={!orchardUnit}
-            placeholder={
-              !orchardUnit
-                ? "Select unit first"
-                : `Enter size in ${orchardUnit === "marla" ? "Marla" : "Kanal"}`
-            }
-            error={errors?.orchardSize?.value?.message}
-          />
+          {orchardUnit === "marlas" && (
+            <FormTextInput
+              name="marlas"
+              label="Size in Marlas"
+              type="pincode"
+              required
+              placeholder="Enter size in Marlas"
+              error={errors?.marlas}
+            />
+          )}
+
+          {orchardUnit === "kanals" && (
+            <FormTextInput
+              name="kanals"
+              label="Size in Kanals"
+              type="pincode"
+              required
+              placeholder="Enter size in Kanals"
+              error={errors?.kanals}
+            />
+          )}
         </View>
       )}
 
-      {/* ---------------- MEASURE MODE ---------------- */}
       {orchardMode === "measure" && (
         <OrchardSizeInput
           control={control}
@@ -138,7 +143,6 @@ export default function BasicInfo({
         />
       )}
 
-      {/* Establishment Year */}
       <SingleSelectInput
         searchable
         control={control}
@@ -149,7 +153,6 @@ export default function BasicInfo({
         error={errors?.establishmentYear?.message}
       />
 
-      {/* Plantation Pattern */}
       <SingleSelectInput
         control={control}
         name="plantationPattern"
@@ -164,7 +167,6 @@ export default function BasicInfo({
         error={errors?.plantationPattern?.message}
       />
 
-      {/* Ownership Type */}
       <SingleSelectInput
         control={control}
         name="ownershipType"
@@ -180,7 +182,6 @@ export default function BasicInfo({
         error={errors?.ownershipType?.message}
       />
 
-      {/* District */}
       <SingleSelectInput
         searchable
         control={control}
@@ -206,12 +207,12 @@ export default function BasicInfo({
       />
 
       {/* PIN Code */}
-      <FormInput
-        control={control}
+      <FormTextInput
         name="pincode"
         label="PIN Code"
-        type="phone"
-        error={errors?.pincode?.message}
+        type="pincode"
+        error={errors?.pincode}
+        required
       />
     </View>
   );

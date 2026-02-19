@@ -6,7 +6,8 @@ const axiosInstance = axios.create({
 
   baseURL:
     // "https://g6tqq5b9-44388.inc1.devtunnels.ms/",
-"https://ziraatapi-fgfhe3hxf3h9gkg4.centralindia-01.azurewebsites.net/",
+    "https://ziraatapi-fgfhe3hxf3h9gkg4.centralindia-01.azurewebsites.net",
+
   headers: {
     "Content-Type": "application/json",
   },

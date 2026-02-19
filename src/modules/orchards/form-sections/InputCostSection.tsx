@@ -26,31 +26,34 @@ export default function InputCostDetails({ control, errors }: any) {
   return (
     <View className="flex-1 w-full">
       <View className="bg-light  w-full">
-        {/* 1️⃣ Pesticide Supplier Location */}
         <SingleSelectInput
           control={control}
           name="pesticideSupplierLocation"
-          label="Pesticide Supplier Location"
+          label="Supplier Location (optional)"
+          placeholder="Supplier Location"
           options={supplierOptions}
           error={errors.pesticideSupplierLocation?.message}
+          optional
         />
 
-        {/* 2️⃣ Payment Type */}
         <SingleSelectInput
           control={control}
           name="paymentType"
-          label="Payment Type"
+          label="Payment Type (optional)"
+          placeholder="Select Payment Type"
           options={paymentOptions}
           error={errors.paymentType?.message}
+          optional
         />
 
-        {/* 3️⃣ Credit Period */}
         <SingleSelectInput
           control={control}
           name="creditPeriod"
-          label="Credit Period"
+          label="Credit Period (optional)"
+          placeholder="Select Credit Period"
           options={creditOptions}
           error={errors.creditPeriod?.message}
+          optional
         />
       </View>
     </View>

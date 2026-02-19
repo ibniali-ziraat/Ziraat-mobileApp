@@ -1,21 +1,24 @@
-import React, { useRef } from "react";
+import { useRef, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
-import { Controller, useFormContext } from "react-hook-form";
-
 import { colors } from "@/src/constants/colors";
-import { FormOtpInputProps } from "./types";
 
-const FormOtpInput: React.FC<FormOtpInputProps> = ({
+const STATIC_OTP = "123456";
+
+const FormOtpInput= ({
   name,
   label,
-  errors,
   required,
   length = 6,
 }) => {
-  const { control } = useFormContext();
+  const { control, setError, clearErrors, formState: { errors } } =
+    useFormContext();
 
-  const refs = useRef<TextInput[]>([]);
+  const refs = useRef([]);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const fieldError = errors[name];
 
   return (
     <Controller
@@ -23,20 +26,42 @@ const FormOtpInput: React.FC<FormOtpInputProps> = ({
       name={name}
       defaultValue=""
       render={({ field: { value, onChange } }) => {
-        const otp = value || "";
+        const otpValue = value || "";
 
         const handleChange = (text: string, index: number) => {
           const digit = text.replace(/\D/g, "");
 
-          const arr = otp.split("");
+       
+          const arr = otpValue.split("");
           arr[index] = digit;
-
           const newOtp = arr.join("").slice(0, length);
 
           onChange(newOtp);
 
+         
           if (digit && index < length - 1) {
             refs.current[index + 1]?.focus();
+          }
+
+   
+          if (!digit && index > 0) {
+            refs.current[index - 1]?.focus();
+          }
+
+  
+          setSuccessMessage("");
+          clearErrors(name);
+
+          
+          if (newOtp.length === length) {
+            if (newOtp === STATIC_OTP) {
+              setSuccessMessage("OTP verified successfully");
+            } else {
+              setError(name, {
+                type: "manual",
+                message: "entered OTP is incorrect",
+              });
+            }
           }
         };
 
@@ -57,18 +82,30 @@ const FormOtpInput: React.FC<FormOtpInputProps> = ({
                   style={[
                     styles.input,
                     {
-                      borderColor: errors ? colors.error : colors.cardBorder,
+                      borderColor: fieldError
+                        ? colors.error
+                        : successMessage
+                        ? colors.primary
+                        : colors.neutral,
                     },
                   ]}
                   keyboardType="numeric"
                   maxLength={1}
-                  value={otp[index] || ""}
+                  value={otpValue[index] || ""}
                   onChangeText={(text) => handleChange(text, index)}
                 />
               ))}
             </View>
 
-            {errors && <Text style={styles.error}>{errors.message}</Text>}
+            {/* Error */}
+            {fieldError && (
+              <Text style={styles.error}>{fieldError.message}</Text>
+            )}
+
+            {/* Success */}
+            {!fieldError && successMessage ? (
+              <Text style={styles.success}>{successMessage}</Text>
+            ) : null}
           </View>
         );
       }}
@@ -107,5 +144,11 @@ const styles = StyleSheet.create({
     marginTop: 6,
     fontSize: 12,
     color: colors.error,
+  },
+
+  success: {
+    marginTop: 6,
+    fontSize: 12,
+    color: colors.primary,
   },
 });

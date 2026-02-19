@@ -2,13 +2,34 @@ import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { View } from "react-native";
 
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
-import {
-  certificationOptions,
-  digitalToolOptions,
-} from "@/src/modules/orchards/schemas/OptionalFutureFieldsSchema";
+
 import { yesNoOptions } from "../schemas/CropNutritionSchema";
 
 export default function FutureFieldScreen({ control, errors }: any) {
+  const schemeOptions = [
+    "Subsidy",
+    "Crop Insurance",
+    "Horticulture Mission Support",
+    "PM-Kisan Support",
+    "Other",
+  ] as const;
+
+  const certificationOptions = [
+    "Organic",
+    "GAP",
+    "Fair Trade",
+    "Global GAP",
+    "Other",
+  ] as const;
+
+  const digitalToolOptions = [
+    "Weather Apps",
+    "Advisory Apps",
+    "Farm Management Tools",
+    "Soil Health Apps",
+    "Mobile-based Irrigation Advisory",
+    "Other",
+  ] as const;
   const digitalToolOpt = digitalToolOptions.map((x) => ({
     label: x,
     value: x,
@@ -27,36 +48,21 @@ export default function FutureFieldScreen({ control, errors }: any) {
   return (
     <View className="flex-1 w-full">
       <View className="bg-light w-full">
-        {/* <CheckboxGroup
-          control={control}
-          name="govtSchemes"
-          label="Government Schemes Availed (Multi-select)"
-          options={schemeOptions}
-          error={errors.govtSchemes?.message}
-        /> */}
-
         <MultiSelectInput
           name="governmentSchemesAvailed"
           control={control}
-          label="Government Schemes Available"
+          label="Government Schemes Available (optional)"
+          placeholder="Government Schemes Available"
           options={GOVT_SCHEMES}
-          error={errors?.govtSchemes?.message}
+          error={errors?.governmentSchemesAvailed?.message}
+          optional
         />
-        {/* 
-        <FormInput
-          control={control}
-          name="fpoMembership"
-          label="FPO / Cooperative Membership (Optional)"
-          optional={true}
-          icon="account-group"
-          iconColor="secondary"
-          error={errors.fpoMembership?.message}
-        /> */}
 
         <SingleSelectInput
           control={control}
           name="isFpoOrCooperativeMember"
-          label="FPO / Cooperative Membership"
+          label="FPO / Cooperative Membership (optional)"
+          placeholder="FPO / Cooperative Membership"
           options={[
             { value: true, label: "Yes" },
             { value: false, label: "No" },
@@ -66,38 +72,25 @@ export default function FutureFieldScreen({ control, errors }: any) {
           optional
         />
 
-        {/* <SingleSelectInput
-          control={control}
-          name="certifications"
-          label="Certifications"
-          options={certOpts}
-          error={errors.certifications?.message}
-          modalLabel="Select (if any)"
-        /> */}
-
         <MultiSelectInput
           name="certifications"
           control={control}
-          label="Certifications"
+          label="Certifications (optional)"
+          placeholder="Certifications"
           options={certOpts}
           error={errors?.certifications?.message}
+          optional
         />
 
         <MultiSelectInput
           name="digitalToolsUsed"
           control={control}
-          label="Digital Tools Used"
+          label="Digital Tools Used (optional)"
+          placeholder="Digital Tools Used"
           options={digitalToolOpt}
           error={errors.digitalTools?.message}
+          optional
         />
-
-        {/* <CheckboxGroup
-          control={control}
-          name="digitalTools"
-          label="Digital Tools Used (Multi-select)"
-          options={digitalToolOptions}
-          error={errors.digitalTools?.message}
-        /> */}
       </View>
     </View>
   );

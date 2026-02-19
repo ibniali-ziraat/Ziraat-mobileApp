@@ -1,15 +1,23 @@
 // StepG_ProductionMarketing.js
 
-import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { View } from "react-native";
 
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
-import { sellingPreferenceOptions } from "@/src/modules/orchards/schemas/ProductionMarketingSchema";
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 
 export default function ProductionMarketing({ control, errors }: any) {
   // Map-ready dropdown format
-  const sellingOptions = sellingPreferenceOptions.map((x) => ({
+  console.log(errors, "errors in pms");
+
+  const sellingOptions = [
+    "Trader",
+    "Mandi",
+    "Direct to Consumer",
+    "Contract Farming",
+    "Exporter",
+    "Retail",
+  ].map((x) => ({
     label: x,
     value: x,
   }));
@@ -30,41 +38,22 @@ export default function ProductionMarketing({ control, errors }: any) {
 
   return (
     <View className="flex-1 w-full">
-      {/* Page Heading */}
-      {/* <CsText className="text-2xl font-bold mb-4 text-center text-primary">
-        Production & Marketing
-     </CsText> */}
-
       <View className="bg-light w-full">
-        {/* <CsText className="text-lg font-semibold mb-3 text-primary">
-          Production & Marketing Information
-       </CsText> */}
-
-        {/* Repeated text inputs (Yield + Harvest Season) */}
-
-        <FormInput
-          control={control}
-          name="averageAnnualYield"
-          label="Average Annual Yield (Boxes / Kilos)"
-          type="phone"
-          error={errors.annualYield?.message}
-        />
-
-        {/* <FormInput
-          control={control}
-          name="yieldUnit"
-          label="Average Annual Yield (Boxes / Kilos)"
-          type="phone"
-          error={errors.annualYield?.message}
-        /> */}
-
         <SingleSelectInput
           control={control}
           name="yieldUnit"
-          label="yieldUnit"
+          label="Yield Unit"
           modalLabel="yieldUnit"
           options={YIELD_UNITS}
           error={errors?.soilType?.message}
+        />
+        <FormTextInput
+          control={control}
+          name="averageAnnualYield"
+          label="Average Annual Yield"
+          type="pincode"
+          error={errors.averageAnnualYield}
+          required
         />
 
         <FormDateInput
@@ -91,23 +80,25 @@ export default function ProductionMarketing({ control, errors }: any) {
         />
 
         {/* Buyer Details (OPTIONAL) */}
-        <FormInput
+        <FormTextInput
           control={control}
           name="buyerName"
-          label="buyerName (Optional)"
-          optional={true}
+          label="Buyer Name (Optional)"
+          placeholder="Buyer Name"
+          optional
           icon="account-box"
           iconColor="secondary"
           error={errors.buyerDetails}
         />
-        <FormInput
+        <FormTextInput
           control={control}
           name="buyerContact"
-          label="buyerContact (Optional)"
+          label="Buyer Contact (Optional)"
+          placeholder="Buyer Contact"
           optional={true}
           icon="account-box"
           iconColor="secondary"
-          error={errors.buyerDetails}
+          error={errors.buyerContact}
         />
       </View>
     </View>

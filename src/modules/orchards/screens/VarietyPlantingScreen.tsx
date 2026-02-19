@@ -19,6 +19,7 @@ import {
   useOrchardVarietiesQuery,
   useUpdateVarietyMutation,
 } from "../hooks/useOrchardsQuery";
+import { VarietyAndPlatingDetailsSchema } from "../schemas/VarietyAndPlatingDetailsSchema";
 
 export default function VarietyAndPlatingDetailsScreen() {
   const { orchardProfileId } = useAuth();
@@ -38,7 +39,21 @@ export default function VarietyAndPlatingDetailsScreen() {
   const { mutateAsync: save, isPending: isSaving } = useCreateVarietyMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateVarietyMutation();
-  const form = useZodForm();
+  const form = useZodForm(VarietyAndPlatingDetailsSchema, {
+    defaultValues: {
+      varieties: [
+        {
+          varietyName: "",
+          numberOfTrees: "",
+          rootstockUsed: "",
+          plantDensity: "",
+          treesLessThan5Years: "",
+          treesFiveToTenYears: "",
+          treesMoreThan10Years: "",
+        },
+      ],
+    },
+  });
   const {
     setValue,
     handleSubmit,

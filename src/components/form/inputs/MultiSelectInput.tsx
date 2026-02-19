@@ -12,6 +12,7 @@ export default function MultiSelectInput({
   options = [],
   error,
   optional = false,
+  placeholder,
 }: FormFieldProps) {
   const [visible, setVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
@@ -30,7 +31,7 @@ export default function MultiSelectInput({
 
   const toggleOption = (val: string | number) => {
     setSelectedOptions((prev) =>
-      prev.includes(val) ? prev.filter((x) => x !== val) : [...prev, val]
+      prev.includes(val) ? prev.filter((x) => x !== val) : [...prev, val],
     );
   };
 
@@ -70,7 +71,7 @@ export default function MultiSelectInput({
             <CsText
               style={{ color: value?.length ? colors.dark : colors.neutral }}
             >
-              {value?.length ? value.join(", ") : `Select ${label}`}
+              {value?.length ? value.join(", ") : `Select ${placeholder}`}
             </CsText>
           </TouchableOpacity>
 

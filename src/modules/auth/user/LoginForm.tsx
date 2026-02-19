@@ -55,10 +55,25 @@ export default function LoginForm() {
           name="mobileNumber"
           label="Phone Number"
           type="phone"
-          placeholder="0000000000"
+          placeholder="Phone Number"
           error={errors.mobileNumber}
           required
         />
+
+{/*         
+       <FormProvider {...methods}>
+  <FormOtpInput
+    name="otp"
+    label="Enter OTP"
+    required
+    errors={errors.otp}
+  />
+
+ 
+</FormProvider> */}
+
+
+
 
         <FormTextInput
           name="password"

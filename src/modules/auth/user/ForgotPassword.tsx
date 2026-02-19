@@ -195,6 +195,32 @@ export default function ForgotPasswordScreen() {
                 <PrimaryButton loading={isOtpPending} onPress={handleVerifyOtp}>
                   Verify OTP
                 </PrimaryButton>
+                <Text
+                  className="mb-3"
+                  style={typography.Poppins_s_regular}
+                >
+                  Please enter the 6-digit OTP sent to your registered
+                  mobile number to continue.
+                </Text>
+
+                <FormInput
+                  control={control}
+                  name="otp"
+                  label="OTP"
+                  keyboardType="numeric"
+                />
+
+                <Pressable
+                  className="bg-primary py-3 rounded-xl mt-4"
+                  onPress={handleVerifyOtp}
+                >
+                  <Text
+                    className="text-dark text-center"
+                    style={typography.Poppins_m_medium}
+                  >
+                    Verify OTP
+                  </Text>
+                </Pressable>
               </>
             )}
 
@@ -219,6 +245,24 @@ export default function ForgotPasswordScreen() {
                 <PrimaryButton loading={isResetting} onPress={handleResetPassword}>
                   Update Password
                 </PrimaryButton>
+                <FormInput
+                  control={control}
+                  name="confirmPassword"
+                  label="Confirm Password"
+                  type="password"
+                />
+
+                <Pressable
+                  className="bg-primary py-3 rounded-xl mt-4"
+                  onPress={()=>{}}
+                >
+                  <Text
+                    className="text-dark text-center"
+                    style={typography.Poppins_m_medium}
+                  >
+                    Submit
+                  </Text>
+                </Pressable>
               </>
             )}
 

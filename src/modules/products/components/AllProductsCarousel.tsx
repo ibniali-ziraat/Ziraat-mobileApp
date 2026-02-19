@@ -107,11 +107,11 @@ export default function AllProductsCarousal({
                   className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md"
                   style={{ backgroundColor: colors.secondary }}
                 >
-                  <CsText
+                  <Text
                   style={{color:colors.light}}
                    className="text-xs  font-semibold">
                     {discount}% OFF
-                  </CsText>
+                  </Text>
                 </View>
               )}
 
