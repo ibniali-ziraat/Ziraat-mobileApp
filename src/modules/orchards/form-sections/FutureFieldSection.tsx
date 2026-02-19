@@ -52,7 +52,7 @@ export default function FutureFieldScreen({ control, errors }: any) {
           label="Digital Tools Used (optional)"
           placeholder="Digital Tools Used"
           options={digitalToolOpt}
-          error={errors.digitalTools?.message}
+          error={errors.digitalToolsUsed?.message}
           optional
         />
       </View>

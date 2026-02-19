@@ -1,228 +1,31 @@
-// import { colors } from "@/src/constants/colors";
-// import { Feather } from "@expo/vector-icons";
-// import { TouchableOpacity, View } from "react-native";
-// import Text from "./Text";
-// import { useFileUploadMutation } from "@/src/hooks/useFileUpload";
-
-// interface ProfileTopHeaderProps {
-//     profilePic?: string;
-//     fullName?: string;
-//     onEdit?: () => void;
-// }
-
-// export default function ProfileTopHeader({ fullName, onEdit }: ProfileTopHeaderProps) {
-
-
-//     const initials = fullName
-//         ? fullName
-//               .split(" ")
-//               .map((w) => w[0])
-//               .join("")
-//               .substring(0, 2)
-//               .toUpperCase()
-//         : "TA";
-
-//         const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
-
-//  const handlePickProfilePic = async () => {
-//   try {
-//     // Ask permission
-//     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-//     if (!permission.granted) {
-//       alert("Permission required to upload profile picture");
-//       return;
-//     }
-
-//     // Pick image
-//     const result = await ImagePicker.launchImageLibraryAsync({
-//       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-//       allowsEditing: true,
-//       aspect: [1, 1],
-//       quality: 0.7,
-//     });
-
-//     if (result.canceled) return;
-
-//     const asset = result.assets[0];
-
-//     const file = {
-//       uri: asset.uri,
-//       name: `profile_${Date.now()}.jpg`,
-//       type: asset.mimeType || "image/jpeg",
-//     };
-
-//     // Upload to server
-//     const response = await uploadFileAsync({
-//       file,
-//       UserType: "User",
-//       UserId: userProfileData.id,
-//       FileCategory: "ProfilePicture",
-//     });
-
-//     const fileUrl = response?.fileUrl;
-//     if (!fileUrl) throw new Error("File upload failed");
-
-//     await handleProfilePicUploaded(fileUrl);
-//   } catch (error) {
-//     console.error("Profile pic upload error:", error);
-//     alert("Failed to upload profile picture");
-//   }
-// };
-
-// const handleProfilePicUploaded = async (fileUrl: string) => {
-//   if (!userProfileData) {
-//     throw new Error("User profile data not loaded");
-//   }
-
-//   // Example: save to backend
-//   await updateUserProfile({
-//     userId: userProfileData.id,
-//     profilePic: fileUrl,
-//   });
-
-//   // Optional: update local UI immediately
-//   setProfilePic(fileUrl);
-// };
-
-
-
-
-
-//     return (
-//         <View
-//             style={{
-//                 width: "100%",
-//                 marginTop: 12,
-//                 marginBottom: 8,
-//                 alignItems: "center",
-//                 paddingVertical: 20,
-//                 paddingHorizontal: 16,
-//                 backgroundColor: "#FFFFFF",
-//                 borderRadius: 20,
-
-                
-//             }}
-//         >
-//             {/* Avatar Container */}
-//             <TouchableOpacity activeOpacity={0.9} style={{ position: "relative" }}>
-
-//                 {/* Avatar Circle */}
-//                 <View
-//                     style={{
-//                         width: 95,
-//                         height: 95,
-//                         borderRadius: 60,
-//                         backgroundColor: colors.primary + "15",
-//                         borderWidth: 3,
-//                         borderColor: colors.primary,
-//                         alignItems: "center",
-//                         justifyContent: "center",
-//                     }}
-//                 >
-//                     <Text variant="bigSubHeading"
-//                         style={{
-//                             color: colors.primary,
-//                         }}
-//                     >
-//                         {initials}
-//                    </Text>
-//                 </View>
-
-//                 {/* Edit Icon */}
-//                 {onEdit && (
-//                     <TouchableOpacity
-//                         onPress={onEdit}
-//                         style={{
-//                             position: "absolute",
-//                             top: -4,
-//                             right: -4,
-//                             padding: 7,
-//                             backgroundColor: "#fff",
-//                             borderRadius: 20,
-
-//                             shadowColor: "#000",
-//                             shadowOpacity: 0.18,
-//                             shadowOffset: { width: 0, height: 2 },
-//                             shadowRadius: 3,
-//                             elevation: 3,
-//                         }}
-//                     >
-//                         <Feather name="edit-3" size={17} color={colors.primary} />
-//                     </TouchableOpacity>
-//                 )}
-
-//                 {/* Camera Icon */}
-//                 <View
-//                     style={{
-//                         position: "absolute",
-//                         bottom: 0,
-//                         right: 0,
-//                         padding: 7,
-//                         backgroundColor: colors.primary,
-//                         borderRadius: 20,
-
-//                         shadowColor: "#000",
-//                         shadowOpacity: 0.25,
-//                         shadowOffset: { width: 0, height: 2 },
-//                         shadowRadius: 4,
-//                         elevation: 5,
-
-//                         borderWidth: 1,
-//                         borderColor: "#fff",
-//                     }}
-//                 >
-//                     <Feather name="camera" size={18} color="#fff" />
-//                 </View>
-//             </TouchableOpacity>
-
-//             {/* Full Name */}
-//             <Text
-//             variant="subheading"
-//                 style={{
-//                     marginTop: 13,
-                    
-                    
-//                     color: colors.primary,
-//                     textTransform: "capitalize",
-                   
-//                 }}
-//             >
-//                 {fullName || "Tansha Ashraf"}
-//            </Text>
-//         </View>
-//     );
-// }
-
-
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import {
-    useFileDeleteMutation,
-    useFileUploadMutation,
-    useUpdateProfile
+  useFileDeleteMutation,
+  useFileUploadMutation,
+  useUpdateProfile,
 } from "@/src/hooks/useFileUpload";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Dimensions,
-    Image,
-    Modal,
-    Pressable,
-    Text,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  Modal,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-// Assuming these exist based on your license code reference
-import { typography } from "@/src/constants/fonts/typography";
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 const { width } = Dimensions.get("window");
 
 interface ProfileTopHeaderProps {
   profilePic?: string;
   fullName?: string;
-  profileData: any; 
+  profileData: any;
 }
 
 export default function ProfileTopHeader({
@@ -230,14 +33,17 @@ export default function ProfileTopHeader({
   fullName,
   profileData,
 }: ProfileTopHeaderProps) {
-  const [profilePic, setProfilePic] = useState<string | undefined>(initialProfilePic);
+  const [profilePic, setProfilePic] = useState<string | undefined>(
+    initialProfilePic,
+  );
   const [uploading, setUploading] = useState(false);
   const [isPreviewVisible, setIsPreviewVisible] = useState(false);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
   const { mutateAsync: deleteFileAsync } = useFileDeleteMutation();
-  const { mutateAsync: updateProfile, isPending: isUpdating } = useUpdateProfile();
+  const { mutateAsync: updateProfile, isPending: isUpdating } =
+    useUpdateProfile();
 
   useEffect(() => {
     setProfilePic(initialProfilePic);
@@ -246,25 +52,38 @@ export default function ProfileTopHeader({
   const isLoading = uploading || isUpdating;
 
   const initials = fullName
-    ? fullName.split(" ").map((w) => w[0]).join("").substring(0, 2).toUpperCase()
+    ? fullName
+        .split(" ")
+        .map((w) => w[0])
+        .join("")
+        .substring(0, 2)
+        .toUpperCase()
     : "??";
 
-  // ---------- SELECTION LOGIC ----------
-
-  const openPicker = async (mode: 'camera' | 'library') => {
+  const openPicker = async (mode: "camera" | "library") => {
     setIsMenuVisible(false); // Close menu first
-    const permission = mode === 'camera' 
-      ? await ImagePicker.requestCameraPermissionsAsync()
-      : await ImagePicker.requestMediaLibraryPermissionsAsync();
+    const permission =
+      mode === "camera"
+        ? await ImagePicker.requestCameraPermissionsAsync()
+        : await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (!permission.granted) {
       showErrorToast("Permission Required to access photos");
       return;
     }
 
-    const result = mode === 'camera' 
-      ? await ImagePicker.launchCameraAsync({ allowsEditing: true, aspect: [1, 1], quality: 0.7 })
-      : await ImagePicker.launchImageLibraryAsync({ allowsEditing: true, aspect: [1, 1], quality: 0.7 });
+    const result =
+      mode === "camera"
+        ? await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.7,
+          })
+        : await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 0.7,
+          });
 
     if (!result.canceled) {
       processPickedImage(result.assets[0]);
@@ -305,7 +124,6 @@ export default function ProfileTopHeader({
     setIsMenuVisible(false);
     try {
       setUploading(true);
-      // Extract blob name if needed, or pass full URL if backend supports it
       await deleteFileAsync({ blobName: profilePic });
       await updateProfile({ ...profileData, profilePic: "" });
 
@@ -321,10 +139,8 @@ export default function ProfileTopHeader({
   return (
     <View className="w-full items-center py-5 bg-white rounded-[20px]">
       <View className="relative">
-        
-        {/* AVATAR */}
-        <TouchableOpacity 
-          activeOpacity={0.9} 
+        <TouchableOpacity
+          activeOpacity={0.9}
           onPress={() => profilePic && setIsPreviewVisible(true)}
           className="w-[100px] h-[100px] rounded-full border-[3px] items-center justify-center overflow-hidden bg-slate-100"
           style={{ borderColor: colors.primary }}
@@ -332,86 +148,144 @@ export default function ProfileTopHeader({
           {profilePic ? (
             <Image source={{ uri: profilePic }} className="w-full h-full" />
           ) : (
-            <Text  style={[{ color: colors.dark }, typography.Poppins_m_regular]}
-            >{initials}</Text>
+            <Text
+              style={[{ color: colors.dark }, typography.Poppins_m_regular]}
+            >
+              {initials}
+            </Text>
           )}
         </TouchableOpacity>
 
-        {/* CAMERA ICON (TRIGGERS CUSTOM MENU) */}
         <TouchableOpacity
           onPress={() => setIsMenuVisible(true)}
           className="absolute bottom-0 right-0 w-[34px] h-[34px] rounded-full items-center justify-center border-2 border-white shadow-md"
           style={{ backgroundColor: colors.primary }}
         >
-          {isLoading ? <ActivityIndicator size="small" color="#fff" /> : <Feather name="edit-2" size={16} color="#fff" />}
+          {isLoading ? (
+            <ActivityIndicator size="small" color="#fff" />
+          ) : (
+            <Feather name="edit-2" size={16} color="#fff" />
+          )}
         </TouchableOpacity>
       </View>
 
-      <Text style={[{ color: colors.primary , paddingTop: 14}, typography.Poppins_m_bold]}
+      <Text
+        style={[
+          { color: colors.primary, paddingTop: 14 },
+          typography.Poppins_m_bold,
+        ]}
       >
         {fullName?.toUpperCase() || "User Name"}
       </Text>
 
-      {/* 1. SELECTION MENU (MODAL) */}
-      <Modal visible={isMenuVisible} transparent animationType="slide" onRequestClose={() => setIsMenuVisible(false)}>
-        <Pressable className="flex-1 bg-black/40 justify-end" onPress={() => setIsMenuVisible(false)}>
+      <Modal
+        visible={isMenuVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setIsMenuVisible(false)}
+      >
+        <Pressable
+          className="flex-1 bg-black/40 justify-end"
+          onPress={() => setIsMenuVisible(false)}
+        >
           <View className="bg-white rounded-t-[30px] p-6 pb-10">
             <View className="w-10 h-1 bg-gray-300 self-center rounded-full mb-6" />
-            <Text style={[{ color: colors.dark, paddingBottom: 15}, typography.Poppins_m_semibold]}
-            >Change Profile Photo</Text>
-            
+            <Text
+              style={[
+                { color: colors.dark, paddingBottom: 15 },
+                typography.Poppins_m_semibold,
+              ]}
+            >
+              Change Profile Photo
+            </Text>
+
             <View className="flex-row justify-around">
-              <TouchableOpacity onPress={() => openPicker('camera')} className="items-center">
+              <TouchableOpacity
+                onPress={() => openPicker("camera")}
+                className="items-center"
+              >
                 <View className="w-14 h-14 bg-blue-50 rounded-full items-center justify-center mb-2">
                   <Feather name="camera" size={24} color={colors.secondary} />
                 </View>
-                <Text style={[{ color: colors.dark }, typography.Poppins_s_regular]}
-                >Camera</Text>
+                <Text
+                  style={[{ color: colors.dark }, typography.Poppins_s_regular]}
+                >
+                  Camera
+                </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => openPicker('library')} className="items-center">
+              <TouchableOpacity
+                onPress={() => openPicker("library")}
+                className="items-center"
+              >
                 <View className="w-14 h-14 bg-green-50 rounded-full items-center justify-center mb-2">
                   <Feather name="image" size={24} color="#10b981" />
                 </View>
-                <Text  style={[{ color: colors.primary }, typography.Poppins_s_regular]}
-                >Gallery</Text>
+                <Text
+                  style={[
+                    { color: colors.primary },
+                    typography.Poppins_s_regular,
+                  ]}
+                >
+                  Gallery
+                </Text>
               </TouchableOpacity>
 
               {profilePic && (
-                <TouchableOpacity onPress={handleDeletePhoto} className="items-center">
+                <TouchableOpacity
+                  onPress={handleDeletePhoto}
+                  className="items-center"
+                >
                   <View className="w-14 h-14 bg-red-50 rounded-full items-center justify-center mb-2">
                     <Feather name="trash-2" size={24} color="#ef4444" />
                   </View>
-                  <Text style={[{ color: colors.error }, typography.Poppins_s_regular]}
-                  >Remove</Text>
+                  <Text
+                    style={[
+                      { color: colors.error },
+                      typography.Poppins_s_regular,
+                    ]}
+                  >
+                    Remove
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               onPress={() => setIsMenuVisible(false)}
               className="mt-8 py-4 bg-gray-100 rounded-xl items-center"
             >
-              <Text  style={[{ color: colors.dark }, typography.Poppins_m_semibold]}
-               >Close</Text>
+              <Text
+                style={[{ color: colors.dark }, typography.Poppins_m_semibold]}
+              >
+                Close
+              </Text>
             </TouchableOpacity>
           </View>
         </Pressable>
       </Modal>
 
       {/* 2. FULL SCREEN PREVIEW MODAL */}
-      <Modal visible={isPreviewVisible} transparent animationType="fade" onRequestClose={() => setIsPreviewVisible(false)}>
+      <Modal
+        visible={isPreviewVisible}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setIsPreviewVisible(false)}
+      >
         <View className="flex-1 bg-black justify-center items-center">
-          <TouchableOpacity className="absolute top-12 right-5" onPress={() => setIsPreviewVisible(false)}>
+          <TouchableOpacity
+            className="absolute top-12 right-5"
+            onPress={() => setIsPreviewVisible(false)}
+          >
             <Feather name="x" size={30} color="#fff" />
           </TouchableOpacity>
-          <Image source={{ uri: profilePic }} style={{ width: width, height: width }} resizeMode="contain" />
+          <Image
+            source={{ uri: profilePic }}
+            style={{ width: width, height: width }}
+            resizeMode="contain"
+          />
         </View>
       </Modal>
     </View>
   );
 }
-
-
-
-

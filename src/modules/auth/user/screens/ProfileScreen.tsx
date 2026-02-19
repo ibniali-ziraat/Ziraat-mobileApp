@@ -35,16 +35,6 @@ export default function ProfileScreen() {
     formState: { errors },
   } = form;
 
-  // useEffect(() => {
-  //   if (!data) return;
-
-  //   Object.entries(data).forEach(([k, v]) => {
-  //     setValue(k, v != null ? String(v) : ""); // convert numbers to strings
-  //   });
-
-  //   setUserProfileId(data?.id);
-  // }, [data]);
-
   useEffect(() => {
     if (!data) return;
 
@@ -52,7 +42,7 @@ export default function ProfileScreen() {
       if (k === "email" && v === DUMMY_EMAIL) {
         setValue(k, "");
       } else {
-        setValue(k, v != null ? String(v) : ""); // convert numbers to strings
+        setValue(k, v != null ? String(v) : "");
       }
     });
 
