@@ -10,7 +10,6 @@ import { HelperText } from "react-native-paper";
 import CsText from "../../shared/CsText";
 import FilePreviewModal from "../../shared/FilePreviewModal";
 
-
 export default function FormFileInput({
   control,
   name,
@@ -24,31 +23,28 @@ export default function FormFileInput({
   const pickFile = async (onChange) => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: "*/*", // Pick any file
+        type: ["application/pdf", "image/*"],
         copyToCacheDirectory: true,
       });
 
-      console.log(result, "result of file upload");
-
       if (!result.canceled) {
-        onChange(result.assets[0]);
+        onChange(result.assets[0]); // store file object only
       }
-    } catch (err) {
-      console.log("Picker Error:", err);
+    } catch {
+      showErrorToast("File picker failed");
     }
   };
 
-  // Function to handle file preview (only for images)
- const previewFile = (file: any) => {
-  if (!file?.uri) return;
+  const previewFile = (file: any) => {
+    if (!file?.uri) return;
 
-  if (file.mimeType?.startsWith("image/")) {
-    setImageUri(file.uri);
-    setIsModalVisible(true);
-  } else {
-    showErrorToast("Preview is available only for image files");
-  }
-};
+    if (file.mimeType?.startsWith("image/")) {
+      setImageUri(file.uri);
+      setIsModalVisible(true);
+    } else {
+      showErrorToast("Preview is available only for image files");
+    }
+  };
 
   const closeModal = () => {
     setIsModalVisible(false); // Close the modal
@@ -104,7 +100,8 @@ export default function FormFileInput({
                 {hasFile ? (
                   <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity
-onPress={() => previewFile(value)}                      style={{ marginRight: 14 }}
+                      onPress={() => previewFile(value)}
+                      style={{ marginRight: 14 }}
                     >
                       <Eye size={22} color={colors.primary} />
                     </TouchableOpacity>
@@ -126,15 +123,15 @@ onPress={() => previewFile(value)}                      style={{ marginRight: 14
             </View>
 
             {/* ERROR TEXT (only if required) */}
-          {(fieldError || error) && (
-  <HelperText
-    type="error"
-    visible
-    style={{ color: colors.error, marginTop: 2 }}
-  >
-    {fieldError?.message || error}
-  </HelperText>
-)}
+            {(fieldError || error) && (
+              <HelperText
+                type="error"
+                visible
+                style={{ color: colors.error, marginTop: 2 }}
+              >
+                {fieldError?.message || error}
+              </HelperText>
+            )}
 
             {/* File preview modal */}
             <FilePreviewModal

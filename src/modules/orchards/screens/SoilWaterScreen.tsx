@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { useAuth } from "@/src/contexts/AuthContext";
+import { useFileUploadMutation } from "@/src/hooks/useFileUpload";
 import SoilAndWaterProfile from "../form-sections/SoilWaterSection";
 import {
   useCreateSoilWaterMutation,
@@ -23,6 +24,7 @@ import { SoilWaterProfileSchema } from "../schemas/SoilWaterProfileSchema";
 export default function SoilAndWaterProfileScreen() {
   const { orchardProfileId } = useAuth();
   console.log(orchardProfileId, "orchardprofile id in orchard.service");
+  const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
 
   const { data: soilWaterData } = useSoilWaterQuery(orchardProfileId!);
   console.log(soilWaterData, "crop nutrition data...");
@@ -48,32 +50,75 @@ export default function SoilAndWaterProfileScreen() {
       }
     });
   }, [soilWaterData]);
-
   const onSubmit = async (values: any) => {
     try {
+      let soilTestReportUrl = soilWaterData?.soilTestReportUrl || "";
+
+      // Upload file only if new file selected
+      if (values.soilTestReportUrl?.uri) {
+        const uploadRes = await uploadFileAsync({
+          file: {
+            uri: values.soilTestReportUrl.uri,
+            name:
+              values.soilTestReportUrl.name || `soil-report-${Date.now()}.pdf`,
+            mimeType: values.soilTestReportUrl.mimeType || "application/pdf",
+          },
+          UserType: "vendor",
+          UserId: orchardProfileId.toString(),
+          FileCategory: "documents",
+        });
+
+        soilTestReportUrl = uploadRes?.data?.fileUrl;
+      }
+
       const payload = {
         id: soilWaterData?.id,
         orchardProfileId,
         ...values,
-        soilTestReportUrl:
-          values.soilTestReportUrl?.name || values.soilTestReportUrl,
+        soilTestReportUrl,
       };
 
       if (soilWaterData) {
         await update(payload);
-        showSuccessToast("Soil & Water Profile updated");
+        showSuccessToast("Updated successfully");
       } else {
         await save(payload);
-        showSuccessToast("Soil & Water Profile saved");
+        showSuccessToast("Saved successfully");
       }
 
       router.push(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast(
-        error?.response?.data?.message || "Failed to save soil & water profile",
+        error?.response?.data?.message || "Failed to save profile",
       );
     }
   };
+
+  // const onSubmit = async (values: any) => {
+  //   try {
+  //     const payload = {
+  //       id: soilWaterData?.id,
+  //       orchardProfileId,
+  //       ...values,
+  //       soilTestReportUrl:
+  //         values.soilTestReportUrl?.name || values.soilTestReportUrl,
+  //     };
+
+  //     if (soilWaterData) {
+  //       await update(payload);
+  //       showSuccessToast("Soil & Water Profile updated");
+  //     } else {
+  //       await save(payload);
+  //       showSuccessToast("Soil & Water Profile saved");
+  //     }
+
+  //     router.push(ROUTES.TABS.ORCHARDS);
+  //   } catch (error: any) {
+  //     showErrorToast(
+  //       error?.response?.data?.message || "Failed to save soil & water profile",
+  //     );
+  //   }
+  // };
 
   // if (isPending) return null;
 

@@ -14,7 +14,6 @@ export const uploadFile = async ({
 }) => {
   const formData = new FormData();
 
-  // The key must be "File" (case sensitive) to match your backend
   formData.append("File", {
     uri: file.uri,
     name: file.name,
@@ -23,7 +22,7 @@ export const uploadFile = async ({
 
   formData.append("UserType", UserType);
   formData.append("FileCategory", FileCategory);
-  formData.append("UserId", UserId.toString()); 
+  formData.append("UserId", UserId.toString());
 
   return axiosInstance.post("/api/FileUpload/upload", formData, {
     headers: {
@@ -32,16 +31,6 @@ export const uploadFile = async ({
   });
 };
 
-
-
-
-
-
-
-
-
-
-
 export const deleteUploadedFile = async ({ blobName }) =>
   (
     await axiosInstance.post("/api/FileUpload/delete", {
@@ -49,8 +38,7 @@ export const deleteUploadedFile = async ({ blobName }) =>
     })
   ).data;
 
-
-  interface UpdateProfilePayload {
+interface UpdateProfilePayload {
   id: string | number;
   fullName?: string;
   email?: string;
@@ -64,6 +52,6 @@ export const deleteUploadedFile = async ({ blobName }) =>
 export const updateProfileSection = async (payload: UpdateProfilePayload) => {
   return await axiosInstance.put(
     `/api/core/userProfile/${payload.id}`, // URL ID
-    payload // Body ID
+    payload, // Body ID
   );
 };

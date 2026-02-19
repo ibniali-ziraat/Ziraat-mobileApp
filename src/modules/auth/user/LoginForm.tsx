@@ -60,21 +60,6 @@ export default function LoginForm() {
           required
         />
 
-{/*         
-       <FormProvider {...methods}>
-  <FormOtpInput
-    name="otp"
-    label="Enter OTP"
-    required
-    errors={errors.otp}
-  />
-
- 
-</FormProvider> */}
-
-
-
-
         <FormTextInput
           name="password"
           label="Password"

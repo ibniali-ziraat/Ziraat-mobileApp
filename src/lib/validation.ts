@@ -96,7 +96,11 @@ export const otpValidator = z
   .string()
   .regex(/^[0-9]{6}$/, "Enter a valid 6-digit OTP");
 
-export const loginPasswordValidator = z.string().min(1, "Required Field");
+export const loginPasswordValidator = z
+  .string()
+  .trim()
+  .min(1, "Password is required");
+
 export const pincodeValidator = z
   .string()
   .nonempty("Required Field")
