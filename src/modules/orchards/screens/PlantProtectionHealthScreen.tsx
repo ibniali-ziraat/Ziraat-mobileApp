@@ -87,7 +87,7 @@ export default function PlantProtectionScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            submitLabel={plantProtectionData?.length > 0 ? "Update" : "Save"}
+            submitLabel={plantProtectionData ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             onCancel={() => router.back()}
             disabled={isSaving || isUpdating}

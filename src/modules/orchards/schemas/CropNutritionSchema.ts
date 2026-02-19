@@ -1,9 +1,9 @@
-import { fullNameValidator } from "@/src/lib/validation";
+import { optionalString } from "@/src/lib/validation";
 import { z } from "zod";
 
-export const fertilizerOptions = ["Organic", "Chemical", "Integrated"] as const;
+// export const fertilizerOptions = ["Organic", "Chemical", "Integrated"] as const;
 
-export const yesNoOptions = ["Yes", "No"] as const;
+// export const yesNoOptions = ["Yes", "No"] as const;
 
 export const applicationModeOptions = [
   "Soil Application",
@@ -18,7 +18,7 @@ export const CropNutritionSchema = z.object({
   isMulchingApplied: z.boolean({
     required_error: "Required Field",
   }),
-  nutritionPlan: fullNameValidator,
+  nutritionPlan: optionalString(),
   lastFertilizerApplicationDate: z
     .string({
       required_error: "Required Field",

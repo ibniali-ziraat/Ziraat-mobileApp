@@ -19,13 +19,9 @@ export default function BasicInfo({
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
   const { setValue } = useFormContext();
 
-  console.log(errors, "errors in ....basicsection");
-
-  /* ------------------ Hydration Guards ------------------ */
   const unitHydrated = useRef(false);
   const modeHydrated = useRef(false);
 
-  /* ------------------ Location ------------------ */
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
 
@@ -43,7 +39,6 @@ export default function BasicInfo({
     }
   }, [tehsils, data?.tehsil]);
 
-  /* ------------------ Watchers ------------------ */
   const orchardUnit = useWatch({
     control,
     name: "orchardUnit",
@@ -54,8 +49,6 @@ export default function BasicInfo({
     name: "orchardSize.mode",
     defaultValue: "manual",
   });
-
-  /* ------------------ SAFE RESET LOGIC ------------------ */
 
   useEffect(() => {
     if (!orchardUnit) return;
@@ -96,7 +89,6 @@ export default function BasicInfo({
 
       {orchardMode === "manual" && (
         <View style={{ marginVertical: 10 }}>
-          {/* Unit selector */}
           <SingleSelectInput
             control={control}
             name="orchardUnit"

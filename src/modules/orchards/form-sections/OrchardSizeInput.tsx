@@ -10,8 +10,6 @@ export default function OrchardSizeInput({
   areaLabel,
   areaUnit,
 }) {
-  console.log(areaLabel, "area label");
-
   return (
     <View
       style={{
