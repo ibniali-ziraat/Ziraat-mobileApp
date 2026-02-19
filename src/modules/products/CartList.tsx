@@ -8,24 +8,36 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
   Image,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCart } from "./hooks/data/useCart";
+import { useCheckout, useCouponCode } from "./hooks/data/useCheckout";
 
 const CartList = () => {
   const router = useRouter();
   const { cart, isLoading, updateCartItem, removeFromCart } = useCart();
 
+  const { mutate: applyCoupon, isPending: isApplyingCoupon } = useCouponCode();
+  const { mutate: handleCheckout, isPending } = useCheckout();
+
+  const [couponCode, setCouponCode] = useState("");
+
+  /* ================= REMOVE ITEM ================= */
   const handleRemoveItem = async (id) => {
     await removeFromCart({ id });
     toast.success("Removed from cart");
   };
 
+  /* ================= QTY CHANGE ================= */
   const handleQtyChange = (cartItemId, qty) => {
     updateCartItem({
       cartItemId,
@@ -33,20 +45,81 @@ const CartList = () => {
     });
   };
 
-  const handleBuyNow = () => {
-    router.push("/products/address");
+  /* ================= APPLY COUPON ================= */
+  const handleApplyCoupon = () => {
+    const trimmedCode = couponCode.trim();
+
+    if (!trimmedCode) {
+      toast.error("Please enter coupon code");
+      return;
+    }
+
+    const payload = {
+      couponCode: trimmedCode,
+    };
+
+    applyCoupon(payload, {
+      onSuccess: (data) => {
+        if (data?.succeeded) {
+          toast.success("Coupon applied successfully");
+
+          console.log("Discount:", data.discountAmount);
+        } else {
+          toast.error(data?.errorMessage || "Invalid coupon code");
+
+          console.log("Coupon failed:", data?.errorMessage);
+        }
+      },
+
+      onError: (error) => {
+        toast.error("Something went wrong");
+        console.log("Network error:", error);
+      },
+    });
   };
 
+  /* ================= START SHOPPING ================= */
   const handleStartShopping = () => {
     router.push("/Product");
   };
 
-  const subtotal = cart?.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  const handlePlaceOrder = () => {
+    const payload = {
+      couponCode: couponCode.trim() || "",
+    };
 
-  /* ============== LOADING ============== */
+    handleCheckout(payload, {
+      onSuccess: async (data) => {
+        try {
+          const checkoutId = data?.checkoutId;
+
+          if (checkoutId) {
+            await AsyncStorage.setItem("checkoutId", checkoutId);
+            console.log("Checkout ID saved:", checkoutId);
+          }
+
+          toast.success("Order placed successfully");
+          router.push("/products/address");
+        } catch (error) {
+          console.log("AsyncStorage error:", error);
+        }
+      },
+
+      onError: (error) => {
+        toast.error("Checkout failed");
+        console.log("Checkout error:", error);
+      },
+    });
+  };
+
+  /* ================= SUBTOTAL ================= */
+  const subtotal = cart?.reduce((sum, item) => {
+    const price = Number(item.total) || 0;
+    const quantity = Number(item.quantity) || 0;
+    return sum + price * quantity;
+  }, 0);
+
+  /* ================= LOADING ================= */
   if (isLoading) {
     return (
       <ScreenLayout>
@@ -57,7 +130,7 @@ const CartList = () => {
     );
   }
 
-  /* ============== EMPTY ============== */
+  /* ================= EMPTY CART ================= */
   if (!cart || cart.length === 0) {
     return (
       <ScreenLayout>
@@ -70,7 +143,10 @@ const CartList = () => {
             resizeMode="contain"
           />
 
-          <CsText style={typography.Poppins_m_semibold} className="text-dark mb-1">
+          <CsText
+            style={typography.Poppins_m_semibold}
+            className="text-dark mb-1"
+          >
             Your cart is empty
           </CsText>
 
@@ -92,26 +168,18 @@ const CartList = () => {
     );
   }
 
-  /* ============== LIST ============== */
+  /* ================= CART LIST ================= */
   return (
     <ScreenLayout scrollable={false}>
-      <BackHeader
-        title="My Cart"
-        desc={`${cart.length} items`}
-      />
+      <BackHeader title="My Cart" desc={`${cart.length} items`} />
 
       <FlatList
         data={cart}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 220 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 260 }}
         renderItem={({ item }) => (
-          <View
-            className="mb-2 rounded-2xl "
-            style={{
-              
-            }}
-          >
+          <View className="mb-2 rounded-2xl">
             <CartListItem
               item={item}
               quantity={item.quantity}
@@ -122,7 +190,7 @@ const CartList = () => {
         )}
       />
 
-      {/* Sticky Summary */}
+      {/* ================= STICKY SUMMARY ================= */}
       <View
         className="absolute bottom-0 left-0 right-0 pt-3 px-4 pb-6"
         style={{
@@ -136,22 +204,61 @@ const CartList = () => {
           borderTopRightRadius: 20,
         }}
       >
-        {/* Subtotal */}
-        <View className="flex-row justify-between mb-3">
-          <CsText style={typography.Poppins_m_semibold}>
-            Subtotal
+        {/* ===== Coupon Section ===== */}
+        <View className="mb-3">
+          <CsText
+            style={typography.Poppins_s_regular}
+            className="text-dark mb-1"
+          >
+            Apply Coupon
           </CsText>
 
+          <View className="flex-row">
+            <TextInput
+              value={couponCode}
+              onChangeText={setCouponCode}
+              placeholder="Enter coupon code"
+              placeholderTextColor="#999"
+              className="flex-1 h-12 px-4 rounded-xl border mr-2"
+              style={{
+                borderColor: "#E5E5E5",
+                backgroundColor: "#FFF",
+              }}
+            />
+
+            <TouchableOpacity
+              onPress={handleApplyCoupon}
+              disabled={isApplyingCoupon}
+              className="px-4 rounded-xl items-center justify-center"
+              style={{
+                backgroundColor: colors.primary,
+                opacity: isApplyingCoupon ? 0.6 : 1,
+              }}
+            >
+              <CsText className="text-light">
+                {isApplyingCoupon ? "Applying..." : "Apply"}
+              </CsText>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* ===== Subtotal ===== */}
+        <View className="flex-row justify-between mb-3">
+          <CsText style={typography.Poppins_m_semibold}>Subtotal</CsText>
+
           <CsText style={typography.Poppins_m_semibold}>
-            ₹{subtotal?.toFixed(2)}
+            ₹{Number(subtotal || 0).toFixed(2)}
           </CsText>
         </View>
 
-        <BuyNowButton title="Place Order" onPress={handleBuyNow} />
+        {/* ===== Place Order Button (no API call) ===== */}
+        <BuyNowButton
+          title={isPending ? "Processing..." : "Place Order"}
+          onPress={handlePlaceOrder}
+        />
       </View>
     </ScreenLayout>
   );
 };
 
 export default CartList;
-  

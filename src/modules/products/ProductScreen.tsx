@@ -36,10 +36,9 @@ export default function ProductScreen() {
     toast.success("Removed from wishlist");
   };
 
-  const { products: allProducts = [], filterOptions = [] } =
-    useProductsData();
+  const { products: allProducts = [], filterOptions = [] } = useProductsData();
 
-  console.log(allProducts, "all products...");
+  // console.log(allProducts, "all products...");
 
   const { data: filteredProductsData = {} } = useProductSearch({
     query: debouncedSearch,
@@ -63,7 +62,6 @@ export default function ProductScreen() {
   return (
     <ScreenLayout>
       <ScreenContent>
-
         {/* SEARCH + FILTER */}
         <ProductSearchBar
           search={search}
@@ -93,7 +91,6 @@ export default function ProductScreen() {
         ) : isFiltering ? (
           /* EMPTY FILTER RESULT */
           <View className="mt-20 items-center">
-
             <CsText style={typography.Poppins_m_semibold}>
               No products found
             </CsText>
@@ -118,10 +115,8 @@ export default function ProductScreen() {
                 Reset Filters
               </CsText>
             </Pressable>
-
           </View>
         ) : null}
-
       </ScreenContent>
     </ScreenLayout>
   );

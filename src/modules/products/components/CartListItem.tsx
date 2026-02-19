@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Image,
-  Modal,
-  Pressable,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, Modal, Pressable, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import CsText from "@/src/components/shared/CsText";
@@ -17,6 +11,8 @@ export default function CartListItem({
   onQtyChange,
   handleRemoveItem,
 }) {
+  // console.log(item.total, "item");
+
   const [quantity, setQuantity] = useState(apiQuantity ?? 1);
   const [showQtyModal, setShowQtyModal] = useState(false);
 
@@ -30,15 +26,12 @@ export default function CartListItem({
     setShowQtyModal(false);
   };
 
-  const price =
-    item?.calculatedProductPrice?.price ?? item?.productPrice ?? 0;
+  const price = item?.calculatedProductPrice?.price ?? item?.productPrice ?? 0;
 
   const oldPrice = item?.calculatedProductPrice?.oldPrice ?? 0;
 
   const discount =
-    oldPrice > price
-      ? Math.round(((oldPrice - price) / oldPrice) * 100)
-      : 0;
+    oldPrice > price ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
   const totalPrice = price * quantity;
 
@@ -53,7 +46,6 @@ export default function CartListItem({
           backgroundColor: colors.light,
         }}
       >
-
         {/* IMAGE */}
         <Image
           source={{ uri: item?.productImage }}
@@ -63,7 +55,6 @@ export default function CartListItem({
 
         {/* CONTENT */}
         <View className="ml-4 flex-1">
-
           {/* TITLE + DELETE */}
           <View className="flex-row justify-between items-start">
             <CsText
@@ -78,11 +69,7 @@ export default function CartListItem({
               className="p-1 rounded-full"
               style={{ backgroundColor: colors.lightHover }}
             >
-              <Ionicons
-                name="close"
-                size={16}
-                color={colors.darkHover}
-              />
+              <Ionicons name="close" size={16} color={colors.darkHover} />
             </Pressable>
           </View>
 
@@ -107,9 +94,7 @@ export default function CartListItem({
             className="self-start mt-2  py-1.5 rounded-md"
             style={{ backgroundColor: colors.lightHover }}
           >
-            <CsText className="text-xs font-semibold">
-              Qty {quantity} ▾
-            </CsText>
+            <CsText className="text-xs font-semibold">Qty {quantity} ▾</CsText>
           </Pressable>
 
           {/* PRICE */}
@@ -156,10 +141,7 @@ export default function CartListItem({
           style={{ backgroundColor: "rgba(0,0,0,0.2)" }}
         >
           <View className="bg-white rounded-t-3xl p-5">
-
-            <CsText className="font-semibold mb-4">
-              Select Quantity
-            </CsText>
+            <CsText className="font-semibold mb-4">Select Quantity</CsText>
 
             <View className="flex-row flex-wrap">
               {[...Array(10)].map((_, i) => {
@@ -191,9 +173,7 @@ export default function CartListItem({
                   </TouchableOpacity>
                 );
               })}
-
             </View>
-
           </View>
         </Pressable>
       </Modal>
