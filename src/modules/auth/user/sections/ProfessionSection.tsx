@@ -1,5 +1,5 @@
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { View } from "react-native";
-import FormInput from "../../../../components/form/inputs/FormInput";
 
 // interface Props {
 //   control: any;
@@ -70,28 +70,28 @@ import FormInput from "../../../../components/form/inputs/FormInput";
 export default function ProfessionSection({ control, errors }: Props) {
   return (
     <View style={{ paddingHorizontal: 8 }}>
-      <FormInput
+      <FormTextInput
         control={control}
         name="professionType"
         label="Profession / Occupation"
         error={errors.professionType?.message}
       />
 
-      <FormInput
+      <FormTextInput
         control={control}
         name="organizationName"
         label="Organization / Employer Name"
         error={errors.organizationName?.message}
       />
 
-      <FormInput
+      <FormTextInput
         control={control}
         name="designation"
         label="Designation / Role"
         error={errors.designation?.message}
       />
 
-      <FormInput
+      <FormTextInput
         control={control}
         name="experienceYears"
         label="Years of Experience"
@@ -99,7 +99,7 @@ export default function ProfessionSection({ control, errors }: Props) {
         error={errors.experienceYears?.message}
       />
 
-      <FormInput
+      <FormTextInput
         control={control}
         name="skills"
         label="Key Skills / Expertise (Optional)"

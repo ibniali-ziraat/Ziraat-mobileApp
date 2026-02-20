@@ -1,7 +1,7 @@
 // src/components/form/sections/OTPSection.tsx
 import CsText from "@/src/components/shared/CsText";
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { View } from "react-native";
-import FormInput from "../../../../components/form/inputs/FormInput";
 
 interface Props {
   control: any;
@@ -12,7 +12,7 @@ interface Props {
 export default function OTPSection({ control, errors, onResend }: Props) {
   return (
     <View>
-      <FormInput
+      <FormTextInput
         control={control}
         name="otp"
         label="Enter OTP"
