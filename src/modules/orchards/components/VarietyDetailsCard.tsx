@@ -16,19 +16,11 @@ function VarietiesCard({
 }) {
   return (
     <ScreenContent>
+      {/* MAIN WRAPPER */}
       <View
         style={{
           marginVertical: 14,
-          padding: 20,
-          borderRadius: 22,
-          backgroundColor: colors.light,
-          borderWidth: 1,
-          borderColor: colors.cardBorder,
-          shadowColor: "#000",
-          shadowOpacity: 0.06,
-          shadowRadius: 14,
-          shadowOffset: { width: 0, height: 6 },
-          elevation: 4,
+        
         }}
       >
         {/* HEADER */}
@@ -53,7 +45,7 @@ function VarietiesCard({
           </View>
         </View>
 
-        {/* EMPTY STATE */}
+        {/* EMPTY */}
         {varietiesData.length === 0 && (
           <Pressable
             onPress={onAdd}
@@ -73,11 +65,22 @@ function VarietiesCard({
           </Pressable>
         )}
 
+        {/* VARIETY CARDS */}
         {varietiesData.map((v) => (
           <View
             key={v.id}
             style={{
-             
+              marginBottom: 18,
+              padding: 16,
+              borderRadius: 18,
+              backgroundColor: "#fff",
+              borderWidth: 1,
+              borderColor: "#F0F0F0",
+              shadowColor: "#000",
+              shadowOpacity: 0.05,
+              shadowRadius: 8,
+              shadowOffset: { width: 0, height: 4 },
+              elevation: 2,
             }}
           >
             {/* TITLE + ACTIONS */}
@@ -104,17 +107,17 @@ function VarietiesCard({
               </View>
             </View>
 
-            {/* MAIN INFO */}
+            {/* INFO */}
             <InfoRow label="Total Trees" value={v.numberOfTrees} />
             <InfoRow label="Rootstock Used" value={v.rootstockUsed} />
             <InfoRow label="Plant Density" value={v.plantDensity} />
 
-            {/* TREE AGE GROUPS */}
+            {/* AGE GROUPS */}
             <View
               style={{
-                marginTop: 16,
-                
-                borderRadius: 16,
+                marginTop: 14,
+                padding: 12,
+                borderRadius: 14,
                 backgroundColor: `${colors.primary}06`,
               }}
             >
@@ -129,26 +132,9 @@ function VarietiesCard({
                 Tree Age Groups
               </Text>
 
-              <AgeChip
-                label="🌱 Young Trees"
-                subtitle="Below 5 years"
-                value={v.treesLessThan5Years}
-               bg={`${colors.primary}15`}
-              />
-
-              <AgeChip
-                label="🌿 Mature Trees"
-                subtitle="5 – 10 years"
-                value={v.treesFiveToTenYears}
-                bg={`${colors.primary}15`}
-              />
-
-              <AgeChip
-                label="🌳 Old Trees"
-                subtitle="Above 10 years"
-                value={v.treesMoreThan10Years}
-                bg={`${colors.primary}15`}
-              />
+              <AgeChip label="🌱 Young Trees" subtitle="Below 5 years" value={v.treesLessThan5Years} bg={`${colors.primary}15`} />
+              <AgeChip label="🌿 Mature Trees" subtitle="5 – 10 years" value={v.treesFiveToTenYears} bg={`${colors.primary}15`} />
+              <AgeChip label="🌳 Old Trees" subtitle="Above 10 years" value={v.treesMoreThan10Years} bg={`${colors.primary}15`} />
             </View>
           </View>
         ))}
@@ -211,17 +197,7 @@ function InfoRow({ label, value }: any) {
 }
 
 /* AGE CHIP */
-function AgeChip({
-  label,
-  subtitle,
-  value,
-  bg,
-}: {
-  label: string;
-  subtitle: string;
-  value: any;
-  bg: string;
-}) {
+function AgeChip({ label, subtitle, value, bg }: any) {
   return (
     <View
       style={{
@@ -233,7 +209,7 @@ function AgeChip({
         borderRadius: 12,
         backgroundColor: bg,
       }}
-    >   
+    >
       <View>
         <Text style={{ fontSize: 13, fontWeight: "600", color: colors.dark }}>
           {label}
