@@ -1,4 +1,4 @@
-import "react-native-get-random-values";
+// import "react-native-get-random-values";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";

@@ -17,6 +17,7 @@ export const colors = {
 
 },
   cardBorder: "#dbd9d733",
+  
 
   googleGradient: {
     colors: ["#4285F4", "#DB4437", "#F4B400", "#0F9D58"],
