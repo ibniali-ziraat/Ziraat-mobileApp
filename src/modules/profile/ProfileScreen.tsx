@@ -137,7 +137,7 @@ export default function UserProfileScreen() {
           />
         )}
 
-        <DetailsCard
+        <DetailsCard 
           heading="Personal Details"
           items={
             profileData

@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { shadows } from "@/src/constants/shadows";
 import { CheckCircle, XCircle } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { Animated, View } from "react-native";
@@ -34,22 +35,21 @@ export default function ProfileProgressBar({
   const isComplete = Math.round(progress) === 100;
 
   return (
-    <View
-      style={{
+    <View 
+      style={[{
         backgroundColor: "#fff",
         borderRadius: 22,
         padding: 18,
-        marginBottom: 12,
+        marginBottom: 16,
+        // shadowColor: isComplete ? colors.primary : "#000",
+        // shadowOffset: { width: 0, height: 6 },
+        // shadowOpacity: isComplete ? 0.18 : 0.08,
+        // shadowRadius: 10,
 
-        shadowColor: isComplete ? colors.primary : "#000",
-        shadowOffset: { width: 0, height: 6 },
-        shadowOpacity: isComplete ? 0.18 : 0.08,
-        shadowRadius: 10,
-
-        elevation: 4,
-        borderWidth: 1,
-        borderColor: isComplete ? colors.primary + "55" : "#F0F0F0",
-      }}
+        // elevation: 4,
+        // borderWidth: 1,
+        // borderColor: isComplete ? colors.primary + "55" : "#F0F0F0",
+      } ,shadows.profile_card,]}
     >
       {/* HEADER */}
       <View
