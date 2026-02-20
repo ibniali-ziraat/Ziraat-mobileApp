@@ -1,9 +1,9 @@
 //@ts-nocheck
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
-import FormInput from "../../../../components/form/inputs/FormInput";
 import SingleSelectInput from "../../../../components/form/inputs/SingleSelectInput";
 
 interface Props {
@@ -91,7 +91,7 @@ export default function AddressSection({ control, errors, data }: Props) {
         error={errors.tehsil}
       />
 
-      <FormInput
+      <FormTextInput
         control={control}
         name="village"
         label="Locality"
@@ -99,7 +99,7 @@ export default function AddressSection({ control, errors, data }: Props) {
       />
 
       {/* Pincode */}
-      <FormInput
+      <FormTextInput
         control={control}
         name="pincode"
         label="Pin Code"
