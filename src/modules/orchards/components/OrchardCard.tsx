@@ -1,6 +1,8 @@
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import { colors } from "@/src/constants/colors";
 import { router } from "expo-router";
-import { Pressable, View } from "react-native";
+import { ChevronRight } from "lucide-react-native";
+import { Pressable, Text, View } from "react-native";
 import OrchardDetails from "./OrchardDetails";
 
 interface OrchardCardProps {
@@ -11,15 +13,35 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
   return (
     <ScreenContent>
       <View
-        className="mb-3 rounded-xl bg-white"
         style={{
+          marginBottom: 16,
+          borderRadius: 20,
+          backgroundColor: "#fff",
+          borderWidth: 1,
+          borderColor: "#F1F1F1",
+          padding: 16,
           shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.08,
-          shadowRadius: 7,
-          elevation: 3, 
+          shadowOffset: { width: 0, height: 6 },
+          shadowOpacity: 0.06,
+          shadowRadius: 12,
+          elevation: 4,
         }}
       >
+        
+
+        {/* Orchard Details */}
+        <OrchardDetails orchard={orchard} />
+
+        {/* Divider */}
+        <View
+          style={{
+            height: 1,
+            backgroundColor: "#F2F2F2",
+            marginVertical: 2,
+          }}
+        />
+
+        {/* View Details CTA */}
         <Pressable
           onPress={() =>
             router.push({
@@ -27,9 +49,25 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
               params: { id: orchard.id },
             })
           }
-          className="active:opacity-90"
+          style={() => ({
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            paddingVertical: 6,
+          
+          })}
         >
-          <OrchardDetails orchard={orchard} />
+          <Text
+            style={{
+              color: colors.primary,
+              fontWeight: "600",
+              fontSize: 14,
+            }}
+          >
+            View Details
+          </Text>
+
+          <ChevronRight size={18} color={colors.primary} />
         </Pressable>
       </View>
     </ScreenContent>

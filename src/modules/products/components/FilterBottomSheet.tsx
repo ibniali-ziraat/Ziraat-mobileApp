@@ -13,6 +13,11 @@ import {
 
 const { height, width } = Dimensions.get("window");
 
+/* ================= FIXED PRICE ================= */
+
+const FIXED_MIN_PRICE = 0;
+const FIXED_MAX_PRICE = 10000;
+
 /* ===================== TYPES ===================== */
 
 type Filters = {
@@ -37,10 +42,6 @@ type FilterOptions = {
     slug: string;
     count: number;
   }[];
-  price: {
-    minPrice: number;
-    maxPrice: number;
-  };
 };
 
 type Props = {
@@ -61,8 +62,8 @@ export default function FilterBottomSheet({
   const [brand, setBrand] = useState<string[]>([]);
   const [category, setCategory] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<number[]>([
-    filterOptions.price.minPrice,
-    filterOptions.price.maxPrice,
+    FIXED_MIN_PRICE,
+    FIXED_MAX_PRICE,
   ]);
   const [sort, setSort] = useState<string | null>(null);
 
@@ -130,8 +131,9 @@ export default function FilterBottomSheet({
 
             <MultiSlider
               values={priceRange}
-              min={filterOptions.price.minPrice}
-              max={filterOptions.price.maxPrice}
+              min={FIXED_MIN_PRICE}
+              max={FIXED_MAX_PRICE}
+              step={100}
               onValuesChange={setPriceRange}
               sliderLength={width - 64}
               selectedStyle={{ backgroundColor: colors.primary }}
@@ -164,10 +166,7 @@ export default function FilterBottomSheet({
               setBrand([]);
               setCategory([]);
               setSort(null);
-              setPriceRange([
-                filterOptions.price.minPrice,
-                filterOptions.price.maxPrice,
-              ]);
+              setPriceRange([FIXED_MIN_PRICE, FIXED_MAX_PRICE]);
             }}
           >
             <CsText>Reset</CsText>
@@ -198,14 +197,14 @@ export default function FilterBottomSheet({
 
 /* ================= COMPONENTS ================= */
 
-const Section = ({ title, children }) => (
+const Section = ({ title, children }: any) => (
   <View style={section}>
     <CsText style={sectionTitle}>{title}</CsText>
     {children}
   </View>
 );
 
-const Item = ({ label, count, selected, onPress }) => (
+const Item = ({ label, count, selected, onPress }: any) => (
   <Pressable onPress={onPress} style={row}>
     <View style={checkbox}>
       {selected && <Check size={14} color={colors.primary} />}
@@ -219,7 +218,7 @@ const Item = ({ label, count, selected, onPress }) => (
   </Pressable>
 );
 
-const PricePill = ({ label }) => (
+const PricePill = ({ label }: any) => (
   <View style={pill}>
     <CsText style={{ color: colors.primary }}>{label}</CsText>
   </View>
@@ -256,7 +255,6 @@ const header = {
 const title = { fontSize: 18, fontWeight: "700" };
 
 const section = {
- 
   borderRadius: 14,
   padding: 12,
   marginBottom: 8,
