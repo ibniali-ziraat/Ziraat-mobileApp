@@ -3,7 +3,6 @@ import { UNIT_CONVERSIONS } from "@/src/utils/units";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Platform, Text, View } from "react-native";
-import AreaBadge from "../components/AreaBadge";
 import MeasureControls from "../components/MeasureControls";
 import MeasureMap from "../components/MeasureMap";
 import { useAreaCalculation } from "../hooks/useAreaCalculation";
@@ -19,9 +18,10 @@ export default function MeasureByTap() {
 
   if (!location) return null;
 
-  const displayArea = (areaHectares * UNIT_CONVERSIONS[unit]).toFixed(3);
-
-  const marlas = areaHectares * UNIT_CONVERSIONS.marla;
+  const allUnits = {
+    kanals: areaHectares * UNIT_CONVERSIONS.kanals,
+    marlas: areaHectares * UNIT_CONVERSIONS.marlas,
+  };
 
   const applyArea = () => {
     if (!areaHectares) return;
@@ -29,10 +29,8 @@ export default function MeasureByTap() {
     router.push({
       pathname: "/orchards/basic-info",
       params: {
-        orchardSize: marlas.toFixed(2), // ALWAYS marla
-        areaValue: displayArea,
-        areaUnit: unit,
-        areaLabel: `${displayArea} ${unit}`,
+        kanals: allUnits.kanals.toFixed(2),
+        marlas: allUnits.marlas.toFixed(2),
       },
     });
   };
@@ -60,10 +58,9 @@ export default function MeasureByTap() {
         points={points}
         onTap={(e) => addPoint(e.nativeEvent.coordinate)}
       />
-      <AreaBadge value={displayArea} unit={unit} />
       <MeasureControls
         unit={unit}
-        setUnit={setUnit}
+        // setUnit={setUnit}
         onPrimary={applyArea}
         onReset={reset}
         primaryLabel="Apply Area"

@@ -10,11 +10,9 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import BasicInfo from "../form-sections/BasicInfoSection";
 
 import { ROUTES } from "@/src/constants/routes";
-
 import { generateId } from "@/src/utils/generateId";
 import {
   useCreateOrchardMutation,
@@ -82,26 +80,28 @@ export default function BasicInfoScreen() {
     });
   }, [isEditMode, orchard]);
 
-  const onSubmit = async (values: any) => {
-    try {
-      const payload = {
-        orchardId: orchard?.id ?? generateId(),
-        ...values,
-      };
+  const safeDecimal = (value) => {
+    if (value === "" || value === undefined || value === null) return 0;
+    return Number(value);
+  };
 
-      if (orchard) {
-        await updateOrchard(payload);
-        showSuccessToast("Orchard updated");
-      } else {
-        await createOrchard(payload);
-        showSuccessToast("Orchard created");
-      }
+  const onSubmit = async (values) => {
+    const payload = {
+      orchardId: orchard?.id ?? generateId(),
 
+      ...values,
+
+      kanals: values.orchardUnit === "kanals" ? safeDecimal(values.kanals) : 0,
+
+      marlas: values.orchardUnit === "marlas" ? safeDecimal(values.marlas) : 0,
+    };
+
+    if (orchard) {
+      await updateOrchard(payload);
       router.replace(ROUTES.TABS.ORCHARDS);
-    } catch (error: any) {
-      showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard",
-      );
+    } else {
+      await createOrchard(payload);
+      router.replace(ROUTES.TABS.ORCHARDS);
     }
   };
 

@@ -7,9 +7,13 @@ export const BasicInfoSchema = z
   .object({
     orchardName: fullNameValidator,
 
-    orchardUnit: z.enum(["marlas", "kanals"], {
-      required_error: "Unit is required",
-    }),
+    orchardSize: z
+      .object({
+        mode: z.enum(["measure", "manual"]),
+      })
+      .optional(),
+
+    orchardUnit: z.enum(["marlas", "kanals"]).optional(),
 
     marlas: z.string().optional(),
     kanals: z.string().optional(),
@@ -33,25 +37,46 @@ export const BasicInfoSchema = z
     pincode: pincodeValidator,
   })
   .superRefine((data, ctx) => {
-    if (data.orchardUnit === "marlas") {
-      if (!data.marlas || data.marlas.trim() === "") {
-        ctx.addIssue({
-          path: ["marlas"],
-          message: "Required Field",
-          code: z.ZodIssueCode.custom,
-        });
-      }
-    }
+    const mode = data.orchardSize?.mode ?? "measure";
 
-    if (data.orchardUnit === "kanals") {
-      if (!data.kanals || data.kanals.trim() === "") {
+    // If manual → orchardSize must exist
+    if (mode === "manual") {
+      if (!data.orchardSize?.mode) {
         ctx.addIssue({
-          path: ["kanals"],
-          message: "Required Field",
+          path: ["orchardSize", "mode"],
+          message: "Mode is required",
           code: z.ZodIssueCode.custom,
         });
+        return;
+      }
+
+      if (!data.orchardUnit) {
+        ctx.addIssue({
+          path: ["orchardUnit"],
+          message: "Unit is required",
+          code: z.ZodIssueCode.custom,
+        });
+        return;
+      }
+
+      if (data.orchardUnit === "marlas") {
+        if (!data.marlas?.trim()) {
+          ctx.addIssue({
+            path: ["marlas"],
+            message: "Required Field",
+            code: z.ZodIssueCode.custom,
+          });
+        }
+      }
+
+      if (data.orchardUnit === "kanals") {
+        if (!data.kanals?.trim()) {
+          ctx.addIssue({
+            path: ["kanals"],
+            message: "Required Field",
+            code: z.ZodIssueCode.custom,
+          });
+        }
       }
     }
   });
-
-export type BasicInfoSchemaType = z.infer<typeof BasicInfoSchema>;
