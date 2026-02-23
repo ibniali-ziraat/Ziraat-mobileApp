@@ -8,6 +8,7 @@ import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import MeasuredOrchardSection from "./MeasuredOrchardSection";
 
 import { colors } from "@/src/constants/colors";
+import { shadows } from "@/src/constants/shadows";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
 
@@ -59,7 +60,7 @@ export default function BasicInfo({ control, errors, data }) {
   };
 
   return (
-    <View style={{ padding: 16, gap: 16 }}>
+    <View style={{ padding: 0, gap: 0 }}>
       <FormTextInput
         name="orchardName"
         label="Orchard Name"
@@ -70,30 +71,70 @@ export default function BasicInfo({ control, errors, data }) {
       />
 
       <View
-        style={{
-          backgroundColor: "#fff",
-          paddingVertical: 14,
-          borderRadius: 14,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
+        style={[
+          {
+            backgroundColor: "#fff",
+            borderRadius: 16,
+            paddingVertical: 16,
+            paddingHorizontal: 18,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 24,
+          },
+          shadows.review_card,
+        ]}
       >
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>
-          Orchard Size Method
-        </Text>
+        {/* Left section */}
+        <View>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "600",
+              color: "#222",
+              marginBottom: 2,
+            }}
+          >
+            Orchard Size
+          </Text>
 
+          <Text
+            style={{
+              fontSize: 12,
+              color: "#777",
+            }}
+          >
+            Choose measurement method
+          </Text>
+        </View>
+
+        {/* Toggle Button */}
         <Pressable
           onPress={toggleMode}
-          style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 8,
+            backgroundColor:
+              orchardMode === "measure" ? colors.primary + "15" : "#f2f2f2",
+            paddingVertical: 6,
+            paddingHorizontal: 12,
+            borderRadius: 20,
+          }}
         >
           {orchardMode === "measure" ? (
-            <ToggleRight size={30} color={colors.primary} />
+            <ToggleRight size={28} color={colors.primary} />
           ) : (
-            <ToggleLeft size={30} color="#aaa" />
+            <ToggleLeft size={28} color="#888" />
           )}
 
-          <Text style={{ fontWeight: "600", color: colors.primary }}>
+          <Text
+            style={{
+              fontWeight: "600",
+              fontSize: 14,
+              color: orchardMode === "measure" ? colors.primary : "#666",
+            }}
+          >
             {orchardMode === "measure" ? "Measure" : "Manual"}
           </Text>
         </Pressable>
@@ -219,215 +260,3 @@ export default function BasicInfo({ control, errors, data }) {
     </View>
   );
 }
-
-// import { useEffect, useRef } from "react";
-// import { useFormContext, useWatch } from "react-hook-form";
-// import { View } from "react-native";
-
-// import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
-// import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
-// import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
-// import { generateEstablishmentYears } from "@/src/utils/generateYears";
-// import OrchardSizeInput from "./OrchardSizeInput";
-
-// export default function BasicInfo({
-//   control,
-//   errors,
-//   data,
-//   orchardSize,
-//   areaLabel,
-//   areaUnit,
-// }) {
-//   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
-//   const { setValue } = useFormContext();
-
-//   const unitHydrated = useRef(false);
-//   const modeHydrated = useRef(false);
-
-//   const { districts, tehsils, setSelectedDistrict } =
-//     useCascadingLocation("Jammu and Kashmir");
-
-//   useEffect(() => {
-//     if (data?.district) {
-//       setSelectedDistrict(data.district);
-//     }
-//   }, [data?.district]);
-
-//   useEffect(() => {
-//     if (!data?.tehsil || !tehsils.length) return;
-
-//     if (tehsils.includes(data.tehsil)) {
-//       setValue("tehsil", data.tehsil, { shouldValidate: true });
-//     }
-//   }, [tehsils, data?.tehsil]);
-
-//   const orchardUnit = useWatch({
-//     control,
-//     name: "orchardUnit",
-//   });
-
-//   const orchardMode = useWatch({
-//     control,
-//     name: "orchardSize.mode",
-//     defaultValue: "manual",
-//   });
-
-//   useEffect(() => {
-//     if (!orchardUnit) return;
-
-//     if (!unitHydrated.current) {
-//       unitHydrated.current = true;
-//       return;
-//     }
-
-//     setValue("orchardSize.value", "", {
-//       shouldDirty: true,
-//       shouldValidate: true,
-//     });
-//   }, [orchardUnit]);
-
-//   useEffect(() => {
-//     if (!orchardMode) return;
-
-//     if (!modeHydrated.current) {
-//       modeHydrated.current = true;
-//       return;
-//     }
-
-//     setValue("orchardSize.unit", undefined);
-//     setValue("orchardSize.value", "");
-//   }, [orchardMode]);
-
-//   return (
-//     <View className="bg-light w-full">
-//       <FormTextInput
-//         name="orchardName"
-//         label="Orchard Name"
-//         type="name"
-//         placeholder="Enter your orchard name"
-//         required
-//         error={errors?.orchardName}
-//       />
-
-//       {orchardMode === "manual" && (
-//         <View style={{ marginVertical: 10 }}>
-//           <SingleSelectInput
-//             control={control}
-//             name="orchardUnit"
-//             label="Orchard Size Unit"
-//             modalLabel="Select Unit"
-//             options={[
-//               { label: "Marlas", value: "marlas" },
-//               { label: "Kanals", value: "kanals" },
-//             ]}
-//             error={errors?.orchardUnit}
-//           />
-
-//           {orchardUnit === "marlas" && (
-//             <FormTextInput
-//               name="marlas"
-//               label="Size in Marlas"
-//               type="pincode"
-//               required
-//               placeholder="Enter size in Marlas"
-//               error={errors?.marlas}
-//             />
-//           )}
-
-//           {orchardUnit === "kanals" && (
-//             <FormTextInput
-//               name="kanals"
-//               label="Size in Kanals"
-//               type="pincode"
-//               required
-//               placeholder="Enter size in Kanals"
-//               error={errors?.kanals}
-//             />
-//           )}
-//         </View>
-//       )}
-
-//       {orchardMode === "measure" && (
-//         <OrchardSizeInput
-//           control={control}
-//           errors={errors}
-//           measuredValue={orchardSize || data?.orchardSize}
-//           areaLabel={areaLabel}
-//           areaUnit={areaUnit}
-//         />
-//       )}
-
-//       <SingleSelectInput
-//         searchable
-//         control={control}
-//         name="establishmentYear"
-//         label="Establishment Year"
-//         modalLabel="Select Year"
-//         options={ESTABLISHMENT_YEAR}
-//         error={errors?.establishmentYear?.message}
-//       />
-
-//       <SingleSelectInput
-//         control={control}
-//         name="plantationPattern"
-//         label="Plantation Pattern"
-//         modalLabel="Select Pattern"
-//         options={[
-//           { label: "Traditional", value: "Traditional" },
-//           { label: "High Density", value: "High Density" },
-//           { label: "Ultra High Density", value: "Ultra High Density" },
-//           { label: "Other", value: "Other" },
-//         ]}
-//         error={errors?.plantationPattern?.message}
-//       />
-
-//       <SingleSelectInput
-//         control={control}
-//         name="ownershipType"
-//         label="Ownership Type"
-//         modalLabel="Ownership Type"
-//         options={[
-//           { label: "Self-Owned", value: "Self-Owned" },
-//           { label: "Joint", value: "Joint" },
-//           { label: "Leased", value: "Leased" },
-//           { label: "Rented", value: "Rented" },
-//           { label: "Other", value: "Other" },
-//         ]}
-//         error={errors?.ownershipType?.message}
-//       />
-
-//       <SingleSelectInput
-//         searchable
-//         control={control}
-//         name="district"
-//         label="District"
-//         modalLabel="District"
-//         options={districts.map((d) => ({ label: d, value: d }))}
-//         onValueChange={setSelectedDistrict}
-//         disabled={!districts.length}
-//         error={errors?.district?.message}
-//       />
-
-//       {/* Tehsil */}
-//       <SingleSelectInput
-//         searchable
-//         control={control}
-//         name="tehsil"
-//         label="Tehsil"
-//         modalLabel="Tehsil"
-//         options={tehsils.map((t) => ({ label: t, value: t }))}
-//         disabled={!tehsils.length}
-//         error={errors?.tehsil?.message}
-//       />
-
-//       {/* PIN Code */}
-//       <FormTextInput
-//         name="pincode"
-//         label="PIN Code"
-//         type="pincode"
-//         error={errors?.pincode}
-//         required
-//       />
-//     </View>
-//   );
-// }

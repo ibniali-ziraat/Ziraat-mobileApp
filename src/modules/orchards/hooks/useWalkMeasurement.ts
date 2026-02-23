@@ -13,7 +13,7 @@ export function useWalkMeasurement() {
         distanceInterval: 1,
         timeInterval: 1000,
       },
-      (loc) => setPath((p) => [...p, loc.coords])
+      (loc) => setPath((p) => [...p, loc.coords]),
     );
   };
 

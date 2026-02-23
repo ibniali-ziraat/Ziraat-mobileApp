@@ -16,7 +16,7 @@ export default function MeasuredOrchardSection() {
   useEffect(() => {
     if (!params?.kanals && !params?.marlas) return;
 
-    setValue("marlas", String(totalMarlas), {
+    setValue("marlas", String(measuredMarlas), {
       shouldValidate: true,
       shouldDirty: true,
     });
@@ -30,31 +30,29 @@ export default function MeasuredOrchardSection() {
       style={{
         backgroundColor: "#fff",
         borderRadius: 14,
-        paddingVertical: 16,
+        paddingBottom: 16,
         gap: 12,
+        // paddingVertical: 18,
       }}
     >
       {totalMarlas > 0 && (
-        <View style={{ alignItems: "center", marginTop: 0 }}>
+        <View style={{ alignItems: "center" }}>
           <Text style={{ fontSize: 14, color: "#555" }}>
             Measured Area:{" "}
             <Text style={{ fontWeight: "700", color: colors.primary }}>
-              {totalMarlas} Marlas
+              ≈ {measuredMarlas} Marlas
             </Text>{" "}
-            <Text style={{ color: "#777" }}>
-              ({measuredKanals} Kanals {measuredMarlas} Marlas)
-            </Text>
+            <Text style={{ color: "#777" }}>(≈ {measuredKanals} Kanals)</Text>
           </Text>
         </View>
       )}
-      {/* Main Action Button */}
-      <View style={{ flexDirection: "row", gap: 10 }}>
+      <View style={{ flexDirection: "row", gap: 10, paddingHorizontal: 20 }}>
         <Pressable
           onPress={() => router.push("/orchards/tap-measure")}
           style={{
             flex: 1,
             backgroundColor: colors.primary,
-            paddingVertical: 14,
+            paddingVertical: 10,
             borderRadius: 10,
             flexDirection: "row",
             justifyContent: "center",
@@ -71,7 +69,7 @@ export default function MeasuredOrchardSection() {
           style={{
             flex: 1,
             backgroundColor: "#fff",
-            paddingVertical: 14,
+            paddingVertical: 10,
             borderRadius: 10,
             flexDirection: "row",
             justifyContent: "center",
@@ -87,6 +85,9 @@ export default function MeasuredOrchardSection() {
           </Text>
         </Pressable>
       </View>
+      <Text style={{ fontSize: 12, color: "#999", marginTop: 2 }}>
+        Approximate value. GPS measurements may have inaccuracy of ±3–5 meters.
+      </Text>
     </View>
   );
 }

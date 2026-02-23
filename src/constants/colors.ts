@@ -12,12 +12,10 @@ export const colors = {
   bgColor: "#FDFDFD",
 
   bgGradient: {
-  colors: ["#FAFAFA", "#F1F1F1", "#ECECEC"],
-  locations: [0, 0.6, 1],
-
-},
+    colors: ["#FAFAFA", "#F1F1F1", "#ECECEC"],
+    locations: [0, 0.6, 1],
+  },
   cardBorder: "#dbd9d733",
-  
 
   googleGradient: {
     colors: ["#4285F4", "#DB4437", "#F4B400", "#0F9D58"],
