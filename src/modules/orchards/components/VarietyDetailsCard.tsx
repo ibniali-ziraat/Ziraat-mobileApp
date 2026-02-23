@@ -1,6 +1,6 @@
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
-import { Edit, Plus, Trash2 } from "lucide-react-native";
+import { Edit, Plus, Trash2, TreePalm, TreePine, Trees } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 function VarietiesCard({
@@ -16,27 +16,22 @@ function VarietiesCard({
 }) {
   return (
     <ScreenContent>
-      {/* MAIN WRAPPER */}
-      <View
-        style={{
-          marginVertical: 14,
-        
-        }}
-      >
+      <View style={{ marginVertical: 12 }}>
+
         {/* HEADER */}
-        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 22 }}>
+        <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 18 }}>
           <View
             style={{
-              width: 6,
-              height: 32,
+              width: 5,
+              height: 28,
               borderRadius: 4,
               backgroundColor: colors.primary,
-              marginRight: 14,
+              marginRight: 12,
             }}
           />
 
           <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 18, fontWeight: "700", color: colors.dark }}>
+            <Text style={{ fontSize: 17, fontWeight: "700", color: colors.dark }}>
               Varieties & Planting
             </Text>
             <Text style={{ fontSize: 12, color: colors.neutral }}>
@@ -45,12 +40,12 @@ function VarietiesCard({
           </View>
         </View>
 
-        {/* EMPTY */}
+        {/* EMPTY STATE */}
         {varietiesData.length === 0 && (
           <Pressable
             onPress={onAdd}
             style={({ pressed }) => ({
-              paddingVertical: 16,
+              paddingVertical: 14,
               borderRadius: 14,
               alignItems: "center",
               backgroundColor: `${colors.primary}12`,
@@ -70,71 +65,78 @@ function VarietiesCard({
           <View
             key={v.id}
             style={{
-              marginBottom: 18,
-              padding: 16,
-              borderRadius: 18,
+              marginBottom: 14,
+              padding: 14,
+              borderRadius: 16,
               backgroundColor: "#fff",
               borderWidth: 1,
-              borderColor: "#F0F0F0",
-              shadowColor: "#000",
-              shadowOpacity: 0.05,
-              shadowRadius: 8,
-              shadowOffset: { width: 0, height: 4 },
+              borderColor: "#eee",
               elevation: 2,
             }}
           >
             {/* TITLE + ACTIONS */}
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: 12,
-              }}
-            >
-              <Text style={{ fontSize: 16, fontWeight: "700", color: colors.dark }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text
+                numberOfLines={1}
+                style={{ fontSize: 15, fontWeight: "700", color: colors.dark, flex: 1 }}
+              >
                 {v.varietyName}
               </Text>
 
-              <View style={{ flexDirection: "row", gap: 12 }}>
+              <View style={{ flexDirection: "row", gap: 10 }}>
                 <ActionIcon onPress={() => onEdit(v.id)}>
-                  <Edit size={16} color={colors.primary} />
+                  <Edit size={15} color={colors.primary} />
                 </ActionIcon>
 
                 <ActionIcon onPress={() => onDelete(v.id)}>
-                  <Trash2 size={16} color={colors.error} />
+                  <Trash2 size={15} color={colors.error} />
                 </ActionIcon>
               </View>
             </View>
 
             {/* INFO */}
-            <InfoRow label="Total Trees" value={v.numberOfTrees} />
-            <InfoRow label="Rootstock Used" value={v.rootstockUsed} />
-            <InfoRow label="Plant Density" value={v.plantDensity} />
+            <View style={{ marginTop: 8 }}>
+              <InfoRow label="Total Trees" value={v.numberOfTrees} />
+              <InfoRow label="Rootstock Used" value={v.rootstockUsed} />
+              <InfoRow label="Plant Density" value={v.plantDensity} />
+            </View>
 
             {/* AGE GROUPS */}
             <View
               style={{
-                marginTop: 14,
-                padding: 12,
-                borderRadius: 14,
+                marginTop: 12,
+                padding: 10,
+                borderRadius: 12,
                 backgroundColor: `${colors.primary}06`,
               }}
             >
-              <Text
-                style={{
-                  fontSize: 13,
-                  fontWeight: "700",
-                  color: colors.dark,
-                  marginBottom: 10,
-                }}
-              >
+              <Text style={{ fontSize: 13, fontWeight: "700", marginBottom: 8 }}>
                 Tree Age Groups
               </Text>
 
-              <AgeChip label="🌱 Young Trees" subtitle="Below 5 years" value={v.treesLessThan5Years} bg={`${colors.primary}15`} />
-              <AgeChip label="🌿 Mature Trees" subtitle="5 – 10 years" value={v.treesFiveToTenYears} bg={`${colors.primary}15`} />
-              <AgeChip label="🌳 Old Trees" subtitle="Above 10 years" value={v.treesMoreThan10Years} bg={`${colors.primary}15`} />
+              <AgeChip
+                icon={<TreePalm size={15} color={colors.primary} />}
+                label="Young Trees"
+                subtitle="Below 5 years"
+                value={v.treesLessThan5Years}
+                bg={`${colors.primary}15`}
+              />
+
+              <AgeChip
+                icon={<TreePine size={15} color={colors.primary} />}
+                label="Mature Trees"
+                subtitle="5 – 10 years"
+                value={v.treesFiveToTenYears}
+                bg={`${colors.primary}15`}
+              />
+
+              <AgeChip
+                icon={<Trees size={15} color={colors.primary} />}
+                label="Old Trees"
+                subtitle="Above 10 years"
+                value={v.treesMoreThan10Years}
+                bg={`${colors.primary}15`}
+              />
             </View>
           </View>
         ))}
@@ -144,13 +146,12 @@ function VarietiesCard({
           <Pressable
             onPress={onAdd}
             style={({ pressed }) => ({
-              marginTop: 6,
-              paddingVertical: 16,
+              paddingVertical: 14,
               borderRadius: 14,
-              alignItems: "center",
               backgroundColor: colors.primary,
               flexDirection: "row",
               justifyContent: "center",
+              alignItems: "center",
               gap: 6,
               transform: [{ scale: pressed ? 0.98 : 1 }],
             })}
@@ -172,9 +173,9 @@ function ActionIcon({ children, onPress }: any) {
     <Pressable
       onPress={onPress}
       style={({ pressed }) => ({
-        width: 32,
-        height: 32,
-        borderRadius: 16,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
         backgroundColor: "#f3f4f6",
         alignItems: "center",
         justifyContent: "center",
@@ -189,48 +190,52 @@ function ActionIcon({ children, onPress }: any) {
 /* INFO ROW */
 function InfoRow({ label, value }: any) {
   return (
-    <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 6 }}>
-      <Text style={{ color: colors.neutral, fontSize: 13 }}>{label}</Text>
-      <Text style={{ color: colors.dark, fontWeight: "600" }}>{value ?? "—"}</Text>
+    <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 4 }}>
+      <Text style={{ color: colors.neutral, fontSize: 12 }}>{label}</Text>
+      <Text style={{ color: colors.dark, fontWeight: "600", maxWidth: "50%" }}>
+        {value ?? "—"}
+      </Text>
     </View>
   );
 }
 
 /* AGE CHIP */
-function AgeChip({ label, subtitle, value, bg }: any) {
+function AgeChip({ icon, label, subtitle, value, bg }: any) {
   return (
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "space-between",
         alignItems: "center",
+        justifyContent: "space-between",
         marginBottom: 8,
         padding: 10,
         borderRadius: 12,
         backgroundColor: bg,
       }}
     >
-      <View>
-        <Text style={{ fontSize: 13, fontWeight: "600", color: colors.dark }}>
-          {label}
-        </Text>
-        <Text style={{ fontSize: 11, color: colors.neutral }}>
-          {subtitle}
-        </Text>
+      <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+        {icon}
+
+        <View style={{ marginLeft: 6 }}>
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.dark }}>
+            {label}
+          </Text>
+
+          <Text style={{ fontSize: 10, color: colors.neutral }}>
+            {subtitle}
+          </Text>
+        </View>
       </View>
 
       <View
         style={{
           minWidth: 34,
-          height: 28,
-          borderRadius: 999,
+          height: 26,
+          borderRadius: 20,
           backgroundColor: "#fff",
           alignItems: "center",
           justifyContent: "center",
-          shadowColor: "#000",
-          shadowOpacity: 0.05,
-          shadowRadius: 4,
-          elevation: 2,
+          paddingHorizontal: 8,
         }}
       >
         <Text style={{ fontWeight: "700", color: colors.primary }}>

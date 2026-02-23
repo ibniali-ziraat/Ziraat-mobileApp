@@ -1,22 +1,23 @@
 
+import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import {
-    ChevronRight,
-    Facebook,
-    Globe,
-    Instagram,
-    MessageCircle,
-    Phone,
-    Twitter,
+  ChevronRight,
+  Facebook,
+  Globe,
+  Instagram,
+  MessageCircle,
+  Phone,
+  Twitter,
 } from "lucide-react-native";
 import {
-    Linking,
-    ScrollView,
-    TouchableOpacity,
-    View
+  Linking,
+  ScrollView,
+  TouchableOpacity,
+  View
 } from "react-native";
 
 /* ---------- Contact Row ---------- */
@@ -91,8 +92,8 @@ export default function ContactUsScreen() {
       showsVerticalScrollIndicator={false}
     >
       <ScreenContent>
-        {/* Header */}
-        <View style={{ paddingTop: 28, paddingBottom: 22 }}>
+        <BackHeader title="Support" />
+        <View style={{ paddingTop: 20, paddingBottom: 22 }}>
            <CsText  style={[typography.Poppins_l_semibold,
                       {
                      
