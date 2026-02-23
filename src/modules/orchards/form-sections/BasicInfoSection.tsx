@@ -51,10 +51,6 @@ export default function BasicInfo({ control, errors, data }) {
     setValue("kanals", "");
   }, [orchardUnit]);
 
-  //----------------------------------
-  // Toggle mode
-  //----------------------------------
-
   const toggleMode = () => {
     setValue(
       "orchardSize.mode",
@@ -62,13 +58,8 @@ export default function BasicInfo({ control, errors, data }) {
     );
   };
 
-  //----------------------------------
-  // UI
-  //----------------------------------
-
   return (
     <View style={{ padding: 16, gap: 16 }}>
-      {/* Orchard Name */}
       <FormTextInput
         name="orchardName"
         label="Orchard Name"
@@ -78,11 +69,10 @@ export default function BasicInfo({ control, errors, data }) {
         error={errors?.orchardName}
       />
 
-      {/* Toggle */}
       <View
         style={{
           backgroundColor: "#fff",
-          padding: 14,
+          paddingVertical: 14,
           borderRadius: 14,
           flexDirection: "row",
           justifyContent: "space-between",
@@ -109,28 +99,14 @@ export default function BasicInfo({ control, errors, data }) {
         </Pressable>
       </View>
 
-      {/* MEASURE MODE */}
       {orchardMode === "measure" && (
         <>
-          <SingleSelectInput
-            control={control}
-            name="orchardUnit"
-            label="Orchard Size Unit"
-            modalLabel="Select Unit"
-            options={[
-              { label: "Marlas", value: "marlas" },
-              { label: "Kanals", value: "kanals" },
-            ]}
-            error={errors?.orchardUnit}
-          />
-
           <MeasuredOrchardSection />
         </>
       )}
 
-      {/* MANUAL MODE — ORIGINAL CODE KEPT SAME */}
       {orchardMode === "manual" && (
-        <View style={{ marginVertical: 10 }}>
+        <View>
           <SingleSelectInput
             control={control}
             name="orchardUnit"
@@ -167,7 +143,6 @@ export default function BasicInfo({ control, errors, data }) {
         </View>
       )}
 
-      {/* Establishment Year */}
       <SingleSelectInput
         searchable
         control={control}
@@ -178,7 +153,6 @@ export default function BasicInfo({ control, errors, data }) {
         error={errors?.establishmentYear?.message}
       />
 
-      {/* Plantation Pattern */}
       <SingleSelectInput
         control={control}
         name="plantationPattern"

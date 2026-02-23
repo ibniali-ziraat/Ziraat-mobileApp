@@ -85,24 +85,59 @@ export default function BasicInfoScreen() {
     return Number(value);
   };
 
+  // const onSubmit = async (values) => {
+  //   const payload = {
+  //     orchardId: orchard?.id ?? generateId(),
+
+  //     ...values,
+
+  //     kanals: values.orchardUnit === "kanals" ? safeDecimal(values.kanals) : 0,
+
+  //     marlas: values.orchardUnit === "marlas" ? safeDecimal(values.marlas) : 0,
+  //   };
+
+  //   if (orchard) {
+  //     await updateOrchard(payload);
+  //     router.replace(ROUTES.TABS.ORCHARDS);
+  //   } else {
+  //     await createOrchard(payload);
+  //     router.replace(ROUTES.TABS.ORCHARDS);
+  //   }
+  // };
+
   const onSubmit = async (values) => {
+    console.log(values, "values...");
+
+    let marlasPayload = 0;
+    let kanalsPayload = 0;
+
+    if (values.orchardSize?.mode === "measure") {
+      marlasPayload = Number(values.marlas ?? 0);
+    } else {
+      if (values.orchardUnit === "kanals") {
+        kanalsPayload = Number(values.kanals ?? 0);
+      }
+
+      if (values.orchardUnit === "marlas") {
+        marlasPayload = Number(values.marlas ?? 0);
+      }
+    }
+
     const payload = {
       orchardId: orchard?.id ?? generateId(),
-
       ...values,
-
-      kanals: values.orchardUnit === "kanals" ? safeDecimal(values.kanals) : 0,
-
-      marlas: values.orchardUnit === "marlas" ? safeDecimal(values.marlas) : 0,
+      kanals: kanalsPayload,
+      marlas: marlasPayload,
     };
 
     if (orchard) {
       await updateOrchard(payload);
-      router.replace(ROUTES.TABS.ORCHARDS);
     } else {
       await createOrchard(payload);
-      router.replace(ROUTES.TABS.ORCHARDS);
     }
+
+    router.replace(ROUTES.TABS.ORCHARDS);
+    // await createOrchard(payload);
   };
 
   if (isPending) return null;
