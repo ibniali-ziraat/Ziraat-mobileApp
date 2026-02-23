@@ -1,7 +1,6 @@
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { router } from "expo-router";
-import { ChevronRight } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 import OrchardDetails from "./OrchardDetails";
 
@@ -27,8 +26,6 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
           elevation: 4,
         }}
       >
-        
-
         {/* Orchard Details */}
         <OrchardDetails orchard={orchard} />
 
@@ -41,7 +38,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
           }}
         />
 
-        {/* View Details CTA */}
+        {/* View Details CTA (Right aligned) */}
         <Pressable
           onPress={() =>
             router.push({
@@ -49,13 +46,11 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
               params: { id: orchard.id },
             })
           }
-          style={() => ({
+          style={{
             flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "flex-end",
             paddingVertical: 6,
-          
-          })}
+          }}
         >
           <Text
             style={{
@@ -66,8 +61,6 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
           >
             View Details
           </Text>
-
-          <ChevronRight size={18} color={colors.primary} />
         </Pressable>
       </View>
     </ScreenContent>
