@@ -3,7 +3,6 @@ import { UNIT_CONVERSIONS } from "@/src/utils/units";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Platform, Text, View } from "react-native";
-import AreaBadge from "../components/AreaBadge";
 import MeasureControls from "../components/MeasureControls";
 import MeasureMap from "../components/MeasureMap";
 import { useAreaCalculation } from "../hooks/useAreaCalculation";
@@ -13,45 +12,40 @@ import { useWalkMeasurement } from "../hooks/useWalkMeasurement";
 export default function MeasureByWalk() {
   const location = useLocationPermission();
   const { path, start, stop, reset } = useWalkMeasurement();
-  const [unit, setUnit] = useState("hectares");
-  const [walking, setWalking] = useState(false);
+
+  const [started, setStarted] = useState(false);
+
+  const areaHectares = useAreaCalculation(path);
+
   if (!location) return null;
 
-  const areaHectares = useAreaCalculation(path, unit);
+  const allUnits = {
+    kanals: areaHectares * UNIT_CONVERSIONS.kanals,
+    marlas: areaHectares * UNIT_CONVERSIONS.marlas,
+  };
 
-  const displayArea = (areaHectares * UNIT_CONVERSIONS[unit]).toFixed(3);
-  const marlas = areaHectares * UNIT_CONVERSIONS.marla;
+  const handleStart = () => {
+    start();
+    setStarted(true);
+  };
 
-  const handlePrimary = () => {
-    // if (!areaHectares) return;
+  const applyArea = () => {
+    if (!areaHectares) return;
 
-    if (walking) {
-      stop();
-      router.push({
-        pathname: "/orchards/basic-info",
-        params: {
-          orchardSize: marlas.toFixed(2),
-          areaValue: displayArea,
-          areaUnit: unit,
-          areaLabel: `${displayArea} ${unit}`,
-        },
-      });
-    } else {
-      start();
-    }
-    setWalking(!walking);
+    stop();
+
+    router.push({
+      pathname: "/orchards/basic-info",
+      params: {
+        kanals: allUnits.kanals.toFixed(2),
+        marlas: allUnits.marlas.toFixed(2),
+      },
+    });
   };
 
   if (Platform.OS === "web") {
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          padding: 20,
-        }}
-      >
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>Map is only available on iOS and Android</Text>
       </View>
     );
@@ -61,14 +55,12 @@ export default function MeasureByWalk() {
     <>
       <BackHeader title="Back" />
 
-      <MeasureMap location={location} points={path} isWalking />
-      <AreaBadge value={displayArea} unit={unit} />
+      <MeasureMap location={location} points={path} />
+
       <MeasureControls
-        unit={unit}
-        setUnit={setUnit}
-        onPrimary={handlePrimary}
+        onPrimary={started ? applyArea : handleStart}
         onReset={reset}
-        primaryLabel={walking ? "Stop & Apply" : "Start Walking"}
+        primaryLabel={started ? "Apply Area" : "Start Walking"}
       />
     </>
   );
