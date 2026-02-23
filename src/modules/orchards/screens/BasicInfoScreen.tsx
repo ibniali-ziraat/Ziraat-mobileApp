@@ -156,7 +156,7 @@ export default function BasicInfoScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            onCancel={() => router.back()}
+            onCancel={() => router.replace(ROUTES.TABS.ORCHARDS)}
             submitLabel={isEditMode ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={creating || updating}
