@@ -53,7 +53,7 @@ export default function MyOrchardsScreen() {
                 everything organized in one place.
               </Text>
 
-              {/* ✅ CREATE MODE */}
+              {/*  CREATE MODE */}
               <Pressable
                 onPress={() =>
                   router.push({
