@@ -11,7 +11,8 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.ziraat"
+      "bundleIdentifier": "com.anonymous.ziraat",
+      "jsEngine": "hermes"
     },
     "android": {
       "adaptiveIcon": {
@@ -50,7 +51,11 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {}
-    }
+      "router": {},
+      "eas": {
+        "projectId": "d70bd293-e949-4061-a72d-e40aa20d2773"
+      }
+    },
+    "owner": "naikummarmukhtar"
   }
 }
