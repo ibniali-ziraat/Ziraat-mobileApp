@@ -15,8 +15,9 @@ import {
   waterSourceOptions,
 } from "@/src/modules/orchards/schemas/SoilWaterProfileSchema";
 
-export default function SoilAndWaterProfile({ control, errors }) {
+export default function SoilAndWaterProfile({ data, control, errors }) {
   console.log(errors, "errors in soilandwatertest");
+  console.log(data, "data in soilandwatertest");
 
   const SOIL_HEALTH_OPTIONS = [
     "Strongly Acidic",
@@ -78,7 +79,7 @@ export default function SoilAndWaterProfile({ control, errors }) {
         <FormDateInput
           control={control}
           name="lastSoilTestDate"
-          label="Latest Soil Test Date (optional)"
+          label="Latest Soil Test Date"
           error={errors?.lastSoilTestDate?.message}
           optional
         />
@@ -120,7 +121,7 @@ export default function SoilAndWaterProfile({ control, errors }) {
         />
       </View>
 
-      <View className="bg-white p-4 rounded-xl shadow-sm mb-6 border border-gray-200">
+      {!data?.soilTestReportUrl && (
         <SingleSelectInput
           control={control}
           name="soilTestRecordsDone"
@@ -132,8 +133,9 @@ export default function SoilAndWaterProfile({ control, errors }) {
           ]}
           error={errors?.soilTestRecordsDone?.message}
         />
+      )}
 
-        {/* {soilTestRecordsDone === true && (
+      {/* {soilTestRecordsDone === true && (
           <>
             <TouchableOpacity
               onPress={() => setOpen((prev) => !prev)}
@@ -196,15 +198,14 @@ export default function SoilAndWaterProfile({ control, errors }) {
           </>
         )} */}
 
-        {soilTestRecordsDone && (
-          <FormFileInput
-            control={control}
-            name="soilTestReportUrl"
-            label="Upload Soil Test Report"
-            error={errors?.soilTestReportUrl}
-          />
-        )}
-      </View>
+      {soilTestRecordsDone && (
+        <FormFileInput
+          control={control}
+          name="soilTestReportUrl"
+          label="Upload Soil Test Report"
+          error={errors?.soilTestReportUrl}
+        />
+      )}
     </View>
   );
 }

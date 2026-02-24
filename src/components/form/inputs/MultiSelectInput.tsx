@@ -63,7 +63,7 @@ export default function MultiSelectInput({
             style={{
               borderWidth: 1,
               borderColor: colors.neutral,
-              padding: 12,
+              padding: 16,
               borderRadius: 6,
               backgroundColor: "white",
             }}

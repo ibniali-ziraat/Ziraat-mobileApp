@@ -68,7 +68,7 @@ export default function FormDateInput({
                     onChange(v); // Always "YYYY-MM-DD"
                   }}
                   style={{
-                    padding: "10px",
+                    padding: "16px",
                     borderRadius: "8px",
                     border: `1px solid ${showError ? colors.error : colors.neutral}`,
                     fontSize: "16px",
@@ -106,6 +106,7 @@ export default function FormDateInput({
                       error={showError}
                       style={{
                         backgroundColor: colors.light,
+                        padding: 2,
                       }}
                       theme={{
                         colors: {
