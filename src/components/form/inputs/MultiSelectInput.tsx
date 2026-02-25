@@ -2,8 +2,15 @@ import { colors } from "@/src/constants/colors";
 import { Asterisk } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Controller, useWatch } from "react-hook-form";
-import { FlatList, Modal, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import CsText from "../../shared/CsText";
+import { MultiSelectInputProps } from "../../shared/inputs/types";
 
 export default function MultiSelectInput({
   control,
@@ -13,14 +20,12 @@ export default function MultiSelectInput({
   error,
   optional = false,
   placeholder = label,
-}: FormFieldProps) {
+}: MultiSelectInputProps) {
   const [visible, setVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
 
-  // ✅ watch RHF value safely
   const value = useWatch({ control, name });
 
-  // ✅ sync modal state with prefill
   useEffect(() => {
     if (Array.isArray(value)) {
       setSelectedOptions(value);
@@ -58,7 +63,7 @@ export default function MultiSelectInput({
           </View>
 
           {/* Trigger */}
-          <TouchableOpacity
+          <Pressable
             onPress={() => setVisible(true)}
             style={{
               borderWidth: 1,
@@ -73,7 +78,7 @@ export default function MultiSelectInput({
             >
               {value?.length ? value.join(", ") : `Select ${placeholder}`}
             </CsText>
-          </TouchableOpacity>
+          </Pressable>
 
           {/* Error */}
           {error && (

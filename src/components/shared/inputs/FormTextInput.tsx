@@ -11,6 +11,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { FormInputProps } from "./types";
 
 const FormTextInput = ({
   name,
@@ -21,7 +22,7 @@ const FormTextInput = ({
   countryCode = "+91",
   placeholder,
   disabled = false,
-}) => {
+}: FormInputProps) => {
   const { control } = useFormContext();
   if (!control) return null;
 

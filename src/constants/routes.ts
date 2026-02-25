@@ -77,19 +77,6 @@
 //     REGISTRATION:"/supplier-registration"
 //   },
 
-//   SPRAY:{
-//   REGISTRATION:"/spray-registration"
-//   },
-
-//   TABS: {
-//     MENU: "/(tabs)/menu",
-//     HOME: "/(tabs)",
-//     PROFILE: "/(tabs)/profile",
-//     PRODUCTS:"/(tabs)/products",
-//     SPRAY:"/(tabs)/spray"
-//   },
-// } as const;
-
 export const ROUTES = {
   // AUTH SCREENS
   AUTH: {

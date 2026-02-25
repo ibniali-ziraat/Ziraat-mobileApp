@@ -12,26 +12,7 @@ import {
 } from "react-native";
 import { HelperText } from "react-native-paper";
 import CsText from "../../shared/CsText";
-
-interface Option {
-  label: string;
-  value: string | number;
-}
-
-interface DropdownProps {
-  control: any;
-  name: string;
-  label: string;
-  placeholder: string;
-  options: Option[];
-  optional?: boolean;
-  error?: any;
-  modalLabel?: string;
-  onValueChange?: (value: string | number) => void;
-  disabled?: boolean;
-  searchable?: boolean;
-  showInputLabel?: boolean;
-}
+import { SingleSelectInputProps } from "../../shared/inputs/types";
 
 export default function SingleSelectInput({
   control,
@@ -41,12 +22,11 @@ export default function SingleSelectInput({
   optional = false,
   error,
   modalLabel = "Select",
-  showInputLabel = true,
   onValueChange,
   disabled = false,
   searchable = false,
   placeholder = label,
-}: DropdownProps) {
+}: SingleSelectInputProps) {
   const [visible, setVisible] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -91,21 +71,17 @@ export default function SingleSelectInput({
         return (
           <View style={{ marginBottom: 16 }}>
             {/* Label */}
-            {showInputLabel && (
-              <CsText
-                style={{
-                  marginBottom: 6,
-                  fontSize: 14,
-                  fontWeight: "500",
-                  color: colors.dark,
-                }}
-              >
-                {label}
-                {!optional && (
-                  <CsText style={{ color: colors.error }}> *</CsText>
-                )}
-              </CsText>
-            )}
+            <CsText
+              style={{
+                marginBottom: 6,
+                fontSize: 14,
+                fontWeight: "500",
+                color: colors.dark,
+              }}
+            >
+              Select {label}
+              {!optional && <CsText style={{ color: colors.error }}> *</CsText>}
+            </CsText>
 
             {/* Selector */}
             <Pressable

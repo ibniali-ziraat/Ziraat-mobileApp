@@ -3,17 +3,22 @@ import { Controller, useFormContext } from "react-hook-form";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import { colors } from "@/src/constants/colors";
+import { FormOtpInputProps } from "./types";
 
 const STATIC_OTP = "123456";
 
-const FormOtpInput= ({
+const FormOtpInput = ({
   name,
   label,
   required,
   length = 6,
-}) => {
-  const { control, setError, clearErrors, formState: { errors } } =
-    useFormContext();
+}: FormOtpInputProps) => {
+  const {
+    control,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useFormContext();
 
   const refs = useRef([]);
   const [successMessage, setSuccessMessage] = useState("");
@@ -31,28 +36,23 @@ const FormOtpInput= ({
         const handleChange = (text: string, index: number) => {
           const digit = text.replace(/\D/g, "");
 
-       
           const arr = otpValue.split("");
           arr[index] = digit;
           const newOtp = arr.join("").slice(0, length);
 
           onChange(newOtp);
 
-         
           if (digit && index < length - 1) {
             refs.current[index + 1]?.focus();
           }
 
-   
           if (!digit && index > 0) {
             refs.current[index - 1]?.focus();
           }
 
-  
           setSuccessMessage("");
           clearErrors(name);
 
-          
           if (newOtp.length === length) {
             if (newOtp === STATIC_OTP) {
               setSuccessMessage("OTP verified successfully");
@@ -85,8 +85,8 @@ const FormOtpInput= ({
                       borderColor: fieldError
                         ? colors.error
                         : successMessage
-                        ? colors.primary
-                        : colors.neutral,
+                          ? colors.primary
+                          : colors.neutral,
                     },
                   ]}
                   keyboardType="numeric"

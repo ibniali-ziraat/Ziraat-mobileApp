@@ -23,8 +23,8 @@ import LogoutButton from "@/src/components/ui/LogoutButton";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
 import { useEffect, useState } from "react";
-import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
-import { userRoutes } from "../auth/vendor/config/userRoutes";
+import { userDeleteConfig } from "../auth/config/userDeleteConfig";
+import { userRoutes } from "../auth/config/userRoutes";
 
 // Icons
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
@@ -137,7 +137,7 @@ export default function UserProfileScreen() {
           />
         )}
 
-        <DetailsCard 
+        <DetailsCard
           heading="Personal Details"
           items={
             profileData
