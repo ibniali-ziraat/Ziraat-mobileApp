@@ -1,11 +1,5 @@
 import { Tabs } from "expo-router";
-import {
-  Home,
-  LucideDroplets,
-  Menu,
-  ShoppingBag,
-  Trees,
-} from "lucide-react-native";
+import { Home, Menu, ShoppingBag, Trees } from "lucide-react-native";
 import { useState } from "react";
 import { Platform, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -14,7 +8,6 @@ import CropHeader from "@/src/components/shared/CropHeader";
 import HomeHeader from "@/src/components/shared/HomeHeader";
 import MenuHeader from "@/src/components/shared/MenuHeader";
 import ProductHeader from "@/src/components/shared/ProductHeader";
-import SprayHeader from "@/src/components/shared/SprayHeader";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
@@ -42,36 +35,34 @@ export default function TabLayout() {
         tabBarInactiveTintColor: colors.dark,
         tabBarHideOnKeyboard: true,
 
-  tabBarStyle: {
-  position: "absolute",
-  bottom: 0,
+        tabBarStyle: {
+          position: "absolute",
+          bottom: 0,
 
-  height: 60 + insets.bottom,
+          height: 60 + insets.bottom,
 
-  backgroundColor: colors.bgColor,
-  borderTopWidth: 0,
+          backgroundColor: colors.bgColor,
+          borderTopWidth: 0,
 
-  shadowColor: "#000",
-  shadowOpacity: 0.08,
-  shadowRadius: 18,
-  shadowOffset: { width: 0, height: 10 },
-  elevation: 18,
+          shadowColor: "#000",
+          shadowOpacity: 0.08,
+          shadowRadius: 18,
+          shadowOffset: { width: 0, height: 10 },
+          elevation: 18,
 
-  paddingHorizontal: 10,
+          paddingHorizontal: 10,
 
-  // ✅ Slight lift for gesture nav
-  paddingTop: isGestureNav ? 14 : 10,
+          // ✅ Slight lift for gesture nav
+          paddingTop: isGestureNav ? 14 : 10,
 
-  paddingBottom: isIOS
-    ? Math.max(insets.bottom, 6)   // ✅ LESS padding on iOS
-    : hasAndroidNavBar
-    ? insets.bottom
-    : isGestureNav
-    ? 16
-    : 10,
-},
-
-
+          paddingBottom: isIOS
+            ? Math.max(insets.bottom, 6) // ✅ LESS padding on iOS
+            : hasAndroidNavBar
+              ? insets.bottom
+              : isGestureNav
+                ? 16
+                : 10,
+        },
 
         tabBarItemStyle: {
           flex: 1,
@@ -147,48 +138,6 @@ export default function TabLayout() {
               pressKey={pressKey}
               icon={<Trees size={22} color={color} strokeWidth={2.2} />}
               label="Orchards"
-            />
-          ),
-        }}
-      />
-
-      {/* Spray */}
-      <Tabs.Screen
-        name="spray"
-        options={{
-          title: "Spray",
-          header: () => <SprayHeader />,
-          tabBarButton: ({ onPress, children }) => (
-            <Pressable
-              onPress={(e) => {
-                setActiveTab("spray");
-                setPressKey((prev) => prev + 1);
-                onPress?.(e);
-              }}
-              style={({ pressed }) => ({
-                flex: 1,
-                width: "100%",
-                height: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-                opacity: pressed ? 0.7 : 1,
-              })}
-            >
-              {children}
-            </Pressable>
-          ),
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon
-              focused={focused}
-              pressKey={pressKey}
-              icon={
-                <LucideDroplets
-                  size={22}
-                  color={color}
-                  strokeWidth={2.2}
-                />
-              }
-              label="Spray"
             />
           ),
         }}

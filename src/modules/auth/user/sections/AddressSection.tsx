@@ -106,26 +106,6 @@ export default function AddressSection({ control, errors, data }: Props) {
         keyboardType="numeric"
         error={errors.pincode?.message}
       />
-
-      {/* GPS (UNCHANGED, still available) */}
-      {/* 
-      <Button
-        title={loading ? "Fetching Location..." : "Use Current Location"}
-        onPress={fetchLocation}
-      />
-
-      {coords && (
-        <View style={{ marginTop: 10 }}>
-          <FormInput
-            control={control}
-            name="gps"
-            label="GPS Location"
-            value={`${coords.latitude}, ${coords.longitude}`}
-            editable={false}
-          />
-        </View>
-      )} 
-      */}
     </View>
   );
 }

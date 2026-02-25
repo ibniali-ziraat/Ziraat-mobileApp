@@ -45,7 +45,7 @@ export default function ProfileSection({
         error={errors.email}
         optional
         type="email"
-        required
+        placeholder={"e,g, ziraat@gmail.com"}
       />
 
       <FormTextInput
@@ -67,6 +67,7 @@ export default function ProfileSection({
           { label: "Female", value: "female" },
         ]}
         error={errors.gender}
+        optional={false}
       />
 
       {!data && (
