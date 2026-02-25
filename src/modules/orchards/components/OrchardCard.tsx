@@ -38,30 +38,43 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
           }}
         />
 
-        {/* View Details CTA (Right aligned) */}
-        <Pressable
-          onPress={() =>
-            router.push({
-              pathname: "/orchards/orchard-detail",
-              params: { id: orchard.id },
-            })
-          }
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            paddingVertical: 6,
-          }}
-        >
-          <Text
-            style={{
-              color: colors.primary,
-              fontWeight: "600",
-              fontSize: 14,
-            }}
-          >
-            View Details
-          </Text>
-        </Pressable>
+   <Pressable
+  onPress={() =>
+    router.push({
+      pathname: "/orchards/orchard-detail",
+      params: { id: orchard.id },
+    })
+  }
+  style={{
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    paddingVertical: 6,
+  }}
+>
+  <Text
+    style={{
+      color: colors.primary,
+      fontWeight: "600",
+      fontSize: 14,
+      textDecorationLine: "underline",
+      marginRight: 4,
+    }}
+  >
+    View Details
+  </Text>
+
+  <Text
+    style={{
+      color: colors.primary,
+      fontSize: 16,
+      lineHeight: 16,
+    }}
+  >
+    →
+  </Text>
+</Pressable>
       </View>
     </ScreenContent>
   );
