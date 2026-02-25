@@ -1,21 +1,21 @@
 import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SearchBar from "@/src/components/shared/SearchBar";
-
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useRouter } from "expo-router";
 import { TreePalm } from "lucide-react-native";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import OrchardCard from "../components/OrchardCard";
 import { useOrchardsByUserQuery } from "../hooks/useOrchardsQuery";
 
 export default function MyOrchardsScreen() {
   const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
-
   const { setOrchardProfileId } = useAuth();
   const router = useRouter();
+
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (!orchardData?.length) {
@@ -27,6 +27,21 @@ export default function MyOrchardsScreen() {
   if (isError) return <Loader />;
 
   const hasNoOrchards = !orchardData || orchardData.length === 0;
+
+  // 🔥 REAL SEARCH LOGIC (MULTIPLE FIELDS)
+  const filteredOrchards = useMemo(() => {
+    if (!search) return orchardData;
+
+    const text = search.toLowerCase();
+
+    return orchardData.filter((o: any) =>
+      o?.orchardName?.toLowerCase().includes(text) ||
+      o?.ownershipType?.toLowerCase().includes(text) ||
+      o?.plantationPattern?.toLowerCase().includes(text) ||
+      String(o?.kanals || "").includes(text) ||
+      String(o?.marlas || "").includes(text)
+    );
+  }, [orchardData, search]);
 
   return (
     <ScreenLayout scrollable>
@@ -53,7 +68,6 @@ export default function MyOrchardsScreen() {
                 everything organized in one place.
               </Text>
 
-              {/*  CREATE MODE */}
               <Pressable
                 onPress={() =>
                   router.push({
@@ -71,20 +85,13 @@ export default function MyOrchardsScreen() {
                   + Add Orchard
                 </Text>
               </Pressable>
-
-              <Text
-                style={{ color: colors.dark }}
-                className="text-xs text-center mt-5 opacity-50"
-              >
-                You can add multiple orchards anytime.
-              </Text>
             </View>
           </View>
         ) : (
-          <View className="flex-1  pt-3">
+          <View className="flex-1 pt-3">
             <FlatList
               scrollEnabled={false}
-              data={orchardData}
+              data={filteredOrchards}
               keyExtractor={(item) => String(item.id)}
               renderItem={({ item }) => (
                 <View className="mb-4">
@@ -96,14 +103,25 @@ export default function MyOrchardsScreen() {
               ListHeaderComponent={
                 <View
                   style={{ backgroundColor: colors.light }}
-                  className="mb-4 mt-2"
+                  className="mb-4 mt-2 px-4"
                 >
-                  <SearchBar />
+                  <SearchBar search={search} setSearch={setSearch} />
                 </View>
+              }
+              ListEmptyComponent={
+                <Text
+                  style={{
+                    textAlign: "center",
+                    marginTop: 40,
+                    color: colors.neutral,
+                  }}
+                >
+                  No orchards found
+                </Text>
               }
             />
 
-            {/*  CREATE MODE */}
+            {/* FAB */}
             <Pressable
               onPress={() =>
                 router.push({
@@ -112,9 +130,6 @@ export default function MyOrchardsScreen() {
                 })
               }
               className="absolute bottom-6 right-6 rounded-full"
-              style={({ pressed }) => ({
-                transform: [{ scale: pressed ? 0.94 : 1 }],
-              })}
             >
               <View
                 className="h-16 w-16 rounded-full items-center justify-center"

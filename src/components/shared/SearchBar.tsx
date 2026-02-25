@@ -51,7 +51,7 @@ export default function SearchBar({
           }),
         }}
       >
-        <Search size={20} color={colors.secondary} strokeWidth={2} />
+        <Search size={20} color={colors.primary} strokeWidth={2} />
 
         <TextInput
           mode="flat"
@@ -71,7 +71,6 @@ export default function SearchBar({
           style={{
             backgroundColor: "transparent",
             flex: 1,
-            
             fontSize: 16,
             height: 40,
             paddingVertical: 0,
