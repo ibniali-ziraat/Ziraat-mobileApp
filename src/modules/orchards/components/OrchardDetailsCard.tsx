@@ -75,7 +75,7 @@ export default function OrchardDetailsCard({
       </View>
 
       {/* CONTENT */}
-      <View className=" pb-4 pt-4">
+      <View className=" p-2 pb-4 pt-4">
         {isEmpty ? (
           <TouchableOpacity
             onPress={onAdd}

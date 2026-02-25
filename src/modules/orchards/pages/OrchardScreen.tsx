@@ -28,10 +28,8 @@ export default function MyOrchardsScreen() {
 
   const hasNoOrchards = !orchardData || orchardData.length === 0;
 
-  // 🔥 REAL SEARCH LOGIC (MULTIPLE FIELDS)
   const filteredOrchards = useMemo(() => {
     if (!search) return orchardData;
-
     const text = search.toLowerCase();
 
     return orchardData.filter((o: any) =>
@@ -44,30 +42,25 @@ export default function MyOrchardsScreen() {
   }, [orchardData, search]);
 
   return (
-    <ScreenLayout scrollable>
-      <View style={{ backgroundColor: colors.light }} className="flex-1">
+    <ScreenLayout scrollable={false}>
+      {/* IMPORTANT: position relative for WEB */}
+      <View style={{ flex: 1, backgroundColor: colors.light, position: "relative" }}>
+
         {hasNoOrchards ? (
           <View className="flex-1 justify-center items-center px-6">
             <View className="items-center">
-              <View className="rounded-3xl items-center justify-center mb-6 shadow-sm">
-                <TreePalm style={{ color: colors.primary }} size={40} />
-              </View>
+              <TreePalm style={{ color: colors.primary }} size={40} />
 
-              <Text
-                style={{ color: colors.dark }}
-                className="text-[22px] font-bold text-center mb-2"
-              >
+              <Text className="text-[22px] font-bold mt-4">
                 Start Your First Orchard
               </Text>
-
-              <Text
+       <Text
                 style={{ color: colors.dark }}
                 className="text-[14px] leading-6 text-center mb-7 opacity-70"
               >
                 Add your orchard to manage crops, monitor growth, and keep
                 everything organized in one place.
               </Text>
-
               <Pressable
                 onPress={() =>
                   router.push({
@@ -76,52 +69,36 @@ export default function MyOrchardsScreen() {
                   })
                 }
                 style={{ backgroundColor: colors.primary }}
-                className="px-6 py-4 rounded-2xl w-full active:scale-95 shadow-md"
+                className="px-6 py-4 rounded-2xl w-full"
               >
-                <Text
-                  style={{ color: colors.light }}
-                  className="font-semibold text-[16px] text-center"
-                >
+                <Text 
+                style={{color:colors.light}}
+                className=" text-center font-semibold">
                   + Add Orchard
                 </Text>
               </Pressable>
             </View>
           </View>
         ) : (
-          <View className="flex-1 pt-3">
+          <>
             <FlatList
-              scrollEnabled={false}
               data={filteredOrchards}
               keyExtractor={(item) => String(item.id)}
               renderItem={({ item }) => (
-                <View className="mb-4">
+                <View className="mb-4 ">
                   <OrchardCard orchard={item} />
                 </View>
               )}
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingBottom: 120 }}
+              contentContainerStyle={{ paddingBottom: 160 }}
               ListHeaderComponent={
-                <View
-                  style={{ backgroundColor: colors.light }}
-                  className="mb-4 mt-2 px-4"
-                >
+                <View className="mb-4 mt-2 px-4">
                   <SearchBar search={search} setSearch={setSearch} />
                 </View>
               }
-              ListEmptyComponent={
-                <Text
-                  style={{
-                    textAlign: "center",
-                    marginTop: 40,
-                    color: colors.neutral,
-                  }}
-                >
-                  No orchards found
-                </Text>
-              }
             />
 
-            {/* FAB */}
+            {/*UNIVERSAL FAB */}
             <Pressable
               onPress={() =>
                 router.push({
@@ -129,32 +106,28 @@ export default function MyOrchardsScreen() {
                   params: { mode: "create" },
                 })
               }
-              className="absolute bottom-6 right-6 rounded-full"
+              style={{
+                position: "absolute",
+                right: 24,
+                bottom: 24,
+                zIndex: 999,
+              }}
             >
               <View
-                className="h-16 w-16 rounded-full items-center justify-center"
                 style={{
-                  backgroundColor: colors.primary + "20",
+                  height: 56,
+                  width: 56,
+                  borderRadius: 28,
+                  backgroundColor: colors.primary,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  elevation: 6,
                 }}
               >
-                <View
-                  className="h-14 w-14 rounded-full items-center justify-center shadow-lg"
-                  style={{ backgroundColor: colors.primary }}
-                >
-                  <Text
-                    style={{
-                      color: colors.light,
-                      lineHeight: 32,
-                      transform: [{ translateY: -1 }],
-                    }}
-                    className="text-3xl font-semibold"
-                  >
-                    +
-                  </Text>
-                </View>
+                <Text style={{ color: "#fff", fontSize: 28 }}>+</Text>
               </View>
             </Pressable>
-          </View>
+          </>
         )}
       </View>
     </ScreenLayout>
