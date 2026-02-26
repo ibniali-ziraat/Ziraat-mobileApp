@@ -164,7 +164,7 @@ export default function SettingsScreen() {
           <Row
             label="Terms & Conditions"
             icon={<FileText size={22} color={colors.neutral} />}
-            onPress={() => router.push("/user/condition")}
+            onPress={() => router.push("/user/terms")}
           />
         </Section>
 
