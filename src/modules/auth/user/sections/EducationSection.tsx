@@ -10,35 +10,31 @@ export default function EducationSection({ control, errors }: Props) {
   return (
     <View>
       <FormTextInput
-        control={control}
         name="highestQualification"
         label="Highest Qualification"
         error={errors.highestQualification}
+        type="name"
       />
 
       <FormTextInput
-        control={control}
         name="instituteName"
         label="Institute / University Name"
         error={errors.instituteName}
+        type="name"
       />
 
       <FormTextInput
-        control={control}
         name="passingYear"
         label="Year of Passing"
-        type="phone"
+        type="year"
         error={errors.passingYear}
       />
 
       <FormTextInput
-        control={control}
         name="specialization"
         label="Specialization / Major (Optional)"
         error={errors.specialization}
-        optional
       />
     </View>
   );
 }
-

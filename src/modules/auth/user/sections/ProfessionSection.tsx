@@ -67,44 +67,42 @@ import { View } from "react-native";
 //   );
 // }
 
-export default function ProfessionSection({ control, errors }: Props) {
+export default function ProfessionSection({ errors }: any) {
   return (
     <View style={{ paddingHorizontal: 8 }}>
       <FormTextInput
-        control={control}
         name="professionType"
         label="Profession / Occupation"
-        error={errors.professionType?.message}
+        error={errors.professionType}
+        type="name"
       />
 
       <FormTextInput
-        control={control}
         name="organizationName"
         label="Organization / Employer Name"
-        error={errors.organizationName?.message}
+        error={errors.organizationName}
+        type="username"
       />
 
       <FormTextInput
-        control={control}
         name="designation"
         label="Designation / Role"
-        error={errors.designation?.message}
+        error={errors.designation}
+        type="username"
       />
 
       <FormTextInput
-        control={control}
         name="experienceYears"
         label="Years of Experience"
-        keyboardType="numeric"
-        error={errors.experienceYears?.message}
+        error={errors.experienceYears}
+        type="age"
       />
 
       <FormTextInput
-        control={control}
         name="skills"
         label="Key Skills / Expertise (Optional)"
-        error={errors.skills?.message}
-        optional
+        placeholder="Key Skills / Expertise"
+        error={errors.skills}
       />
     </View>
   );

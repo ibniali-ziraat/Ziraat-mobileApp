@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
-import { RefreshCcw, Search, XCircle } from "lucide-react-native";
+import { Search, XCircle } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import {
   Animated,
   FlatList,
@@ -15,7 +15,6 @@ import CsText from "../../shared/CsText";
 import { SingleSelectInputProps } from "../../shared/inputs/types";
 
 export default function SingleSelectInput({
-  control,
   name,
   label,
   options,
@@ -27,6 +26,8 @@ export default function SingleSelectInput({
   searchable = false,
   placeholder = label,
 }: SingleSelectInputProps) {
+  const { control } = useFormContext();
+  if (!control) return null;
   const [visible, setVisible] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -70,7 +71,6 @@ export default function SingleSelectInput({
 
         return (
           <View style={{ marginBottom: 16 }}>
-            {/* Label */}
             <CsText
               style={{
                 marginBottom: 6,
@@ -83,7 +83,6 @@ export default function SingleSelectInput({
               {!optional && <CsText style={{ color: colors.error }}> *</CsText>}
             </CsText>
 
-            {/* Selector */}
             <Pressable
               disabled={disabled}
               style={{
@@ -178,7 +177,7 @@ export default function SingleSelectInput({
                       </CsText>
 
                       <View style={{ flexDirection: "row" }}>
-                        <Pressable
+                        {/* <Pressable
                           onPress={() => {
                             onChange("");
                             onValueChange?.("");
@@ -188,7 +187,7 @@ export default function SingleSelectInput({
                           style={{ padding: 6 }}
                         >
                           <RefreshCcw size={20} color={colors.primary} />
-                        </Pressable>
+                        </Pressable> */}
 
                         <Pressable
                           onPress={() => {

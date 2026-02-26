@@ -87,14 +87,14 @@ export default function MyOrchardsScreen() {
               data={filteredOrchards}
               keyExtractor={(item) => String(item.id)}
               renderItem={({ item }) => (
-                <View className="mb-4 ">
+                <View className="mb-4">
                   <OrchardCard orchard={item} />
                 </View>
               )}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 160 }}
               ListHeaderComponent={
-                <View className="mb-4 mt-2 px-4">
+                <View className="mb-6 mt-4 px-8">
                   <SearchBar search={search} setSearch={setSearch} />
                 </View>
               }

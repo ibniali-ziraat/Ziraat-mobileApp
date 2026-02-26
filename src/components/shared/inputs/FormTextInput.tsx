@@ -35,6 +35,8 @@ const FormTextInput = ({
       case "age":
       case "pincode":
       case "bankaccount":
+      case "pincode":
+      case "year":
         return "numeric";
 
       case "email":
@@ -55,6 +57,8 @@ const FormTextInput = ({
 
       case "pincode":
         return text.replace(/\D/g, "").slice(0, 6);
+      case "year":
+        return text.replace(/\D/g, "").slice(0, 4);
 
       case "bankaccount":
         return text.replace(/\D/g, "").slice(0, 18);
@@ -82,12 +86,16 @@ const FormTextInput = ({
           .replace(/[^a-zA-Z0-9@._-]/g, "")
           .replace(/@(?=.*@)/g, "")
           .slice(0, 32);
+      case "username":
+        return text.replace(/[^a-zA-Z0-9._]/g, "").slice(0, 24);
 
       case "name":
         return text.replace(/[^a-zA-Z\s]/g, "").slice(0, 32);
 
       case "password":
         return text.slice(0, 24);
+      case "address":
+        return text.replace(/[^a-zA-Z0-9\s,.\-/#]/g, "").slice(0, 120);
 
       default:
         return text;
@@ -110,14 +118,12 @@ const FormTextInput = ({
 
         return (
           <View style={styles.container}>
-            {/* Label */}
             <View style={styles.labelRow}>
               <Text style={styles.label}>{label}</Text>
 
               {required && <Text style={styles.required}> *</Text>}
             </View>
 
-            {/* Input */}
             <View style={[styles.inputContainer, { borderColor }]}>
               {type === "phone" && (
                 <Text style={styles.countryCode}>{countryCode}</Text>
@@ -150,7 +156,6 @@ const FormTextInput = ({
               )}
             </View>
 
-            {/* Error */}
             {hasError && <Text style={styles.error}>{error?.message}</Text>}
           </View>
         );
