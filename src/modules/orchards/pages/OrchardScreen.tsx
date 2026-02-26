@@ -44,7 +44,6 @@ export default function MyOrchardsScreen() {
 
   return (
     <ScreenLayout scrollable={false}>
-      {/* IMPORTANT: position relative for WEB */}
       <View
         style={{ flex: 1, backgroundColor: colors.light, position: "relative" }}
       >

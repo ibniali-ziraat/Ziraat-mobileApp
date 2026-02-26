@@ -15,10 +15,9 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
       <View
         style={[
           {
-            marginBottom: 16,
+            marginBottom: 32,
             borderRadius: 20,
             backgroundColor: colors.light,
-            borderWidth: 1,
             padding: 16,
           },
           shadows.review_card,
@@ -26,7 +25,13 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
       >
         <OrchardDetails orchard={orchard} />
 
-        <View style={{}} />
+        {/* Divider */}
+        <View
+          style={{
+            height: 1,
+            marginVertical: 2,
+          }}
+        />
 
         <Pressable
           onPress={() =>
