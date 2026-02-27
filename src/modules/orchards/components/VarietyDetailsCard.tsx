@@ -27,7 +27,7 @@ export default function VarietiesCard({
   showAll = false,
 }: Props) {
   const hasVarieties = varietiesData.length > 0;
-  const showSeeMore = varietiesData.length > 2;
+  const showSeeMore = !showAll && varietiesData.length > 2;
 
   const visibleVarieties = showAll
     ? varietiesData
@@ -38,7 +38,6 @@ export default function VarietiesCard({
   return (
     <ScreenContent>
       <View style={{ marginVertical: 12 }}>
-        {/* HEADER */}
         <View
           style={{
             flexDirection: "row",
@@ -94,7 +93,6 @@ export default function VarietiesCard({
           )}
         </View>
 
-        {/* CENTER ADD */}
         {!hasVarieties && (
           <Pressable
             onPress={onAdd}
@@ -114,7 +112,6 @@ export default function VarietiesCard({
           </Pressable>
         )}
 
-        {/* VARIETY CARDS */}
         {visibleVarieties.map((v) => (
           <View
             key={v.id}
@@ -237,7 +234,7 @@ export default function VarietiesCard({
             }}
           >
             <Text style={{ color: colors.primary, fontWeight: "700" }}>
-              See more Varieties ({varietiesData.length})
+              See more Varieties ({varietiesData.length - 2})
             </Text>
           </Pressable>
         )}
@@ -246,7 +243,6 @@ export default function VarietiesCard({
   );
 }
 
-/* ACTION ICON */
 function ActionIcon({ children, onPress }: any) {
   return (
     <Pressable
@@ -310,7 +306,6 @@ function AgeChip({ icon, label, subtitle, value, bg }: any) {
     </View>
   );
 }
-/* STRIP ITEM */
 function StripItem({ label, value }: any) {
   const isEmpty = value === null || value === undefined || value === "";
 

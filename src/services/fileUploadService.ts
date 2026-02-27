@@ -1,6 +1,5 @@
 import axiosInstance from "../api/client/axiosInstance";
 
-// uploadFile.ts
 export const uploadFile = async ({
   file,
   UserType,

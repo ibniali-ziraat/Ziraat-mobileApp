@@ -43,6 +43,7 @@ import { OrchardDeleteKey } from "../config/orchardDeleteConfig";
 import BackHeader from "@/src/components/shared/BackHeader";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
+import SoilTestReportsCard from "../components/SoilTestReportsCard";
 import VarietiesCard from "../components/VarietyDetailsCard";
 import {
   useCropNutritionQuery,
@@ -119,6 +120,7 @@ export default function OrchardDetail() {
   // console.log(varietiesData, "varieties data....");
 
   const { data: soilWaterData } = useSoilWaterQuery(orchardProfileId!);
+  console.log(soilWaterData, "soilwaterdata....");
 
   // const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
   //   null,
@@ -323,7 +325,6 @@ export default function OrchardDetail() {
           onAdd={() => goToSection("farm")}
           emptyActionLabel="Add Location"
         />
-
         <OrchardDetailsCard
           heading="Crop Nutrition"
           items={
@@ -377,7 +378,6 @@ export default function OrchardDetail() {
           onAdd={() => router.push(ROUTES.ORCHARDS.REGISTRATION.CROP_INFO)}
           emptyActionLabel="Add Crop Nutrition"
         />
-
         <OrchardDetailsCard
           heading="Infrastructure"
           items={
@@ -440,14 +440,12 @@ export default function OrchardDetail() {
           onAdd={() => goToSection("farmInfrastructure")}
           emptyActionLabel="Add Infrastructure"
         />
-
         <VarietiesCard
           varietiesData={varietiesData || []}
           onAdd={() => goToSection("varietyAndPlanting")}
           onEdit={(id) => goToSection("varietyAndPlanting", id)}
           onDelete={(id) => setVarietyToDelete(id)}
         />
-
         <OrchardDetailsCard
           heading="Soil & Water"
           items={
@@ -542,7 +540,14 @@ export default function OrchardDetail() {
           onAdd={() => goToSection("soilAndWater")}
           emptyActionLabel="Add Soil & Water"
         />
-
+        {soilWaterData && (
+          <SoilTestReportsCard
+            reportUrls={soilWaterData?.soilTestReportUrls}
+            onEdit={() => goToSection("soilTestReports")}
+            onDelete={() => setDeleteSection("soilTestReports")}
+            onAdd={() => goToSection("soilTestReports")}
+          />
+        )}
         <OrchardDetailsCard
           heading="Plant Protection"
           items={
@@ -587,7 +592,6 @@ export default function OrchardDetail() {
           onAdd={() => goToSection("plantProtection")}
           emptyActionLabel="Add Plant Protection"
         />
-
         {/* PRODUCTION & MARKETING */}
         <OrchardDetailsCard
           heading="Production & Marketing"
@@ -648,8 +652,43 @@ export default function OrchardDetail() {
           onAdd={() => goToSection("productionAndMarketing")}
           emptyActionLabel="Add Production"
         />
-
         {/* INPUT COST */}
+        {/* <OrchardDetailsCard
+          heading="Soil Test Reports"
+          items={
+            hasData(inputCostData)
+              ? [
+                  {
+                    title: "Payment Type",
+                    value: inputCostData.paymentType || "-",
+                    icon: <IndianRupee size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Credit Period",
+                    value: inputCostData.creditPeriod || "-",
+                    icon: <CalendarClock size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Pesticide Supplier Location",
+                    value: inputCostData.pesticideSupplierLocation || "-",
+                    icon: <MapPin size={20} color={colors.primary} />,
+                  },
+                ]
+              : []
+          }
+          onEdit={
+            hasData(inputCostData)
+              ? () => goToSection("soilTestReports")
+              : undefined
+          }
+          onDelete={
+            hasData(inputCostData)
+              ? () => setDeleteSection("soilTestReports")
+              : undefined
+          }
+          onAdd={() => goToSection("soilTestReports")}
+          emptyActionLabel="Add Soil Test Report"
+        /> */}
         <OrchardDetailsCard
           heading="Input Cost"
           items={
@@ -684,7 +723,6 @@ export default function OrchardDetail() {
           onAdd={() => goToSection("inputCost")}
           emptyActionLabel="Add Input Cost"
         />
-
         {/* FUTURE READINESS */}
         <OrchardDetailsCard
           heading="Future Readiness"
