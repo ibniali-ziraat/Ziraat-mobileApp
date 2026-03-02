@@ -37,7 +37,6 @@ export default function SoilTestReportsCard({
           backgroundColor: colors.light,
         }}
       >
-        {/* HEADER */}
         <View className="flex-row items-center justify-between pt-4 px-4">
           <View className="flex-row items-center gap-3">
             <View
@@ -53,8 +52,7 @@ export default function SoilTestReportsCard({
             </CsText>
           </View>
 
-          {/* Add more reports */}
-          {onAdd && (
+          {onAdd && hasReports && (
             <TouchableOpacity
               onPress={onAdd}
               className="flex-row items-center gap-1"
@@ -65,7 +63,6 @@ export default function SoilTestReportsCard({
           )}
         </View>
 
-        {/* CONTENT */}
         <View className="p-4 pt-3">
           {!hasReports ? (
             <TouchableOpacity

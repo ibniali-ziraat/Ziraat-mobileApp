@@ -65,6 +65,7 @@ import {
   useProductionMarketingQuery,
   useSoilWaterQuery,
 } from "../hooks/useOrchardsQuery";
+import { useDeleteSoilTestReportMutation } from "../hooks/useSoilTestReport";
 import { orchardRoutes } from "../routes/orchardRoutes";
 
 export default function OrchardDetail() {
@@ -116,15 +117,12 @@ export default function OrchardDetail() {
   const { data: inputCostData } = useInputCostQuery(orchardProfileId!);
   const { data: varietiesData } = useOrchardVarietiesQuery(orchardProfileId!);
   const { mutateAsync: deleteVariety } = useDeleteVarietyMutation();
-
-  // console.log(varietiesData, "varieties data....");
+  const { mutateAsync: deleteSoilTestReport } =
+    useDeleteSoilTestReportMutation();
 
   const { data: soilWaterData } = useSoilWaterQuery(orchardProfileId!);
   console.log(soilWaterData, "soilwaterdata....");
 
-  // const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
-  //   null,
-  // );
   const [deleteWhole, setDeleteWhole] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -135,10 +133,7 @@ export default function OrchardDetail() {
     return true;
   };
 
-  const goToSection = (
-    section: OrchardRouteKey,
-    varietyId: number | string,
-  ) => {
+  const goToSection = (section: any, varietyId: number | string) => {
     router.push(`${orchardRoutes[section]}?varietyId=${varietyId}`);
   };
 
@@ -251,6 +246,7 @@ export default function OrchardDetail() {
     }
   };
 
+  const handleDeleteSoilTestReport = () => {};
   return (
     <ScreenLayout>
       <BackHeader title="  Orchard Information" />
@@ -543,8 +539,7 @@ export default function OrchardDetail() {
         {soilWaterData && (
           <SoilTestReportsCard
             reportUrls={soilWaterData?.soilTestReportUrls}
-            onEdit={() => goToSection("soilTestReports")}
-            onDelete={() => setDeleteSection("soilTestReports")}
+            onDeleteReport={handleDeleteSoilTestReport}
             onAdd={() => goToSection("soilTestReports")}
           />
         )}
@@ -652,43 +647,7 @@ export default function OrchardDetail() {
           onAdd={() => goToSection("productionAndMarketing")}
           emptyActionLabel="Add Production"
         />
-        {/* INPUT COST */}
-        {/* <OrchardDetailsCard
-          heading="Soil Test Reports"
-          items={
-            hasData(inputCostData)
-              ? [
-                  {
-                    title: "Payment Type",
-                    value: inputCostData.paymentType || "-",
-                    icon: <IndianRupee size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Credit Period",
-                    value: inputCostData.creditPeriod || "-",
-                    icon: <CalendarClock size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Pesticide Supplier Location",
-                    value: inputCostData.pesticideSupplierLocation || "-",
-                    icon: <MapPin size={20} color={colors.primary} />,
-                  },
-                ]
-              : []
-          }
-          onEdit={
-            hasData(inputCostData)
-              ? () => goToSection("soilTestReports")
-              : undefined
-          }
-          onDelete={
-            hasData(inputCostData)
-              ? () => setDeleteSection("soilTestReports")
-              : undefined
-          }
-          onAdd={() => goToSection("soilTestReports")}
-          emptyActionLabel="Add Soil Test Report"
-        /> */}
+
         <OrchardDetailsCard
           heading="Input Cost"
           items={
