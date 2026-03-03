@@ -8,6 +8,7 @@ import {
   FileText,
   HelpCircle,
   Lock,
+  MapPin,
   PhoneCall,
   Shield,
   Trash2,
@@ -145,6 +146,12 @@ export default function SettingsScreen() {
           />
           <Divider />
 
+
+<Row
+  label="Add Address"
+  icon={<MapPin size={22} color={colors.neutral} />}
+  onPress={() => router.push("/user/add-addresses")}
+/>
           <Row
             label="FAQs"
             icon={<HelpCircle size={22} color={colors.neutral} />}
