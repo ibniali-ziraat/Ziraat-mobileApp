@@ -14,8 +14,8 @@
 
 import { useMutation } from "@tanstack/react-query";
 import {
-    ChangeCurrentPasswordPayload,
-    currentPasswordService,
+  ChangeCurrentPasswordPayload,
+  currentPasswordService,
 } from "../services/currentPasswordService";
 
 export const useChangeCurrentPassword = () => {
