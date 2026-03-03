@@ -51,10 +51,11 @@ export default function SoilAndWaterProfileScreen() {
     });
   }, [soilWaterData]);
   const onSubmit = async (values: any) => {
+    console.log(values, "values in soilwaterreport");
+
     try {
       let soilTestReportUrl = soilWaterData?.soilTestReportUrl || "";
 
-      // Upload file only if new file selected
       if (values.soilTestReportUrl?.uri) {
         const uploadRes = await uploadFileAsync({
           file: {

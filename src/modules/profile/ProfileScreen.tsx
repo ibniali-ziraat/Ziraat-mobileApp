@@ -144,10 +144,9 @@ export default function UserProfileScreen() {
               ? [
                   {
                     title: "Email",
-                    value:
-                      profileData?.email === DUMMY_EMAIL
-                        ? "—"
-                        : profileData?.email,
+                    value: profileData?.email.endsWith(DUMMY_EMAIL)
+                      ? "N/A"
+                      : profileData?.email,
                     icon: <Mail size={22} color={colors.primary} />,
                   },
                   {
@@ -169,7 +168,7 @@ export default function UserProfileScreen() {
                     title: "User Since",
                     value: profileData?.createdOn
                       ? new Date(profileData.createdOn).toLocaleDateString()
-                      : "—",
+                      : "N/A",
                     icon: <Calendar size={22} color={colors.primary} />,
                   },
                 ]
@@ -239,7 +238,7 @@ export default function UserProfileScreen() {
                   },
                   {
                     title: "Specialization",
-                    value: educationData.specialization || "—",
+                    value: educationData.specialization || "N/A",
                     icon: (
                       <GraduationCapIcon size={22} color={colors.primary} />
                     ),
@@ -282,12 +281,12 @@ export default function UserProfileScreen() {
                     title: "Experience",
                     value: professionData.experienceYears
                       ? `${professionData.experienceYears} yrs`
-                      : "—",
+                      : "N/A",
                     icon: <Clock size={22} color={colors.primary} />,
                   },
                   {
                     title: "Skills",
-                    value: professionData.skills || "—",
+                    value: professionData.skills || "N/A",
                     icon: <UserCheck size={22} color={colors.primary} />,
                   },
                 ]

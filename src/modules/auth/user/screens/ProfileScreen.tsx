@@ -23,6 +23,8 @@ export default function ProfileScreen() {
   const { setUserProfileId, userId } = useAuth();
 
   const { data } = useProfileQuery(userId);
+  console.log(data, "userprofiledata...");
+
   const { mutateAsync: save, isPending: isSaving } = useProfileMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useProfileUpdateMutation();
@@ -39,7 +41,7 @@ export default function ProfileScreen() {
     if (!data) return;
 
     Object.entries(data).forEach(([k, v]) => {
-      if (k === "email" && v === DUMMY_EMAIL) {
+      if (k === "email" && v.endsWith(DUMMY_EMAIL)) {
         setValue(k, "");
       } else {
         setValue(k, v != null ? String(v) : "");
@@ -55,7 +57,7 @@ export default function ProfileScreen() {
         id: data?.id,
         userId: userId,
         ...values,
-        email: values.email?.trim() || DUMMY_EMAIL,
+        email: values.email?.trim() || `${values.phone}${DUMMY_EMAIL}`,
       };
       if (data) {
         await update(payload);

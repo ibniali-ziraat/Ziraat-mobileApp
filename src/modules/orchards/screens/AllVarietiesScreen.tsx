@@ -1,4 +1,3 @@
-
 // import BackHeader from "@/src/components/shared/BackHeader";
 // import ScreenLayout from "@/src/components/shared/ScreenLayout";
 // import { colors } from "@/src/constants/colors";
@@ -32,7 +31,7 @@
 //    <ScreenLayout>
 //     <BackHeader
 //             title= "All Varieties"
-           
+
 //           />
 //      <View style={{ flex: 1, backgroundColor: colors.bgColor }}>
 //       <ScrollView >
@@ -49,16 +48,13 @@
 //   );
 // }
 
-
-
-
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { colors } from "@/src/constants/colors";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 import VarietiesCard from "../components/VarietyDetailsCard";
 import { OrchardRouteKey, orchardRoutes } from "../routes/orchardRoutes";
 
@@ -77,7 +73,7 @@ export default function AllVarieties() {
 
   const goToSection = (
     section: OrchardRouteKey,
-    varietyId?: number | string
+    varietyId?: number | string,
   ) => {
     if (varietyId) {
       router.push({
@@ -89,17 +85,15 @@ export default function AllVarieties() {
     }
   };
 
-  
   const onDeletePress = (id: number) => {
     setSelectedId(id);
     setShowDeleteModal(true);
   };
 
-   
   const handleConfirmDelete = () => {
     if (!selectedId) return;
 
-    setVarieties(prev => prev.filter(item => item.id !== selectedId));
+    setVarieties((prev) => prev.filter((item) => item.id !== selectedId));
 
     setShowDeleteModal(false);
     setSelectedId(null);
@@ -110,18 +104,15 @@ export default function AllVarieties() {
       <BackHeader title="All Varieties" />
 
       <View style={{ flex: 1, backgroundColor: colors.bgColor }}>
-        <ScrollView>
-          <VarietiesCard
-            varietiesData={varieties}
-            onAdd={() => goToSection("varietyAndPlanting")}
-            onEdit={(id) => goToSection("varietyAndPlanting", id)}
-            onDelete={onDeletePress}
-            showAll
-          />
-        </ScrollView>
+        <VarietiesCard
+          varietiesData={varieties}
+          onAdd={() => goToSection("varietyAndPlanting")}
+          onEdit={(id) => goToSection("varietyAndPlanting", id)}
+          onDelete={onDeletePress}
+          showAll
+        />
       </View>
 
-      {/*  Confirm Delete Modal */}
       <ConfirmDeleteModal
         visible={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}

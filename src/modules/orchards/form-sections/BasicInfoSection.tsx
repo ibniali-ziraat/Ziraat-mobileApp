@@ -12,12 +12,13 @@ import { shadows } from "@/src/constants/shadows";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
 
-export default function BasicInfo({ control, errors, data }) {
+export default function BasicInfo({ errors, data }) {
   console.log(errors, "errors...");
 
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
 
-  const { setValue } = useFormContext();
+  const { control, setValue } = useFormContext();
+  if (!control) return null;
 
   const unitHydrated = useRef(false);
   const { districts, tehsils, setSelectedDistrict } =
@@ -37,7 +38,7 @@ export default function BasicInfo({ control, errors, data }) {
   const orchardMode = useWatch({
     control,
     name: "orchardSize.mode",
-    defaultValue: "measure",
+    defaultValue: "manual",
   });
 
   useEffect(() => {
@@ -85,7 +86,6 @@ export default function BasicInfo({ control, errors, data }) {
           shadows.review_card,
         ]}
       >
-        {/* Left section */}
         <View>
           <Text
             style={{
@@ -149,7 +149,6 @@ export default function BasicInfo({ control, errors, data }) {
       {orchardMode === "manual" && (
         <View>
           <SingleSelectInput
-            control={control}
             name="orchardUnit"
             label="Orchard Size Unit"
             modalLabel="Select Unit"
@@ -186,7 +185,6 @@ export default function BasicInfo({ control, errors, data }) {
 
       <SingleSelectInput
         searchable
-        control={control}
         name="establishmentYear"
         label="Establishment Year"
         modalLabel="Select Year"
@@ -195,7 +193,6 @@ export default function BasicInfo({ control, errors, data }) {
       />
 
       <SingleSelectInput
-        control={control}
         name="plantationPattern"
         label="Plantation Pattern"
         modalLabel="Select Pattern"
@@ -210,7 +207,6 @@ export default function BasicInfo({ control, errors, data }) {
 
       {/* Ownership Type */}
       <SingleSelectInput
-        control={control}
         name="ownershipType"
         label="Ownership Type"
         modalLabel="Ownership Type"
@@ -227,7 +223,6 @@ export default function BasicInfo({ control, errors, data }) {
       {/* District */}
       <SingleSelectInput
         searchable
-        control={control}
         name="district"
         label="District"
         modalLabel="District"
@@ -240,7 +235,6 @@ export default function BasicInfo({ control, errors, data }) {
       {/* Tehsil */}
       <SingleSelectInput
         searchable
-        control={control}
         name="tehsil"
         label="Tehsil"
         modalLabel="Tehsil"

@@ -151,14 +151,13 @@ import { showErrorToast } from "@/src/utils/toast";
 import * as DocumentPicker from "expo-document-picker";
 import { Eye, Upload, X } from "lucide-react-native";
 import { useState } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { HelperText } from "react-native-paper";
 import CsText from "../../shared/CsText";
 import FilePreviewModal from "../../shared/FilePreviewModal";
 
 export default function FormFileInput({
-  control,
   name,
   label = "Upload File",
   optional = false,
@@ -167,7 +166,9 @@ export default function FormFileInput({
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [imageUri, setImageUri] = useState("");
 
-  // 📌 Pick file from device
+  const { control } = useFormContext();
+  if (!control) return;
+
   const pickFile = async (onChange: any) => {
     try {
       const result = await DocumentPicker.getDocumentAsync({

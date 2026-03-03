@@ -1,21 +1,13 @@
 import { colors } from "@/src/constants/colors";
 import { Plus, X } from "lucide-react-native"; // Lucide icons
 import { useState } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { TextInput, TouchableOpacity, View } from "react-native";
 import { HelperText } from "react-native-paper";
 import CsText from "../../shared/CsText";
-
-interface ChipInputProps {
-  control: any;
-  name: string;
-  label: string;
-  placeholder?: string;
-  error?: any;
-}
+import { ChipInputProps } from "../../shared/inputs/types";
 
 export default function ChipInput({
-  control,
   name,
   label,
   placeholder = "Add",
@@ -23,6 +15,8 @@ export default function ChipInput({
   required = false,
 }: ChipInputProps) {
   const [input, setInput] = useState("");
+  const { control } = useFormContext();
+  if (!control) return null;
 
   return (
     <Controller
@@ -47,7 +41,7 @@ export default function ChipInput({
             <CsText className="text-dark text-base font-semibold mb-2">
               {label}
               {required && <CsText className="text-red-500"> *</CsText>}
-           </CsText>
+            </CsText>
 
             {/* Chips */}
             <View className="flex-row flex-wrap gap-2 mb-2">
@@ -67,7 +61,6 @@ export default function ChipInput({
               ))}
             </View>
 
-            {/* Input */}
             <View className="flex-row items-center border border-neutral rounded-md bg-white px-3 py-4">
               <TextInput
                 className="flex-1 text-dark text-base p-0 m-0"
