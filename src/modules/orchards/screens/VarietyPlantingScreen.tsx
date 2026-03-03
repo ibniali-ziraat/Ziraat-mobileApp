@@ -63,9 +63,7 @@ export default function VarietyAndPlatingDetailsScreen() {
     formState: { errors },
   } = form;
 
-  /**
-   * ✅ CORRECT PREFILL
-   */
+  
   useEffect(() => {
     if (!varietyId) return;
     if (!varietiesData || varietiesData.length === 0) return;

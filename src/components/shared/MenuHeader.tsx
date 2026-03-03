@@ -64,7 +64,7 @@ const MenuHeader = ({ role }: MenuHeaderProps) => {
           <IconButton
             onPress={() =>
               router.push({
-                pathname: "/settings/settingsPage",
+                pathname: "/settings/settings",
               })
             }
           >
