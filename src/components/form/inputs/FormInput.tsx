@@ -45,7 +45,10 @@ export default function FormInput({
 
         return (
           <View style={{ marginBottom: 9 }}>
-            <CsText style={{ color: colors.dark }} className="mb-1  text-base">
+            <CsText
+              style={{ color: colors.dark }}
+              className="mb-1 text-base"
+            >
               {labelWithRequired}
             </CsText>
 
@@ -60,7 +63,10 @@ export default function FormInput({
               }}
             >
               <TextInput
-                contentStyle={{ color: colors.dark, paddingVertical: 14 }}
+                contentStyle={{
+                  color: colors.dark,
+                  paddingVertical: 14,
+                }}
                 mode="outlined"
                 value={value}
                 onBlur={onBlur}
@@ -84,14 +90,23 @@ export default function FormInput({
                   isSecure ? (
                     <TextInput.Icon
                       icon={showPassword ? "eye-off" : "eye"}
-                      onPress={() => setShowPassword((p) => !p)}
+                      onPress={() =>
+                        setShowPassword((prev) => !prev)
+                      }
                       forceTextInputFocus={false}
                     />
                   ) : undefined
                 }
-                style={{ backgroundColor: "transparent", borderRadius: 16 }}
+
+                outlineStyle={{ borderWidth: 1 }}
+                activeOutlineStyle={{ borderWidth: 1 }}
+
+                style={{
+                  backgroundColor: "transparent",
+                  borderRadius: 4,
+                }}
                 theme={{
-                  roundness: 16,
+                  roundness: 10,
                   colors: {
                     primary: colors.primary,
                     placeholder: "#9ca3af",
@@ -107,7 +122,10 @@ export default function FormInput({
               <HelperText
                 type="error"
                 visible
-                style={{ color: colors.error, marginTop: 4 }}
+                style={{
+                  color: colors.error,
+                  marginTop: 4,
+                }}
               >
                 {(fieldError || error)?.message}
               </HelperText>
