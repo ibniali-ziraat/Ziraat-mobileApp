@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { passwordValidator } from "../lib/validation";
 
 export const ChangePasswordSchema = z
   .object({
@@ -6,12 +7,7 @@ export const ChangePasswordSchema = z
       .string()
       .min(1, "Current password is required"),
 
-    newPassword: z
-      .string()
-      .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/,
-      "Minimum 8 characters with upper & lower case, number and symbol"
-      ),
+    newPassword: passwordValidator,
 
     confirmPassword: z
       .string()
