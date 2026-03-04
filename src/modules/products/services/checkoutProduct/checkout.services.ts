@@ -1,4 +1,5 @@
 import axiosInstance from "@/src/api/client/axiosInstance";
+import { CreateCheckoutPayload } from "../checkoutTypes";
 
 export const applyCoupon = async (payload: { couponCode: string }) => {
   const { data } = await axiosInstance.post("/cart/apply-coupon", payload);
@@ -25,23 +26,19 @@ export interface SelectOption {
 
 export interface CreateAddressPayload {
   id: number;
-
   contactName: string;
   phone: string;
-
   addressLine1: string;
   addressLine2: string;
-
   zipCode: string;
   city: string;
-
   stateOrProvinceId: number;
   districtId: number;
   countryId: string;
 
-  stateOrProvinces: SelectOption[];
-  districts: SelectOption[];
-  countries: SelectOption[];
+  stateOrProvinces: any[];
+  districts: any[];
+  countries: any[];
 
   displayDistrict: boolean;
   displayZipCode: boolean;
@@ -49,6 +46,48 @@ export interface CreateAddressPayload {
 }
 
 export const createAddress = async (payload: CreateAddressPayload) => {
-  const { data } = await axiosInstance.post("/Create", payload);
+  try {
+    const response = await axiosInstance.post("/Create", payload);
+
+    return response.data;
+  } catch (error: any) {
+    /**
+     * ✅ HANDLE 302 REDIRECT CASE
+     */
+    if (error?.response?.status === 302) {
+      console.log("302 redirect received — treating as success");
+
+      return error.response.data;
+    }
+
+    throw error;
+  }
+};
+
+export const createCheckout = async (payload: CreateCheckoutPayload) => {
+  try {
+    const response = await axiosInstance.post(
+      "/Checkout/Create", // change endpoint if needed
+      payload,
+    );
+
+    return response.data;
+  } catch (error: any) {
+    /**
+     * ✅ HANDLE 302 REDIRECT CASE
+     */
+    if (error?.response?.status === 302) {
+      console.log("302 redirect received — treating as success");
+
+      return error.response.data;
+    }
+
+    throw error;
+  }
+};
+
+export const getCheckoutShipping = async (checkoutId: string) => {
+  const { data } = await axiosInstance.get(`/checkout/${checkoutId}/shipping`);
+
   return data;
 };

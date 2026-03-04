@@ -1,4 +1,4 @@
-import "react-native-get-random-values"; // ✅ ALWAYS FIRST
+// import "react-native-get-random-values";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
@@ -14,8 +14,8 @@ import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import BasicInfo from "../form-sections/BasicInfoSection";
 
 import { ROUTES } from "@/src/constants/routes";
-import { v4 as uuidv4 } from "uuid";
 
+import { generateId } from "@/src/utils/generateId";
 import {
   useCreateOrchardMutation,
   useOrchardsByUserQuery,
@@ -46,25 +46,23 @@ export default function BasicInfoScreen() {
   const form = useZodForm(BasicInfoSchema);
 
   const {
-    setValue,
     handleSubmit,
     control,
-    reset, // ✅ IMPORTANT
+    reset,
     formState: { errors },
   } = form;
 
-  /* ✅ RESET FORM WHEN MODE CHANGES */
   useEffect(() => {
     if (!isEditMode) {
-      reset(); // 🧹 Clear old edit values when creating new orchard
+      reset();
     }
   }, [isEditMode]);
 
-  /* ✅ PREFILL ONLY EDIT MODE */
   useEffect(() => {
     if (!isEditMode || !orchard) return;
 
-    console.log("🌳 Prefilling orchard:", orchard);
+    const hasKanals = Number(orchard.kanals) > 0;
+    const hasMarlas = Number(orchard.marlas) > 0;
 
     reset({
       orchardName: orchard.orchardName ?? "",
@@ -75,21 +73,11 @@ export default function BasicInfoScreen() {
       tehsil: orchard.tehsil ?? "",
       zone: orchard.zone ?? "",
       pincode: orchard.pinCode ?? "",
-
+      orchardUnit: hasKanals ? "kanals" : hasMarlas ? "marlas" : undefined,
+      kanals: hasKanals ? String(orchard.kanals) : "",
+      marlas: hasMarlas ? String(orchard.marlas) : "",
       orchardSize: {
         mode: "manual",
-        unit:
-          orchard.kanals > 0
-            ? "kanal"
-            : orchard.marlas > 0
-              ? "marla"
-              : undefined,
-        value:
-          orchard.kanals > 0
-            ? orchard.kanals
-            : orchard.marlas > 0
-              ? orchard.marlas
-              : undefined,
       },
     });
   }, [isEditMode, orchard]);
@@ -97,7 +85,7 @@ export default function BasicInfoScreen() {
   const onSubmit = async (values: any) => {
     try {
       const payload = {
-        orchardId: orchard?.id ?? uuidv4(),
+        orchardId: orchard?.id ?? generateId(),
         ...values,
       };
 
@@ -111,10 +99,6 @@ export default function BasicInfoScreen() {
 
       router.replace(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
-      console.log("❌ ERROR:", error);
-      console.log("❌ STATUS:", error?.response?.status);
-      console.log("❌ DATA:", error?.response?.data);
-
       showErrorToast(
         error?.response?.data?.message || "Failed to save orchard",
       );

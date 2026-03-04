@@ -31,3 +31,21 @@ export const fetchStatesByCountry = async (
 
   return data;
 };
+
+/* ================= district api ================= */
+
+export interface district {
+  id: number; // adjust if string
+  name: string;
+  abbreviation?: string;
+}
+
+export const fetchDistrictsByStates = async (
+  stateOrProvinceId: string,
+): Promise<district[]> => {
+  const { data } = await axiosInstance.get(
+    `/api/states-provinces/${stateOrProvinceId}/districts`,
+  );
+
+  return data;
+};

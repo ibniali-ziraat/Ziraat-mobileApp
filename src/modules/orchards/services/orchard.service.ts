@@ -171,9 +171,11 @@ export const createPlantProtection = async (data: any) => {
   return res;
 };
 
-export const updatePlantProtection = async (id: string | number, data: any) => {
+export const updatePlantProtection = async (data: any) => {
+  console.log(data, "iddata");
+
   const { data: res } = await axiosInstance.patch(
-    `${CORE}/orchard-protection/${id}`,
+    `${CORE}/orchard/${data?.orchardProfileId}/plant-health`,
     data,
   );
   return res;
@@ -181,7 +183,7 @@ export const updatePlantProtection = async (id: string | number, data: any) => {
 
 export const deletePlantProtection = async (id: string | number) => {
   const { data: res } = await axiosInstance.delete(
-    `${CORE}/orchard-protection/${id}`,
+    `${CORE}/orchard/${id}/plant-health`,
   );
   return res;
 };

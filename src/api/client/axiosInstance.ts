@@ -4,8 +4,7 @@ import axios from "axios";
 const axiosInstance = axios.create({
   // baseURL: "https://r612bq9q-44388.inc1.devtunnels.ms",
 
-  baseURL:
-    "https://ziraatapi-fgfhe3hxf3h9gkg4.centralindia-01.azurewebsites.net/",
+  baseURL: "https://nwxp9p34-44388.inc1.devtunnels.ms/",
 
   headers: {
     "Content-Type": "application/json",

@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import {
-    fetchCountries,
-    fetchStatesByCountry,
+  fetchCountries,
+  fetchDistrictsByStates,
+  fetchStatesByCountry,
 } from "../../services/checkoutProduct/Address/address.services";
 
 export const useCountries = () => {
@@ -16,5 +17,13 @@ export const useStates = (countryId: string) => {
     queryKey: ["states", countryId],
     queryFn: () => fetchStatesByCountry(countryId),
     enabled: !!countryId,
+  });
+};
+
+export const useDistricts = (stateId: string) => {
+  return useQuery({
+    queryKey: ["states", stateId],
+    queryFn: () => fetchDistrictsByStates(stateId),
+    enabled: !!stateId,
   });
 };

@@ -98,7 +98,7 @@ const CartList = () => {
             console.log("Checkout ID saved:", checkoutId);
           }
 
-          toast.success("Order placed successfully");
+          // toast.success("Order placed successfullyghjkl");
           router.push("/products/address");
         } catch (error) {
           console.log("AsyncStorage error:", error);
@@ -139,7 +139,7 @@ const CartList = () => {
         <View className="flex-1 justify-center items-center px-6">
           <Image
             source={require("@/assets/images/empty-wishlist.png")}
-            className="w-48 h-48 mb-6"
+            style={{ width: 90, height: 90 }}
             resizeMode="contain"
           />
 

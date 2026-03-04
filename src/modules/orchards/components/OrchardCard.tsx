@@ -1,4 +1,3 @@
-
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { router } from "expo-router";
 import { Pressable, View } from "react-native";
@@ -11,8 +10,16 @@ interface OrchardCardProps {
 export default function OrchardCard({ orchard }: OrchardCardProps) {
   return (
     <ScreenContent>
-     
-      <View className="mb-3">
+      <View
+        className="mb-3 rounded-xl bg-white"
+        style={{
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.08,
+          shadowRadius: 7,
+          elevation: 3, 
+        }}
+      >
         <Pressable
           onPress={() =>
             router.push({
@@ -22,11 +29,9 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
           }
           className="active:opacity-90"
         >
-        
-            <OrchardDetails orchard={orchard} />
+          <OrchardDetails orchard={orchard} />
         </Pressable>
       </View>
     </ScreenContent>
   );
 }
-

@@ -1,50 +1,12 @@
-import FormInput from "@/src/components/form/inputs/FormInput";
-
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { useEffect } from "react";
 import { useFieldArray } from "react-hook-form";
-import { Pressable, Text, View } from "react-native";
-import { soilTypeOptions } from "../schemas/SoilWaterProfileSchema";
+import { Pressable, View } from "react-native";
+import { VARIETIES_LIST } from "../constants/orchardOptions";
 
 export default function VarietAndPlatingDetails({ control, errors }) {
-  const VARIETIES_LIST = [
-    "Red Delicious",
-    "Golden Delicious",
-    "Gala",
-    "Fuji",
-    "Honeycrisp",
-    "Ambri",
-    "Other",
-  ];
-
-  const rootstockOptions = [
-    { label: "M9", value: "M9" },
-    { label: "MM106", value: "MM106" },
-    { label: "Seedling", value: "Seedling" },
-    { label: "Other", value: "Other" },
-  ];
-
-  const densityOptions = [
-    { label: "High Density", value: "High Density" },
-    { label: "Medium Density", value: "Medium Density" },
-    { label: "Traditional", value: "Traditional" },
-  ];
-
-  const TREE_AGE_DISTRIBUTION = [
-    "Less than 5 years",
-    "5–10 years",
-    "10+ years",
-  ].map((x) => ({
-    label: x,
-    value: x,
-  }));
-
-  // const { fields, append, remove } = useFieldArray({
-  //   control,
-  //   name: "customInputs",
-  // });
-
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append } = useFieldArray({
     control,
     name: "varieties",
   });
@@ -64,74 +26,88 @@ export default function VarietAndPlatingDetails({ control, errors }) {
   }, [fields.length, append]);
 
   return (
-    <View style={{ paddingVertical: 20}}>
-      {fields.map((field, index) => (
-        <View
-          key={field.id}
-          style={{
-            marginBottom: 20,
-            padding: 12,
-            borderRadius: 10,
-            backgroundColor: "#fff",
-          }}
-        >
-          <SingleSelectInput
-            control={control}
-            name={`varieties.${index}.varietyName`}
-            label="Variety Name"
-            options={soilTypeOptions.map((v) => ({ label: v, value: v }))}
-            error={errors?.varieties?.[index]?.varietyName?.message}
-          />
+    <View style={{ paddingVertical: 20 }}>
+      {fields.map((field, index) => {
+        const varietyError = errors?.varieties?.[index];
 
-          <FormInput
-            control={control}
-            name={`varieties.${index}.numberOfTrees`}
-            label="Total Trees"
-            type="phone"
-          />
+        return (
+          <View key={field.id}>
+            <SingleSelectInput
+              control={control}
+              name={`varieties.${index}.varietyName`}
+              label="Apple variety"
+              placeholder="Select apple variety"
+              options={VARIETIES_LIST}
+              error={varietyError?.varietyName?.message}
+              modalLabel="Select Soil Type"
+            />
 
-          <SingleSelectInput
-            control={control}
-            name={`varieties.${index}.rootstockUsed`}
-            label="Rootstock Used"
-            options={rootstockOptions}
-          />
+            <FormTextInput
+              name={`varieties.${index}.numberOfTrees`}
+              label="Total number of trees"
+              placeholder="e.g. 150"
+              type="pincode"
+              required
+              error={varietyError?.numberOfTrees}
+            />
 
-          <SingleSelectInput
-            control={control}
-            name={`varieties.${index}.plantDensity`}
-            label="Plant Density"
-            options={densityOptions}
-          />
+            <FormTextInput
+              name={`varieties.${index}.treesLessThan5Years`}
+              label="Young trees (less than 5 years)"
+              placeholder="e.g. 50"
+              type="pincode"
+              required
+              error={varietyError?.treesLessThan5Years}
+            />
 
-          <FormInput
-            control={control}
-            name={`varieties.${index}.treesLessThan5Years`}
-            label="Trees (<5 Years)"
-            type="phone"
-          />
+            <FormTextInput
+              name={`varieties.${index}.treesFiveToTenYears`}
+              label="Trees aged 5 to 10 years"
+              placeholder="e.g. 50"
+              type="pincode"
+              required
+              error={varietyError?.treesFiveToTenYears}
+            />
 
-          <FormInput
-            control={control}
-            name={`varieties.${index}.treesFiveToTenYears`}
-            label="Trees (5–10 Years)"
-            type="phone"
-          />
+            <FormTextInput
+              name={`varieties.${index}.treesMoreThan10Years`}
+              label="Old trees (more than 10 years)"
+              placeholder="e.g. 50"
+              type="pincode"
+              required
+              error={varietyError?.treesMoreThan10Years}
+            />
+            <SingleSelectInput
+              control={control}
+              optional
+              name={`varieties.${index}.rootstockUsed`}
+              label="Rootstock used (optional)"
+              placeholder="Select rootstock type"
+              options={[
+                { label: "M9", value: "M9" },
+                { label: "MM106", value: "MM106" },
+                { label: "Seedling", value: "Seedling" },
+                { label: "Other", value: "Other" },
+              ]}
+              // error={errors?.varieties?.[index]?.rootstockUsed?.message}
+            />
 
-          <FormInput
-            control={control}
-            name={`varieties.${index}.treesMoreThan10Years`}
-            label="Trees (>10 Years)"
-            type="phone"
-          />
-
-          {fields.length > 1 && (
-            <Pressable onPress={() => remove(index)}>
-              <Text style={{ color: "red", marginTop: 8 }}>Remove Variety</Text>
-            </Pressable>
-          )}
-        </View>
-      ))}
+            <SingleSelectInput
+              control={control}
+              optional
+              name={`varieties.${index}.plantDensity`}
+              label="Planting density (optional)"
+              placeholder="Select planting density"
+              options={[
+                { label: "High Density", value: "High Density" },
+                { label: "Medium Density", value: "Medium Density" },
+                { label: "Traditional", value: "Traditional" },
+              ]}
+              // error={errors?.varieties?.[index]?.plantDensity?.message}
+            />
+          </View>
+        );
+      })}
 
       <Pressable
         onPress={() =>

@@ -18,6 +18,7 @@ import {
   useCropNutritionQuery,
   useUpdateCropNutritionMutation,
 } from "../hooks/useOrchardsQuery";
+import { CropNutritionSchema } from "../schemas/CropNutritionSchema";
 
 export default function CropNutritionManagementScreen() {
   const { orchardProfileId } = useAuth();
@@ -31,7 +32,7 @@ export default function CropNutritionManagementScreen() {
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateCropNutritionMutation();
 
-  const form = useZodForm();
+  const form = useZodForm(CropNutritionSchema);
   const {
     setValue,
     handleSubmit,

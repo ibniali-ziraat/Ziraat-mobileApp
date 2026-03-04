@@ -18,6 +18,7 @@ import {
   useOrchardExtraQuery,
   useUpdateOrchardExtraMutation,
 } from "../hooks/useOrchardsQuery";
+import { OptionalFutureFieldsSchema } from "../schemas/OptionalFutureFieldsSchema";
 
 export default function FutureProofFieldScreen() {
   const { orchardProfileId } = useAuth();
@@ -29,7 +30,7 @@ export default function FutureProofFieldScreen() {
     useCreateOrchardExtraMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateOrchardExtraMutation();
-  const form = useZodForm();
+  const form = useZodForm(OptionalFutureFieldsSchema);
   const {
     setValue,
     handleSubmit,

@@ -22,6 +22,7 @@ interface DropdownProps {
   control: any;
   name: string;
   label: string;
+  placeholder: string;
   options: Option[];
   optional?: boolean;
   error?: any;
@@ -39,11 +40,12 @@ export default function SingleSelectInput({
   options,
   optional = false,
   error,
-  modalLabel = "",
+  modalLabel = "Select",
   showInputLabel = true,
   onValueChange,
   disabled = false,
   searchable = false,
+  placeholder = label,
 }: DropdownProps) {
   const [visible, setVisible] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState("");
@@ -133,7 +135,7 @@ export default function SingleSelectInput({
                   color: disabled ? colors.neutral + "88" : colors.darkHover,
                 }}
               >
-                {selectedLabel || label}
+                {selectedLabel || placeholder}
               </CsText>
             </Pressable>
 

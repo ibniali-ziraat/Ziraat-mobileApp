@@ -1,14 +1,11 @@
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
-import FormInput from "@/src/components/form/inputs/FormInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
+import FormTextAreaInput from "@/src/components/shared/inputs/FormTextAreaInput";
 import { View } from "react-native";
+import { applicationModeOptions } from "../constants/orchardOptions";
 
 export default function CropNutrition({ control, errors }) {
   const fertilizerOptions = ["Organic", "Chemical", "Integrated"];
-
-  const yesNoOptions = ["Yes", "No"];
-
-  const applicationModeOptions = ["Soil Application", "Foliar Application"];
 
   return (
     <View className="flex-1 w-full">
@@ -25,7 +22,6 @@ export default function CropNutrition({ control, errors }) {
         <SingleSelectInput
           control={control}
           name="hasFertigation"
-          // name="hasFertigationFacility"
           label="Fertigation Facility"
           options={[
             { value: true, label: "Yes" },
@@ -47,20 +43,11 @@ export default function CropNutrition({ control, errors }) {
           modalLabel="Mulching Applied"
         />
 
-        <FormInput
-          control={control}
-          name="nutritionPlan"
-          label="Nutrition Plan"
-          icon="book-open-page-variant"
-          error={errors.nutritionPlan?.message}
-          optional={true}
-        />
-
         <FormDateInput
           control={control}
           name="lastFertilizerApplicationDate"
           label="Last Fertiliser Date"
-          error={errors.lastFertiliserDate?.message}
+          error={errors.lastFertilizerApplicationDate}
           optional={true}
         />
 
@@ -69,9 +56,18 @@ export default function CropNutrition({ control, errors }) {
           control={control}
           name="fertilizerApplicationMode"
           label="Mode of Fertiliser Application"
-          options={applicationModeOptions.map((v) => ({ label: v, value: v }))}
+          options={applicationModeOptions}
           error={errors.applicationMode?.message}
           modalLabel="Fertiliser Mode"
+        />
+
+        <FormTextAreaInput
+          name="nutritionPlan"
+          label="Nutrition Plan"
+          placeholder="e.g. Jan: Organic compost, Mar: NPK fertilizer, Jun: Micronutrient spray"
+          error={errors.nutritionPlan}
+          maxLength={120}
+          // required
         />
       </View>
     </View>

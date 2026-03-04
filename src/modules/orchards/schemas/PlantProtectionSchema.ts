@@ -1,69 +1,21 @@
-// StepE_PlantProtection.schema.ts
+import { booleanRequired, multiSelectOptional } from "@/src/lib/validation";
 import { z } from "zod";
 
-/* -------------------------------------------
-   OPTIONS (MUST MATCH UI EXACTLY)
--------------------------------------------- */
-
-export const diseaseList = [
-  "Scab",
-  "Alternaria",
-  "Powdery Mildew",
-  "Fire Blight",
-  "Marssonina",
-  "Root Rot",
-  "Other",
-] as const;
-
-export const pestList = [
-  "Aphids",
-  "Mites",
-  "Codling Moth",
-  "Leaf Miner",
-  "San Jose Scale",
-  "Borers",
-  "Other",
-] as const;
-
-export const insuranceOptions = ["Yes", "No"] as const;
-
-/* -------------------------------------------
-   SCHEMA
--------------------------------------------- */
-
 export const PlantProtectionSchema = z.object({
-  /**  
-   * 🌿 Diseases (multi-select)
-   * - Must be an array
-   * - Must select at least 1 item  
-   */
-  diseases: z
-    .array(z.enum(diseaseList))
-    .min(1, "Please select at least one disease."),
+  /* OPTIONAL multi select */
+  diseaseHistory: multiSelectOptional(),
 
-  /**
-   * 🐛 Pests (multi-select)
-   */
-  pests: z
-    .array(z.enum(pestList))
-    .min(1, "Please select at least one pest."),
+  /* OPTIONAL multi select */
+  pestHistory: multiSelectOptional(),
 
-  /**
-   * 🧴 Spray Schedule (Optional string)
-   */
-  spraySchedule: z
-    .string()
-    .max(500, "Spray schedule description is too long.")
-    .optional()
-    .nullable(),
+  /* OPTIONAL chip input (array of strings) */
+  spraySchedule: z.preprocess(
+    (val) => val ?? [],
+    z.array(z.string()).optional(),
+  ),
 
-  /**
-   * 🛡 Crop Insurance (Yes / No)
-   */
-  cropInsurance: z.enum(insuranceOptions, {
-    required_error: "Please select crop insurance option.",
-    invalid_type_error: "Please choose Yes or No.",
-  }),
+  /* REQUIRED yes/no select */
+  isCropInsuranceCovered: booleanRequired(),
 });
 
-export type StepEPlantProtectionType = z.infer<typeof stepEPlantProtectionSchema>;
+export type PlantProtectionSchemaType = z.infer<typeof PlantProtectionSchema>;
