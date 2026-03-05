@@ -1,7 +1,7 @@
 import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
+import { shadows } from "@/src/constants/shadows";
 import { useWindowDimensions, View } from "react-native";
 import { BarChart, LineChart as CurveChart } from "react-native-chart-kit";
 
@@ -29,12 +29,26 @@ const netProfitTrendData = {
 
 export default function FinancialPerformanceScreen() {
   const { width } = useWindowDimensions();
-
   const chartWidth = Math.max(width - 70, 280);
+
+  const cardStyle = [
+    {
+      width: "100%",
+      backgroundColor: colors.light,
+      borderRadius: 16,
+   
+      borderColor: colors.neutral,
+      paddingVertical: 12,
+      paddingHorizontal: 12,
+    },
+    shadows.profile_card,
+  ];
 
   return (
     <ScreenLayout scrollable>
       <ScreenContent className="pt-4 pb-10">
+
+        {/* KPI Cards */}
         <View className="flex-row flex-wrap justify-between mt-4">
           {kpis.map((item) => (
             <View key={item.id} className="w-[48%] mb-3">
@@ -43,11 +57,14 @@ export default function FinancialPerformanceScreen() {
           ))}
         </View>
 
+        {/* Revenue vs Cost */}
         <View className="w-full mt-4">
-          <ZiraatCard width="100%" paddingVertical={1} paddingHorizontal={1}>
+          <View style={cardStyle}>
             <CsText
-              style={typography.Poppins_m_semibold}
-              className="text-[18px]  text-dark mb-4"
+              style={[
+                typography.Poppins_m_semibold,
+                { fontSize: 18, color: colors.dark, marginBottom: 16 },
+              ]}
             >
               Revenue vs Cost
             </CsText>
@@ -60,24 +77,27 @@ export default function FinancialPerformanceScreen() {
                 fromZero
                 showValuesOnTopOfBars
                 chartConfig={{
-                  backgroundColor: "#ffffff",
-                  backgroundGradientFrom: "#ffffff",
-                  backgroundGradientTo: "#ffffff",
+                  backgroundColor: colors.light,
+                  backgroundGradientFrom: colors.light,
+                  backgroundGradientTo: colors.light,
                   decimalPlaces: 0,
                   color: () => colors.secondary,
-                  labelColor: () => "#111",
+                  labelColor: () => colors.dark,
                 }}
                 style={{ borderRadius: 12 }}
               />
             </View>
-          </ZiraatCard>
+          </View>
         </View>
 
+        {/* Net Profit Trend */}
         <View className="w-full mt-4">
-          <ZiraatCard width="100%" paddingVertical={1} paddingHorizontal={1}>
+          <View style={cardStyle}>
             <CsText
-              style={typography.Poppins_m_semibold}
-              className="text-[16px]  text-dark mb-4"
+              style={[
+                typography.Poppins_m_semibold,
+                { fontSize: 16, color: colors.dark, marginBottom: 16 },
+              ]}
             >
               Net Profit Trend (6 Months)
             </CsText>
@@ -90,24 +110,27 @@ export default function FinancialPerformanceScreen() {
                 bezier
                 fromZero
                 chartConfig={{
-                  backgroundColor: "#ffffff",
-                  backgroundGradientFrom: "#ffffff",
-                  backgroundGradientTo: "#ffffff",
+                  backgroundColor: colors.light,
+                  backgroundGradientFrom: colors.light,
+                  backgroundGradientTo: colors.light,
                   decimalPlaces: 0,
-                  color: () => "#c7611f",
-                  labelColor: () => "#111",
+                  color: () => colors.secondary,
+                  labelColor: () => colors.dark,
                 }}
                 style={{ borderRadius: 12 }}
               />
             </View>
-          </ZiraatCard>
+          </View>
         </View>
 
+        {/* Financial Insights */}
         <View className="w-full mt-4">
-          <ZiraatCard width="100%" paddingVertical={1} paddingHorizontal={1}>
+          <View style={cardStyle}>
             <CsText
-              style={typography.Poppins_m_semibold}
-              className=" text-dark text-[18px] mb-4"
+              style={[
+                typography.Poppins_m_semibold,
+                { fontSize: 18, color: colors.dark, marginBottom: 16 },
+              ]}
             >
               Recent Financial Insights
             </CsText>
@@ -117,8 +140,9 @@ export default function FinancialPerformanceScreen() {
                 <InsightItem key={item.id} item={item} />
               ))}
             </View>
-          </ZiraatCard>
+          </View>
         </View>
+
       </ScreenContent>
     </ScreenLayout>
   );

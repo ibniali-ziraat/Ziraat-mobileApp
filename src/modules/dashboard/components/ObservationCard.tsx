@@ -1,5 +1,7 @@
 import CsText from "@/src/components/shared/CsText";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
+import { shadows } from "@/src/constants/shadows";
 import { View } from "react-native";
 
 type ObservationCardProps = {
@@ -14,28 +16,57 @@ const ObservationCard = ({
   recommended,
 }: ObservationCardProps) => {
   return (
-    <ZiraatCard
-      width="100%"
-      paddingHorizontal={1}
-      paddingVertical={1.2}
-      marginBottom={1}
+    <View
+      style={[
+        {
+          width: "100%",
+          backgroundColor: colors.light,
+          borderRadius: 16,
+         
+          borderColor: colors.neutral,
+          paddingHorizontal: 14,
+          paddingVertical: 14,
+          marginBottom: 10,
+        },
+        shadows.profile_card,
+      ]}
     >
-      <View className="gap-2">
-        <CsText className="text-xl font-semibold">
+      <View style={{ gap: 8 }}>
+        {/* Title */}
+        <CsText
+          style={[
+            typography.Poppins_m_semibold,
+            { fontSize: 18, color: colors.dark },
+          ]}
+        >
           {title}
-       </CsText>
+        </CsText>
 
-        <CsText className="text-neutral leading-relaxed">
+        {/* Description */}
+        <CsText
+          style={{
+            color: colors.neutral,
+            lineHeight: 22,
+          }}
+        >
           {description}
-       </CsText>
+        </CsText>
 
+        {/* Recommendation */}
         {recommended && (
-          <CsText className="text-sm text-primary">
-            Recommended: {recommended}
-         </CsText>
+          <CsText
+            style={{
+              fontSize: 14,
+              color: colors.primary,
+              marginTop: 4,
+            }}
+          >
+            <CsText style={{ fontWeight: "600" }}>Recommended: </CsText>
+            {recommended}
+          </CsText>
         )}
       </View>
-    </ZiraatCard>
+    </View>
   );
 };
 

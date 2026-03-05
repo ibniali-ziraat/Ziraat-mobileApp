@@ -3,6 +3,7 @@ import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { shadows } from "@/src/constants/shadows";
 import observationsData from "@/src/data/observationsData.json";
 import { statTileData } from "@/src/data/statTileData";
 
@@ -43,6 +44,7 @@ export default function PestDiseaseProfile() {
   return (
     <ScreenLayout>
       <ScreenContent>
+        {/* Stat Tiles */}
         <View className="flex-row flex-wrap justify-between">
           {statTileData.map((item) => {
             const content = (
@@ -68,9 +70,9 @@ export default function PestDiseaseProfile() {
           })}
         </View>
 
+        {/* High Risk Pests */}
         <CsText
-          style={typography.Poppins_m_semibold}
-          className="text-2xl  my-4"
+          style={[typography.Poppins_m_semibold, { fontSize: 22, marginVertical: 16, color: colors.dark }]}
         >
           High-Risk Pests Identified
         </CsText>
@@ -84,7 +86,10 @@ export default function PestDiseaseProfile() {
           />
         ))}
 
-        <CsText style={typography.Poppins_m_medium} className="text-2xl my-4">
+        {/* Disease Observations */}
+        <CsText
+          style={[typography.Poppins_m_medium, { fontSize: 22, marginVertical: 16, color: colors.dark }]}
+        >
           Disease Observations
         </CsText>
 
@@ -97,13 +102,26 @@ export default function PestDiseaseProfile() {
           />
         ))}
 
+        {/* Spray Schedule */}
         <CsText
-          style={typography.Poppins_m_semibold}
-          className="text-2xl  mt-5 mb-4"
+          style={[typography.Poppins_m_semibold, { fontSize: 22, marginTop: 20, marginBottom: 16, color: colors.dark }]}
         >
           Spray Schedule & History
         </CsText>
-        <View className="bg-light rounded-xl p-4 shadow mb-6">
+
+        <View
+          style={[
+            {
+              backgroundColor: colors.light,
+              borderRadius: 16,
+              
+              borderColor: colors.neutral,
+              padding: 16,
+              marginBottom: 24,
+            },
+            shadows.profile_card,
+          ]}
+        >
           {[
             {
               title: "Last Applied Spray",
@@ -121,38 +139,74 @@ export default function PestDiseaseProfile() {
           ].map((item, index) => (
             <View key={index}>
               <CsText
-                className={`font-semibold text-lg ${item.isError ? "text-error" : ""}`}
+                style={{
+                  fontWeight: "600",
+                  fontSize: 16,
+                  color: item.isError ? colors.error : colors.dark,
+                }}
               >
                 {item.title}
               </CsText>
+
               <CsText
-                className={`mt-1 ${item.isError ? "text-error" : "text-dark"}`}
+                style={{
+                  marginTop: 4,
+                  color: item.isError ? colors.error : colors.neutral,
+                }}
               >
                 {item.description}
               </CsText>
-              {index < 2 && <View className="border-t border-dark my-4" />}
+
+              {index < 2 && (
+                <View
+                  style={{
+                   
+                    borderColor: colors.neutral,
+                    marginVertical: 16,
+                  }}
+                />
+              )}
             </View>
           ))}
         </View>
 
+        {/* Chart Section */}
         <CsText
-          style={typography.Poppins_m_semibold}
-          className="text-2xl  mt-6 mb-2"
+          style={[typography.Poppins_m_semibold, { fontSize: 22, marginTop: 24, marginBottom: 8, color: colors.dark }]}
         >
           Pest & Disease Trend (30 Days)
         </CsText>
+
         <CsText
-          style={typography.Poppins_m_semibold}
-          className="text-base mb-4"
+          style={[typography.Poppins_m_semibold, { fontSize: 14, marginBottom: 16, color: colors.neutral }]}
         >
           Chart showing incidence trends to help plan interventions.
         </CsText>
 
-        <View className="bg-light rounded-xl p-4 shadow mb-6">
+        <View
+          style={[
+            {
+              backgroundColor: colors.light,
+              borderRadius: 16,
+             
+              borderColor: colors.neutral,
+              padding: 16,
+              marginBottom: 24,
+            },
+            shadows.profile_card,
+          ]}
+        >
           <CustomBarChart labels={[]} values={[]} type="bar" />
+
           <CsText
-            style={typography.Poppins_m_medium}
-            className="text-center  text-overlay mt-2"
+            style={[
+              typography.Poppins_m_medium,
+              {
+                textAlign: "center",
+                color: colors.neutral,
+                marginTop: 8,
+              },
+            ]}
           >
             (Analytics integration coming soon)
           </CsText>

@@ -13,9 +13,9 @@ import { TouchableOpacity, View, useWindowDimensions } from "react-native";
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { shadows } from "@/src/constants/shadows";
 import resourceData from "../../../data/resourceUsageData.json";
 import InputModal from "../components/InputModal";
 
@@ -31,41 +31,75 @@ const iconMap: Record<string, any> = {
 
 const MetricCard = ({ title, value, icon, width }: any) => (
   <View style={{ width, marginBottom: 12 }}>
-    <ZiraatCard
-      width="100%"
-      height={150}
-      paddingHorizontal={1}
-      paddingVertical={0.75}
+    <View
+      style={[
+        {
+          width: "100%",
+          height: 150,
+          backgroundColor: colors.light,
+          borderRadius: 16,
+         
+          borderColor: colors.neutral,
+          paddingVertical: 10,
+          paddingHorizontal: 10,
+          alignItems: "center",
+          justifyContent: "space-between",
+        },
+        shadows.profile_card,
+      ]}
     >
-      <View className="h-full justify-between items-center">
-        {iconMap?.[icon] &&
-          React.createElement(iconMap[icon], {
-            size: 38,
-            color: colors.secondary,
-            strokeWidth: 1.3,
-          })}
+      {iconMap?.[icon] &&
+        React.createElement(iconMap[icon], {
+          size: 38,
+          color: colors.secondary,
+          strokeWidth: 1.3,
+        })}
 
-        <CsText className="text-[14px]">{title}</CsText>
+      <CsText style={{ fontSize: 14, color: colors.dark }}>{title}</CsText>
 
-        <CsText className="text-center text-dark text-[18px] font-semibold">
-          {value}
-        </CsText>
-      </View>
-    </ZiraatCard>
+      <CsText
+        style={{
+          textAlign: "center",
+          fontSize: 18,
+          color: colors.dark,
+          fontWeight: "600",
+        }}
+      >
+        {value}
+      </CsText>
+    </View>
   </View>
 );
 
 const SummaryRow = ({ label, value, bold }: any) => (
-  <View className="flex-row justify-between py-2">
-    <CsText className={bold ? "font-bold text-lg" : ""}>{label}</CsText>
-    <CsText className={bold ? "font-bold text-lg" : ""}>{value}</CsText>
+  <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 6 }}>
+    <CsText
+      style={{
+        fontWeight: bold ? "700" : "400",
+        fontSize: bold ? 18 : 14,
+        color: colors.dark,
+      }}
+    >
+      {label}
+    </CsText>
+    <CsText
+      style={{
+        fontWeight: bold ? "700" : "400",
+        fontSize: bold ? 18 : 14,
+        color: colors.dark,
+      }}
+    >
+      {value}
+    </CsText>
   </View>
 );
 
 const EfficiencyTag = ({ label, score }: any) => (
-  <View className="flex-row items-center mb-2 justify-between">
-    <CsText className="text-[15px]">{label}</CsText>
-    <CsText className="text-[16px] font-semibold">{score || "0"}</CsText>
+  <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+    <CsText style={{ fontSize: 15, color: colors.dark }}>{label}</CsText>
+    <CsText style={{ fontSize: 16, fontWeight: "600", color: colors.primary }}>
+      {score || "0"}
+    </CsText>
   </View>
 );
 
@@ -73,11 +107,21 @@ const InsightItem = ({ icon, text }: any) => {
   const Icon = iconMap?.[icon];
 
   return (
-    <View className="mb-3 bg-white px-3 py-3 rounded-lg">
-      <View className="flex-row items-start">
-        {Icon && <Icon size={26} color={colors.secondary} strokeWidth={1.3} />}
-        <CsText className="ml-2 flex-1 text-black">{text}</CsText>
-      </View>
+    <View
+      style={{
+        marginBottom: 10,
+        backgroundColor: colors.light,
+        paddingHorizontal: 12,
+        paddingVertical: 12,
+        borderRadius: 12,
+        flexDirection: "row",
+        alignItems: "flex-start",
+      }}
+    >
+      {Icon && <Icon size={26} color={colors.secondary} strokeWidth={1.3} />}
+      <CsText style={{ marginLeft: 8, flex: 1, color: colors.dark }}>
+        {text}
+      </CsText>
     </View>
   );
 };
@@ -90,7 +134,6 @@ export default function InputResourceUsageScreen() {
 
   const { width } = useWindowDimensions();
 
-  // ✅ Responsive grid (1 column on small screens, 2 columns otherwise)
   const isSmall = width < 380;
   const cardWidth = isSmall ? "100%" : "48%";
 
@@ -102,7 +145,8 @@ export default function InputResourceUsageScreen() {
   return (
     <ScreenLayout scrollable>
       <ScreenContent className="pt-4 pb-8">
-        {/* ✅ Metrics Grid */}
+
+        {/* Metrics */}
         <View className="w-full flex-row flex-wrap justify-between">
           {resourceData.metrics.map((m: any, i: number) => (
             <MetricCard
@@ -117,25 +161,46 @@ export default function InputResourceUsageScreen() {
           ))}
         </View>
 
-        {/* ✅ Button */}
+        {/* Button */}
         <TouchableOpacity
-          className="bg-secondary rounded-xl mt-4 p-4 mb-6"
+          style={{
+            backgroundColor: colors.secondary,
+            borderRadius: 12,
+            marginTop: 16,
+            padding: 16,
+            marginBottom: 24,
+          }}
           onPress={() => setOpenModal(true)}
-          activeOpacity={0.9}
         >
-          <CsText className="text-light text-center text-lg font-semibold">
+          <CsText
+            style={{
+              color: colors.light,
+              textAlign: "center",
+              fontSize: 18,
+              fontWeight: "600",
+            }}
+          >
             Calculate Efficiency
           </CsText>
         </TouchableOpacity>
 
-        {/* ✅ Summary */}
-        <CsText className="text-2xl font-bold mb-4">Resource Summary</CsText>
+        {/* Summary */}
+        <CsText style={{ fontSize: 22, fontWeight: "700", marginBottom: 16, color: colors.dark }}>
+          Resource Summary
+        </CsText>
 
-        <ZiraatCard
-          width="100%"
-          paddingHorizontal={1}
-          paddingVertical={1}
-          marginBottom={1}
+        <View
+          style={[
+            {
+              backgroundColor: colors.light,
+              borderRadius: 16,
+             
+              borderColor: colors.neutral,
+              padding: 14,
+              marginBottom: 12,
+            },
+            shadows.profile_card,
+          ]}
         >
           <SummaryRow label="Fertilizer Cost" value={`₹ ${fertilizerCost}`} />
           <SummaryRow label="Labor Cost" value={`₹ ${laborCost}`} />
@@ -145,22 +210,27 @@ export default function InputResourceUsageScreen() {
             value={`₹ ${overallCost}`}
             bold
           />
-        </ZiraatCard>
+        </View>
 
-        {/* ✅ Efficiency */}
+        {/* Efficiency */}
         <CsText
-          style={typography.Poppins_m_semibold}
-          className="text-2xl mt-6 mb-4"
+          style={[typography.Poppins_m_semibold, { fontSize: 22, marginTop: 20, marginBottom: 16, color: colors.dark }]}
         >
           Input Efficiency Overview
         </CsText>
 
-        {/* ✅ Remove height="10%" (this breaks layout on phones) */}
-        <ZiraatCard
-          width="100%"
-          paddingHorizontal={1}
-          paddingVertical={1}
-          marginBottom={1}
+        <View
+          style={[
+            {
+              backgroundColor: colors.light,
+              borderRadius: 16,
+             
+              borderColor: colors.neutral,
+              padding: 14,
+              marginBottom: 12,
+            },
+            shadows.profile_card,
+          ]}
         >
           {resourceData.efficiencyLabels.map((label: string, i: number) => (
             <EfficiencyTag
@@ -169,29 +239,33 @@ export default function InputResourceUsageScreen() {
               score={i === 0 ? fertilizer : i === 1 ? laborHours : costInputs}
             />
           ))}
-        </ZiraatCard>
+        </View>
 
-        {/* ✅ Insights */}
+        {/* Insights */}
         <CsText
-          style={typography.Poppins_m_semibold}
-          className="text-2xl mt-6 mb-4"
+          style={[typography.Poppins_m_semibold, { fontSize: 22, marginTop: 20, marginBottom: 16, color: colors.dark }]}
         >
           Performance Insights
         </CsText>
 
-        <ZiraatCard
-          width="100%"
-          paddingHorizontal={1}
-          paddingVertical={1}
-          marginBottom={2}
+        <View
+          style={[
+            {
+              backgroundColor: colors.light,
+              borderRadius: 16,
+            
+              borderColor: colors.neutral,
+              padding: 14,
+            },
+            shadows.profile_card,
+          ]}
         >
           {resourceData.insights.map((insight: any, i: number) => (
             <InsightItem key={i} icon={insight.icon} text={insight.text} />
           ))}
-        </ZiraatCard>
+        </View>
       </ScreenContent>
 
-      {/* ✅ Modal outside content (good) */}
       <InputModal
         visible={openModal}
         onClose={() => setOpenModal(false)}

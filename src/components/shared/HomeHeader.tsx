@@ -4,7 +4,7 @@ import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
-import { Bell } from "lucide-react-native";
+import { BarChart2, Bell } from "lucide-react-native";
 import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import CsText from "./CsText";
@@ -34,6 +34,21 @@ const HomeHeader = () => {
         </View>
 
         <View className="flex-row items-center">
+  <TouchableOpacity
+    className="p-2 mr-3 rounded-full border"
+            style={{ borderColor: colors.neutral }}
+            onPress={() =>
+              router.push({
+                pathname: "/dashboards",
+                params: { role: "farmer" },
+              })
+            }
+          >
+            <BarChart2 size={20} color={colors.secondary} />
+          </TouchableOpacity>
+
+
+
           <TouchableOpacity
             onPress={() => router.push("/user/notifications")}
             className="p-2 mr-3 rounded-full border"
@@ -41,6 +56,8 @@ const HomeHeader = () => {
           >
             <Bell size={24} color={colors.secondary} />
           </TouchableOpacity>
+
+
 
          <TouchableOpacity onPress={() => router.push(ROUTES.USER.PROFILE)}>
 

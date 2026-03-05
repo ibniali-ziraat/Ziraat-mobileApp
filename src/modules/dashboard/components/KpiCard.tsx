@@ -1,6 +1,6 @@
 import CsText from "@/src/components/shared/CsText";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
+import { shadows } from "@/src/constants/shadows";
 import {
   DollarSign,
   Percent,
@@ -33,30 +33,64 @@ export default function KpiCard({ item }: Props) {
   const Icon = icons[item.icon];
 
   return (
-    <ZiraatCard width="49%" paddingVertical={2} paddingHorizontal={2}>
-      <View className="h-40 items-center justify-evenly">
-        {/* Icon */}
-        {Icon && (
-          <Icon size={38} color={colors.secondary} strokeWidth={1.3} />
-        )}
+    <View
+      style={[
+        {
+          width: "100%",
+          height: 160,
+          backgroundColor: colors.light,
+          borderRadius: 16,
+         
+          borderColor: colors.neutral,
+          paddingVertical: 12,
+          paddingHorizontal: 12,
+          alignItems: "center",
+          justifyContent: "space-evenly",
+        },
+        shadows.profile_card,
+      ]}
+    >
+      {/* Icon */}
+      {Icon && (
+        <Icon size={38} color={colors.secondary} strokeWidth={1.3} />
+      )}
 
-        {/* Title */}
-        <CsText className="text-black font-semibold text-[14px] text-center">
-          {item.title}
+      {/* Title */}
+      <CsText
+        style={{
+          color: colors.dark,
+          fontWeight: "600",
+          fontSize: 14,
+          textAlign: "center",
+        }}
+      >
+        {item.title}
+      </CsText>
+
+      {/* Value */}
+      <CsText
+        style={{
+          color: colors.dark,
+          fontWeight: "700",
+          fontSize: 18,
+          textAlign: "center",
+        }}
+      >
+        {item.value}
+      </CsText>
+
+      {/* Subtitle */}
+      {item.subtitle && (
+        <CsText
+          style={{
+            color: colors.neutral,
+            fontSize: 14,
+            textAlign: "center",
+          }}
+        >
+          {item.subtitle}
         </CsText>
-
-        {/* Value */}
-        <CsText className="text-black font-bold text-[18px] text-center">
-          {item.value}
-        </CsText>
-
-        {/* Subtitle */}
-        {item.subtitle && (
-          <CsText className="text-black text-[14px] text-center">
-            {item.subtitle}
-          </CsText>
-        )}
-      </View>
-    </ZiraatCard>
+      )}
+    </View>
   );
 }
