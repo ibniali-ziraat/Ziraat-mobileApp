@@ -1,5 +1,3 @@
-// import "react-native-get-random-values";
-
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
@@ -80,31 +78,6 @@ export default function BasicInfoScreen() {
     });
   }, [isEditMode, orchard]);
 
-  const safeDecimal = (value) => {
-    if (value === "" || value === undefined || value === null) return 0;
-    return Number(value);
-  };
-
-  // const onSubmit = async (values) => {
-  //   const payload = {
-  //     orchardId: orchard?.id ?? generateId(),
-
-  //     ...values,
-
-  //     kanals: values.orchardUnit === "kanals" ? safeDecimal(values.kanals) : 0,
-
-  //     marlas: values.orchardUnit === "marlas" ? safeDecimal(values.marlas) : 0,
-  //   };
-
-  //   if (orchard) {
-  //     await updateOrchard(payload);
-  //     router.replace(ROUTES.TABS.ORCHARDS);
-  //   } else {
-  //     await createOrchard(payload);
-  //     router.replace(ROUTES.TABS.ORCHARDS);
-  //   }
-  // };
-
   const onSubmit = async (values) => {
     console.log(values, "values...");
 
@@ -137,7 +110,6 @@ export default function BasicInfoScreen() {
     }
 
     router.replace(ROUTES.TABS.ORCHARDS);
-    // await createOrchard(payload);
   };
 
   if (isPending) return null;
@@ -152,7 +124,7 @@ export default function BasicInfoScreen() {
 
       <ScreenContent>
         <FormProvider {...form}>
-          <BasicInfo control={control} errors={errors} data={orchard} />
+          <BasicInfo errors={errors} data={orchard} />
 
           <FormActions
             cancelLabel="Cancel"

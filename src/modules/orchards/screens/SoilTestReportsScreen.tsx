@@ -2,108 +2,83 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { useZodForm } from "@/src/hooks/useZodForm";
 
-import { router } from "expo-router";
-import { FormProvider } from "react-hook-form";
+import { ROUTES } from "@/src/constants/routes";
+import { useZodForm } from "@/src/hooks/useZodForm";
+import { showErrorToast } from "@/src/utils/toast";
 
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useFileUploadMutation } from "@/src/hooks/useFileUpload";
+import { router } from "expo-router";
+import { FormProvider } from "react-hook-form";
 
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import SoilTestReportsSection from "../form-sections/SoilTestReportsSection";
-import {
-  useCreateSoilTestReportMutation,
-  useDeleteSoilTestReportMutation,
-  useSoilTestReportQuery,
-} from "../hooks/useSoilTestReport";
-import { SoilTestReportSchema } from "../schemas/SoilTestReportSchema";
+import { useCreateSoilTestReportMutation } from "../hooks/useSoilTestReport";
 
 export default function SoilTestReportsScreen() {
   const { orchardProfileId } = useAuth();
-
-  const { data, refetch } = useSoilTestReportQuery(orchardProfileId);
-
-  const { mutateAsync: createReport, isPending: creating } =
-    useCreateSoilTestReportMutation();
-
-  const { mutateAsync: deleteReport } = useDeleteSoilTestReportMutation();
-
   const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
+  const { mutateAsync: save } = useCreateSoilTestReportMutation();
 
-  const form = useZodForm(SoilTestReportSchema);
-
+  const form = useZodForm();
   const {
     handleSubmit,
-    control,
-    reset,
     formState: { errors },
   } = form;
 
   const onSubmit = async (values: any) => {
+    console.log(values, "valies in str");
+
     try {
-      if (!values.file?.uri) return;
+      const uploadedFiles: string[] = [];
 
-      const uploadRes = await uploadFileAsync({
-        file: {
-          uri: values.file.uri,
-          name: values.file.name,
-          mimeType: values.file.mimeType,
-        },
-        UserType: "vendor",
-        UserId: orchardProfileId.toString(),
-        FileCategory: "soil-test-reports",
-      });
+      for (const file of values.reports || []) {
+        if (file?.uri) {
+          console.log("existed file.uri");
 
-      const fileUrl = uploadRes?.data?.fileUrl;
+          const uploadRes = await uploadFileAsync({
+            file: {
+              uri: file.uri,
+              name: file.name || `soil-report-${Date.now()}.pdf`,
+              mimeType: file.mimeType || "application/pdf",
+            },
+            UserType: "vendor",
+            UserId: orchardProfileId.toString(),
+            FileCategory: "documents",
+          });
 
-      await createReport({
+          uploadedFiles.push(uploadRes?.data?.fileUrl);
+          console.log(uploadedFiles, "uploaded files");
+          console.log(uploadRes, "upload res...");
+        }
+      }
+      const payload = {
         orchardProfileId,
-        fileUrl,
-      });
+        soilTestReportUrls: uploadedFiles,
+      };
 
-      showSuccessToast("Report uploaded");
+      await save(payload);
 
-      reset();
-
-      refetch();
-    } catch (e) {
-      showErrorToast("Upload failed");
+      // showSuccessToast("Reports uploaded successfully");
+      // router.push(ROUTES.TABS.ORCHARDS);
+    } catch (error: any) {
+      showErrorToast("Failed to upload reports");
     }
-  };
-
-  const handleDelete = async (id: number) => {
-    await deleteReport(id);
-
-    showSuccessToast("Report deleted");
-
-    refetch();
   };
 
   return (
     <ScreenLayout>
-      <BackHeader
-        title="Soil Test Reports"
-        desc="Upload and manage reports"
-        onPress={() => router.back()}
-      />
+      <BackHeader title="Orchard Registration" desc="Soil Test Reports" />
 
       <ScreenContent>
         <FormProvider {...form}>
-          <SoilTestReportsSection
-            control={control}
-            errors={errors}
-            reports={data}
-            onDelete={handleDelete}
-          />
+          <SoilTestReportsSection errors={errors} />
 
           <FormActions
-            cancelLabel="Back"
-            onCancel={() => router.back()}
-            submitLabel="Upload"
+            cancelLabel="Cancel"
+            onCancel={() => router.replace(ROUTES.TABS.ORCHARDS)}
+            submitLabel="Upload All"
             onSubmit={handleSubmit(onSubmit)}
-            loading={creating}
-            disabled={creating}
           />
         </FormProvider>
       </ScreenContent>

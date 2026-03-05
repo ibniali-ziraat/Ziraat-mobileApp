@@ -1,1 +1,1 @@
-export const DUMMY_EMAIL = "ziraat@codestrix.com";
+export const DUMMY_EMAIL = "@ziraat.codestrix.com";

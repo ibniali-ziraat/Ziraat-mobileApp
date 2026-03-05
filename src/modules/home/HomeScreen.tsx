@@ -9,6 +9,7 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 
+import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
 import { colors } from "@/src/constants/colors";
 import { toast } from "@backpackapp-io/react-native-toast";
 import AllProductsCarousal from "../products/components/AllProductsCarousel";
@@ -85,7 +86,7 @@ export default function HomeScreen() {
             >
               <WeatherCard current={currentWeather} />
             </TouchableOpacity>
-
+            
             <QuickActions />
 
             <SectionTitle
@@ -108,6 +109,9 @@ export default function HomeScreen() {
 
             <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
             <FarmerTipsCard />
+             <View className="mb-20">
+               <LegalDisclaimer />
+             </View>
           </View>
         </AnimatedTabContent>
       </ScreenContent>

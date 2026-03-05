@@ -1,6 +1,8 @@
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
+import { shadows } from "@/src/constants/shadows";
 import { router } from "expo-router";
+import { ArrowRight } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 import OrchardDetails from "./OrchardDetails";
 
@@ -9,72 +11,56 @@ interface OrchardCardProps {
 }
 
 export default function OrchardCard({ orchard }: OrchardCardProps) {
+  const PADDING = 16;
+
   return (
     <ScreenContent>
       <View
-        style={{
-          marginBottom: 16,
-          borderRadius: 20,
-          backgroundColor: "#fff",
-          borderWidth: 1,
-          borderColor: "#F1F1F1",
-          padding: 16,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 6 },
-          shadowOpacity: 0.06,
-          shadowRadius: 12,
-          elevation: 4,
-        }}
+        style={[
+          {
+            marginBottom: 32,
+            borderRadius: 20,
+            backgroundColor: colors.light,
+            padding: PADDING,
+          },
+          shadows.review_card,
+        ]}
       >
-        {/* Orchard Details */}
         <OrchardDetails orchard={orchard} />
 
-        {/* Divider */}
         <View
           style={{
             height: 1,
-            backgroundColor: "#F2F2F2",
-            marginVertical: 2,
+            backgroundColor: "#eee",
+            marginVertical: 12,
           }}
         />
+        <Pressable
+          onPress={() =>
+            router.push({
+              pathname: "/orchards/orchard-detail",
+              params: { id: orchard.id },
+            })
+          }
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            gap: 6,
+          }}
+        >
+          <Text
+            style={{
+              color: colors.primary,
+              fontWeight: "600",
+              fontSize: 14,
+            }}
+          >
+            View Details
+          </Text>
 
-   <Pressable
-  onPress={() =>
-    router.push({
-      pathname: "/orchards/orchard-detail",
-      params: { id: orchard.id },
-    })
-  }
-  style={{
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingVertical: 6,
-  }}
->
-  <Text
-    style={{
-      color: colors.primary,
-      fontWeight: "600",
-      fontSize: 14,
-      textDecorationLine: "underline",
-      marginRight: 4,
-    }}
-  >
-    View Details
-  </Text>
-
-  <Text
-    style={{
-      color: colors.primary,
-      fontSize: 16,
-      lineHeight: 16,
-    }}
-  >
-    →
-  </Text>
-</Pressable>
+          <ArrowRight size={18} color={colors.primary} />
+        </Pressable>
       </View>
     </ScreenContent>
   );

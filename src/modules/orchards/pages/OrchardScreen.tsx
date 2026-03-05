@@ -32,20 +32,21 @@ export default function MyOrchardsScreen() {
     if (!search) return orchardData;
     const text = search.toLowerCase();
 
-    return orchardData.filter((o: any) =>
-      o?.orchardName?.toLowerCase().includes(text) ||
-      o?.ownershipType?.toLowerCase().includes(text) ||
-      o?.plantationPattern?.toLowerCase().includes(text) ||
-      String(o?.kanals || "").includes(text) ||
-      String(o?.marlas || "").includes(text)
+    return orchardData.filter(
+      (o: any) =>
+        o?.orchardName?.toLowerCase().includes(text) ||
+        o?.ownershipType?.toLowerCase().includes(text) ||
+        o?.plantationPattern?.toLowerCase().includes(text) ||
+        String(o?.kanals || "").includes(text) ||
+        String(o?.marlas || "").includes(text),
     );
   }, [orchardData, search]);
 
   return (
     <ScreenLayout scrollable={false}>
-      {/* IMPORTANT: position relative for WEB */}
-      <View style={{ flex: 1, backgroundColor: colors.light, position: "relative" }}>
-
+      <View
+        style={{ flex: 1, backgroundColor: colors.light, position: "relative" }}
+      >
         {hasNoOrchards ? (
           <View className="flex-1 justify-center items-center px-6">
             <View className="items-center">
@@ -54,7 +55,7 @@ export default function MyOrchardsScreen() {
               <Text className="text-[22px] font-bold mt-4">
                 Start Your First Orchard
               </Text>
-       <Text
+              <Text
                 style={{ color: colors.dark }}
                 className="text-[14px] leading-6 text-center mb-7 opacity-70"
               >
@@ -71,9 +72,10 @@ export default function MyOrchardsScreen() {
                 style={{ backgroundColor: colors.primary }}
                 className="px-6 py-4 rounded-2xl w-full"
               >
-                <Text 
-                style={{color:colors.light}}
-                className=" text-center font-semibold">
+                <Text
+                  style={{ color: colors.light }}
+                  className=" text-center font-semibold"
+                >
                   + Add Orchard
                 </Text>
               </Pressable>
@@ -85,20 +87,19 @@ export default function MyOrchardsScreen() {
               data={filteredOrchards}
               keyExtractor={(item) => String(item.id)}
               renderItem={({ item }) => (
-                <View className="mb-4 ">
+                <View className="mb-4">
                   <OrchardCard orchard={item} />
                 </View>
               )}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 160 }}
               ListHeaderComponent={
-                <View className="mb-4 mt-2 px-4">
+                <View className="mb-6 mt-4 px-8">
                   <SearchBar search={search} setSearch={setSearch} />
                 </View>
               }
             />
 
-            {/*UNIVERSAL FAB */}
             <Pressable
               onPress={() =>
                 router.push({

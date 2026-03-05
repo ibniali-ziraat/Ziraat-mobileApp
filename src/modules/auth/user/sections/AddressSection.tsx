@@ -95,16 +95,18 @@ export default function AddressSection({ control, errors, data }: Props) {
         control={control}
         name="village"
         label="Locality"
-        error={errors.village?.message}
+        error={errors.village}
+        type="address"
+        required
       />
 
-      {/* Pincode */}
       <FormTextInput
         control={control}
         name="pincode"
         label="Pin Code"
-        keyboardType="numeric"
-        error={errors.pincode?.message}
+        type="pincode"
+        error={errors.pincode}
+        required
       />
     </View>
   );

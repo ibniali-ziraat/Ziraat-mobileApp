@@ -24,18 +24,18 @@ import { VarietyAndPlatingDetailsSchema } from "../schemas/VarietyAndPlatingDeta
 export default function VarietyAndPlatingDetailsScreen() {
   const { orchardProfileId } = useAuth();
 
- 
   if (!orchardProfileId) return null;
 
   const { varietyId } = useLocalSearchParams<{ varietyId?: string }>();
 
   const { data: varietiesData } = useOrchardVarietiesQuery(orchardProfileId);
+  console.log(varietiesData, "varieties data....");
 
   const selectedVariety = varietiesData?.find(
-    (v: any) => String(v.id) === String(varietyId)
+    (v: any) => String(v.id) === String(varietyId),
   );
 
-  const isEdit = !!varietyId;
+  const isEdit = selectedVariety;
 
   const { mutateAsync: save, isPending: isSaving } = useCreateVarietyMutation();
   const { mutateAsync: update, isPending: isUpdating } =
@@ -63,15 +63,13 @@ export default function VarietyAndPlatingDetailsScreen() {
     formState: { errors },
   } = form;
 
-  /**
-   * ✅ CORRECT PREFILL
-   */
+  
   useEffect(() => {
     if (!varietyId) return;
-    if (!varietiesData?.length) return;
+    if (!varietiesData || varietiesData.length === 0) return;
 
     const selected = varietiesData.find(
-      (v: any) => String(v.id) === String(varietyId)
+      (v: any) => String(v.id) === String(varietyId),
     );
 
     if (!selected) return;
@@ -79,17 +77,17 @@ export default function VarietyAndPlatingDetailsScreen() {
     form.reset({
       varieties: [
         {
-          varietyName: selected.varietyName ?? "",
-          numberOfTrees: selected.numberOfTrees ?? "",
-          rootstockUsed: selected.rootstockUsed ?? "",
-          plantDensity: selected.plantDensity ?? "",
-          treesLessThan5Years: selected.treesLessThan5Years ?? "",
-          treesFiveToTenYears: selected.treesFiveToTenYears ?? "",
-          treesMoreThan10Years: selected.treesMoreThan10Years ?? "",
+          varietyName: String(selected.varietyName ?? ""),
+          numberOfTrees: String(selected.numberOfTrees ?? ""),
+          rootstockUsed: String(selected.rootstockUsed ?? ""),
+          plantDensity: String(selected.plantDensity ?? ""),
+          treesLessThan5Years: String(selected.treesLessThan5Years ?? ""),
+          treesFiveToTenYears: String(selected.treesFiveToTenYears ?? ""),
+          treesMoreThan10Years: String(selected.treesMoreThan10Years ?? ""),
         },
       ],
     });
-  }, [varietyId, varietiesData]);
+  }, [varietyId, varietiesData, form]);
 
   const onSubmit = async (values: any) => {
     try {

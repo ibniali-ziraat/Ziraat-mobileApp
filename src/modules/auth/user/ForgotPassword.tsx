@@ -2,6 +2,7 @@ import FormInput from "@/src/components/form/inputs/FormInput";
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import {
   useOtpVerifyMutation,
   useResetPasswordMutation,

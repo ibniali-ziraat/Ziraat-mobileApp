@@ -1,55 +1,55 @@
-import { FlatList, Linking, TouchableOpacity, View } from "react-native";
-
 import FormFileInput from "@/src/components/form/inputs/FormFileInput";
-import CsText from "@/src/components/shared/CsText";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import { Pressable, Text, View } from "react-native";
 
-export default function SoilTestReportsSection({
-  control,
-  errors,
-  reports,
-  onDelete,
-}) {
-  const renderItem = ({ item, index }) => (
-    <View className="bg-white p-4 rounded-xl mb-3 border border-gray-200">
-      <CsText className="font-semibold">Soil Report {index + 1}</CsText>
+type Props = {
+  errors: any;
+};
 
-      <View className="flex-row gap-3 mt-3">
-        <TouchableOpacity
-          onPress={() => Linking.openURL(item.fileUrl)}
-          className="bg-blue-500 px-4 py-2 rounded-lg"
-        >
-          <CsText className="text-white">View</CsText>
-        </TouchableOpacity>
+export default function SoilTestReportsSection({ errors }: Props) {
+  const { control } = useFormContext();
 
-        <TouchableOpacity
-          onPress={() => onDelete(item.id)}
-          className="bg-red-500 px-4 py-2 rounded-lg"
-        >
-          <CsText className="text-white">Delete</CsText>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "reports",
+  });
 
   return (
-    <View>
-      {/* Upload */}
-      <FormFileInput
-        control={control}
-        name="file"
-        label="Upload Soil Test Report"
-        error={errors?.file}
-      />
+    <View style={{ gap: 16 }}>
+      {/* Add Button */}
+      <Pressable
+        onPress={() => append(null)}
+        style={{
+          padding: 12,
+          backgroundColor: "#16a34a",
+          borderRadius: 8,
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ color: "white", fontWeight: "600" }}>+ Add Report</Text>
+      </Pressable>
 
-      {/* List */}
-      <FlatList
-        data={reports}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
-        ListEmptyComponent={
-          <CsText className="text-gray-400 mt-4">No reports uploaded</CsText>
-        }
-      />
+      {/* Uploaded Files */}
+      {fields.map((item, index) => (
+        <View
+          key={item.id}
+          style={{
+            backgroundColor: "#f3f4f6",
+            padding: 12,
+            borderRadius: 8,
+          }}
+        >
+          <Text style={{ fontWeight: "600", marginBottom: 6 }}>
+            Report {index + 1}
+          </Text>
+
+          <FormFileInput
+            name={`reports.${index}`}
+            label="Select File"
+            error={errors?.reports?.[index]?.message}
+          />
+        </View>
+      ))}
     </View>
   );
 }
