@@ -1,10 +1,10 @@
+import CsText from "@/src/components/shared/CsText";
+import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
+import { shadows } from "@/src/constants/shadows";
 import * as Icons from "lucide-react-native";
 import { View } from "react-native";
-import CsText from "@/src/components/shared/CsText";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
-import { colors } from "@/src/constants/colors";
 import StatChip from "./StatChip";
-import { typography } from "@/src/constants/fonts/typography";
 
 export default function OrchardStatsSection({ orchards = [], admin }: any) {
   const Tree = Icons.Trees;
@@ -38,13 +38,14 @@ export default function OrchardStatsSection({ orchards = [], admin }: any) {
 
       <View
         className="w-full"
-        style={{
+        style={[{
           height: 112,
+               borderRadius: 16,
           marginVertical: 18,
           backgroundColor: colors.bgColor,
-        }}
+        },shadows.profile_card]}
       >
-        <ZiraatCard width="100%" height="100%" paddingHorizontal={1} paddingVertical={1}>
+        <View  className="p-4">
           <CsText style={typography.Poppins_m_semibold} className="mb-2">
             Smart Insight
           </CsText>
@@ -53,7 +54,7 @@ export default function OrchardStatsSection({ orchards = [], admin }: any) {
             Tree density and survival suggest potential to increase yield by improving
             fertigation.
           </CsText>
-        </ZiraatCard>
+        </View>
       </View>
     </View>
   );

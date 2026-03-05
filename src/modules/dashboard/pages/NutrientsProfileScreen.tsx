@@ -2,9 +2,9 @@ import CustomBarChart from "@/src/components/charts/CustomBarChart";
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { shadows } from "@/src/constants/shadows";
 import {
   Activity,
   AlertTriangle,
@@ -40,18 +40,25 @@ export default function NutrientsProfileScreen() {
   return (
     <ScreenLayout>
       <ScreenContent>
+
+        {/* Header Image */}
         <View className="overflow-hidden pb-6 rounded-xl">
           <ImageBackground
             source={{ uri: singleHeaderImage }}
             className="w-full h-56 rounded-xl overflow-hidden"
           >
             <View className="p-4">
-              <CsText style={typography.Poppins_l_bold} className="text-light">
+              <CsText
+                style={[typography.Poppins_l_bold, { color: colors.light }]}
+              >
                 Soil, Water & Nutrient
               </CsText>
+
               <CsText
-                style={typography.Poppins_s_regular}
-                className="text-light mt-2"
+                style={[
+                  typography.Poppins_s_regular,
+                  { color: colors.light, marginTop: 6 },
+                ]}
               >
                 Real-time insight into soil health.
               </CsText>
@@ -59,6 +66,7 @@ export default function NutrientsProfileScreen() {
           </ImageBackground>
         </View>
 
+        {/* Cards */}
         <View className="flex-row flex-wrap justify-between mt-4">
           {cardsDataJson.map((card, index) => {
             const Icon = ICON_MAP[card.icon];
@@ -83,21 +91,46 @@ export default function NutrientsProfileScreen() {
           })}
         </View>
 
+        {/* Chart Section */}
         <View className="mt-6 mb-6">
           <CsText
-            style={typography.Poppins_m_semibold}
-            className="text-[20px]  text-dark mb-4"
+            style={[
+              typography.Poppins_m_semibold,
+              { fontSize: 20, color: colors.dark, marginBottom: 16 },
+            ]}
           >
             Soil Health Trend
           </CsText>
 
-          <ZiraatCard width="100%" paddingHorizontal={2} paddingVertical={2}>
+          {/* Shadow Card replacing ZiraatCard */}
+          <View
+            style={[
+              {
+                width: "100%",
+                backgroundColor: colors.light,
+                borderRadius: 16,
+             
+                borderColor: colors.neutral,
+                paddingHorizontal: 14,
+                paddingVertical: 16,
+              },
+              shadows.profile_card,
+            ]}
+          >
             <CustomBarChart />
-            <CsText className="text-center text-md mt-2">
+
+            <CsText
+              style={{
+                textAlign: "center",
+                marginTop: 10,
+                color: colors.dark,
+              }}
+            >
               (pH, EC & NPK trend)
             </CsText>
-          </ZiraatCard>
+          </View>
         </View>
+
       </ScreenContent>
     </ScreenLayout>
   );

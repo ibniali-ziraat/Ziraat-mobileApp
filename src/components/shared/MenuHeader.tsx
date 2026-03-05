@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { router } from "expo-router";
-import { BarChart2, Cog, PhoneCall } from "lucide-react-native";
+import { Cog, PhoneCall } from "lucide-react-native";
 import React from "react";
 import { Pressable, View } from "react-native";
 import CsText from "./CsText";
@@ -49,7 +49,7 @@ const MenuHeader = ({ role }: MenuHeaderProps) => {
           <IconButton onPress={() => console.log("Call Expert")}>
             <PhoneCall size={20} color={colors.primary} />
           </IconButton>
-
+{/* 
           <IconButton
             onPress={() =>
               router.push({
@@ -59,7 +59,7 @@ const MenuHeader = ({ role }: MenuHeaderProps) => {
             }
           >
             <BarChart2 size={20} color={colors.secondary} />
-          </IconButton>
+          </IconButton> */}
 
           <IconButton
             onPress={() =>

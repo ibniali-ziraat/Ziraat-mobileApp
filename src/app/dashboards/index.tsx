@@ -4,6 +4,7 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { DashboardTabs } from "@/src/navigation/DashboardTabs";
 import { useLocalSearchParams } from "expo-router";
+import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import {
   Animated,
@@ -48,7 +49,9 @@ export default function DashboardPage() {
   const insets = useSafeAreaInsets();
 
   return (
-    <View className="flex-1 bg-light">
+    <View
+     style={{backgroundColor:colors.light}}
+    className="flex-1">
       {/* Scrollable Main Content */}
 
       <BackHeader
@@ -66,76 +69,100 @@ export default function DashboardPage() {
           <ActiveComponent />
         </ScreenLayout>
       ) : (
-        <CsText className="p-4 text-dark">No Screen Found</CsText>
+        <CsText
+        style={{color:colors.dark}}
+        className="p-4 ">No Screen Found</CsText>
       )}
 
       <View
-        className="absolute bottom-5 left-0 right-0"
-        style={{ bottom: insets.bottom + 10 }}
-      >
-        <View
-          className="bg-light border rounded-full mx-3"
-          style={{ borderColor: colors.neutral }}
-        >
-          <ScrollView
-            horizontal
-            ref={scrollRef}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              paddingHorizontal: 4,
+  className="absolute bottom-5 left-0 right-0"
+  style={{ bottom: insets.bottom + 10 }}
+>
+  <View
+    className="border rounded-full mx-3"
+    style={{
+      borderColor: colors.neutral,
+      backgroundColor: colors.light,
+    }}
+  >
+    {/* Left Arrow */}
+    <View
+      style={{
+        position: "absolute",
+        left: 6,
+        top: 0,
+        bottom: 0,
+        justifyContent: "center",
+        zIndex: 2,
+      }}
+    >
+      <ChevronLeft size={18} color={colors.dark}/>
+    </View>
+
+    {/* Scrollable Tabs */}
+    <ScrollView
+      horizontal
+      ref={scrollRef}
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        paddingHorizontal: 24, // extra padding for arrows
+      }}
+    >
+      {tabs.map((tab, index) => {
+        const Icon = tab.icon ?? (() => null);
+        const isActive = activeTab === index;
+
+        return (
+          <TouchableOpacity
+            key={tab.name}
+            className="mx-1 items-center justify-center rounded-full overflow-hidden"
+            style={{
+              width: tabWidth,
+              paddingVertical: 6,
             }}
+            onPress={() => setActiveTab(index)}
           >
-            {tabs.map((tab, index) => {
-              const Icon = tab.icon ?? (() => null);
-              const isActive = activeTab === index;
+            {Icon && (
+              <Icon
+                size={22}
+                color={isActive ? colors.primary : colors.dark}
+              />
+            )}
 
-              return (
-                <TouchableOpacity
-                  key={tab.name}
-                  className="mx-1 items-center justify-center rounded-full overflow-hidden"
-                  style={{
-                    width: tabWidth,
-                    paddingVertical: 6,
-                  }}
-                  onPress={() => setActiveTab(index)}
-                >
-                  {Icon && (
-                    <Icon
-                      size={22}
-                      color={isActive ? colors.primary : colors.dark}
-                    />
-                  )}
+            <CsText
+  className="text-[10px] mt-1 text-center"
+  numberOfLines={1}
+  ellipsizeMode="tail"
+  style={{
+    color: isActive ? colors.primary : colors.dark,
+    fontWeight: isActive ? "600" : "400",
+  }}
+>
+  {tab.label.split(" ")[0]}
+</CsText>
+          </TouchableOpacity>
+        );
+      })}
+    </ScrollView>
 
-                  <CsText
-                    className={`text-[10px] mt-1 text-center ${isActive ? "text-primary font-semibold" : "text-dark"
-                      }`}
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                  >
-                    {tab.label.split(" ")[0]}
-                  </CsText>
-                </TouchableOpacity>
-              );
-            })}
-
-            {/* <Animated.View
-              style={{
-                position: "absolute",
-                bottom: insets.bottom + 10,
-                left: 16,
-                width: tabWidth * 0.8, // <<< FIXED WIDTH
-                height: 2,
-                borderRadius: 1,
-                backgroundColor: colors.primary,
-                transform: [{ translateX: underlineAnim }],
-              }}
-            /> */}
-          </ScrollView>
-        </View>
-      </View>
+    {/* Right Arrow */}
+    <View
+      style={{
+        position: "absolute",
+        right: 6,
+        top: 0,
+        bottom: 0,
+        justifyContent: "center",
+        zIndex: 2,
+      }}
+    >
+      <ChevronRight size={18} color={colors.dark}  />
+    </View>
+  </View>
+</View>
     </View>
   );
 }

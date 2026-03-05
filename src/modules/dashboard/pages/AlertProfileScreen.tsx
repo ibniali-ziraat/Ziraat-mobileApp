@@ -29,7 +29,7 @@ export default function AlertsTrackingScreen() {
   };
 
   return (
-    <ScreenLayout className="flex-1 bg-light p-4">
+    <ScreenLayout >
       <ScreenContent>
         <HeaderBanner />
 
