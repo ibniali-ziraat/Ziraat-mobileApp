@@ -1,21 +1,18 @@
-import FormInput from "@/src/components/form/inputs/FormInput";
 import BackHeader from "@/src/components/shared/BackHeader";
-import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { useChangeCurrentPassword } from "@/src/hooks/useChangeCurrentPassword";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
-import { Eye, EyeOff, ShieldCheck } from "lucide-react-native";
-import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { ShieldCheck } from "lucide-react-native";
+import { useState } from "react";
+import { FormProvider } from "react-hook-form";
 import {
-  ActivityIndicator,
-  Alert,
-  Animated,
-  Pressable,
-  View,
+  Text,
+  View
 } from "react-native";
 
+import FormActions from "@/src/components/shared/FormActions";
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
+import { useZodForm } from "@/src/hooks/useZodForm";
 import { ChangePasswordSchema } from "@/src/schemas/password.schema";
 
 type FormValues = {
@@ -25,127 +22,112 @@ type FormValues = {
 };
 
 export default function ChangePasswordScreen() {
-  const [showOld, setShowOld] = useState(false);
-  const [showNew, setShowNew] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
 
-  const fade = useRef(new Animated.Value(0)).current;
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const methods = useZodForm(ChangePasswordSchema);
 
   const {
-    control,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(ChangePasswordSchema),
-    mode: "onChange",
-  });
+  } = methods;
 
   const changePassword = useChangeCurrentPassword();
 
-  useEffect(() => {
-    Animated.timing(fade, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  }, []);
-
   const onSubmit = async (values: FormValues) => {
-  try {
-    await changePassword.mutateAsync(values);
+    setErrorMessage("");
+    setSuccessMessage("");
 
-    reset();
-    Alert.alert("Success", "Password changed successfully");
+    try {
+      await changePassword.mutateAsync(values);
 
-    setTimeout(() => {
-      router.replace("/settings/SettingsScreen");
-    }, 800);
-  } catch (err: any) {
-    Alert.alert(
-      "Error",
-      err?.response?.data?.message || "Something went wrong"
-    );
-  }
-};
+      reset();
+      setSuccessMessage("Password changed successfully");
+
+      setTimeout(() => {
+        router.replace("/settings/SettingsScreen");
+      }, 800);
+
+    } catch (err: any) {
+      setErrorMessage(
+        err?.response?.data?.message || "Something went wrong"
+      );
+    }
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.light }}>
       <View className="flex-1 px-4">
+
         <BackHeader title="Change Password" desc="Security Settings" />
 
-        <Animated.View style={{ opacity: fade }} className="rounded-3xl p-5 mt-4">
-          <View className="items-center mb-6">
-            <View className="bg-primary/10 p-4 rounded-full">
-              <ShieldCheck size={28} color={colors.primary} />
+        <FormProvider {...methods}>
+          <View className="rounded-3xl p-5 mt-4">
+
+            <View className="items-center mb-6">
+              <View className="bg-primary/10 p-4 rounded-full">
+                <ShieldCheck size={28} color={colors.primary} />
+              </View>
+
+              <Text className="mt-2 text-lg font-semibold">
+                Change your current Password
+              </Text>
+
+              <Text
+                style={{ color: colors.darkHover }}
+                className="text-sm mt-1"
+              >
+                Keep your account secure & safe
+              </Text>
             </View>
 
-            <CsText className="mt-2 text-lg font-semibold">
-              Change your current Password
-            </CsText>
+            {successMessage ? (
+              <Text className="text-green-600 mb-3 text-center">
+                {successMessage}
+              </Text>
+            ) : null}
 
-            <CsText style={{ color: colors.darkHover }} className="text-sm mt-1">
-              Keep your account secure & safe
-            </CsText>
+            {errorMessage ? (
+              <Text className="text-red-500 mb-3 text-center">
+                {errorMessage}
+              </Text>
+            ) : null}
+
+            <FormTextInput
+              name="oldPassword"
+              label="Current Password"
+              type="password"
+              error={errors?.oldPassword}
+            />
+
+            <FormTextInput
+              name="newPassword"
+              label="New Password"
+              type="password"
+              error={errors?.newPassword}
+            />
+
+            <FormTextInput
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              error={errors?.confirmPassword}
+            />
+
+            <View className="mb-3 mt-4">
+                      <FormActions
+                        submitLabel="Save Changes"
+                        onSubmit={handleSubmit(onSubmit)}
+                        disabled={changePassword.isPending}
+                        loading={changePassword.isPending}
+                      />
+                    </View>
+
           </View>
+        </FormProvider>
 
-          <FormInput
-            control={control}
-            name="oldPassword"
-            label="Current Password"
-            type={showOld ? "text" : "password"}
-            error={errors?.oldPassword}
-            rightIcon={
-              <Pressable onPress={() => setShowOld(!showOld)}>
-                {showOld ? <EyeOff size={18} /> : <Eye size={18} />}
-              </Pressable>
-            }
-          />
-
-          <FormInput
-            control={control}
-            name="newPassword"
-            label="New Password"
-            type={showNew ? "text" : "password"}
-            error={errors?.newPassword}
-            rightIcon={
-              <Pressable onPress={() => setShowNew(!showNew)}>
-                {showNew ? <EyeOff size={18} /> : <Eye size={18} />}
-              </Pressable>
-            }
-          />
-
-          <FormInput
-            control={control}
-            name="confirmPassword"
-            label="Confirm Password"
-            type={showConfirm ? "text" : "password"}
-            error={errors?.confirmPassword}
-            rightIcon={
-              <Pressable onPress={() => setShowConfirm(!showConfirm)}>
-                {showConfirm ? <EyeOff size={18} /> : <Eye size={18} />}
-              </Pressable>
-            }
-          />
-
-          <Pressable
-            onPress={handleSubmit(onSubmit)}
-            disabled={changePassword.isPending}
-            className="mt-4 py-4 rounded-2xl items-center"
-            style={{
-              backgroundColor: colors.primary,
-              opacity: changePassword.isPending ? 0.6 : 1,
-            }}
-          >
-            {changePassword.isPending ? (
-              <ActivityIndicator color="#fff" />
-            ) : (
-              <CsText style={{ color: colors.light }} className="font-semibold text-base ">
-              Save changes
-              </CsText>
-            )}
-          </Pressable>
-        </Animated.View>
       </View>
     </View>
   );
