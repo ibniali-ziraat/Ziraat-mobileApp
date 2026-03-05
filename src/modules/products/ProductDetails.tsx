@@ -32,6 +32,7 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { X } from "lucide-react-native";
 import { Modal } from "react-native-paper";
 
+import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
 import Loader from "@/src/components/shared/Loader";
 import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
@@ -144,7 +145,7 @@ export default function ProductDetails() {
   const isInCart = Boolean(cartItem);
 
   return (
-    <ScreenLayout scrollable={false}>
+    <ScreenLayout scrollable>
       <ScreenContent>
         <BackHeader title="Product Details" />
 
@@ -161,7 +162,9 @@ export default function ProductDetails() {
                 quantity={quantity}
                 setQuantity={setQuantity}
               />
-
+             <View className="mt-6">
+               <LegalDisclaimer/>
+             </View>
               <ProductDescription product={product} />
               <ProductSpecifications product={product} />
             </>
