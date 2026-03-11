@@ -1,11 +1,10 @@
-import { useRef, useState } from "react";
+
+import { useRef } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import { colors } from "@/src/constants/colors";
 import { FormOtpInputProps } from "./types";
-
-const STATIC_OTP = "123456";
 
 const FormOtpInput = ({
   name,
@@ -13,15 +12,14 @@ const FormOtpInput = ({
   required,
   length = 6,
 }: FormOtpInputProps) => {
+
   const {
     control,
-    setError,
     clearErrors,
     formState: { errors },
   } = useFormContext();
 
-  const refs = useRef([]);
-  const [successMessage, setSuccessMessage] = useState("");
+  const refs = useRef<any[]>([]);
 
   const fieldError = errors[name];
 
@@ -31,48 +29,44 @@ const FormOtpInput = ({
       name={name}
       defaultValue=""
       render={({ field: { value, onChange } }) => {
+
         const otpValue = value || "";
 
         const handleChange = (text: string, index: number) => {
+
           const digit = text.replace(/\D/g, "");
 
-          const arr = otpValue.split("");
-          arr[index] = digit;
-          const newOtp = arr.join("").slice(0, length);
+          const otpArray = otpValue.split("");
+
+          otpArray[index] = digit;
+
+          const newOtp = otpArray.join("").slice(0, length);
 
           onChange(newOtp);
 
+          clearErrors(name);
+
+          // Move focus forward
           if (digit && index < length - 1) {
             refs.current[index + 1]?.focus();
           }
 
+          // Move focus back on delete
           if (!digit && index > 0) {
             refs.current[index - 1]?.focus();
-          }
-
-          setSuccessMessage("");
-          clearErrors(name);
-
-          if (newOtp.length === length) {
-            if (newOtp === STATIC_OTP) {
-              setSuccessMessage("OTP verified successfully");
-            } else {
-              setError(name, {
-                type: "manual",
-                message: "entered OTP is incorrect",
-              });
-            }
           }
         };
 
         return (
           <View style={styles.container}>
+
             <Text style={styles.label}>
               {label}
               {required && <Text style={{ color: colors.error }}> *</Text>}
             </Text>
 
             <View style={styles.row}>
+
               {[...Array(length)].map((_, index) => (
                 <TextInput
                   key={index}
@@ -84,9 +78,7 @@ const FormOtpInput = ({
                     {
                       borderColor: fieldError
                         ? colors.error
-                        : successMessage
-                          ? colors.primary
-                          : colors.neutral,
+                        : colors.neutral,
                     },
                   ]}
                   keyboardType="numeric"
@@ -95,17 +87,15 @@ const FormOtpInput = ({
                   onChangeText={(text) => handleChange(text, index)}
                 />
               ))}
+
             </View>
 
-            {/* Error */}
             {fieldError && (
-              <Text style={styles.error}>{fieldError.message}</Text>
+              <Text style={styles.error}>
+                {fieldError.message}
+              </Text>
             )}
 
-            {/* Success */}
-            {!fieldError && successMessage ? (
-              <Text style={styles.success}>{successMessage}</Text>
-            ) : null}
           </View>
         );
       }}
@@ -116,6 +106,7 @@ const FormOtpInput = ({
 export default FormOtpInput;
 
 const styles = StyleSheet.create({
+
   container: {
     marginBottom: 16,
   },
@@ -146,9 +137,5 @@ const styles = StyleSheet.create({
     color: colors.error,
   },
 
-  success: {
-    marginTop: 6,
-    fontSize: 12,
-    color: colors.primary,
-  },
 });
+
