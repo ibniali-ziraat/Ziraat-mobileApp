@@ -1,6 +1,7 @@
-import ForgotPasswordScreen from "@/src/modules/auth/user/ForgotPassword";
 
+
+import ResetPasswordScreen from "@/src/modules/auth/user/forget-password/ResetPassword";
 import React from "react";
 export default function ForgetPassword() {
-  return React.createElement (ForgotPasswordScreen, null);
+  return React.createElement(ResetPasswordScreen, null);
 }

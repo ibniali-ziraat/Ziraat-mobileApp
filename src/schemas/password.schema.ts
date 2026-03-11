@@ -1,32 +1,30 @@
 import { z } from "zod";
-import { passwordValidator } from "../lib/validation";
 
 export const ChangePasswordSchema = z
   .object({
     oldPassword: z
       .string()
-      .min(1, "Current password is required"),
+      .min(1, "Required Field"),
 
-    newPassword: passwordValidator,
+    newPassword: z
+      .string()
+      .min(1, "Required Field")
+      .regex(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{7,}$/,
+        "Password must be at least 7 characters long and include an uppercase letter, a lowercase letter, a number, and a special character.",
+      ),
 
     confirmPassword: z
       .string()
-      .min(1, "Confirm Password is required"),
+      .min(1, "Required Field"),
   })
-  .superRefine((data, ctx) => {
-    if (data.newPassword !== data.confirmPassword) {
+  .superRefine(({ newPassword, confirmPassword }, ctx) => {
+    if (newPassword !== confirmPassword) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "Passwords do not match",
+        code: "custom",
         path: ["confirmPassword"],
-      });
-    }
-
-    if (data.oldPassword === data.newPassword) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "New password must be different from current password",
-        path: ["newPassword"],
+        message: "Passwords do not match",
       });
     }
   });
+
