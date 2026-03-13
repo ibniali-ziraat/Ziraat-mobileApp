@@ -12,7 +12,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import DropdownSelectInput from "@/src/components/form/inputs/Dropdown";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Sparkles } from "lucide-react-native";
-import { useCodCheckout, usePaymentProviders } from "../hooks/useCheckout";
+import { useCodCheckout, usePaymentProviders } from "../hooks/UseCheckout";
 
 const ReviewOrderScreen = () => {
   const { address, orderSummary } = useLocalSearchParams();

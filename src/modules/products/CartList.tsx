@@ -19,7 +19,7 @@ import {
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useCheckout, useCouponCode } from "./Checkout/hooks/useCheckout";
+import { useCheckout, useCouponCode } from "./Checkout/hooks/UseCheckout";
 import { useCart } from "./hooks/data/useCart";
 
 const CartList = () => {

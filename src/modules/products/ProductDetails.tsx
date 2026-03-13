@@ -32,7 +32,6 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { X } from "lucide-react-native";
 import { Modal } from "react-native-paper";
 
-import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
 import Loader from "@/src/components/shared/Loader";
 import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
@@ -145,79 +144,81 @@ export default function ProductDetails() {
   const isInCart = Boolean(cartItem);
 
   return (
-    <ScreenLayout scrollable>
-      <ScreenContent>
-        <BackHeader title="Product Details" />
+    <>
+      <ScreenLayout scrollable>
+        <ScreenContent>
+          <BackHeader title="Product Details" />
 
-        <FlatList
-          data={[{ key: "content" }]}
-          renderItem={() => null}
-          ListHeaderComponent={
-            <>
-              <ProductHeader product={product} />
-              <ProductPriceCard product={product} />
-              {/* <ProductMeta product={product} /> */}
+          <FlatList
+            scrollEnabled={false}
+            data={[{ key: "content" }]}
+            renderItem={() => null}
+            ListHeaderComponent={
+              <>
+                <ProductHeader product={product} />
+                <ProductPriceCard product={product} />
+                {/* <ProductMeta product={product} /> */}
 
-              <ProductQuantitySelector
-                quantity={quantity}
-                setQuantity={setQuantity}
-              />
-             <View className="mt-6">
-               <LegalDisclaimer/>
-             </View>
-              <ProductDescription product={product} />
-              <ProductSpecifications product={product} />
-            </>
-          }
-          ListFooterComponent={
-            <View className="pb-32">
-              {reviewsLoading ? (
-                <ActivityIndicator color={colors.primary} />
-              ) : reviewsError ? (
-                <CsText>Failed to load reviews</CsText>
-              ) : (
-                <>
-                  <Review
-                    reviews={reviews}
-                    summary={summary}
-                    onWriteReviewPress={() => setModalVisible(true)}
-                  />
+                <ProductQuantitySelector
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                />
+                <View className="mt-6">{/* <LegalDisclaimer/> */}</View>
+                <ProductDescription product={product} />
+                <ProductSpecifications product={product} />
+              </>
+            }
+            ListFooterComponent={
+              <View className="pb-32">
+                {reviewsLoading ? (
+                  <ActivityIndicator color={colors.primary} />
+                ) : reviewsError ? (
+                  <Text>Failed to load reviews</Text>
+                ) : (
+                  <>
+                    <Review
+                      reviews={reviews}
+                      summary={summary}
+                      onWriteReviewPress={() => setModalVisible(true)}
+                    />
 
-                  {pageNumber < totalPages && (
-                    <TouchableOpacity
-                      onPress={() => setPageNumber((prev) => prev + 1)}
-                    >
-                      <Text>Load More Reviews</Text>
-                    </TouchableOpacity>
-                  )}
-                </>
-              )}
+                    {pageNumber < totalPages && (
+                      <TouchableOpacity
+                        onPress={() => setPageNumber((prev) => prev + 1)}
+                      >
+                        <Text>Load More Reviews</Text>
+                      </TouchableOpacity>
+                    )}
+                  </>
+                )}
 
-              <ProductFaq data={faqData} />
-            </View>
-          }
-        />
+                <ProductFaq data={faqData} />
+              </View>
+            }
+          />
 
-        <Modal
-          visible={modalVisible}
-          onDismiss={() => setModalVisible(false)}
-          contentContainerStyle={{
-            backgroundColor: "white",
-            margin: 20,
-            borderRadius: 20,
-            padding: 16,
-          }}
-        >
-          <Pressable
-            onPress={() => setModalVisible(false)}
-            style={{ alignSelf: "flex-end" }}
+          <Modal
+            visible={modalVisible}
+            onDismiss={() => setModalVisible(false)}
+            contentContainerStyle={{
+              backgroundColor: "white",
+              margin: 20,
+              borderRadius: 20,
+              padding: 16,
+            }}
           >
-            <X size={26} color="black" />
-          </Pressable>
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              style={{ alignSelf: "flex-end" }}
+            >
+              <X size={26} color="black" />
+            </Pressable>
 
-          <WriteReview onSubmit={addReview} loading={isPending} />
-        </Modal>
-      </ScreenContent>
+            <WriteReview onSubmit={addReview} loading={isPending} />
+          </Modal>
+        </ScreenContent>
+      </ScreenLayout>
+
       <ProductStickyBar
         product={product}
         quantity={quantity}
@@ -226,6 +227,6 @@ export default function ProductDetails() {
         onRemoveFromCart={handleRemoveFromCart}
         isCartBusy={isCartBusy}
       />
-    </ScreenLayout>
+    </>
   );
 }

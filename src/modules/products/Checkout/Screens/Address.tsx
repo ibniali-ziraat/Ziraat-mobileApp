@@ -20,7 +20,7 @@ import {
   useCheckoutShipping,
   useCreateCheckoutShipping,
   useUpdateTaxAndShippingPrices,
-} from "../hooks/useCheckout";
+} from "../hooks/UseCheckout";
 
 const SelectAddressScreen = () => {
   const [checkoutId, setCheckoutId] = useState<string | null>(null);

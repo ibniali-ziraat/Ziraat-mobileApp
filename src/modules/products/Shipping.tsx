@@ -106,7 +106,7 @@ export default function Shipping() {
       });
       ToastAndroid.show("Added to Cart", ToastAndroid.SHORT);
     } catch (error) {
-      console.error("Add to cart failed:", error);
+      console.error(" failed:", error);
       ToastAndroid.show("Failed to add to cart", ToastAndroid.SHORT);
     }
   };

@@ -131,5 +131,7 @@ export const ROUTES = {
     HOME: "/(tabs)",
     PROFILE: "/(tabs)/profile",
     ORCHARDS: "/(tabs)/orchards",
+    Products: "/(tabs)/Product",
+    // ORDERS: "/(tabs)/orders",
   },
 } as const;

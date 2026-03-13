@@ -24,11 +24,11 @@ import {
 
 import { ScrollView } from "react-native-gesture-handler";
 
-import { useCountries, useDistricts, useStates } from "../hooks/useAddress";
-import { useCreateShippingAddress } from "../hooks/useCheckout";
+import { useCountries, useDistricts, useStates } from "../hooks/UseAddress";
+import { useCreateShippingAddress } from "../hooks/UseCheckout";
 
 import { router } from "expo-router";
-import { AddressFormData, addressSchema } from "../Schema/addressSchema";
+import { AddressFormData, addressSchema } from "../schema/addressSchema";
 
 const CreateAddressScreen = ({ navigation }) => {
   const methods = useForm<AddressFormData>({

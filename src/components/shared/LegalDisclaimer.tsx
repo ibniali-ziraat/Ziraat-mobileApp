@@ -51,12 +51,12 @@ import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
 import {
-    LayoutAnimation,
-    Platform,
-    Text,
-    TouchableOpacity,
-    UIManager,
-    View,
+  LayoutAnimation,
+  Platform,
+  Text,
+  TouchableOpacity,
+  UIManager,
+  View,
 } from "react-native";
 
 if (Platform.OS === "android") {
@@ -78,7 +78,7 @@ export default function LegalDisclaimer() {
         borderColor: colors.secondary,
         borderWidth: 1,
         borderRadius: 16,
-        marginHorizontal: 16,
+        // marginHorizontal: 16,
         marginBottom: 6,
         overflow: "hidden",
       }}
@@ -161,8 +161,8 @@ export default function LegalDisclaimer() {
             }}
           >
             ZIRAAT is a technology platform. Sale and supply of fertilizers and
-            pesticides is carried out by licensed vendors in compliance with
-            the Insecticides Act, 1968 and Fertilizer Control Order, 1985. Use
+            pesticides is carried out by licensed vendors in compliance with the
+            Insecticides Act, 1968 and Fertilizer Control Order, 1985. Use
             pesticides strictly as per label instructions and expert advice.
           </Text>
         </View>

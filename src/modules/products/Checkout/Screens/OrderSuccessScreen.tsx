@@ -110,7 +110,7 @@ const OrderSuccessScreen = () => {
           {/* SHIPPING ADDRESS */}
           <View className=" mt-4 rounded-2xl bg-white p-5">
             <Text style={[typography.Poppins_s_bold]} className="mb-2 text-lg">
-              Shipping Address/Billing Address
+              Delivery Address
             </Text>
 
             <Text className="font-semibold text-neutral-900">
