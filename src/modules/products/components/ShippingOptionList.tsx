@@ -21,8 +21,9 @@ export default function ShippingOptionList({
             <View className="flex-row justify-between items-center">
               <View className="flex-row items-start gap-3">
                 <View
-                  className={`h-5 w-5 rounded-full border-2 ${isSelected ? "border-secondary" : "border-neutral"
-                    } flex items-center justify-center`}
+                  className={`h-5 w-5 rounded-full border-2 ${
+                    isSelected ? "border-secondary" : "border-neutral"
+                  } flex items-center justify-center`}
                 >
                   {isSelected && (
                     <View className="h-2.5 w-2.5 bg-secondary rounded-full" />
@@ -35,7 +36,9 @@ export default function ShippingOptionList({
                 </View>
               </View>
 
-              <CsText className="text-secondary font-semibold">{item.price}</CsText>
+              <CsText className="text-secondary font-semibold">
+                {item.price}
+              </CsText>
             </View>
           </TouchableOpacity>
         );

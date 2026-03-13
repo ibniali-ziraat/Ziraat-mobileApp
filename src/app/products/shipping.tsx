@@ -1,6 +1,6 @@
+import ShippingOptionList from "@/src/modules/products/components/ShippingOptionList";
 import React from "react";
-import Shipping from "../../data/products.json";
 
 export default function ShipingDetails() {
-  return React.createElement(Shipping, null);
+  return React.createElement(ShippingOptionList, null);
 }

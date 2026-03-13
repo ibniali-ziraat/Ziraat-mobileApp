@@ -92,11 +92,11 @@ export default function ProductDetails() {
       rating: formData.rating,
       title: "",
       comment: formData.comment,
-      reviewerName: "Anonymous",
+      reviewerName: "",
       entityId: product.id,
       entityTypeId: "Product",
-      hasBoughtProduct: false,
-      loggedUserName: "Anonymous",
+      hasBoughtProduct: true,
+      loggedUserName: "",
     };
 
     submitReview(payload, {

@@ -22,7 +22,7 @@ export default function AllProductsCarousal({
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
 
-  console.log(items, "items data+++ in all products carousal");
+  // console.log(items, "items data+++ in all products carousal");
 
   const getWishlistItem = (productId: string) =>
     wishlistItems.find((w: any) => String(w.productId) === String(productId));
@@ -44,6 +44,8 @@ export default function AllProductsCarousal({
             ? item.price
             : null;
 
+        // console.log(price, "price");
+
         const discount =
           oldPrice && price
             ? Math.round(((oldPrice - price) / oldPrice) * 100)
@@ -51,7 +53,6 @@ export default function AllProductsCarousal({
 
         return (
           <View style={{ width: cardWidth }} className="mr-4">
-
             {/* IMAGE CARD */}
             <View
               className="rounded-2xl overflow-hidden"
@@ -64,7 +65,6 @@ export default function AllProductsCarousal({
                 elevation: 2,
               }}
             >
-
               {/* IMAGE */}
               <Pressable
                 onPress={() =>
@@ -108,13 +108,13 @@ export default function AllProductsCarousal({
                   style={{ backgroundColor: colors.secondary }}
                 >
                   <Text
-                  style={{color:colors.light}}
-                   className="text-xs  font-semibold">
+                    style={{ color: colors.light }}
+                    className="text-xs  font-semibold"
+                  >
                     {discount}% OFF
                   </Text>
                 </View>
               )}
-
             </View>
 
             {/* CONTENT */}
@@ -139,7 +139,6 @@ export default function AllProductsCarousal({
             <View className="mt-1">
               <RatingStars rating={item.rating || item.ratingAverage} />
             </View>
-
           </View>
         );
       }}
