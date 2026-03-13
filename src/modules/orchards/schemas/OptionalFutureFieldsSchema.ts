@@ -20,5 +20,5 @@ export const OptionalFutureFieldsSchema = z.object({
   certifications: multiSelectOptional(),
 
   /** 4️⃣ Digital Tools (Required multi-select) */
-  digitalTools: multiSelectOptional(),
+  digitalToolsUsed: multiSelectOptional(),
 });

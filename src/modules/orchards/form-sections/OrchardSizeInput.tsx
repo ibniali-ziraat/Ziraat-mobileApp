@@ -4,7 +4,6 @@ import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 export default function OrchardSizeInput({
-  control,
   errors,
   measuredValue,
   areaLabel,
@@ -23,7 +22,7 @@ export default function OrchardSizeInput({
     >
       <FormTextInput
         name="orchardSize.value"
-        label={`Orchard Size (${areaUnit})`}
+        label={`Orchard Size`}
         // label={`Orchard Size `}
         type="pincode"
         disabled={true}

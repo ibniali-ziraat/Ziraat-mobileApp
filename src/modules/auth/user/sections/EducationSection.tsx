@@ -1,5 +1,5 @@
+import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import { View } from "react-native";
-import FormInput from "../../../../components/form/inputs/FormInput";
 
 interface Props {
   control: any;
@@ -9,36 +9,32 @@ interface Props {
 export default function EducationSection({ control, errors }: Props) {
   return (
     <View>
-      <FormInput
-        control={control}
+      <FormTextInput
         name="highestQualification"
         label="Highest Qualification"
         error={errors.highestQualification}
+        type="name"
       />
 
-      <FormInput
-        control={control}
+      <FormTextInput
         name="instituteName"
         label="Institute / University Name"
         error={errors.instituteName}
+        type="name"
       />
 
-      <FormInput
-        control={control}
+      <FormTextInput
         name="passingYear"
         label="Year of Passing"
-        type="phone"
+        type="year"
         error={errors.passingYear}
       />
 
-      <FormInput
-        control={control}
+      <FormTextInput
         name="specialization"
         label="Specialization / Major (Optional)"
         error={errors.specialization}
-        optional
       />
     </View>
   );
 }
-

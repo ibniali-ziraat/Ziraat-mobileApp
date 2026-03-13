@@ -7,11 +7,11 @@ import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { FormProvider } from "react-hook-form";
 
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useLocalSearchParams } from "expo-router";
+
 import { useEffect } from "react";
 import VarietAndPlatingDetails from "../form-sections/VarietyPlantingSection";
 import {
@@ -23,22 +23,24 @@ import { VarietyAndPlatingDetailsSchema } from "../schemas/VarietyAndPlatingDeta
 
 export default function VarietyAndPlatingDetailsScreen() {
   const { orchardProfileId } = useAuth();
-  console.log(orchardProfileId, "orchardprofile id in orchard.service");
+
+  if (!orchardProfileId) return null;
 
   const { varietyId } = useLocalSearchParams<{ varietyId?: string }>();
-  console.log(varietyId, "variety id is ..");
 
-  const { data: varietiesData } = useOrchardVarietiesQuery(orchardProfileId!);
+  const { data: varietiesData } = useOrchardVarietiesQuery(orchardProfileId);
+  console.log(varietiesData, "varieties data....");
+
   const selectedVariety = varietiesData?.find(
-    (v: any) => v.id === Number(varietyId),
+    (v: any) => String(v.id) === String(varietyId),
   );
 
-  const isEdit = !!varietyId && !!selectedVariety;
-  console.log(varietiesData, "crop nutrition data...");
+  const isEdit = selectedVariety;
 
   const { mutateAsync: save, isPending: isSaving } = useCreateVarietyMutation();
   const { mutateAsync: update, isPending: isUpdating } =
     useUpdateVarietyMutation();
+
   const form = useZodForm(VarietyAndPlatingDetailsSchema, {
     defaultValues: {
       varieties: [
@@ -54,37 +56,38 @@ export default function VarietyAndPlatingDetailsScreen() {
       ],
     },
   });
+
   const {
-    setValue,
     handleSubmit,
     control,
     formState: { errors },
   } = form;
 
+  
   useEffect(() => {
-    if (!isEdit || !varietiesData || !varietyId) return;
+    if (!varietyId) return;
+    if (!varietiesData || varietiesData.length === 0) return;
 
-    const selectedVariety = varietiesData.find(
-      (v: any) => v.id === Number(varietyId),
+    const selected = varietiesData.find(
+      (v: any) => String(v.id) === String(varietyId),
     );
 
-    if (!selectedVariety) return;
+    if (!selected) return;
 
-    // IMPORTANT: match useFieldArray structure
     form.reset({
       varieties: [
         {
-          varietyName: selectedVariety.varietyName,
-          numberOfTrees: selectedVariety.numberOfTrees,
-          rootstockUsed: selectedVariety.rootstockUsed,
-          plantDensity: selectedVariety.plantDensity,
-          treesLessThan5Years: selectedVariety.treesLessThan5Years,
-          treesFiveToTenYears: selectedVariety.treesFiveToTenYears,
-          treesMoreThan10Years: selectedVariety.treesMoreThan10Years,
+          varietyName: String(selected.varietyName ?? ""),
+          numberOfTrees: String(selected.numberOfTrees ?? ""),
+          rootstockUsed: String(selected.rootstockUsed ?? ""),
+          plantDensity: String(selected.plantDensity ?? ""),
+          treesLessThan5Years: String(selected.treesLessThan5Years ?? ""),
+          treesFiveToTenYears: String(selected.treesFiveToTenYears ?? ""),
+          treesMoreThan10Years: String(selected.treesMoreThan10Years ?? ""),
         },
       ],
     });
-  }, [isEdit, varietiesData, varietyId]);
+  }, [varietyId, varietiesData, form]);
 
   const onSubmit = async (values: any) => {
     try {
@@ -97,20 +100,11 @@ export default function VarietyAndPlatingDetailsScreen() {
 
         showSuccessToast("Variety updated");
       } else {
-        // const payload = values.varieties.map((v) => ({
-        //   orchardProfileId,
-        //   ...v,
-        // }));
-
-        // await save(payload);
-        // showSuccessToast("Varieties saved");
         for (const v of values.varieties) {
-          const payload = {
+          await save({
             orchardProfileId,
             ...v,
-          };
-
-          await save(payload);
+          });
         }
 
         showSuccessToast("Varieties saved");
@@ -121,41 +115,6 @@ export default function VarietyAndPlatingDetailsScreen() {
       showErrorToast("Failed to save variety");
     }
   };
-
-  // const onSubmit = async (values: any) => {
-  //   try {
-  //     const payload = {
-  //       id: varietiesData[0]?.id,
-  //       orchardProfileId,
-  //       ...values,
-  //     };
-  //     const saveData = [
-  //       {
-  //         id: varietiesData[0]?.id,
-  //         orchardProfileId,
-  //         ...values,
-  //       },
-  //     ];
-  //     if (varietiesData.length > 0) {
-  //       await update(payload);
-  //       showSuccessToast("Variety & Planting Details updated");
-  //     } else {
-  //       await save(saveData);
-  //       showSuccessToast("Variety & Planting Details saved");
-  //     }
-
-  //     router.replace(ROUTES.TABS.ORCHARDS);
-  //   } catch (error: any) {
-  //     showErrorToast(
-  //       error?.response?.data?.message || "Failed to save variety details",
-  //     );
-  //   }
-  // };
-
-  /**
-   * Loading / Error guards
-   */
-  // if (isPending) return null;
 
   return (
     <ScreenLayout>

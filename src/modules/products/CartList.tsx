@@ -19,8 +19,8 @@ import {
 } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useCheckout, useCouponCode } from "./Checkout/hooks/useCheckout";
 import { useCart } from "./hooks/data/useCart";
-import { useCheckout, useCouponCode } from "./hooks/data/useCheckout";
 
 const CartList = () => {
   const router = useRouter();
@@ -99,7 +99,7 @@ const CartList = () => {
           }
 
           // toast.success("Order placed successfullyghjkl");
-          router.push("/products/address");
+          router.push("/products/checkout/selectAddress");
         } catch (error) {
           console.log("AsyncStorage error:", error);
         }
@@ -253,7 +253,7 @@ const CartList = () => {
 
         {/* ===== Place Order Button (no API call) ===== */}
         <BuyNowButton
-          title={isPending ? "Processing..." : "Place Order"}
+          title={isPending ? "Processing..." : "Checkout"}
           onPress={handlePlaceOrder}
         />
       </View>

@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  Pressable,
   Text,
   TouchableOpacity,
   View,
@@ -31,6 +32,7 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { X } from "lucide-react-native";
 import { Modal } from "react-native-paper";
 
+import Loader from "@/src/components/shared/Loader";
 import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
 import { useProductByIdQuery } from "./hooks/queries/products.queries";
@@ -42,16 +44,15 @@ export default function ProductDetails() {
   const { data: product, isLoading, isError } = useProductByIdQuery(productId);
 
   const { mutate: submitReview, isPending } = useAddReview();
+  const { cart, addToCart, removeFromCart, isCartBusy } = useCart();
 
-  /* ✅ Pagination State */
   const [pageNumber, setPageNumber] = useState(1);
   const pageSize = 5;
 
-  /* ✅ Fetch Reviews From Backend */
   const {
     data: reviewsData,
     isLoading: reviewsLoading,
-    isError: reviewsError, // ✅ ADD THIS
+    isError: reviewsError,
   } = useListReviews({
     entityId: product?.id,
     entityTypeId: "Product",
@@ -69,7 +70,6 @@ export default function ProductDetails() {
     totalReviews: reviewsData?.reviewsCount ?? 0,
   };
 
-  /* ✅ Map Backend → UI Model */
   const reviews = useMemo(() => {
     return reviewsRaw.map((r: any) => ({
       id: r.id,
@@ -82,7 +82,6 @@ export default function ProductDetails() {
     }));
   }, [reviewsRaw]);
 
-  /* ✅ Add Review */
   const [modalVisible, setModalVisible] = useState(false);
 
   const addReview = (formData: any) => {
@@ -101,20 +100,16 @@ export default function ProductDetails() {
 
     submitReview(payload, {
       onSuccess: () => {
-        toast.success("Review added ✅");
+        toast.success("Review added ");
         setModalVisible(false);
       },
     });
   };
 
-  const { cart, addToCart, removeFromCart, isCartBusy } = useCart();
-
-  /* ================= LOADING ================= */
-
   if (isLoading) {
     return (
       <ScreenLayout>
-        <ActivityIndicator size="large" color={colors.primary} />
+        <Loader />
       </ScreenLayout>
     );
   }
@@ -127,105 +122,107 @@ export default function ProductDetails() {
     );
   }
 
+  const handleAddToCart = async () => {
+    await addToCart({
+      productId: product.id,
+      quantity,
+    });
+    toast.success("Added to cart");
+  };
+
+  const handleRemoveFromCart = async () => {
+    if (!cartItem) return;
+
+    await removeFromCart({
+      id: cartItem.id,
+    });
+
+    toast.success("Removed from cart");
+  };
+
   const cartItem = cart.find((i) => i.productId === product.id);
   const isInCart = Boolean(cartItem);
 
   return (
-    <>
-      <ScreenLayout>
-        <ScreenContent>
-          <BackHeader title="Product Details" />
+    <ScreenLayout scrollable={false}>
+      <ScreenContent>
+        <BackHeader title="Product Details" />
 
-          <FlatList
-            data={[{ key: "content" }]}
-            renderItem={() => null}
-            ListHeaderComponent={
-              <>
-                <ProductHeader product={product} />
-                <ProductPriceCard product={product} />
-                {/* <ProductMeta product={product} /> */}
+        <FlatList
+          data={[{ key: "content" }]}
+          renderItem={() => null}
+          ListHeaderComponent={
+            <>
+              <ProductHeader product={product} />
+              <ProductPriceCard product={product} />
+              {/* <ProductMeta product={product} /> */}
 
-                <ProductQuantitySelector
-                  quantity={quantity}
-                  setQuantity={setQuantity}
-                />
+              <ProductQuantitySelector
+                quantity={quantity}
+                setQuantity={setQuantity}
+              />
 
-                <ProductDescription product={product} />
-                <ProductSpecifications product={product} />
-              </>
-            }
-            ListFooterComponent={
-              <View className="pb-32">
-                {/* ✅ Reviews Section */}
-                {reviewsLoading ? (
-                  <ActivityIndicator color={colors.primary} />
-                ) : reviewsError ? (
-                  <CsText>Failed to load reviews</CsText>
-                ) : (
-                  <>
-                    <Review
-                      reviews={reviews}
-                      summary={summary}
-                      onWriteReviewPress={() => setModalVisible(true)}
-                    />
+              <ProductDescription product={product} />
+              <ProductSpecifications product={product} />
+            </>
+          }
+          ListFooterComponent={
+            <View className="pb-32">
+              {reviewsLoading ? (
+                <ActivityIndicator color={colors.primary} />
+              ) : reviewsError ? (
+                <CsText>Failed to load reviews</CsText>
+              ) : (
+                <>
+                  <Review
+                    reviews={reviews}
+                    summary={summary}
+                    onWriteReviewPress={() => setModalVisible(true)}
+                  />
 
-                    {/* ✅ Load More Pagination */}
-                    {pageNumber < totalPages && (
-                      <TouchableOpacity
-                        onPress={() => setPageNumber((prev) => prev + 1)}
-                      >
-                        <Text>Load More Reviews</Text>
-                      </TouchableOpacity>
-                    )}
-                  </>
-                )}
+                  {pageNumber < totalPages && (
+                    <TouchableOpacity
+                      onPress={() => setPageNumber((prev) => prev + 1)}
+                    >
+                      <Text>Load More Reviews</Text>
+                    </TouchableOpacity>
+                  )}
+                </>
+              )}
 
-                <ProductFaq data={faqData} />
-              </View>
-            }
-          />
+              <ProductFaq data={faqData} />
+            </View>
+          }
+        />
 
-          {/* ✅ Write Review Modal */}
-          <Modal
-            visible={modalVisible}
-            onDismiss={() => setModalVisible(false)}
-            contentContainerStyle={{
-              backgroundColor: "white",
-              margin: 20,
-              borderRadius: 20,
-              padding: 16,
-            }}
+        <Modal
+          visible={modalVisible}
+          onDismiss={() => setModalVisible(false)}
+          contentContainerStyle={{
+            backgroundColor: "white",
+            margin: 20,
+            borderRadius: 20,
+            padding: 16,
+          }}
+        >
+          <Pressable
+            onPress={() => setModalVisible(false)}
+            style={{ alignSelf: "flex-end" }}
           >
-            <TouchableOpacity
-              onPress={() => setModalVisible(false)}
-              style={{ alignSelf: "flex-end" }}
-            >
-              <X size={26} color="black" />
-            </TouchableOpacity>
+            <X size={26} color="black" />
+          </Pressable>
 
-            <WriteReview onSubmit={addReview} loading={isPending} />
-          </Modal>
-        </ScreenContent>
-      </ScreenLayout>
-
+          <WriteReview onSubmit={addReview} loading={isPending} />
+        </Modal>
+      </ScreenContent>
       <ProductStickyBar
         product={product}
         quantity={quantity}
         isInCart={isInCart}
-        onAddToCart={async () => {
-          await addToCart({
-            productId: product.id,
-            quantity,
-          });
-          toast.success("Added to cart");
-        }}
-        onRemoveFromCart={async () => {
-          if (!cartItem) return;
-          await removeFromCart({ id: cartItem.id });
-          toast.success("Removed from cart");
-        }}
+        onAddToCart={handleAddToCart}
+        onRemoveFromCart={handleRemoveFromCart}
         isCartBusy={isCartBusy}
       />
-    </>
+    </ScreenLayout>
   );
 }

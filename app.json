@@ -11,7 +11,8 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.ziraat"
+      "bundleIdentifier": "com.anonymous.ziraat",
+      "jsEngine": "hermes"
     },
     "android": {
       "adaptiveIcon": {
@@ -50,7 +51,9 @@
       "reactCompiler": true
     },
     "extra": {
-      "router": {}
-    }
+      "router": {},
+ 
+    },
+    "owner": "naikummarmukhtar"
   }
 }

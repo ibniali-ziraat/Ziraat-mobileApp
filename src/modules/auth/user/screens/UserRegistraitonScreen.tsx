@@ -90,38 +90,6 @@ export default function UserRegistrationScreen() {
       }
     }
 
-    // if (step === 0) {
-    //   try {
-    //     setProfileData(data);
-
-    //     const existsRes = await verifyUserExists({
-    //       phone: data.phone,
-    //       email: data.email,
-    //     });
-
-    //     console.log(existsRes, "existsres.");
-
-    //     if (existsRes?.success === false) {
-    //       showErrorToast(existsRes.message);
-    //       return;
-    //     }
-
-    //     const otpRes = await sendOtpMutate(data.phone);
-    //     if (!otpRes?.success) {
-    //       showErrorToast(otpRes?.message || "Failed to send OTP");
-    //       return;
-    //     }
-
-    //     nextStep();
-    //   } catch (error) {
-    //     console.log(error, "error");
-
-    //     showErrorToast(
-    //       error.response.data.message || "Something went wrong try again later"
-    //     );
-    //   }
-    // }
-
     if (step === 1) {
       try {
         const otpRes = await verifyOtpMutate({

@@ -146,7 +146,7 @@ export default function Review() {
               <X size={24} color={colors.dark} />
             </TouchableOpacity>
 
-            <WriteReview onSubmit={addReview} />
+            <WriteReview onSubmit={addReview}/>
           </View>
         </View>
       </Modal>

@@ -1,27 +1,26 @@
+import { ToggleLeft, ToggleRight } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
+import MeasuredOrchardSection from "./MeasuredOrchardSection";
+
+import { colors } from "@/src/constants/colors";
+import { shadows } from "@/src/constants/shadows";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
-import OrchardSizeInput from "./OrchardSizeInput";
 
-export default function BasicInfo({
-  control,
-  errors,
-  data,
-  orchardSize,
-  areaLabel,
-  areaUnit,
-}) {
+export default function BasicInfo({ errors, data }) {
+  console.log(errors, "errors...");
+
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
-  const { setValue } = useFormContext();
+
+  const { control, setValue } = useFormContext();
+  if (!control) return null;
 
   const unitHydrated = useRef(false);
-  const modeHydrated = useRef(false);
-
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
 
@@ -30,14 +29,6 @@ export default function BasicInfo({
       setSelectedDistrict(data.district);
     }
   }, [data?.district]);
-
-  useEffect(() => {
-    if (!data?.tehsil || !tehsils.length) return;
-
-    if (tehsils.includes(data.tehsil)) {
-      setValue("tehsil", data.tehsil, { shouldValidate: true });
-    }
-  }, [tehsils, data?.tehsil]);
 
   const orchardUnit = useWatch({
     control,
@@ -58,26 +49,19 @@ export default function BasicInfo({
       return;
     }
 
-    setValue("orchardSize.value", "", {
-      shouldDirty: true,
-      shouldValidate: true,
-    });
+    setValue("marlas", "");
+    setValue("kanals", "");
   }, [orchardUnit]);
 
-  useEffect(() => {
-    if (!orchardMode) return;
-
-    if (!modeHydrated.current) {
-      modeHydrated.current = true;
-      return;
-    }
-
-    setValue("orchardSize.unit", undefined);
-    setValue("orchardSize.value", "");
-  }, [orchardMode]);
+  const toggleMode = () => {
+    setValue(
+      "orchardSize.mode",
+      orchardMode === "measure" ? "manual" : "measure",
+    );
+  };
 
   return (
-    <View className="bg-light w-full">
+    <View style={{ padding: 0, gap: 0 }}>
       <FormTextInput
         name="orchardName"
         label="Orchard Name"
@@ -87,10 +71,84 @@ export default function BasicInfo({
         error={errors?.orchardName}
       />
 
+      <View
+        style={[
+          {
+            backgroundColor: "#fff",
+            borderRadius: 16,
+            paddingVertical: 16,
+            paddingHorizontal: 18,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 24,
+          },
+          shadows.review_card,
+        ]}
+      >
+        <View>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "600",
+              color: "#222",
+              marginBottom: 2,
+            }}
+          >
+            Orchard Size
+          </Text>
+
+          <Text
+            style={{
+              fontSize: 12,
+              color: "#777",
+            }}
+          >
+            Choose measurement method
+          </Text>
+        </View>
+
+        {/* Toggle Button */}
+        <Pressable
+          onPress={toggleMode}
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            gap: 8,
+            backgroundColor:
+              orchardMode === "measure" ? colors.primary + "15" : "#f2f2f2",
+            paddingVertical: 6,
+            paddingHorizontal: 12,
+            borderRadius: 20,
+          }}
+        >
+          {orchardMode === "measure" ? (
+            <ToggleRight size={28} color={colors.primary} />
+          ) : (
+            <ToggleLeft size={28} color="#888" />
+          )}
+
+          <Text
+            style={{
+              fontWeight: "600",
+              fontSize: 14,
+              color: orchardMode === "measure" ? colors.primary : "#666",
+            }}
+          >
+            {orchardMode === "measure" ? "Measure" : "Manual"}
+          </Text>
+        </Pressable>
+      </View>
+
+      {orchardMode === "measure" && (
+        <>
+          <MeasuredOrchardSection />
+        </>
+      )}
+
       {orchardMode === "manual" && (
-        <View style={{ marginVertical: 10 }}>
+        <View>
           <SingleSelectInput
-            control={control}
             name="orchardUnit"
             label="Orchard Size Unit"
             modalLabel="Select Unit"
@@ -125,19 +183,8 @@ export default function BasicInfo({
         </View>
       )}
 
-      {orchardMode === "measure" && (
-        <OrchardSizeInput
-          control={control}
-          errors={errors}
-          measuredValue={orchardSize || data?.orchardSize}
-          areaLabel={areaLabel}
-          areaUnit={areaUnit}
-        />
-      )}
-
       <SingleSelectInput
         searchable
-        control={control}
         name="establishmentYear"
         label="Establishment Year"
         modalLabel="Select Year"
@@ -146,7 +193,6 @@ export default function BasicInfo({
       />
 
       <SingleSelectInput
-        control={control}
         name="plantationPattern"
         label="Plantation Pattern"
         modalLabel="Select Pattern"
@@ -159,8 +205,8 @@ export default function BasicInfo({
         error={errors?.plantationPattern?.message}
       />
 
+      {/* Ownership Type */}
       <SingleSelectInput
-        control={control}
         name="ownershipType"
         label="Ownership Type"
         modalLabel="Ownership Type"
@@ -174,9 +220,9 @@ export default function BasicInfo({
         error={errors?.ownershipType?.message}
       />
 
+      {/* District */}
       <SingleSelectInput
         searchable
-        control={control}
         name="district"
         label="District"
         modalLabel="District"
@@ -189,7 +235,6 @@ export default function BasicInfo({
       {/* Tehsil */}
       <SingleSelectInput
         searchable
-        control={control}
         name="tehsil"
         label="Tehsil"
         modalLabel="Tehsil"
@@ -198,13 +243,13 @@ export default function BasicInfo({
         error={errors?.tehsil?.message}
       />
 
-      {/* PIN Code */}
+      {/* PIN */}
       <FormTextInput
         name="pincode"
         label="PIN Code"
         type="pincode"
-        error={errors?.pincode}
         required
+        error={errors?.pincode}
       />
     </View>
   );

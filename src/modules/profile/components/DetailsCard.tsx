@@ -1,5 +1,6 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
+import { shadows } from "@/src/constants/shadows";
 import { PencilLine, Plus, Trash2 } from "lucide-react-native";
 import { TouchableOpacity, View } from "react-native";
 
@@ -31,23 +32,21 @@ export default function DetailsCard({
 
   return (
     <View
-      style={{
-        backgroundColor: "#fff",
+      style={[{
+        backgroundColor: colors.light,
         borderRadius: 16,
         padding: 16,
         marginVertical: 8,
 
         
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.08,
-        shadowRadius: 1,
-
-        elevation: 3,
-
-        borderWidth: 1,
-        borderColor: "#F0F0F0",
-      }}
+        // shadowColor: colors.dark,
+        // shadowOffset: { width: 0, height: 3 },
+        // shadowOpacity: 0.08,
+        // shadowRadius: 1,
+        // elevation: 3,
+        // borderWidth: 1,
+        // borderColor: colors.light,
+      },shadows.profile_card]}
     >
       {/* Header */}
       <View
@@ -78,7 +77,7 @@ export default function DetailsCard({
 
             {onDelete && (
               <TouchableOpacity onPress={onDelete}>
-                <Trash2 size={18} color="#E53935" />
+                <Trash2 size={18} color={colors.secondary} />
               </TouchableOpacity>
             )}
           </View>
@@ -184,7 +183,7 @@ export default function DetailsCard({
                     marginLeft: 58,
                     marginTop: 10,
                     height: 1,
-                    backgroundColor: "#EFEFEF",
+                    backgroundColor: colors.light,
                   }}
                 />
               )}

@@ -1,5 +1,3 @@
-// import "react-native-get-random-values";
-
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
@@ -10,11 +8,9 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
-import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import BasicInfo from "../form-sections/BasicInfoSection";
 
 import { ROUTES } from "@/src/constants/routes";
-
 import { generateId } from "@/src/utils/generateId";
 import {
   useCreateOrchardMutation,
@@ -82,27 +78,38 @@ export default function BasicInfoScreen() {
     });
   }, [isEditMode, orchard]);
 
-  const onSubmit = async (values: any) => {
-    try {
-      const payload = {
-        orchardId: orchard?.id ?? generateId(),
-        ...values,
-      };
+  const onSubmit = async (values) => {
+    console.log(values, "values...");
 
-      if (orchard) {
-        await updateOrchard(payload);
-        showSuccessToast("Orchard updated");
-      } else {
-        await createOrchard(payload);
-        showSuccessToast("Orchard created");
+    let marlasPayload = 0;
+    let kanalsPayload = 0;
+
+    if (values.orchardSize?.mode === "measure") {
+      marlasPayload = Number(values.marlas ?? 0);
+    } else {
+      if (values.orchardUnit === "kanals") {
+        kanalsPayload = Number(values.kanals ?? 0);
       }
 
-      router.replace(ROUTES.TABS.ORCHARDS);
-    } catch (error: any) {
-      showErrorToast(
-        error?.response?.data?.message || "Failed to save orchard",
-      );
+      if (values.orchardUnit === "marlas") {
+        marlasPayload = Number(values.marlas ?? 0);
+      }
     }
+
+    const payload = {
+      orchardId: orchard?.id ?? generateId(),
+      ...values,
+      kanals: kanalsPayload,
+      marlas: marlasPayload,
+    };
+
+    if (orchard) {
+      await updateOrchard(payload);
+    } else {
+      await createOrchard(payload);
+    }
+
+    router.replace(ROUTES.TABS.ORCHARDS);
   };
 
   if (isPending) return null;
@@ -117,11 +124,11 @@ export default function BasicInfoScreen() {
 
       <ScreenContent>
         <FormProvider {...form}>
-          <BasicInfo control={control} errors={errors} data={orchard} />
+          <BasicInfo errors={errors} data={orchard} />
 
           <FormActions
             cancelLabel="Cancel"
-            onCancel={() => router.back()}
+            onCancel={() => router.replace(ROUTES.TABS.ORCHARDS)}
             submitLabel={isEditMode ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={creating || updating}

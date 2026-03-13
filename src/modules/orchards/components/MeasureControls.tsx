@@ -1,26 +1,60 @@
-import { UNIT_CONVERSIONS } from "@/src/utils/units";
-import { Picker } from "@react-native-picker/picker";
-import { Button, View } from "react-native";
+import { colors } from "@/src/constants/colors";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function MeasureControls({
   unit,
-  setUnit,
   onPrimary,
   onReset,
   primaryLabel,
 }) {
-  console.log(unit, "iniii");
-
   return (
-    <View className="absolute bottom-6 left-4 right-4 bg-white p-4 rounded-xl gap-2">
-      <Picker selectedValue={unit} onValueChange={setUnit}>
-        {Object.keys(UNIT_CONVERSIONS).map((u) => (
-          <Picker.Item key={u} label={u} value={u} />
-        ))}
-      </Picker>
+    <View style={styles.container}>
+      <Pressable style={styles.resetButton} onPress={onReset}>
+        <Text style={styles.resetText}>Reset</Text>
+      </Pressable>
 
-      <Button title={primaryLabel} onPress={onPrimary} />
-      <Button title="Reset" onPress={onReset} color="#666" />
+      <Pressable style={styles.primaryButton} onPress={onPrimary}>
+        <Text style={styles.primaryText}>{primaryLabel}</Text>
+      </Pressable>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: "absolute",
+    bottom: 24,
+    left: 16,
+    right: 16,
+    flexDirection: "row",
+    gap: 10,
+  },
+
+  resetButton: {
+    flex: 1,
+    backgroundColor: colors.dark,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  resetText: {
+    color: colors.light,
+    fontSize: 15,
+    fontWeight: "500",
+  },
+
+  primaryButton: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  primaryText: {
+    color: colors.light,
+    fontSize: 15,
+    fontWeight: "500",
+  },
+});

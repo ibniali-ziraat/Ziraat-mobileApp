@@ -23,8 +23,8 @@ import LogoutButton from "@/src/components/ui/LogoutButton";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
 import { useEffect, useState } from "react";
-import { userDeleteConfig } from "../auth/vendor/config/userDeleteConfig";
-import { userRoutes } from "../auth/vendor/config/userRoutes";
+import { userDeleteConfig } from "../auth/config/userDeleteConfig";
+import { userRoutes } from "../auth/config/userRoutes";
 
 // Icons
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
@@ -56,9 +56,7 @@ export default function UserProfileScreen() {
   const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data: profileData , refetch} = useProfileQuery(userId);
-  console.log(profileData, "profileData......");
-
+  const { data: profileData } = useProfileQuery(userId);
   const { data: addressData } = useAddressQuery(userProfileId);
   const { data: educationData } = useEducationQuery(userProfileId);
   const { data: professionData } = useProfessionQuery(userProfileId);
@@ -121,11 +119,11 @@ export default function UserProfileScreen() {
         onPress={() => router.push(ROUTES.TABS.HOME)}
       />
       <ScreenContent>
-<ProfileTopHeader
-  profilePic={profileData?.profilePic}
-  fullName={profileData?.fullName}
-  profileData={profileData} // <--- Pass the WHOLE object here
-/>
+        <ProfileTopHeader
+          profilePic={profileData?.profilePic}
+          fullName={profileData?.fullName}
+          profileData={profileData}
+        />
         {progress < 100 && (
           <ProfileProgressBar
             progress={progress}
@@ -146,10 +144,9 @@ export default function UserProfileScreen() {
               ? [
                   {
                     title: "Email",
-                    value:
-                      profileData?.email === DUMMY_EMAIL
-                        ? "—"
-                        : profileData?.email,
+                    value: profileData?.email.endsWith(DUMMY_EMAIL)
+                      ? "N/A"
+                      : profileData?.email,
                     icon: <Mail size={22} color={colors.primary} />,
                   },
                   {
@@ -171,7 +168,7 @@ export default function UserProfileScreen() {
                     title: "User Since",
                     value: profileData?.createdOn
                       ? new Date(profileData.createdOn).toLocaleDateString()
-                      : "—",
+                      : "N/A",
                     icon: <Calendar size={22} color={colors.primary} />,
                   },
                 ]
@@ -241,7 +238,7 @@ export default function UserProfileScreen() {
                   },
                   {
                     title: "Specialization",
-                    value: educationData.specialization || "—",
+                    value: educationData.specialization || "N/A",
                     icon: (
                       <GraduationCapIcon size={22} color={colors.primary} />
                     ),
@@ -284,12 +281,12 @@ export default function UserProfileScreen() {
                     title: "Experience",
                     value: professionData.experienceYears
                       ? `${professionData.experienceYears} yrs`
-                      : "—",
+                      : "N/A",
                     icon: <Clock size={22} color={colors.primary} />,
                   },
                   {
                     title: "Skills",
-                    value: professionData.skills || "—",
+                    value: professionData.skills || "N/A",
                     icon: <UserCheck size={22} color={colors.primary} />,
                   },
                 ]

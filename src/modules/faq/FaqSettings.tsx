@@ -1,14 +1,15 @@
 import { ChevronDown } from "lucide-react-native";
 import { useState } from "react";
 import {
-    FlatList,
-    LayoutAnimation,
-    Platform,
-    TouchableOpacity,
-    UIManager,
-    View
+  FlatList,
+  LayoutAnimation,
+  Platform,
+  TouchableOpacity,
+  UIManager,
+  View
 } from "react-native";
 
+import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
@@ -100,7 +101,9 @@ const FaqSettings = () => {
         contentContainerStyle={{ paddingBottom: 40 }}
         ListHeaderComponent={
           <ScreenContent>
-            <View style={{ paddingTop: 28, paddingBottom: 18 }}>
+
+             <BackHeader title="FAQs" />
+            <View style={{ paddingTop: 20, paddingBottom: 18 }}>
               {/* TITLE */}
               <CsText  style={[typography.Poppins_l_semibold,
             {

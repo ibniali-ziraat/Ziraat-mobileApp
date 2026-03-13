@@ -1,5 +1,5 @@
-import OrchardProfileScreeen from "@/src/modules/farmer/dashboard/pages/OrchardProfileScreeen";
+import OrchardProfileScreeen from "@/src/modules/dashboard/pages/OrchardProfileScreeen";
 import React from "react";
 export default function OrchardProfile() {
-    return React.createElement(OrchardProfileScreeen, null);
+  return React.createElement(OrchardProfileScreeen, null);
 }

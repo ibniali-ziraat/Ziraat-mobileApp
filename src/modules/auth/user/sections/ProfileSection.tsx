@@ -5,7 +5,6 @@ import { View } from "react-native";
 import SingleSelectInput from "../../../../components/form/inputs/SingleSelectInput";
 
 export default function ProfileSection({
-  control,
   errors,
   data,
   setValue,
@@ -15,7 +14,7 @@ export default function ProfileSection({
       setValue("fullName", data.fullName || "");
       setValue("email", data.email || "");
       setValue("phone", data.phone || "");
-      setValue("age", data.age != null ? String(data.age) : ""); // convert number to string
+      setValue("age", data.age != null ? String(data.age) : "");
       setValue("gender", data.gender || "");
     }
   }, [data, setValue]);
@@ -43,9 +42,8 @@ export default function ProfileSection({
         name="email"
         label="Email (Optional)"
         error={errors.email}
-        optional
         type="email"
-        required
+        placeholder={"e,g, ziraat@gmail.com"}
       />
 
       <FormTextInput
@@ -57,7 +55,6 @@ export default function ProfileSection({
       />
 
       <SingleSelectInput
-        control={control}
         name="gender"
         label="Gender"
         modalLabel="Gender"
@@ -67,12 +64,12 @@ export default function ProfileSection({
           { label: "Female", value: "female" },
         ]}
         error={errors.gender}
+        optional={false}
       />
 
       {!data && (
         <>
           <FormTextInput
-            control={control}
             name="password"
             label="Password"
             error={errors.password}
@@ -80,7 +77,6 @@ export default function ProfileSection({
             required
           />
           <FormTextInput
-            control={control}
             name="confirmPassword"
             label="Confirm Password"
             error={errors.confirmPassword}

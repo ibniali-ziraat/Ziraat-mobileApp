@@ -101,7 +101,7 @@ export default function DetailRow({ label, value, isLast }: DetailRowProps) {
               className="text-right"
               numberOfLines={2}
             >
-              {value || "-"}
+              {value || "N/A"}
             </CsText>
 
           </View>

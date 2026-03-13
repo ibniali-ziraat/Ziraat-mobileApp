@@ -125,6 +125,27 @@ export const getSoilWaterByOrchard = async (
 ) =>
   safeGet(axiosInstance.get(`${CORE}/orchard/${orchardProfileId}/soil-water`));
 
+export const createSoilTestReport = async (data: any) => {
+  console.log(data, "data for");
+
+  const { data: res } = await axiosInstance.patch(
+    `${CORE}/orchard/${data.orchardProfileId}/soil-water`,
+    data,
+  );
+  return res;
+};
+
+export const deleteSoilTestReport = async (data: any) => {
+  const { data: res } = await axiosInstance.patch(
+    `${CORE}/orchard/${data.orchardProfileId}/soil-water`,
+    data,
+  );
+  return res;
+};
+
+export const getSoilTestReport = async (orchardProfileId: string | number) =>
+  safeGet(axiosInstance.get(`${CORE}/orchard/${orchardProfileId}/soil-water`));
+
 //
 // ====================================================
 // 🌾 D. CROP & NUTRITION

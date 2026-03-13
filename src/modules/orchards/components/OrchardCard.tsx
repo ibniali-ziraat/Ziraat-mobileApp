@@ -1,6 +1,9 @@
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import { colors } from "@/src/constants/colors";
+import { shadows } from "@/src/constants/shadows";
 import { router } from "expo-router";
-import { Pressable, View } from "react-native";
+import { ArrowRight } from "lucide-react-native";
+import { Pressable, Text, View } from "react-native";
 import OrchardDetails from "./OrchardDetails";
 
 interface OrchardCardProps {
@@ -8,18 +11,30 @@ interface OrchardCardProps {
 }
 
 export default function OrchardCard({ orchard }: OrchardCardProps) {
+  const PADDING = 16;
+
   return (
     <ScreenContent>
       <View
-        className="mb-3 rounded-xl bg-white"
-        style={{
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.08,
-          shadowRadius: 7,
-          elevation: 3, 
-        }}
+        style={[
+          {
+            marginBottom: 32,
+            borderRadius: 20,
+            backgroundColor: colors.light,
+            padding: PADDING,
+          },
+          shadows.review_card,
+        ]}
       >
+        <OrchardDetails orchard={orchard} />
+
+        <View
+          style={{
+            height: 1,
+            backgroundColor: "#eee",
+            marginVertical: 12,
+          }}
+        />
         <Pressable
           onPress={() =>
             router.push({
@@ -27,9 +42,24 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
               params: { id: orchard.id },
             })
           }
-          className="active:opacity-90"
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            gap: 6,
+          }}
         >
-          <OrchardDetails orchard={orchard} />
+          <Text
+            style={{
+              color: colors.primary,
+              fontWeight: "600",
+              fontSize: 14,
+            }}
+          >
+            View Details
+          </Text>
+
+          <ArrowRight size={18} color={colors.primary} />
         </Pressable>
       </View>
     </ScreenContent>
