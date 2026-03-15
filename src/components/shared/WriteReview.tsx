@@ -83,7 +83,8 @@ export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
           style={typography.Poppins_s_semibold}
           className="text-center text-light"
         >
-          {loading ? "Submitting..." : "Submit Review"}
+          Submit Review
+          {loading ? "Submitting..." : ""}
         </Text>
       </TouchableOpacity>
     </View>

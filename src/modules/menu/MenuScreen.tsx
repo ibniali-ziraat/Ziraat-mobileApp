@@ -15,15 +15,12 @@ export default function MenuScreen() {
     setRoleMode(newRole);
   };
 
-  const menuGroupsToShow =
-    roleMode === "farmer" ? MenuLinks.farmer : MenuLinks.supplier;
-
   return (
     <ScreenLayout>
       <AnimatedTabContent>
         <View className="flex-1 bg-light">
           <ScreenContent>
-            {menuGroupsToShow.map((group) => (
+            {MenuLinks.farmer.map((group) => (
               <View key={group.title} className="">
                 {group.routes.map((route) => (
                   <MenuItem

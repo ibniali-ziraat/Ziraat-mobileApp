@@ -5,9 +5,8 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ThumbsUp, User, X } from "lucide-react-native";
 import React, { useState } from "react";
-import { Modal, TouchableOpacity, View } from "react-native";
+import { Modal, Text, TouchableOpacity, View } from "react-native";
 import data from "../../data/Review.json";
-import CsText from "./CsText";
 
 export default function Review() {
   const { summary, reviews: initialReviews } = data;
@@ -40,38 +39,38 @@ export default function Review() {
 
   return (
     <View className="mt-6 ">
-
       {/* Header */}
       <View className="flex-row justify-between items-center mb-4">
-        <CsText style={typography.Poppins_l_semibold}>
-          Customer Reviews
-        </CsText>
+        <Text style={typography.Poppins_l_semibold}>Customer Reviews</Text>
 
         <TouchableOpacity
           onPress={() => setModalVisible(true)}
           className="px-4 py-2 rounded-full"
           style={{ backgroundColor: colors.secondary }}
         >
-          <CsText
-          style={{color:colors.light}}
-           className=" text-sm">Write Review</CsText>
+          <Text style={{ color: colors.light }} className=" text-sm">
+            Write Review
+          </Text>
         </TouchableOpacity>
       </View>
 
       {/* Summary */}
       <View className="mb-4">
         <View className="flex-row items-center">
-          <CsText style={typography.Poppins_xl_semibold}>
+          <Text style={typography.Poppins_xl_semibold}>
             {summary.averageRating}
-          </CsText>
+          </Text>
 
           <View className="ml-3">
             <RatingStars rating={summary.averageRating} size={14} />
-            <CsText
-              style={[typography.Poppins_s_regular, { color: colors.dark, opacity: 0.6 }]}
+            <Text
+              style={[
+                typography.Poppins_s_regular,
+                { color: colors.dark, opacity: 0.6 },
+              ]}
             >
               {summary.totalReviews} Reviews
-            </CsText>
+            </Text>
           </View>
         </View>
       </View>
@@ -83,7 +82,6 @@ export default function Review() {
       <View className="mt-4">
         {sortedReviews.map((r, idx) => (
           <View key={r.id} className="py-4">
-
             {/* User Row */}
             <View className="flex-row items-center justify-between mb-2">
               <View className="flex-row items-center">
@@ -95,12 +93,15 @@ export default function Review() {
                 </View>
 
                 <View>
-                  <CsText style={typography.Poppins_m_semibold}>{r.user}</CsText>
-                  <CsText
-                    style={[typography.Poppins_xs_regular, { color: colors.dark, opacity: 0.5 }]}
+                  <Text style={typography.Poppins_m_semibold}>{r.user}</Text>
+                  <Text
+                    style={[
+                      typography.Poppins_xs_regular,
+                      { color: colors.dark, opacity: 0.5 },
+                    ]}
                   >
                     {r.date}
-                  </CsText>
+                  </Text>
                 </View>
               </View>
 
@@ -108,28 +109,38 @@ export default function Review() {
             </View>
 
             {/* Comment */}
-            <CsText
-              style={[typography.Poppins_s_regular, { color: colors.dark, opacity: 0.8 }]}
+            <Text
+              style={[
+                typography.Poppins_s_regular,
+                { color: colors.dark, opacity: 0.8 },
+              ]}
             >
               {r.comment}
-            </CsText>
+            </Text>
 
             {/* Helpful */}
             <View className="flex-row items-center mt-3">
               <ThumbsUp size={14} color={colors.secondary} />
-              <CsText
-                style={[typography.Poppins_xs_regular, { color: colors.dark, opacity: 0.6 }]}
+              <Text
+                style={[
+                  typography.Poppins_xs_regular,
+                  { color: colors.dark, opacity: 0.6 },
+                ]}
                 className="ml-2"
               >
                 {r.helpful} found this helpful
-              </CsText>
+              </Text>
             </View>
 
             {/* Divider */}
             {idx !== sortedReviews.length - 1 && (
               <View
                 className="mt-4"
-                style={{ height: 1, backgroundColor: colors.dark, opacity: 0.08 }}
+                style={{
+                  height: 1,
+                  backgroundColor: colors.dark,
+                  opacity: 0.08,
+                }}
               />
             )}
           </View>
@@ -140,13 +151,17 @@ export default function Review() {
       <Modal animationType="slide" transparent visible={modalVisible}>
         <View className="flex-1 justify-center items-center bg-black/40">
           <View
-          style={{backgroundColor:colors.light}}
-           className=" rounded-2xl p-5 w-11/12">
-            <TouchableOpacity onPress={() => setModalVisible(false)} className="self-end mb-2">
+            style={{ backgroundColor: colors.light }}
+            className=" rounded-2xl p-5 w-11/12"
+          >
+            <TouchableOpacity
+              onPress={() => setModalVisible(false)}
+              className="self-end mb-2"
+            >
               <X size={24} color={colors.dark} />
             </TouchableOpacity>
 
-            <WriteReview onSubmit={addReview}/>
+            <WriteReview onSubmit={addReview} />
           </View>
         </View>
       </Modal>

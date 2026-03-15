@@ -1,6 +1,9 @@
-import AddToCartButton from "@/src/components/shared/AddToCartButton";
+import BackButton from "@/src/components/shared/BackButton";
 import BuyNowButton from "@/src/components/shared/BuyNowButton";
+import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
+
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import { View } from "react-native";
 
@@ -29,14 +32,8 @@ export default function ProductStickyBar({
     }
   };
 
-  const handleBuyNowPress = () => {
-    router.push({
-      pathname: "/products/shipping",
-      params: {
-        productId: String(product.id),
-        quantity: String(quantity),
-      },
-    });
+  const handleBackPress = () => {
+    router.replace(ROUTES.TABS.Products); // change path if needed
   };
 
   return (
@@ -49,43 +46,51 @@ export default function ProductStickyBar({
 
         paddingTop: 12,
         paddingHorizontal: 16,
+        paddingBottom: 20,
 
         backgroundColor: colors.light,
 
+        borderTopWidth: 1,
+        borderTopColor: "#E5E5E5",
+
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.08,
+        shadowRadius: 6,
+
+        elevation: 6,
         zIndex: 999,
       }}
     >
-      {/* Top border line */}
-      <View
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 1,
-          backgroundColor: colors.dark,
-          opacity: 0.08,
-        }}
-      />
+      {/* Legal Disclaimer */}
+      <View style={{ marginBottom: 8 }}>
+        <LegalDisclaimer />
+      </View>
 
-      {/* Buttons row */}
+      {/* Buttons Row */}
       <View
         style={{
           flexDirection: "row",
-          marginTop: 8,
+          gap: 12,
         }}
       >
-        <View style={{ flex: 1, marginRight: 12 }}>
-          <BuyNowButton onPress={handleBuyNowPress} />
+        {/* Back Button */}
+        <View style={{ flex: 1 }}>
+          <BackButton
+            title="Back"
+            onPress={handleBackPress}
+            variant="secondary"
+          />
         </View>
 
+        {/* Add To Cart Button */}
         <View style={{ flex: 1 }}>
-          <AddToCartButton
+          <BuyNowButton
             title={isInCart ? "Remove from Cart" : "Add to Cart"}
             onPress={handleCartPress}
             disabled={isCartBusy}
             loading={isCartBusy}
-            variant={isInCart ? "danger" : "primary"}
+            // variant={isInCart ? "danger" : "primary"}
           />
         </View>
       </View>

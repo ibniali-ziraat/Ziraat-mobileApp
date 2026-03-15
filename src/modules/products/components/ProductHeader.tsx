@@ -1,8 +1,7 @@
-import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import ProductDetailCarousel from "@/src/modules/products/components/ProductDetailCarousel";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 export default function ProductHeader({ product }: any) {
   return (
@@ -12,7 +11,7 @@ export default function ProductHeader({ product }: any) {
       />
 
       <View
-        className="px-5 pt-5 pb-6 mt-4 rounded-3xl"
+        className="p-5 mt-4 rounded-2xl"
         style={{
           backgroundColor: colors.light,
           shadowColor: colors.dark,
@@ -20,20 +19,18 @@ export default function ProductHeader({ product }: any) {
           shadowOpacity: 0.05,
           shadowRadius: 8,
           elevation: 3,
-        
-         
-         
+          marginHorizontal: 1,
         }}
       >
         {/* Product Name */}
-        <CsText
+        <Text
           style={[
             typography.Poppins_s_semibold,
             { fontSize: 19, lineHeight: 30 },
           ]}
         >
           {product.name}
-        </CsText>
+        </Text>
 
         {/* Accent line
         <View
@@ -44,15 +41,14 @@ export default function ProductHeader({ product }: any) {
         {/* Brand */}
         {product.brand && (
           <View className="flex-row justify-between items-center">
-            <CsText
-            style={{color:colors.dark}}
-             className=" text-xs uppercase tracking-wider">
+            <Text
+              style={{ color: colors.dark }}
+              className=" text-xs uppercase tracking-wider"
+            >
               Brand:
-            </CsText>
+            </Text>
 
-            <CsText style={{ color: colors.primary }}>
-              {product.brand.name}
-            </CsText>
+            <Text style={{ color: colors.primary }}>{product.brand.name}</Text>
           </View>
         )}
 
@@ -64,11 +60,9 @@ export default function ProductHeader({ product }: any) {
 
         {/* Categories */}
         {product.categories?.length > 0 && (
-          <CsText
-          style={{color:colors.dark}}
-          className=" text-sm leading-5">
+          <Text style={{ color: colors.dark }} className=" text-sm leading-5">
             {product.categories.map((c: any) => c.name).join(" • ")}
-          </CsText>
+          </Text>
         )}
       </View>
     </>
