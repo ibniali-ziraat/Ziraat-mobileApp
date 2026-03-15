@@ -173,7 +173,7 @@ export const useCreateSoilWaterMutation = () => {
 export const useUpdateSoilWaterMutation = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: any) => updateSoilWater(id, data),
+    mutationFn: updateSoilWater,
     onSuccess: () => qc.invalidateQueries({ queryKey: ["soilWater"] }),
   });
 };

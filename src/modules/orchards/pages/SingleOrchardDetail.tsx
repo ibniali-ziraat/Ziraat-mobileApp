@@ -13,7 +13,6 @@ import {
   Calendar,
   CalendarClock,
   Droplet,
-  FileText,
   Hash,
   IndianRupee,
   Landmark,
@@ -352,7 +351,7 @@ export default function OrchardDetail() {
                       ? new Date(
                           cropNutritionData.lastFertilizerApplicationDate,
                         ).toLocaleDateString()
-                      : "-",
+                      : "N/A",
                     icon: <Leaf size={20} color={colors.primary} />,
                   },
                   {
@@ -459,36 +458,7 @@ export default function OrchardDetail() {
                       : "—",
                     icon: <Leaf size={20} color={colors.primary} />,
                   },
-                  // {
-                  //   title: "Soil pH",
-                  //   value: orchard.soilAndWater.soilPh ,
-                  //   icon: <Beaker size={20} color={colors.primary} />,
-                  // },
-                  // {
-                  //   title: "Nitrogen (N)",
-                  //   value: orchard.soilAndWater.soilNitrogen ,
-                  //   icon: <FlaskConicalIcon size={20} color={colors.primary} />,
-                  // },
-                  // {
-                  //   title: "Phosphorus (P)",
-                  //   value: orchard.soilAndWater.soilPhosphorus ,
-                  //   icon: <FlaskConical size={20} color={colors.primary} />,
-                  // },
-                  // {
-                  //   title: "Potassium (K)",
-                  //   value: orchard.soilAndWater.soilPotassium ,
-                  //   icon: <FlaskConical size={20} color={colors.primary} />,
-                  // },
-                  // {
-                  //   title: "Organic Carbon",
-                  //   value: orchard.soilAndWater.soilOrganicCarbon ,
-                  //   icon: <Leaf size={20} color={colors.primary} />,
-                  // },
-                  // {
-                  //   title: "Micronutrients",
-                  //   value: orchard.soilAndWater.soilMicronutrients ,
-                  //   icon: <Leaf size={20} color={colors.primary} />,
-                  // },
+
                   {
                     title: "Last Soil Test",
                     value: soilWaterData.lastSoilTestDate
@@ -512,13 +482,6 @@ export default function OrchardDetail() {
                     title: "Water Availability",
                     value: soilWaterData.waterAvailability || "—",
                     icon: <AlertCircle size={20} color={colors.primary} />,
-                  },
-                  {
-                    title: "Soil Test Report",
-                    value: soilWaterData.soilTestReportUrl
-                      ? "View Report"
-                      : "—",
-                    icon: <FileText size={20} color={colors.primary} />,
                   },
                 ]
               : []
@@ -551,17 +514,18 @@ export default function OrchardDetail() {
                   {
                     title: "Diseases",
                     value:
-                      plantProtectionData.diseaseHistory?.join(", ") || "-",
+                      plantProtectionData.diseaseHistory?.join(", ") || "N/A",
                     icon: <ShieldCheck size={20} color={colors.primary} />,
                   },
                   {
                     title: "Pests",
-                    value: plantProtectionData.pestHistory?.join(", ") || "-",
+                    value: plantProtectionData.pestHistory?.join(", ") || "N/A",
                     icon: <Bug size={20} color={colors.primary} />,
                   },
                   {
                     title: "Spray Schedule",
-                    value: plantProtectionData.spraySchedule?.join(", ") || "-",
+                    value:
+                      plantProtectionData.spraySchedule?.join(", ") || "N/A",
                     icon: <Calendar size={20} color={colors.primary} />,
                   },
                   {
@@ -604,7 +568,7 @@ export default function OrchardDetail() {
                       ? new Date(
                           plantProductionData.peakHarvestFromMonth,
                         ).toLocaleDateString()
-                      : "-",
+                      : "N/A",
                     icon: <Calendar size={20} color={colors.primary} />,
                   },
                   {
@@ -613,22 +577,22 @@ export default function OrchardDetail() {
                       ? new Date(
                           plantProductionData.peakHarvestToMonth,
                         ).toLocaleDateString()
-                      : "-",
+                      : "N/A",
                     icon: <Calendar size={20} color={colors.primary} />,
                   },
                   {
                     title: "Selling Preference",
-                    value: plantProductionData.sellingPreference || "-",
+                    value: plantProductionData.sellingPreference || "N/A",
                     icon: <Store size={20} color={colors.primary} />,
                   },
                   {
                     title: "Buyer Name",
-                    value: plantProductionData.buyerName || "-",
+                    value: plantProductionData.buyerName || "N/A",
                     icon: <User size={20} color={colors.primary} />,
                   },
                   {
                     title: "Buyer Contact",
-                    value: plantProductionData.buyerContact || "-",
+                    value: plantProductionData.buyerContact || "N/A",
                     icon: <Phone size={20} color={colors.primary} />,
                   },
                 ]
@@ -655,17 +619,17 @@ export default function OrchardDetail() {
               ? [
                   {
                     title: "Payment Type",
-                    value: inputCostData.paymentType || "-",
+                    value: inputCostData.paymentType || "N/A",
                     icon: <IndianRupee size={20} color={colors.primary} />,
                   },
                   {
                     title: "Credit Period",
-                    value: inputCostData.creditPeriod || "-",
+                    value: inputCostData.creditPeriod || "N/A",
                     icon: <CalendarClock size={20} color={colors.primary} />,
                   },
                   {
                     title: "Pesticide Supplier Location",
-                    value: inputCostData.pesticideSupplierLocation || "-",
+                    value: inputCostData.pesticideSupplierLocation || "N/A",
                     icon: <MapPin size={20} color={colors.primary} />,
                   },
                 ]
@@ -691,7 +655,7 @@ export default function OrchardDetail() {
                   {
                     title: "Government Schemes Availed",
                     value:
-                      extraData.governmentSchemesAvailed?.join(", ") || "-",
+                      extraData.governmentSchemesAvailed?.join(", ") || "N/A",
                     icon: <Landmark size={20} color={colors.primary} />,
                   },
                   {
@@ -701,12 +665,12 @@ export default function OrchardDetail() {
                   },
                   {
                     title: "Certifications",
-                    value: extraData.certifications?.join(", ") || "-",
+                    value: extraData.certifications?.join(", ") || "N/A",
                     icon: <BadgeCheck size={20} color={colors.primary} />,
                   },
                   {
                     title: "Digital Tools Used",
-                    value: extraData.digitalToolsUsed?.join(", ") || "-",
+                    value: extraData.digitalToolsUsed?.join(", ") || "N/A",
                     icon: <Smartphone size={20} color={colors.primary} />,
                   },
                 ]

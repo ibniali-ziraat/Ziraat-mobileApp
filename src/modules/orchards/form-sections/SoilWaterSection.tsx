@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { useWatch } from "react-hook-form";
 import { View } from "react-native";
 
 import FormDateInput from "@/src/components/form/inputs/FormDateInput";
-import FormFileInput from "@/src/components/form/inputs/FormFileInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 
 import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
@@ -34,24 +31,6 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
     label: x,
     value: x,
   }));
-
-  const lastSoilTestDone = useWatch({
-    control,
-    name: "lastSoilTestDone",
-    defaultValue: "No",
-  });
-  const soilTestRecordsDone = useWatch({
-    control,
-    name: "soilTestRecordsDone",
-    defaultValue: "No",
-  });
-  const soilTestFileToggle = useWatch({
-    control,
-    name: "soilTestFileToggle",
-    defaultValue: "No",
-  });
-
-  const [open, setOpen] = useState(true);
 
   return (
     <View className="flex-1 w-full p-4">
@@ -121,20 +100,6 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
         />
       </View>
 
-      {!data?.soilTestReportUrl && (
-        <SingleSelectInput
-          control={control}
-          name="soilTestRecordsDone"
-          label="Soil Test Records Available?"
-          modalLabel="Soil Records Available"
-          options={[
-            { value: true, label: "Yes" },
-            { value: false, label: "No" },
-          ]}
-          error={errors?.soilTestRecordsDone?.message}
-        />
-      )}
-
       {/* {soilTestRecordsDone === true && (
           <>
             <TouchableOpacity
@@ -197,15 +162,6 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
             )}
           </>
         )} */}
-
-      {soilTestRecordsDone && (
-        <FormFileInput
-          control={control}
-          name="soilTestReportUrl"
-          label="Upload Soil Test Report"
-          error={errors?.soilTestReportUrl}
-        />
-      )}
     </View>
   );
 }

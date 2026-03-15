@@ -10,6 +10,7 @@ import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 
 import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
+import Loader from "@/src/components/shared/Loader";
 import { colors } from "@/src/constants/colors";
 import { toast } from "@backpackapp-io/react-native-toast";
 import AllProductsCarousal from "../products/components/AllProductsCarousel";
@@ -58,7 +59,7 @@ export default function HomeScreen() {
   }, [data]);
 
   if (locLoading || weatherLoading || productsLoading) {
-    return null; // Loader
+    return <Loader />; // Loader
   }
 
   const handleAddToWishlist = async (productId: string) => {
@@ -86,7 +87,7 @@ export default function HomeScreen() {
             >
               <WeatherCard current={currentWeather} />
             </TouchableOpacity>
-            
+
             <QuickActions />
 
             <SectionTitle
@@ -109,9 +110,9 @@ export default function HomeScreen() {
 
             <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
             <FarmerTipsCard />
-             <View className="mb-20">
-               <LegalDisclaimer />
-             </View>
+            <View className="mb-20">
+              <LegalDisclaimer />
+            </View>
           </View>
         </AnimatedTabContent>
       </ScreenContent>

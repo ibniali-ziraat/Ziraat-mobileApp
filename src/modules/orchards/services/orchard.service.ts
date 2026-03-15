@@ -106,6 +106,8 @@ export const createSoilWater = async (data: any) => {
 };
 
 export const updateSoilWater = async (data: any) => {
+  console.log(data, "data of orchard.sercie");
+
   const { data: res } = await axiosInstance.patch(
     `${CORE}/orchard/${data.orchardProfileId}/soil-water`,
     data,
