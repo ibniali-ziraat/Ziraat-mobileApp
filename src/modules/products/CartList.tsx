@@ -175,7 +175,7 @@ const CartList = () => {
 
       <FlatList
         data={cart}
-        keyExtractor={(item) => item.id.toString()}
+        // keyExtractor={(item) => item?.id?.toString()}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 260 }}
         renderItem={({ item }) => (
