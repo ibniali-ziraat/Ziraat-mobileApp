@@ -42,6 +42,7 @@ import { OrchardDeleteKey } from "../config/orchardDeleteConfig";
 import BackHeader from "@/src/components/shared/BackHeader";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { useFileDeleteMutation } from "@/src/hooks/useFileUpload";
 import SoilTestReportsCard from "../components/SoilTestReportsCard";
 import VarietiesCard from "../components/VarietyDetailsCard";
 import {
@@ -68,13 +69,13 @@ import { useDeleteSoilTestReportMutation } from "../hooks/useSoilTestReport";
 import { orchardRoutes } from "../routes/orchardRoutes";
 
 export default function OrchardDetail() {
-  const { id } = useLocalSearchParams<{ id: string }>();
   const { setOrchardProfileId, orchardProfileId } = useAuth();
   const queryClient = useQueryClient();
 
   const [deleteSection, setDeleteSection] = useState<OrchardDeleteKey | null>(
     null,
   );
+  const { id } = useLocalSearchParams<{ id: string }>();
 
   const [varietyToDelete, setVarietyToDelete] = useState<number | null>(null);
 
@@ -116,8 +117,6 @@ export default function OrchardDetail() {
   const { data: inputCostData } = useInputCostQuery(orchardProfileId!);
   const { data: varietiesData } = useOrchardVarietiesQuery(orchardProfileId!);
   const { mutateAsync: deleteVariety } = useDeleteVarietyMutation();
-  const { mutateAsync: deleteSoilTestReport } =
-    useDeleteSoilTestReportMutation();
 
   const { data: soilWaterData } = useSoilWaterQuery(orchardProfileId!);
   console.log(soilWaterData, "soilwaterdata....");
@@ -229,7 +228,7 @@ export default function OrchardDetail() {
     try {
       setDeleting(true);
 
-      await deleteAllVarieties(orchardProfileId!);
+      // await deleteAllVarieties(orchardProfileId!);
 
       queryClient.invalidateQueries({
         queryKey: ["orchard", orchardProfileId],
@@ -245,12 +244,50 @@ export default function OrchardDetail() {
     }
   };
 
-  const handleDeleteSoilTestReport = () => {};
+  // 1. Ensure your hooks are initialized at the top of OrchardDetail
+  const { mutateAsync: deleteFileAsync } = useFileDeleteMutation();
+  const { mutateAsync: updateSoilWater } = useDeleteSoilTestReportMutation();
+
+  // 2. The combined deletion logic
+  const handleDeleteSoilTestReport = async (urlToDelete: string) => {
+    try {
+      setDeleting(true);
+
+      // STEP 1: Delete from Cloud (Ref: ProfileTopHeader line 111)
+      // We pass the URL as the 'blobName' to the delete mutation
+      await deleteFileAsync({ blobName: urlToDelete });
+
+      // STEP 2: Filter the current list to remove the deleted URL
+      // We need to send the remaining URLs back to the database
+      const currentReports = soilWaterData?.soilTestReportUrls || [];
+      const updatedReports = currentReports.filter(
+        (url: string) => url !== urlToDelete,
+      );
+
+      // STEP 3: Update Database
+      // We call the mutation with the orchard ID and the new filtered array
+      await updateSoilWater({
+        orchardProfileId: orchardProfileId!,
+        soilTestReportUrls: updatedReports,
+      });
+
+      // STEP 4: Refresh UI
+      queryClient.invalidateQueries({
+        queryKey: ["orchard", orchardProfileId],
+      });
+
+      showSuccessToast("Report permanently deleted");
+    } catch (error) {
+      console.error("Deletion failed:", error);
+      showErrorToast("Failed to delete report. Please try again.");
+    } finally {
+      setDeleting(false);
+    }
+  };
   return (
     <ScreenLayout>
       <BackHeader title="  Orchard Information" />
       <ScrollView>
-        {/* BASIC INFORMATION */}
         <OrchardDetailsCard
           heading="Basic Information"
           items={[

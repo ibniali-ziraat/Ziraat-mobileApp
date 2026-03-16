@@ -7,7 +7,8 @@ import { Linking, TouchableOpacity, View } from "react-native";
 
 interface Props {
   reportUrls?: string[];
-  onDeleteReport?: (index: number) => void;
+  // CHANGE: Changed from (index: number) to (url: string)
+  onDeleteReport?: (url: string) => void;
   onAdd?: () => void;
 }
 
@@ -37,13 +38,13 @@ export default function SoilTestReportsCard({
           backgroundColor: colors.light,
         }}
       >
+        {/* ... Header remains same ... */}
         <View className="flex-row items-center justify-between pt-4 px-4">
           <View className="flex-row items-center gap-3">
             <View
               className="w-1.5 h-7 rounded-full"
               style={{ backgroundColor: colors.primary }}
             />
-
             <CsText
               className="text-[15px] font-semibold"
               style={{ color: colors.dark }}
@@ -83,16 +84,14 @@ export default function SoilTestReportsCard({
               {reportUrls.map((url, index) => (
                 <View key={index}>
                   <View className="flex-row items-center justify-between">
-                    {/* Left */}
+                    {/* Left - File Info */}
                     <TouchableOpacity
                       onPress={() => openReport(url)}
                       className="flex-row items-center gap-4 flex-1"
                     >
                       <View
                         className="h-11 w-11 items-center justify-center rounded-xl"
-                        style={{
-                          backgroundColor: `${colors.primary}12`,
-                        }}
+                        style={{ backgroundColor: `${colors.primary}12` }}
                       >
                         <FileText size={18} color={colors.primary} />
                       </View>
@@ -104,7 +103,6 @@ export default function SoilTestReportsCard({
                         >
                           Report {index + 1}
                         </CsText>
-
                         <CsText
                           className="text-md mt-1"
                           style={{ color: colors.primary }}
@@ -116,21 +114,22 @@ export default function SoilTestReportsCard({
 
                     {/* Right actions */}
                     <View className="flex-row items-center gap-3">
-                      {
-                        <TouchableOpacity onPress={() => onDeleteReport(index)}>
+                      {onDeleteReport && (
+                        <TouchableOpacity
+                          // CHANGE: Now passing the 'url' string instead of 'index'
+                          onPress={() => onDeleteReport(url)}
+                          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                        >
                           <Trash2 size={18} color={colors.error} />
                         </TouchableOpacity>
-                      }
+                      )}
                     </View>
                   </View>
 
-                  {/* Divider */}
                   {index < reportUrls.length - 1 && (
                     <View
                       className="mt-4 h-px"
-                      style={{
-                        backgroundColor: colors.cardBorder,
-                      }}
+                      style={{ backgroundColor: colors.cardBorder }}
                     />
                   )}
                 </View>

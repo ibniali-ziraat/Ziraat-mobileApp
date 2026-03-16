@@ -138,6 +138,8 @@ export const createSoilTestReport = async (data: any) => {
 };
 
 export const deleteSoilTestReport = async (data: any) => {
+  console.log(data, "data in deletesoiltestreport");
+
   const { data: res } = await axiosInstance.patch(
     `${CORE}/orchard/${data.orchardProfileId}/soil-water`,
     data,

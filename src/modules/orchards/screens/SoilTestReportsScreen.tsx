@@ -5,7 +5,7 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
-import { showErrorToast } from "@/src/utils/toast";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useFileUploadMutation } from "@/src/hooks/useFileUpload";
@@ -27,8 +27,6 @@ export default function SoilTestReportsScreen() {
   } = form;
 
   const onSubmit = async (values: any) => {
-    console.log(values, "valies in str");
-
     try {
       const uploadedFiles: string[] = [];
 
@@ -59,8 +57,8 @@ export default function SoilTestReportsScreen() {
 
       await save(payload);
 
-      // showSuccessToast("Reports uploaded successfully");
-      // router.push(ROUTES.TABS.ORCHARDS);
+      showSuccessToast("Reports uploaded successfully");
+      router.push(ROUTES.TABS.ORCHARDS);
     } catch (error: any) {
       showErrorToast("Failed to upload reports");
     }

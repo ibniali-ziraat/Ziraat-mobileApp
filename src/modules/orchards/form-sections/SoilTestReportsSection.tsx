@@ -16,7 +16,6 @@ export default function SoilTestReportsSection({ errors }: Props) {
 
   return (
     <View style={{ gap: 16 }}>
-      {/* Add Button */}
       <Pressable
         onPress={() => append(null)}
         style={{
@@ -29,7 +28,6 @@ export default function SoilTestReportsSection({ errors }: Props) {
         <Text style={{ color: "white", fontWeight: "600" }}>+ Add Report</Text>
       </Pressable>
 
-      {/* Uploaded Files */}
       {fields.map((item, index) => (
         <View
           key={item.id}
