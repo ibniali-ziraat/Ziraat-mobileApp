@@ -280,7 +280,7 @@ export const updateProductionMarketing = async (data: any) => {
 
 export const deleteProductionMarketing = async (id: string | number) => {
   const { data: res } = await axiosInstance.delete(
-    `${CORE}/orchard-marketing/${id}`,
+    `${CORE}/orchard/${id}/production`,
   );
   return res;
 };
@@ -313,7 +313,7 @@ export const updateInputCost = async (data: any) => {
 
 export const deleteInputCost = async (id: string | number) => {
   const { data: res } = await axiosInstance.delete(
-    `${CORE}/orchard-inputcost/${id}`,
+    `${CORE}/orchard/${id}/input-cost`,
   );
   return res;
 };

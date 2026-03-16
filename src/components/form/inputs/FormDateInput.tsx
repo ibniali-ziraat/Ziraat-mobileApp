@@ -1,9 +1,11 @@
 import { colors } from "@/src/constants/colors"; // Import root colors
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Calendar } from "lucide-react-native";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import { Platform, TouchableOpacity, View } from "react-native";
-import { HelperText, TextInput } from "react-native-paper";
+import { Platform, Pressable, View } from "react-native";
+import { HelperText } from "react-native-paper";
+import CsText from "../../shared/CsText";
 
 export default function FormDateInput({
   control,
@@ -39,7 +41,7 @@ export default function FormDateInput({
         field: { onChange, value },
         fieldState: { error: fieldError },
       }) => {
-        const showError = !!(fieldError || error);
+        const showError = !!fieldError;
         const normalizedValue = normalizeDate(value);
 
         return (
@@ -69,8 +71,8 @@ export default function FormDateInput({
                   }}
                   style={{
                     padding: "16px",
-                    borderRadius: "8px",
-                    border: `1px solid ${showError ? colors.error : colors.neutral}`,
+                    borderRadius: "4px",
+                    border: `1px solid ${colors.neutral}`,
                     fontSize: "16px",
                     outline: "none",
                     backgroundColor: colors.light,
@@ -85,40 +87,55 @@ export default function FormDateInput({
                       marginTop: 4,
                     }}
                   >
-                    {(fieldError || error)?.message}
+                    {fieldError || error}
                   </span>
                 )}
               </View>
             ) : (
               // --------------------- MOBILE INPUT ---------------------
+              // --------------------- MOBILE INPUT ---------------------
               <>
-                <TouchableOpacity
-                  onPress={() => setShow(true)}
-                  activeOpacity={0.8}
+                <CsText
+                  style={{
+                    marginBottom: 6,
+                    fontSize: 14,
+                    fontWeight: "500",
+                    color: colors.dark,
+                  }}
                 >
-                  <View pointerEvents="none">
-                    <TextInput
-                      mode="outlined"
-                      label={optional ? `${label} (Optional)` : `${label} *`}
-                      value={normalizedValue}
-                      editable={false}
-                      right={<TextInput.Icon icon="calendar" />}
-                      error={showError}
-                      style={{
-                        backgroundColor: colors.light,
-                        padding: 2,
-                      }}
-                      theme={{
-                        colors: {
-                          primary: colors.primary,
-                          placeholder: colors.neutral,
-                          text: colors.dark,
-                          error: colors.error,
-                        },
-                      }}
-                    />
-                  </View>
-                </TouchableOpacity>
+                  {label}
+                  {!optional && (
+                    <CsText style={{ color: colors.error }}> *</CsText>
+                  )}
+                </CsText>
+
+                <Pressable
+                  onPress={() => setShow(true)}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    // Applied requested border styling
+                    borderWidth: 1,
+                    borderColor: showError ? colors.error : colors.darkHover,
+                    paddingHorizontal: 16,
+                    paddingVertical: 14,
+                    backgroundColor: colors.light,
+                    borderRadius: 10,
+                  }}
+                >
+                  <CsText
+                    style={{
+                      fontSize: 16,
+                      color: normalizedValue
+                        ? colors.dark
+                        : colors.neutral + "88",
+                    }}
+                  >
+                    {normalizedValue || `Select ${label}`}
+                  </CsText>
+                  <Calendar size={20} color={colors.primary} />
+                </Pressable>
 
                 {show && (
                   <DateTimePicker
@@ -130,7 +147,7 @@ export default function FormDateInput({
                     onChange={(event, selectedDate) => {
                       setShow(false);
                       if (event.type === "dismissed") return;
-                      onChange(formatDate(selectedDate)); // Always "YYYY-MM-DD"
+                      onChange(formatDate(selectedDate));
                     }}
                   />
                 )}
@@ -141,13 +158,11 @@ export default function FormDateInput({
                     visible
                     style={{
                       color: colors.error,
-                      paddingVertical: 0,
-                      paddingBottom: 0,
+                      paddingHorizontal: 0,
                       marginTop: 2,
-                      marginBottom: 0,
                     }}
                   >
-                    {showError}
+                    {fieldError?.message || error || "Required Field"}
                   </HelperText>
                 )}
               </>

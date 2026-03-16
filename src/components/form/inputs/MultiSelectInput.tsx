@@ -1,15 +1,8 @@
 import { colors } from "@/src/constants/colors";
-import { Asterisk } from "lucide-react-native";
+import { Asterisk, ChevronDown } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Controller, useWatch } from "react-hook-form";
-import {
-  FlatList,
-  Modal,
-  Pressable,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import CsText from "../../shared/CsText";
+import { FlatList, Modal, Pressable, Text, View } from "react-native";
 import { MultiSelectInputProps } from "../../shared/inputs/types";
 
 export default function MultiSelectInput({
@@ -48,11 +41,11 @@ export default function MultiSelectInput({
         <View style={{ marginBottom: 16 }}>
           {/* Label */}
           <View style={{ flexDirection: "row", marginBottom: 8 }}>
-            <CsText
+            <Text
               style={{ fontSize: 16, fontWeight: "600", color: colors.dark }}
             >
               {label}
-            </CsText>
+            </Text>
             {!optional && (
               <Asterisk
                 size={14}
@@ -71,26 +64,33 @@ export default function MultiSelectInput({
               padding: 16,
               borderRadius: 6,
               backgroundColor: "white",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            <CsText
+            <Text
               style={{ color: value?.length ? colors.dark : colors.neutral }}
             >
               {value?.length ? value.join(", ") : `Select ${placeholder}`}
-            </CsText>
+            </Text>
+            <ChevronDown
+              size={16}
+              color={colors.neutral}
+              style={{ marginLeft: 8 }}
+            />
           </Pressable>
 
           {/* Error */}
           {error && (
-            <CsText style={{ color: colors.error, fontSize: 12 }}>
+            <Text style={{ color: colors.error, marginTop: 6 }}>
               {error.message || error}
-            </CsText>
+            </Text>
           )}
 
           {/* Modal */}
           <Modal visible={visible} transparent animationType="fade">
-            <TouchableOpacity
-              activeOpacity={1}
+            <Pressable
               onPress={() => setVisible(false)}
               style={{
                 flex: 1,
@@ -114,7 +114,7 @@ export default function MultiSelectInput({
                   renderItem={({ item }) => {
                     const selected = selectedOptions.includes(item.value);
                     return (
-                      <TouchableOpacity
+                      <Pressable
                         onPress={() => toggleOption(item.value)}
                         style={{
                           flexDirection: "row",
@@ -131,16 +131,16 @@ export default function MultiSelectInput({
                           marginBottom: 6,
                         }}
                       >
-                        <CsText style={{ marginRight: 10 }}>
+                        <Text style={{ marginRight: 10 }}>
                           {selected ? "✓" : ""}
-                        </CsText>
-                        <CsText>{item.label}</CsText>
-                      </TouchableOpacity>
+                        </Text>
+                        <Text>{item.label}</Text>
+                      </Pressable>
                     );
                   }}
                 />
 
-                <TouchableOpacity
+                <Pressable
                   onPress={() => {
                     onChange(selectedOptions);
                     setVisible(false);
@@ -153,10 +153,10 @@ export default function MultiSelectInput({
                     alignItems: "center",
                   }}
                 >
-                  <CsText style={{ color: "white" }}>Add</CsText>
-                </TouchableOpacity>
+                  <Text style={{ color: "white" }}>Add</Text>
+                </Pressable>
               </View>
-            </TouchableOpacity>
+            </Pressable>
           </Modal>
         </View>
       )}

@@ -22,6 +22,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
             borderRadius: 20,
             backgroundColor: colors.light,
             padding: PADDING,
+            elevation: 0,
           },
           shadows.review_card,
         ]}

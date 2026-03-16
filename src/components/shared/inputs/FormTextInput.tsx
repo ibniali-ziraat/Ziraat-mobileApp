@@ -156,7 +156,11 @@ const FormTextInput = ({
               )}
             </View>
 
-            {hasError && <Text style={styles.error}>{error?.message}</Text>}
+            {hasError && (
+              <Text style={{ color: colors.error, marginTop: 6 }}>
+                {error?.message}
+              </Text>
+            )}
           </View>
         );
       }}

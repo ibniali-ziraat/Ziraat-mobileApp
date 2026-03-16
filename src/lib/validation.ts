@@ -94,13 +94,14 @@ export const fullNameValidator = z
   .min(3, "Name must be at least 3 characters");
 export const otpValidator = z
   .string()
+  .min(1, "Required Field")
+  .length(6, "OTP must be 6 digits")
   .regex(/^[0-9]{6}$/, "Enter a valid 6-digit OTP");
 
 export const loginPasswordValidator = z
   .string()
   .trim()
-  .min(1, "Password is required");
-
+  .min(1, "Required Field");
 export const pincodeValidator = z
   .string()
   .nonempty("Required Field")

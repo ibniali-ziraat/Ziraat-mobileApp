@@ -1,27 +1,26 @@
+import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import { View } from "react-native";
-
-import MultiSelectInput from "@/src/components/form/inputs/MultiSelectInput";
 import {
   certOpts,
   digitalToolOpt,
   GOVT_SCHEMES,
 } from "../constants/orchardOptions";
 
-export default function FutureFieldScreen({ control, errors }: any) {
+export default function FutureFieldSection({ control, errors }: any) {
   return (
-    <View className="flex-1 w-full">
-      <View className="bg-light w-full">
-        <MultiSelectInput
-          name="governmentSchemesAvailed"
-          control={control}
-          label="Government Schemes Available (optional)"
-          placeholder="Government Schemes Available"
-          options={GOVT_SCHEMES}
-          error={errors?.governmentSchemesAvailed?.message}
-          optional
-        />
+    <View className="bg-light w-full">
+      <MultiSelectInput
+        name="governmentSchemesAvailed"
+        control={control}
+        label="Government Schemes Available (optional)"
+        placeholder="Government Schemes Available"
+        options={GOVT_SCHEMES}
+        error={errors?.governmentSchemesAvailed?.message}
+        optional
+      />
 
+      <View className="mt-4">
         <SingleSelectInput
           control={control}
           name="isFpoOrCooperativeMember"
@@ -31,11 +30,13 @@ export default function FutureFieldScreen({ control, errors }: any) {
             { value: true, label: "Yes" },
             { value: false, label: "No" },
           ]}
-          error={errors.fpoMembership?.message}
+          error={errors.isFpoOrCooperativeMember?.message} // Fixed name mismatch
           modalLabel="Select (if any)"
           optional
         />
+      </View>
 
+      <View className="mt-4">
         <MultiSelectInput
           name="certifications"
           control={control}
@@ -45,7 +46,9 @@ export default function FutureFieldScreen({ control, errors }: any) {
           error={errors?.certifications?.message}
           optional
         />
+      </View>
 
+      <View className="mt-4">
         <MultiSelectInput
           name="digitalToolsUsed"
           control={control}
