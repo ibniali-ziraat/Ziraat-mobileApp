@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { useAuth } from "@/src/contexts/AuthContext";
-import ProductionMarketing from "../form-sections/ProductionMarketingSection";
+import ProductionMarketingSection from "../form-sections/ProductionMarketingSection";
 import {
   useCreateProductionMarketingMutation,
   useProductionMarketingQuery,
@@ -95,7 +95,7 @@ export default function ProductionAndMarketingScreen() {
 
       <ScreenContent>
         <FormProvider {...form}>
-          <ProductionMarketing errors={errors} control={control} />
+          <ProductionMarketingSection errors={errors} control={control} />
 
           <FormActions
             cancelLabel="Cancel"

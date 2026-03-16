@@ -1,5 +1,6 @@
 import z from "zod";
+import { otpValidator } from "../lib/validation";
 
 export const otpSchema = z.object({
-  otp: z.string().length(6, "OTP must be 6 digits"),
+  otp: otpValidator,
 });

@@ -1,5 +1,5 @@
 import { colors } from "@/src/constants/colors";
-import { Search, XCircle } from "lucide-react-native";
+import { ChevronDown, Search, XCircle } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import {
@@ -82,8 +82,48 @@ export default function SingleSelectInput({
               Select {label}
               {!optional && <CsText style={{ color: colors.error }}> *</CsText>}
             </CsText>
-
             <Pressable
+              disabled={disabled}
+              style={{
+                borderWidth: 1,
+                borderColor: liveError
+                  ? colors.error
+                  : disabled
+                    ? colors.darkHover
+                    : colors.darkHover,
+                paddingHorizontal: 16,
+                paddingVertical: 14,
+                backgroundColor: colors.light,
+                borderRadius: 10,
+                // Add these two lines for layout
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+              onPress={() => {
+                if (!disabled) {
+                  setVisible(true);
+                  if (searchable) showSearchBar();
+                }
+              }}
+            >
+              <CsText
+                style={{
+                  fontSize: 16,
+                  color: disabled ? colors.neutral + "88" : colors.darkHover,
+                  flex: 1, // Ensures text doesn't overlap the icon
+                }}
+              >
+                {selectedLabel || placeholder}
+              </CsText>
+
+              {/* 2. Added Chevron Icon */}
+              <ChevronDown
+                size={20}
+                color={disabled ? colors.neutral + "88" : colors.darkHover}
+              />
+            </Pressable>
+            {/* <Pressable
               disabled={disabled}
               style={{
                 borderWidth: liveError ? 1 : 1,
@@ -112,8 +152,7 @@ export default function SingleSelectInput({
               >
                 {selectedLabel || placeholder}
               </CsText>
-            </Pressable>
-
+            </Pressable> */}
             {liveError && (
               <HelperText
                 type="error"
@@ -123,7 +162,6 @@ export default function SingleSelectInput({
                 Required Field
               </HelperText>
             )}
-
             {/* Modal */}
             {!disabled && (
               <Modal visible={visible} transparent animationType="slide">

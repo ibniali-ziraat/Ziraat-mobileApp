@@ -27,6 +27,7 @@ import { userDeleteConfig } from "../auth/config/userDeleteConfig";
 import { userRoutes } from "../auth/config/userRoutes";
 
 // Icons
+import Loader from "@/src/components/shared/Loader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { DUMMY_EMAIL } from "@/src/constants/constants";
@@ -56,11 +57,17 @@ export default function UserProfileScreen() {
   const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
   const queryClient = useQueryClient();
 
-  const { data: profileData } = useProfileQuery(userId);
-  const { data: addressData } = useAddressQuery(userProfileId);
-  const { data: educationData } = useEducationQuery(userProfileId);
-  const { data: professionData } = useProfessionQuery(userProfileId);
-  console.log(professionData);
+  const { data: profileData, isPending: profileLoading } =
+    useProfileQuery(userId);
+  const { data: addressData, isPending: addressLoading } =
+    useAddressQuery(userProfileId);
+  const { data: educationData, isPending: educationLoading } =
+    useEducationQuery(userProfileId);
+  const { data: professionData, isPending: professionLoading } =
+    useProfessionQuery(userProfileId);
+
+  const isLoading =
+    profileLoading || addressLoading || educationLoading || professionLoading;
 
   const { mutateAsync: deleteAddressApi } = useAddressDeleteMutation();
   const { mutateAsync: deleteEducationApi } = useEducationDeleteMutation();
@@ -111,7 +118,9 @@ export default function UserProfileScreen() {
       setDeleting(false);
     }
   };
-
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <ScreenLayout>
       <BackHeader

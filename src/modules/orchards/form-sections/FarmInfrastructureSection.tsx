@@ -12,53 +12,51 @@ import {
 
 export default function FarmInfrastructureScreen({ control, errors }) {
   return (
-    <View className="flex-1 w-full">
-      <View className="bg-light w-full">
-        <MultiSelectInput
-          name="equipmentOwned"
-          control={control}
-          label="Equipment Owned"
-          placeholder="Equipment Owned"
-          options={EQUIPMENT_OPTIONS}
-          error={errors?.equipmentOwned?.message}
-        />
-        <MultiSelectInput
-          name="storageFacilities"
-          control={control}
-          label="Storage Facilities"
-          options={STORAGE_OPTIONS}
-          error={errors?.storageFacilities?.message}
-        />
-        <FormTextInput
-          name="permanentLabor"
-          label="Permanent Labour"
-          placeholder="Labours"
-          type="age"
-          error={errors.permanentLabor}
-          required
-        />{" "}
-        <FormTextInput
-          name="seasonalLabor"
-          label="Seasonal Labor"
-          type="age"
-          error={errors.seasonalLabor}
-          required
-        />{" "}
-        <FormTextInput
-          name="contractBasedLabor"
-          label="Contract Based Labor"
-          type="age"
-          error={errors.contractBasedLabor}
-          required
-        />
-        <MultiSelectInput
-          name="otherTools"
-          control={control}
-          label="Tools"
-          options={TOOLS}
-          error={errors?.otherTools?.message}
-        />
-      </View>
+    <View className="bg-light w-full">
+      <MultiSelectInput
+        name="equipmentOwned"
+        control={control}
+        label="Equipment Owned"
+        placeholder="Equipment Owned"
+        options={EQUIPMENT_OPTIONS}
+        error={errors?.equipmentOwned?.message}
+      />
+      <MultiSelectInput
+        name="storageFacilities"
+        control={control}
+        label="Storage Facilities"
+        options={STORAGE_OPTIONS}
+        error={errors?.storageFacilities?.message}
+      />
+      <FormTextInput
+        name="permanentLabor"
+        label="Permanent Labour"
+        placeholder="Labours"
+        type="age"
+        error={errors.permanentLabor}
+        required
+      />{" "}
+      <FormTextInput
+        name="seasonalLabor"
+        label="Seasonal Labor"
+        type="age"
+        error={errors.seasonalLabor}
+        required
+      />{" "}
+      <FormTextInput
+        name="contractBasedLabor"
+        label="Contract Based Labor"
+        type="age"
+        error={errors.contractBasedLabor}
+        required
+      />
+      <MultiSelectInput
+        name="otherTools"
+        control={control}
+        label="Tools"
+        options={TOOLS}
+        error={errors?.otherTools?.message}
+      />
     </View>
   );
 }

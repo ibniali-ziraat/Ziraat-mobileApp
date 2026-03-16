@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { useAuth } from "@/src/contexts/AuthContext";
-import OptionalFutureFields from "../form-sections/FutureFieldSection";
+import FutureFieldSection from "../form-sections/FutureFieldSection";
 import {
   useCreateOrchardExtraMutation,
   useOrchardExtraQuery,
@@ -90,8 +90,7 @@ export default function FutureProofFieldScreen() {
 
       <ScreenContent>
         <FormProvider {...form}>
-          <OptionalFutureFields errors={errors} control={control} />
-
+          <FutureFieldSection errors={errors} control={control} />
           <FormActions
             cancelLabel="Cancel"
             submitLabel={orchardExtraData ? "Update" : "Save"}

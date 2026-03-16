@@ -13,7 +13,7 @@ import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
 
 export default function BasicInfo({ errors, data }) {
-  console.log(errors, "errors...");
+  console.log(data, "data...");
 
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
 
@@ -38,7 +38,7 @@ export default function BasicInfo({ errors, data }) {
   const orchardMode = useWatch({
     control,
     name: "orchardSize.mode",
-    defaultValue: "manual",
+    defaultValue: "measure",
   });
 
   useEffect(() => {
