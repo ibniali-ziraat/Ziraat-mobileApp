@@ -1,6 +1,6 @@
 
 
-import { resetPasswordService, sendOtpService, verifyOtpService } from "@/src/services/forgetPassword";
+import { resetPasswordService, sendOtpService, verifyOtpService } from "@/src/services/forgetPasswordService";
 import { useMutation } from "@tanstack/react-query";
 
 export const useSendOtpMutation = () =>

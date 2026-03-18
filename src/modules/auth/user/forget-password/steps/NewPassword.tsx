@@ -4,124 +4,149 @@ import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import { colors } from "@/src/constants/colors";
-import { useResetPasswordMutation } from "@/src/hooks/userQueryHooks";
+
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
-import { router } from "expo-router";
-import { Lock } from "lucide-react-native";
 import { FormProvider } from "react-hook-form";
+
+import { Lock } from "lucide-react-native";
 import { Image, Text, View } from "react-native";
 
-import StepIndicator from "../../component/StepIndicator";
-import { NewPasswordSchema } from "../schemas/newPassword.schema";
+import { useSendOtpMutation } from "@/src/hooks/useForgotPassword";
+import { VerifyPhoneSchema } from "../schemas/verfiy-phone.schema";
 
-type FormType = {
-    password: string;
-    confirmPassword: string;
+type Props = {
+  onNext: (phone: string) => void;
 };
 
-export default function NewPassword({ phoneNumber }: any) {
-    const methods = useZodForm(NewPasswordSchema);
+export default function VerifyPhone({ onNext }: Props) {
 
-    const { handleSubmit, formState } = methods;
-    const { errors } = formState;
+  const methods = useZodForm(VerifyPhoneSchema);
+  const { handleSubmit, formState } = methods;
+  const { errors } = formState;
 
-    const { mutateAsync: resetPasswordMutate, isPending } =
-        useResetPasswordMutation();
+  const { mutateAsync: sendOtpMutate, isPending } = useSendOtpMutation();
 
-    const resetPassword = async (data: FormType) => {
-        try {
-            const res = await resetPasswordMutate({
-                phoneNumber,
-                password: data.password,
-            });
+  const handleSendOtp = async (data: any) => {
 
-            if (!res?.success) {
-                return showErrorToast(res?.message || "Reset failed");
-            }
+    try {
 
-            showSuccessToast("Password updated successfully");
+      const res = await sendOtpMutate(data.mobileNumber);
 
-            router.replace("/login");
-        } catch {
-            showErrorToast("Failed to reset password");
-        }
-    };
+      console.log("OTP RESPONSE", res);
 
-    return (
-        <ScreenLayout>
-            <BackHeader
-                title="Forgot Password"
-                desc="Recover your account securely"
+      showSuccessToast("OTP sent successfully");
+
+      onNext(data.mobileNumber);
+
+    } catch (error: any) {
+
+      console.log("OTP ERROR", error?.response);
+
+      showErrorToast(
+        error?.response?.data?.message || "Failed to send OTP"
+      );
+
+    }
+
+  };
+
+  return (
+    <ScreenLayout>
+      <BackHeader
+        title="Forgot Password"
+        desc="Enter your phone number to receive OTP"
+      />
+
+      <FormProvider {...methods}>
+        <View className="flex-1 justify-center px-2">
+
+          {/* LOGO */}
+          <View style={{ alignItems: "center", marginBottom: 15 }}>
+            <Image
+              source={require("@/assets/images/logo.jpeg")}
+              style={{ width: 110, height: 90, resizeMode: "contain" }}
             />
 
-            <FormProvider {...methods}>
-                <View className="flex-1 justify-center px-2">
-                    {/* LOGO */}
-                    <View style={{ alignItems: "center", marginBottom: 10 }}>
-                        <Image
-                            source={require("@/assets/images/logo.jpeg")}
-                            style={{ width: 115, height: 100, resizeMode: "contain" }}
-                        />
-                    </View>
+              <Text
+              style={{
+                fontSize: 22,
+                fontWeight: "700",
+                marginTop: 16,
+                color: "#111",
+              }}
+            >
+              Verify your number
+            </Text>
 
+            <Text
+              style={{
+                fontSize: 13,
+                color: colors.neutral,
+                marginTop: 6,
+                textAlign: "center",
+            
+              }}
+            >
+              We’ll send a verification code to your phone
+            </Text>
+          
+          </View>
 
-                    <StepIndicator step="reset" />
+          {/* CARD */}
+          <View
+            style={{
+              borderRadius: 30,
+              padding: 26,
+              shadowColor: "#000",
+              shadowOpacity: 0.08,
+              shadowRadius: 20,
+              elevation: 8,
+            }}
+          >
 
-                    {/* CARD */}
-                    <View
-                        style={{
-                            borderRadius: 30,
-                            padding: 26,
-                            shadowColor: "#000",
-                            shadowOpacity: 0.08,
-                            shadowRadius: 20,
-                            elevation: 8,
-                        }}
-                    >
-                        <FormTextInput
-                            name="password"
-                            label="New Password"
-                            type="password"
-                            error={errors.password}
-                            required
-                        />
+            <FormTextInput
+              name="mobileNumber"
+              label="Phone Number"
+              type="phone"
+              required
+              error={errors.mobileNumber}
+            />
 
-                        <FormTextInput
-                            name="confirmPassword"
-                            label="Confirm Password"
-                            type="password"
-                            error={errors.confirmPassword}
-                            required
-                        />
+            <FormActions
+              submitLabel="Send OTP"
+              onSubmit={handleSubmit(handleSendOtp)}
+              loading={isPending}
+              disabled={isPending}
+            />
 
+            {/* SECURITY TEXT */}
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 16,
+              }}
+            >
+              <Lock size={14} color={colors.secondary} />
 
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                marginTop: 16,
-                            }}
-                        >
-                            <Lock size={14} color={colors.secondary} />
+              <Text
+                style={{
+                  marginLeft: 6,
+                  color: colors.neutral,
+                }}
+              >
+                Your information is secure
+              </Text>
 
-                            <Text style={{ marginLeft: 6 }}>
-                                Your information is secure
-                            </Text>
-                        </View>
+            </View>
 
+          </View>
 
-                        <FormActions
-                            submitLabel="Reset Password"
-                            onSubmit={handleSubmit(resetPassword)}
-                            loading={isPending}
-                            disabled={isPending}
-                        />
-                    </View>
-                </View>
-            </FormProvider>
-        </ScreenLayout>
-    );
+        </View>
+      </FormProvider>
+    </ScreenLayout>
+  );
 }
