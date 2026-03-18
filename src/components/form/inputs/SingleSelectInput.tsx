@@ -26,12 +26,12 @@ export default function SingleSelectInput({
   searchable = false,
   placeholder = label,
 }: SingleSelectInputProps) {
-  const { control } = useFormContext();
-  if (!control) return null;
   const [visible, setVisible] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState("");
   const [searchText, setSearchText] = useState("");
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const { control } = useFormContext();
+  if (!control) return null;
 
   const filteredOptions = useMemo(() => {
     if (!searchable || !searchText) return options;

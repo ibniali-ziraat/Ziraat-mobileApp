@@ -58,7 +58,8 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
         <FormDateInput
           control={control}
           name="lastSoilTestDate"
-          label="Latest Soil Test Date"
+          label="Latest Soil Test Date (optional)"
+          placeholder="Select Date"
           error={errors?.lastSoilTestDate?.message}
           optional
         />
@@ -70,7 +71,6 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
         </CsText>
 
         <SingleSelectInput
-          control={control}
           name="waterSource"
           label="Water Source"
           modalLabel="Water Source"
@@ -79,7 +79,6 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
         />
 
         <SingleSelectInput
-          control={control}
           name="irrigationMethod"
           label="Irrigation Method"
           modalLabel="Irrigation Method"

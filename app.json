@@ -7,7 +7,11 @@
     "icon": "./assets/images/ziraaticon.png",
     "scheme": "ziraat",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true,
+      "newArchEnabled": false
+    },
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
@@ -52,7 +56,6 @@
     },
     "extra": {
       "router": {}
-      
     },
     "owner": "naikummarmukhtar"
   }
