@@ -14,13 +14,15 @@ import { FormProvider } from "react-hook-form";
 
 import SoilTestReportsSection from "../form-sections/SoilTestReportsSection";
 import { useCreateSoilTestReportMutation } from "../hooks/useSoilTestReport";
+import { SoilTestReportSchema } from "../schemas/SoilTestReportSchema";
 
 export default function SoilTestReportsScreen() {
   const { orchardProfileId } = useAuth();
   const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
-  const { mutateAsync: save } = useCreateSoilTestReportMutation();
+  const { mutateAsync: save, isPending: isSaving } =
+    useCreateSoilTestReportMutation();
 
-  const form = useZodForm();
+  const form = useZodForm(SoilTestReportSchema);
   const {
     handleSubmit,
     formState: { errors },
@@ -74,9 +76,11 @@ export default function SoilTestReportsScreen() {
 
           <FormActions
             cancelLabel="Cancel"
-            onCancel={() => router.replace(ROUTES.TABS.ORCHARDS)}
+            onCancel={() => router.back()}
             submitLabel="Upload All"
             onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving}
+            loading={isSaving}
           />
         </FormProvider>
       </ScreenContent>

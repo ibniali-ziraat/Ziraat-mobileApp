@@ -145,16 +145,13 @@
 //     />
 //   );
 // }
-import { colors } from "@/src/constants/colors";
 import { FormFieldProps } from "@/src/types/formFieldProps";
 import { showErrorToast } from "@/src/utils/toast";
 import * as DocumentPicker from "expo-document-picker";
 import { Eye, Upload, X } from "lucide-react-native";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { TouchableOpacity, View } from "react-native";
-import { HelperText } from "react-native-paper";
-import CsText from "../../shared/CsText";
+import { Text, TouchableOpacity, View } from "react-native";
 import FilePreviewModal from "../../shared/FilePreviewModal";
 
 export default function FormFileInput({
@@ -212,85 +209,77 @@ export default function FormFileInput({
         field: { onChange, value },
         fieldState: { error: fieldError },
       }) => {
-        // 🔥 Handle both string URL and picked file object
         const fileUri = typeof value === "string" ? value : value?.uri;
-
         const fileName =
           typeof value === "string" ? value.split("/").pop() : value?.name;
-
         const hasFile = !!fileUri;
-        const showError = !optional && !!(fieldError || error);
+        const isInvalid = !optional && !!(fieldError || error);
 
         return (
-          <View style={{ marginBottom: 20 }}>
-            <View
+          <View>
+            <TouchableOpacity
+              onPress={() => !hasFile && pickFile(onChange)}
+              activeOpacity={0.8}
               style={{
-                borderWidth: 1.6,
-                borderColor: showError ? colors.error : colors.neutral,
-                backgroundColor: colors.light,
-                paddingVertical: 16,
-                paddingHorizontal: 14,
-                borderRadius: 10,
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-between",
+                backgroundColor: "#FFFFFF",
+                padding: 14,
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: isInvalid ? "#EF4444" : "#D1D5DB",
               }}
             >
-              {/* 📄 File Name / Label */}
-              <TouchableOpacity
-                onPress={() => !hasFile && pickFile(onChange)}
-                activeOpacity={0.7}
-                style={{ flex: 1 }}
-              >
-                <CsText
-                  style={{
-                    color: colors.dark,
-                    fontSize: 15,
-                    fontWeight: hasFile ? "500" : "400",
-                  }}
-                  numberOfLines={1}
-                >
-                  {hasFile
-                    ? fileName
-                    : `${label}${optional ? " (Optional)" : ""}`}
-                </CsText>
-              </TouchableOpacity>
-
-              {/* 👁 Preview / ❌ Remove / ⬆ Upload */}
-              <View style={{ flexDirection: "row", gap: 14 }}>
+              {/* Icon Section */}
+              <View style={{ marginRight: 12 }}>
                 {hasFile ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <TouchableOpacity
-                      onPress={() => previewFile(value)}
-                      style={{ marginRight: 14 }}
-                    >
-                      <Eye size={22} color={colors.primary} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => onChange(null)}>
-                      <X size={22} color={colors.error} />
-                    </TouchableOpacity>
-                  </View>
+                  <Eye
+                    size={20}
+                    color="#2563EB"
+                    onPress={() => previewFile(value)}
+                  />
                 ) : (
-                  <TouchableOpacity onPress={() => pickFile(onChange)}>
-                    <Upload size={22} color={colors.primary} />
-                  </TouchableOpacity>
+                  <Upload size={20} color="#6B7280" />
                 )}
               </View>
-            </View>
 
-            {/* ❗ Error Text */}
-            {(fieldError || error) && (
-              <HelperText
-                type="error"
-                visible
-                style={{ color: colors.error, marginTop: 2 }}
+              {/* Text Section */}
+              <View style={{ flex: 1 }}>
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    color: hasFile ? "#1F2937" : "#9CA3AF",
+                    fontSize: 15,
+                  }}
+                >
+                  {hasFile ? fileName : label}
+                </Text>
+              </View>
+
+              {/* Remove Action */}
+              {hasFile && (
+                <TouchableOpacity
+                  onPress={() => onChange(null)}
+                  style={{ padding: 4 }}
+                >
+                  <X size={18} color="#9CA3AF" />
+                </TouchableOpacity>
+              )}
+            </TouchableOpacity>
+
+            {isInvalid && (
+              <Text
+                style={{
+                  color: "#EF4444",
+                  fontSize: 12,
+                  marginTop: 4,
+                  marginLeft: 4,
+                }}
               >
                 {fieldError?.message || error}
-              </HelperText>
+              </Text>
             )}
 
-            {/* 🖼 Image Preview Modal */}
             <FilePreviewModal
               isVisible={isModalVisible}
               fileUri={imageUri}

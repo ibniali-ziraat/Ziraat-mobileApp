@@ -37,15 +37,22 @@ const Wishlist = () => {
   };
 
   const handleAddToCart = async (product) => {
+    console.log(product, "product in wishlist");
+
     if (!product) return;
 
-    await addToCart({
-      productId: product.productId,
-      variationName: "",
-      quantity: product.quantity,
-    });
+    try {
+      await addToCart({
+        productId: product.productId,
+        variationName: "",
+        quantity: product.quantity,
+      });
 
-    toast.success("Item added to cart");
+      toast.success("Item added to cart");
+    } catch (error) {
+      // console.error("Error adding to cart:", error);
+      // toast.error("Failed to add item to cart");
+    }
   };
 
   /* ================= LOADING ================= */
@@ -89,10 +96,7 @@ const Wishlist = () => {
             className="px-12 py-3 rounded-full active:scale-95"
           >
             <CsText
-              style={[
-                typography.Poppins_m_semibold,
-                { color: colors.light },
-              ]}
+              style={[typography.Poppins_m_semibold, { color: colors.light }]}
             >
               Browse Products
             </CsText>

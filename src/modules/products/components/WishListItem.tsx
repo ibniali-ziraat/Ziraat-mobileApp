@@ -9,7 +9,6 @@ import { useWishlist } from "../hooks/data/useWishlist";
 const IMAGE_HEIGHT = 175;
 const CARD_HEIGHT = 320;
 
-
 const WishlistItem = ({ item, onRemove, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
   const { removeFromWishlist } = useWishlist();
@@ -29,10 +28,12 @@ const WishlistItem = ({ item, onRemove, onAddToCart }) => {
     });
     await removeFromWishlist({ id: item.id });
   };
+  if (!item) {
+    return null;
+  }
 
   return (
-   <View className="w-1/2 px-1 mb-6">
-
+    <View className="w-1/2 px-1 mb-6">
       <View
         style={{
           height: CARD_HEIGHT,
@@ -59,95 +60,90 @@ const WishlistItem = ({ item, onRemove, onAddToCart }) => {
         </View>
 
         {/* BODY */}
-       {/* BODY */}
-<View className=" pt-2 ">
+        {/* BODY */}
+        <View className=" pt-2 ">
+          <View className="px-3">
+            {/* TITLE (LOCKED HEIGHT) */}
+            <View style={{ minHeight: 34 }}>
+              <CsText
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={[typography.Poppins_xs_medium, { color: "#111" }]}
+              >
+                {item.productName}
+              </CsText>
+            </View>
 
-  <View className="px-3">
+            {/* SMALL GAP */}
+            <View style={{ height: 6 }} />
 
-    {/* TITLE (LOCKED HEIGHT) */}
-    <View style={{ minHeight: 34 }}>
-      <CsText
-        numberOfLines={2}
-        ellipsizeMode="tail"
-        style={[typography.Poppins_xs_medium, { color: "#111" }]}
-      >
-        {item.productName}
-      </CsText>
-    </View>
+            {/* QTY CONTROL */}
+            <View
+              className="flex-row items-center"
+              style={{
+                borderWidth: 1,
+                borderColor: "#e5e5e5",
+                alignSelf: "flex-start",
+              }}
+            >
+              <Pressable
+                onPress={decrease}
+                style={{
+                  paddingHorizontal: 10,
+                  paddingVertical: 6,
+                  opacity: quantity === 1 ? 0.4 : 1,
+                }}
+              >
+                <Minus size={12} color={colors.dark} />
+              </Pressable>
 
-    {/* SMALL GAP */}
-    <View style={{ height: 6 }} />
+              <View
+                style={{
+                  borderLeftWidth: 1,
+                  borderRightWidth: 1,
+                  borderColor: "#e5e5e5",
+                  paddingHorizontal: 12,
+                  paddingVertical: 4,
+                }}
+              >
+                <CsText style={{ fontSize: 12, color: "#111" }}>
+                  Qty {quantity}
+                </CsText>
+              </View>
 
-    {/* QTY CONTROL */}
-    <View
-      className="flex-row items-center"
-      style={{
-        borderWidth: 1,
-        borderColor: "#e5e5e5",
-        alignSelf: "flex-start",
-      }}
-    >
-      <Pressable
-        onPress={decrease}
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 6,
-          opacity: quantity === 1 ? 0.4 : 1,
-        }}
-      >
-        <Minus size={12} color={colors.dark} />
-      </Pressable>
+              <Pressable
+                onPress={increase}
+                style={{
+                  paddingHorizontal: 10,
+                  paddingVertical: 6,
+                }}
+              >
+                <Plus size={12} color={colors.dark} />
+              </Pressable>
+            </View>
+          </View>
 
-      <View
-        style={{
-          borderLeftWidth: 1,
-          borderRightWidth: 1,
-          borderColor: "#e5e5e5",
-          paddingHorizontal: 12,
-          paddingVertical: 4,
-        }}
-      >
-        <CsText style={{ fontSize: 12, color: "#111" }}>
-          Qty {quantity}
-        </CsText>
-      </View>
-
-      <Pressable
-        onPress={increase}
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 6,
-        }}
-      >
-        <Plus size={12} color={colors.dark} />
-      </Pressable>
-    </View>
-
-  </View>
-
-  {/* BUTTON (NO EXTRA MARGIN) */}
-  <Pressable
-    onPress={handleAddToCart}
-    className="pt-6 pb-5 border-t items-center active:opacity-70"
-    style={{ borderColor: "#e5e5e5", marginTop: 6 }}
-  >
-    <View className="flex-row items-center">
-      <ShoppingBag size={16} color={colors.secondary} />
-      <CsText
-        className="ml-2"
-        style={{
-          color: colors.secondary,
-          letterSpacing: 0.6,
-          fontFamily: typography.Poppins_m_semibold?.fontFamily,
-        }}
-      >
-        MOVE TO BAG
-      </CsText>
-    </View>
-  </Pressable>
-
-</View>
-
+          {/* BUTTON (NO EXTRA MARGIN) */}
+          <Pressable
+            onPress={handleAddToCart}
+            className="pt-6 pb-5 border-t items-center active:opacity-70"
+            style={{ borderColor: "#e5e5e5", marginTop: 6 }}
+          >
+            <View className="flex-row items-center">
+              <ShoppingBag size={16} color={colors.secondary} />
+              <CsText
+                className="ml-2"
+                style={{
+                  color: colors.secondary,
+                  letterSpacing: 0.6,
+                  fontFamily: typography.Poppins_m_semibold?.fontFamily,
+                }}
+              >
+                MOVE TO BAG
+              </CsText>
+            </View>
+          </Pressable>
+        </View>
       </View>
     </View>
   );

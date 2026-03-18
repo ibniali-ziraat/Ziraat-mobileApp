@@ -2,11 +2,13 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 
 import { CheckCircle } from "lucide-react-native";
-import { BackHandler, Text, TouchableOpacity, View } from "react-native";
+import { BackHandler, Text, View } from "react-native";
 
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 
+import FormActions from "@/src/components/shared/FormActions";
+import { ROUTES } from "@/src/constants/routes";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 
@@ -40,14 +42,6 @@ const OrderSuccessScreen = () => {
       return () => backHandler.remove();
     }, []),
   );
-
-  const handleContinueShopping = () => {
-    /**
-     * Reset navigation stack
-     * Prevent user from going back to checkout/payment
-     */
-    router.replace("/");
-  };
 
   return (
     <>
@@ -128,40 +122,12 @@ const OrderSuccessScreen = () => {
             <Text className="text-neutral-700">{shippingAddress.phone}</Text>
           </View>
 
-          {/* BILLING ADDRESS */}
-          {/* <View className=" rounded-2xl bg-white p-5">
-            <Text style={[typography.Poppins_s_bold]} className="mb-2 text-lg">
-              Billing Address
-            </Text>
-
-            <Text className="font-semibold text-neutral-900">
-              {billingAddress.contactName}
-            </Text>
-
-            <Text className="text-neutral-700">
-              {billingAddress.addressLine1}
-            </Text>
-
-            <Text className="text-neutral-700">
-              {billingAddress.city} - {billingAddress.zipCode}
-            </Text>
-
-            <Text className="text-neutral-700">{billingAddress.phone}</Text>
-          </View> */}
-
-          {/* CONTINUE SHOPPING */}
-          <TouchableOpacity
-            onPress={handleContinueShopping}
-            style={{ backgroundColor: colors.primary }}
-            className="mt-8 h-14 items-center justify-center rounded-xl"
-          >
-            <Text
-              style={[typography.Poppins_s_bold]}
-              className="text-base text-white"
-            >
-              Continue Shopping
-            </Text>
-          </TouchableOpacity>
+          <FormActions
+            submitLabel="Shop More"
+            onSubmit={() => router.replace(ROUTES.TABS.Products)}
+            cancelLabel="View Order"
+            onCancel={() => router.push(ROUTES.MORE.ORDERS)}
+          />
         </View>
       </ScreenLayout>
     </>

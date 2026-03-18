@@ -2,29 +2,28 @@ import { colors } from "@/src/constants/colors"; // Import root colors
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Calendar } from "lucide-react-native";
 import { useState } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { Platform, Pressable, View } from "react-native";
 import { HelperText } from "react-native-paper";
 import CsText from "../../shared/CsText";
 
 export default function FormDateInput({
-  control,
   name,
   label,
   optional = false,
   error,
+  placeholder = "Select Date",
 }) {
   const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
   console.log(error, "date error");
+  const { control } = useFormContext();
 
-  // Normalize backend dates: "2025-12-10T00:00:00" → "2025-12-10"
   const normalizeDate = (date) => {
     if (!date) return "";
     return date.includes("T") ? date.split("T")[0] : date;
   };
 
-  // Format selected date into "YYYY-MM-DD"
   const formatDate = (date) => {
     const d = new Date(date);
     const year = d.getFullYear();
@@ -132,7 +131,7 @@ export default function FormDateInput({
                         : colors.neutral + "88",
                     }}
                   >
-                    {normalizedValue || `Select ${label}`}
+                    {normalizedValue || `${placeholder}`}
                   </CsText>
                   <Calendar size={20} color={colors.primary} />
                 </Pressable>
