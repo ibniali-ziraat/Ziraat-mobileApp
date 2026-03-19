@@ -25,8 +25,9 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { FormProvider } from "react-hook-form";
 import { View } from "react-native";
+import AuthWrapper from "../component/AuthWrapper";
 
-export default function UserRegistrationScreen() {
+export default function SignupScreen() {
   const [step, setStep] = useState(0);
   const { setUserId, setUserToken } = useAuth();
 
@@ -124,7 +125,7 @@ export default function UserRegistrationScreen() {
         await setUserToken(loginRes?.token);
         await setUserId(loginRes?.user);
 
-        router.push(ROUTES.USER.HOME);
+        router.push(ROUTES.TABS.HOME);
         showSuccessToast("Logged in Successfully");
       } catch (error: any) {
         const backendError =
@@ -163,45 +164,47 @@ export default function UserRegistrationScreen() {
   // }
 
   return (
-    <FormProvider {...methods}>
-      <View className="px-4 ">
-        {step === 0 && (
-          <Heading
-            title="Lets sign up"
-            subtitle="Create your account to get started"
-            // subtitle="Join our trusted platform for safe, effective crop protection."
-          />
-        )}
+    <AuthWrapper mode="register">
+      <FormProvider {...methods}>
+        <View className="px-4 ">
+          {step === 0 && (
+            <Heading
+              title="Lets sign up"
+              subtitle="Create your account to get started"
+              // subtitle="Join our trusted platform for safe, effective crop protection."
+            />
+          )}
 
-        {step === 1 && (
-          <OtpHeading
-            title="Verify your phone"
-            phone={profileData?.phone}
-            onResend={handleResendOtp}
-            disabled={isSendingOtp}
-          />
-        )}
+          {step === 1 && (
+            <OtpHeading
+              title="Verify your phone"
+              phone={profileData?.phone}
+              onResend={handleResendOtp}
+              disabled={isSendingOtp}
+            />
+          )}
 
-        <AnimatedStepWrapper trigger={step}>
-          {step === 0 && <ProfileSection control={control} errors={errors} />}
-          {step === 1 && <OTPSection control={control} errors={errors} />}
-        </AnimatedStepWrapper>
+          <AnimatedStepWrapper trigger={step}>
+            {step === 0 && <ProfileSection control={control} errors={errors} />}
+            {step === 1 && <OTPSection control={control} errors={errors} />}
+          </AnimatedStepWrapper>
 
-        <View>
-          {/* {step > 0 && (
+          <View>
+            {/* {step > 0 && (
           <Button title="Back" onPress={prevStep} disabled={isLoading} />
         )} */}
 
-          <FormActions
-            cancelLabel={step > 0 ? "Back" : undefined}
-            onCancel={prevStep}
-            submitLabel={step === 1 ? "Signup" : "Next"}
-            onSubmit={handleSubmit(onSubmit)}
-            disabled={isLoading}
-            loading={isLoading}
-          />
+            <FormActions
+              cancelLabel={step > 0 ? "Back" : undefined}
+              onCancel={prevStep}
+              submitLabel={step === 1 ? "Signup" : "Next"}
+              onSubmit={handleSubmit(onSubmit)}
+              disabled={isLoading}
+              loading={isLoading}
+            />
+          </View>
         </View>
-      </View>
-    </FormProvider>
+      </FormProvider>
+    </AuthWrapper>
   );
 }

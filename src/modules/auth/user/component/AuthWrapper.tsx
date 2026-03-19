@@ -1,14 +1,16 @@
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import { useState } from "react";
+import { ROUTES } from "@/src/constants/routes";
+import { ModeButton } from "@/src/modules/auth/components/ModeButton";
+import { router } from "expo-router";
 import { Image, View } from "react-native";
-import { ModeButton } from "../components/ModeButton";
-import LoginForm from "./LoginForm";
-import UserRegistrationScreen from "./screens/UserRegistraitonScreen";
 
-export default function AuthForm() {
-  const [mode, setMode] = useState<"login" | "register">("login");
+type Props = {
+  children: React.ReactNode;
+  mode: "login" | "register";
+};
 
+export default function AuthWrapper({ children, mode }: Props) {
   return (
     <ScreenLayout>
       <View
@@ -26,9 +28,7 @@ export default function AuthForm() {
           />
         </View>
 
-        <View>
-          {mode === "login" ? <LoginForm /> : <UserRegistrationScreen />}
-        </View>
+        {children}
 
         <ModeButton
           title={
@@ -36,7 +36,11 @@ export default function AuthForm() {
               ? "Don't have an account? Register"
               : "Already have an account? Login"
           }
-          onPress={() => setMode(mode === "login" ? "register" : "login")}
+          onPress={() =>
+            mode === "login"
+              ? router.replace(ROUTES.AUTH.SIGNUP)
+              : router.replace(ROUTES.AUTH.LOGIN)
+          }
         />
       </View>
     </ScreenLayout>

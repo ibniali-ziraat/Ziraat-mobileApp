@@ -1,13 +1,13 @@
 import * as Lucide from "lucide-react-native";
 
-import AdvisoryProfile from "../app/dashboards/(farmer)/advisory-profile";
-import AlertProfile from "../app/dashboards/(farmer)/alert-profile";
-import FinancialProfile from "../app/dashboards/(farmer)/financial-profile";
-import NutrientProfile from "../app/dashboards/(farmer)/nutrient-profile";
-import OrchardProfile from "../app/dashboards/(farmer)/orchard-profile";
-import PestDiseaseProfile from "../app/dashboards/(farmer)/pestdisease-profile";
-import ResourcesProfile from "../app/dashboards/(farmer)/resources-profile";
-import WeatherProfile from "../app/dashboards/(farmer)/weather-profile";
+import AdvisoryProfile from "../app/(dashboards)/(sections)/advisory-profile";
+import AlertProfile from "../app/(dashboards)/(sections)/alert-profile";
+import FinancialProfile from "../app/(dashboards)/(sections)/financial-profile";
+import NutrientProfile from "../app/(dashboards)/(sections)/nutrient-profile";
+import OrchardProfile from "../app/(dashboards)/(sections)/orchard-profile";
+import PestDiseaseProfile from "../app/(dashboards)/(sections)/pestdisease-profile";
+import ResourcesProfile from "../app/(dashboards)/(sections)/resources-profile";
+import WeatherProfile from "../app/(dashboards)/(sections)/weather-profile";
 
 export const DashboardTabs = {
   orchardProfile: {

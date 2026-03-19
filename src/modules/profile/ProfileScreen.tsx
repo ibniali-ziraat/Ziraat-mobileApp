@@ -51,7 +51,7 @@ import {
 } from "lucide-react-native";
 import DetailsCard from "./components/DetailsCard";
 
-export default function UserProfileScreen() {
+export default function ProfileScreen() {
   const [deleteSection, setDeleteSection] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
   const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();

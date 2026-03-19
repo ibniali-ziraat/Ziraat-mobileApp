@@ -34,20 +34,17 @@ const HomeHeader = () => {
         </View>
 
         <View className="flex-row items-center">
-  <TouchableOpacity
-    className="p-2 mr-3 rounded-full border"
+          <TouchableOpacity
+            className="p-2 mr-3 rounded-full border"
             style={{ borderColor: colors.neutral }}
             onPress={() =>
               router.push({
                 pathname: "/dashboards",
-                params: { role: "farmer" },
               })
             }
           >
             <BarChart2 size={20} color={colors.secondary} />
           </TouchableOpacity>
-
-
 
           <TouchableOpacity
             onPress={() => router.push("/user/notifications")}
@@ -57,18 +54,13 @@ const HomeHeader = () => {
             <Bell size={24} color={colors.secondary} />
           </TouchableOpacity>
 
-
-
-         <TouchableOpacity onPress={() => router.push(ROUTES.USER.PROFILE)}>
-
-    <View 
-      className="w-10 h-10 rounded-full items-center justify-center bg-secondary"
-    >
-      <CsText className="text-white font-bold uppercase text-lg">
-        {data?.fullName ? data.fullName.charAt(0) : "U"}
-      </CsText>
-    </View>
-</TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push(ROUTES.ACCOUNT.PROFILE)}>
+            <View className="w-10 h-10 rounded-full items-center justify-center bg-secondary">
+              <CsText className="text-white font-bold uppercase text-lg">
+                {data?.fullName ? data.fullName.charAt(0) : "U"}
+              </CsText>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </ScreenContent>

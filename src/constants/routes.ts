@@ -1,16 +1,28 @@
 export const ROUTES = {
+  TABS: {
+    HOME: "/(tabs)",
+    PROFILE: "/(tabs)/profile",
+    ORCHARDS: "/(tabs)/orchards",
+    Products: "/(tabs)/products",
+  },
   MORE: {
     SUPPORT: "/more/support",
     NOTIFICATIONS: "/more/notifications",
-    SETTINGS: "/more/settings",
-    ORDERS: "/products/checkout/orders/orders",
+    SETTINGS: "/settings/settings",
+    ORDERS: "/orders/orders",
   },
-  NAV: {
-    BACK: -1,
+  ACCOUNT: {
+    ADDRESS: "/account/login",
+    PROFILE: "/profile",
+    FORGOT_PASSWORD: "/account/forgot-password",
+    CHANGE_PASSWORD: "/account/vendor",
+    DELETE_ACCOUNT: "/account/vendor/vendor-profile-screen",
+    ADD_ADDRESS: "/account/add-addresses",
   },
+
   AUTH: {
-    LOGIN: "/auth/login",
-    REGISTER: "/auth/register",
+    LOGIN: "/login",
+    SIGNUP: "/signup",
     FORGOT_PASSWORD: "/auth/forgot-password",
     VENDOR_ONBOARD: "/auth/vendor",
     VENDOR_PROFILE: "/auth/vendor/vendor-profile-screen",
@@ -54,13 +66,5 @@ export const ROUTES = {
       SOIL_WATER_INFO: "/orchards/soil-water-info",
       VARIETY_INFO: "/orchards/variety-info",
     },
-  },
-  TABS: {
-    MENU: "/(tabs)/menu",
-    HOME: "/(tabs)",
-    PROFILE: "/(tabs)/profile",
-    ORCHARDS: "/(tabs)/orchards",
-    Products: "/(tabs)/Product",
-    // ORDERS: "/(tabs)/orders",
   },
 } as const;

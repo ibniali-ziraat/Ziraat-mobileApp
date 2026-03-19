@@ -1,5 +1,10 @@
 import { Tabs } from "expo-router";
-import { Home, MoreHorizontalIcon, ShoppingBag, Trees } from "lucide-react-native";
+import {
+  Home,
+  MoreHorizontalIcon,
+  ShoppingBag,
+  Trees,
+} from "lucide-react-native";
 import { useState } from "react";
 import { Platform, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -13,14 +18,12 @@ import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 
-
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { roleMode, userId } = useAuth();
+  const { userId } = useAuth();
   const { data } = useProfileQuery(userId);
 
   const [pressKey, setPressKey] = useState(0);
-  const [activeTab, setActiveTab] = useState<string>("index");
 
   // ✅ Platform helpers
   const isIOS = Platform.OS === "ios";
@@ -81,7 +84,6 @@ export default function TabLayout() {
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
-                setActiveTab("index");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
@@ -117,7 +119,6 @@ export default function TabLayout() {
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
-                setActiveTab("orchards");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
@@ -146,14 +147,13 @@ export default function TabLayout() {
 
       {/* Products */}
       <Tabs.Screen
-        name="Product"
+        name="products"
         options={{
           title: "Products",
           header: () => <ProductHeader />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
-                setActiveTab("Product");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
@@ -179,19 +179,16 @@ export default function TabLayout() {
           ),
         }}
       />
-    
-
 
       {/* Menu */}
       <Tabs.Screen
         name="menu"
         options={{
           title: "Menu",
-          header: () => <MenuHeader role={roleMode} />,
+          header: () => <MenuHeader />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
-                setActiveTab("menu");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
@@ -211,13 +208,13 @@ export default function TabLayout() {
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<MoreHorizontalIcon size={22} color={color} strokeWidth={2.2} />}
+              icon={
+                <MoreHorizontalIcon size={22} color={color} strokeWidth={2.2} />
+              }
               label="More"
             />
           ),
         }}
-
-
       />
     </Tabs>
   );

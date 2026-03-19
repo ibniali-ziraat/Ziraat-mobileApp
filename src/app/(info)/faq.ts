@@ -1,5 +1,5 @@
+import FaqSettings from "@/src/modules/faq/FaqSettings";
 import React from "react";
-import FaqSettings from "../modules/faq/FaqSettings";
 
 export default function FaqSetting() {
   return React.createElement(FaqSettings, null);
