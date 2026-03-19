@@ -3,19 +3,34 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import { useLocalSearchParams } from "expo-router";
 
+import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-
-import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
+import { shadows } from "@/src/constants/shadows";
 
 import {
-    CalendarDays,
-    CreditCard,
-    MapPin,
-    Package,
-    ShoppingCart,
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Text,
+  View,
+} from "react-native";
+
+import {
+  CalendarDays,
+  CreditCard,
+  MapPin,
+  Package,
+  ShoppingCart,
 } from "lucide-react-native";
 
 import { useOrderDetails } from "../../hooks/UseOders";
+
+const baseCard = {
+  backgroundColor: "#fff",
+  borderRadius: 22,
+  padding: 16,
+  marginBottom: 14,
+};
 
 const OrderDetailsScreen = () => {
   const { orderId } = useLocalSearchParams();
@@ -37,7 +52,7 @@ const OrderDetailsScreen = () => {
     return (
       <ScreenLayout>
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" />
+          <ActivityIndicator size="large" color={colors.primary} />
         </View>
       </ScreenLayout>
     );
@@ -52,191 +67,272 @@ const OrderDetailsScreen = () => {
         data={items}
         keyExtractor={(item) => String(item.id)}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
+        contentContainerStyle={{
+          padding: 16,
+          paddingBottom: 40,
+        }}
         ListHeaderComponent={() => (
           <View>
-            {/* Order Info */}
-            <View className="bg-white rounded-xl p-5 shadow-md mb-5">
-              <Text
-                style={[typography.Poppins_s_bold]}
-                className="text-neutral-900 mb-5 text-base"
-              >
-                Order Information
-              </Text>
 
+            {/* ORDER INFO */}
+            <View style={[baseCard, shadows.profile_card]}>
               <View className="flex-row items-center mb-4">
-                <Package size={18} color="#9CA3AF" />
-                <Text className="text-neutral-500 ml-3">Order ID</Text>
+                <Package size={18} color={colors.primary} />
+                <Text style={[typography.Poppins_s_bold, { marginLeft: 8 }]}>
+                  Order Information
+                </Text>
+              </View>
 
-                <Text className="ml-auto text-neutral-900 font-semibold">
+              <View className="flex-row items-center mb-3">
+                <Package size={16} color="#9CA3AF" />
+                <Text style={{ marginLeft: 10, color: "#737373" }}>
+                  Order ID
+                </Text>
+                <Text style={{ marginLeft: "auto", color: "#111" }}>
                   #{orderData?.id}
                 </Text>
               </View>
 
-              <View className="flex-row items-center mb-4">
-                <CalendarDays size={18} color="#9CA3AF" />
-                <Text className="text-neutral-500 ml-3">Order Date</Text>
-
-                <Text className="ml-auto text-neutral-900">
+              <View className="flex-row items-center mb-3">
+                <CalendarDays size={16} color="#9CA3AF" />
+                <Text style={{ marginLeft: 10, color: "#737373" }}>
+                  Order Date
+                </Text>
+                <Text style={{ marginLeft: "auto", color: "#111" }}>
                   {formatDate(orderData?.createdOn)}
                 </Text>
               </View>
 
               <View className="flex-row items-center">
-                <ShoppingCart size={18} color="#9CA3AF" />
-                <Text className="text-neutral-500 ml-3">Status</Text>
+                <ShoppingCart size={16} color="#9CA3AF" />
+                <Text style={{ marginLeft: 10, color: "#737373" }}>
+                  Status
+                </Text>
 
-                <View className="ml-auto bg-primary/10 px-3 py-1 rounded-full">
-                  <Text className="text-primary text-xs font-semibold">
+                <View
+                  style={{
+                    marginLeft: "auto",
+                    backgroundColor: colors.primary + "15",
+                    paddingHorizontal: 12,
+                    paddingVertical: 5,
+                    borderRadius: 20,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: colors.primary,
+                      fontSize: 12,
+                      fontWeight: "700",
+                    }}
+                  >
                     {orderData?.orderStatusString}
                   </Text>
                 </View>
               </View>
             </View>
 
-            {/* Shipping Address */}
-            <View className="bg-white rounded-xl p-5 shadow-md mb-5">
-              <Text
-                style={[typography.Poppins_s_bold]}
-                className="text-neutral-900 mb-4 text-base"
-              >
-                Shipping Address
+            {/* SHIPPING */}
+            <View style={[baseCard, shadows.profile_card]}>
+              <View className="flex-row items-center mb-4">
+                <MapPin size={18} color={colors.primary} />
+                <Text style={[typography.Poppins_s_bold, { marginLeft: 8 }]}>
+                  Shipping Address
+                </Text>
+              </View>
+
+              <Text style={[typography.Poppins_s_bold]}>
+                {orderData?.shippingAddress?.contactName}
               </Text>
 
-              <View className="flex-row items-start">
-                <MapPin size={20} color="#9CA3AF" />
+              <Text style={{ color: "#737373", marginTop: 4 }}>
+                {orderData?.shippingAddress?.addressLine1}
+              </Text>
 
-                <View className="flex-1 ml-3">
-                  <Text
-                    style={[typography.Poppins_s_bold]}
-                    className="text-neutral-900"
-                  >
-                    {orderData?.shippingAddress?.contactName}
-                  </Text>
+              <Text style={{ color: "#737373" }}>
+                {orderData?.shippingAddress?.cityName},{" "}
+                {orderData?.shippingAddress?.stateOrProvinceName}
+              </Text>
 
-                  <Text className="text-neutral-500 mt-1">
-                    {orderData?.shippingAddress?.addressLine1}
-                  </Text>
+              <Text style={{ color: "#737373" }}>
+                {orderData?.shippingAddress?.zipCode}
+              </Text>
 
-                  <Text className="text-neutral-500">
-                    {orderData?.shippingAddress?.cityName},{" "}
-                    {orderData?.shippingAddress?.stateOrProvinceName}
-                  </Text>
-
-                  <Text className="text-neutral-500">
-                    {orderData?.shippingAddress?.zipCode}
-                  </Text>
-
-                  <Text className="text-neutral-500 mt-2">
-                    {orderData?.shippingAddress?.phone}
-                  </Text>
-                </View>
-              </View>
+              <Text style={{ color: "#737373", marginTop: 6 }}>
+                {orderData?.shippingAddress?.phone}
+              </Text>
             </View>
 
-            {/* Payment */}
-            <View className="bg-white rounded-xl p-5 shadow-md mb-5">
-              <Text
-                style={[typography.Poppins_s_bold]}
-                className="text-neutral-900 mb-4 text-base"
-              >
-                Payment Method
+            {/* PAYMENT */}
+            <View style={[baseCard, shadows.profile_card]}>
+              <View className="flex-row items-center mb-3">
+                <CreditCard size={18} color={colors.primary} />
+                <Text style={[typography.Poppins_s_bold, { marginLeft: 8 }]}>
+                  Payment Method
+                </Text>
+              </View>
+
+              <Text style={{ fontWeight: "500" }}>
+                {orderData?.paymentMethod}
+              </Text>
+            </View>
+
+            {/* ITEMS TITLE */}
+            <View
+              style={{
+                paddingHorizontal: 6,
+                marginTop:7,
+                marginBottom: 10,
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <View
+                style={{
+                  width: 4,
+                  height: 18,
+                  backgroundColor: colors.primary,
+                  borderRadius: 4,
+                  marginRight: 8,
+                }}
+              />
+              <Text style={[typography.Poppins_s_bold, { fontSize: 15 }]}>
+                Ordered Items
+              </Text>
+            </View>
+
+          </View>
+        )}
+        renderItem={({ item }) => (
+          <View
+            style={[
+              baseCard,
+              shadows.profile_card,
+              {
+                flexDirection: "row",
+                padding: 12,
+                alignItems: "center",
+              },
+            ]}
+          >
+            <View
+              style={{
+                backgroundColor: "#F8F9FB",
+                padding: 4,
+                borderRadius: 14,
+              }}
+            >
+              <Image
+                source={{ uri: item.productImage }}
+                style={{
+                  height: 68,
+                  width: 68,
+                  borderRadius: 10,
+                }}
+                resizeMode="cover"
+              />
+            </View>
+
+            <View style={{ marginLeft: 12, flex: 1 }}>
+              <Text style={[typography.Poppins_s_bold]} numberOfLines={1}>
+                {item.productName}
               </Text>
 
-              <View className="flex-row items-center">
-                <CreditCard size={18} color="#9CA3AF" />
-
-                <Text className="text-neutral-700 ml-3 font-medium">
-                  {orderData?.paymentMethod}
+              <View
+                style={{
+                  marginTop: 6,
+                  backgroundColor: "#F1F3F6",
+                  alignSelf: "flex-start",
+                  paddingHorizontal: 8,
+                  paddingVertical: 3,
+                  borderRadius: 8,
+                }}
+              >
+                <Text style={{ fontSize: 11, color: "#555", fontWeight: "600" }}>
+                  Qty {item.quantity}
                 </Text>
               </View>
             </View>
 
-            {/* Items Title */}
-            <Text
-              style={[typography.Poppins_s_bold]}
-              className="text-neutral-900 text-base mb-3"
-            >
-              Ordered Items
-            </Text>
-          </View>
-        )}
-        renderItem={({ item }) => (
-          <View className="bg-white rounded-xl p-4 mb-4 shadow-md flex-row">
-            <Image
-              source={{ uri: item.productImage }}
-              className="h-18 w-18 rounded-xl"
-              resizeMode="cover"
-            />
-
-            <View className="flex-1 ml-4 justify-center">
+            <View style={{ alignItems: "flex-end" }}>
               <Text
-                style={[typography.Poppins_s_bold]}
-                className="text-neutral-900"
+                style={{
+                  color: colors.primary,
+                  fontWeight: "700",
+                  fontSize: 15,
+                }}
               >
-                {item.productName}
-              </Text>
-
-              <Text className="text-neutral-500 text-sm mt-1">
-                Quantity: {item.quantity}
-              </Text>
-
-              <Text className="text-primary mt-2 font-semibold">
                 ₹{item.productPrice}
+              </Text>
+
+              <Text style={{ fontSize: 10, color: "#999", marginTop: 2 }}>
+                per item
               </Text>
             </View>
           </View>
         )}
         ListFooterComponent={() => (
-          <View className="bg-white rounded-xl p-5 shadow-md mt-4">
-            <Text
-              style={[typography.Poppins_s_bold]}
-              className="text-neutral-900 mb-5 text-base"
-            >
+          <View style={[baseCard, shadows.profile_card]}>
+            <Text style={[typography.Poppins_s_bold, { marginBottom: 12 }]}>
               Order Summary
             </Text>
 
-            <View className="flex-row justify-between mb-3">
-              <Text className="text-neutral-500">Subtotal</Text>
-              <Text className="text-neutral-900 font-medium">
-                ₹{orderData?.subtotal}
-              </Text>
-            </View>
-
-            <View className="flex-row justify-between mb-3">
-              <Text className="text-neutral-500">Discount</Text>
-              <Text className="text-red-500 font-medium">
-                - ₹{orderData?.discountAmount}
-              </Text>
-            </View>
-
-            <View className="flex-row justify-between mb-3">
-              <Text className="text-neutral-500">Tax</Text>
-              <Text className="text-neutral-900 font-medium">
-                ₹{orderData?.taxAmount}
-              </Text>
-            </View>
-
-            <View className="flex-row justify-between mb-3">
-              <Text className="text-neutral-500">Shipping</Text>
-              <Text className="text-neutral-900 font-medium">
-                ₹{orderData?.shippingAmount}
-              </Text>
-            </View>
-
-            <View className="h-[1px] bg-neutral-200 my-3" />
-
-            <View className="flex-row justify-between mt-2">
-              <Text
-                style={[typography.Poppins_s_bold]}
-                className="text-neutral-900"
+            {[{
+              label: "Subtotal",
+              value: orderData?.subtotal,
+            },
+            {
+              label: "Discount",
+              value: `- ₹${orderData?.discountAmount}`,
+              isDiscount: true,
+            },
+            {
+              label: "Tax",
+              value: orderData?.taxAmount,
+            },
+            {
+              label: "Shipping",
+              value: orderData?.shippingAmount,
+            }].map((row, i) => (
+              <View
+                key={i}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginBottom: 10,
+                }}
               >
+                <Text style={{ color: "#737373" }}>{row.label}</Text>
+                <Text
+                  style={{
+                    color: row.isDiscount ? "#EF4444" : "#111",
+                    fontWeight: "500",
+                  }}
+                >
+                  {typeof row.value === "string"
+                    ? row.value
+                    : `₹${row.value}`}
+                </Text>
+              </View>
+            ))}
+
+            <View
+              style={{
+                height: 1,
+                backgroundColor: "#00000010",
+                marginVertical: 12,
+              }}
+            />
+
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={[typography.Poppins_s_bold]}>
                 Total
               </Text>
 
               <Text
-                style={[typography.Poppins_s_bold]}
-                className="text-primary text-xl"
+                style={[
+                  typography.Poppins_s_bold,
+                  { color: colors.primary, fontSize: 20 },
+                ]}
               >
                 ₹{orderData?.orderTotal}
               </Text>
