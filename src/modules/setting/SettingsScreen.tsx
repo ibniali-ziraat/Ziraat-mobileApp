@@ -1,7 +1,6 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import Constants from "expo-constants";
 import { router } from "expo-router";
 import {
   ChevronRight,
@@ -16,11 +15,6 @@ import {
 } from "lucide-react-native";
 import { useRef } from "react";
 import { Animated, Pressable, View } from "react-native";
-
-const appVersion =
-  Constants.expoConfig?.version ?? Constants.manifest?.version ?? "1.0.0";
-
-/* ---------------- ROW ---------------- */
 
 const Row = ({ icon, label, onPress, danger = false }) => {
   const scale = useRef(new Animated.Value(1)).current;
@@ -146,12 +140,11 @@ export default function SettingsScreen() {
           />
           <Divider />
 
-
-<Row
-  label="Add Address"
-  icon={<MapPin size={22} color={colors.neutral} />}
-  onPress={() => router.push("/user/add-addresses")}
-/>
+          <Row
+            label="Add Address"
+            icon={<MapPin size={22} color={colors.neutral} />}
+            onPress={() => router.push("/user/add-addresses")}
+          />
           <Row
             label="FAQs"
             icon={<HelpCircle size={22} color={colors.neutral} />}
@@ -194,7 +187,7 @@ export default function SettingsScreen() {
               letterSpacing: 0.6,
             }}
           >
-            App Version v{appVersion}
+            App Version v 1.2.0.1
           </CsText>
         </View>
 

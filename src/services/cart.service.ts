@@ -28,11 +28,16 @@ export const getCartItems = async () => {
   return safeGet(axiosInstance.get("/cart/list/"));
 };
 
-// ADD
+// src/services/cart.service.ts
 export const saveCartItems = async (payload: AddToCartPayload) => {
-  return safeGet(axiosInstance.post("/cart/add-item", payload));
-};
+  // Clean the payload: Remove variationName if it's empty
+  const cleanPayload = { ...payload };
+  if (!cleanPayload.variationName) {
+    delete cleanPayload.variationName;
+  }
 
+  return safeGet(axiosInstance.post("/cart/add-item", cleanPayload));
+};
 // UPDATE
 export const updateCartItems = async (payload: UpdateCartPayload) => {
   return safeGet(axiosInstance.post("/cart/update-item-quantity", payload));

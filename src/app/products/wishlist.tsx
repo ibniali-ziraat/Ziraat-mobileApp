@@ -1,4 +1,4 @@
-import Wishlist from "@/src/modules/products/WishList";
+import Wishlist from "@/src/modules/wishlist";
 import React from "react";
 
 export default function WishlistScreen() {
