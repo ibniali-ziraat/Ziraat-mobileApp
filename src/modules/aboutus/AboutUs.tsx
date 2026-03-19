@@ -13,7 +13,8 @@ import {
   Target,
   Wheat,
 } from "lucide-react-native";
-import { Image, View } from "react-native";
+import { useState } from "react";
+import { Image, TouchableOpacity, View } from "react-native";
 
 const iconMap = {
   Wheat,
@@ -36,6 +37,12 @@ const aboutUsImages = {
 };
 
 export default function AboutUs() {
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const toggleExpand = (index: number) => {
+    setExpandedIndex(prev => (prev === index ? null : index));
+  };
+
   return (
     <ScreenLayout>
       <BackHeader
@@ -46,12 +53,17 @@ export default function AboutUs() {
       {aboutZiraatData.map((section, index) => {
         const Icon = iconMap[section.icon];
         const isEven = index % 2 === 0;
+        const isExpanded = expandedIndex === index;
+
+        // ✅ Check if any content is long
+        const hasLongContent = section.content.some(
+          (item: string) => item.length > 80
+        );
 
         return (
           <ZiraatCard
             key={index}
             width="100%"
-            height="12%"
             paddingHorizontal={1}
             paddingVertical={2}
             marginBottom={3}
@@ -59,10 +71,11 @@ export default function AboutUs() {
             <View
               className={`flex-row ${
                 isEven ? "flex-row" : "flex-row-reverse"
-              } items-stretch`}
+              }`}
             >
+              {/* Image */}
               {section.image && (
-                <View className="w-[45%] rounded-xl overflow-hidden">
+                <View className="w-[45%] h-[140px] rounded-xl overflow-hidden">
                   <Image
                     source={aboutUsImages[section.image]}
                     className="w-full h-full"
@@ -71,28 +84,47 @@ export default function AboutUs() {
                 </View>
               )}
 
-              <View className="w-[55%] px-3">
-                <View className="flex-row items-center mb-3">
-                  {Icon && (
-                    <Icon
-                      size={22}
-                      color={colors.secondary}
-                      strokeWidth={1.3}
-                    />
-                  )}
-                  <CsText className="ml-2 text-[18px] font-bold text-dark">
-                    {section.title}
-                  </CsText>
-                </View>
-
-                {section.content.map((item: string, idx: number) => (
-                  <View key={idx} className="flex-row mb-2">
-                    <CsText className="mr-2 text-[14px] text-dark">•</CsText>
-                    <CsText className="flex-1 text-[14px] text-normal">
-                      {item}
+              {/* Content */}
+              <View className="w-[55%] px-3 justify-between">
+                <View>
+                  <View className="flex-row items-center mb-2">
+                    {Icon && (
+                      <Icon
+                        size={20}
+                        color={colors.secondary}
+                        strokeWidth={1.3}
+                      />
+                    )}
+                    <CsText className="ml-2 text-[17px] font-semibold text-dark">
+                      {section.title}
                     </CsText>
                   </View>
-                ))}
+
+                  {section.content.map((item: string, idx: number) => (
+                    <View key={idx} className="flex-row mb-1">
+                      <CsText className="mr-2 text-[13px] text-dark">
+                        •
+                      </CsText>
+                      <CsText
+                        className="flex-1 text-[13px] text-normal leading-[18px]"
+                        numberOfLines={isExpanded ? undefined : 2}
+                      >
+                        {item}
+                      </CsText>
+                    </View>
+                  ))}
+                </View>
+
+                {/* ✅ Show only if content is long */}
+                {hasLongContent && (
+                  <View className="items-end mt-2">
+                    <TouchableOpacity onPress={() => toggleExpand(index)}>
+                      <CsText className="text-[12px] text-secondary font-medium">
+                        {isExpanded ? "Read Less ↑" : "Read More →"}
+                      </CsText>
+                    </TouchableOpacity>
+                  </View>
+                )}
               </View>
             </View>
           </ZiraatCard>
