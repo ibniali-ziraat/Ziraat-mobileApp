@@ -1,4 +1,4 @@
-import OrderDetailsScreen from "@/src/modules/products/Checkout/Screens/orders/OrderDetailsScreen";
+import OrderDetailsScreen from "@/src/modules/checkout/Screens/orders/OrderDetailsScreen";
 import React from "react";
 
 export default function MyAddress() {

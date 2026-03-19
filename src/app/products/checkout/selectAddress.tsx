@@ -1,4 +1,4 @@
-import SelectAddressScreen from "@/src/modules/products/Checkout/Screens/Address";
+import SelectAddressScreen from "@/src/modules/checkout/Screens/Address";
 import React from "react";
 
 export default function MyAddress() {

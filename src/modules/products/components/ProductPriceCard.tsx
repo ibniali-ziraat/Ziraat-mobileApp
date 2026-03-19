@@ -1,18 +1,14 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { IndianRupee } from "lucide-react-native";
 import { View } from "react-native";
 
 export default function ProductPriceCard({ product }: any) {
   const price = product.calculatedProductPrice;
-  const inStock =
-    !product.stockTrackingIsEnabled || product.stockQuantity > 0;
+  const inStock = !product.stockTrackingIsEnabled || product.stockQuantity > 0;
 
   const savings =
-    price?.oldPrice && price?.price
-      ? price.oldPrice - price.price
-      : null;
+    price?.oldPrice && price?.price ? price.oldPrice - price.price : null;
 
   return (
     <View
@@ -25,14 +21,12 @@ export default function ProductPriceCard({ product }: any) {
     >
       {/* PRICE + STOCK ROW */}
       <View className="flex-row justify-between items-start">
-
         {/* LEFT */}
         <View>
-
           {/* OLD PRICE */}
           {price?.oldPrice && (
             <View className="flex-row items-center mb-1">
-              <IndianRupee size={12} color={colors.darkHover} />
+              {/* <IndianRupee size={12} color={colors.darkHover} /> */}
               <CsText
                 style={[
                   typography.Poppins_s_regular,
@@ -50,8 +44,7 @@ export default function ProductPriceCard({ product }: any) {
 
           {/* MAIN PRICE */}
           <View className="flex-row items-center">
-
-            <IndianRupee size={20} color={colors.dark} />
+            {/* <IndianRupee size={20} color={colors.dark} /> */}
 
             <CsText
               style={[typography.Poppins_l_semibold, { color: colors.dark }]}
@@ -74,19 +67,14 @@ export default function ProductPriceCard({ product }: any) {
                 </CsText>
               </View>
             )}
-
           </View>
 
           {/* SAVINGS */}
           {savings && (
-            <CsText
-              style={{ color: colors.primary }}
-              className="text-xs mt-1"
-            >
+            <CsText style={{ color: colors.primary }} className="text-xs mt-1">
               You save ₹{savings}
             </CsText>
           )}
-
         </View>
 
         {/* STOCK BADGE */}
@@ -107,7 +95,6 @@ export default function ProductPriceCard({ product }: any) {
             {inStock ? "In Stock" : "Out of Stock"}
           </CsText>
         </View>
-
       </View>
 
       {/* DIVIDER */}
@@ -118,7 +105,6 @@ export default function ProductPriceCard({ product }: any) {
           backgroundColor: colors.lightHover,
         }}
       />
-
     </View>
   );
 }

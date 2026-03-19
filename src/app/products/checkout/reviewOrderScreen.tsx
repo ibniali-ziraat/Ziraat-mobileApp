@@ -1,4 +1,4 @@
-import ReviewOrderScreen from "@/src/modules/products/Checkout/Screens/ReviewOrderScreen";
+import ReviewOrderScreen from "@/src/modules/checkout/Screens/ReviewOrderScreen";
 import React from "react";
 
 export default function MyAddress() {
