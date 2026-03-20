@@ -7,6 +7,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 
+import { ROUTES } from "@/src/constants/routes";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -89,7 +90,7 @@ const SelectAddressScreen = () => {
           /* NAVIGATE TO REVIEW SCREEN */
 
           router.push({
-            pathname: "/products/checkout/reviewOrderScreen",
+            pathname: ROUTES.SHOPPING.CHECKOUT.REVIEW_ORDER,
             params: {
               address: JSON.stringify(address),
               orderSummary: JSON.stringify(orderSummary),
@@ -215,7 +216,7 @@ const SelectAddressScreen = () => {
         {/* ADD ADDRESS */}
 
         <TouchableOpacity
-          onPress={() => router.push("/products/checkout/createAdress")}
+          onPress={() => router.push(ROUTES.SHOPPING.CHECKOUT.CREATE_ADDRESS)}
           style={{
             backgroundColor: colors.secondary,
             height: 52,

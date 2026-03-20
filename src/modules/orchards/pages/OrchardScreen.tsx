@@ -2,6 +2,7 @@ import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SearchBar from "@/src/components/shared/SearchBar";
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useRouter } from "expo-router";
 import { TreePalm } from "lucide-react-native";
@@ -65,7 +66,7 @@ export default function MyOrchardsScreen() {
               <Pressable
                 onPress={() =>
                   router.push({
-                    pathname: "/orchards/basic-info",
+                    pathname: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
                     params: { mode: "create" },
                   })
                 }
@@ -103,7 +104,7 @@ export default function MyOrchardsScreen() {
             <Pressable
               onPress={() =>
                 router.push({
-                  pathname: "/orchards/basic-info",
+                  pathname: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
                   params: { mode: "create" },
                 })
               }

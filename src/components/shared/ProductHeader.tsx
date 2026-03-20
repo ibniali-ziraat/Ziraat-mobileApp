@@ -4,6 +4,7 @@ import { TouchableOpacity, View } from "react-native";
 
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { ROUTES } from "@/src/constants/routes";
 import { useCart } from "@/src/modules/products/hooks/data/useCart";
 import { useWishlist } from "@/src/modules/wishlist/hooks/useWishlist";
 import CsText from "./CsText";
@@ -35,7 +36,7 @@ const ProductHeader = () => {
 
       <View className="flex-row items-center space-x-3">
         <TouchableOpacity
-          onPress={() => router.push("/products/wishlist")}
+          onPress={() => router.push(ROUTES.SHOPPING.WISHLIST)}
           className="p-2 relative mr-2"
         >
           <Heart size={24} color={colors.secondary} />
@@ -51,7 +52,7 @@ const ProductHeader = () => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => router.push("/products/cartlist")}
+          onPress={() => router.push(ROUTES.SHOPPING.CART)}
           className="p-2 relative"
         >
           <ShoppingCart size={24} color={colors.primary} />

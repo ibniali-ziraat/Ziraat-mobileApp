@@ -21,6 +21,7 @@ import {
   View,
 } from "react-native";
 
+import { ROUTES } from "@/src/constants/routes";
 import { useUserOrders } from "../../hooks/UseOders";
 
 const ORDER_STATUS = {
@@ -29,12 +30,20 @@ const ORDER_STATUS = {
   20: { label: "Pending", bg: colors.secondary + "12", text: colors.secondary },
   30: { label: "Paid", bg: colors.primary + "15", text: colors.primary },
   35: { label: "Failed", bg: colors.error + "12", text: colors.error },
-  40: { label: "Invoiced", bg: colors.secondary + "10", text: colors.secondary },
+  40: {
+    label: "Invoiced",
+    bg: colors.secondary + "10",
+    text: colors.secondary,
+  },
   50: { label: "Shipping", bg: colors.primary + "10", text: colors.primary },
   60: { label: "Shipped", bg: colors.primary + "12", text: colors.primary },
   70: { label: "Delivered", bg: colors.primary + "20", text: colors.primary },
   80: { label: "Cancelled", bg: colors.error + "12", text: colors.error },
-  90: { label: "Refunded", bg: colors.secondary + "10", text: colors.secondary },
+  90: {
+    label: "Refunded",
+    bg: colors.secondary + "10",
+    text: colors.secondary,
+  },
   100: { label: "Closed", bg: "#E5E5E5", text: colors.neutral },
 };
 
@@ -45,7 +54,7 @@ const baseCard = {
   marginBottom: 14,
 };
 
-const OrdersScreen = () => {
+const OrdersListScreen = () => {
   const { data, isLoading } = useUserOrders();
   const orders = data || [];
 
@@ -65,12 +74,12 @@ const OrdersScreen = () => {
         bg: "#F3F4F6",
         text: colors.neutral,
       }
-    );       
+    );
   };
-  
+
   const handleOrderPress = (order: any) => {
     router.push({
-      pathname: "/products/checkout/orders/orderDetails",
+      pathname: ROUTES.ORDERS.DETAILS,
       params: { orderId: order.id },
     });
   };
@@ -166,9 +175,7 @@ const OrdersScreen = () => {
           <View className="flex-1 ml-3 ">
             {/* HEADER */}
             <View className="flex-row justify-between items-center">
-              <Text
-                style={[typography.Poppins_s_bold, { color: colors.dark }]}
-              >
+              <Text style={[typography.Poppins_s_bold, { color: colors.dark }]}>
                 Order #{item.id}
               </Text>
 
@@ -271,4 +278,4 @@ const OrdersScreen = () => {
   );
 };
 
-export default OrdersScreen;
+export default OrdersListScreen;

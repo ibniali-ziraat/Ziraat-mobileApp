@@ -24,7 +24,6 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileProgress } from "@/src/hooks/useProfileProgress";
 import { useEffect, useState } from "react";
 import { userDeleteConfig } from "../auth/config/userDeleteConfig";
-import { userRoutes } from "../auth/config/userRoutes";
 
 // Icons
 import Loader from "@/src/components/shared/Loader";
@@ -51,7 +50,7 @@ import {
 } from "lucide-react-native";
 import DetailsCard from "./components/DetailsCard";
 
-export default function ProfileScreen() {
+export default function ProfileViewScreen() {
   const [deleteSection, setDeleteSection] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
   const { userId, setUserProfileId, userProfileId, logoutUser } = useAuth();
@@ -85,8 +84,6 @@ export default function ProfileScreen() {
       setUserProfileId(profileData?.id);
     }
   }, [profileData]);
-
-  const goToSection = (section) => router.push(userRoutes[section]);
 
   const deleteActions = {
     address: deleteAddressApi,
@@ -183,7 +180,7 @@ export default function ProfileScreen() {
                 ]
               : []
           }
-          onEdit={() => goToSection("profile")}
+          onEdit={() => router.push(ROUTES.USER.FORMS.PROFILE)}
         />
         <DetailsCard
           heading="Address"
@@ -219,12 +216,15 @@ export default function ProfileScreen() {
                 ]
               : []
           }
-          onEdit={addressData ? () => goToSection("address") : undefined}
+          onEdit={
+            addressData
+              ? () => router.push(ROUTES.USER.FORMS.ADDRESS)
+              : undefined
+          }
           onDelete={addressData ? () => setDeleteSection("address") : undefined}
-          onAdd={() => goToSection("address")}
+          onAdd={() => router.push(ROUTES.USER.FORMS.ADDRESS)}
           emptyActionLabel="Add Address"
         />
-        {/* EDUCATION */}
         <DetailsCard
           heading="Education"
           items={
@@ -255,19 +255,22 @@ export default function ProfileScreen() {
                 ]
               : []
           }
-          onEdit={educationData ? () => goToSection("education") : undefined}
+          onEdit={
+            educationData
+              ? () => router.push(ROUTES.USER.FORMS.EDUCATION)
+              : undefined
+          }
           onDelete={
             educationData ? () => setDeleteSection("education") : undefined
           }
-          onAdd={() => goToSection("education")}
+          onAdd={() => router.push(ROUTES.USER.FORMS.EDUCATION)}
           emptyActionLabel="Add Education"
         />
-        {/* PROFESSION */}
         <DetailsCard
           heading="Profession"
-          onEdit={() => goToSection("profession")}
+          onEdit={() => router.push(ROUTES.USER.FORMS.PROFESSION)}
           onDelete={() => setDeleteSection("profession")}
-          onAdd={() => goToSection("profession")}
+          onAdd={() => router.push(ROUTES.USER.FORMS.PROFESSION)}
           items={
             professionData
               ? [

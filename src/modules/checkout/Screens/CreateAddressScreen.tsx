@@ -24,6 +24,7 @@ import {
 
 import { ScrollView } from "react-native-gesture-handler";
 
+import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import { useCountries, useDistricts, useStates } from "../hooks/useAddress";
 import { useCreateShippingAddress } from "../hooks/useCheckout";
@@ -143,7 +144,7 @@ const CreateAddressScreen = ({ navigation }) => {
 
         reset();
 
-        router.replace("/products/checkout/selectAddress");
+        router.replace(ROUTES.SHOPPING.CHECKOUT.SELECT_ADDRESS);
       } else {
         toast.error("Failed to create address");
       }

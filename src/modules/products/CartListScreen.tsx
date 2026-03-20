@@ -18,11 +18,12 @@ import {
   View,
 } from "react-native";
 
+import { ROUTES } from "@/src/constants/routes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useCheckout, useCouponCode } from "../checkout/hooks/useCheckout";
 import { useCart } from "./hooks/data/useCart";
 
-const CartList = () => {
+const CartListScreen = () => {
   const router = useRouter();
   const { cart, isLoading, updateCartItem, removeFromCart } = useCart();
 
@@ -98,8 +99,7 @@ const CartList = () => {
             console.log("Checkout ID saved:", checkoutId);
           }
 
-          // toast.success("Order placed successfullyghjkl");
-          router.push("/products/checkout/selectAddress");
+          router.push(ROUTES.SHOPPING.CHECKOUT.SELECT_ADDRESS);
         } catch (error) {
           console.log("AsyncStorage error:", error);
         }
@@ -261,4 +261,4 @@ const CartList = () => {
   );
 };
 
-export default CartList;
+export default CartListScreen;

@@ -25,6 +25,7 @@ import SoilTestReportsCard from "../components/SoilTestReportsCard";
 import VarietiesCard from "../components/VarietyDetailsCard";
 
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { OrchardDeleteKey } from "../config/orchardDeleteConfig";
 import { useOrchardDeletion } from "../hooks/useOrchardDelete";
@@ -41,7 +42,7 @@ import {
 } from "../hooks/useOrchardsQuery";
 import { orchardRoutes } from "../routes/orchardRoutes";
 
-export default function OrchardDetail() {
+export default function OrchardDetailsScreen() {
   const { setOrchardProfileId, orchardProfileId } = useAuth();
   const { id } = useLocalSearchParams<{ id: string }>();
 
@@ -128,7 +129,7 @@ export default function OrchardDetail() {
           ]}
           onEdit={() =>
             router.push({
-              pathname: "/orchards/basic-info",
+              pathname: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
               params: { mode: "edit", id: String(orchardProfileId) },
             })
           }
@@ -158,14 +159,14 @@ export default function OrchardDetail() {
                 ]
               : []
           }
-          onAdd={() => goToSection("farm")}
+          onAdd={() => router.push(ROUTES.ORCHARDS.REGISTRATION.FARM_INFO)}
           emptyActionLabel="Add Location"
         />
 
         {/* Varieties Section */}
         <VarietiesCard
           varietiesData={varietiesData || []}
-          onAdd={() => goToSection("varietyAndPlanting")}
+          onAdd={() => router.push(ROUTES.ORCHARDS.REGISTRATION.VARIETY_INFO)}
           onEdit={(id) => goToSection("varietyAndPlanting", id)}
           onDelete={(id) => setVarietyToDelete(id)}
         />
@@ -204,7 +205,9 @@ export default function OrchardDetail() {
               ? () => setSectionToDelete("soilAndWater")
               : undefined
           }
-          onAdd={() => goToSection("soilAndWater")}
+          onAdd={() =>
+            router.push(ROUTES.ORCHARDS.REGISTRATION.SOIL_WATER_INFO)
+          }
         />
 
         {/* Soil Test Reports */}
@@ -214,7 +217,9 @@ export default function OrchardDetail() {
             onDeleteReport={(url) =>
               deleteSoilTestReport(url, soilWaterData.soilTestReportUrls)
             }
-            onAdd={() => goToSection("soilTestReports")}
+            onAdd={() =>
+              router.push(ROUTES.ORCHARDS.REGISTRATION.SOIL_TEST_REPORTS)
+            }
           />
         )}
 
@@ -247,7 +252,7 @@ export default function OrchardDetail() {
               ? () => setSectionToDelete("farmInfrastructure")
               : undefined
           }
-          onAdd={() => goToSection("farmInfrastructure")}
+          onAdd={() => router.push(ROUTES.ORCHARDS.REGISTRATION.FARM_INFO)}
         />
 
         {/* Future Readiness */}
@@ -279,7 +284,7 @@ export default function OrchardDetail() {
               ? () => setSectionToDelete("futureReadiness")
               : undefined
           }
-          onAdd={() => goToSection("futureReadiness")}
+          onAdd={() => router.push(ROUTES.ORCHARDS.REGISTRATION.FUTURE_INFO)}
         />
 
         {/* Delete Entire Orchard Button */}

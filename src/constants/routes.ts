@@ -3,7 +3,7 @@ export const ROUTES = {
     HOME: "/(tabs)",
     PROFILE: "/(tabs)/profile",
     ORCHARDS: "/(tabs)/orchards",
-    Products: "/(tabs)/products",
+    PRODUCTS: "/(tabs)/products",
   },
   MORE: {
     SUPPORT: "/more/support",
@@ -13,7 +13,7 @@ export const ROUTES = {
   },
   ACCOUNT: {
     ADDRESS: "/login",
-    PROFILE: "/profile",
+    PROFILE: "/profile-view",
     FORGOT_PASSWORD: "/forgot-password",
     CHANGE_PASSWORD: "/vendor",
     DELETE_ACCOUNT: "/vendor/vendor-profile-screen",
@@ -24,47 +24,61 @@ export const ROUTES = {
     LOGIN: "/login",
     SIGNUP: "/signup",
     FORGOT_PASSWORD: "/auth/forgot-password",
-    VENDOR_ONBOARD: "/auth/vendor",
-    VENDOR_PROFILE: "/auth/vendor/vendor-profile-screen",
-    USER: {
-      REGISTRAION: "/",
-      PROFILE: "/user/user-profile",
-      EDIT_PROFILE: "/user-profile/edit",
-    },
-    VENDOR: {
-      REGISTRAION: "/auth/vendor",
-      EDIT_PROFILE: "/user-profile/edit",
-    },
   },
 
-  // USER SCREENS
   USER: {
     HOME: "/",
-    PROFILE: "/user/user-profile",
-    EDIT_PROFILE: "/user-profile/edit",
-  },
-
-  // VENDOR / SUPPLIER SCREENS
-  VENDOR: {
-    PROFILE: "/vendor/vendor-profile-screen",
-
-    NOTIFICATIONS: "/vendor/notifications",
-    SUPPORT: "/vendor/support",
-    PAYMENTS: "/vendor/payments",
-    STORE: "/vendor/store",
+    FORMS: {
+      PROFILE: "/profile-form",
+      ADDRESS: "/address",
+      EDUCATION: "/education",
+      PROFESSION: "/profession",
+    },
   },
 
   ORCHARDS: {
     REGISTRATION: {
-      BASIC_INFO: "/orchards/basic-info",
-      CROP_INFO: "/orchards/crop-info",
-      FARM_INFO: "orchards/farm-info",
-      FUTURE_INFO: "/orchards/future-info",
-      INPUT_COST_INFO: "/orchards/inputcost-info",
-      PLANT_PROTECTION_INFO: "/orchards/plant-protection-info",
-      PRODUCTION_INFO: "/orchards/production-info",
-      SOIL_WATER_INFO: "/orchards/soil-water-info",
-      VARIETY_INFO: "/orchards/variety-info",
+      BASIC_INFO: "/basic-info",
+      CROP_INFO: "/crop-info",
+      FARM_INFO: "/farm-info",
+      FUTURE_INFO: "/future-info",
+      INPUT_COST_INFO: "/inputcost-info",
+      PLANT_PROTECTION_INFO: "/plant-protection-info",
+      PRODUCTION_INFO: "/production-info",
+      SOIL_WATER_INFO: "/soil-water-info",
+      SOIL_TEST_REPORTS: "/soil-test-reports",
+      VARIETY_INFO: "/variety-info",
+      ALL_VARIETIES: "/all-varieties",
     },
+    DETAILS: {
+      ORCHARD_DETAILS: "/orchard-details",
+    },
+    MEASUREMENT: {
+      MEASURE_BY_TAP: "/measure-by-tap",
+      MEASURE_BY_WALK: "/measure-by-walk",
+    },
+  },
+
+  SHOPPING: {
+    WISHLIST: "/wishlist",
+    CART: "/cart-list",
+    CHECKOUT: {
+      SELECT_ADDRESS: "/select-address",
+      CREATE_ADDRESS: "/create-address",
+      REVIEW_ORDER: "/review-order",
+      ORDER_SUCCESS: "/order-success",
+    },
+  },
+
+  ORDERS: {
+    LIST: "/orders-list",
+    DETAILS: "/order-details",
+    TRACKING: "/orders/tracking",
+  },
+
+  SHIPPING: {
+    ADDRESS: "/shipping/address",
+    METHOD: "/shipping/method",
+    CONFIRMATION: "/shipping/confirmation",
   },
 } as const;

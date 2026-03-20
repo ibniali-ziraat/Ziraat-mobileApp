@@ -19,7 +19,7 @@ import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
 
-export default function ProfileScreen() {
+export default function ProfileFormScreen() {
   const { setUserProfileId, userId } = useAuth();
 
   const { data } = useProfileQuery(userId);
@@ -66,7 +66,7 @@ export default function ProfileScreen() {
         await save(payload);
         showSuccessToast("Profile Saved");
       }
-      router.replace(ROUTES.USER.PROFILE);
+      router.replace(ROUTES.ACCOUNT.PROFILE);
     } catch (error) {
       console.error("Profile submission error:", error);
       showSuccessToast("Something went wrong. Please try again.");
@@ -80,15 +80,15 @@ export default function ProfileScreen() {
         desc={
           data ? "Update your profile details" : "Add your profile information"
         }
-        onPress={() => router.replace(ROUTES.USER.PROFILE)}
+        onPress={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
       />
 
       <ScreenContent>
         <FormProvider {...form}>
-          <ProfileSection control={control} errors={errors} data={data} />
+          <ProfileSection errors={errors} data={data} />
           <FormActions
             cancelLabel={"Cancel"}
-            onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+            onCancel={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
             submitLabel={data ? "Update " : "Submit"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}

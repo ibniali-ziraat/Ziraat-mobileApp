@@ -26,7 +26,7 @@ import {
 import { useOrderDetails } from "../../hooks/UseOders";
 
 const baseCard = {
-  backgroundColor: "#fff",
+  backgroundColor: colors.light,
   borderRadius: 22,
   padding: 16,
   marginBottom: 14,
@@ -84,35 +84,35 @@ const OrderDetailsScreen = () => {
               </View>
 
               <View className="flex-row items-center mb-3">
-                <Package size={16} color="#9CA3AF" />
-                <Text style={{ marginLeft: 10, color: "#737373" }}>
+                <Package size={16} color={colors.darkHover} />
+                <Text style={{ marginLeft: 10, color: colors.neutral }}>
                   Order ID
                 </Text>
-                <Text style={{ marginLeft: "auto", color: "#111" }}>
+                <Text style={{ marginLeft: "auto", color: colors.dark }}>
                   #{orderData?.id}
                 </Text>
               </View>
 
               <View className="flex-row items-center mb-3">
-                <CalendarDays size={16} color="#9CA3AF" />
-                <Text style={{ marginLeft: 10, color: "#737373" }}>
+                <CalendarDays size={16} color={colors.darkHover} />
+                <Text style={{ marginLeft: 10, color: colors.neutral }}>
                   Order Date
                 </Text>
-                <Text style={{ marginLeft: "auto", color: "#111" }}>
+                <Text style={{ marginLeft: "auto", color: colors.dark }}>
                   {formatDate(orderData?.createdOn)}
                 </Text>
               </View>
 
               <View className="flex-row items-center">
-                <ShoppingCart size={16} color="#9CA3AF" />
-                <Text style={{ marginLeft: 10, color: "#737373" }}>
+                <ShoppingCart size={16} color={colors.darkHover} />
+                <Text style={{ marginLeft: 10, color: colors.neutral }}>
                   Status
                 </Text>
 
                 <View
                   style={{
                     marginLeft: "auto",
-                    backgroundColor: colors.primary + "15",
+                    backgroundColor: colors.cardBorder,
                     paddingHorizontal: 12,
                     paddingVertical: 5,
                     borderRadius: 20,
@@ -144,20 +144,20 @@ const OrderDetailsScreen = () => {
                 {orderData?.shippingAddress?.contactName}
               </Text>
 
-              <Text style={{ color: "#737373", marginTop: 4 }}>
+              <Text style={{ color: colors.neutral, marginTop: 4 }}>
                 {orderData?.shippingAddress?.addressLine1}
               </Text>
 
-              <Text style={{ color: "#737373" }}>
+              <Text style={{ color: colors.neutral }}>
                 {orderData?.shippingAddress?.cityName},{" "}
                 {orderData?.shippingAddress?.stateOrProvinceName}
               </Text>
 
-              <Text style={{ color: "#737373" }}>
+              <Text style={{ color: colors.neutral }}>
                 {orderData?.shippingAddress?.zipCode}
               </Text>
 
-              <Text style={{ color: "#737373", marginTop: 6 }}>
+              <Text style={{ color: colors.neutral, marginTop: 6 }}>
                 {orderData?.shippingAddress?.phone}
               </Text>
             </View>
@@ -171,7 +171,7 @@ const OrderDetailsScreen = () => {
                 </Text>
               </View>
 
-              <Text style={{ fontWeight: "500" }}>
+              <Text style={{ fontWeight: "500", color: colors.dark }}>
                 {orderData?.paymentMethod}
               </Text>
             </View>
@@ -180,7 +180,7 @@ const OrderDetailsScreen = () => {
             <View
               style={{
                 paddingHorizontal: 6,
-                marginTop:7,
+                marginTop: 7,
                 marginBottom: 10,
                 flexDirection: "row",
                 alignItems: "center",
@@ -216,7 +216,7 @@ const OrderDetailsScreen = () => {
           >
             <View
               style={{
-                backgroundColor: "#F8F9FB",
+                backgroundColor: colors.bgColor,
                 padding: 4,
                 borderRadius: 14,
               }}
@@ -240,14 +240,20 @@ const OrderDetailsScreen = () => {
               <View
                 style={{
                   marginTop: 6,
-                  backgroundColor: "#F1F3F6",
+                  backgroundColor: colors.bgColor,
                   alignSelf: "flex-start",
                   paddingHorizontal: 8,
                   paddingVertical: 3,
                   borderRadius: 8,
                 }}
               >
-                <Text style={{ fontSize: 11, color: "#555", fontWeight: "600" }}>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: colors.darkHover,
+                    fontWeight: "600",
+                  }}
+                >
                   Qty {item.quantity}
                 </Text>
               </View>
@@ -264,7 +270,13 @@ const OrderDetailsScreen = () => {
                 ₹{item.productPrice}
               </Text>
 
-              <Text style={{ fontSize: 10, color: "#999", marginTop: 2 }}>
+              <Text
+                style={{
+                  fontSize: 10,
+                  color: colors.darkHover,
+                  marginTop: 2,
+                }}
+              >
                 per item
               </Text>
             </View>
@@ -276,23 +288,16 @@ const OrderDetailsScreen = () => {
               Order Summary
             </Text>
 
-            {[{
-              label: "Subtotal",
-              value: orderData?.subtotal,
-            },
-            {
-              label: "Discount",
-              value: `- ₹${orderData?.discountAmount}`,
-              isDiscount: true,
-            },
-            {
-              label: "Tax",
-              value: orderData?.taxAmount,
-            },
-            {
-              label: "Shipping",
-              value: orderData?.shippingAmount,
-            }].map((row, i) => (
+            {[
+              { label: "Subtotal", value: orderData?.subtotal },
+              {
+                label: "Discount",
+                value: `- ₹${orderData?.discountAmount}`,
+                isDiscount: true,
+              },
+              { label: "Tax", value: orderData?.taxAmount },
+              { label: "Shipping", value: orderData?.shippingAmount },
+            ].map((row, i) => (
               <View
                 key={i}
                 style={{
@@ -301,10 +306,10 @@ const OrderDetailsScreen = () => {
                   marginBottom: 10,
                 }}
               >
-                <Text style={{ color: "#737373" }}>{row.label}</Text>
+                <Text style={{ color: colors.neutral }}>{row.label}</Text>
                 <Text
                   style={{
-                    color: row.isDiscount ? "#EF4444" : "#111",
+                    color: row.isDiscount ? colors.error : colors.dark,
                     fontWeight: "500",
                   }}
                 >
@@ -318,12 +323,17 @@ const OrderDetailsScreen = () => {
             <View
               style={{
                 height: 1,
-                backgroundColor: "#00000010",
+                backgroundColor: colors.cardBorder,
                 marginVertical: 12,
               }}
             />
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
               <Text style={[typography.Poppins_s_bold]}>
                 Total
               </Text>
