@@ -1,16 +1,28 @@
-// screens/form/YourFormScreen.tsx
 
+import DiscussionSection from "../components/DiscussionSection";
 
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import DiscussionPanel from "../components/ChatPanel";
+import {
+    KeyboardAvoidingView,
+    Platform,
+    View,
+} from "react-native";
 
-export default function discussionScreen() {
+export default function DiscussionScreen() {
   return (
-    <ScreenLayout>
-      {/* 🧾 Your Existing Form UI Here */}
+    <View style={{ flex: 1 }}>
 
-      {/* 💬 Discussion Chat */}
-      <DiscussionPanel />
-    </ScreenLayout>
+      {/* <BackHeader
+        title="Discussion"
+        desc="Ask questions or get help from experts while filling the form."
+      /> */}
+
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <DiscussionSection />
+      </KeyboardAvoidingView>
+
+    </View>
   );
 }
