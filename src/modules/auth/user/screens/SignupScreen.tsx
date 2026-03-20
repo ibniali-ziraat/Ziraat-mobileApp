@@ -28,7 +28,7 @@ import { View } from "react-native";
 import AuthWrapper from "../component/AuthWrapper";
 
 export default function SignupScreen() {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const { setUserId, setUserToken } = useAuth();
 
   const [profileData, setProfileData] = useState<any>(null);
@@ -159,9 +159,6 @@ export default function SignupScreen() {
 
   const isLoading =
     isSignupPending || isOtpPending || isUserExistsPending || isSendingOtp;
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
 
   return (
     <AuthWrapper mode="register">
@@ -190,10 +187,6 @@ export default function SignupScreen() {
           </AnimatedStepWrapper>
 
           <View>
-            {/* {step > 0 && (
-          <Button title="Back" onPress={prevStep} disabled={isLoading} />
-        )} */}
-
             <FormActions
               cancelLabel={step > 0 ? "Back" : undefined}
               onCancel={prevStep}

@@ -12,12 +12,12 @@ export const ROUTES = {
     ORDERS: "/orders/orders",
   },
   ACCOUNT: {
-    ADDRESS: "/account/login",
+    ADDRESS: "/login",
     PROFILE: "/profile",
-    FORGOT_PASSWORD: "/account/forgot-password",
-    CHANGE_PASSWORD: "/account/vendor",
-    DELETE_ACCOUNT: "/account/vendor/vendor-profile-screen",
-    ADD_ADDRESS: "/account/add-addresses",
+    FORGOT_PASSWORD: "/forgot-password",
+    CHANGE_PASSWORD: "/vendor",
+    DELETE_ACCOUNT: "/vendor/vendor-profile-screen",
+    ADD_ADDRESS: "/add-addresses",
   },
 
   AUTH: {

@@ -18,9 +18,7 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
   return (
     <ScreenContent>
       <View className="bg-light mb-4">
-        {/* Row */}
         <View className="flex-row items-center">
-          {/* Back Button */}
           <TouchableOpacity
             onPress={() => router.back()}
             className="p-2 mr-3 rounded-full pl-0"
@@ -29,7 +27,6 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
             <ArrowLeft size={26} color={colors.dark} />
           </TouchableOpacity>
 
-          {/* Title + Description */}
           <View className="flex-1">
             <CsText
               style={[typography.Poppins_m_semibold]}

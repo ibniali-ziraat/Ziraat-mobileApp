@@ -74,7 +74,7 @@ export default function LoginScreen() {
 
           <Pressable
             className="items-end mt-2"
-            onPress={() => router.push("/user/forget-password")}
+            onPress={() => router.push(ROUTES.ACCOUNT.FORGOT_PASSWORD)}
           >
             <Text className="text-primary" style={typography.Poppins_s_regular}>
               Forgot password?
