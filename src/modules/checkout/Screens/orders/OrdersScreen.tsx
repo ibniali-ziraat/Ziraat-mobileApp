@@ -2,40 +2,47 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { shadows } from "@/src/constants/shadows";
+
 import { router } from "expo-router";
 import {
-    CalendarDays,
-    ChevronRight,
-    Package,
-    ShoppingBag,
+  CalendarDays,
+  ChevronRight,
+  Package,
+  ShoppingBag,
 } from "lucide-react-native";
+
 import {
-    ActivityIndicator,
-    FlatList,
-    Image,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
+
 import { useUserOrders } from "../../hooks/UseOders";
 
 const ORDER_STATUS = {
-  1: { label: "New", bg: "bg-blue-50", text: "text-blue-600" },
-  10: { label: "On Hold", bg: "bg-yellow-50", text: "text-yellow-600" },
-  20: { label: "Pending Payment", bg: "bg-orange-50", text: "text-orange-600" },
-  30: {
-    label: "Payment Received",
-    bg: "bg-indigo-50",
-    text: "text-indigo-600",
-  },
-  35: { label: "Payment Failed", bg: "bg-red-50", text: "text-red-600" },
-  40: { label: "Invoiced", bg: "bg-purple-50", text: "text-purple-600" },
-  50: { label: "Shipping", bg: "bg-green-50", text: "text-green-600" },
-  60: { label: "Shipped", bg: "bg-amber-50", text: "text-amber-600" },
-  70: { label: "Delivered", bg: "bg-green-50", text: "text-green-600" },
-  80: { label: "Cancelled", bg: "bg-red-50", text: "text-red-600" },
-  90: { label: "Refunded", bg: "bg-purple-50", text: "text-purple-600" },
-  100: { label: "Closed", bg: "bg-neutral-100", text: "text-neutral-600" },
+  1: { label: "New", bg: colors.primary + "12", text: colors.primary },
+  10: { label: "On Hold", bg: colors.warning + "12", text: colors.warning },
+  20: { label: "Pending", bg: colors.secondary + "12", text: colors.secondary },
+  30: { label: "Paid", bg: colors.primary + "15", text: colors.primary },
+  35: { label: "Failed", bg: colors.error + "12", text: colors.error },
+  40: { label: "Invoiced", bg: colors.secondary + "10", text: colors.secondary },
+  50: { label: "Shipping", bg: colors.primary + "10", text: colors.primary },
+  60: { label: "Shipped", bg: colors.primary + "12", text: colors.primary },
+  70: { label: "Delivered", bg: colors.primary + "20", text: colors.primary },
+  80: { label: "Cancelled", bg: colors.error + "12", text: colors.error },
+  90: { label: "Refunded", bg: colors.secondary + "10", text: colors.secondary },
+  100: { label: "Closed", bg: "#E5E5E5", text: colors.neutral },
+};
+
+const baseCard = {
+  backgroundColor: colors.light,
+  borderRadius: 20,
+  padding: 14,
+  marginBottom: 14,
 };
 
 const OrdersScreen = () => {
@@ -48,7 +55,6 @@ const OrdersScreen = () => {
     return d.toLocaleDateString("en-IN", {
       day: "numeric",
       month: "short",
-      year: "numeric",
     });
   };
 
@@ -56,12 +62,12 @@ const OrdersScreen = () => {
     return (
       ORDER_STATUS[status] || {
         label: "Unknown",
-        bg: "bg-neutral-50",
-        text: "text-neutral-500",
+        bg: "#F3F4F6",
+        text: colors.neutral,
       }
-    );
+    );       
   };
-
+  
   const handleOrderPress = (order: any) => {
     router.push({
       pathname: "/products/checkout/orders/orderDetails",
@@ -86,27 +92,45 @@ const OrdersScreen = () => {
         <BackHeader title="My Orders" desc="Track and manage your orders" />
 
         <View className="flex-1 items-center justify-center px-8">
-          <View className="h-24 w-24 rounded-full bg-neutral-50 items-center justify-center mb-6">
-            <Package size={40} color={colors.primary} opacity={0.5} />
+          <View
+            style={{
+              height: 90,
+              width: 90,
+              borderRadius: 45,
+              backgroundColor: colors.primary + "10",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 16,
+            }}
+          >
+            <Package size={36} color={colors.primary} />
           </View>
 
-          <Text
-            style={[typography.Poppins_s_bold]}
-            className="text-xl text-neutral-900"
-          >
+          <Text style={[typography.Poppins_s_bold, { fontSize: 18 }]}>
             No Orders Yet
           </Text>
 
-          <Text className="text-neutral-500 text-center mt-2 leading-5">
-            Looks like you haven't placed any orders. Start shopping to fill
-            this up!
+          <Text
+            style={{
+              color: colors.neutral,
+              textAlign: "center",
+              marginTop: 6,
+            }}
+          >
+            Start shopping to see your orders here
           </Text>
 
           <TouchableOpacity
             onPress={() => router.replace("/")}
-            className="mt-6 bg-primary px-8 py-3 rounded-full"
+            style={{
+              marginTop: 16,
+              backgroundColor: colors.primary,
+              paddingHorizontal: 24,
+              paddingVertical: 10,
+              borderRadius: 30,
+            }}
           >
-            <Text style={[typography.Poppins_s_bold]} className="text-white">
+            <Text style={{ color: "#fff", fontWeight: "600" }}>
               Start Shopping
             </Text>
           </TouchableOpacity>
@@ -121,81 +145,106 @@ const OrdersScreen = () => {
 
     return (
       <TouchableOpacity
-        activeOpacity={0.7}
+        activeOpacity={0.92}
         onPress={() => handleOrderPress(item)}
-        style={{
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.05,
-          shadowRadius: 8,
-          elevation: 2,
-        }}
-        className="bg-white rounded-[24px] p-4 mb-4 flex-row items-center"
+        style={[baseCard, shadows.profile_card]}
       >
-        {/* Product Image */}
-        <View className="bg-neutral-50 rounded-2xl p-1">
+        <View className="flex-row">
+          {/* IMAGE */}
           <Image
             source={{ uri: firstProduct?.thumbnailImage }}
-            className="h-20 w-20 rounded-xl"
+            style={{
+              height: 78,
+              width: 78,
+              borderRadius: 14,
+              backgroundColor: colors.bgColor,
+            }}
             resizeMode="cover"
           />
-        </View>
 
-        {/* Order Info */}
-        <View className="flex-1 ml-4">
-          <View className="flex-row justify-between items-center">
-            <Text
-              style={[typography.Poppins_s_bold]}
-              className="text-neutral-900 text-base"
-            >
-              Order #{item.id}
-            </Text>
-
-            <View className="bg-neutral-50 p-1.5 rounded-full">
-              <ChevronRight size={16} color="#A3A3A3" strokeWidth={3} />
-            </View>
-          </View>
-
-          <Text
-            numberOfLines={1}
-            className="text-neutral-500 font-medium text-xs mt-0.5"
-          >
-            {firstProduct?.productName || "Multiple Items"}
-          </Text>
-
-          {/* Meta Tags */}
-          <View className="flex-row items-center mt-3">
-            <View className="flex-row items-center bg-neutral-50 px-2 py-1 rounded-md mr-3">
-              <CalendarDays size={12} color="#737373" />
-              <Text className="text-neutral-500 text-[10px] font-bold ml-1">
-                {formatDate(item.createdOn)}
-              </Text>
-            </View>
-
-            <View className="flex-row items-center bg-neutral-50 px-2 py-1 rounded-md">
-              <ShoppingBag size={12} color="#737373" />
-              <Text className="text-neutral-500 text-[10px] font-bold ml-1">
-                {item.orderItems?.length}{" "}
-                {item.orderItems?.length === 1 ? "Item" : "Items"}
-              </Text>
-            </View>
-          </View>
-
-          {/* Price + Status */}
-          <View className="flex-row justify-between items-center mt-4">
-            <Text
-              style={[typography.Poppins_s_bold]}
-              className="text-primary text-lg"
-            >
-              ₹{item.subTotal}
-            </Text>
-
-            <View className={`${status.bg} px-3 py-1 rounded-full`}>
+          {/* CONTENT */}
+          <View className="flex-1 ml-3 ">
+            {/* HEADER */}
+            <View className="flex-row justify-between items-center">
               <Text
-                className={`${status.text} text-[10px] font-black uppercase tracking-tight`}
+                style={[typography.Poppins_s_bold, { color: colors.dark }]}
               >
-                {status.label}
+                Order #{item.id}
               </Text>
+
+              <ChevronRight size={16} color={colors.neutral} />
+            </View>
+
+            {/* PRODUCT */}
+            <Text
+              numberOfLines={1}
+              style={{
+                color: colors.neutral,
+                marginTop: 4,
+                fontSize: 13,
+              }}
+            >
+              {firstProduct?.productName || "Multiple Items"}
+            </Text>
+
+            {/* META */}
+            <View className="flex-row items-center mt-3 gap-6">
+              <View className="flex-row items-center mr-12">
+                <CalendarDays size={13} color={colors.secondary} />
+                <Text
+                  style={{
+                    marginLeft: 4,
+                    color: colors.neutral,
+                    fontSize: 12,
+                  }}
+                >
+                  {formatDate(item.createdOn)}
+                </Text>
+              </View>
+
+              <View className="flex-row items-center">
+                <ShoppingBag size={13} color={colors.secondary} />
+                <Text
+                  style={{
+                    marginLeft: 4,
+                    color: colors.neutral,
+                    fontSize: 12,
+                  }}
+                >
+                  {item.orderItems?.length} Items
+                </Text>
+              </View>
+            </View>
+
+            {/* PRICE + STATUS */}
+            <View className="flex-row justify-between items-center mt-4">
+              <Text
+                style={[
+                  typography.Poppins_s_bold,
+                  { color: colors.primary, fontSize: 16 },
+                ]}
+              >
+                ₹{item.subTotal}
+              </Text>
+
+              <View
+                style={{
+                  backgroundColor: status.bg,
+                  paddingHorizontal: 12,
+                  paddingVertical: 4,
+                  borderRadius: 20,
+                }}
+              >
+                <Text
+                  style={{
+                    color: status.text,
+                    fontSize: 10,
+                    fontWeight: "700",
+                  }}
+                >
+                  {status.label}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
