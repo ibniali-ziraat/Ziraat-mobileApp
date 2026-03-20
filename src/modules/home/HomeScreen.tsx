@@ -15,7 +15,7 @@ import { colors } from "@/src/constants/colors";
 import { toast } from "@backpackapp-io/react-native-toast";
 import AllProductsCarousal from "../products/components/AllProductsCarousel";
 import { useProductsData } from "../products/hooks/data/useProductsData";
-import { useWishlist } from "../products/hooks/data/useWishlist";
+import { useWishlist } from "../wishlist/hooks/useWishlist";
 import FarmOverviewChart from "./components/FarmOverviewChart";
 import FarmerTipsCard from "./components/FarmerTipsCard";
 import QuickActions from "./components/QuickActions";

@@ -15,36 +15,30 @@ import {
 export default function AllProductsCarousal({
   items,
   wishlistItems = [],
-  onAddToWishlist,
-  onRemoveFromWishlist,
+  onToggleWishlist, // Use the new single function
   isWishlistBusy,
 }) {
   const screenWidth = Dimensions.get("window").width;
   const cardWidth = screenWidth * 0.42;
 
-  // console.log(items, "items data+++ in all products carousal");
-
-  const getWishlistItem = (productId: string) =>
-    wishlistItems.find((w: any) => String(w.productId) === String(productId));
-
   return (
     <FlatList
       horizontal
       data={items}
-      keyExtractor={(item) => item._id}
+      keyExtractor={(item) => item._id.toString()}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{ paddingHorizontal: 12 }}
       renderItem={({ item }) => {
-        const wishlistItem = getWishlistItem(item._id);
-        const isWishlisted = Boolean(wishlistItem);
+        // Check if item is in wishlist by comparing the Product ID
+        const isWishlisted = wishlistItems.some(
+          (w) => String(w.productId) === String(item._id),
+        );
 
         const price = item.discountPrice ?? item.price;
         const oldPrice =
           item.discountPrice && item.discountPrice < item.price
             ? item.price
             : null;
-
-        // console.log(price, "price");
 
         const discount =
           oldPrice && price
@@ -53,7 +47,6 @@ export default function AllProductsCarousal({
 
         return (
           <View style={{ width: cardWidth }} className="mr-4">
-            {/* IMAGE CARD */}
             <View
               className="rounded-2xl overflow-hidden"
               style={{
@@ -65,7 +58,6 @@ export default function AllProductsCarousal({
                 elevation: 2,
               }}
             >
-              {/* IMAGE */}
               <Pressable
                 onPress={() =>
                   router.push({
@@ -81,17 +73,10 @@ export default function AllProductsCarousal({
                 />
               </Pressable>
 
-              {/* HEART — NO NAVIGATION */}
               <Pressable
                 hitSlop={10}
                 disabled={isWishlistBusy}
-                onPress={() => {
-                  if (isWishlisted) {
-                    onRemoveFromWishlist?.(wishlistItem.id);
-                  } else {
-                    onAddToWishlist?.(item._id);
-                  }
-                }}
+                onPress={() => onToggleWishlist?.(item._id)} // Single toggle call
                 className="absolute top-2 right-2 bg-white/90 p-2 rounded-full"
               >
                 <Heart
@@ -101,7 +86,6 @@ export default function AllProductsCarousal({
                 />
               </Pressable>
 
-              {/* DISCOUNT BADGE */}
               {discount && (
                 <View
                   className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md"
@@ -109,7 +93,7 @@ export default function AllProductsCarousal({
                 >
                   <Text
                     style={{ color: colors.light }}
-                    className="text-xs  font-semibold"
+                    className="text-xs font-semibold"
                   >
                     {discount}% OFF
                   </Text>
@@ -117,8 +101,8 @@ export default function AllProductsCarousal({
               )}
             </View>
 
-            {/* CONTENT */}
             <Pressable
+              className="mt-2"
               onPress={() =>
                 router.push({
                   pathname: "/products/single-product-details",
@@ -129,13 +113,9 @@ export default function AllProductsCarousal({
               <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
                 {item.title || item.name}
               </Text>
-
-              <Text style={typography.Poppins_s_medium}>
-                ₹{item.discountPrice ?? item.price}
-              </Text>
+              <Text style={typography.Poppins_s_medium}>₹{price}</Text>
             </Pressable>
 
-            {/* RATING */}
             <View className="mt-1">
               <RatingStars rating={item.rating || item.ratingAverage} />
             </View>

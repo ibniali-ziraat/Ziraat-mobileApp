@@ -121,23 +121,38 @@ export default function ProductDetails() {
       </ScreenLayout>
     );
   }
-
   const handleAddToCart = async () => {
-    await addToCart({
-      productId: product.id,
-      quantity,
-    });
-    toast.success("Added to cart");
+    if (!product?.id) return;
+
+    try {
+      // Pass ONLY productId and quantity as requested
+      await addToCart({
+        productId: Number(product.id),
+        quantity: Number(quantity),
+      });
+
+      toast.success("Added to cart");
+    } catch (error: any) {
+      console.error("Add to cart error details:", error.response?.data);
+      toast.error("Failed to add to cart");
+    }
   };
-
   const handleRemoveFromCart = async () => {
-    if (!cartItem) return;
+    if (!cartItem?.id) return;
 
-    await removeFromCart({
-      id: cartItem.id,
-    });
+    try {
+      await removeFromCart({
+        id: cartItem.id,
+      });
 
-    toast.success("Removed from cart");
+      toast.success("Removed from cart");
+    } catch (error) {
+      console.error("Failed to remove item from cart:", error);
+
+      const errorMessage =
+        error instanceof Error ? error.message : "Could not remove item";
+      toast.error(`Error: ${errorMessage}`);
+    }
   };
 
   const cartItem = cart.find((i) => i.productId === product.id);

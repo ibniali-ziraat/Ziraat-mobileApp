@@ -4,7 +4,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import { Minus, Plus, ShoppingBag, X } from "lucide-react-native";
 import { useState } from "react";
 import { Image, Pressable, View } from "react-native";
-import { useWishlist } from "../hooks/data/useWishlist";
+import { useWishlist } from "../hooks/useWishlist";
 
 const IMAGE_HEIGHT = 175;
 const CARD_HEIGHT = 320;
