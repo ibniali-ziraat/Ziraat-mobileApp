@@ -9,20 +9,15 @@ import { useState } from "react";
 import { Platform, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import AppHeader from "@/src/components/shared/AppHeader";
+import AppHeader from "@/src/components/app-header";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { userId } = useAuth();
-  const { data } = useProfileQuery(userId);
 
   const [pressKey, setPressKey] = useState(0);
 
-  // ✅ Platform helpers
   const isIOS = Platform.OS === "ios";
   const isAndroid = Platform.OS === "android";
   const hasAndroidNavBar = isAndroid && insets.bottom > 0;
@@ -45,7 +40,7 @@ export default function TabLayout() {
           backgroundColor: colors.bgColor,
           borderTopWidth: 0,
 
-          shadowColor: "#000",
+          shadowColor: colors.dark,
           shadowOpacity: 0.08,
           shadowRadius: 18,
           shadowOffset: { width: 0, height: 10 },
@@ -53,11 +48,10 @@ export default function TabLayout() {
 
           paddingHorizontal: 10,
 
-          // ✅ Slight lift for gesture nav
           paddingTop: isGestureNav ? 14 : 10,
 
           paddingBottom: isIOS
-            ? Math.max(insets.bottom, 6) // ✅ LESS padding on iOS
+            ? Math.max(insets.bottom, 6)
             : hasAndroidNavBar
               ? insets.bottom
               : isGestureNav
@@ -72,7 +66,6 @@ export default function TabLayout() {
         },
       }}
     >
-      {/* Home */}
       <Tabs.Screen
         name="index"
         options={{
@@ -107,7 +100,6 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Orchards */}
       <Tabs.Screen
         name="orchards"
         options={{
@@ -142,7 +134,6 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Products */}
       <Tabs.Screen
         name="products"
         options={{
@@ -177,7 +168,6 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Menu */}
       <Tabs.Screen
         name="menu"
         options={{
