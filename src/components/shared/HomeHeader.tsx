@@ -39,7 +39,7 @@ const HomeHeader = () => {
             style={{ borderColor: colors.neutral }}
             onPress={() =>
               router.push({
-                pathname: "/dashboards",
+                pathname: ROUTES.DASHBOARD,
               })
             }
           >

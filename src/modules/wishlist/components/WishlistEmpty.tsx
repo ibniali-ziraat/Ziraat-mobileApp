@@ -56,7 +56,7 @@ const WishlistEmpty = ({ onStartShopping }: WishlistEmptyProps) => {
         </Pressable>
 
         <Pressable
-          onPress={() => router.push(ROUTES.TABS.Products)}
+          onPress={() => router.push(ROUTES.TABS.PRODUCTS)}
           className="mt-4 py-2 active:opacity-60"
         >
           <Text

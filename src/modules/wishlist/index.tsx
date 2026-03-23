@@ -61,7 +61,7 @@ const Wishlist = () => {
   if (!isLoading && wishlist.length === 0) {
     return (
       <WishlistEmpty
-        onStartShopping={() => router.push(ROUTES.TABS.Products)}
+        onStartShopping={() => router.push(ROUTES.TABS.PRODUCTS)}
       />
     );
   }

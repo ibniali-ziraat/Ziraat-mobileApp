@@ -81,7 +81,7 @@ const CartListScreen = () => {
 
   /* ================= START SHOPPING ================= */
   const handleStartShopping = () => {
-    router.push("/Product");
+    router.push(ROUTES.TABS.PRODUCTS);
   };
 
   const handlePlaceOrder = () => {

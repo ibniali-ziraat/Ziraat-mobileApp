@@ -5,11 +5,19 @@ export const ROUTES = {
     ORCHARDS: "/(tabs)/orchards",
     PRODUCTS: "/(tabs)/products",
   },
+  DASHBOARD: "/dashboard",
   MORE: {
     SUPPORT: "/more/support",
-    NOTIFICATIONS: "/more/notifications",
     SETTINGS: "/settings/settings",
-    ORDERS: "/orders/orders",
+    ORDERS: "/orders-list",
+    PAYMENTS: "/more/payments",
+    ABOUT_US: "/about-us",
+    DISCUSSION: "/more/discussion",
+    PROFILE: "/profile-view",
+  },
+
+  PRODUCTS: {
+    SINGLE_PRODUCT_DETAILS: "/single-product-details",
   },
   ACCOUNT: {
     ADDRESS: "/login",
@@ -54,8 +62,8 @@ export const ROUTES = {
       ORCHARD_DETAILS: "/orchard-details",
     },
     MEASUREMENT: {
-      MEASURE_BY_TAP: "/measure-by-tap",
-      MEASURE_BY_WALK: "/measure-by-walk",
+      MEASURE_BY_TAP: "/tap-measure",
+      MEASURE_BY_WALK: "/walk-measure",
     },
   },
 
@@ -80,5 +88,9 @@ export const ROUTES = {
     ADDRESS: "/shipping/address",
     METHOD: "/shipping/method",
     CONFIRMATION: "/shipping/confirmation",
+  },
+  NOTIFICATIONS: "/notifications",
+  WEATHER: {
+    DETAILS: "/weather-details",
   },
 } as const;

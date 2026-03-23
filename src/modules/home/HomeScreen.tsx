@@ -12,6 +12,7 @@ import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
 import Loader from "@/src/components/shared/Loader";
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { toast } from "@backpackapp-io/react-native-toast";
 import AllProductsCarousal from "../products/components/AllProductsCarousel";
 import { useProductsData } from "../products/hooks/data/useProductsData";
@@ -81,9 +82,7 @@ export default function HomeScreen() {
             className="flex-1  pt-4"
           >
             <TouchableOpacity
-              onPress={() =>
-                router.push("/dashboards/(farmer)/weather-profile")
-              }
+              onPress={() => router.push(ROUTES.WEATHER.DETAILS)}
             >
               <WeatherCard current={currentWeather} />
             </TouchableOpacity>
