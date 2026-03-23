@@ -9,10 +9,7 @@ import { useState } from "react";
 import { Platform, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import CropHeader from "@/src/components/shared/CropHeader";
-import HomeHeader from "@/src/components/shared/HomeHeader";
-import MenuHeader from "@/src/components/shared/MenuHeader";
-import ProductHeader from "@/src/components/shared/ProductHeader";
+import AppHeader from "@/src/components/shared/AppHeader";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
@@ -80,7 +77,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          header: () => <HomeHeader title={data?.fullName} />,
+          header: () => <AppHeader variant="home" />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
@@ -115,7 +112,7 @@ export default function TabLayout() {
         name="orchards"
         options={{
           title: "Orchards",
-          header: () => <CropHeader />,
+          header: () => <AppHeader variant="orchards" />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
@@ -150,7 +147,7 @@ export default function TabLayout() {
         name="products"
         options={{
           title: "Products",
-          header: () => <ProductHeader />,
+          header: () => <AppHeader variant="products" />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
@@ -185,7 +182,7 @@ export default function TabLayout() {
         name="menu"
         options={{
           title: "Menu",
-          header: () => <MenuHeader />,
+          header: () => <AppHeader variant="menu" />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {

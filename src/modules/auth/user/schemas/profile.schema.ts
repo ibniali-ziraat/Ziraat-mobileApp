@@ -39,7 +39,6 @@ export const profileSchema = z
     profilePic: z.any().optional(),
   })
 
-  // Password match logic
   .superRefine(({ password, confirmPassword }, ctx) => {
     if (password !== confirmPassword) {
       ctx.addIssue({

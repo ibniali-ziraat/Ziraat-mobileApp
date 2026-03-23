@@ -35,7 +35,6 @@ const FormTextInput = ({
       case "age":
       case "pincode":
       case "bankaccount":
-      case "pincode":
       case "year":
         return "numeric";
 

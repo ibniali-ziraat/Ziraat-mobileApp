@@ -1,8 +1,10 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { ROUTES } from "@/src/constants/routes";
 import { shadows } from "@/src/constants/shadows";
 import {
   useCheckoutShipping,
@@ -13,45 +15,30 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useRouter } from "expo-router";
 import { PencilIcon, Plus, Trash2Icon } from "lucide-react-native";
 import { useCallback, useMemo, useState } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  ScrollView,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
 const AddressListScreen = () => {
   const router = useRouter();
 
- const {
-  data: userAddress = [],
-  isLoading,
-  refetch,
-} = useCheckoutShipping();
-useFocusEffect(
+  const { data: userAddress = [], isLoading, refetch } = useCheckoutShipping();
+  useFocusEffect(
     useCallback(() => {
       refetch();
-    }, [refetch])
+    }, [refetch]),
   );
 
-  const { mutate: deleteUserAddress, isPending } =
-    useDeleteUserAddress();
+  const { mutate: deleteUserAddress, isPending } = useDeleteUserAddress();
 
-  const {
-    mutate: setAsDefault,
-    isPending: isSettingDefault,
-  } = useDefaultAddress();
+  const { mutate: setAsDefault, isPending: isSettingDefault } =
+    useDefaultAddress();
 
-  const [deleteId, setDeleteId] =
-    useState<number | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
 
- 
   const sortedAddresses = useMemo(() => {
     return [...userAddress].sort(
       (a, b) =>
         Number(b?.isDefaultShippingAddress) -
-        Number(a?.isDefaultShippingAddress)
+        Number(a?.isDefaultShippingAddress),
     );
   }, [userAddress]);
 
@@ -73,7 +60,6 @@ useFocusEffect(
     setAsDefault(userAddressId);
   };
 
-  
   if (isLoading) {
     return (
       <ScreenLayout>
@@ -88,25 +74,14 @@ useFocusEffect(
 
   return (
     <ScreenLayout>
-      <BackHeader
-        title="My Addresses"
-        desc="Saved delivery addresses"
-      />
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          padding: 16,
-          paddingBottom: 120,
-        }}
-      >
-        {/* Heading + Add */}
+      <BackHeader title="My Addresses" desc="Saved delivery addresses" />
+      <ScreenContent>
         <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: 20,
+            marginTop: 16,
           }}
         >
           <Text
@@ -119,9 +94,7 @@ useFocusEffect(
           </Text>
 
           <Pressable
-            onPress={() =>
-              router.push("/user/user-address-form")
-            }
+            onPress={() => router.push(ROUTES.ACCOUNT.ADDRESS_FORM)}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -131,11 +104,7 @@ useFocusEffect(
               backgroundColor: colors.primary,
             }}
           >
-            <Plus
-              size={16}
-              color={colors.light}
-              strokeWidth={2}
-            />
+            <Plus size={16} color={colors.light} strokeWidth={2} />
             <Text
               style={{
                 marginLeft: 4,
@@ -165,8 +134,7 @@ useFocusEffect(
 
         {/* Address Cards */}
         {sortedAddresses.map((item: any) => {
-          const isDefault =
-            item?.isDefaultShippingAddress === true;
+          const isDefault = item?.isDefaultShippingAddress === true;
 
           return (
             <View
@@ -201,8 +169,7 @@ useFocusEffect(
                 {isDefault && (
                   <View
                     style={{
-                      backgroundColor:
-                        colors.primary + "15",
+                      backgroundColor: colors.primary + "15",
                       paddingHorizontal: 10,
                       paddingVertical: 4,
                       borderRadius: 20,
@@ -230,17 +197,13 @@ useFocusEffect(
                 {item.phone}
               </Text>
 
-              <Text style={{ color: colors.neutral }}>
-                {item.addressLine1}
-              </Text>
+              <Text style={{ color: colors.neutral }}>{item.addressLine1}</Text>
 
               <Text style={{ color: colors.neutral }}>
                 {item.districtName}, {item.stateOrProvinceName}
               </Text>
 
-              <Text style={{ color: colors.neutral }}>
-                {item.countryName}
-              </Text>
+              <Text style={{ color: colors.neutral }}>{item.countryName}</Text>
 
               <View
                 style={{
@@ -260,16 +223,11 @@ useFocusEffect(
               >
                 {!isDefault ? (
                   <Pressable
-                    onPress={() =>
-                      handleSetDefault(item.userAddressId)
-                    }
+                    onPress={() => handleSetDefault(item.userAddressId)}
                     disabled={isSettingDefault}
                   >
                     {isSettingDefault ? (
-                      <ActivityIndicator
-                        size="small"
-                        color={colors.primary}
-                      />
+                      <ActivityIndicator size="small" color={colors.primary} />
                     ) : (
                       <Text
                         style={{
@@ -300,20 +258,18 @@ useFocusEffect(
                     gap: 18,
                   }}
                 >
-                  {/* Edit */}
                   <Pressable
                     disabled={isPending}
                     onPress={() =>
                       router.push(
-                        `/user/user-address-form?id=${item.userAddressId}`
+                        `${ROUTES.ACCOUNT.ADDRESS_FORM}?id=${item.userAddressId}`,
                       )
                     }
                     style={{
                       width: 36,
                       height: 36,
                       borderRadius: 18,
-                      backgroundColor:
-                        colors.primary + "15",
+                      backgroundColor: colors.primary + "15",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
@@ -328,15 +284,12 @@ useFocusEffect(
                   {/* Delete */}
                   <Pressable
                     disabled={isPending}
-                    onPress={() =>
-                      handleDelete(item.userAddressId)
-                    }
+                    onPress={() => handleDelete(item.userAddressId)}
                     style={{
                       width: 36,
                       height: 36,
                       borderRadius: 18,
-                      backgroundColor:
-                        colors.error + "15",
+                      backgroundColor: colors.error + "15",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
@@ -353,7 +306,6 @@ useFocusEffect(
           );
         })}
 
-        {/* End Message */}
         {sortedAddresses.length > 0 && (
           <View
             style={{
@@ -369,20 +321,20 @@ useFocusEffect(
                 letterSpacing: 0.5,
               }}
             >
-              You've reached the end
+              You&apos;ve reached the end
             </Text>
           </View>
         )}
-      </ScrollView>
 
-      <ConfirmDeleteModal
-        visible={deleteId !== null}
-        title="Delete Address"
-        description="Are you sure you want to delete this address?"
-        onCancel={() => setDeleteId(null)}
-        onConfirm={confirmDelete}
-        loading={isPending}
-      />
+        <ConfirmDeleteModal
+          visible={deleteId !== null}
+          title="Delete Address"
+          description="Are you sure you want to delete this address?"
+          onCancel={() => setDeleteId(null)}
+          onConfirm={confirmDelete}
+          loading={isPending}
+        />
+      </ScreenContent>
     </ScreenLayout>
   );
 };

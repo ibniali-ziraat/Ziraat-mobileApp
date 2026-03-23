@@ -5,9 +5,10 @@ import AlertProfile from "../app/(dashboards)/(sections)/alert-profile";
 import FinancialProfile from "../app/(dashboards)/(sections)/financial-profile";
 import NutrientProfile from "../app/(dashboards)/(sections)/nutrient-profile";
 import OrchardProfile from "../app/(dashboards)/(sections)/orchard-profile";
-import PestDiseaseProfile from "../app/(dashboards)/(sections)/pestdisease-profile";
+import PestDiseaseProfile from "../app/(dashboards)/(sections)/pest-disease-profile";
 import ResourcesProfile from "../app/(dashboards)/(sections)/resources-profile";
 import WeatherProfile from "../app/(dashboards)/(sections)/weather-profile";
+import { ROUTES } from "../constants/routes";
 
 export const DashboardTabs = {
   orchardProfile: {
@@ -15,7 +16,7 @@ export const DashboardTabs = {
     component: OrchardProfile,
     icon: Lucide.TreeDeciduous,
     label: "Orchard Profile",
-    link: "dashboards/orchard-profile",
+    link: ROUTES.DASHBOARD.ORCHARD_PROFILE,
     role: "farmer",
   },
   weatherProfile: {
@@ -23,7 +24,7 @@ export const DashboardTabs = {
     component: WeatherProfile,
     icon: Lucide.CloudSun,
     label: "Weather & Climate",
-    link: "dashboards/weather-profile",
+    link: ROUTES.DASHBOARD.WEATHER_PROFILE,
     role: "farmer",
   },
   nutrientProfile: {
@@ -31,7 +32,7 @@ export const DashboardTabs = {
     component: NutrientProfile,
     icon: Lucide.Droplet,
     label: "Nutrient Management",
-    link: "dashboards/nutrient-profile",
+    link: ROUTES.DASHBOARD.NUTRIENT_PROFILE,
     role: "farmer",
   },
   pestDiseaseProfile: {
@@ -39,7 +40,7 @@ export const DashboardTabs = {
     component: PestDiseaseProfile,
     icon: Lucide.Bug,
     label: "Pest & Disease",
-    link: "dashboards/pestdisease-profile",
+    link: ROUTES.DASHBOARD.PEST_DISEASE_PROFILE,
     role: "farmer",
   },
   resourcesProfile: {
@@ -47,7 +48,7 @@ export const DashboardTabs = {
     component: ResourcesProfile,
     icon: Lucide.Package,
     label: "Resources Usage",
-    link: "dashboards/resources-profile",
+    link: ROUTES.DASHBOARD.RESOURCES_PROFILE,
     role: "farmer",
   },
   financialProfile: {
@@ -55,7 +56,7 @@ export const DashboardTabs = {
     component: FinancialProfile,
     icon: Lucide.CreditCard,
     label: "Financial",
-    link: "dashboards/financial-profile",
+    link: ROUTES.DASHBOARD.FINANCIAL_PROFILE,
     role: "farmer",
   },
   advisoryProfile: {
@@ -63,7 +64,7 @@ export const DashboardTabs = {
     component: AdvisoryProfile,
     icon: Lucide.MessageSquare,
     label: "Advisory",
-    link: "dashboards/advisory-profile",
+    link: ROUTES.DASHBOARD.ADVISORY_PROFILE,
     role: "farmer",
   },
   alertProfile: {
@@ -71,7 +72,7 @@ export const DashboardTabs = {
     component: AlertProfile,
     icon: Lucide.Bell,
     label: "Alerts",
-    link: "dashboards/alert-profile",
+    link: ROUTES.DASHBOARD.ALERT_PROFILE,
     role: "farmer",
   },
 };

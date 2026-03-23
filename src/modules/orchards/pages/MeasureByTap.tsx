@@ -1,5 +1,6 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { ROUTES } from "@/src/constants/routes";
 import { UNIT_CONVERSIONS } from "@/src/utils/units";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -28,7 +29,7 @@ export default function MeasureByTap() {
     if (!areaHectares) return;
 
     router.push({
-      pathname: "/orchards/basic-info",
+      pathname: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
       params: {
         kanals: allUnits.kanals.toFixed(2),
         marlas: allUnits.marlas.toFixed(2),

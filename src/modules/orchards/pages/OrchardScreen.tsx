@@ -95,7 +95,7 @@ export default function MyOrchardsScreen() {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ paddingBottom: 160 }}
               ListHeaderComponent={
-                <View className="mb-6 mt-4 px-8">
+                <View className="mb-6 mt-4">
                   <SearchBar search={search} setSearch={setSearch} />
                 </View>
               }

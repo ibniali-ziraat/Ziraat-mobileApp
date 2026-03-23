@@ -16,7 +16,6 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 
 import ProductDescription from "./components/ProductDescription";
-import ProductHeader from "./components/ProductHeader";
 import ProductPriceCard from "./components/ProductPriceCard";
 import ProductQuantitySelector from "./components/ProductQuantitySelector";
 import ProductSpecifications from "./components/ProductSpecifications";
@@ -161,16 +160,15 @@ export default function ProductDetails() {
   return (
     <>
       <ScreenLayout scrollable>
+        <BackHeader title="Product Details" />
         <ScreenContent>
-          <BackHeader title="Product Details" />
-
           <FlatList
             scrollEnabled={false}
             data={[{ key: "content" }]}
             renderItem={() => null}
             ListHeaderComponent={
               <>
-                <ProductHeader product={product} />
+                {/* <AppHeader variant="products" /> */}
                 <ProductPriceCard product={product} />
                 {/* <ProductMeta product={product} /> */}
 

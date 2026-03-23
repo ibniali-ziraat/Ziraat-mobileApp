@@ -28,7 +28,7 @@ import { View } from "react-native";
 import AuthWrapper from "../component/AuthWrapper";
 
 export default function SignupScreen() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const { setUserId, setUserToken } = useAuth();
 
   const [profileData, setProfileData] = useState<any>(null);

@@ -5,10 +5,20 @@ export const ROUTES = {
     ORCHARDS: "/(tabs)/orchards",
     PRODUCTS: "/(tabs)/products",
   },
-  DASHBOARD: "/dashboard",
+  DASHBOARD: {
+    MAIN: "/dashboard",
+    PEST_DISEASE_PROFILE: "/pest-disease-profile",
+    ORCHARD_PROFILE: "/orchard-profile",
+    NUTRIENT_PROFILE: "/nutrient-profile",
+    RESOURCES_PROFILE: "/resources-profile",
+    FINANCIAL_PROFILE: "/financial-profile",
+    ADVISORY_PROFILE: "/advisory-profile",
+    ALERT_PROFILE: "/alert-profile",
+    WEATHER_PROFILE: "/weather-profile",
+  },
   MORE: {
     SUPPORT: "/more/support",
-    SETTINGS: "/settings/settings",
+    SETTINGS: "/settings",
     ORDERS: "/orders-list",
     PAYMENTS: "/more/payments",
     ABOUT_US: "/about-us",
@@ -23,9 +33,10 @@ export const ROUTES = {
     ADDRESS: "/login",
     PROFILE: "/profile-view",
     FORGOT_PASSWORD: "/forgot-password",
-    CHANGE_PASSWORD: "/vendor",
+    CHANGE_PASSWORD: "/change-password",
     DELETE_ACCOUNT: "/vendor/vendor-profile-screen",
     ADD_ADDRESS: "/add-addresses",
+    ADDRESS_FORM: "/address-form",
   },
 
   AUTH: {
@@ -93,4 +104,5 @@ export const ROUTES = {
   WEATHER: {
     DETAILS: "/weather-details",
   },
+  SETTINGS: "/settings",
 } as const;
