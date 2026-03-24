@@ -207,7 +207,7 @@ const SelectAddressScreen = () => {
         {/* ADD ADDRESS */}
 
         <TouchableOpacity
-          onPress={() => router.push(ROUTES.SHOPPING.CHECKOUT.CREATE_ADDRESS)}
+          onPress={() => router.push(ROUTES.ACCOUNT.ADDRESS_FORM)}
           style={{
             backgroundColor: colors.secondary,
             height: 52,

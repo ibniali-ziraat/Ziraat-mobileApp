@@ -74,7 +74,11 @@ const AddressListScreen = () => {
 
   return (
     <ScreenLayout>
-      <BackHeader title="My Addresses" desc="Saved delivery addresses" />
+      <BackHeader
+        title="My Addresses"
+        desc="Saved delivery addresses"
+        onPress={() => router.push(ROUTES.TABS.MORE)}
+      />
       <ScreenContent>
         <View
           style={{

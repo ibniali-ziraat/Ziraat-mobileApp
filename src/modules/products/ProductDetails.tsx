@@ -31,6 +31,7 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { X } from "lucide-react-native";
 import { Modal } from "react-native-paper";
 
+import AppHeader from "@/src/components/app-header";
 import Loader from "@/src/components/shared/Loader";
 import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
@@ -168,7 +169,7 @@ export default function ProductDetails() {
             renderItem={() => null}
             ListHeaderComponent={
               <>
-                {/* <AppHeader variant="products" /> */}
+                <AppHeader variant="products" />
                 <ProductPriceCard product={product} />
                 {/* <ProductMeta product={product} /> */}
 

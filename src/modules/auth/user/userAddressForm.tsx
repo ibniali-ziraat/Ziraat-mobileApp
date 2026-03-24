@@ -4,9 +4,10 @@ import FormTextAreaInput from "@/src/components/shared/inputs/FormTextAreaInput"
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { toast } from "@backpackapp-io/react-native-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { FormProvider } from "react-hook-form";
-import { View } from "react-native";
+import { FormProvider, useForm } from "react-hook-form";
+import { ActivityIndicator, View } from "react-native";
 
 import {
   useCountries,
@@ -18,9 +19,9 @@ import {
 } from "@/src/hooks/useraddress/useUserAddress";
 
 import FormActions from "@/src/components/shared/FormActions";
-import Loader from "@/src/components/shared/Loader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
-import { useZodForm } from "@/src/hooks/useZodForm";
+import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { AddressFormData, addressSchema } from "./schemas/userAdress.schema";
 
@@ -30,7 +31,22 @@ const UserAddressForm = () => {
 
   const isEditMode = !!id;
   const userAddressId = Number(id);
-  const methods = useZodForm(addressSchema);
+
+  const methods = useForm<AddressFormData>({
+    resolver: zodResolver(addressSchema),
+    mode: "onChange",
+    defaultValues: {
+      contactName: "",
+      phone: "",
+      addressLine1: "",
+      addressLine2: "",
+      zipCode: "",
+      city: "",
+      countryId: "",
+      stateOrProvinceId: "",
+      districtId: "",
+    },
+  });
 
   const {
     handleSubmit,
@@ -43,6 +59,7 @@ const UserAddressForm = () => {
   const selectedCountry = watch("countryId");
   const selectedState = watch("stateOrProvinceId");
 
+  // ✅ Fetch edit data
   const { data: existingAddress, isLoading: isFetchingAddress } =
     useExistingAddress(isEditMode ? userAddressId : undefined);
 
@@ -85,6 +102,18 @@ const UserAddressForm = () => {
       setValue("districtId", "");
     }
   }, [selectedState]);
+
+  if (isEditMode && isFetchingAddress) {
+    return (
+      <ScreenLayout>
+        <ActivityIndicator
+          size="large"
+          color={colors.primary}
+          style={{ marginTop: 40 }}
+        />
+      </ScreenLayout>
+    );
+  }
 
   const onSubmit = (data: AddressFormData) => {
     const selectedCountryObj = countries?.find(
@@ -154,7 +183,7 @@ const UserAddressForm = () => {
         {
           onSuccess: () => {
             toast.success("Address updated successfully");
-            router.back();
+            router.replace(ROUTES.ACCOUNT.ADD_ADDRESS);
           },
           onError: () => toast.error("Failed to update address"),
         },
@@ -189,96 +218,85 @@ const UserAddressForm = () => {
       value: String(d.id),
     })) || [];
 
-  if (isEditMode && isFetchingAddress) {
-    return (
-      <ScreenLayout>
-        <Loader />
-      </ScreenLayout>
-    );
-  }
-
   return (
     <ScreenLayout>
-      <BackHeader
-        title={isEditMode ? "Edit Address" : "Add New Address"}
-        desc="Enter delivery details"
-      />
       <ScreenContent>
+        <BackHeader
+          title={isEditMode ? "Edit Address" : "Add New Address"}
+          desc="Enter delivery details"
+        />
+
         <FormProvider {...methods}>
-          <View style={{ marginTop: 12 }}>
-            <FormTextInput
-              name="contactName"
-              label="Contact Name"
-              required
-              error={errors.contactName}
-              type="username"
-            />
+          <FormTextInput
+            name="contactName"
+            label="Contact Name"
+            required
+            error={errors.contactName}
+          />
 
-            <FormTextInput
-              name="phone"
-              label="Phone Number"
-              required
-              error={errors.phone}
-              type="phone"
-            />
+          <FormTextInput
+            name="phone"
+            label="Phone Number"
+            required
+            type="phone"
+            error={errors.phone}
+          />
 
-            <SingleSelectInput
-              name="countryId"
-              label="Country"
-              options={countryOptions}
-              modalLabel="Select Country"
-              searchable
-              error={errors.countryId}
-            />
+          <SingleSelectInput
+            name="countryId"
+            label="Country"
+            options={countryOptions}
+            modalLabel="Select Country"
+            searchable
+            error={errors.countryId}
+          />
 
-            <SingleSelectInput
-              name="stateOrProvinceId"
-              label="State / Province"
-              options={stateOptions}
-              disabled={!selectedCountry}
-              error={errors.stateOrProvinceId}
-            />
+          <SingleSelectInput
+            name="stateOrProvinceId"
+            label="State / Province"
+            options={stateOptions}
+            disabled={!selectedCountry}
+            error={errors.stateOrProvinceId}
+          />
 
-            <SingleSelectInput
-              name="districtId"
-              label="District"
-              options={districtOptions}
-              disabled={!selectedState}
-              error={errors.districtId}
-            />
+          <SingleSelectInput
+            name="districtId"
+            label="District"
+            options={districtOptions}
+            disabled={!selectedState}
+            error={errors.districtId}
+          />
 
-            <FormTextAreaInput
-              name="addressLine1"
-              label="Address Line 1"
-              required
-              error={errors.addressLine1}
-            />
+          <FormTextAreaInput
+            name="addressLine1"
+            label="Address Line 1"
+            required
+            error={errors.addressLine1}
+          />
 
-            <FormTextAreaInput
-              name="addressLine2"
-              label="Address Line 2 (Optional)"
-            />
+          <FormTextAreaInput
+            name="addressLine2"
+            label="Address Line 2 (Optional)"
+          />
 
-            <View style={{ flexDirection: "row", gap: 12 }}>
-              <View style={{ flex: 1 }}>
-                <FormTextInput
-                  name="city"
-                  label="City"
-                  required
-                  error={errors.city}
-                  type="username"
-                />
-              </View>
+          <View style={{ flexDirection: "row", gap: 12 }}>
+            <View style={{ flex: 1 }}>
+              <FormTextInput
+                name="city"
+                label="City"
+                required
+                error={errors.city}
+              />
+            </View>
 
-              <View style={{ flex: 1 }}>
-                <FormTextInput
-                  name="zipCode"
-                  label="Zip Code"
-                  required
-                  error={errors.zipCode}
-                  type="pincode"
-                />
-              </View>
+            <View style={{ flex: 1 }}>
+              <FormTextInput
+                name="zipCode"
+                label="Zip Code"
+                required
+                type="pincode"
+                error={errors.zipCode}
+              />
             </View>
           </View>
           <FormActions

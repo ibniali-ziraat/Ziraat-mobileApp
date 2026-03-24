@@ -98,7 +98,11 @@ const OrdersListScreen = () => {
   if (!orders.length) {
     return (
       <ScreenLayout>
-        <BackHeader title="My Orders" desc="Track and manage your orders" />
+        <BackHeader
+          title="My Orders"
+          desc="Track and manage your orders"
+          onPress={() => router.replace(ROUTES.TABS.MORE)}
+        />
 
         <View className="flex-1 items-center justify-center px-8">
           <View

@@ -1,7 +1,7 @@
 export const ROUTES = {
   TABS: {
     HOME: "/(tabs)",
-    PROFILE: "/(tabs)/profile",
+    MORE: "/(tabs)/more",
     ORCHARDS: "/(tabs)/orchards",
     PRODUCTS: "/(tabs)/products",
   },
