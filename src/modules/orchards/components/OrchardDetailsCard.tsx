@@ -2,7 +2,7 @@ import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { PencilLine, Plus, Trash2 } from "lucide-react-native";
-import { TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 interface DetailItem {
   title: string;
@@ -40,33 +40,34 @@ export default function OrchardDetailsCard({
           backgroundColor: colors.light,
         }}
       >
-        {/* HEADER */}
-        <View className="flex-row items-center justify-between  pt-4">
-          <View className="flex-row items-center gap-3">
-            {/* Orchard marker */}
-            <View
-              className="w-1.5 h-7 rounded-full"
-              style={{ backgroundColor: colors.primary }}
-            />
+        <View className="flex-row items-center justify-between pt-4">
+          <View>
+            {/* Marker + Heading on the same row */}
+            <View className="flex-row items-center gap-3">
+              <View
+                className="w-1.5 h-7 rounded-full"
+                style={{ backgroundColor: colors.primary }}
+              />
+              <Text
+                className="text-[15px] font-semibold"
+                style={{ color: colors.dark }}
+              >
+                {heading}
+              </Text>
+            </View>
 
-            <CsText
-              className="text-[15px] font-semibold"
-              style={{ color: colors.dark }}
-            >
-              {heading}
-            </CsText>
-          </View>
-          {subheading && (
-            <View className="px-4 pt-1">
-              <CsText
-                className="text-[11px]"
+            {/* Subheading below */}
+            {subheading && (
+              <Text
+                className="text-[11px] mt-0.5 ml-5"
                 style={{ color: colors.neutral, fontStyle: "italic" }}
               >
                 {subheading}
-              </CsText>
-            </View>
-          )}
+              </Text>
+            )}
+          </View>
 
+          {/* Edit / Delete buttons */}
           {!isEmpty && (
             <View className="flex-row gap-4">
               {onEdit && (

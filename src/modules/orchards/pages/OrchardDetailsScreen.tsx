@@ -18,7 +18,7 @@ import {
   Users,
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Pressable, ScrollView, Text } from "react-native";
+import { Pressable, Text } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import Loader from "@/src/components/shared/Loader";
@@ -28,6 +28,7 @@ import OrchardDetailsCard from "../components/OrchardDetailsCard";
 import SoilTestReportsCard from "../components/SoilTestReportsCard";
 import VarietiesCard from "../components/VarietyDetailsCard";
 
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
@@ -105,8 +106,7 @@ export default function OrchardDetailsScreen() {
   return (
     <ScreenLayout>
       <BackHeader title="Orchard Information" />
-      <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
-        {/* Basic Info */}
+      <ScreenContent>
         <OrchardDetailsCard
           heading="Basic Information"
           items={[
@@ -178,7 +178,7 @@ export default function OrchardDetailsScreen() {
           heading="Soil & Water"
           subheading={
             !hasData(soilWaterData)
-              ? "* Soil test reports can only be added after the Soil & Water section is filled."
+              ? "Soil test reports can only be added after the Soil & Water section is filled."
               : undefined
           }
           items={
@@ -320,41 +320,41 @@ export default function OrchardDetailsScreen() {
             Delete Entire Orchard
           </Text>
         </Pressable>
-      </ScrollView>
 
-      {/* Modals */}
-      <ConfirmDeleteModal
-        visible={!!sectionToDelete}
-        title="Confirm Deletion"
-        description="Are you sure you want to delete this section?"
-        onCancel={() => setSectionToDelete(null)}
-        onConfirm={async () => {
-          await deleteSection(sectionToDelete!);
-          setSectionToDelete(null);
-        }}
-        loading={isDeleting}
-      />
+        {/* Modals */}
+        <ConfirmDeleteModal
+          visible={!!sectionToDelete}
+          title="Confirm Deletion"
+          description="Are you sure you want to delete this section?"
+          onCancel={() => setSectionToDelete(null)}
+          onConfirm={async () => {
+            await deleteSection(sectionToDelete!);
+            setSectionToDelete(null);
+          }}
+          loading={isDeleting}
+        />
 
-      <ConfirmDeleteModal
-        visible={!!varietyToDelete}
-        title="Delete Variety"
-        description="This action will remove this variety from your orchard."
-        onCancel={() => setVarietyToDelete(null)}
-        onConfirm={async () => {
-          await deleteVariety(varietyToDelete!);
-          setVarietyToDelete(null);
-        }}
-        loading={isDeleting}
-      />
+        <ConfirmDeleteModal
+          visible={!!varietyToDelete}
+          title="Delete Variety"
+          description="This action will remove this variety from your orchard."
+          onCancel={() => setVarietyToDelete(null)}
+          onConfirm={async () => {
+            await deleteVariety(varietyToDelete!);
+            setVarietyToDelete(null);
+          }}
+          loading={isDeleting}
+        />
 
-      <ConfirmDeleteModal
-        visible={showDeleteWhole}
-        title="Delete Entire Orchard?"
-        description="This will permanently remove all data associated with this orchard."
-        onCancel={() => setShowDeleteWhole(false)}
-        onConfirm={deleteEntireOrchard}
-        loading={isDeleting}
-      />
+        <ConfirmDeleteModal
+          visible={showDeleteWhole}
+          title="Delete Entire Orchard?"
+          description="This will permanently remove all data associated with this orchard."
+          onCancel={() => setShowDeleteWhole(false)}
+          onConfirm={deleteEntireOrchard}
+          loading={isDeleting}
+        />
+      </ScreenContent>
     </ScreenLayout>
   );
 }
