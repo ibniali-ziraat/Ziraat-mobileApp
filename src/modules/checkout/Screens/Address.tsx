@@ -7,14 +7,10 @@ import { typography } from "@/src/constants/fonts/typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 
+import Loader from "@/src/components/shared/Loader";
+import { ROUTES } from "@/src/constants/routes";
 import { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import {
   useCheckoutShipping,
   useCreateCheckoutShipping,
@@ -89,7 +85,7 @@ const SelectAddressScreen = () => {
           /* NAVIGATE TO REVIEW SCREEN */
 
           router.push({
-            pathname: "/products/checkout/reviewOrderScreen",
+            pathname: ROUTES.SHOPPING.CHECKOUT.REVIEW_ORDER,
             params: {
               address: JSON.stringify(address),
               orderSummary: JSON.stringify(orderSummary),
@@ -120,18 +116,18 @@ const SelectAddressScreen = () => {
   if (isLoading) {
     return (
       <ScreenLayout>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <ActivityIndicator color={colors.primary} />
-        </View>
+        <Loader />
       </ScreenLayout>
     );
   }
 
   return (
     <ScreenLayout scrollable>
-      <BackHeader title="Select Address" desc="Choose delivery address" />
+      <BackHeader
+        title="Select Address"
+        desc="Choose delivery address"
+        onPress={() => router.replace(ROUTES.TABS.PRODUCTS)}
+      />
 
       <View style={{ padding: 16 }}>
         <Text
@@ -215,7 +211,7 @@ const SelectAddressScreen = () => {
         {/* ADD ADDRESS */}
 
         <TouchableOpacity
-          onPress={() => router.push("/products/checkout/createAdress")}
+          onPress={() => router.push(ROUTES.SHOPPING.CHECKOUT.CREATE_ADDRESS)}
           style={{
             backgroundColor: colors.secondary,
             height: 52,

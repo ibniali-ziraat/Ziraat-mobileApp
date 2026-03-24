@@ -30,7 +30,7 @@ export default function FutureFieldSection({ control, errors }: any) {
             { value: true, label: "Yes" },
             { value: false, label: "No" },
           ]}
-          error={errors.isFpoOrCooperativeMember?.message} // Fixed name mismatch
+          error={errors.isFpoOrCooperativeMember?.message}
           modalLabel="Select (if any)"
           optional
         />

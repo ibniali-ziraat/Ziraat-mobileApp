@@ -1,6 +1,7 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import {
   ChevronRight,
@@ -127,7 +128,7 @@ export default function SettingsScreen() {
           <Row
             label="Change Password"
             icon={<Lock size={22} color={colors.neutral} />}
-            onPress={() => router.push("/user/change-password")}
+            onPress={() => router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD)}
           />
         </Section>
 

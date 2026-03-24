@@ -1,6 +1,7 @@
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import { Heart } from "lucide-react-native";
 import {
@@ -25,11 +26,10 @@ export default function AllProductsCarousal({
     <FlatList
       horizontal
       data={items}
-      keyExtractor={(item) => item._id.toString()}
+      // keyExtractor={(item) => item._id.toString()}
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{ paddingHorizontal: 12 }}
       renderItem={({ item }) => {
-        // Check if item is in wishlist by comparing the Product ID
         const isWishlisted = wishlistItems.some(
           (w) => String(w.productId) === String(item._id),
         );
@@ -61,7 +61,7 @@ export default function AllProductsCarousal({
               <Pressable
                 onPress={() =>
                   router.push({
-                    pathname: "/products/single-product-details",
+                    pathname: ROUTES.PRODUCTS.SINGLE_PRODUCT_DETAILS,
                     params: { productId: item._id },
                   })
                 }

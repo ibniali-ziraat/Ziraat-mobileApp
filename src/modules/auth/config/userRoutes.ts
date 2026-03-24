@@ -1,8 +1,8 @@
 export const userRoutes = {
-  profile: "auth/user/profile",
-  address: "auth/user/address",
-  education: "auth/user/education",
-  profession: "auth/user/profession",
+  profile: "/profile-form",
+  address: "/address",
+  education: "/education",
+  profession: "/profession",
 } as const;
 
 export type UserRouteKey = keyof typeof userRoutes;

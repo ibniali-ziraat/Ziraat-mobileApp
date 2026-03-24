@@ -1,5 +1,6 @@
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { shadows } from "@/src/constants/shadows";
 import { router } from "expo-router";
 import { ArrowRight } from "lucide-react-native";
@@ -39,7 +40,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
         <Pressable
           onPress={() =>
             router.push({
-              pathname: "/orchards/orchard-detail",
+              pathname: ROUTES.ORCHARDS.DETAILS.ORCHARD_DETAILS,
               params: { id: orchard.id },
             })
           }

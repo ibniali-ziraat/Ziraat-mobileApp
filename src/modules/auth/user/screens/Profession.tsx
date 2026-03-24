@@ -53,7 +53,7 @@ export default function ProfessionScreen() {
         showSuccessToast("Profession Info Saved");
       }
 
-      router.replace(ROUTES.USER.PROFILE);
+      router.replace(ROUTES.ACCOUNT.PROFILE);
     } catch (error) {
       const backendError =
         error?.response?.data?.message ||
@@ -70,13 +70,13 @@ export default function ProfessionScreen() {
         <BackHeader
           title="Professional Details"
           desc="Please provide details about your current profession. "
-          onPress={() => router.replace(ROUTES.USER.PROFILE)}
+          onPress={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
         />
         <ScreenContent>
           <ProfessionSection control={control} errors={errors} />
           <FormActions
             cancelLabel={"Cancel"}
-            onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+            onCancel={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
             submitLabel={data ? "Update " : "Add "}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}

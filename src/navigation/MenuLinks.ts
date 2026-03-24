@@ -1,18 +1,18 @@
+import { ROUTES } from "../constants/routes";
+
 export const MenuLinks = {
   farmer: [
     {
       title: "Farmer Settings",
       routes: [
-        { label: "Profile", screen: "user-profile" },
-        { label: "Notifications", screen: "notifications" },
-        { label: "Support", screen: "settings/farmer/support" },
-        { label: "Payment Methods", screen: "settings/farmer/payments" },
-        { label: "Saved Addresses", screen: "settings/farmer/addresses" },
-        { label: "About Us", screen: "about-us" },
-        { label: "My Orders", screen: "products/checkout/orders/orders" },
-        { label: "Discussion", screen: "discussion" },
-        // { label: "Change Password", screen: "user/change-password" },
-        // { label: "Delete Account", screen: "user/delete-account"},
+        { label: "Profile", screen: ROUTES.ACCOUNT.PROFILE },
+        { label: "Notifications", screen: ROUTES.NOTIFICATIONS },
+        { label: "Support", screen: ROUTES.MORE.SUPPORT },
+        { label: "Payment Methods", screen: ROUTES.MORE.PAYMENTS },
+        { label: "Saved Addresses", screen: ROUTES.ACCOUNT.ADD_ADDRESS },
+        { label: "About Us", screen: ROUTES.MORE.ABOUT_US },
+        { label: "My Orders", screen: ROUTES.ORDERS.LIST },
+        { label: "Discussion", screen: ROUTES.MORE.DISCUSSION },
       ],
     },
   ],

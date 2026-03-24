@@ -39,10 +39,9 @@ export default function MultiSelectInput({
       name={name}
       render={({ field: { onChange } }) => (
         <View style={{ marginBottom: 16 }}>
-          {/* Label */}
           <View style={{ flexDirection: "row", marginBottom: 8 }}>
             <Text
-              style={{ fontSize: 16, fontWeight: "600", color: colors.dark }}
+              style={{ fontSize: 14, fontWeight: "500", color: colors.dark }}
             >
               {label}
             </Text>
@@ -55,7 +54,6 @@ export default function MultiSelectInput({
             )}
           </View>
 
-          {/* Trigger */}
           <Pressable
             onPress={() => setVisible(true)}
             style={{
@@ -81,14 +79,12 @@ export default function MultiSelectInput({
             />
           </Pressable>
 
-          {/* Error */}
           {error && (
             <Text style={{ color: colors.error, marginTop: 6 }}>
               {error.message || error}
             </Text>
           )}
 
-          {/* Modal */}
           <Modal visible={visible} transparent animationType="fade">
             <Pressable
               onPress={() => setVisible(false)}

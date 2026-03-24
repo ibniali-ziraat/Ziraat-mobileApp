@@ -124,9 +124,9 @@ const OrderSuccessScreen = () => {
 
           <FormActions
             submitLabel="Shop More"
-            onSubmit={() => router.replace(ROUTES.TABS.Products)}
+            onSubmit={() => router.replace(ROUTES.TABS.PRODUCTS)}
             cancelLabel="View Order"
-            onCancel={() => router.push(ROUTES.MORE.ORDERS)}
+            onCancel={() => router.push(ROUTES.ORDERS.LIST)}
           />
         </View>
       </ScreenLayout>

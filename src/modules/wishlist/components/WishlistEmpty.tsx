@@ -4,6 +4,7 @@ import { Image, Pressable, Text, View } from "react-native";
 import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { ROUTES } from "@/src/constants/routes";
 
 interface WishlistEmptyProps {
   onStartShopping: () => void;
@@ -55,7 +56,7 @@ const WishlistEmpty = ({ onStartShopping }: WishlistEmptyProps) => {
         </Pressable>
 
         <Pressable
-          onPress={() => router.push("/products/cartlist")}
+          onPress={() => router.push(ROUTES.SHOPPING.CART)}
           className="mt-4 py-2 active:opacity-60"
         >
           <Text

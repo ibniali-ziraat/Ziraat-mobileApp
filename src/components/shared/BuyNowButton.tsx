@@ -1,8 +1,6 @@
 import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/fonts/typography";
 import { BuyNowButtonProps } from "@/src/types/buy.type";
-import { TouchableOpacity } from "react-native";
-import CsText from "./CsText";
+import { Text, TouchableOpacity } from "react-native";
 
 export default function BuyNowButton({
   onPress,
@@ -17,9 +15,7 @@ export default function BuyNowButton({
         backgroundColor: colors.secondary,
       }}
     >
-      <CsText style={[typography.Poppins_m_semibold, { color: colors.light }]}>
-        {title}
-      </CsText>
+      <Text className="text-white font-bold">{title}</Text>
     </TouchableOpacity>
   );
 }

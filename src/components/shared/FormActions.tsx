@@ -41,7 +41,7 @@ export default function FormActions({
           mode="outlined"
           textColor={colors.dark}
           onPress={onCancel}
-          disabled={isDisabled}
+          // disabled={isDisabled}
           style={{
             flex: 1,
             borderRadius: 12,

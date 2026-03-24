@@ -8,6 +8,7 @@ import Loader from "@/src/components/shared/Loader";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 
+import { ROUTES } from "@/src/constants/routes";
 import { useCart } from "../products/hooks/data/useCart";
 import WishlistItem from "./components/WishListItem";
 import WishlistEmpty from "./components/WishlistEmpty";
@@ -58,7 +59,11 @@ const Wishlist = () => {
   }
 
   if (!isLoading && wishlist.length === 0) {
-    return <WishlistEmpty onStartShopping={() => router.push("/Product")} />;
+    return (
+      <WishlistEmpty
+        onStartShopping={() => router.push(ROUTES.TABS.PRODUCTS)}
+      />
+    );
   }
 
   return (

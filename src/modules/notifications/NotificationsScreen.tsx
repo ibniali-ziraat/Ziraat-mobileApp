@@ -1,9 +1,11 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { useRouter } from "expo-router";
 import { Bell, Droplet, Leaf } from "lucide-react-native";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 
 export default function NotificationScreen() {
   const router = useRouter();
@@ -31,13 +33,9 @@ export default function NotificationScreen() {
   ];
 
   return (
-    <ScrollView className="flex-1" style={{ backgroundColor: colors.light }}>
+    <ScreenLayout>
       <BackHeader title="Notifications" />
-
-      <ScrollView
-        className=""
-        contentContainerStyle={{ paddingBottom: 20 }}
-      >
+      <ScreenContent>
         {notifications.length === 0 ? (
           <View className="flex-1 justify-center items-center mt-20">
             <Bell color={colors.dark} size={48} />
@@ -46,7 +44,7 @@ export default function NotificationScreen() {
               style={{ color: colors.dark }}
             >
               No new notifications
-           </CsText>
+            </CsText>
           </View>
         ) : (
           notifications.map((item) => (
@@ -62,15 +60,15 @@ export default function NotificationScreen() {
                   style={{ color: colors.dark }}
                 >
                   {item.message}
-               </CsText>
+                </CsText>
                 <CsText className="text-sm mt-1" style={{ color: colors.dark }}>
                   {item.time}
-               </CsText>
+                </CsText>
               </View>
             </View>
           ))
         )}
-      </ScrollView>
-    </ScrollView>
+      </ScreenContent>
+    </ScreenLayout>
   );
 }

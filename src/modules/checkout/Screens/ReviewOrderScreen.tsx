@@ -10,6 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 import DropdownSelectInput from "@/src/components/form/inputs/Dropdown";
+import { ROUTES } from "@/src/constants/routes";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Sparkles } from "lucide-react-native";
 import { useCodCheckout, usePaymentProviders } from "../hooks/useCheckout";
@@ -51,7 +52,7 @@ const ReviewOrderScreen = () => {
     codCheckout(checkoutId, {
       onSuccess: (response) => {
         router.push({
-          pathname: "/products/checkout/orderSuccess",
+          pathname: ROUTES.SHOPPING.CHECKOUT.ORDER_SUCCESS,
           params: {
             order: JSON.stringify(response),
           },
