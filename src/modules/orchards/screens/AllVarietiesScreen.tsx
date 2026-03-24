@@ -52,6 +52,7 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { View } from "react-native";
@@ -106,7 +107,7 @@ export default function AllVarieties() {
       <View style={{ flex: 1, backgroundColor: colors.bgColor }}>
         <VarietiesCard
           varietiesData={varieties}
-          onAdd={() => goToSection("varietyAndPlanting")}
+          onAdd={() => router.push(ROUTES.ORCHARDS.REGISTRATION.VARIETY_INFO)}
           onEdit={(id) => goToSection("varietyAndPlanting", id)}
           onDelete={onDeletePress}
           showAll

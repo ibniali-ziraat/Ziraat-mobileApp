@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { ROUTES } from "@/src/constants/routes";
 import { router, useLocalSearchParams } from "expo-router";
 import { Map } from "lucide-react-native";
 import { useEffect } from "react";
@@ -48,7 +49,9 @@ export default function MeasuredOrchardSection() {
       )}
       <View style={{ flexDirection: "row", gap: 10, paddingHorizontal: 20 }}>
         <Pressable
-          onPress={() => router.push("/orchards/tap-measure")}
+          onPress={() =>
+            router.push(ROUTES.ORCHARDS.MEASUREMENT.MEASURE_BY_TAP)
+          }
           style={{
             flex: 1,
             backgroundColor: colors.primary,
@@ -65,7 +68,9 @@ export default function MeasuredOrchardSection() {
         </Pressable>
 
         <Pressable
-          onPress={() => router.push("/orchards/walk-measure")}
+          onPress={() =>
+            router.push(ROUTES.ORCHARDS.MEASUREMENT.MEASURE_BY_WALK)
+          }
           style={{
             flex: 1,
             backgroundColor: "#fff",

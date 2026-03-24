@@ -16,7 +16,6 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 
 import ProductDescription from "./components/ProductDescription";
-import ProductHeader from "./components/ProductHeader";
 import ProductPriceCard from "./components/ProductPriceCard";
 import ProductQuantitySelector from "./components/ProductQuantitySelector";
 import ProductSpecifications from "./components/ProductSpecifications";
@@ -33,6 +32,7 @@ import { X } from "lucide-react-native";
 import { Modal } from "react-native-paper";
 
 import Loader from "@/src/components/shared/Loader";
+import ProductImages from "./components/ProductImages";
 import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
 import { useProductByIdQuery } from "./hooks/queries/products.queries";
@@ -170,7 +170,7 @@ export default function ProductDetails() {
             renderItem={() => null}
             ListHeaderComponent={
               <>
-                <ProductHeader product={product} />
+                <ProductImages product={product} />
                 <ProductPriceCard product={product} />
                 {/* <ProductMeta product={product} /> */}
 

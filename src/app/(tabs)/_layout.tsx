@@ -1,28 +1,23 @@
 import { Tabs } from "expo-router";
-import { Home, MoreHorizontalIcon, ShoppingBag, Trees } from "lucide-react-native";
+import {
+  Home,
+  MoreHorizontalIcon,
+  ShoppingBag,
+  Trees,
+} from "lucide-react-native";
 import { useState } from "react";
 import { Platform, Pressable } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import CropHeader from "@/src/components/shared/CropHeader";
-import HomeHeader from "@/src/components/shared/HomeHeader";
-import MenuHeader from "@/src/components/shared/MenuHeader";
-import ProductHeader from "@/src/components/shared/ProductHeader";
+import AppHeader from "@/src/components/app-header";
 import TabIcon from "@/src/components/shared/TabIcon";
 import { colors } from "@/src/constants/colors";
-import { useAuth } from "@/src/contexts/AuthContext";
-import { useProfileQuery } from "@/src/hooks/userQueryHooks";
-
 
 export default function TabLayout() {
   const insets = useSafeAreaInsets();
-  const { roleMode, userId } = useAuth();
-  const { data } = useProfileQuery(userId);
 
   const [pressKey, setPressKey] = useState(0);
-  const [activeTab, setActiveTab] = useState<string>("index");
 
-  // ✅ Platform helpers
   const isIOS = Platform.OS === "ios";
   const isAndroid = Platform.OS === "android";
   const hasAndroidNavBar = isAndroid && insets.bottom > 0;
@@ -45,7 +40,7 @@ export default function TabLayout() {
           backgroundColor: colors.bgColor,
           borderTopWidth: 0,
 
-          shadowColor: "#000",
+          shadowColor: colors.dark,
           shadowOpacity: 0.08,
           shadowRadius: 18,
           shadowOffset: { width: 0, height: 10 },
@@ -53,11 +48,10 @@ export default function TabLayout() {
 
           paddingHorizontal: 10,
 
-          // ✅ Slight lift for gesture nav
           paddingTop: isGestureNav ? 14 : 10,
 
           paddingBottom: isIOS
-            ? Math.max(insets.bottom, 6) // ✅ LESS padding on iOS
+            ? Math.max(insets.bottom, 6)
             : hasAndroidNavBar
               ? insets.bottom
               : isGestureNav
@@ -72,16 +66,14 @@ export default function TabLayout() {
         },
       }}
     >
-      {/* Home */}
       <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          header: () => <HomeHeader title={data?.fullName} />,
+          header: () => <AppHeader variant="home" />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
-                setActiveTab("index");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
@@ -108,16 +100,14 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Orchards */}
       <Tabs.Screen
         name="orchards"
         options={{
           title: "Orchards",
-          header: () => <CropHeader />,
+          header: () => <AppHeader variant="orchards" />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
-                setActiveTab("orchards");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
@@ -144,16 +134,14 @@ export default function TabLayout() {
         }}
       />
 
-      {/* Products */}
       <Tabs.Screen
-        name="Product"
+        name="products"
         options={{
           title: "Products",
-          header: () => <ProductHeader />,
+          header: () => <AppHeader variant="products" />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
-                setActiveTab("Product");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
@@ -179,19 +167,15 @@ export default function TabLayout() {
           ),
         }}
       />
-    
 
-
-      {/* Menu */}
       <Tabs.Screen
-        name="menu"
+        name="more"
         options={{
-          title: "Menu",
-          header: () => <MenuHeader role={roleMode} />,
+          title: "More",
+          header: () => <AppHeader variant="menu" />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable
               onPress={(e) => {
-                setActiveTab("menu");
                 setPressKey((prev) => prev + 1);
                 onPress?.(e);
               }}
@@ -211,13 +195,13 @@ export default function TabLayout() {
             <TabIcon
               focused={focused}
               pressKey={pressKey}
-              icon={<MoreHorizontalIcon size={22} color={color} strokeWidth={2.2} />}
+              icon={
+                <MoreHorizontalIcon size={22} color={color} strokeWidth={2.2} />
+              }
               label="More"
             />
           ),
         }}
-
-
       />
     </Tabs>
   );

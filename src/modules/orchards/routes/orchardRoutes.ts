@@ -1,16 +1,18 @@
+import { ROUTES } from "@/src/constants/routes";
+
 export const orchardRoutes = {
-  basicInformation: "orchards/basic-info",
-  crop: "orchards/crop-info",
-  farm: "orchards/farm-info",
-  varietyAndPlanting: "orchards/variety-info",
-  soilAndWater: "orchards/soil-water-info",
-  soilTestReports: "orchards/soil-test-reports",
-  nutrition: "orchards/crop-info",
-  plantProtection: "orchards/plant-protection-info",
-  farmInfrastructure: "orchards/farm-info",
-  productionAndMarketing: "orchards/production-info",
-  inputCost: "orchards/inputcost-info",
-  futureReadiness: "orchards/future-info",
+  basicInformation: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
+  crop: ROUTES.ORCHARDS.REGISTRATION.CROP_INFO,
+  farm: ROUTES.ORCHARDS.REGISTRATION.FARM_INFO,
+  varietyAndPlanting: ROUTES.ORCHARDS.REGISTRATION.VARIETY_INFO,
+  soilAndWater: ROUTES.ORCHARDS.REGISTRATION.SOIL_WATER_INFO,
+  soilTestReports: ROUTES.ORCHARDS.REGISTRATION.SOIL_TEST_REPORTS,
+  nutrition: ROUTES.ORCHARDS.REGISTRATION.CROP_INFO,
+  plantProtection: ROUTES.ORCHARDS.REGISTRATION.PLANT_PROTECTION_INFO,
+  farmInfrastructure: ROUTES.ORCHARDS.REGISTRATION.FARM_INFO,
+  productionAndMarketing: ROUTES.ORCHARDS.REGISTRATION.PRODUCTION_INFO,
+  inputCost: ROUTES.ORCHARDS.REGISTRATION.INPUT_COST_INFO,
+  futureReadiness: ROUTES.ORCHARDS.REGISTRATION.FUTURE_INFO,
 } as const;
 
 export type OrchardRouteKey = keyof typeof orchardRoutes;

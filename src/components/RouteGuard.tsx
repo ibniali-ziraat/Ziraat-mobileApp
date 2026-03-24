@@ -2,6 +2,7 @@ import { router } from "expo-router";
 import { ReactNode, useEffect, useRef } from "react";
 import { View } from "react-native";
 import { colors } from "../constants/colors";
+import { ROUTES } from "../constants/routes";
 import { useAuth } from "../contexts/AuthContext";
 import { scheduleAutoLogout } from "../utils/tokenExpiryCheck";
 
@@ -18,7 +19,7 @@ export default function RouteGuard({ children }: RouteGuardProps) {
 
     if (!userToken) {
       logoutUser();
-      router.replace("/auth/user");
+      router.replace(ROUTES.AUTH.LOGIN);
       // router.replace("/");
       return;
     }
@@ -34,8 +35,8 @@ export default function RouteGuard({ children }: RouteGuardProps) {
         logoutUser();
       },
       () => {
-        router.replace("/auth/user");
-      }
+        router.replace(ROUTES.AUTH.LOGIN);
+      },
     );
 
     return () => {

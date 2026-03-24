@@ -33,7 +33,7 @@ export default function ProductStickyBar({
   };
 
   const handleBackPress = () => {
-    router.replace(ROUTES.TABS.Products); // change path if needed
+    router.replace(ROUTES.TABS.PRODUCTS); // change path if needed
   };
 
   return (
@@ -90,7 +90,6 @@ export default function ProductStickyBar({
             onPress={handleCartPress}
             disabled={isCartBusy}
             loading={isCartBusy}
-            // variant={isInCart ? "danger" : "primary"}
           />
         </View>
       </View>
