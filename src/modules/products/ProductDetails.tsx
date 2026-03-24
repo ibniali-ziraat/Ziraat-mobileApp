@@ -31,8 +31,8 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { X } from "lucide-react-native";
 import { Modal } from "react-native-paper";
 
-import AppHeader from "@/src/components/app-header";
 import Loader from "@/src/components/shared/Loader";
+import ProductImages from "./components/ProductImages";
 import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
 import { useProductByIdQuery } from "./hooks/queries/products.queries";
@@ -161,15 +161,16 @@ export default function ProductDetails() {
   return (
     <>
       <ScreenLayout scrollable>
-        <BackHeader title="Product Details" />
         <ScreenContent>
+          <BackHeader title="Product Details" />
+
           <FlatList
             scrollEnabled={false}
             data={[{ key: "content" }]}
             renderItem={() => null}
             ListHeaderComponent={
               <>
-                <AppHeader variant="products" />
+                <ProductImages product={product} />
                 <ProductPriceCard product={product} />
                 {/* <ProductMeta product={product} /> */}
 
