@@ -169,9 +169,9 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="menu"
+        name="more"
         options={{
-          title: "Menu",
+          title: "More",
           header: () => <AppHeader variant="menu" />,
           tabBarButton: ({ onPress, children }) => (
             <Pressable

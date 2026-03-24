@@ -15,7 +15,8 @@ export type InputType =
   | "name"
   | "address"
   | "year"
-  | "username";
+  | "username"
+  | "city";
 interface Option {
   label: string;
   value: string | number;

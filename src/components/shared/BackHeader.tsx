@@ -20,7 +20,7 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
       <View className="bg-light mb-4">
         <View className="flex-row items-center">
           <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={onPress ?? (() => router.back())}
             className="p-2 mr-3 rounded-full pl-0"
             activeOpacity={0.7}
           >

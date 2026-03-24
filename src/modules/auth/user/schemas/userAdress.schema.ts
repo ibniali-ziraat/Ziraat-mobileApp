@@ -1,4 +1,5 @@
 import {
+  addressValidator,
   fullNameValidator,
   phoneValidator,
   pincodeValidator,
@@ -16,7 +17,7 @@ export const addressSchema = z.object({
 
   districtId: z.string().min(1, "Required Field"),
 
-  addressLine1: z.string().min(5, "Required Field"),
+  addressLine1: addressValidator,
 
   addressLine2: z.string().optional(),
 

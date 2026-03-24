@@ -92,6 +92,10 @@ export const fullNameValidator = z
   .string()
   .min(1, "Required Field")
   .min(3, "Name must be at least 3 characters");
+export const addressValidator = z
+  .string()
+  .min(1, "Required Field")
+  .min(5, "Too short to be a valid address");
 export const otpValidator = z
   .string()
   .min(1, "Required Field")

@@ -21,7 +21,6 @@ import {
 import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
-import { ROUTES } from "@/src/constants/routes";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { AddressFormData, addressSchema } from "./schemas/userAdress.schema";
 
@@ -183,7 +182,7 @@ const UserAddressForm = () => {
         {
           onSuccess: () => {
             toast.success("Address updated successfully");
-            router.replace(ROUTES.ACCOUNT.ADD_ADDRESS);
+            router.back();
           },
           onError: () => toast.error("Failed to update address"),
         },
@@ -220,12 +219,11 @@ const UserAddressForm = () => {
 
   return (
     <ScreenLayout>
+      <BackHeader
+        title={isEditMode ? "Edit Address" : "Add New Address"}
+        desc="Enter delivery details"
+      />
       <ScreenContent>
-        <BackHeader
-          title={isEditMode ? "Edit Address" : "Add New Address"}
-          desc="Enter delivery details"
-        />
-
         <FormProvider {...methods}>
           <FormTextInput
             name="contactName"
@@ -285,6 +283,7 @@ const UserAddressForm = () => {
                 name="city"
                 label="City"
                 required
+                type="city"
                 error={errors.city}
               />
             </View>

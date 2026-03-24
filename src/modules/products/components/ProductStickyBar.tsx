@@ -90,7 +90,6 @@ export default function ProductStickyBar({
             onPress={handleCartPress}
             disabled={isCartBusy}
             loading={isCartBusy}
-            // variant={isInCart ? "danger" : "primary"}
           />
         </View>
       </View>

@@ -7,10 +7,10 @@ import {
   FlatList,
   Modal,
   Pressable,
+  Text,
   TextInput,
   View,
 } from "react-native";
-import { HelperText } from "react-native-paper";
 import CsText from "../../shared/CsText";
 import { SingleSelectInputProps } from "../../shared/inputs/types";
 
@@ -154,13 +154,9 @@ export default function SingleSelectInput({
               </CsText>
             </Pressable> */}
             {liveError && (
-              <HelperText
-                type="error"
-                visible
-                style={{ color: colors.error, paddingHorizontal: 0 }}
-              >
+              <Text style={{ color: colors.error, marginTop: 6 }}>
                 Required Field
-              </HelperText>
+              </Text>
             )}
             {/* Modal */}
             {!disabled && (

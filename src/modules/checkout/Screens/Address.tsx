@@ -123,7 +123,11 @@ const SelectAddressScreen = () => {
 
   return (
     <ScreenLayout scrollable>
-      <BackHeader title="Select Address" desc="Choose delivery address" />
+      <BackHeader
+        title="Select Address"
+        desc="Choose delivery address"
+        onPress={() => router.replace(ROUTES.TABS.PRODUCTS)}
+      />
 
       <View style={{ padding: 16 }}>
         <Text
@@ -207,7 +211,7 @@ const SelectAddressScreen = () => {
         {/* ADD ADDRESS */}
 
         <TouchableOpacity
-          onPress={() => router.push(ROUTES.ACCOUNT.ADDRESS_FORM)}
+          onPress={() => router.push(ROUTES.SHOPPING.CHECKOUT.CREATE_ADDRESS)}
           style={{
             backgroundColor: colors.secondary,
             height: 52,

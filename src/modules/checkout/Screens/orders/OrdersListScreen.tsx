@@ -265,7 +265,11 @@ const OrdersListScreen = () => {
 
   return (
     <ScreenLayout>
-      <BackHeader title="My Orders" desc="Track and manage your orders" />
+      <BackHeader
+        title="My Orders"
+        desc="Track and manage your orders"
+        onPress={() => router.replace(ROUTES.TABS.MORE)}
+      />
 
       <FlatList
         scrollEnabled={false}

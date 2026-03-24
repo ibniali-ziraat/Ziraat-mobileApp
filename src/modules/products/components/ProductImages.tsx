@@ -1,42 +1,70 @@
 import { colors } from "@/src/constants/colors";
-import { useRouter } from "expo-router";
-import { Heart, ShoppingCart } from "lucide-react-native";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { typography } from "@/src/constants/fonts/typography";
+import ProductDetailCarousel from "@/src/modules/products/components/ProductDetailCarousel";
+import { Text, View } from "react-native";
 
-const ProductHeader = () => {
-  const router = useRouter();
-
+export default function ProductImages({ product }: any) {
   return (
-    <View className="flex-row items-center justify-between h-16 bg-white px-4">
-      {/* Title */}
-      <View>
-        <Text className="text-lg font-bold text-dark">Products</Text>
+    <>
+      <ProductDetailCarousel
+        photos={product.images?.map((i: any) => i.url) ?? []}
+      />
 
-        <Text className="text-sm text-neutral">
-          Shop fertilizers, Tools & Supplies
+      <View
+        className="p-5 mt-4 rounded-2xl"
+        style={{
+          backgroundColor: colors.light,
+          shadowColor: colors.dark,
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 8,
+          elevation: 3,
+          marginHorizontal: 1,
+        }}
+      >
+        {/* Product Name */}
+        <Text
+          style={[
+            typography.Poppins_s_semibold,
+            { fontSize: 19, lineHeight: 30 },
+          ]}
+        >
+          {product.name}
         </Text>
-      </View>
 
-      <View className="flex-row items-center space-x-3">
-        <TouchableOpacity
-          onPress={() => router.push("/wishlist")}
-          className="p-2 me-2 rounded-full bg-white border"
-          style={{ borderColor: colors.neutral }}
-        >
-          <Heart size={20} color={colors.secondary} />
-        </TouchableOpacity>
+        {/* Accent line
+        <View
+          className="mt-2 mb-3 w-10 h-[3px] rounded-full"
+          style={{ backgroundColor: colors.primary }}
+        /> */}
 
-        <TouchableOpacity
-          onPress={() => router.push("/cartlist")}
-          className="p-2 rounded-full bg-white border"
-          style={{ borderColor: colors.neutral }}
-        >
-          <ShoppingCart size={20} color={colors.primary} />
-        </TouchableOpacity>
+        {/* Brand */}
+        {product.brand && (
+          <View className="flex-row justify-between items-center">
+            <Text
+              style={{ color: colors.dark }}
+              className=" text-xs uppercase tracking-wider"
+            >
+              Brand:
+            </Text>
+
+            <Text style={{ color: colors.primary }}>{product.brand.name}</Text>
+          </View>
+        )}
+
+        {/* Soft Divider */}
+        <View
+          className="my-4"
+          style={{ height: 1, backgroundColor: "#ECECEC" }}
+        />
+
+        {/* Categories */}
+        {product.categories?.length > 0 && (
+          <Text style={{ color: colors.dark }} className=" text-sm leading-5">
+            {product.categories.map((c: any) => c.name).join(" • ")}
+          </Text>
+        )}
       </View>
-    </View>
+    </>
   );
-};
-
-export default React.memo(ProductHeader);
+}

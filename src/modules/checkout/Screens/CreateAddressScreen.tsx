@@ -3,56 +3,129 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import FormTextAreaInput from "@/src/components/shared/inputs/FormTextAreaInput";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-
 import { toast } from "@backpackapp-io/react-native-toast";
-
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
+import { ActivityIndicator, View } from "react-native";
 
-import { View } from "react-native";
+import {
+  useCountries,
+  useCreateAddress,
+  useDistricts,
+  useEditUserAddress,
+  useExistingAddress,
+  useStates,
+} from "@/src/hooks/useraddress/useUserAddress";
 
 import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
-import { useZodForm } from "@/src/hooks/useZodForm";
-import { router } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { addressSchema } from "../../auth/user/schemas/userAdress.schema";
-import { useCountries, useDistricts, useStates } from "../hooks/useAddress";
-import { useCreateShippingAddress } from "../hooks/useCheckout";
+import { AddressFormData } from "../Schema/addressSchema";
 
-const CreateAddressScreen = ({ navigation }) => {
-  const methods = useZodForm(addressSchema);
+const UserAddressForm = () => {
+  const router = useRouter();
+  const { id } = useLocalSearchParams();
+
+  const isEditMode = !!id;
+  const userAddressId = Number(id);
+
+  const methods = useForm<AddressFormData>({
+    resolver: zodResolver(addressSchema),
+    mode: "onChange",
+    defaultValues: {
+      contactName: "",
+      phone: "",
+      addressLine1: "",
+      addressLine2: "",
+      zipCode: "",
+      city: "",
+      countryId: "",
+      stateOrProvinceId: "",
+      districtId: "",
+    },
+  });
 
   const {
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = methods;
 
   const selectedCountry = watch("countryId");
   const selectedState = watch("stateOrProvinceId");
 
+  // ✅ Fetch edit data
+  const { data: existingAddress, isLoading: isFetchingAddress } =
+    useExistingAddress(isEditMode ? userAddressId : undefined);
+
   const { data: countries } = useCountries();
   const { data: states } = useStates(selectedCountry);
   const { data: districts } = useDistricts(selectedState);
 
-  const { mutateAsync: createAddress, isPending } = useCreateShippingAddress();
+  const { mutate: handleCreateAddress, isPending: isCreating } =
+    useCreateAddress();
+
+  const { mutate: handleEditAddress, isPending: isEditing } =
+    useEditUserAddress();
+
+  const isPending = isCreating || isEditing;
 
   useEffect(() => {
-    methods.setValue("districtId", "");
+    if (isEditMode && existingAddress) {
+      reset({
+        contactName: existingAddress.contactName || "",
+        phone: existingAddress.phone || "",
+        addressLine1: existingAddress.addressLine1 || "",
+        addressLine2: existingAddress.addressLine2 || "",
+        zipCode: existingAddress.zipCode || "",
+        city: existingAddress.city || "",
+        countryId: existingAddress.countryId?.toString() || "",
+        stateOrProvinceId: existingAddress.stateOrProvinceId?.toString() || "",
+        districtId: "",
+      });
+    }
+  }, [existingAddress]);
+
+  useEffect(() => {
+    if (isEditMode && existingAddress && districts?.length) {
+      setValue("districtId", existingAddress.districtId?.toString() || "");
+    }
+  }, [districts]);
+
+  useEffect(() => {
+    if (!isEditMode) {
+      setValue("districtId", "");
+    }
   }, [selectedState]);
 
-  const onSubmit = async (data: AddressFormData) => {
-    const selectedCountry = countries?.find(
+  if (isEditMode && isFetchingAddress) {
+    return (
+      <ScreenLayout>
+        <ActivityIndicator
+          size="large"
+          color={colors.primary}
+          style={{ marginTop: 40 }}
+        />
+      </ScreenLayout>
+    );
+  }
+
+  const onSubmit = (data: AddressFormData) => {
+    const selectedCountryObj = countries?.find(
       (c) => String(c.id) === data.countryId,
     );
 
-    const selectedState = states?.find(
+    const selectedStateObj = states?.find(
       (s) => String(s.id) === data.stateOrProvinceId,
     );
 
-    const selectedDistrict = districts?.find(
+    const selectedDistrictObj = districts?.find(
       (d) => String(d.id) === data.districtId,
     );
 
@@ -67,66 +140,66 @@ const CreateAddressScreen = ({ navigation }) => {
       stateOrProvinceId: Number(data.stateOrProvinceId),
       districtId: Number(data.districtId),
       countryId: data.countryId,
-
-      stateOrProvinces: selectedState
+      countries: selectedCountryObj
         ? [
             {
               disabled: false,
               selected: true,
-              text: selectedState.name,
-              value: String(selectedState.id),
+              text: selectedCountryObj.name,
+              value: String(selectedCountryObj.id),
             },
           ]
         : [],
-
-      districts: selectedDistrict
+      stateOrProvinces: selectedStateObj
         ? [
             {
               disabled: false,
               selected: true,
-              text: selectedDistrict.name,
-              value: String(selectedDistrict.id),
+              text: selectedStateObj.name,
+              value: String(selectedStateObj.id),
             },
           ]
         : [],
-
-      countries: selectedCountry
+      districts: selectedDistrictObj
         ? [
             {
               disabled: false,
               selected: true,
-              text: selectedCountry.name,
-              value: String(selectedCountry.id),
+              text: selectedDistrictObj.name,
+              value: String(selectedDistrictObj.id),
             },
           ]
         : [],
-
       displayDistrict: true,
       displayZipCode: true,
       displayCity: true,
     };
 
-    try {
-      const res = await createAddress(payload);
-
-      if (res?.success) {
-        toast.success("Address created successfully");
-
-        reset();
-
-        router.replace(ROUTES.SHOPPING.CHECKOUT.SELECT_ADDRESS);
-      } else {
-        toast.error("Failed to create address");
-      }
-    } catch (error) {
-      console.log("Create Address Error:", error);
-      toast.error("Failed to create address");
+    if (isEditMode) {
+      handleEditAddress(
+        {
+          userAddressId,
+          payload,
+        },
+        {
+          onSuccess: () => {
+            toast.success("Address updated successfully");
+            router.back();
+          },
+          onError: () => toast.error("Failed to update address"),
+        },
+      );
+    } else {
+      handleCreateAddress(payload, {
+        onSuccess: () => {
+          toast.success("Address saved successfully");
+          reset();
+          router.replace(ROUTES.SHOPPING.CHECKOUT.SELECT_ADDRESS);
+        },
+        onError: () => toast.error("Failed to save address"),
+      });
     }
   };
-
-  /**
-   * Options
-   */
 
   const countryOptions =
     countries?.map((c) => ({
@@ -148,14 +221,16 @@ const CreateAddressScreen = ({ navigation }) => {
 
   return (
     <ScreenLayout>
-      <BackHeader title="Add New Address" desc="Enter delivery details" />
-
+      <BackHeader
+        title={isEditMode ? "Edit Address" : "Add New Address"}
+        desc="Enter delivery details"
+        onPress={() => router.replace(ROUTES.SHOPPING.CART)}
+      />
       <ScreenContent>
         <FormProvider {...methods}>
           <FormTextInput
             name="contactName"
             label="Contact Name"
-            placeholder="John Doe"
             required
             error={errors.contactName}
           />
@@ -163,18 +238,14 @@ const CreateAddressScreen = ({ navigation }) => {
           <FormTextInput
             name="phone"
             label="Phone Number"
-            type="phone"
-            placeholder="0000000000"
             required
+            type="phone"
             error={errors.phone}
           />
-
-          <View className="h-[1px] bg-gray-100" />
 
           <SingleSelectInput
             name="countryId"
             label="Country"
-            control={methods.control}
             options={countryOptions}
             modalLabel="Select Country"
             searchable
@@ -185,8 +256,6 @@ const CreateAddressScreen = ({ navigation }) => {
             name="stateOrProvinceId"
             label="State / Province"
             options={stateOptions}
-            modalLabel="Select State"
-            searchable
             disabled={!selectedCountry}
             error={errors.stateOrProvinceId}
           />
@@ -195,8 +264,6 @@ const CreateAddressScreen = ({ navigation }) => {
             name="districtId"
             label="District"
             options={districtOptions}
-            modalLabel="Select District"
-            searchable
             disabled={!selectedState}
             error={errors.districtId}
           />
@@ -211,44 +278,43 @@ const CreateAddressScreen = ({ navigation }) => {
           <FormTextAreaInput
             name="addressLine2"
             label="Address Line 2 (Optional)"
-            optional
-            error={errors.addressLine2}
           />
 
-          <View className="flex-row gap-3">
-            <View className="flex-1">
+          <View style={{ flexDirection: "row", gap: 12 }}>
+            <View style={{ flex: 1 }}>
               <FormTextInput
                 name="city"
                 label="City"
                 required
+                type="city"
                 error={errors.city}
               />
             </View>
 
-            <View className="flex-1">
+            <View style={{ flex: 1 }}>
               <FormTextInput
                 name="zipCode"
                 label="Zip Code"
-                type="pincode"
                 required
+                type="pincode"
                 error={errors.zipCode}
               />
             </View>
           </View>
           <FormActions
-            onCancel={() => router.back()}
             cancelLabel="Cancel"
-            submitLabel="Add Address"
+            onCancel={() =>
+              router.replace(ROUTES.SHOPPING.CHECKOUT.SELECT_ADDRESS)
+            }
+            submitLabel={isEditMode ? "Update Address" : "Save Address"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isPending}
             loading={isPending}
           />
-
-          <View className="h-10" />
         </FormProvider>
       </ScreenContent>
     </ScreenLayout>
   );
 };
 
-export default CreateAddressScreen;
+export default UserAddressForm;

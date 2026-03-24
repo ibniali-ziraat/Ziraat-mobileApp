@@ -1,17 +1,21 @@
 import { router, useLocalSearchParams } from "expo-router";
 import {
+  Activity,
   AlertCircle,
-  Building2,
-  Droplet,
+  Building2, // Soil Health Status
+  CalendarDays, // Last Soil Test Date
+  Droplets, // Irrigation Method
+  Gauge,
   Hash,
+  Layers,
   Map,
   MapPin,
   Ruler,
-  Smartphone,
+  Smartphone, // Water Source
+  Sprout,
   ToolCase,
   User2,
   Users,
-  Waves,
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, Text } from "react-native";
@@ -163,7 +167,6 @@ export default function OrchardDetailsScreen() {
           emptyActionLabel="Add Location"
         />
 
-        {/* Varieties Section */}
         <VarietiesCard
           varietiesData={varietiesData || []}
           onAdd={() => router.push(ROUTES.ORCHARDS.REGISTRATION.VARIETY_INFO)}
@@ -171,26 +174,46 @@ export default function OrchardDetailsScreen() {
           onDelete={(id) => setVarietyToDelete(id)}
         />
 
-        {/* Soil & Water */}
         <OrchardDetailsCard
           heading="Soil & Water"
+          subheading={
+            !hasData(soilWaterData)
+              ? "* Soil test reports can only be added after the Soil & Water section is filled."
+              : undefined
+          }
           items={
             hasData(soilWaterData)
               ? [
                   {
                     title: "Soil Type",
                     value: soilWaterData.soilType,
-                    icon: <Droplet size={20} color={colors.primary} />,
+                    icon: <Layers size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Soil Health Status",
+                    value: soilWaterData.soilHealthStatus?.join(", ") || "N/A",
+                    icon: <Activity size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Last Soil Test Date",
+                    value:
+                      soilWaterData.lastSoilTestDate.split("T")[0] || "N/A",
+                    icon: <CalendarDays size={20} color={colors.primary} />,
                   },
                   {
                     title: "Water Source",
-                    value: soilWaterData.waterSource,
-                    icon: <Waves size={20} color={colors.primary} />,
+                    value: soilWaterData.waterSource || "N/A",
+                    icon: <Droplets size={20} color={colors.primary} />,
                   },
                   {
                     title: "Irrigation Method",
-                    value: soilWaterData.irrigationMethod,
-                    icon: <Waves size={20} color={colors.primary} />,
+                    value: soilWaterData.irrigationMethod || "N/A",
+                    icon: <Sprout size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Water Availability",
+                    value: soilWaterData.waterAvailability || "N/A",
+                    icon: <Gauge size={20} color={colors.primary} />,
                   },
                 ]
               : []
@@ -210,7 +233,6 @@ export default function OrchardDetailsScreen() {
           }
         />
 
-        {/* Soil Test Reports */}
         {soilWaterData && (
           <SoilTestReportsCard
             reportUrls={soilWaterData?.soilTestReportUrls}

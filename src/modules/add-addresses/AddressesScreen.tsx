@@ -1,4 +1,5 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import Loader from "@/src/components/shared/Loader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
@@ -63,11 +64,7 @@ const AddressListScreen = () => {
   if (isLoading) {
     return (
       <ScreenLayout>
-        <ActivityIndicator
-          size="large"
-          color={colors.primary}
-          style={{ marginTop: 40 }}
-        />
+        <Loader />
       </ScreenLayout>
     );
   }
@@ -77,7 +74,7 @@ const AddressListScreen = () => {
       <BackHeader
         title="My Addresses"
         desc="Saved delivery addresses"
-        onPress={() => router.push(ROUTES.TABS.MORE)}
+        onPress={() => router.replace(ROUTES.TABS.MORE)}
       />
       <ScreenContent>
         <View
