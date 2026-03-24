@@ -61,7 +61,7 @@ export default function SignupScreen() {
       try {
         const normalizedData = {
           ...data,
-          email: data.email?.trim() || DUMMY_EMAIL,
+          email: data.email?.trim() || `${data.phone + DUMMY_EMAIL}`,
         };
 
         setProfileData(normalizedData);
@@ -77,6 +77,10 @@ export default function SignupScreen() {
         }
 
         const otpRes = await sendOtpMutate(normalizedData.phone);
+
+        if (process.env.EXPO_PUBLIC_USE_MOCK_OTP === "true") {
+          showSuccessToast(`Mock OTP: ${process.env.EXPO_PUBLIC_MOCK_OTP}`);
+        }
         if (!otpRes?.success) {
           showErrorToast(otpRes?.message || "Failed to send OTP");
           return;
