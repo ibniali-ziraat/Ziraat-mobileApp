@@ -33,7 +33,7 @@ export default function SignupScreen() {
 
   const [profileData, setProfileData] = useState<any>(null);
 
-  const schemas = [profileSchema, otpSchema];
+  const schemas = [profileSchema(false), otpSchema];
 
   const methods = useZodForm(schemas[step]);
   const {
