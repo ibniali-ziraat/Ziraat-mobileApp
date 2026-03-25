@@ -104,7 +104,6 @@ export const sendUserOtp = async (phoneNumber: string) => {
 };
 
 export const verifyUserOtp = async (data: any) => {
-  // ✅ DEV MODE — MOCK VERIFY
   if (USE_MOCK_OTP) {
     if (data.otp === MOCK_OTP) {
       return {

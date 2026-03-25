@@ -125,16 +125,15 @@ export default function ProductDetails() {
     if (!product?.id) return;
 
     try {
-      // Pass ONLY productId and quantity as requested
       await addToCart({
         productId: Number(product.id),
         quantity: Number(quantity),
       });
 
-      toast.success("Added to cart");
+      // toast.success("Added to cart");
     } catch (error: any) {
-      console.error("Add to cart error details:", error.response?.data);
-      toast.error("Failed to add to cart");
+      // console.error("Add to cart error details:", error.response?.data);
+      // toast.error("Failed to add to cart");
     }
   };
   const handleRemoveFromCart = async () => {

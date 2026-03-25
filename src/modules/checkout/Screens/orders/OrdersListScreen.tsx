@@ -12,15 +12,9 @@ import {
   ShoppingBag,
 } from "lucide-react-native";
 
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
+import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
 import { useUserOrders } from "../../hooks/UseOders";
 
@@ -87,10 +81,7 @@ const OrdersListScreen = () => {
   if (isLoading) {
     return (
       <ScreenLayout>
-        <BackHeader title="My Orders" desc="Track and manage your orders" />
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
+        <Loader />
       </ScreenLayout>
     );
   }

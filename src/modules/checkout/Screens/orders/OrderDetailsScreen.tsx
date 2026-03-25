@@ -7,13 +7,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { shadows } from "@/src/constants/shadows";
 
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, Image, Text, View } from "react-native";
 
 import {
   CalendarDays,
@@ -23,6 +17,7 @@ import {
   ShoppingCart,
 } from "lucide-react-native";
 
+import Loader from "@/src/components/shared/Loader";
 import { useOrderDetails } from "../../hooks/UseOders";
 
 const baseCard = {
@@ -51,9 +46,7 @@ const OrderDetailsScreen = () => {
   if (isLoading) {
     return (
       <ScreenLayout>
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color={colors.primary} />
-        </View>
+        <Loader />
       </ScreenLayout>
     );
   }
@@ -73,7 +66,6 @@ const OrderDetailsScreen = () => {
         }}
         ListHeaderComponent={() => (
           <View>
-
             {/* ORDER INFO */}
             <View style={[baseCard, shadows.profile_card]}>
               <View className="flex-row items-center mb-4">
@@ -199,7 +191,6 @@ const OrderDetailsScreen = () => {
                 Ordered Items
               </Text>
             </View>
-
           </View>
         )}
         renderItem={({ item }) => (
@@ -313,9 +304,7 @@ const OrderDetailsScreen = () => {
                     fontWeight: "500",
                   }}
                 >
-                  {typeof row.value === "string"
-                    ? row.value
-                    : `₹${row.value}`}
+                  {typeof row.value === "string" ? row.value : `₹${row.value}`}
                 </Text>
               </View>
             ))}
@@ -334,9 +323,7 @@ const OrderDetailsScreen = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Text style={[typography.Poppins_s_bold]}>
-                Total
-              </Text>
+              <Text style={[typography.Poppins_s_bold]}>Total</Text>
 
               <Text
                 style={[

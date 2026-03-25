@@ -2,6 +2,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import {
   Activity,
   AlertCircle,
+  Box,
   Building2, // Soil Health Status
   CalendarDays, // Last Soil Test Date
   Droplets, // Irrigation Method
@@ -10,10 +11,12 @@ import {
   Layers,
   Map,
   MapPin,
+  Paperclip,
   Ruler,
   Smartphone, // Water Source
   Sprout,
   ToolCase,
+  ToolCaseIcon,
   User2,
   Users,
 } from "lucide-react-native";
@@ -70,6 +73,8 @@ export default function OrchardDetailsScreen() {
     orchardProfileId!,
   );
   const { data: extraData } = useOrchardExtraQuery(orchardProfileId!);
+  console.log(extraData, "extra data...");
+
   const { data: inputCostData } = useInputCostQuery(orchardProfileId!);
   const { data: varietiesData } = useOrchardVarietiesQuery(orchardProfileId!);
   const { data: soilWaterData } = useSoilWaterQuery(orchardProfileId!);
@@ -186,33 +191,33 @@ export default function OrchardDetailsScreen() {
               ? [
                   {
                     title: "Soil Type",
-                    value: soilWaterData.soilType,
+                    value: soilWaterData?.soilType,
                     icon: <Layers size={20} color={colors.primary} />,
                   },
                   {
                     title: "Soil Health Status",
-                    value: soilWaterData.soilHealthStatus?.join(", ") || "N/A",
+                    value: soilWaterData?.soilHealthStatus?.join(", ") || "N/A",
                     icon: <Activity size={20} color={colors.primary} />,
                   },
                   {
                     title: "Last Soil Test Date",
                     value:
-                      soilWaterData.lastSoilTestDate.split("T")[0] || "N/A",
+                      soilWaterData?.lastSoilTestDate?.split("T")[0] || "N/A",
                     icon: <CalendarDays size={20} color={colors.primary} />,
                   },
                   {
                     title: "Water Source",
-                    value: soilWaterData.waterSource || "N/A",
+                    value: soilWaterData?.waterSource || "N/A",
                     icon: <Droplets size={20} color={colors.primary} />,
                   },
                   {
                     title: "Irrigation Method",
-                    value: soilWaterData.irrigationMethod || "N/A",
+                    value: soilWaterData?.irrigationMethod || "N/A",
                     icon: <Sprout size={20} color={colors.primary} />,
                   },
                   {
                     title: "Water Availability",
-                    value: soilWaterData.waterAvailability || "N/A",
+                    value: soilWaterData?.waterAvailability || "N/A",
                     icon: <Gauge size={20} color={colors.primary} />,
                   },
                 ]
@@ -253,13 +258,33 @@ export default function OrchardDetailsScreen() {
               ? [
                   {
                     title: "Equipment Owned",
-                    value: infrastructureData.equipmentOwned?.join(", "),
+                    value: infrastructureData?.equipmentOwned?.join(", "),
                     icon: <ToolCase size={20} color={colors.primary} />,
                   },
                   {
                     title: "Permanent Labor",
-                    value: infrastructureData.permanentLabor,
+                    value: infrastructureData?.permanentLabor,
                     icon: <Users size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Seasonal Labor",
+                    value: infrastructureData?.seasonalLabor,
+                    icon: <Users size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Contract-based Labor",
+                    value: infrastructureData?.contractBasedLabor,
+                    icon: <Users size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Other Tools",
+                    value: infrastructureData?.otherTools?.join(", "),
+                    icon: <ToolCaseIcon size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Storage Facilities",
+                    value: infrastructureData?.storageFacilities?.join(", "),
+                    icon: <Box size={20} color={colors.primary} />,
                   },
                 ]
               : []
@@ -285,13 +310,30 @@ export default function OrchardDetailsScreen() {
               ? [
                   {
                     title: "Digital Tools",
-                    value: extraData.digitalToolsUsed?.join(", ") || "N/A",
+                    value: extraData?.digitalToolsUsed?.join(", ") || "N/A",
                     icon: <Smartphone size={20} color={colors.primary} />,
                   },
+
                   {
-                    title: "FPO Member",
-                    value: extraData.isFpoOrCooperativeMember ? "Yes" : "No",
+                    title: "Certifications",
+                    value: extraData?.certifications?.join(", ") || "N/A",
+                    icon: <Paperclip size={20} color={colors.primary} />,
+                  },
+
+                  {
+                    title: "FPO / Cooperative Membership",
+                    value:
+                      extraData?.isFpoOrCooperativeMember === true
+                        ? "Yes"
+                        : extraData?.isFpoOrCooperativeMember === false
+                          ? "No"
+                          : "N/A",
                     icon: <Users size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Digital Tools",
+                    value: extraData?.digitalToolsUsed?.join(", ") || "N/A",
+                    icon: <ToolCaseIcon size={20} color={colors.primary} />,
                   },
                 ]
               : []

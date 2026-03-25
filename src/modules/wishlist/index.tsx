@@ -49,8 +49,7 @@ const Wishlist = () => {
 
       toast.success("Item moved to cart");
     } catch (error) {
-      // If it added but errored, check if the error is actually coming from the REMOVE part
-      console.error("Error in Move-to-Cart sequence:", error);
+      // console.error("Error in Move-to-Cart sequence:", error);
     }
   };
 

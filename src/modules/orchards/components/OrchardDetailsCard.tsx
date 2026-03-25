@@ -103,7 +103,7 @@ export default function OrchardDetailsCard({
           ) : (
             <View className="gap-5">
               {items.map((item, index) => (
-                <View key={item.title}>
+                <View key={index}>
                   <View className="flex-row items-start gap-4">
                     {/* Field icon */}
                     <View
