@@ -119,7 +119,7 @@ export default function BasicInfoScreen() {
       <BackHeader
         title={isEditMode ? "Edit Orchard" : "Add Orchard"}
         desc="Enter orchard details"
-        onPress={() => router.back()}
+        onPress={() => router.replace(ROUTES.TABS.ORCHARDS)}
       />
 
       <ScreenContent>

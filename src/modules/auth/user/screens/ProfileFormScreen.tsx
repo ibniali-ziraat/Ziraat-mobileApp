@@ -29,13 +29,22 @@ export default function ProfileFormScreen() {
   const { mutateAsync: update, isPending: isUpdating } =
     useProfileUpdateMutation();
 
-  const form = useZodForm(profileSchema);
+  const isUpdate = !!data;
+
+  const form = useZodForm(profileSchema(isUpdate)); // re-derives when data loads
   const {
     setValue,
-    control,
     handleSubmit,
     formState: { errors },
   } = form;
+
+  // const form = useZodForm(profileSchema);
+  // const {
+  //   setValue,
+  //   control,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = form;
 
   useEffect(() => {
     if (!data) return;

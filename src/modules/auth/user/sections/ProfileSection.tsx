@@ -19,6 +19,8 @@ export default function ProfileSection({
     }
   }, [data, setValue]);
 
+  console.log(errors, "errors in profile");
+
   return (
     <View>
       <FormTextInput
