@@ -10,7 +10,6 @@ import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 
 import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
-import Loader from "@/src/components/shared/Loader";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { toast } from "@backpackapp-io/react-native-toast";
@@ -59,10 +58,6 @@ export default function HomeScreen() {
     return null;
   }, [data]);
 
-  if (locLoading || weatherLoading || productsLoading) {
-    return <Loader />; // Loader
-  }
-
   const handleAddToWishlist = async (productId: string) => {
     await addToWishlist({ productId });
     toast.success("Added to wishlist");
@@ -72,6 +67,10 @@ export default function HomeScreen() {
     await removeFromWishlist({ id });
     toast.success("Removed from wishlist");
   };
+
+  // if (locLoading || weatherLoading || productsLoading) {
+  //   return <Loader />;
+  // }
 
   return (
     <ScreenLayout>

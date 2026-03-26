@@ -64,7 +64,8 @@ export default function PlantProtectionScreen() {
         showSuccessToast("Plant Protection saved");
       }
 
-      router.back();
+      // router.back();
+      router.dismiss();
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message || "Failed to save plant protection",

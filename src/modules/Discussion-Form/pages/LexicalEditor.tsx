@@ -8,13 +8,14 @@ type Props = {
 
 const LexicalEditor = forwardRef<WebView, Props>(({ onChange }, ref) => {
   return (
-    <WebView      ref={ref}
+    <WebView
+      ref={ref}
       originWhitelist={["*"]}
       javaScriptEnabled
       domStorageEnabled
       mixedContentMode="always"
       keyboardDisplayRequiresUserAction={false}
-     androidLayerType="software"
+      androidLayerType="software"
       nestedScrollEnabled={true}
       scrollEnabled={false}
       onMessage={(e) => onChange(e.nativeEvent.data)}
@@ -22,5 +23,7 @@ const LexicalEditor = forwardRef<WebView, Props>(({ onChange }, ref) => {
     />
   );
 });
+
+LexicalEditor.displayName = "LexicalEditor";
 
 export default LexicalEditor;

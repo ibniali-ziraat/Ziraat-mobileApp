@@ -67,7 +67,8 @@ export default function SoilAndWaterProfileScreen() {
         showSuccessToast("Saved successfully");
       }
 
-      router.push(ROUTES.TABS.ORCHARDS);
+      // router.push(ROUTES.TABS.ORCHARDS);
+      router.dismiss();
     } catch (error: any) {
       console.log(error, "error in soilwaterscerren");
 

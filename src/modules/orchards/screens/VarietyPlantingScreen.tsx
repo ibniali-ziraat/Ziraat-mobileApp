@@ -63,7 +63,6 @@ export default function VarietyAndPlatingDetailsScreen() {
     formState: { errors },
   } = form;
 
-  
   useEffect(() => {
     if (!varietyId) return;
     if (!varietiesData || varietiesData.length === 0) return;
@@ -110,7 +109,8 @@ export default function VarietyAndPlatingDetailsScreen() {
         showSuccessToast("Varieties saved");
       }
 
-      router.back();
+      // router.back();
+      router.dismiss();
     } catch (error) {
       showErrorToast("Failed to save variety");
     }

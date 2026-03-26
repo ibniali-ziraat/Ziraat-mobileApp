@@ -3,7 +3,6 @@ import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
-import { ROUTES } from "@/src/constants/routes";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 
@@ -75,7 +74,8 @@ export default function FarmInfrastructureScreen() {
         await save(payload);
         showSuccessToast("Farm infrastructure saved");
       }
-      router.replace(ROUTES.TABS.ORCHARDS);
+      // router.replace(ROUTES.TABS.ORCHARDS);
+      router.dismiss();
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message ||
