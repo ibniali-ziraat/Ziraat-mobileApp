@@ -53,7 +53,7 @@ export default function EducationScreen() {
         showSuccessToast("Education Saved");
       }
 
-      router.replace(ROUTES.USER.PROFILE);
+      router.replace(ROUTES.ACCOUNT.PROFILE);
     } catch (error) {
       const backendError =
         error?.response?.data?.message ||
@@ -70,14 +70,14 @@ export default function EducationScreen() {
         <BackHeader
           title="Educational Details"
           desc="Please provide details about your highest qualification and educational background."
-          onPress={() => router.replace(ROUTES.USER.PROFILE)}
+          onPress={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
         />
 
         <ScreenContent>
           <EducationSection control={control} errors={errors} />
           <FormActions
             cancelLabel={"Cancel"}
-            onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+            onCancel={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
             submitLabel={data ? "Update" : "Add"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}

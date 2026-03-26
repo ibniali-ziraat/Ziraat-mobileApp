@@ -38,9 +38,6 @@ export default function FutureProofFieldScreen() {
     formState: { errors },
   } = form;
 
-  /**
-   * ✅ PREFILL FORM IF DATA EXISTS
-   */
   useEffect(() => {
     if (!orchardExtraData) return;
 
@@ -51,9 +48,6 @@ export default function FutureProofFieldScreen() {
     });
   }, [orchardExtraData]);
 
-  /**
-   * Submit handler
-   */
   const onSubmit = async (values: any) => {
     try {
       const payload = {

@@ -1,66 +1,108 @@
 export const ROUTES = {
+  TABS: {
+    HOME: "/(tabs)",
+    MORE: "/(tabs)/more",
+    ORCHARDS: "/(tabs)/orchards",
+    PRODUCTS: "/(tabs)/products",
+  },
+  DASHBOARD: {
+    MAIN: "/dashboard",
+    PEST_DISEASE_PROFILE: "/pest-disease-profile",
+    ORCHARD_PROFILE: "/orchard-profile",
+    NUTRIENT_PROFILE: "/nutrient-profile",
+    RESOURCES_PROFILE: "/resources-profile",
+    FINANCIAL_PROFILE: "/financial-profile",
+    ADVISORY_PROFILE: "/advisory-profile",
+    ALERT_PROFILE: "/alert-profile",
+    WEATHER_PROFILE: "/weather-profile",
+  },
   MORE: {
     SUPPORT: "/more/support",
-    NOTIFICATIONS: "/more/notifications",
-    SETTINGS: "/more/settings",
-    ORDERS: "/products/checkout/orders/orders",
-  },
-  NAV: {
-    BACK: -1,
-  },
-  AUTH: {
-    LOGIN: "/auth/login",
-    REGISTER: "/auth/register",
-    FORGOT_PASSWORD: "/auth/forgot-password",
-    VENDOR_ONBOARD: "/auth/vendor",
-    VENDOR_PROFILE: "/auth/vendor/vendor-profile-screen",
-    USER: {
-      REGISTRAION: "/",
-      PROFILE: "/user/user-profile",
-      EDIT_PROFILE: "/user-profile/edit",
-    },
-    VENDOR: {
-      REGISTRAION: "/auth/vendor",
-      EDIT_PROFILE: "/user-profile/edit",
-    },
+    SETTINGS: "/settings",
+    ORDERS: "/orders-list",
+    PAYMENTS: "/more/payments",
+    ABOUT_US: "/about-us",
+    DISCUSSION: "/more/discussion",
+    PROFILE: "/profile-view",
   },
 
-  // USER SCREENS
+  PRODUCTS: {
+    SINGLE_PRODUCT_DETAILS: "/single-product-details",
+  },
+  ACCOUNT: {
+    ADDRESS: "/login",
+    PROFILE: "/profile-view",
+    FORGOT_PASSWORD: "/forgot-password",
+    CHANGE_PASSWORD: "/change-password",
+    DELETE_ACCOUNT: "/vendor/vendor-profile-screen",
+    ADD_ADDRESS: "/add-addresses",
+    ADDRESS_FORM: "/address-form",
+  },
+
+  AUTH: {
+    LOGIN: "/login",
+    SIGNUP: "/signup",
+    FORGOT_PASSWORD: "/auth/forgot-password",
+  },
+
   USER: {
     HOME: "/",
-    PROFILE: "/user/user-profile",
-    EDIT_PROFILE: "/user-profile/edit",
-  },
-
-  // VENDOR / SUPPLIER SCREENS
-  VENDOR: {
-    PROFILE: "/vendor/vendor-profile-screen",
-
-    NOTIFICATIONS: "/vendor/notifications",
-    SUPPORT: "/vendor/support",
-    PAYMENTS: "/vendor/payments",
-    STORE: "/vendor/store",
+    FORMS: {
+      PROFILE: "/profile-form",
+      ADDRESS: "/address",
+      EDUCATION: "/education",
+      PROFESSION: "/profession",
+    },
   },
 
   ORCHARDS: {
     REGISTRATION: {
-      BASIC_INFO: "/orchards/basic-info",
-      CROP_INFO: "/orchards/crop-info",
-      FARM_INFO: "orchards/farm-info",
-      FUTURE_INFO: "/orchards/future-info",
-      INPUT_COST_INFO: "/orchards/inputcost-info",
-      PLANT_PROTECTION_INFO: "/orchards/plant-protection-info",
-      PRODUCTION_INFO: "/orchards/production-info",
-      SOIL_WATER_INFO: "/orchards/soil-water-info",
-      VARIETY_INFO: "/orchards/variety-info",
+      BASIC_INFO: "/basic-info",
+      CROP_INFO: "/crop-info",
+      FARM_INFO: "/farm-info",
+      FUTURE_INFO: "/future-info",
+      INPUT_COST_INFO: "/inputcost-info",
+      PLANT_PROTECTION_INFO: "/plant-protection-info",
+      PRODUCTION_INFO: "/production-info",
+      SOIL_WATER_INFO: "/soil-water-info",
+      SOIL_TEST_REPORTS: "/soil-test-reports",
+      VARIETY_INFO: "/variety-info",
+      ALL_VARIETIES: "/all-varieties",
+    },
+    DETAILS: {
+      ORCHARD_DETAILS: "/orchard-details",
+    },
+    MEASUREMENT: {
+      MEASURE_BY_TAP: "/tap-measure",
+      MEASURE_BY_WALK: "/walk-measure",
     },
   },
-  TABS: {
-    MENU: "/(tabs)/menu",
-    HOME: "/(tabs)",
-    PROFILE: "/(tabs)/profile",
-    ORCHARDS: "/(tabs)/orchards",
-    Products: "/(tabs)/Product",
-    // ORDERS: "/(tabs)/orders",
+
+  SHOPPING: {
+    WISHLIST: "/wishlist",
+    CART: "/cart-list",
+    CHECKOUT: {
+      SELECT_ADDRESS: "/select-address",
+      CREATE_ADDRESS: "/create-address",
+      REVIEW_ORDER: "/review-order",
+      ORDER_SUCCESS: "/order-success",
+    },
   },
+
+  ORDERS: {
+    LIST: "/orders-list",
+    DETAILS: "/order-details",
+    TRACKING: "/orders/tracking",
+  },
+
+  SHIPPING: {
+    ADDRESS: "/shipping/address",
+    METHOD: "/shipping/method",
+    CONFIRMATION: "/shipping/confirmation",
+  },
+  NOTIFICATIONS: "/notifications",
+  WEATHER: {
+    DETAILS: "/weather-details",
+  },
+  SETTINGS: "/settings",
 } as const;

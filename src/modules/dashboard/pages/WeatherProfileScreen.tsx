@@ -18,10 +18,13 @@ import { useLocationSearch } from "@/src/hooks/useLocationSearch";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 import WeatherCard from "@/src/modules/home/components/weatherCard";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { RefreshControl, View } from "react-native";
+import { View } from "react-native";
 
+import BackHeader from "@/src/components/shared/BackHeader";
 import Loader from "@/src/components/shared/Loader";
 import Map from "@/src/components/shared/Map";
+import { ROUTES } from "@/src/constants/routes";
+import { router } from "expo-router";
 
 export default function WeatherScreen() {
   const [refreshing, setRefreshing] = useState(false);
@@ -96,13 +99,12 @@ export default function WeatherScreen() {
   const dayData = data?.data_day;
 
   return (
-    <ScreenLayout
-      className="flex-1"
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
+    <ScreenLayout>
       <View className="pb-10">
+        <BackHeader
+          title="Weather"
+          onPress={() => router.replace(ROUTES.TABS.HOME)}
+        />
         <SearchBar search={search} setSearch={setSearch} />
 
         {search.length >= 3 && loading ? (

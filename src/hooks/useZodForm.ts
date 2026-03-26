@@ -4,7 +4,7 @@ import { ZodType } from "zod";
 
 export function useZodForm<T extends ZodType<any>>(
   schema?: T,
-  options?: Partial<UseFormProps<any>>
+  options?: Partial<UseFormProps<any>>,
 ) {
   return useForm({
     ...(schema ? { resolver: zodResolver(schema) } : {}),

@@ -35,7 +35,6 @@ const FormTextInput = ({
       case "age":
       case "pincode":
       case "bankaccount":
-      case "pincode":
       case "year":
         return "numeric";
 
@@ -88,6 +87,8 @@ const FormTextInput = ({
           .slice(0, 32);
       case "username":
         return text.replace(/[^a-zA-Z0-9._]/g, "").slice(0, 24);
+      case "city":
+        return text.replace(/[^a-zA-Z0-9._]/g, "").slice(0, 14);
 
       case "name":
         return text.replace(/[^a-zA-Z\s]/g, "").slice(0, 32);

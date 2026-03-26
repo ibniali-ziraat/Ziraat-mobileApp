@@ -52,7 +52,7 @@ export default function AddressScreen() {
         await save(payload);
         showSuccessToast("Address Saved");
       }
-      router.replace(ROUTES.USER.PROFILE);
+      router.replace(ROUTES.ACCOUNT.PROFILE);
     } catch (error) {
       const backendError =
         error?.response?.data?.message ||
@@ -69,13 +69,13 @@ export default function AddressScreen() {
         <BackHeader
           title="Address Details"
           desc="Please provide accurate address details for record-keeping and location verification purposes."
-          onPress={() => router.replace(ROUTES.USER.PROFILE)}
+          onPress={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
         />
         <ScreenContent>
           <AddressSection control={control} errors={errors} data={data} />
           <FormActions
             cancelLabel={"Cancel"}
-            onCancel={() => router.replace(ROUTES.USER.PROFILE)}
+            onCancel={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
             submitLabel={data ? "Update" : "Add"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
