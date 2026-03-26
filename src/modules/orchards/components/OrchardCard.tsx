@@ -1,4 +1,5 @@
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { shadows } from "@/src/constants/shadows";
@@ -15,55 +16,57 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
   const PADDING = 16;
 
   return (
-    <ScreenContent>
-      <View
-        style={[
-          {
-            marginBottom: 32,
-            borderRadius: 20,
-            backgroundColor: colors.light,
-            padding: PADDING,
-            elevation: 0,
-          },
-          shadows.review_card,
-        ]}
-      >
-        <OrchardDetails orchard={orchard} />
-
+    <ScreenLayout>
+      <ScreenContent>
         <View
-          style={{
-            height: 1,
-            backgroundColor: "#eee",
-            marginVertical: 12,
-          }}
-        />
-        <Pressable
-          onPress={() =>
-            router.push({
-              pathname: ROUTES.ORCHARDS.DETAILS.ORCHARD_DETAILS,
-              params: { id: orchard.id },
-            })
-          }
-          style={{
-            flexDirection: "row",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            gap: 6,
-          }}
+          style={[
+            {
+              marginBottom: 32,
+              borderRadius: 20,
+              backgroundColor: colors.light,
+              padding: PADDING,
+              elevation: 0,
+            },
+            shadows.review_card,
+          ]}
         >
-          <Text
+          <OrchardDetails orchard={orchard} />
+
+          <View
             style={{
-              color: colors.primary,
-              fontWeight: "600",
-              fontSize: 14,
+              height: 1,
+              backgroundColor: "#eee",
+              marginVertical: 12,
+            }}
+          />
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: ROUTES.ORCHARDS.DETAILS.ORCHARD_DETAILS,
+                params: { id: orchard.id },
+              })
+            }
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              gap: 6,
             }}
           >
-            View Details
-          </Text>
+            <Text
+              style={{
+                color: colors.primary,
+                fontWeight: "600",
+                fontSize: 14,
+              }}
+            >
+              View Details
+            </Text>
 
-          <ArrowRight size={18} color={colors.primary} />
-        </Pressable>
-      </View>
-    </ScreenContent>
+            <ArrowRight size={18} color={colors.primary} />
+          </Pressable>
+        </View>
+      </ScreenContent>
+    </ScreenLayout>
   );
 }

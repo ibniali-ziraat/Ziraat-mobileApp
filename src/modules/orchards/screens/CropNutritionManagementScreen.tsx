@@ -75,7 +75,8 @@ export default function CropNutritionManagementScreen() {
         showSuccessToast("Crop & Nutrition saved");
       }
 
-      router.replace(ROUTES.TABS.ORCHARDS);
+      // router.replace(ROUTES.TABS.ORCHARDS);
+      router.dismiss();
     } catch (error: any) {
       showErrorToast(
         error?.response?.data?.message ||

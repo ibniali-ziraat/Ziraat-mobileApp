@@ -69,7 +69,8 @@ export default function ProductionAndMarketingScreen() {
         await save(payload);
         showSuccessToast("Production & Marketing saved");
       }
-      router.back();
+      // router.back();
+      router.dismiss();
 
       // router.push(ROUTES.ORCHARDS.REGISTRATION.SOIL_WATER_INFO);
     } catch (error: any) {

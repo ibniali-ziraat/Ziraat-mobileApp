@@ -109,7 +109,8 @@ export default function BasicInfoScreen() {
       await createOrchard(payload);
     }
 
-    router.replace(ROUTES.TABS.ORCHARDS);
+    // router.replace(ROUTES.TABS.ORCHARDS);
+    router.dismiss();
   };
 
   if (isPending) return null;
@@ -119,7 +120,7 @@ export default function BasicInfoScreen() {
       <BackHeader
         title={isEditMode ? "Edit Orchard" : "Add Orchard"}
         desc="Enter orchard details"
-        onPress={() => router.replace(ROUTES.TABS.ORCHARDS)}
+        // onPress={() => router.replace(ROUTES.TABS.ORCHARDS)}
       />
 
       <ScreenContent>
