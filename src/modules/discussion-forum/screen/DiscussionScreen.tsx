@@ -1,28 +1,23 @@
-
+import BackHeader from "@/src/components/shared/BackHeader";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { View } from "react-native";
 import DiscussionSection from "../components/DiscussionSection";
-
-import {
-    KeyboardAvoidingView,
-    Platform,
-    View,
-} from "react-native";
 
 export default function DiscussionScreen() {
   return (
-    <View style={{ flex: 1 }}>
-
-      {/* <BackHeader
+    <ScreenLayout scrollable={false}>
+      
+   
+      <BackHeader
         title="Discussion"
-        desc="Ask questions or get help from experts while filling the form."
-      /> */}
+       
+      />
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : undefined}
-      >
+    
+      <View style={{ flex: 1 }}>
         <DiscussionSection />
-      </KeyboardAvoidingView>
+      </View>
 
-    </View>
+    </ScreenLayout>
   );
 }
