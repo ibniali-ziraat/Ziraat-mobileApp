@@ -96,7 +96,7 @@ export default function InputCostDetailsScreen() {
             cancelLabel="Cancel"
             submitLabel={inputCostData?.length > 0 ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
-            onCancel={() => router.back()}
+            onCancel={() => router.dismiss()}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}
           />

@@ -182,7 +182,7 @@ const UserAddressForm = () => {
         {
           onSuccess: () => {
             toast.success("Address updated successfully");
-            router.back();
+            router.dismiss();
           },
           onError: () => toast.error("Failed to update address"),
         },
@@ -192,7 +192,7 @@ const UserAddressForm = () => {
         onSuccess: () => {
           toast.success("Address saved successfully");
           reset();
-          router.back();
+          router.dismiss();
         },
         onError: () => toast.error("Failed to save address"),
       });
@@ -300,7 +300,7 @@ const UserAddressForm = () => {
           </View>
           <FormActions
             cancelLabel="Cancel"
-            onCancel={() => router.back()}
+            onCancel={() => router.dismiss()}
             submitLabel={isEditMode ? "Update Address" : "Save Address"}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isPending}

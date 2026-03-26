@@ -109,7 +109,6 @@ export default function VarietyAndPlatingDetailsScreen() {
         showSuccessToast("Varieties saved");
       }
 
-      // router.back();
       router.dismiss();
     } catch (error) {
       showErrorToast("Failed to save variety");
