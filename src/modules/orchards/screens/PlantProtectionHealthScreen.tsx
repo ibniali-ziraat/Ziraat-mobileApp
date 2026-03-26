@@ -64,7 +64,6 @@ export default function PlantProtectionScreen() {
         showSuccessToast("Plant Protection saved");
       }
 
-      // router.back();
       router.dismiss();
     } catch (error: any) {
       showErrorToast(
@@ -90,7 +89,7 @@ export default function PlantProtectionScreen() {
             cancelLabel="Cancel"
             submitLabel={plantProtectionData ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
-            onCancel={() => router.back()}
+            onCancel={() => router.dismiss()}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}
           />

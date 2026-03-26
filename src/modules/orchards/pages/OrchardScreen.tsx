@@ -1,29 +1,19 @@
 import Loader from "@/src/components/shared/Loader";
-import { ScreenContent } from "@/src/components/shared/ScreenContent";
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import SearchBar from "@/src/components/shared/SearchBar";
-import { colors } from "@/src/constants/colors";
-import { ROUTES } from "@/src/constants/routes";
-import { shadows } from "@/src/constants/shadows";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useRouter } from "expo-router";
-import { TreePalm } from "lucide-react-native";
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
-import OrchardCard from "../components/OrchardCard";
+import { View } from "react-native";
+import AddOrchardFAB from "../components/AddOrchardFab";
+import NoOrchardsEmpty from "../components/NoOrchardsEmpty";
+import OrchardList from "../components/OrchardList";
 import { useOrchardsByUserQuery } from "../hooks/useOrchardsQuery";
 
 export default function MyOrchardsScreen() {
   const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
   const { setOrchardProfileId } = useAuth();
-  const router = useRouter();
-
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (!orchardData?.length) {
-      setOrchardProfileId(null);
-    }
+    if (!orchardData?.length) setOrchardProfileId(null);
   }, [orchardData]);
 
   if (isPending) return <Loader />;
@@ -34,7 +24,6 @@ export default function MyOrchardsScreen() {
   const filteredOrchards = useMemo(() => {
     if (!search) return orchardData;
     const text = search.toLowerCase();
-
     return orchardData.filter(
       (o: any) =>
         o?.orchardName?.toLowerCase().includes(text) ||
@@ -46,96 +35,18 @@ export default function MyOrchardsScreen() {
   }, [orchardData, search]);
 
   return (
-    <View className="flex-1 bg-light">
+    <View style={{ flex: 1 }} className="bg-light">
       {hasNoOrchards ? (
-        <ScreenLayout>
-          <ScreenContent>
-            <View className="flex-1 justify-center items-center px-6">
-              <View className="items-center">
-                <TreePalm style={{ color: colors.primary }} size={40} />
-
-                <Text className="text-[22px] font-bold mt-4">
-                  Start Your First Orchard
-                </Text>
-                <Text
-                  style={{ color: colors.dark }}
-                  className="text-[14px] leading-6 text-center mb-7 opacity-70"
-                >
-                  Add your orchard to manage crops, monitor growth, and keep
-                  everything organized in one place.
-                </Text>
-                <Pressable
-                  onPress={() =>
-                    router.push({
-                      pathname: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
-                      params: { mode: "create" },
-                    })
-                  }
-                  style={{ backgroundColor: colors.primary }}
-                  className="px-6 py-4 rounded-2xl w-full"
-                >
-                  <Text
-                    style={{ color: colors.light }}
-                    className=" text-center font-semibold"
-                  >
-                    + Add Orchard
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          </ScreenContent>
-        </ScreenLayout>
+        <NoOrchardsEmpty />
       ) : (
-        <>
-          <FlatList
-            data={filteredOrchards}
-            keyExtractor={(item) => String(item.id)}
-            renderItem={({ item }) => (
-              <View className="mb-4" style={[{}, shadows.review_card]}>
-                <OrchardCard orchard={item} />
-              </View>
-            )}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 160 }}
-            ListHeaderComponent={
-              <View className="mb-6 mt-4 bg-light">
-                <ScreenContent>
-                  <SearchBar search={search} setSearch={setSearch} />
-                </ScreenContent>
-              </View>
-            }
-          />
-
-          <Pressable
-            onPress={() =>
-              router.push({
-                pathname: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
-                params: { mode: "create" },
-              })
-            }
-            style={{
-              position: "absolute",
-              right: 24,
-              bottom: 24,
-              zIndex: 999,
-            }}
-          >
-            <View
-              style={{
-                height: 56,
-                width: 56,
-                borderRadius: 28,
-                backgroundColor: colors.primary,
-                alignItems: "center",
-                justifyContent: "center",
-                elevation: 6,
-              }}
-            >
-              <Text style={{ color: "#fff", fontSize: 28 }}>+</Text>
-            </View>
-          </Pressable>
-        </>
+        <OrchardList
+          orchards={filteredOrchards}
+          search={search}
+          setSearch={setSearch}
+        />
       )}
+
+      <AddOrchardFAB />
     </View>
   );
 }

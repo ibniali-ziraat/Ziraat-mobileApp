@@ -43,19 +43,36 @@ export default function FarmInfrastructureScreen() {
   /**
    * ✅ PREFILL FORM IF DATA EXISTS
    */
+  // useEffect(() => {
+  //   if (!infrastructureData) return;
+
+  //   Object.entries(infrastructureData).forEach(([key, value]) => {
+  //     if (value !== null && value !== undefined) {
+  //       setValue(key as any, value);
+  //     }
+  //   });
+  // }, [infrastructureData]);
+
   useEffect(() => {
     if (!infrastructureData) return;
 
+    const numericFields = [
+      "permanentLabor",
+      "seasonalLabor",
+      "contractBasedLabor",
+    ];
+
     Object.entries(infrastructureData).forEach(([key, value]) => {
       if (value !== null && value !== undefined) {
-        setValue(key as any, value);
+        if (numericFields.includes(key) && typeof value === "number") {
+          setValue(key as any, String(value));
+        } else {
+          setValue(key as any, value);
+        }
       }
     });
   }, [infrastructureData]);
 
-  /**
-   * Submit handler
-   */
   const onSubmit = async (values: any) => {
     try {
       const payload = {
@@ -103,7 +120,7 @@ export default function FarmInfrastructureScreen() {
           <FormActions
             cancelLabel="Cancel"
             submitLabel={infrastructureData ? "Update" : "Save"}
-            onCancel={() => router.back()}
+            onCancel={() => router.dismiss()}
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}

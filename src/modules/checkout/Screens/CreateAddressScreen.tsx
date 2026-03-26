@@ -184,7 +184,7 @@ const UserAddressForm = () => {
         {
           onSuccess: () => {
             toast.success("Address updated successfully");
-            router.back();
+            router.dismiss();
           },
           onError: () => toast.error("Failed to update address"),
         },

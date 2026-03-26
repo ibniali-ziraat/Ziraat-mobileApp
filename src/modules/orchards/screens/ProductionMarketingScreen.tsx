@@ -69,7 +69,6 @@ export default function ProductionAndMarketingScreen() {
         await save(payload);
         showSuccessToast("Production & Marketing saved");
       }
-      // router.back();
       router.dismiss();
 
       // router.push(ROUTES.ORCHARDS.REGISTRATION.SOIL_WATER_INFO);
@@ -104,7 +103,7 @@ export default function ProductionAndMarketingScreen() {
               ProductionMarketingData?.length > 0 ? "Update" : "Save"
             }
             onSubmit={handleSubmit(onSubmit)}
-            onCancel={() => router.back()}
+            onCancel={() => router.dismiss()}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}
           />

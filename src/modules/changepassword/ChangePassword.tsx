@@ -111,7 +111,7 @@ export default function ChangePasswordScreen() {
             disabled={changePassword.isPending}
             loading={changePassword.isPending}
             cancelLabel="Cancel"
-            onCancel={() => router.back()}
+            onCancel={() => router.dismiss()}
           />
         </FormProvider>
       </ScreenContent>
