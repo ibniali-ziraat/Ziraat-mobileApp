@@ -1,124 +1,178 @@
-import { toast } from "@backpackapp-io/react-native-toast";
-import { useState } from "react";
+
+  import { toast } from "@backpackapp-io/react-native-toast";
+import { useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 
-import CsText from "@/src/components/shared/CsText";
+  import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/fonts/typography";
 import { useDebounce } from "@/src/hooks/useDebounce";
 
-import AllProductsCarousal from "./components/AllProductsCarousel";
-import FilterBottomSheet from "./components/FilterBottomSheet";
+  import FilterBottomSheet from "./components/FilterBottomSheet";
 import ProductSearchBar from "./components/ProductSearchBar";
 
-import { useWishlist } from "../wishlist/hooks/useWishlist";
+  import { useWishlist } from "../wishlist/hooks/useWishlist";
+
+  import ProductsList from "./components/AllProductsCarousel";
 import { useProductsData } from "./hooks/data/useProductsData";
 import { useProductSearch } from "./hooks/queries/products.queries";
 
-export default function ProductScreen() {
-  const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState({});
-  const [filterOpen, setFilterOpen] = useState(false);
-  const debouncedSearch = useDebounce(search, 500);
+  export default function ProductScreen() {
+    const [search, setSearch] = useState("");
+    const [filters, setFilters] = useState({});
+    const [filterOpen, setFilterOpen] = useState(false);
 
-  const {
-    wishlist,
-    isBusy,
-    addToWishlist,
-    removeFromWishlist,
-    getWishlistItemId,
-  } = useWishlist();
-  const { products: allProducts = [], filterOptions = [] } = useProductsData();
+    const [page, setPage] = useState(1); 
+    const pageSize = 6;
 
-  const { data: filteredProductsData = {} } = useProductSearch({
-    query: debouncedSearch,
-    ...filters,
-  });
+    const debouncedSearch = useDebounce(search, 500);
 
-  const filteredProducts = Array.isArray(filteredProductsData?.products)
-    ? filteredProductsData.products
-    : [];
+    const {
+      wishlist,
+      isBusy,
+      addToWishlist,
+      removeFromWishlist,
+      getWishlistItemId,
+    } = useWishlist();
 
-  const isFiltering = Object.keys(filters).length > 0 || debouncedSearch;
-  const displayedProducts = isFiltering ? filteredProducts : allProducts;
+    const { products: allProducts = [], filterOptions = [] } = useProductsData();
 
-  const handleToggleWishlist = async (productId: number) => {
-    console.log("TOGGLE WISHLIST PRODUCT ID 👉", productId);
-    const wishlistItemId = getWishlistItemId(productId);
+    const { data: filteredProductsData = {} } = useProductSearch({
+      query: debouncedSearch,
+      ...filters,
+    });
 
-    try {
-      if (wishlistItemId) {
-        await removeFromWishlist(wishlistItemId);
-        toast.success("Removed from wishlist");
-      } else {
-        await addToWishlist({ productId, quantity: 1 });
-        toast.success("Added to wishlist");
+    const filteredProducts = Array.isArray(filteredProductsData?.products)
+      ? filteredProductsData.products
+      : [];
+
+    const isFiltering = Object.keys(filters).length > 0 || debouncedSearch;
+    const displayedProducts = isFiltering ? filteredProducts : allProducts;
+
+    
+    const totalPages = Math.ceil(displayedProducts.length / pageSize);
+
+    const paginatedProducts = displayedProducts.slice(
+      (page - 1) * pageSize,
+      page * pageSize
+    );
+
+    /* RESET PAGE ON FILTER/SEARCH */
+    useEffect(() => {
+      setPage(1);
+    }, [debouncedSearch, filters]);
+
+    const handleToggleWishlist = async (productId: string | number) => {
+      const wishlistItemId = getWishlistItemId(productId);
+
+      try {
+        if (wishlistItemId) {
+          await removeFromWishlist(wishlistItemId);
+          toast.success("Removed from wishlist");
+        } else {
+          await addToWishlist({ productId, quantity: 1 });
+          toast.success("Added to wishlist");
+        }
+      } catch {
+        toast.error("Process failed");
       }
-    } catch (error) {
-      toast.error("Process failed");
-    }
-  };
+    };
 
-  const handleReset = () => {
-    setFilters({});
-    setSearch("");
-    toast.success("Filters cleared");
-  };
+    return (
+      <ScreenLayout>
+        <ScreenContent>
+          
+          {/* SEARCH */}
+          <ProductSearchBar
+            search={search}
+            setSearch={setSearch}
+            onFilterPress={() => setFilterOpen(true)}
+          />
 
-  return (
-    <ScreenLayout>
-      <ScreenContent>
-        <ProductSearchBar
-          search={search}
-          setSearch={setSearch}
-          onFilterPress={() => setFilterOpen(true)}
-        />
+          {/*  FILTER */}
+          <FilterBottomSheet
+            visible={filterOpen}
+            onClose={() => setFilterOpen(false)}
+            onApplyFilters={setFilters}
+            filterOptions={filterOptions}
+          />
 
-        <FilterBottomSheet
-          visible={filterOpen}
-          onClose={() => setFilterOpen(false)}
-          onApplyFilters={setFilters}
-          filterOptions={filterOptions}
-        />
-
-        {displayedProducts.length > 0 ? (
+          {/*  PRODUCTS */}
           <View className="mt-6">
-            <AllProductsCarousal
-              items={displayedProducts}
+            <ProductsList
+              items={paginatedProducts} 
               wishlistItems={wishlist}
               onToggleWishlist={handleToggleWishlist}
               isWishlistBusy={isBusy}
+              variant="grid"
             />
           </View>
-        ) : isFiltering ? (
-          <View className="mt-20 items-center">
-            <CsText style={typography.Poppins_m_semibold}>
-              No products found
-            </CsText>
-            <CsText
-              className="opacity-60 mt-2 mb-5 text-center"
-              style={typography.Poppins_s_regular}
-            >
-              Try changing filters or search.
-            </CsText>
-            <Pressable
-              onPress={handleReset}
+
+          {/*  PAGINATION UI */}
+          {totalPages > 1 && (
+            <View
               style={{
-                backgroundColor: colors.primary,
-                paddingHorizontal: 24,
-                paddingVertical: 10,
-                borderRadius: 25,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: 6,
+                marginVertical: 16,
               }}
             >
-              <CsText style={{ color: "#fff", fontWeight: "600" }}>
-                Reset Filters
-              </CsText>
-            </Pressable>
-          </View>
-        ) : null}
-      </ScreenContent>
-    </ScreenLayout>
-  );
-}
+              {/* PREV */}
+              <Pressable
+                disabled={page === 1}
+                onPress={() => setPage((p) => p - 1)}
+              >
+                <CsText style={{ opacity: page === 1 ? 0.3 : 1 }}>
+                  Prev
+                </CsText>
+              </Pressable>
+
+              {/* PAGE NUMBERS */}
+              {[...Array(totalPages)].map((_, i) => {
+                const pageNumber = i + 1;
+                const isActive = pageNumber === page;
+
+                return (
+                  <Pressable key={i} onPress={() => setPage(pageNumber)}>
+                    <View
+                      style={{
+                        paddingHorizontal: 10,
+                        paddingVertical: 6,
+                        borderRadius: 6,
+                        backgroundColor: isActive
+                          ? colors.primary
+                          : "#E5E7EB",
+                      }}
+                    >
+                      <CsText
+                        style={{
+                          color: isActive ? "#fff" : "#000",
+                          fontWeight: "600",
+                        }}
+                      >
+                        {pageNumber}
+                      </CsText>
+                    </View>
+                  </Pressable>
+                );
+              })}
+
+              {/* NEXT */}
+              <Pressable
+                disabled={page === totalPages}
+                onPress={() => setPage((p) => p + 1)}
+              >
+                <CsText style={{ opacity: page === totalPages ? 0.3 : 1 }}>
+                  Next
+                </CsText>
+              </Pressable>
+            </View>
+          )}
+
+        </ScreenContent>
+      </ScreenLayout>
+    );
+  }
