@@ -13,52 +13,115 @@ import {
   View,
 } from "react-native";
 
-export default function AllProductsCarousal({
-  items,
-  wishlistItems = [],
-  onToggleWishlist, // Use the new single function
-  isWishlistBusy,
-}) {
-  const screenWidth = Dimensions.get("window").width;
-  const cardWidth = screenWidth * 0.42;
+  export default function ProductsList({
+    items,
+    wishlistItems = [],
+    onToggleWishlist,
+    isWishlistBusy,
+    onSeeMore,
+    variant = "grid",
+  }) {
+    const screenWidth = Dimensions.get("window").width;
+    const cardWidth = screenWidth * 0.42;
 
-  return (
-    <FlatList
-      horizontal
-      data={items}
-      // keyExtractor={(item) => item._id.toString()}
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ paddingHorizontal: 12 }}
-      renderItem={({ item }) => {
-        const isWishlisted = wishlistItems.some(
-          (w) => String(w.productId) === String(item._id),
-        );
+    const isCarousel = variant === "carousel";
 
-        const price = item.discountPrice ?? item.price;
-        const oldPrice =
-          item.discountPrice && item.discountPrice < item.price
-            ? item.price
-            : null;
+    return (
+      <FlatList
+        data={items}
+        horizontal={isCarousel} 
+        numColumns={isCarousel ? 1 : 2} 
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={!isCarousel}
+        contentContainerStyle={{
+          paddingHorizontal: isCarousel ? 12 : 12,
+          paddingBottom: isCarousel ? 0 : 30,
+        }}
+        columnWrapperStyle={
+          !isCarousel ? { justifyContent: "space-between" } : undefined
+        }
+        keyExtractor={(item) => item._id.toString()}
 
-        const discount =
-          oldPrice && price
-            ? Math.round(((oldPrice - price) / oldPrice) * 100)
-            : null;
+        renderItem={({ item }) => {
+          const isWishlisted = wishlistItems.some(
+            (w) => String(w.productId) === String(item._id),
+          );
 
-        return (
-          <View style={{ width: cardWidth }} className="mr-4">
+          const price = item.discountPrice ?? item.price;
+          const oldPrice =
+            item.discountPrice && item.discountPrice < item.price
+              ? item.price
+              : null;
+
+          const discount =
+            oldPrice && price
+              ? Math.round(((oldPrice - price) / oldPrice) * 100)
+              : null;
+
+          return (
             <View
-              className="rounded-2xl overflow-hidden"
               style={{
-                backgroundColor: colors.light,
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.08,
-                shadowRadius: 6,
-                elevation: 2,
+                width: isCarousel ? cardWidth : "48%",
+                marginRight: isCarousel ? 12 : 0,
+                marginBottom: isCarousel ? 0 : 16,
               }}
             >
+              {/* CARD */}
+              <View
+                className="rounded-2xl overflow-hidden"
+                style={{
+                  backgroundColor: colors.light,
+                  elevation: 2,
+                }}
+              >
+                <Pressable
+                  onPress={() =>
+                    router.push({
+                      pathname: ROUTES.PRODUCTS.SINGLE_PRODUCT_DETAILS,
+                      params: { productId: item._id },
+                    })
+                  }
+                >
+                  <Image
+                    source={{ uri: item.photos?.[0] || item.thumbnailUrl }}
+                    style={{
+                      width: "100%",
+                      height: isCarousel ? cardWidth : 160,
+                    }}
+                    resizeMode="cover"
+                  />
+                </Pressable>
+
+                {/*  Wishlist */}
+                <Pressable
+                  hitSlop={10}
+                  disabled={isWishlistBusy}
+                  onPress={() => onToggleWishlist?.(item._id)}
+                  className="absolute top-2 right-2 bg-white/90 p-2 rounded-full"
+                >
+                  <Heart
+                    size={18}
+                    color={isWishlisted ? "#E11D48" : "#9CA3AF"}
+                    fill={isWishlisted ? "#E11D48" : "none"}
+                  />
+                </Pressable>
+
+                {/* Discount */}
+                {discount && (
+                  <View
+                    className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md"
+                    style={{ backgroundColor: colors.secondary }}
+                  >
+                    <Text style={{ color: "#fff", fontSize: 10 }}>
+                      {discount}% OFF
+                    </Text>
+                  </View>
+                )}
+              </View>
+
+              {/* INFO */}
               <Pressable
+                className="mt-2"
                 onPress={() =>
                   router.push({
                     pathname: ROUTES.PRODUCTS.SINGLE_PRODUCT_DETAILS,
@@ -66,62 +129,37 @@ export default function AllProductsCarousal({
                   })
                 }
               >
-                <Image
-                  source={{ uri: item.photos?.[0] || item.thumbnailUrl }}
-                  style={{ width: "100%", height: cardWidth }}
-                  resizeMode="cover"
-                />
-              </Pressable>
+                <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
+                  {item.title || item.name}
+                </Text>
 
-              <Pressable
-                hitSlop={10}
-                disabled={isWishlistBusy}
-                onPress={() => onToggleWishlist?.(item._id)} // Single toggle call
-                className="absolute top-2 right-2 bg-white/90 p-2 rounded-full"
-              >
-                <Heart
-                  size={18}
-                  color={isWishlisted ? "#E11D48" : "#9CA3AF"}
-                  fill={isWishlisted ? "#E11D48" : "none"}
-                />
-              </Pressable>
+                <View className="flex-row items-center gap-2">
+                  <Text style={typography.Poppins_s_medium}>₹{price}</Text>
 
-              {discount && (
-                <View
-                  className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md"
-                  style={{ backgroundColor: colors.secondary }}
-                >
-                  <Text
-                    style={{ color: colors.light }}
-                    className="text-xs font-semibold"
-                  >
-                    {discount}% OFF
-                  </Text>
+                  {oldPrice && (
+                    <Text
+                      style={{
+                        textDecorationLine: "line-through",
+                        color: "#9CA3AF",
+                        fontSize: 12,
+                      }}
+                    >
+                      ₹{oldPrice}
+                    </Text>
+                  )}
                 </View>
-              )}
-            </View>
+              </Pressable>
 
-            <Pressable
-              className="mt-2"
-              onPress={() =>
-                router.push({
-                  pathname: "/products/single-product-details",
-                  params: { productId: item._id },
-                })
-              }
-            >
-              <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
-                {item.title || item.name}
-              </Text>
-              <Text style={typography.Poppins_s_medium}>₹{price}</Text>
-            </Pressable>
-
-            <View className="mt-1">
-              <RatingStars rating={item.rating || item.ratingAverage} />
+              <View className="mt-1">
+                <RatingStars rating={item.rating || item.ratingAverage} />
+              </View>
             </View>
-          </View>
-        );
-      }}
-    />
-  );
-}
+          );
+        }}
+
+        
+            
+       
+      />
+    );
+  }

@@ -13,7 +13,7 @@ import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { toast } from "@backpackapp-io/react-native-toast";
-import AllProductsCarousal from "../products/components/AllProductsCarousel";
+import ProductsList from "../products/components/AllProductsCarousel";
 import { useProductsData } from "../products/hooks/data/useProductsData";
 import { useWishlist } from "../wishlist/hooks/useWishlist";
 import FarmOverviewChart from "./components/FarmOverviewChart";
@@ -95,13 +95,21 @@ export default function HomeScreen() {
 
             {/* <ProductCarousel items={products.slice(0, 8)} /> */}
 
-            <AllProductsCarousal
-              items={allProducts}
-              wishlistItems={wishlist}
-              onAddToWishlist={handleAddToWishlist}
-              onRemoveFromWishlist={handleRemoveFromWishlist}
-              isWishlistBusy={isWishlistBusy}
-            />
+            <ProductsList
+  items={allProducts}
+  wishlistItems={wishlist}
+  onToggleWishlist={(id) => {
+    const exists = wishlist.some(w => String(w.productId) === String(id));
+
+    if (exists) {
+      handleRemoveFromWishlist(id);
+    } else {
+      handleAddToWishlist(id);
+    }
+  }}
+  isWishlistBusy={isWishlistBusy}
+  variant="carousel" 
+/>
 
             <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
             <FarmOverviewChart />

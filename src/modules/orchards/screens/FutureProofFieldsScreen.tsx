@@ -88,7 +88,7 @@ export default function FutureProofFieldScreen() {
             cancelLabel="Cancel"
             submitLabel={orchardExtraData ? "Update" : "Save"}
             onSubmit={handleSubmit(onSubmit)}
-            onCancel={() => router.back()}
+            onCancel={() => router.dismiss()}
             disabled={isSaving || isUpdating}
             loading={isSaving || isUpdating}
           />

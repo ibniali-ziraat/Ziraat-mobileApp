@@ -54,11 +54,6 @@ import {
   updateSoilWater,
 } from "../services/orchard.service";
 
-//
-// ====================================================
-// 🌳 A. ORCHARD BASIC
-// ====================================================
-//
 export const useOrchardsByUserQuery = () =>
   useQuery({
     queryKey: ["orchards"],
@@ -84,10 +79,16 @@ export const useUpdateOrchardMutation = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: updateOrchard,
-    onSuccess: (_, data: any) =>
-      qc.invalidateQueries({
-        queryKey: ["orchard", data.orchardId || data.id],
-      }),
+    onSuccess: async (_, variables: any) => {
+      const id = variables?.orchardId ?? variables?.id;
+
+      await Promise.all([
+        qc.invalidateQueries({ queryKey: ["orchards"] }),
+        id
+          ? qc.invalidateQueries({ queryKey: ["orchard", String(id)] })
+          : Promise.resolve(),
+      ]);
+    },
   });
 };
 
@@ -96,7 +97,7 @@ export const useDeleteOrchardSectionMutation = () => {
   return useMutation({
     mutationFn: deleteOrchardSection,
     onSuccess: (_, data: any) =>
-      qc.invalidateQueries({ queryKey: ["orchard", data.id] }),
+      qc.invalidateQueries({ queryKey: ["orchards", data.id] }),
   });
 };
 
@@ -108,11 +109,6 @@ export const useDeleteOrchardEntireMutation = () => {
   });
 };
 
-//
-// ====================================================
-// 🌱 B. VARIETY & PLANTING
-// ====================================================
-//
 export const useOrchardVarietiesQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["orchardVarieties", orchardId],
@@ -150,11 +146,6 @@ export const useDeleteAllVarietiesMutation = () => {
   });
 };
 
-//
-// ====================================================
-// 🌍 C. SOIL & WATER
-// ====================================================
-//
 export const useSoilWaterQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["soilWater", orchardId],
@@ -186,11 +177,6 @@ export const useDeleteSoilWaterMutation = () => {
   });
 };
 
-//
-// ====================================================
-// 🌾 D. CROP & NUTRITION
-// ====================================================
-//
 export const useCropNutritionQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["cropNutrition", orchardId],
@@ -219,11 +205,6 @@ export const useDeleteCropNutritionMutation = (orchardId: ID) => {
   });
 };
 
-//
-// ====================================================
-// 🐛 E. PLANT PROTECTION
-// ====================================================
-//
 export const usePlantProtectionQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["plantProtection", orchardId],
@@ -255,11 +236,6 @@ export const useDeletePlantProtectionMutation = () => {
   });
 };
 
-//
-// ====================================================
-// 🚜 F. INFRASTRUCTURE
-// ====================================================
-//
 export const useInfrastructureQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["infrastructure", orchardId],
@@ -277,7 +253,10 @@ export const useCreateInfrastructureMutation = () => {
 
 export const useUpdateInfrastructureMutation = () => {
   const qc = useQueryClient();
-  return useMutation({ mutationFn: updateInfrastructure });
+  return useMutation({
+    mutationFn: updateInfrastructure,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["infrastructure"] }),
+  });
 };
 
 export const useDeleteInfrastructureMutation = () => {
@@ -288,11 +267,6 @@ export const useDeleteInfrastructureMutation = () => {
   });
 };
 
-//
-// ====================================================
-// 📦 G. PRODUCTION & MARKETING
-// ====================================================
-//
 export const useProductionMarketingQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["productionMarketing", orchardId],
@@ -327,11 +301,6 @@ export const useDeleteProductionMarketingMutation = () => {
   });
 };
 
-//
-// ====================================================
-// 💰 H. INPUT COST
-// ====================================================
-//
 export const useInputCostQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["inputCost", orchardId],
@@ -363,11 +332,6 @@ export const useDeleteInputCostMutation = () => {
   });
 };
 
-//
-// ====================================================
-// 🧩 I. EXTRA
-// ====================================================
-//
 export const useOrchardExtraQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["orchardExtra", orchardId],
@@ -399,11 +363,6 @@ export const useDeleteOrchardExtraMutation = () => {
   });
 };
 
-//
-// ====================================================
-// 🔎 PROFILE LOOKUP
-// ====================================================
-//
 export const useOrchardProfileIdQuery = (orchardId: ID) =>
   useQuery({
     queryKey: ["orchardProfile", orchardId],

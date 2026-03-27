@@ -289,7 +289,7 @@ export const generateInvoicePDF = async (
       to: filePath,
     });
 
-    // ✅ FIXED: Use Print.printAsync for in-app PDF preview (works on both iOS & Android)
+  
     if (action === "view") {
       await Print.printAsync({ uri: filePath });
       return;

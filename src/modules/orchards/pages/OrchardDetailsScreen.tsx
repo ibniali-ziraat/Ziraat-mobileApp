@@ -135,6 +135,16 @@ export default function OrchardDetailsScreen() {
               value: orchard?.ownershipType,
               icon: <Map size={20} color={colors.primary} />,
             },
+            {
+              title: "Establishment Year",
+              value: String(orchard?.establishmentYear),
+              icon: <CalendarDays size={20} color={colors.primary} />,
+            },
+            {
+              title: "Plantation Pattern",
+              value: orchard?.plantationPattern,
+              icon: <Sprout size={20} color={colors.primary} />,
+            },
           ]}
           onEdit={() =>
             router.push({
@@ -331,8 +341,9 @@ export default function OrchardDetailsScreen() {
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
-                    title: "Digital Tools",
-                    value: extraData?.digitalToolsUsed?.join(", ") || "N/A",
+                    title: "Government Schemes Availed",
+                    value:
+                      extraData?.governmentSchemesAvailed?.join(", ") || "N/A",
                     icon: <ToolCaseIcon size={20} color={colors.primary} />,
                   },
                 ]
