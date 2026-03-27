@@ -33,7 +33,7 @@ export default function ProductStickyBar({
   };
 
   const handleBackPress = () => {
-    router.replace(ROUTES.TABS.PRODUCTS); // change path if needed
+    router.replace(ROUTES.TABS.PRODUCTS); 
   };
 
   return (

@@ -1,6 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useRouter } from "expo-router";
-import { FlatList, RefreshControl, View } from "react-native";
+import { FlatList, View } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
@@ -77,13 +77,7 @@ const Wishlist = () => {
         numColumns={2}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={isFetchingWishlist}
-            onRefresh={refetch}
-            tintColor={colors.primary}
-          />
-        }
+       
         columnWrapperStyle={{
           paddingHorizontal: 10,
           justifyContent: "space-between",
