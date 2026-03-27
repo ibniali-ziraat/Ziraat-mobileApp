@@ -42,13 +42,18 @@ const WishlistItem = ({ item, onRemove, onAddToCart }) => {
           borderColor: "#ededed",
         }}
       >
-        {/* REMOVE */}
-        <Pressable
-          onPress={() => onRemove(item.id)}
-          className="absolute right-2 top-2 z-10"
-        >
-          <X size={14} color="#222" />
-        </Pressable>
+      <Pressable
+  onPress={() => onRemove(item.id)}
+  className="absolute right-2 top-2 z-10"
+  style={{
+    backgroundColor: colors.light, 
+    padding: 6,
+    borderRadius: 20,
+   
+  }}
+>
+  <X size={14} color="#222" />
+</Pressable>
 
         {/* IMAGE */}
         <View style={{ height: IMAGE_HEIGHT }}>

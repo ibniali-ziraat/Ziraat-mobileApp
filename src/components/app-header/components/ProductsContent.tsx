@@ -46,7 +46,7 @@ const ProductsContent = () => {
           className="p-2 relative"
           style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}
         >
-          <ShoppingCart size={24} color={colors.primary} />
+          <ShoppingCart size={24} color={colors.secondary} />
           <Badge count={cartCount} />
         </Pressable>
       </View>
