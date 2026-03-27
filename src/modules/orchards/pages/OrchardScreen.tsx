@@ -1,4 +1,5 @@
 import Loader from "@/src/components/shared/Loader";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
@@ -37,7 +38,9 @@ export default function MyOrchardsScreen() {
   return (
     <View style={{ flex: 1 }} className="bg-light">
       {hasNoOrchards ? (
-        <NoOrchardsEmpty />
+        <ScreenLayout>
+          <NoOrchardsEmpty />
+        </ScreenLayout>
       ) : (
         <OrchardList
           orchards={filteredOrchards}

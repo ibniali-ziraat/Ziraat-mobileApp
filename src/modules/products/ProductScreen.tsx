@@ -80,7 +80,7 @@ export default function ProductScreen() {
   };
 
   return (
-    <ScreenLayout>
+    <ScreenLayout scrollable={false}>
       <ScreenContent>
         {/* SEARCH */}
         <ProductSearchBar
