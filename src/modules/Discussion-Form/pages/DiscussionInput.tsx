@@ -228,7 +228,7 @@ export default function DiscussionInput({
           {[
             { icon: Bold, action: "bold" },
             { icon: Italic, action: "italic" },
-            { icon: List, action: "LIST" }, // ✅ FIXED
+            { icon: List, action: "LIST" }, 
           ].map((item, index) => (
             <Pressable
               key={index}

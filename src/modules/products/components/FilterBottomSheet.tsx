@@ -143,7 +143,7 @@ export default function FilterBottomSheet({
           </Section>
 
           {/* SORT */}
-          <Section title="Sort By">
+          <Section title="Sort By Price">
             <Item label="None" selected={!sort} onPress={() => setSort(null)} />
             <Item
               label="Low → High"
