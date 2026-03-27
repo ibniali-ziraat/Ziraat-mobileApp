@@ -1,178 +1,172 @@
-
-  import { toast } from "@backpackapp-io/react-native-toast";
+import { toast } from "@backpackapp-io/react-native-toast";
 import { useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 
-  import CsText from "@/src/components/shared/CsText";
+import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { useDebounce } from "@/src/hooks/useDebounce";
 
-  import FilterBottomSheet from "./components/FilterBottomSheet";
+import FilterBottomSheet from "./components/FilterBottomSheet";
 import ProductSearchBar from "./components/ProductSearchBar";
 
-  import { useWishlist } from "../wishlist/hooks/useWishlist";
+import { useWishlist } from "../wishlist/hooks/useWishlist";
 
-  import ProductsList from "./components/AllProductsCarousel";
+import ProductsList from "./components/AllProductsCarousel";
 import { useProductsData } from "./hooks/data/useProductsData";
 import { useProductSearch } from "./hooks/queries/products.queries";
 
-  export default function ProductScreen() {
-    const [search, setSearch] = useState("");
-    const [filters, setFilters] = useState({});
-    const [filterOpen, setFilterOpen] = useState(false);
+export default function ProductScreen() {
+  const [search, setSearch] = useState("");
+  const [filters, setFilters] = useState({});
+  const [filterOpen, setFilterOpen] = useState(false);
 
-    const [page, setPage] = useState(1); 
-    const pageSize = 6;
+  const [page, setPage] = useState(1);
+  const pageSize = 6;
 
-    const debouncedSearch = useDebounce(search, 500);
+  const debouncedSearch = useDebounce(search, 500);
 
-    const {
-      wishlist,
-      isBusy,
-      addToWishlist,
-      removeFromWishlist,
-      getWishlistItemId,
-    } = useWishlist();
+  const {
+    wishlist,
+    isBusy,
+    addToWishlist,
+    removeFromWishlist,
+    getWishlistItemId,
+  } = useWishlist();
 
-    const { products: allProducts = [], filterOptions = [] } = useProductsData();
+  const { products: allProducts = [], filterOptions = [] } = useProductsData();
 
-    const { data: filteredProductsData = {} } = useProductSearch({
-      query: debouncedSearch,
-      ...filters,
-    });
+  const { data: filteredProductsData = {} } = useProductSearch({
+    query: debouncedSearch,
+    ...filters,
+  });
 
-    const filteredProducts = Array.isArray(filteredProductsData?.products)
-      ? filteredProductsData.products
-      : [];
+  const filteredProducts = Array.isArray(filteredProductsData?.products)
+    ? filteredProductsData.products
+    : [];
 
-    const isFiltering = Object.keys(filters).length > 0 || debouncedSearch;
-    const displayedProducts = isFiltering ? filteredProducts : allProducts;
+  const isFiltering = Object.keys(filters).length > 0 || debouncedSearch;
+  const displayedProducts = isFiltering ? filteredProducts : allProducts;
 
-    
-    const totalPages = Math.ceil(displayedProducts.length / pageSize);
+  const totalPages = Math.ceil(displayedProducts.length / pageSize);
 
-    const paginatedProducts = displayedProducts.slice(
-      (page - 1) * pageSize,
-      page * pageSize
-    );
+  const paginatedProducts = displayedProducts.slice(
+    (page - 1) * pageSize,
+    page * pageSize,
+  );
 
-    /* RESET PAGE ON FILTER/SEARCH */
-    useEffect(() => {
-      setPage(1);
-    }, [debouncedSearch, filters]);
+  /* RESET PAGE ON FILTER/SEARCH */
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, filters]);
 
-    const handleToggleWishlist = async (productId: string | number) => {
-      const wishlistItemId = getWishlistItemId(productId);
+  const handleToggleWishlist = async (productId: string | number) => {
+    const id = getWishlistItemId(productId);
+    console.log(id, "wishlistid.....");
 
-      try {
-        if (wishlistItemId) {
-          await removeFromWishlist(wishlistItemId);
-          toast.success("Removed from wishlist");
-        } else {
-          await addToWishlist({ productId, quantity: 1 });
-          toast.success("Added to wishlist");
-        }
-      } catch {
-        toast.error("Process failed");
+    try {
+      if (id) {
+        await removeFromWishlist({ id });
+        toast.success("Removed from wishlist");
+      } else {
+        await addToWishlist({ productId, quantity: 1 });
+        toast.success("Added to wishlist");
       }
-    };
+    } catch (error) {
+      // console.log(error, "error in wishlist");
+      // toast.error(error);
+    }
+  };
 
-    return (
-      <ScreenLayout>
-        <ScreenContent>
-          
-          {/* SEARCH */}
-          <ProductSearchBar
-            search={search}
-            setSearch={setSearch}
-            onFilterPress={() => setFilterOpen(true)}
+  return (
+    <ScreenLayout>
+      <ScreenContent>
+        {/* SEARCH */}
+        <ProductSearchBar
+          search={search}
+          setSearch={setSearch}
+          onFilterPress={() => setFilterOpen(true)}
+        />
+
+        {/*  FILTER */}
+        <FilterBottomSheet
+          visible={filterOpen}
+          onClose={() => setFilterOpen(false)}
+          onApplyFilters={setFilters}
+          filterOptions={filterOptions}
+        />
+
+        {/*  PRODUCTS */}
+        <View className="mt-6">
+          <ProductsList
+            items={paginatedProducts}
+            wishlistItems={wishlist}
+            onToggleWishlist={handleToggleWishlist}
+            isWishlistBusy={isBusy}
+            variant="grid"
           />
+        </View>
 
-          {/*  FILTER */}
-          <FilterBottomSheet
-            visible={filterOpen}
-            onClose={() => setFilterOpen(false)}
-            onApplyFilters={setFilters}
-            filterOptions={filterOptions}
-          />
-
-          {/*  PRODUCTS */}
-          <View className="mt-6">
-            <ProductsList
-              items={paginatedProducts} 
-              wishlistItems={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-              isWishlistBusy={isBusy}
-              variant="grid"
-            />
-          </View>
-
-          {/*  PAGINATION UI */}
-          {totalPages > 1 && (
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: 6,
-                marginVertical: 16,
-              }}
+        {/*  PAGINATION UI */}
+        {totalPages > 1 && (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: 6,
+              marginVertical: 16,
+            }}
+          >
+            {/* PREV */}
+            <Pressable
+              disabled={page === 1}
+              onPress={() => setPage((p) => p - 1)}
             >
-              {/* PREV */}
-              <Pressable
-                disabled={page === 1}
-                onPress={() => setPage((p) => p - 1)}
-              >
-                <CsText style={{ opacity: page === 1 ? 0.3 : 1 }}>
-                  Prev
-                </CsText>
-              </Pressable>
+              <CsText style={{ opacity: page === 1 ? 0.3 : 1 }}>Prev</CsText>
+            </Pressable>
 
-              {/* PAGE NUMBERS */}
-              {[...Array(totalPages)].map((_, i) => {
-                const pageNumber = i + 1;
-                const isActive = pageNumber === page;
+            {/* PAGE NUMBERS */}
+            {[...Array(totalPages)].map((_, i) => {
+              const pageNumber = i + 1;
+              const isActive = pageNumber === page;
 
-                return (
-                  <Pressable key={i} onPress={() => setPage(pageNumber)}>
-                    <View
+              return (
+                <Pressable key={i} onPress={() => setPage(pageNumber)}>
+                  <View
+                    style={{
+                      paddingHorizontal: 10,
+                      paddingVertical: 6,
+                      borderRadius: 6,
+                      backgroundColor: isActive ? colors.primary : "#E5E7EB",
+                    }}
+                  >
+                    <CsText
                       style={{
-                        paddingHorizontal: 10,
-                        paddingVertical: 6,
-                        borderRadius: 6,
-                        backgroundColor: isActive
-                          ? colors.primary
-                          : "#E5E7EB",
+                        color: isActive ? "#fff" : "#000",
+                        fontWeight: "600",
                       }}
                     >
-                      <CsText
-                        style={{
-                          color: isActive ? "#fff" : "#000",
-                          fontWeight: "600",
-                        }}
-                      >
-                        {pageNumber}
-                      </CsText>
-                    </View>
-                  </Pressable>
-                );
-              })}
+                      {pageNumber}
+                    </CsText>
+                  </View>
+                </Pressable>
+              );
+            })}
 
-              {/* NEXT */}
-              <Pressable
-                disabled={page === totalPages}
-                onPress={() => setPage((p) => p + 1)}
-              >
-                <CsText style={{ opacity: page === totalPages ? 0.3 : 1 }}>
-                  Next
-                </CsText>
-              </Pressable>
-            </View>
-          )}
-
-        </ScreenContent>
-      </ScreenLayout>
-    );
-  }
+            {/* NEXT */}
+            <Pressable
+              disabled={page === totalPages}
+              onPress={() => setPage((p) => p + 1)}
+            >
+              <CsText style={{ opacity: page === totalPages ? 0.3 : 1 }}>
+                Next
+              </CsText>
+            </Pressable>
+          </View>
+        )}
+      </ScreenContent>
+    </ScreenLayout>
+  );
+}

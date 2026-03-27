@@ -6,6 +6,7 @@ export const getWishlist = async () =>
   safeGet(axiosInstance.get("/api/wishList/PrivateList/"));
 
 export const deleteWishlist = async ({ id }: number) => {
+  console.log(id, "id in wishlist service");
   return safeGet(
     await axiosInstance.delete(`/api/wishList/RemoveItem?id=${id}`),
   ).data;
