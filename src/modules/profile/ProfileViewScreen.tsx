@@ -26,7 +26,6 @@ import { useEffect, useState } from "react";
 import { userDeleteConfig } from "../auth/config/userDeleteConfig";
 
 // Icons
-import Loader from "@/src/components/shared/Loader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { DUMMY_EMAIL } from "@/src/constants/constants";
@@ -115,9 +114,9 @@ export default function ProfileViewScreen() {
       setDeleting(false);
     }
   };
-  if (isLoading) {
-    return <Loader />;
-  }
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
   return (
     <ScreenLayout>
       <BackHeader

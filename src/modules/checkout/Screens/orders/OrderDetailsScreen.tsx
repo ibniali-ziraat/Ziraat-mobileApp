@@ -7,18 +7,23 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { shadows } from "@/src/constants/shadows";
 
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 
 import {
   CalendarDays,
   CreditCard,
+  Download,
+  Eye,
   MapPin,
   Package,
+  Share2,
   ShoppingCart,
 } from "lucide-react-native";
 
 import Loader from "@/src/components/shared/Loader";
 import { useOrderDetails } from "../../hooks/UseOders";
+
+import { generateInvoicePDF } from "@/src/components/shared/InvoiceGenerator";
 
 const baseCard = {
   backgroundColor: colors.light,
@@ -54,6 +59,82 @@ const OrderDetailsScreen = () => {
   return (
     <ScreenLayout>
       <BackHeader title="Order Details" desc={`Order #${orderData?.id}`} />
+
+      {/* ✅ NEW ICON ACTION ROW */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginHorizontal: 16,
+          marginTop: 10,
+          marginBottom: 6,
+          gap: 10,
+        }}
+      >
+        {/* DOWNLOAD */}
+        <Pressable
+          onPress={() => generateInvoicePDF(orderData, "download")}
+          style={{
+            flex: 1,
+            backgroundColor: colors.primary,
+            paddingVertical: 12,
+            borderRadius: 14,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+          }}
+        >
+          <Download size={16} color="#fff" />
+          <Text style={{ color: "#fff", fontWeight: "600" }}>
+            Download
+          </Text>
+        </Pressable>
+
+        {/* VIEW */}
+        <Pressable
+          onPress={() => generateInvoicePDF(orderData, "view")}
+          style={{
+            flex: 1,
+            backgroundColor: colors.bgColor,
+            paddingVertical: 12,
+            borderRadius: 14,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            borderWidth: 1,
+            borderColor: colors.cardBorder,
+          }}
+        >
+          <Eye size={16} color={colors.dark} />
+          <Text style={{ color: colors.dark, fontWeight: "600" }}>
+            View
+          </Text>
+        </Pressable>
+
+        {/* SHARE */}
+        <Pressable
+          onPress={() => generateInvoicePDF(orderData, "share")}
+          style={{
+            flex: 1,
+            backgroundColor: colors.bgColor,
+            paddingVertical: 12,
+            borderRadius: 14,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            borderWidth: 1,
+            borderColor: colors.cardBorder,
+          }}
+        >
+          <Share2 size={16} color={colors.dark} />
+          <Text style={{ color: colors.dark, fontWeight: "600" }}>
+            Share
+          </Text>
+        </Pressable>
+      </View>
 
       <FlatList
         scrollEnabled={false}
@@ -304,7 +385,9 @@ const OrderDetailsScreen = () => {
                     fontWeight: "500",
                   }}
                 >
-                  {typeof row.value === "string" ? row.value : `₹${row.value}`}
+                  {typeof row.value === "string"
+                    ? row.value
+                    : `₹${row.value}`}
                 </Text>
               </View>
             ))}
