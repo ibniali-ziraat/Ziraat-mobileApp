@@ -1,23 +1,22 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import { generateInvoicePDF } from "@/src/components/shared/InvoiceGenerator";
+import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-
-import { useLocalSearchParams } from "expo-router";
-
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { shadows } from "@/src/constants/shadows";
-
-import { FlatList, Image, Text, View } from "react-native";
-
+import { useLocalSearchParams } from "expo-router";
 import {
   CalendarDays,
   CreditCard,
+  Download,
+  Eye,
   MapPin,
   Package,
+  Share2,
   ShoppingCart,
 } from "lucide-react-native";
-
-import Loader from "@/src/components/shared/Loader";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { useOrderDetails } from "../../hooks/UseOders";
 
 const baseCard = {
@@ -66,13 +65,55 @@ const OrderDetailsScreen = () => {
         }}
         ListHeaderComponent={() => (
           <View>
-            {/* ORDER INFO */}
+
             <View style={[baseCard, shadows.profile_card]}>
+
+
               <View className="flex-row items-center mb-4">
                 <Package size={18} color={colors.primary} />
+
                 <Text style={[typography.Poppins_s_bold, { marginLeft: 8 }]}>
                   Order Information
                 </Text>
+
+
+                <View style={{ marginLeft: "auto" }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                      gap: 2,
+
+                    }}
+                  >
+                    <Pressable
+                      onPress={() =>
+                        generateInvoicePDF(orderData, "download")
+                      }
+                      style={{ padding: 8 }}
+                    >
+                      <Download size={18} color={colors.dark} />
+                    </Pressable>
+
+                    <Pressable
+                      onPress={() =>
+                        generateInvoicePDF(orderData, "view")
+                      }
+                      style={{ padding: 8 }}
+                    >
+                      <Eye size={18} color={colors.dark} />
+                    </Pressable>
+
+                    <Pressable
+                      onPress={() =>
+                        generateInvoicePDF(orderData, "share")
+                      }
+                      style={{ padding: 8 }}
+                    >
+                      <Share2 size={18} color={colors.dark} />
+                    </Pressable>
+                  </View>
+                </View>
               </View>
 
               <View className="flex-row items-center mb-3">
@@ -121,6 +162,7 @@ const OrderDetailsScreen = () => {
                   </Text>
                 </View>
               </View>
+
             </View>
 
             {/* SHIPPING */}
@@ -304,7 +346,9 @@ const OrderDetailsScreen = () => {
                     fontWeight: "500",
                   }}
                 >
-                  {typeof row.value === "string" ? row.value : `₹${row.value}`}
+                  {typeof row.value === "string"
+                    ? row.value
+                    : `₹${row.value}`}
                 </Text>
               </View>
             ))}
