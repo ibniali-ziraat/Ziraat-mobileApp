@@ -16,6 +16,7 @@ import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 
 import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
+import { useState } from "react";
 import { useUserOrders } from "../../hooks/UseOders";
 
 const ORDER_STATUS = {
@@ -51,6 +52,7 @@ const baseCard = {
 const OrdersListScreen = () => {
   const { data, isLoading } = useUserOrders();
   const orders = data || [];
+  const [isGrid, setIsGrid] = useState(false);
 
   const formatDate = (date: string) => {
     if (!date) return "N/A";
@@ -143,12 +145,13 @@ const OrdersListScreen = () => {
     );
   }
 
-  const renderOrder = ({ item }) => {
+  const renderListOrder = ({ item }) => {
     const firstProduct = item.orderItems?.[0];
     const status = getStatus(item.orderStatus);
 
     return (
       <TouchableOpacity
+    
         activeOpacity={0.92}
         onPress={() => handleOrderPress(item)}
         style={[baseCard, shadows.profile_card]}
@@ -254,23 +257,125 @@ const OrdersListScreen = () => {
     );
   };
 
+  const renderGridOrder = ({ item }) => {
+    const firstProduct = item.orderItems?.[0];
+    const status = getStatus(item.orderStatus);
+
+    return (
+      <TouchableOpacity
+        activeOpacity={0.92}
+        onPress={() => handleOrderPress(item)}
+        style={[
+          {
+            backgroundColor: colors.light,
+            borderRadius: 20,
+            padding: 12,
+            marginBottom: 14,
+            flex: 1,
+            marginHorizontal: 6,
+          },
+          shadows.profile_card,
+        ]}
+      >
+        {/* IMAGE */}
+        <Image
+          source={{ uri: firstProduct?.thumbnailImage }}
+          style={{
+            height: 110,
+            width: "100%",
+            borderRadius: 14,
+            backgroundColor: colors.bgColor,
+            marginBottom: 10,
+          }}
+          resizeMode="cover"
+        />
+
+        {/* ORDER ID */}
+        <Text style={[typography.Poppins_s_bold, { color: colors.dark, fontSize: 13 }]}>
+          Order #{item.id}
+        </Text>
+
+        {/* PRODUCT NAME */}
+        <Text
+          numberOfLines={1}
+          style={{
+            color: colors.neutral,
+            marginTop: 2,
+            fontSize: 12,
+          }}
+        >
+          {firstProduct?.productName || "Multiple Items"}
+        </Text>
+
+        {/* DATE */}
+        <View className="flex-row items-center mt-2">
+          <CalendarDays size={12} color={colors.secondary} />
+          <Text style={{ marginLeft: 4, color: colors.neutral, fontSize: 11 }}>
+            {formatDate(item.createdOn)}
+          </Text>
+        </View>
+
+        {/* PRICE + STATUS */}
+        <View className="flex-row justify-between items-center mt-3">
+          <Text
+            style={[
+              typography.Poppins_s_bold,
+              { color: colors.primary, fontSize: 14 },
+            ]}
+          >
+            ₹{item.subTotal}
+          </Text>
+
+          <View
+            style={{
+              backgroundColor: status.bg,
+              paddingHorizontal: 8,
+              paddingVertical: 3,
+              borderRadius: 20,
+            }}
+          >
+            <Text
+              style={{
+                color: status.text,
+                fontSize: 9,
+                fontWeight: "700",
+              }}
+            >
+              {status.label}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <ScreenLayout>
-      <BackHeader
+     <BackHeader
         title="My Orders"
         desc="Track and manage your orders"
-        // onPress={() => router.replace(ROUTES.TABS.MORE)}
+        onPress={() => router.replace(ROUTES.TABS.MORE)}
+        showToggle
+        isGrid={isGrid}
+        onToggle={setIsGrid}
       />
+
+
+  
 
       <FlatList
         scrollEnabled={false}
         data={orders}
+        key={isGrid ? "grid" : "list"}
         keyExtractor={(item) => String(item.id)}
-        renderItem={renderOrder}
+        numColumns={isGrid ? 2 : 1}
+        renderItem={isGrid ? renderGridOrder : renderListOrder}
         showsVerticalScrollIndicator={false}
+      
         contentContainerStyle={{
-          padding: 16,
+          paddingHorizontal: isGrid ? 10 : 16,
           paddingBottom: 60,
+          paddingTop: isGrid ? 4 : 0,
         }}
       />
     </ScreenLayout>
