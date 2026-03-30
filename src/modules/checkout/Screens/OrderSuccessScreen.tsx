@@ -1,8 +1,8 @@
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 
-import { generateInvoicePDF } from "@/src/components/shared/InvoiceGenerator";
-import { BackHandler, Text, TouchableOpacity, View } from "react-native";
+import { CheckCircle } from "lucide-react-native";
+import { BackHandler, Text, View } from "react-native";
 
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
@@ -11,8 +11,6 @@ import FormActions from "@/src/components/shared/FormActions";
 import { ROUTES } from "@/src/constants/routes";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
-
-import { CheckCircle, Download, Eye, Share2 } from "lucide-react-native";
 
 const OrderSuccessScreen = () => {
   const { order: orderParam } = useLocalSearchParams();
@@ -38,7 +36,7 @@ const OrderSuccessScreen = () => {
     useCallback(() => {
       const backHandler = BackHandler.addEventListener(
         "hardwareBackPress",
-        () => true,
+        () => true, // block back
       );
 
       return () => backHandler.remove();
@@ -62,7 +60,7 @@ const OrderSuccessScreen = () => {
 
             <Text
               style={[typography.Poppins_s_bold]}
-              className="mt-6 text-2xl text-center text-neutral-900"
+              className="mt-4 text-2xl text-center text-neutral-900"
             >
               Order Placed Successfully
             </Text>
@@ -72,67 +70,8 @@ const OrderSuccessScreen = () => {
             </Text>
           </View>
 
-          {/* SHIPPING ADDRESS */}
-          <View className=" mt-4 rounded-2xl bg-white p-5">
-        
-            <View className="flex-row justify-between items-center pb-1 ">
-              <Text
-                style={[typography.Poppins_m_bold]}
-                className="text-lg"
-              >
-                Delivery Address
-              </Text>
-
-              <View className="flex-row gap-3">
-                <TouchableOpacity
-                  onPress={() => generateInvoicePDF(order, "download")}
-                  className="bg-neutral-100 p-2 rounded-full"
-                >
-                  <Download size={18} color={colors.primary} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => generateInvoicePDF(order, "view")}
-                  className="bg-neutral-100 p-2 rounded-full"
-                >
-                  <Eye size={18} color={colors.primary} />
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => generateInvoicePDF(order, "share")}
-                  className="bg-neutral-100 p-2 rounded-full"
-                >
-                  <Share2 size={18} color={colors.primary} />
-                </TouchableOpacity>
-              </View>
-            </View>
-
-            <Text className="font-semibold  text-neutral-1000">
-              {shippingAddress.contactName}
-            </Text>
-
-            <Text className="text-neutral-700">
-              {shippingAddress.addressLine1}
-            </Text>
-
-            <Text className="text-neutral-700">
-              {shippingAddress.city} - {shippingAddress.zipCode}
-            </Text>
-
-            <Text className="text-neutral-700">
-              {shippingAddress.phone}
-            </Text>
-          </View>
-
           {/* ORDER DETAILS */}
-          <View className="rounded-2xl bg-white p-5">
-            <Text
-              style={[typography.Poppins_m_bold]}
-              className="mb-2 text-lg"
-            >
-              Order Details
-            </Text>
-
+          <View className="mt-8 rounded-2xl bg-white p-5">
             <DetailRow label="Order ID" value={`#${order.id}`} />
 
             <DetailRow
@@ -140,20 +79,11 @@ const OrderSuccessScreen = () => {
               value={`₹${Number(order.orderTotal).toFixed(2)}`}
             />
 
-            <DetailRow
-              label="Payment Method"
-              value={order.paymentMethod}
-            />
+            <DetailRow label="Payment Method" value={order.paymentMethod} />
 
-            <DetailRow
-              label="Shipping Method"
-              value={order.shippingMethod}
-            />
+            <DetailRow label="Shipping Method" value={order.shippingMethod} />
 
-            <DetailRow
-              label="Quantity"
-              value={`${totalQuantity}`}
-            />
+            <DetailRow label="Quantity" value={`${totalQuantity}`} />
 
             <DetailRow
               label="Tax Amount"
@@ -169,6 +99,27 @@ const OrderSuccessScreen = () => {
               label="Coupon Applied"
               value={order.couponCode || "No Coupon"}
             />
+          </View>
+
+          {/* SHIPPING ADDRESS */}
+          <View className=" mt-4 rounded-2xl bg-white p-5">
+            <Text style={[typography.Poppins_s_bold]} className="mb-2 text-lg">
+              Delivery Address
+            </Text>
+
+            <Text className="font-semibold text-neutral-900">
+              {shippingAddress.contactName}
+            </Text>
+
+            <Text className="text-neutral-700">
+              {shippingAddress.addressLine1}
+            </Text>
+
+            <Text className="text-neutral-700">
+              {shippingAddress.city} - {shippingAddress.zipCode}
+            </Text>
+
+            <Text className="text-neutral-700">{shippingAddress.phone}</Text>
           </View>
 
           <FormActions
