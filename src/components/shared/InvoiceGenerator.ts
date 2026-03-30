@@ -1,5 +1,5 @@
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { Platform } from "react-native"; // ✅ ADDED
+import { Platform } from "react-native";
 
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system/legacy";
@@ -37,7 +37,7 @@ export const generateInvoicePDF = async (
       }
     );
 
-    // ✅ MODIFIED (only for web compatibility, logic same)
+
     const logo =
       Platform.OS === "web"
         ? "/logo.jpeg"
@@ -285,7 +285,7 @@ export const generateInvoicePDF = async (
     </html>
     `;
 
-    // ✅ WEB SUPPORT (ONLY ADDITION)
+
     if (Platform.OS === "web") {
       const { jsPDF } = await import("jspdf");
 
@@ -302,7 +302,7 @@ export const generateInvoicePDF = async (
       return;
     }
 
-    // ✅ ORIGINAL MOBILE CODE (UNCHANGED)
+   
 
     const { uri } = await Print.printToFileAsync({ html });
 
