@@ -14,6 +14,7 @@ export const MenuLinks = {
         { label: "My Orders", screen: ROUTES.ORDERS.LIST },
         { label: "Chat With Us", screen: "discussion" },
         { label: "Discussion", screen: "chat-Screen" },
+          { label: "Wallet", screen: ROUTES.PAYMENTMETHOD.Wallet },
         // { label: "Change Password", screen: "user/change-password" },
         // { label: "Delete Account", screen: "user/delete-account"},
       ],
