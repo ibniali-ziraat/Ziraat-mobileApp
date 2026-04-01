@@ -23,7 +23,7 @@ export default function ProductScreen() {
   const [filterOpen, setFilterOpen] = useState(false);
 
   const [page, setPage] = useState(1);
-  const pageSize = 6;
+  const pageSize = 15;
 
   const debouncedSearch = useDebounce(search, 500);
 
@@ -42,9 +42,18 @@ export default function ProductScreen() {
     ...filters,
   });
 
-  const filteredProducts = Array.isArray(filteredProductsData?.products)
+  let filteredProducts = Array.isArray(filteredProductsData?.products)
     ? filteredProductsData.products
     : [];
+
+
+  if (filters?.minRating !== undefined && filters?.minRating !== null) {
+    filteredProducts = filteredProducts.filter(
+      (p: any) =>
+        Number(p.ratingAverage || 0) >= Number(filters.minRating)
+    );
+
+  }
 
   const isFiltering = Object.keys(filters).length > 0 || debouncedSearch;
   const displayedProducts = isFiltering ? filteredProducts : allProducts;
@@ -56,7 +65,7 @@ export default function ProductScreen() {
     page * pageSize,
   );
 
-  /* RESET PAGE ON FILTER/SEARCH */
+ 
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch, filters]);
@@ -74,8 +83,7 @@ export default function ProductScreen() {
         toast.success("Added to wishlist");
       }
     } catch (error) {
-      // console.log(error, "error in wishlist");
-      // toast.error(error);
+   
     }
   };
 
