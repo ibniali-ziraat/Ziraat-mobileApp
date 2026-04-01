@@ -1,10 +1,4 @@
-import { Platform } from "react-native";
-import MapView, {
-  Marker,
-  Polygon,
-  Polyline,
-  PROVIDER_GOOGLE,
-} from "react-native-maps";
+import MapView, { Marker, Polygon, Polyline } from "react-native-maps";
 
 export default function MeasureMap({
   location,
@@ -15,7 +9,7 @@ export default function MeasureMap({
   return (
     <MapView
       style={{ flex: 1 }}
-      provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
+      // provider={Platform.OS === "android" ? PROVIDER_GOOGLE : undefined}
       mapType="satellite"
       showsUserLocation
       initialRegion={{
