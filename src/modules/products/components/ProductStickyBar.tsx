@@ -129,43 +129,38 @@ export default function ProductStickyBar({
         <Animated.View
           style={{ flex: 1, transform: [{ scale: wishlistBtnScale }] }}
         >
-          <Pressable
-            onPress={handleWishlist}
-            onPressIn={() => animateWishlist(0.96)}
-            onPressOut={() => animateWishlist(1)}
-            style={[
-              styles.cartBtn,
-              {
-                backgroundColor: isWishlisted
-                  ? colors.secondary
-                  : colors.light,
-                borderWidth: 1.5,
-                borderColor: colors.secondary,
-              },
-            ]}
-          >
-            <Heart
-              size={18}
-              color={
-                isWishlisted ? colors.light : colors.secondary
-              }
-              fill={
-                isWishlisted ? colors.light : "transparent"
-              }
-            />
-            <Text
-              style={[
-                styles.cartText,
-                {
-                  color: isWishlisted
-                    ? colors.light
-                    : colors.secondary,
-                },
-              ]}
-            >
-              {isWishlisted ? "WISHLISTED" : "WISHLIST"}
-            </Text>
-          </Pressable>
+         <Pressable
+  onPress={handleWishlist}
+  onPressIn={() => animateWishlist(0.96)}
+  onPressOut={() => animateWishlist(1)}
+  style={[
+    styles.cartBtn,
+    {
+      backgroundColor: colors.light, 
+      borderWidth: 1.5,
+      borderColor: colors.secondary, 
+    },
+  ]}
+>
+  <Heart
+    size={18}
+    color={colors.secondary} 
+    fill={
+      isWishlisted ? colors.secondary : "transparent" 
+    }
+  />
+
+  <Text
+    style={[
+      styles.cartText,
+      {
+        color: colors.secondary, // ALWAYS secondary
+      },
+    ]}
+  >
+    {isWishlisted ? "WISHLISTED" : "WISHLIST"}
+  </Text>
+</Pressable>
         </Animated.View>
 
         {/*  Cart */}
