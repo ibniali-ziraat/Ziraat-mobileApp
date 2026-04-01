@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import RazorpayCheckout from "react-native-razorpay";
 import { colors } from "../constants/colors";
 
-const RAZORPAY_KEY = "rzp_test_RuYSKNZSDzCrK1";
 type RazorpayResult =
   | {
       success: true;
@@ -44,7 +43,7 @@ export const usePayment = () => {
     }): Promise<RazorpayResult> => {
       try {
         const options = {
-          key: RAZORPAY_KEY,
+          key: process.env.EXPO_PUBLIC_RAZORPAY_KEY_ID || "",
           currency: "INR",
           amount: String(amount * 100), // paise
           name: "Ziraat",
@@ -80,7 +79,7 @@ export const usePayment = () => {
         };
       }
     },
-    []
+    [],
   );
 
   return { pay };
