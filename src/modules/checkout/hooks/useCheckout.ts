@@ -8,6 +8,7 @@ import {
   getCheckoutShipping,
   getPaymentProviders,
   updateTaxAndShippingPrices,
+  upiCheckoutService,
 } from "../services/checkout.services";
 
 export const useCouponCode = () => {
@@ -84,5 +85,16 @@ export const usePaymentProviders = () => {
 export const useCodCheckout = () => {
   return useMutation({
     mutationFn: (checkoutId: number) => codCheckoutService(checkoutId),
+  });
+};
+
+export const useUpiCheckout = () => {
+  return useMutation({
+    mutationFn: (payload: {
+      checkoutId: string;
+      paymentId: string;
+      orderId: string;
+      signature: string;
+    }) => upiCheckoutService(payload),
   });
 };

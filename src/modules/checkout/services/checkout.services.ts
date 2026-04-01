@@ -94,3 +94,15 @@ export const codCheckoutService = async (checkoutId: string) => {
 
   return response.data;
 };
+export const upiCheckoutService = async (payload: {
+  checkoutId: string;
+  paymentId: string;
+  orderId: string;
+  signature: string;
+}) => {
+  const { data } = await axiosInstance.post(
+    `/api/payments/upi-checkout`,
+    payload,
+  );
+  return data;
+};
