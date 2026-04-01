@@ -29,6 +29,7 @@ export const useProductSearch = (params: {
   minPrice?: number;
   maxPrice?: number;
   sort?: string;
+    minRating?: number; 
 }) =>
   useQuery({
     queryKey: ["product-search", params],
