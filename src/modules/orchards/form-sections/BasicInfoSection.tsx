@@ -1,14 +1,10 @@
-import { ToggleLeft, ToggleRight } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { Pressable, Text, View } from "react-native";
+import { View } from "react-native";
 
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
-import MeasuredOrchardSection from "./MeasuredOrchardSection";
 
-import { colors } from "@/src/constants/colors";
-import { shadows } from "@/src/constants/shadows";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
 
@@ -38,7 +34,7 @@ export default function BasicInfo({ errors, data }) {
   const orchardMode = useWatch({
     control,
     name: "orchardSize.mode",
-    defaultValue: "measure",
+    defaultValue: "manual",
   });
 
   useEffect(() => {
@@ -70,7 +66,7 @@ export default function BasicInfo({ errors, data }) {
         required
         error={errors?.orchardName}
       />
-
+      {/* 
       <View
         style={[
           {
@@ -108,7 +104,6 @@ export default function BasicInfo({ errors, data }) {
           </Text>
         </View>
 
-        {/* Toggle Button */}
         <Pressable
           onPress={toggleMode}
           style={{
@@ -138,13 +133,13 @@ export default function BasicInfo({ errors, data }) {
             {orchardMode === "measure" ? "Measure" : "Manual"}
           </Text>
         </Pressable>
-      </View>
-
+      </View> */}
+      {/* 
       {orchardMode === "measure" && (
         <>
           <MeasuredOrchardSection />
         </>
-      )}
+      )} */}
 
       {orchardMode === "manual" && (
         <View>
