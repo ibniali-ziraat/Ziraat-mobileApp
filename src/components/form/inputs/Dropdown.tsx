@@ -3,12 +3,12 @@ import { Check, ChevronDown } from "lucide-react-native";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import {
-    LayoutAnimation,
-    Platform,
-    Pressable,
-    Text,
-    UIManager,
-    View,
+  LayoutAnimation,
+  Platform,
+  Pressable,
+  Text,
+  UIManager,
+  View,
 } from "react-native";
 import { SingleSelectInputProps } from "../../shared/inputs/types";
 
@@ -43,10 +43,6 @@ export default function DropdownSelectInput({
 
         return (
           <View className="mb-4">
-            {/* 
-                LABEL - Always visible 
-                This ensures "Select Payment Method" stays at the top 
-            */}
             {label && (
               <Text className="mb-2 text-[14px] font-semibold text-neutral-500">
                 {label}
@@ -68,7 +64,6 @@ export default function DropdownSelectInput({
                 shadowRadius: 2,
               }}
             >
-              {/* TRIGGER BOX */}
               <Pressable
                 onPress={toggleDropdown}
                 style={({ pressed }) => ({
@@ -81,7 +76,6 @@ export default function DropdownSelectInput({
                 <Text
                   className={`text-[16px] ${!selectedOption ? "text-neutral-400" : "text-neutral-900 font-medium"}`}
                 >
-                  {/* Shows selected label if exists, otherwise shows placeholder */}
                   {selectedOption ? selectedOption.label : placeholder}
                 </Text>
 

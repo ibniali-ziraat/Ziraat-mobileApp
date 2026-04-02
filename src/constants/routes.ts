@@ -1,3 +1,4 @@
+
 export const ROUTES = {
   TABS: {
     HOME: "/(tabs)",
@@ -88,6 +89,11 @@ export const ROUTES = {
       ORDER_SUCCESS: "/order-success",
     },
   },
+
+   PAYMENTMETHOD: {
+    Wallet:"/wallet",
+   },
+
 
   ORDERS: {
     LIST: "/orders-list",

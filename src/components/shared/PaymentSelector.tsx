@@ -52,10 +52,13 @@ export default function PaymentSelector({
                     setPaymentMethod(item.id);
                     setOpenDropdown(false);
                   }}
-                  className={`flex-row items-center justify-between px-4 py-3 ${isSelected ? "bg-light" : ""
-                    }`}
+                  className={`flex-row items-center justify-between px-4 py-3 ${
+                    isSelected ? "bg-light" : ""
+                  }`}
                 >
-                  <CsText className={`text-dark ${isSelected ? "font-semibold" : ""}`}>
+                  <CsText
+                    className={`text-dark ${isSelected ? "font-semibold" : ""}`}
+                  >
                     {item.label}
                   </CsText>
                   {isSelected && <Check size={18} color={colors.primary} />}

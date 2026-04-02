@@ -1,29 +1,49 @@
 import { toast } from "@backpackapp-io/react-native-toast";
-import { useEffect, useState } from "react";
-import { Pressable, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import {
+  ActivityIndicator,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 
-import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { useDebounce } from "@/src/hooks/useDebounce";
-
 import FilterBottomSheet from "./components/FilterBottomSheet";
 import ProductSearchBar from "./components/ProductSearchBar";
 
 import { useWishlist } from "../wishlist/hooks/useWishlist";
 
+import { ScrollView } from "react-native-gesture-handler";
 import ProductsList from "./components/AllProductsCarousel";
 import { useProductsData } from "./hooks/data/useProductsData";
 import { useProductSearch } from "./hooks/queries/products.queries";
+
+import {
+  ArrowUp,
+  ChevronRight,
+  CookingPotIcon,
+  Layers2,
+  LayoutGrid,
+  Sofa,
+} from "lucide-react-native";
+
+import SectionTitle from "../home/components/SectionTitle";
 
 export default function ProductScreen() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({});
   const [filterOpen, setFilterOpen] = useState(false);
 
-  const [page, setPage] = useState(1);
+  const [activeCategory, setActiveCategory] = useState("All");
+
   const pageSize = 6;
+  const [visibleCount, setVisibleCount] = useState(pageSize);
+
+  const [showTopBtn, setShowTopBtn] = useState(false);
+  const scrollRef = useRef<any>(null);
 
   const debouncedSearch = useDebounce(search, 500);
 
@@ -35,35 +55,37 @@ export default function ProductScreen() {
     getWishlistItemId,
   } = useWishlist();
 
-  const { products: allProducts = [], filterOptions = [] } = useProductsData();
+  const { products: allProducts = [], filterOptions = [] } =
+    useProductsData();
 
   const { data: filteredProductsData = {} } = useProductSearch({
     query: debouncedSearch,
     ...filters,
   });
 
-  const filteredProducts = Array.isArray(filteredProductsData?.products)
+  let filteredProducts = Array.isArray(filteredProductsData?.products)
     ? filteredProductsData.products
     : [];
+
+  if (filters?.minRating !== undefined && filters?.minRating !== null) {
+    filteredProducts = filteredProducts.filter(
+      (p: any) =>
+        Number(p.ratingAverage || 0) >= Number(filters.minRating)
+    );
+  }
 
   const isFiltering = Object.keys(filters).length > 0 || debouncedSearch;
   const displayedProducts = isFiltering ? filteredProducts : allProducts;
 
-  const totalPages = Math.ceil(displayedProducts.length / pageSize);
+  const visibleProducts = displayedProducts.slice(0, visibleCount);
+  const isMoreLoading = visibleCount < displayedProducts.length;
 
-  const paginatedProducts = displayedProducts.slice(
-    (page - 1) * pageSize,
-    page * pageSize,
-  );
-
-  /* RESET PAGE ON FILTER/SEARCH */
   useEffect(() => {
-    setPage(1);
+    setVisibleCount(pageSize);
   }, [debouncedSearch, filters]);
 
   const handleToggleWishlist = async (productId: string | number) => {
     const id = getWishlistItemId(productId);
-    console.log(id, "wishlistid.....");
 
     try {
       if (id) {
@@ -73,95 +95,186 @@ export default function ProductScreen() {
         await addToWishlist({ productId, quantity: 1 });
         toast.success("Added to wishlist");
       }
-    } catch (error) {
-      // console.log(error, "error in wishlist");
-      // toast.error(error);
-    }
+    } catch (error) {}
   };
+
+  //  UPDATED CATEGORY ICON STRUCTURE
+  const categories = [
+    { label: "All", icon: LayoutGrid },
+    { label: "Furniture", icon: Sofa },
+    { label: "Carpets", icon: Layers2 },
+    { label: "Utensils", icon: CookingPotIcon },
+  ];
 
   return (
     <ScreenLayout scrollable={false}>
       <ScreenContent>
-        {/* SEARCH */}
-        <ProductSearchBar
-          search={search}
-          setSearch={setSearch}
-          onFilterPress={() => setFilterOpen(true)}
-        />
+        <ScrollView
+          ref={scrollRef}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={300}
+          onScroll={(e) => {
+            const { layoutMeasurement, contentOffset, contentSize } =
+              e.nativeEvent;
 
-        {/*  FILTER */}
-        <FilterBottomSheet
-          visible={filterOpen}
-          onClose={() => setFilterOpen(false)}
-          onApplyFilters={setFilters}
-          filterOptions={filterOptions}
-        />
+            const isCloseToBottom =
+              layoutMeasurement.height + contentOffset.y >=
+              contentSize.height - 80;
 
-        {/*  PRODUCTS */}
-        <View className="mt-6">
-          <ProductsList
-            items={paginatedProducts}
-            wishlistItems={wishlist}
-            onToggleWishlist={handleToggleWishlist}
-            isWishlistBusy={isBusy}
-            variant="grid"
+            if (isCloseToBottom && isMoreLoading) {
+              setVisibleCount((prev) => prev + pageSize);
+            }
+
+            setShowTopBtn(contentOffset.y > 300);
+          }}
+        >
+          {/* SEARCH */}
+          <ProductSearchBar
+            search={search}
+            setSearch={setSearch}
+            onFilterPress={() => setFilterOpen(true)}
           />
-        </View>
 
-        {/*  PAGINATION UI */}
-        {totalPages > 1 && (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              gap: 6,
-              marginVertical: 16,
-            }}
-          >
-            {/* PREV */}
-            <Pressable
-              disabled={page === 1}
-              onPress={() => setPage((p) => p - 1)}
+          {/* FILTER */}
+          <FilterBottomSheet
+            visible={filterOpen}
+            onClose={() => setFilterOpen(false)}
+            onApplyFilters={setFilters}
+            filterOptions={filterOptions}
+          />
+
+          {/* CATEGORY CHIPS */}
+          {!isFiltering && (
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={{ marginTop: 18 }}
+              contentContainerStyle={{ paddingRight: 10 }}
             >
-              <CsText style={{ opacity: page === 1 ? 0.3 : 1 }}>Prev</CsText>
-            </Pressable>
+              {categories.map((item, i) => {
+                const isActive = activeCategory === item.label;
 
-            {/* PAGE NUMBERS */}
-            {[...Array(totalPages)].map((_, i) => {
-              const pageNumber = i + 1;
-              const isActive = pageNumber === page;
-
-              return (
-                <Pressable key={i} onPress={() => setPage(pageNumber)}>
-                  <View
+                return (
+                  <Pressable
+                    key={i}
+                    onPress={() => setActiveCategory(item.label)}
                     style={{
-                      paddingHorizontal: 10,
-                      paddingVertical: 6,
-                      borderRadius: 6,
-                      backgroundColor: isActive ? colors.primary : "#E5E7EB",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      paddingHorizontal: 16,
+                      paddingVertical: 10,
+                      borderRadius: 24,
+                      marginRight: 10,
+                      backgroundColor: isActive
+                        ? colors.primary
+                        : colors.light,
+                      borderWidth: 1,
+                      borderColor: isActive
+                        ? colors.primary
+                        : colors.secondary,
+                      elevation: isActive ? 4 : 2,
                     }}
                   >
-                    <CsText
+                    {/* ICON */}
+                    <View style={{ marginRight: 6 }}>
+                      <item.icon
+                        size={14}
+                        color={
+                          isActive
+                            ? colors.light
+                            : colors.secondary
+                        }
+                      />
+                    </View>
+
+                    {/* TEXT */}
+                    <Text
                       style={{
-                        color: isActive ? "#fff" : "#000",
                         fontWeight: "600",
+                        fontSize: 13,
+                        color: isActive
+                          ? colors.light
+                          : colors.secondary,
                       }}
                     >
-                      {pageNumber}
-                    </CsText>
-                  </View>
-                </Pressable>
-              );
-            })}
+                      {item.label}
+                    </Text>
+                  </Pressable>
+                );
+              })}
+            </ScrollView>
+          )}
 
+          <View style={{ marginTop: 24 }}>
+  <View
+    style={{
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 8,
+    }}
+  >
+    <SectionTitle title="Popular Picks" icon="flame-outline" />
+
+    {/* RIGHT ARROW */}
+    <View
+      style={{
+        backgroundColor: colors.light,
+        padding: 6,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor:colors.cardBorder,
+      }}
+    >
+     <ChevronRight size={16} color={colors.dark} />
+    </View>
+  </View>
+
+  <ProductsList
+    items={allProducts.slice(3, 8)}
+    wishlistItems={wishlist}
+    onToggleWishlist={handleToggleWishlist}
+    isWishlistBusy={isBusy}
+    variant="carousel"
+  />
+</View>
+
+          {/* ALL PRODUCTS */}
+          <View style={{ marginTop: 24 }}>
+            <SectionTitle title="All Products" icon="grid-outline" />
+
+            <ProductsList
+              items={visibleProducts}
+              wishlistItems={wishlist}
+              onToggleWishlist={handleToggleWishlist}
+              isWishlistBusy={isBusy}
+              variant="grid"
+            />
+          </View>
+
+          {/* LOADER */}
+          {isMoreLoading && (
+            <View style={{ paddingVertical: 20, alignItems: "center" }}>
+              <ActivityIndicator size="large" color={colors.primary} />
+            </View>
+          )}
+        </ScrollView>
+
+        {/* SCROLL TO TOP */}
+        {showTopBtn && (
+          <View style={{ position: "absolute", bottom: 30, right: 20 }}>
             <Pressable
-              disabled={page === totalPages}
-              onPress={() => setPage((p) => p + 1)}
+              onPress={() =>
+                scrollRef.current?.scrollTo({ y: 0, animated: true })
+              }
+              style={{
+                backgroundColor: colors.primary,
+                padding: 16,
+                borderRadius: 100,
+                elevation: 10,
+              }}
             >
-              <CsText style={{ opacity: page === totalPages ? 0.3 : 1 }}>
-                Next
-              </CsText>
+              <ArrowUp size={18} color={colors.light}/>
             </Pressable>
           </View>
         )}
