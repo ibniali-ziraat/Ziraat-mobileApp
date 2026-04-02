@@ -155,7 +155,6 @@ export default function ProductScreen() {
               );
             })}
 
-            {/* NEXT */}
             <Pressable
               disabled={page === totalPages}
               onPress={() => setPage((p) => p + 1)}
