@@ -1,6 +1,7 @@
 import React from "react";
-import discussionScreen from "../modules/discussion-forum/screen/DiscussionScreen";
+import Discussionforum from "../modules/Discussion-Form/screen/ChatScreen";
+
 
 export default function  discussion() {
-  return React.createElement(discussionScreen, null);
+  return React.createElement(Discussionforum, null);
 }

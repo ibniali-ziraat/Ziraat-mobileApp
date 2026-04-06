@@ -1,24 +1,256 @@
-import {
-  Pressable,
-  Text,
-  View
-} from "react-native";
+// import { colors } from "@/src/constants/colors";
+// import * as ImagePicker from "expo-image-picker";
+// import {
+//   Bold,
+//   Camera,
+//   Code,
+//   Image as ImageIcon,
+//   Italic,
+//   Link2,
+//   List,
+//   Send,
+//   X,
+// } from "lucide-react-native";
+// import { useEffect, useRef, useState } from "react";
+// import {
+//   Image,
+//   ScrollView,
+//   Text,
+//   TextInput,
+//   TouchableOpacity,
+//   View,
+// } from "react-native";
 
+// import ScreenLayout from "@/src/components/shared/ScreenLayout";
+// import { Post } from "../screen/ChatScreen";
+
+// type Props = {
+//   message: string;
+//   setMessage: (v: string) => void;
+//   replyTo: Post | null;
+//   setReplyTo: (v: Post | null) => void;
+//   onSend: (text: string) => void;
+//   inputText: string;
+//   setInputText: (v: string) => void;
+// };
+
+// export default function DiscussionInput({
+//   message,
+//   setMessage,
+//   replyTo,
+//   setReplyTo,
+//   onSend,
+//   inputText,
+//   setInputText,
+// }: Props) {
+//   const inputRef = useRef<TextInput>(null);
+//   const [image, setImage] = useState<string | null>(null);
+
+//   useEffect(() => {
+//     if (inputText) {
+//       setMessage(inputText);
+//       setInputText("");
+//       setTimeout(() => inputRef.current?.focus(), 100);
+//     }
+//   }, [inputText]);
+
+//   const handleSend = () => {
+//     if (!message.trim() && !image) return;
+
+//     const finalText = image
+//       ? `${message}\n📷 ${image}`
+//       : message;
+
+//     onSend(finalText.trim());
+//     setMessage("");
+//     setImage(null);
+//   };
+
+//   /* ========= FORMAT HELPERS ========= */
+//   const wrapText = (before: string, after: string = before) => {
+//     setMessage((prev) => prev + `${before}text${after}`);
+//     setTimeout(() => inputRef.current?.focus(), 100);
+//   };
+
+//   const addList = () => {
+//     setMessage((prev) => prev + "\n- ");
+//   };
+
+//   const addCodeBlock = () => {
+//     setMessage((prev) => prev + "\n```\ncode\n```");
+//   };
+
+//   /* CAMERA */
+//   const openCamera = async () => {
+//     const res = await ImagePicker.launchCameraAsync();
+//     if (!res.canceled) setImage(res.assets[0].uri);
+//   };
+
+//   /* GALLERY */
+//   const pickImage = async () => {
+//     const res = await ImagePicker.launchImageLibraryAsync();
+//     if (!res.canceled) setImage(res.assets[0].uri);
+//   };
+
+//   /* LINK */
+//   const addLink = () => {
+//     setMessage((prev) => prev + "[title](https://)");
+//   };
+
+//   return (
+//     <ScreenLayout>
+//       <View
+//       style={{
+//         backgroundColor: colors.light,
+//         borderTopWidth: 1,
+//         borderTopColor: colors.cardBorder,
+//         paddingHorizontal: 16,
+//         paddingTop: 10,
+//         paddingBottom: 28,
+//       }}
+//     >
+//       {/* Reply Banner */}
+//       {replyTo && (
+//         <View
+//           style={{
+//             flexDirection: "row",
+//             justifyContent: "space-between",
+//             backgroundColor: colors.primary + "0e",
+//             borderRadius: 8,
+//             padding: 8,
+//             marginBottom: 8,
+//           }}
+//         >
+//           <Text style={{ fontSize: 12, color: colors.primary }}>
+//             Replying to {replyTo.author}
+//           </Text>
+//           <TouchableOpacity onPress={() => setReplyTo(null)}>
+//             <X size={14} color={colors.primary} />
+//           </TouchableOpacity>
+//         </View>
+//       )}
+
+//       {/* Image Preview */}
+//       {image && (
+//         <Image
+//           source={{ uri: image }}
+//           style={{ width: 60, height: 60, borderRadius: 8, marginBottom: 6 }}
+//         />
+//       )}
+
+//       {/* ===== TOOLBAR ===== */}
+//       <ScrollView
+//         horizontal
+//         showsHorizontalScrollIndicator={false}
+//         style={{ marginBottom: 6 }}
+//       >
+//         <View style={{ flexDirection: "row", gap: 14 }}>
+//           <TouchableOpacity onPress={() => wrapText("**")}>
+//             <Bold size={16} color="#666" />
+//           </TouchableOpacity>
+
+//           <TouchableOpacity onPress={() => wrapText("*")}>
+//             <Italic size={16} color="#666" />
+//           </TouchableOpacity>
+
+//           <TouchableOpacity onPress={addList}>
+//             <List size={16} color="#666" />
+//           </TouchableOpacity>
+
+//           <TouchableOpacity onPress={addCodeBlock}>
+//             <Code size={16} color="#666" />
+//           </TouchableOpacity>
+
+//           <TouchableOpacity onPress={addLink}>
+//             <Link2 size={16} color="#666" />
+//           </TouchableOpacity>
+
+//           <TouchableOpacity onPress={openCamera}>
+//             <Camera size={16} color="#666" />
+//           </TouchableOpacity>
+
+//           <TouchableOpacity onPress={pickImage}>
+//             <ImageIcon size={16} color="#666" />
+//           </TouchableOpacity>
+//         </View>
+//       </ScrollView>
+
+//       {/* INPUT + SEND */}
+//       <View style={{ flexDirection: "row", gap: 8 }}>
+//         <TextInput
+//           ref={inputRef}
+//           value={message}
+//           onChangeText={setMessage}
+//           placeholder="Write something..."
+//           multiline
+//           style={{
+//             flex: 1,
+//             borderWidth: 1.5,
+//             borderColor: message ? colors.primary : "#ddd",
+//             borderRadius: 12,
+//             padding: 12,
+//             minHeight: 44,
+//             maxHeight: 120,
+//             backgroundColor: "#fafafa",
+//           }}
+//         />
+
+//         <TouchableOpacity
+//           onPress={handleSend}
+//           disabled={!message.trim() && !image}
+//           style={{
+//             width: 44,
+//             height: 44,
+//             borderRadius: 12,
+//             backgroundColor:
+//               message.trim() || image ? colors.primary : "#ddd",
+//             alignItems: "center",
+//             justifyContent: "center",
+//           }}
+//         >
+//           <Send size={18} color="#fff" />
+//         </TouchableOpacity>
+//       </View>
+//     </View>
+//     </ScreenLayout>
+//   );
+// }
+
+
+import { colors } from "@/src/constants/colors";
 import * as ImagePicker from "expo-image-picker";
-
 import {
   Bold,
   Camera,
+  Code,
   Image as ImageIcon,
   Italic,
+  Link2,
   List,
   Send,
   X,
 } from "lucide-react-native";
-
-import { colors } from "@/src/constants/colors";
 import { useEffect, useRef, useState } from "react";
-import LexicalEditor from "./LexicalEditor";
+import {
+  Image,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+import { Post } from "../screen/ChatScreen";
+
+type Props = {
+  message: string;
+  setMessage: (v: string) => void;
+  replyTo: Post | null;
+  setReplyTo: (v: Post | null) => void;
+  onSend: (text: string) => void;
+  inputText: string;
+  setInputText: (v: string) => void;
+};
 
 export default function DiscussionInput({
   message,
@@ -26,292 +258,154 @@ export default function DiscussionInput({
   replyTo,
   setReplyTo,
   onSend,
-}) {
-
-  const editorRef = useRef<any>(null);
-
-  const [images, setImages] = useState<string[]>([]);
-  const [activeTool, setActiveTool] = useState<string | null>(null);
-
-  const [inputText, setInputText] = useState("");
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
-  const users = ["Rahul", "Aman", "Priya", "You"];
-
-  /* ================= COMMAND HANDLER ================= */
-
-  const sendCommand = (type: string, payload?: any) => {
-    editorRef.current?.postMessage(
-      JSON.stringify({ type, ...payload })
-    );
-  };
-
-  /* ================= MENTION DETECT ================= */
+  inputText,
+  setInputText,
+}: Props) {
+  const inputRef = useRef<TextInput>(null);
+  const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
-    const lastWord = inputText.split(" ").pop();
-    if (lastWord?.startsWith("@")) setShowSuggestions(true);
-    else setShowSuggestions(false);
+    if (inputText) {
+      setMessage(inputText);
+      setInputText("");
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
   }, [inputText]);
 
-  const filteredUsers = users.filter((u) =>
-    u.toLowerCase().includes(
-      inputText.split("@").pop()?.toLowerCase()
-    )
-  );
+  const handleSend = () => {
+    if (!message.trim() && !image) return;
 
-  /* ================= IMAGE PICK ================= */
+    const finalText = image
+      ? `${message}\n📷 ${image}`
+      : message;
 
-  const pickImage = async () => {
-    const res = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.7,
-    });
-
-    if (!res.canceled) {
-      setImages((prev) => [...prev, res.assets[0].uri]);
-    }
+    onSend(finalText.trim());
+    setMessage("");
+    setImage(null);
   };
 
-  /* ================= CAMERA ================= */
+  const wrapText = (before: string, after: string = before) => {
+    setMessage((prev) => prev + `${before}text${after}`);
+    setTimeout(() => inputRef.current?.focus(), 100);
+  };
+
+  const addList = () => setMessage((prev) => prev + "\n- ");
+  const addCodeBlock = () => setMessage((prev) => prev + "\n```\ncode\n```");
+  const addLink = () => setMessage((prev) => prev + "[title](https://)");
 
   const openCamera = async () => {
-    const res = await ImagePicker.launchCameraAsync({
-      quality: 0.7,
-    });
-
-    if (!res.canceled) {
-      setImages((prev) => [...prev, res.assets[0].uri]);
-    }
+    const res = await ImagePicker.launchCameraAsync();
+    if (!res.canceled) setImage(res.assets[0].uri);
   };
 
-  /* ================= FORMAT COMMAND ================= */
-
-  const exec = (cmd: string) => {
-    setActiveTool(cmd);
-
-    if (cmd === "bold" || cmd === "italic") {
-      sendCommand("FORMAT", { command: cmd });
-    } else if (cmd === "LIST") {
-      sendCommand("LIST");
-    }
-
-    setTimeout(() => setActiveTool(null), 200);
+  const pickImage = async () => {
+    const res = await ImagePicker.launchImageLibraryAsync();
+    if (!res.canceled) setImage(res.assets[0].uri);
   };
-
-  /* ================= SEND ================= */
-
-  const handleSend = () => {
-    const cleanText = inputText.trim();
-
-    if (!cleanText && images.length === 0) return;
-
-    onSend?.(message);
-
-    setMessage("");
-    setInputText("");
-    setImages([]);
-    setReplyTo(null);
-
-    sendCommand("CLEAR");
-  };
-
-  const isActive = inputText.trim() || images.length > 0;
-
-  /* ================= AUTO REPLY ================= */
-
-  useEffect(() => {
-    if (replyTo) {
-      sendCommand("INSERT", {
-        text: `@${replyTo.author} `,
-      });
-    }
-  }, [replyTo]);
 
   return (
     <View
       style={{
         backgroundColor: colors.light,
-        paddingHorizontal: 12,
-        paddingTop: 10,
-        paddingBottom: 14,
         borderTopWidth: 1,
-        borderColor: colors.cardBorder,
+        borderTopColor: colors.cardBorder,
+        paddingHorizontal: 16,
+        paddingTop: 10,
+        paddingBottom: 12,
       }}
     >
-
-      {/* ================= REPLY BAR ================= */}
+      {/* Reply */}
       {replyTo && (
         <View
           style={{
-            backgroundColor: colors.primary + "10",
-            padding: 12,
-            borderRadius: 14,
-            marginBottom: 10,
             flexDirection: "row",
-            alignItems: "center",
-            borderLeftWidth: 4,
-            borderLeftColor: colors.primary,
+            justifyContent: "space-between",
+            backgroundColor: colors.primary + "0e",
+            borderRadius: 8,
+            padding: 8,
+            marginBottom: 8,
           }}
         >
-          <Text style={{ color: colors.primary, flex: 1, fontWeight: "600" }}>
+          <Text style={{ fontSize: 12, color: colors.primary }}>
             Replying to {replyTo.author}
           </Text>
-
-          <Pressable onPress={() => setReplyTo(null)}>
-            <X size={16} color={colors.primary} />
-          </Pressable>
+          <TouchableOpacity onPress={() => setReplyTo(null)}>
+            <X size={14} color={colors.primary} />
+          </TouchableOpacity>
         </View>
       )}
 
-      {/* ================= MENTIONS ================= */}
-      {showSuggestions && (
-        <View
+      {/* Image */}
+      {image && (
+        <Image
+          source={{ uri: image }}
+          style={{ width: 60, height: 60, borderRadius: 8, marginBottom: 6 }}
+        />
+      )}
+
+      {/* Toolbar */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View style={{ flexDirection: "row", gap: 14, marginBottom: 6 }}>
+          <TouchableOpacity onPress={() => wrapText("**")}>
+            <Bold size={16} color="#666" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => wrapText("*")}>
+            <Italic size={16} color="#666" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={addList}>
+            <List size={16} color="#666" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={addCodeBlock}>
+            <Code size={16} color="#666" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={addLink}>
+            <Link2 size={16} color="#666" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={openCamera}>
+            <Camera size={16} color="#666" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={pickImage}>
+            <ImageIcon size={16} color="#666" />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+
+      {/* Input */}
+      <View style={{ flexDirection: "row", gap: 8 }}>
+        <TextInput
+          ref={inputRef}
+          value={message}
+          onChangeText={setMessage}
+          placeholder="Ask your question..."
+          multiline
           style={{
-            backgroundColor: colors.light,
-            borderWidth: 1,
-            borderColor: colors.cardBorder,
-            borderRadius: 14,
-            marginBottom: 10,
-            elevation: 4,
-            overflow: "hidden",
+            flex: 1,
+            borderWidth: 1.5,
+            borderColor: message ? colors.primary : "#ddd",
+            borderRadius: 12,
+            padding: 12,
+            minHeight: 44,
+            maxHeight: 120,
+            backgroundColor: "#fafafa",
           }}
-        >
-          {filteredUsers.map((user, index) => (
-            <Pressable
-              key={user}
-              onPress={() => {
-                sendCommand("INSERT", { text: `@${user} ` });
-                setShowSuggestions(false);
-              }}
-              style={{
-                paddingVertical: 12,
-                paddingHorizontal: 14,
-                borderBottomWidth:
-                  index !== filteredUsers.length - 1 ? 1 : 0,
-                borderColor: colors.cardBorder,
-              }}
-            >
-              <Text
-                style={{
-                  color: colors.dark,
-                  fontWeight: "500",
-                  fontSize: 14,
-                }}
-              >
-                {user}
-              </Text>
-            </Pressable>
-          ))}
-        </View>
-      )}
+        />
 
-      {/* ================= EDITOR ================= */}
-      <View
-        style={{
-          borderRadius: 20,
-          borderWidth: 1,
-          borderColor: colors.primary,
-          backgroundColor: colors.bgColor,
-          padding: 8,
-        }}
-      >
-
-        {/* ================= TOOLBAR ================= */}
-        <View
+        <TouchableOpacity
+          onPress={handleSend}
+          disabled={!message.trim() && !image}
           style={{
-            flexDirection: "row",
+            width: 44,
+            height: 44,
+            borderRadius: 12,
+            backgroundColor:
+              message.trim() || image ? colors.primary : "#ddd",
             alignItems: "center",
-            marginBottom: 6,
+            justifyContent: "center",
           }}
         >
-          {[
-            { icon: Bold, action: "bold" },
-            { icon: Italic, action: "italic" },
-            { icon: List, action: "LIST" }, 
-          ].map((item, index) => (
-            <Pressable
-              key={index}
-              onPress={() => exec(item.action)}
-              style={[
-                toolBtn,
-                activeTool === item.action && {
-                  backgroundColor: colors.primary + "15",
-                },
-              ]}
-            >
-              <item.icon
-                size={15}
-                color={
-                  activeTool === item.action
-                    ? colors.primary
-                    : colors.neutral
-                }
-              />
-            </Pressable>
-          ))}
-
-          <View
-            style={{
-              width: 1,
-              height: 18,
-              backgroundColor: colors.cardBorder,
-              marginHorizontal: 6,
-            }}
-          />
-
-          <Pressable onPress={pickImage} style={toolBtn}>
-            <ImageIcon size={15} color={colors.neutral} />
-          </Pressable>
-
-          <Pressable onPress={openCamera} style={toolBtn}>
-            <Camera size={15} color={colors.neutral} />
-          </Pressable>
-        </View>
-
-        {/* ================= INPUT ================= */}
-        <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
-          
-          <View style={{ flex: 1, minHeight: 40, maxHeight: 120 }}>
-            <LexicalEditor
-              ref={editorRef}
-              onChange={(val) => {
-                setMessage(val);
-
-                const plainText = val.replace(/<[^>]+>/g, "");
-                setInputText(plainText);
-              }}
-            />
-          </View>
-
-          {/* ================= SEND ================= */}
-          <Pressable
-            onPress={handleSend}
-            disabled={!isActive}
-            style={{
-              marginLeft: 8,
-              width: 42,
-              height: 42,
-              borderRadius: 21,
-              backgroundColor: isActive
-                ? colors.primary
-                : colors.primary + "60",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Send size={18} color={colors.light} />
-          </Pressable>
-        </View>
+          <Send size={18} color="#fff" />
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
-
-const toolBtn = {
-  width: 36,
-  height: 36,
-  borderRadius: 10,
-  alignItems: "center",
-  justifyContent: "center",
-};

@@ -74,6 +74,7 @@ export default function ProductDetails() {
     return reviewsRaw.map((r: any) => ({
       id: r.id,
       user: r.reviewerName,
+      userId: r.userId,
       rating: r.rating,
       comment: r.comment,
       title: r.title,

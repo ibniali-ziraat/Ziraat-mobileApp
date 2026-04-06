@@ -1,4 +1,5 @@
-// import { useState } from "react";
+
+// import { useRef, useState } from "react";
 // import {
 //   ScrollView,
 //   Text,
@@ -46,190 +47,6 @@
 //       },
 //     ],
 //   },
-
-//   {
-//     id: "4",
-//     author: "Amit Verma",
-//     role: "User",
-//     content: "What is the max file size allowed?",
-//     likes: 3,
-//     isLiked: false,
-//     children: [
-//       {
-//         id: "5",
-//         author: "Rahul Sharma",
-//         role: "Expert",
-//         content: "Maximum allowed file size is 5MB.",
-//         isAccepted: true,
-//         likes: 6,
-//         isLiked: false,
-//         children: [
-//           {
-//             id: "6",
-//             author: "Amit Verma",
-//             role: "User",
-//             content: "Thanks! That helps.",
-//             likes: 1,
-//             isLiked: false,
-//             children: [],
-//           },
-//         ],
-//       },
-//     ],
-//   },
-
-//   {
-//     id: "7",
-//     author: "Sneha Kapoor",
-//     role: "User",
-//     content: "Can we upload multiple documents at once?",
-//     likes: 2,
-//     isLiked: false,
-//     children: [
-//       {
-//         id: "8",
-//         author: "Expert Team",
-//         role: "Expert",
-//         content: "Currently only single upload is supported.",
-//         likes: 3,
-//         isLiked: false,
-//         children: [
-//           {
-//             id: "9",
-//             author: "Sneha Kapoor",
-//             role: "User",
-//             content: "Any plan to support multiple uploads?",
-//             likes: 1,
-//             isLiked: false,
-//             children: [
-//               {
-//                 id: "10",
-//                 author: "Expert Team",
-//                 role: "Expert",
-//                 content: "Yes, it's coming in next release ",
-//                 isAccepted: true,
-//                 likes: 5,
-//                 isLiked: false,
-//                 children: [],
-//               },
-//             ],
-//           },
-//         ],
-//       },
-//     ],
-//   },
-
-//   {
-//     id: "11",
-//     author: "Rohit Singh",
-//     role: "User",
-//     content: "I am getting upload error. Anyone facing same issue?",
-//     likes: 4,
-//     isLiked: false,
-//     children: [
-//       {
-//         id: "12",
-//         author: "Neha Jain",
-//         role: "User",
-//         content: "Yes, I had the same issue yesterday.",
-//         likes: 2,
-//         isLiked: false,
-//         children: [
-//           {
-//             id: "13",
-//             author: "Rohit Singh",
-//             role: "User",
-//             content: "How did you fix it?",
-//             likes: 1,
-//             isLiked: false,
-//             children: [
-//               {
-//                 id: "14",
-//                 author: "Neha Jain",
-//                 role: "User",
-//                 content: "Try reducing file size or switch network.",
-//                 likes: 3,
-//                 isLiked: false,
-//                 children: [],
-//               },
-//             ],
-//           },
-//         ],
-//       },
-//       {
-//         id: "15",
-//         author: "Support Team",
-//         role: "Expert",
-//         content: "Please clear cache and retry. Contact support if issue persists.",
-//         isAccepted: true,
-//         likes: 6,
-//         isLiked: false,
-//         children: [],
-//       },
-//     ],
-//   },
-
-//   {
-//     id: "16",
-//     author: "Karan Mehta",
-//     role: "User",
-//     content: "Is JPG format supported or only PDF?",
-//     likes: 2,
-//     isLiked: false,
-//     children: [
-//       {
-//         id: "17",
-//         author: "Rahul Sharma",
-//         role: "Expert",
-//         content: "Both JPG and PDF formats are supported.",
-//         isAccepted: true,
-//         likes: 5,
-//         isLiked: false,
-//         children: [
-//           {
-//             id: "18",
-//             author: "Karan Mehta",
-//             role: "User",
-//             content: "Perfect, thanks!",
-//             likes: 1,
-//             isLiked: false,
-//             children: [],
-//           },
-//         ],
-//       },
-//     ],
-//   },
-
-//   {
-//     id: "19",
-//     author: "Anjali Gupta",
-//     role: "User",
-//     content: "How long does verification take after upload?",
-//     likes: 3,
-//     isLiked: false,
-//     children: [
-//       {
-//         id: "20",
-//         author: "Expert Team",
-//         role: "Expert",
-//         content: "Usually within 24–48 hours.",
-//         isAccepted: true,
-//         likes: 4,
-//         isLiked: false,
-//         children: [
-//           {
-//             id: "21",
-//             author: "Anjali Gupta",
-//             role: "User",
-//             content: "Great, thanks for the info!",
-//             likes: 1,
-//             isLiked: false,
-//             children: [],
-//           },
-//         ],
-//       },
-//     ],
-//   },
 // ];
 
 // /* ================= MAIN ================= */
@@ -239,7 +56,33 @@
 //   const [message, setMessage] = useState("");
 //   const [replyTo, setReplyTo] = useState<any>(null);
 
-//   /* ================= LIKE FUNCTION ================= */
+//   const [inputText, setInputText] = useState(""); // ✅ FIXED
+
+//   const scrollRef = useRef<any>(null);
+
+//   /* ================= ADD REPLY ================= */
+
+//   const addReply = (list: any[], parentId: string, newMsg: any) => {
+//     return list.map((item) => {
+//       if (item.id === parentId) {
+//         return {
+//           ...item,
+//           children: [...(item.children || []), newMsg],
+//         };
+//       }
+
+//       if (item.children?.length) {
+//         return {
+//           ...item,
+//           children: addReply(item.children, parentId, newMsg),
+//         };
+//       }
+
+//       return item;
+//     });
+//   };
+
+//   /* ================= LIKE ================= */
 
 //   const toggleLike = (list: any[], id: string) => {
 //     return list.map((item) => {
@@ -278,7 +121,20 @@
 //       children: [],
 //     };
 
-//     setDiscussionList((prev) => [...prev, newMsg]);
+//     if (replyTo) {
+//       setDiscussionList((prev) =>
+//         addReply(prev, replyTo.id, newMsg)
+//       );
+//     } else {
+//       setDiscussionList((prev) => [...prev, newMsg]);
+//     }
+
+//     setReplyTo(null);
+//     setMessage("");
+
+//     setTimeout(() => {
+//       scrollRef.current?.scrollToEnd({ animated: true });
+//     }, 200);
 //   };
 
 //   return (
@@ -313,7 +169,7 @@
 //               <MessageCircle size={18} color={colors.primary} />
 //             </View>
 
-//             <Text style={{ fontSize: 20, fontWeight: "700" }}>
+//             <Text style={{ fontSize: 20, fontWeight: "700", color: colors.dark }}>
 //               Discussion
 //             </Text>
 //           </View>
@@ -325,11 +181,14 @@
 
 //         {/* THREAD */}
 //         <ScrollView
+//           ref={scrollRef}
 //           style={{ flex: 1 }}
 //           contentContainerStyle={{
 //             padding: 16,
 //             paddingBottom: 140,
 //           }}
+//           showsVerticalScrollIndicator={false}
+//           keyboardShouldPersistTaps="handled"
 //         >
 //           {discussionList.map((item) => (
 //             <MessageItem
@@ -338,6 +197,7 @@
 //               depth={0}
 //               replyTo={replyTo}
 //               setReplyTo={setReplyTo}
+//               setInputText={setInputText} // ✅ required
 //               onLike={(id) =>
 //                 setDiscussionList((prev) => toggleLike(prev, id))
 //               }
@@ -360,6 +220,8 @@
 //             replyTo={replyTo}
 //             setReplyTo={setReplyTo}
 //             onSend={handleSend}
+//             inputText={inputText}        
+//             setInputText={setInputText}  
 //           />
 //         </View>
 
@@ -367,30 +229,55 @@
 //     </ScreenLayout>
 //   );
 // }
+
+
+import { MessageCircle } from "lucide-react-native";
 import { useRef, useState } from "react";
 import {
   ScrollView,
   Text,
-  View,
+  TouchableOpacity,
+  View
 } from "react-native";
 
+import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-
-import BackHeader from "@/src/components/shared/BackHeader";
-import { MessageCircle } from "lucide-react-native";
-import DiscussionInput from "../pages/DiscussionInput";
+import AskModal from "../pages/AskModal";
+import FilterBar from "../pages/FilterBar";
 import MessageItem from "../pages/MessageItem";
 
-/* ================= INITIAL DATA ================= */
 
-const initialDiscussions = [
+/* ─── types ─── */
+export type Post = {
+  id: string;
+  author: string;
+  role: "Expert" | "User";
+  content: string;
+  likes: number;
+  isLiked: boolean;
+  isAccepted?: boolean;
+  votes?: number;
+  userVote?: 0 | 1 | -1;
+  views?: number;
+  tags?: string[];
+  excerpt?: string;
+  children: Post[];
+};
+
+const initialDiscussions: Post[] = [
   {
     id: "1",
     author: "Rahul Sharma",
     role: "Expert",
     content: "@You Please upload your GST certificate in PDF format.",
     isAccepted: true,
+    votes: 12,
+    userVote: 0,
+    views: 284,
+    tags: ["gst-compliance", "documents"],
+    excerpt:
+      "Rahul asked me to upload my GST certificate in PDF format but I only have image scans.",
     likes: 5,
     isLiked: false,
     children: [
@@ -406,7 +293,8 @@ const initialDiscussions = [
             id: "3",
             author: "Rahul Sharma",
             role: "Expert",
-            content: "PDF is recommended for better readability.",
+            content:
+              "PDF is recommended. Use iLovePDF or Adobe to convert your scans for free.",
             likes: 4,
             isLiked: false,
             children: [],
@@ -415,185 +303,319 @@ const initialDiscussions = [
       },
     ],
   },
+  {
+    id: "4",
+    author: "Support Team",
+    role: "Expert",
+    content:
+      "Standard review takes 2-4 business days. Please raise a ticket with your submission ID if it has been longer.",
+    isAccepted: true,
+    votes: 7,
+    userVote: 0,
+    views: 119,
+    tags: ["kyc", "verification"],
+    excerpt:
+      "My KYC was rejected twice. The error says document mismatch. All my details seem correct.",
+    likes: 3,
+    isLiked: false,
+    children: [],
+  },
+  {
+    id: "5",
+    author: "You",
+    role: "User",
+    content: "What is the maximum upload size for documents?",
+    votes: 4,
+    userVote: 0,
+    views: 88,
+    tags: ["upload", "pdf"],
+    excerpt:
+      "I tried uploading a 15MB PDF and it failed. Is there a file size limit?",
+    likes: 0,
+    isLiked: false,
+    children: [],
+  },
+   {
+    id: "1",
+    author: "Rahul Sharma",
+    role: "Expert",
+    content: "@You Please upload your GST certificate in PDF format.",
+    isAccepted: true,
+    votes: 12,
+    userVote: 0,
+    views: 284,
+    tags: ["gst-compliance", "documents"],
+    excerpt:
+      "Rahul asked me to upload my GST certificate in PDF format but I only have image scans.",
+    likes: 5,
+    isLiked: false,
+    children: [
+      {
+        id: "2",
+        author: "You",
+        role: "User",
+        content: "@Rahul Can I upload image instead?",
+        likes: 2,
+        isLiked: false,
+        children: [
+          {
+            id: "3",
+            author: "Rahul Sharma",
+            role: "Expert",
+            content:
+              "PDF is recommended. Use iLovePDF or Adobe to convert your scans for free.",
+            likes: 4,
+            isLiked: false,
+            children: [],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "4",
+    author: "Support Team",
+    role: "Expert",
+    content:
+      "Standard review takes 2-4 business days. Please raise a ticket with your submission ID if it has been longer.",
+    isAccepted: true,
+    votes: 7,
+    userVote: 0,
+    views: 119,
+    tags: ["kyc", "verification"],
+    excerpt:
+      "My KYC was rejected twice. The error says document mismatch. All my details seem correct.",
+    likes: 3,
+    isLiked: false,
+    children: [],
+  },
+  {
+    id: "5",
+    author: "You",
+    role: "User",
+    content: "What is the maximum upload size for documents?",
+    votes: 4,
+    userVote: 0,
+    views: 88,
+    tags: ["upload", "pdf"],
+    excerpt:
+      "I tried uploading a 15MB PDF and it failed. Is there a file size limit?",
+    likes: 0,
+    isLiked: false,
+    children: [],
+  },
 ];
 
-/* ================= MAIN ================= */
+export type FilterType = "newest" | "active" | "unanswered";
 
-export default function DiscussionScreen() {
-  const [discussionList, setDiscussionList] = useState(initialDiscussions);
+/* ─── helpers ─── */
+function addReplyToTree(list: Post[], parentId: string, newMsg: Post): Post[] {
+  return list.map((item) => {
+    if (item.id === parentId) {
+      return { ...item, children: [...(item.children || []), newMsg] };
+    }
+    if (item.children?.length) {
+      return { ...item, children: addReplyToTree(item.children, parentId, newMsg) };
+    }
+    return item;
+  });
+}
+
+function toggleLikeInTree(list: Post[], id: string): Post[] {
+  return list.map((item) => {
+    if (item.id === id) {
+      const isLiked = !item.isLiked;
+      return {
+        ...item,
+        isLiked,
+        likes: isLiked ? (item.likes || 0) + 1 : Math.max((item.likes || 1) - 1, 0),
+      };
+    }
+    if (item.children?.length) {
+      return { ...item, children: toggleLikeInTree(item.children, id) };
+    }
+    return item;
+  });
+}
+
+function toggleVoteInTree(
+  list: Post[],
+  id: string,
+  dir: 1 | -1
+): Post[] {
+  return list.map((item) => {
+    if (item.id === id) {
+      const prev = item.userVote ?? 0;
+      const newVote = prev === dir ? 0 : dir;
+      const delta = newVote - prev;
+      return { ...item, userVote: newVote as 0 | 1 | -1, votes: (item.votes ?? 0) + delta };
+    }
+    return item;
+  });
+}
+
+/*  screen */
+export default function Discussionforum() {
+  const [discussionList, setDiscussionList] = useState<Post[]>(initialDiscussions);
   const [message, setMessage] = useState("");
-  const [replyTo, setReplyTo] = useState<any>(null);
+  const [inputText, setInputText] = useState("");
+  const [replyTo, setReplyTo] = useState<Post | null>(null);
+  const [filter, setFilter] = useState<FilterType>("newest");
+  const [askVisible, setAskVisible] = useState(false);
 
-  const [inputText, setInputText] = useState(""); // ✅ FIXED
+  const scrollRef = useRef<ScrollView>(null);
 
-  const scrollRef = useRef<any>(null);
-
-  /* ================= ADD REPLY ================= */
-
-  const addReply = (list: any[], parentId: string, newMsg: any) => {
-    return list.map((item) => {
-      if (item.id === parentId) {
-        return {
-          ...item,
-          children: [...(item.children || []), newMsg],
-        };
-      }
-
-      if (item.children?.length) {
-        return {
-          ...item,
-          children: addReply(item.children, parentId, newMsg),
-        };
-      }
-
-      return item;
-    });
-  };
-
-  /* ================= LIKE ================= */
-
-  const toggleLike = (list: any[], id: string) => {
-    return list.map((item) => {
-      if (item.id === id) {
-        const isLiked = !item.isLiked;
-        return {
-          ...item,
-          isLiked,
-          likes: isLiked
-            ? (item.likes || 0) + 1
-            : Math.max((item.likes || 1) - 1, 0),
-        };
-      }
-
-      if (item.children?.length) {
-        return {
-          ...item,
-          children: toggleLike(item.children, id),
-        };
-      }
-
-      return item;
-    });
-  };
-
-  /* ================= SEND ================= */
+  const filteredList = (() => {
+    if (filter === "unanswered") return discussionList.filter((d) => !d.children.length);
+    if (filter === "active")
+      return [...discussionList].sort(
+        (a, b) => (b.votes ?? 0) + b.children.length - ((a.votes ?? 0) + a.children.length)
+      );
+    return discussionList;
+  })();
 
   const handleSend = (text: string) => {
-    const newMsg = {
+    const newMsg: Post = {
       id: Date.now().toString(),
       author: "You",
       role: "User",
-      content: text,
+      content: replyTo ? `@${replyTo.author} ${text}` : text,
       likes: 0,
       isLiked: false,
       children: [],
     };
-
     if (replyTo) {
-      setDiscussionList((prev) =>
-        addReply(prev, replyTo.id, newMsg)
-      );
+      setDiscussionList((prev) => addReplyToTree(prev, replyTo.id, newMsg));
     } else {
-      setDiscussionList((prev) => [...prev, newMsg]);
+      setDiscussionList((prev) => [
+        ...prev,
+        { ...newMsg, votes: 0, userVote: 0, views: 1, tags: [], excerpt: text.slice(0, 80) },
+      ]);
     }
-
     setReplyTo(null);
     setMessage("");
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 200);
+  };
 
-    setTimeout(() => {
-      scrollRef.current?.scrollToEnd({ animated: true });
-    }, 200);
+  const handleAskSubmit = (title: string, body: string, tags: string[]) => {
+    const newPost: Post = {
+      id: Date.now().toString(),
+      author: "You",
+      role: "User",
+      content: body,
+      excerpt: body.slice(0, 100),
+      tags,
+      votes: 0,
+      userVote: 0,
+      views: 1,
+      likes: 0,
+      isLiked: false,
+      children: [],
+    };
+    setDiscussionList((prev) => [newPost, ...prev]);
+    setAskVisible(false);
   };
 
   return (
     <ScreenLayout scrollable={false}>
       <BackHeader title="Discussion" />
 
-      <View style={{ flex: 1, backgroundColor: colors.bgColor }}>
-        
-        {/* HEADER */}
+     
+        {/*  header  */}
         <View
           style={{
             paddingHorizontal: 16,
-            paddingTop: 16,
-            paddingBottom: 14,
+            paddingTop: 14,
+            paddingBottom: 12,
             borderBottomWidth: 1,
             borderColor: colors.cardBorder,
             backgroundColor: colors.light,
           }}
         >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View
+          <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+              <View
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 10,
+                  backgroundColor: colors.primary + "15",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <MessageCircle size={17} color={colors.primary} />
+              </View>
+              <Text style={{ fontSize: 16, fontWeight: "700", color: colors.dark }}>
+                Discussion Forum
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => setAskVisible(true)}
               style={{
-                width: 36,
-                height: 36,
-                borderRadius: 12,
-                backgroundColor: colors.primary + "15",
-                alignItems: "center",
-                justifyContent: "center",
-                marginRight: 10,
+                backgroundColor: colors.primary,
+                paddingHorizontal: 12,
+                paddingVertical: 6,
+                borderRadius: 8,
               }}
             >
-              <MessageCircle size={18} color={colors.primary} />
-            </View>
-
-            <Text style={{ fontSize: 20, fontWeight: "700", color: colors.dark }}>
-              Discussion
-            </Text>
+              <Text style={{ color: colors.light, fontWeight: "700", fontSize: 12 }}>
+                + Ask
+              </Text>
+            </TouchableOpacity>
           </View>
-
-          <Text style={{ marginTop: 6, color: colors.neutral }}>
-            Ask questions or get help from experts in real-time.
+          <Text style={{ marginTop: 4, fontSize: 12, color: colors.neutral + "99" }}>
+            Ask questions or get expert help in real-time.
           </Text>
         </View>
 
-        {/* THREAD */}
+        {/* filter bar */}
+        <FilterBar active={filter} onChange={setFilter} />
+
+        {/* thread list */}
         <ScrollView
           ref={scrollRef}
           style={{ flex: 1 }}
-          contentContainerStyle={{
-            padding: 16,
-            paddingBottom: 140,
-          }}
+          contentContainerStyle={{ paddingBottom: 140 }}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          {discussionList.map((item) => (
+          {filteredList.map((item) => (
             <MessageItem
               key={item.id}
               item={item}
               depth={0}
               replyTo={replyTo}
               setReplyTo={setReplyTo}
-              setInputText={setInputText} // ✅ required
-              onLike={(id) =>
-                setDiscussionList((prev) => toggleLike(prev, id))
+              setInputText={setInputText}
+              onLike={(id) => setDiscussionList((prev) => toggleLikeInTree(prev, id))}
+              onVote={(id, dir) =>
+                setDiscussionList((prev) => toggleVoteInTree(prev, id, dir))
               }
             />
           ))}
         </ScrollView>
 
-        {/* INPUT */}
-        <View
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-          }}
-        >
+      
+        {/* <View style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
           <DiscussionInput
             message={message}
             setMessage={setMessage}
             replyTo={replyTo}
             setReplyTo={setReplyTo}
             onSend={handleSend}
-            inputText={inputText}        
-            setInputText={setInputText}  
+            inputText={inputText}
+            setInputText={setInputText}
           />
         </View>
+     */}
 
-      </View>
+      {/* ── ask modal ── */}
+      <AskModal
+        visible={askVisible}
+        onClose={() => setAskVisible(false)}
+        onSubmit={handleAskSubmit}
+      />
     </ScreenLayout>
   );
 }
