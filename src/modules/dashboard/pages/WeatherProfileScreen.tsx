@@ -23,6 +23,7 @@ import { View } from "react-native";
 import BackHeader from "@/src/components/shared/BackHeader";
 import Loader from "@/src/components/shared/Loader";
 import Map from "@/src/components/shared/Map";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 
@@ -100,85 +101,91 @@ export default function WeatherScreen() {
 
   return (
     <ScreenLayout>
-      <View className="pb-10">
-        <BackHeader
-          title="Weather"
-          onPress={() => router.replace(ROUTES.TABS.HOME)}
-        />
-        <SearchBar search={search} setSearch={setSearch} />
+      <ScreenContent>
+        <View className="pb-10">
+          <BackHeader
+            title="Weather"
+            onPress={() => router.replace(ROUTES.TABS.HOME)}
+          />
+          <SearchBar
+            search={search}
+            setSearch={setSearch}
+            placeholder="Search City..."
+          />
 
-        {search.length >= 3 && loading ? (
-          <Loader />
-        ) : (
-          <>
-            {data && currentWeather && (
-              <>
-                <WeatherCard
-                  current={currentWeather}
-                  city={cityName || "Srinagar "}
-                />
+          {search.length >= 3 && loading ? (
+            <Loader />
+          ) : (
+            <>
+              {data && currentWeather && (
+                <>
+                  <WeatherCard
+                    current={currentWeather}
+                    city={cityName || "Srinagar "}
+                  />
 
-                {data && <HourlyCard data_1h={data.data_1h} />}
+                  {data && <HourlyCard data_1h={data.data_1h} />}
 
-                <StormCard />
+                  <StormCard />
 
-                {data?.data_day && <WeeklyCard data_day={data.data_day} />}
+                  {data?.data_day && <WeeklyCard data_day={data.data_day} />}
 
-                <View className="flex-row justify-between">
-                  {data?.data_1h?.felttemperature?.length > 0 && (
-                    <FeelsLikeCard
-                      temp={Math.round(data.data_1h.felttemperature[0])}
-                      actualTemp={Math.round(data.data_1h.temperature[0])}
+                  <View className="flex-row justify-between">
+                    {data?.data_1h?.felttemperature?.length > 0 && (
+                      <FeelsLikeCard
+                        temp={Math.round(data.data_1h.felttemperature[0])}
+                        actualTemp={Math.round(data.data_1h.temperature[0])}
+                      />
+                    )}
+
+                    {uvIndex !== undefined && (
+                      <UVCard value={Math.round(uvIndex)} />
+                    )}
+                  </View>
+
+                  {data?.data_1h?.windspeed && data?.data_1h?.winddirection && (
+                    <WindCard
+                      speed={Math.round(data.data_1h.windspeed[0] * 3.6)}
+                      gusts={Math.round(data.data_1h.windspeed[0] * 3.6 * 1.6)}
+                      degree={data.data_1h.winddirection[0]}
                     />
                   )}
 
-                  {uvIndex !== undefined && (
-                    <UVCard value={Math.round(uvIndex)} />
-                  )}
-                </View>
+                  <View className="mt-4 flex-row justify-between">
+                    {data?.data_1h?.sealevelpressure && (
+                      <PressureCard value={data.data_1h.sealevelpressure[0]} />
+                    )}
+                    <HumidityCard value={todayHumidity} />
+                  </View>
 
-                {data?.data_1h?.windspeed && data?.data_1h?.winddirection && (
-                  <WindCard
-                    speed={Math.round(data.data_1h.windspeed[0] * 3.6)}
-                    gusts={Math.round(data.data_1h.windspeed[0] * 3.6 * 1.6)}
-                    degree={data.data_1h.winddirection[0]}
+                  <View className="mt-2 flex-row justify-between">
+                    <VisibilityCard distance={visibilityVal} />
+                    <SunsetCard sunrise={sunriseTime} sunset={sunsetTime} />
+                  </View>
+
+                  <MoonCard
+                    phaseValue={data?.data_day?.moonphase?.[0]}
+                    illumination={data?.data_day?.moonillumination?.[0]}
+                    moonrise={data?.data_day?.moonrise?.[0]}
                   />
-                )}
 
-                <View className="mt-4 flex-row justify-between">
-                  {data?.data_1h?.sealevelpressure && (
-                    <PressureCard value={data.data_1h.sealevelpressure[0]} />
-                  )}
-                  <HumidityCard value={todayHumidity} />
-                </View>
-
-                <View className="mt-2 flex-row justify-between">
-                  <VisibilityCard distance={visibilityVal} />
-                  <SunsetCard sunrise={sunriseTime} sunset={sunsetTime} />
-                </View>
-
-                <MoonCard
-                  phaseValue={data?.data_day?.moonphase?.[0]}
-                  illumination={data?.data_day?.moonillumination?.[0]}
-                  moonrise={data?.data_day?.moonrise?.[0]}
-                />
-
-                <View className="flex-row justify-between">
-                  <AveragesCard
-                    currentMax={Math.round(dayData?.temperature_max?.[0])}
-                    averageMax={8}
-                  />
-                  <Precipitation
-                    amount={dayData?.precipitation?.[0]}
-                    probability={dayData?.precipitation_probability?.[0]}
-                  />
-                </View>
-              </>
-            )}
-          </>
-        )}
-      </View>
-      <Map />
+                  <View className="flex-row justify-between">
+                    <AveragesCard
+                      currentMax={Math.round(dayData?.temperature_max?.[0])}
+                      averageMax={8}
+                    />
+                    <Precipitation
+                      amount={dayData?.precipitation?.[0]}
+                      probability={dayData?.precipitation_probability?.[0]}
+                    />
+                  </View>
+                </>
+              )}
+            </>
+          )}
+        </View>
+        <Map />
+      </ScreenContent>
     </ScreenLayout>
   );
 }

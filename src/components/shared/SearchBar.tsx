@@ -10,6 +10,7 @@ type Props = {
   onIconPress?: () => void;
   onPress?: () => void;
   pressable?: boolean;
+  placeholder?: string;
 };
 
 export default function SearchBar({
@@ -19,6 +20,7 @@ export default function SearchBar({
   onIconPress,
   onPress,
   pressable = false,
+  placeholder = "Search products, crops...",
 }: Props) {
   return (
     <TouchableOpacity
@@ -42,7 +44,7 @@ export default function SearchBar({
           ...(Platform.OS === "ios" && {
             shadowColor: "#000",
             shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.10,
+            shadowOpacity: 0.1,
             shadowRadius: 3,
           }),
 
@@ -57,7 +59,7 @@ export default function SearchBar({
           mode="flat"
           underlineColor="transparent"
           activeUnderlineColor="transparent"
-          placeholder="Search products, crops..."
+          placeholder={placeholder}
           placeholderTextColor="#999"
           value={search}
           onChangeText={setSearch}
@@ -77,7 +79,6 @@ export default function SearchBar({
             paddingTop: Platform.OS === "ios" ? 1 : 0,
           }}
         />
-
 
         {/* CLEAR X */}
         {!!search && (
