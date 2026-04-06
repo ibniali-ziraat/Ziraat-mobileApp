@@ -47,15 +47,33 @@ export default function HomeScreen() {
 
   const currentWeather = useMemo(() => {
     if (!data) return null;
+
     if (data.data_current) {
       return {
-        tempC: data.data_current.temperature,
+        tempC: Math.round(data.data_current.temperature),
+        feelsLikeC: Math.round(data.data_current.temperature),
         condition: data.data_current.pictocode,
+        humidity: data.data_current.relativehumidity ?? 0,
+        windKph: Math.round(data.data_current.windspeed),
+        windDir: 0,
+        isDaylight: data.data_current.isdaylight,
         highTemp: Math.round(data.data_day.temperature_max[0]),
         lowTemp: Math.round(data.data_day.temperature_min[0]),
       };
     }
-    return null;
+
+    const hour = new Date().getHours();
+
+    return {
+      tempC: Math.round(data.data_1h.temperature[hour]),
+      feelsLikeC: Math.round(data.data_1h.felttemperature[hour]),
+      condition: data.data_1h.pictocode[hour],
+      humidity: data.data_1h.relativehumidity[hour],
+      windKph: Math.round(data.data_1h.windspeed[hour]),
+      windDir: data.data_1h.winddirection[hour],
+      highTemp: Math.round(data.data_day.temperature_max[0]),
+      lowTemp: Math.round(data.data_day.temperature_min[0]),
+    };
   }, [data]);
 
   const handleAddToWishlist = async (productId: string) => {
@@ -96,20 +114,22 @@ export default function HomeScreen() {
             {/* <ProductCarousel items={products.slice(0, 8)} /> */}
 
             <ProductsList
-  items={allProducts}
-  wishlistItems={wishlist}
-  onToggleWishlist={(id) => {
-    const exists = wishlist.some(w => String(w.productId) === String(id));
+              items={allProducts}
+              wishlistItems={wishlist}
+              onToggleWishlist={(id) => {
+                const exists = wishlist.some(
+                  (w) => String(w.productId) === String(id),
+                );
 
-    if (exists) {
-      handleRemoveFromWishlist(id);
-    } else {
-      handleAddToWishlist(id);
-    }
-  }}
-  isWishlistBusy={isWishlistBusy}
-  variant="carousel" 
-/>
+                if (exists) {
+                  handleRemoveFromWishlist(id);
+                } else {
+                  handleAddToWishlist(id);
+                }
+              }}
+              isWishlistBusy={isWishlistBusy}
+              variant="carousel"
+            />
 
             <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
             <FarmOverviewChart />
