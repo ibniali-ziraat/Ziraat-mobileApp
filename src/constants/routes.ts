@@ -101,6 +101,10 @@ export const ROUTES = {
     TRACKING: "/orders/tracking",
   },
 
+  Discussion:{
+    discussionForum:"/discussion",
+    QuestionScreen:"/questionScreen",
+  },
   SHIPPING: {
     ADDRESS: "/shipping/address",
     METHOD: "/shipping/method",

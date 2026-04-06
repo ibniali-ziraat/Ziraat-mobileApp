@@ -27,7 +27,7 @@ export default function ProductsList({
   const isCarousel = variant === "carousel";
 
   /**
-   * ✅ NORMALIZE DATA (handles both API + old format)
+   *  NORMALIZE DATA (handles both API + old format)
    */
   const normalizedItems = (items?.products || items || [])
     .filter((item) => item) // remove null/undefined
@@ -57,7 +57,7 @@ export default function ProductsList({
       }
 
       /**
-       * ✅ SAFE KEY EXTRACTOR
+       * SAFE KEY EXTRACTOR
        */
       keyExtractor={(item, index) =>
         item?.id ? String(item.id) : `fallback-${index}`
