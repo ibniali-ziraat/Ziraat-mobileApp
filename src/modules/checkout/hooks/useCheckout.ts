@@ -6,6 +6,7 @@ import {
   createCheckoutShipping,
   createShippingAddress,
   getCheckoutShipping,
+  getCoupon,
   getPaymentProviders,
   updateTaxAndShippingPrices,
   upiCheckoutService,
@@ -16,6 +17,15 @@ export const useCouponCode = () => {
     mutationFn: (payload: { couponCode: string }) => applyCoupon(payload),
   });
 };
+
+export const useGetCouponCode = (couponCode?: string) => {
+  return useQuery({
+    queryKey: ["coupon", couponCode],
+    queryFn: () => getCoupon(couponCode),
+    enabled: true, // ✅ ALWAYS FETCH
+  });
+};
+
 
 export const useCheckout = () => {
   return useMutation({
