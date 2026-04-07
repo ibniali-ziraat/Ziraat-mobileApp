@@ -90,7 +90,7 @@ export default function SignupScreen() {
       } catch (error: any) {
         showErrorToast(
           error?.response?.data?.message ||
-            "Something went wrong try again later",
+          "Something went wrong try again later",
         );
       }
     }
@@ -172,7 +172,7 @@ export default function SignupScreen() {
             <Heading
               title="Lets sign up"
               subtitle="Create your account to get started"
-              // subtitle="Join our trusted platform for safe, effective crop protection."
+            // subtitle="Join our trusted platform for safe, effective crop protection."
             />
           )}
 

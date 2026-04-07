@@ -14,6 +14,7 @@ interface Summary {
 
 interface Props {
   summary: Summary;
+  couponCode?: string;
 }
 
 const formatRs = (value: string) => value?.replace("$", "₹");
@@ -29,12 +30,16 @@ const SummaryRow = ({
 }) => (
   <View className="mb-2 flex-row justify-between">
     <Text
-      className={`text-sm ${bold ? "font-bold text-neutral-900" : "text-neutral-700"}`}
+      className={`text-sm ${
+        bold ? "font-bold text-neutral-900" : "text-neutral-700"
+      }`}
     >
       {label}
     </Text>
     <Text
-      className={`text-sm ${bold ? "font-bold text-neutral-900" : "text-neutral-700"}`}
+      className={`text-sm ${
+        bold ? "font-bold text-neutral-900" : "text-neutral-700"
+      }`}
     >
       {value}
     </Text>
@@ -43,7 +48,7 @@ const SummaryRow = ({
 
 const Divider = () => <View className="my-2 border-t border-neutral-100" />;
 
-export const OrderSummary = ({ summary }: Props) => (
+export const OrderSummary = ({ summary, couponCode }: Props) => (
   <View className="mx-4 rounded-2xl bg-white p-4">
     <Text
       style={typography.Poppins_s_bold}
@@ -52,7 +57,26 @@ export const OrderSummary = ({ summary }: Props) => (
       Order Summary
     </Text>
 
-    <SummaryRow label="Subtotal" value={formatRs(summary.subTotalString)} />
+    <SummaryRow
+      label="Subtotal"
+      value={formatRs(summary.subTotalString)}
+    />
+
+  
+    {couponCode && (
+      <View className="mb-2 flex-row justify-between items-center">
+        <Text className="text-sm">
+          Coupon Applied
+        </Text>
+
+        <View className="flex-row items-center">
+
+          <Text className="ml-1 text-sm">
+            {couponCode}
+          </Text>
+        </View>
+      </View>
+    )}
 
     {summary.discount > 0 && (
       <SummaryRow
@@ -61,7 +85,10 @@ export const OrderSummary = ({ summary }: Props) => (
       />
     )}
 
-    <SummaryRow label="Tax" value={formatRs(summary.taxAmountString)} />
+    <SummaryRow
+      label="Included Tax"
+      value={formatRs(summary.taxAmountString)}
+    />
 
     <SummaryRow
       label="Shipping"
