@@ -1,9 +1,8 @@
 import { Gauge } from "lucide-react-native";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import Svg, { Circle, G, Line, Path } from "react-native-svg";
 import { typography } from "../constants/fonts/typography";
-import CsText from "./shared/CsText";
-import ZiraatCard from "./shared/ZiraatProfileCard";
+import { shadows } from "../constants/shadows";
 
 type Props = {
   value: number;
@@ -20,26 +19,41 @@ export default function PressureCard({ value }: Props) {
   );
 
   return (
-    <ZiraatCard
-      width="48%"
-      paddingHorizontal={1}
-      paddingVertical={1}
-      className="border border-light"
+    <View
+      style={[
+        {
+          width: "98%",
+          marginVertical: 8,
+          paddingHorizontal: 12,
+          paddingVertical: 12,
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          height: 180, 
+          justifyContent: "space-between",
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.05)",
+        },
+        shadows.profile_card, 
+      ]}
     >
-      <View className="flex-row items-center justify-between px-3 mt-1">
-        <View className="flex-row items-center">
-          <Gauge size={18} color="#c7611f" />
-          <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
-            PRESSURE
-          </CsText>
-        </View>
+      {/* Header */}
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Gauge size={18} color="#c7611f" />
+        <Text
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+        >
+          PRESSURE
+        </Text>
       </View>
 
-      <View className="items-center justify-center -mt-2 mb-1">
+      {/* Gauge */}
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Svg width={SIZE} height={SIZE / 1.6}>
-
+          {/* Arc */}
           <Path
-            d={`M ${CENTER - RADIUS} ${CENTER} A ${RADIUS} ${RADIUS} 0 0 1 ${CENTER + RADIUS} ${CENTER}`}
+            d={`M ${CENTER - RADIUS} ${CENTER} A ${RADIUS} ${RADIUS} 0 0 1 ${
+              CENTER + RADIUS
+            } ${CENTER}`}
             stroke="#000000"
             strokeWidth={4}
             fill="none"
@@ -59,32 +73,37 @@ export default function PressureCard({ value }: Props) {
             />
           </G>
 
+          {/* Center Dot */}
           <Circle cx={CENTER} cy={CENTER} r={5} fill="#c7611f" />
         </Svg>
 
         {/* Labels */}
         <View
-          style={{ width: RADIUS * 2 + 20 }}
-          className="flex-row justify-between -mt-2"
+          style={{
+            width: RADIUS * 2 + 20,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            marginTop: -6,
+          }}
         >
-          <CsText style={typography.Poppins_xs_regular} className=" text-dark">
+          <Text style={[typography.Poppins_xs_regular, { color: "#000" }]}>
             Low
-          </CsText>
-          <CsText style={typography.Poppins_xs_regular} className=" text-dark">
+          </Text>
+          <Text style={[typography.Poppins_xs_regular, { color: "#000" }]}>
             High
-          </CsText>
+          </Text>
         </View>
-        <View className="pt-2">
 
-          <CsText style={typography.Poppins_s_regular} className=" text-dark">
-            {Math.round(value)}
-            <CsText style={typography.Poppins_s_regular} className=" text-dark">
-              {" "}
-              hPa
-            </CsText>
-          </CsText>
-        </View>
+        {/* Value */}
+        <Text
+          style={[
+            typography.Poppins_s_regular,
+            { color: "#000", marginTop: 6 },
+          ]}
+        >
+          {Math.round(value)} hPa
+        </Text>
       </View>
-    </ZiraatCard>
+    </View>
   );
 }

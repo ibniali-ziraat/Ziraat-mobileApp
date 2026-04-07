@@ -1,18 +1,5 @@
-import AveragesCard from "@/src/components/AveragesCard";
-import FeelsLikeCard from "@/src/components/FeelsLikeCard";
-import HourlyCard from "@/src/components/HourlyCard";
-import HumidityCard from "@/src/components/HumidityCard";
-import { MoonCard } from "@/src/components/MoonCard";
-import { Precipitation } from "@/src/components/Precipitation";
-import PressureCard from "@/src/components/PressureCard";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SearchBar from "@/src/components/shared/SearchBar";
-import StormCard from "@/src/components/StormCard";
-import SunsetCard from "@/src/components/SunsetCard";
-import UVCard from "@/src/components/UVCard";
-import VisibilityCard from "@/src/components/VisibilityCard";
-import WeeklyCard from "@/src/components/WeeklyCard";
-import WindCard from "@/src/components/WindCard";
 import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useLocationSearch } from "@/src/hooks/useLocationSearch";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
@@ -20,10 +7,23 @@ import WeatherCard from "@/src/modules/home/components/weatherCard";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 
+import AveragesCard from "@/src/components/AveragesCard";
+import FeelsLikeCard from "@/src/components/FeelsLikeCard";
+import HourlyCard from "@/src/components/HourlyCard";
+import HumidityCard from "@/src/components/HumidityCard";
+import { MoonCard } from "@/src/components/MoonCard";
+import { Precipitation } from "@/src/components/Precipitation";
+import PressureCard from "@/src/components/PressureCard";
 import BackHeader from "@/src/components/shared/BackHeader";
 import Loader from "@/src/components/shared/Loader";
 import Map from "@/src/components/shared/Map";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import StormCard from "@/src/components/StormCard";
+import SunsetCard from "@/src/components/SunsetCard";
+import UVCard from "@/src/components/UVCard";
+import VisibilityCard from "@/src/components/VisibilityCard";
+import TenDayForecastCard from "@/src/components/WeeklyCard";
+import WindCard from "@/src/components/WindCard";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 
@@ -46,9 +46,9 @@ export default function WeatherScreen() {
 
   const finalCoords = searchedCoords ??
     coords ?? {
-      lat: 34.0837,
-      lon: 74.7973,
-    };
+    lat: 34.0837,
+    lon: 74.7973,
+  };
 
   const { data } = useWeatherQuery({
     lat: finalCoords.lat,
@@ -128,19 +128,26 @@ export default function WeatherScreen() {
 
                   <StormCard />
 
-                  {data?.data_day && <WeeklyCard data_day={data.data_day} />}
+                  {data?.data_day && <TenDayForecastCard data_day={data.data_day} />}
 
-                  <View className="flex-row justify-between">
-                    {data?.data_1h?.felttemperature?.length > 0 && (
-                      <FeelsLikeCard
-                        temp={Math.round(data.data_1h.felttemperature[0])}
-                        actualTemp={Math.round(data.data_1h.temperature[0])}
-                      />
-                    )}
 
-                    {uvIndex !== undefined && (
-                      <UVCard value={Math.round(uvIndex)} />
-                    )}
+
+                  <View className="flex-row">
+                    <View className="flex-1 mr-1">
+                      {data?.data_1h?.felttemperature?.length > 0 && (
+                        <FeelsLikeCard
+                          temp={Math.round(data.data_1h.felttemperature[0])}
+                          actualTemp={Math.round(data.data_1h.temperature[0])}
+                        />
+                      )}
+                    </View>
+
+                    <View className="flex-1 ml-1">
+                      {uvIndex !== undefined && (
+                        <UVCard value={Math.round(uvIndex)} />
+                      )}
+                    </View>
+
                   </View>
 
                   {data?.data_1h?.windspeed && data?.data_1h?.winddirection && (
@@ -152,15 +159,28 @@ export default function WeatherScreen() {
                   )}
 
                   <View className="mt-4 flex-row justify-between">
-                    {data?.data_1h?.sealevelpressure && (
-                      <PressureCard value={data.data_1h.sealevelpressure[0]} />
-                    )}
-                    <HumidityCard value={todayHumidity} />
+                    <View className="flex-1 mr-1">
+                      {data?.data_1h?.sealevelpressure && (
+                        <PressureCard value={data.data_1h.sealevelpressure[0]} />
+                      )}
+                    </View>
+
+                    <View className="flex-1 ml-1">
+                      <HumidityCard value={todayHumidity} />
+                    </View>
+
+
                   </View>
 
                   <View className="mt-2 flex-row justify-between">
-                    <VisibilityCard distance={visibilityVal} />
-                    <SunsetCard sunrise={sunriseTime} sunset={sunsetTime} />
+                    <View className="flex-1 mr-1">
+                      <VisibilityCard distance={visibilityVal} />
+                    </View>
+
+
+                    <View className="flex-1 ml-1">
+                      <SunsetCard sunrise={sunriseTime} sunset={sunsetTime} />
+                    </View>
                   </View>
 
                   <MoonCard
@@ -170,14 +190,19 @@ export default function WeatherScreen() {
                   />
 
                   <View className="flex-row justify-between">
-                    <AveragesCard
-                      currentMax={Math.round(dayData?.temperature_max?.[0])}
-                      averageMax={8}
-                    />
-                    <Precipitation
-                      amount={dayData?.precipitation?.[0]}
-                      probability={dayData?.precipitation_probability?.[0]}
-                    />
+                    <View className="flex-1 mr-1">
+                      <AveragesCard
+                        currentMax={Math.round(dayData?.temperature_max?.[0] ?? 0)}
+                        averageMax={8}
+                      />
+                    </View>
+
+                    <View className="flex-1 ml-1"><Precipitation
+                      amount={dayData?.precipitation?.[0] ?? 0}
+                      probability={dayData?.precipitation_probability?.[0] ?? 0}
+                    /></View>
+
+
                   </View>
                 </>
               )}

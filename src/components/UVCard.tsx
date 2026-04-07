@@ -1,9 +1,8 @@
 import { Sun } from "lucide-react-native";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import Svg, { Circle, Line } from "react-native-svg";
 import { typography } from "../constants/fonts/typography";
-import CsText from "./shared/CsText";
-import ZiraatCard from "./shared/ZiraatProfileCard";
+import { shadows } from "../constants/shadows";
 
 type Props = {
   value: number;
@@ -27,70 +26,63 @@ export default function UVCard({ value }: Props) {
   const { level, advice } = getUVInfo(value);
 
   return (
-    <ZiraatCard
-      width="48%"
-      marginVertical={1}
-      paddingHorizontal={1}
-      paddingVertical={1}
+    <View
+      style={[
+        {
+          width: "100%",
+          marginVertical: 8,
+          paddingHorizontal: 12,
+          paddingVertical: 12,
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          height: 160, 
+          justifyContent: "space-between",
+        },
+        shadows.profile_card, 
+      ]}
     >
-      <View className="w-full ">
-        <View className="flex-row items-center">
-          <Sun size={18} color="#c7611f" />
-          <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
-            UV INDEX
-          </CsText>
-        </View>
-
-        <CsText style={typography.Poppins_l_medium} className="mt-1 text-dark">{value}</CsText>
-
-        <CsText style={typography.Poppins_m_regular} className="text-md text-dark">{level}</CsText>
-
-        <Svg
-          width={BAR_WIDTH}
-          height={14}
-          style={{
-            marginVertical: 10,
-          }}
+      {/* Header */}
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <Sun size={18} color="#c7611f" />
+        <Text
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
         >
-          <Line x1="0" y1="7" x2="30" y2="7" stroke="#22C55E" strokeWidth="4" />
-          <Line
-            x1="30"
-            y1="7"
-            x2="60"
-            y2="7"
-            stroke="#FACC15"
-            strokeWidth="4"
-          />
-          <Line
-            x1="60"
-            y1="7"
-            x2="90"
-            y2="7"
-            stroke="#F97316"
-            strokeWidth="4"
-          />
-          <Line
-            x1="90"
-            y1="7"
-            x2="120"
-            y2="7"
-            stroke="#EF4444"
-            strokeWidth="4"
-          />
-          <Line
-            x1="120"
-            y1="7"
-            x2="150"
-            y2="8"
-            stroke="#A855F7"
-            strokeWidth="4"
-          />
-
-          <Circle cx={markerX} cy={6} r={5} fill="#c7611f" />
-        </Svg>
-
-        <CsText style={typography.Poppins_xs_regular} className="text-sm leading-5 text-dark">{advice}</CsText>
+          UV INDEX
+        </Text>
       </View>
-    </ZiraatCard>
+
+      {/* Value + Level */}
+      <View>
+        <Text
+          style={[typography.Poppins_l_medium, { marginTop: 4, color: "#000" }]}
+        >
+          {value}
+        </Text>
+
+        <Text
+          style={[typography.Poppins_m_regular, { color: "#000" }]}
+        >
+          {level}
+        </Text>
+      </View>
+
+      {/* UV Bar */}
+      <Svg width={BAR_WIDTH} height={14} style={{ marginVertical: 6 }}>
+        <Line x1="0" y1="7" x2="30" y2="7" stroke="#22C55E" strokeWidth="4" />
+        <Line x1="30" y1="7" x2="60" y2="7" stroke="#FACC15" strokeWidth="4" />
+        <Line x1="60" y1="7" x2="90" y2="7" stroke="#F97316" strokeWidth="4" />
+        <Line x1="90" y1="7" x2="120" y2="7" stroke="#EF4444" strokeWidth="4" />
+        <Line x1="120" y1="7" x2="150" y2="7" stroke="#A855F7" strokeWidth="4" />
+
+        <Circle cx={markerX} cy={7} r={5} fill="#c7611f" />
+      </Svg>
+
+      {/* Advice */}
+      <Text
+        style={[typography.Poppins_xs_regular, { color: "#000", lineHeight: 18 }]}
+      >
+        {advice}
+      </Text>
+    </View>
   );
 }
