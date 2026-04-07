@@ -31,10 +31,7 @@ export default function HomeScreen(): JSX.Element {
     <ScreenLayout>
       <ScreenContent>
         <AnimatedTabContent>
-          <View
-            style={{ backgroundColor: colors.light }}
-            className="flex-1 pt-4"
-          >
+          <View style={{ backgroundColor: colors.light }} className="flex-1">
             <TouchableOpacity
               onPress={() => router.push(ROUTES.WEATHER.DETAILS)}
             >
