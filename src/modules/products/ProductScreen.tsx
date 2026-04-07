@@ -1,11 +1,6 @@
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useEffect, useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -17,7 +12,6 @@ import ProductSearchBar from "./components/ProductSearchBar";
 import { useWishlist } from "../wishlist/hooks/useWishlist";
 
 import { ScrollView } from "react-native-gesture-handler";
-import ProductsList from "./components/AllProductsCarousel";
 import { useProductsData } from "./hooks/data/useProductsData";
 import { useProductSearch } from "./hooks/queries/products.queries";
 
@@ -31,6 +25,7 @@ import {
 } from "lucide-react-native";
 
 import SectionTitle from "../home/components/SectionTitle";
+import ProductsList from "./components/ProductList";
 
 export default function ProductScreen() {
   const [search, setSearch] = useState("");
@@ -55,8 +50,7 @@ export default function ProductScreen() {
     getWishlistItemId,
   } = useWishlist();
 
-  const { products: allProducts = [], filterOptions = [] } =
-    useProductsData();
+  const { products: allProducts = [], filterOptions = [] } = useProductsData();
 
   const { data: filteredProductsData = {} } = useProductSearch({
     query: debouncedSearch,
@@ -69,8 +63,7 @@ export default function ProductScreen() {
 
   if (filters?.minRating !== undefined && filters?.minRating !== null) {
     filteredProducts = filteredProducts.filter(
-      (p: any) =>
-        Number(p.ratingAverage || 0) >= Number(filters.minRating)
+      (p: any) => Number(p.ratingAverage || 0) >= Number(filters.minRating),
     );
   }
 
@@ -165,13 +158,9 @@ export default function ProductScreen() {
                       paddingVertical: 10,
                       borderRadius: 24,
                       marginRight: 10,
-                      backgroundColor: isActive
-                        ? colors.primary
-                        : colors.light,
+                      backgroundColor: isActive ? colors.primary : colors.light,
                       borderWidth: 1,
-                      borderColor: isActive
-                        ? colors.primary
-                        : colors.secondary,
+                      borderColor: isActive ? colors.primary : colors.secondary,
                       elevation: isActive ? 4 : 2,
                     }}
                   >
@@ -179,11 +168,7 @@ export default function ProductScreen() {
                     <View style={{ marginRight: 6 }}>
                       <item.icon
                         size={14}
-                        color={
-                          isActive
-                            ? colors.light
-                            : colors.secondary
-                        }
+                        color={isActive ? colors.light : colors.secondary}
                       />
                     </View>
 
@@ -192,9 +177,7 @@ export default function ProductScreen() {
                       style={{
                         fontWeight: "600",
                         fontSize: 13,
-                        color: isActive
-                          ? colors.light
-                          : colors.secondary,
+                        color: isActive ? colors.light : colors.secondary,
                       }}
                     >
                       {item.label}
@@ -206,38 +189,38 @@ export default function ProductScreen() {
           )}
 
           <View style={{ marginTop: 24 }}>
-  <View
-    style={{
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 8,
-    }}
-  >
-    <SectionTitle title="Popular Picks" icon="flame-outline" />
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: 8,
+              }}
+            >
+              <SectionTitle title="Popular Picks" icon="flame-outline" />
 
-    {/* RIGHT ARROW */}
-    <View
-      style={{
-        backgroundColor: colors.light,
-        padding: 6,
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor:colors.cardBorder,
-      }}
-    >
-     <ChevronRight size={16} color={colors.dark} />
-    </View>
-  </View>
+              {/* RIGHT ARROW */}
+              <View
+                style={{
+                  backgroundColor: colors.light,
+                  padding: 6,
+                  borderRadius: 20,
+                  borderWidth: 1,
+                  borderColor: colors.cardBorder,
+                }}
+              >
+                <ChevronRight size={16} color={colors.dark} />
+              </View>
+            </View>
 
-  <ProductsList
-    items={allProducts.slice(3, 8)}
-    wishlistItems={wishlist}
-    onToggleWishlist={handleToggleWishlist}
-    isWishlistBusy={isBusy}
-    variant="carousel"
-  />
-</View>
+            <ProductsList
+              items={allProducts.slice(3, 8)}
+              wishlistItems={wishlist}
+              onToggleWishlist={handleToggleWishlist}
+              isWishlistBusy={isBusy}
+              variant="carousel"
+            />
+          </View>
 
           {/* ALL PRODUCTS */}
           <View style={{ marginTop: 24 }}>
@@ -274,7 +257,7 @@ export default function ProductScreen() {
                 elevation: 10,
               }}
             >
-              <ArrowUp size={18} color={colors.light}/>
+              <ArrowUp size={18} color={colors.light} />
             </Pressable>
           </View>
         )}

@@ -10,7 +10,6 @@ import {
 } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
-import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
@@ -24,7 +23,6 @@ import ProductStickyBar from "./components/ProductStickyBar";
 import Review from "@/src/components/shared/AllReview";
 import WriteReview from "@/src/components/shared/WriteReview";
 
-
 import { toast } from "@backpackapp-io/react-native-toast";
 import { MoveLeft, PackageSearch, X } from "lucide-react-native";
 import { Modal } from "react-native-paper";
@@ -36,11 +34,11 @@ import { useAddReview, useListReviews } from "./hooks/data/useReview";
 import { useProductByIdQuery } from "./hooks/queries/products.queries";
 
 /* ⭐ IMPORT PRODUCTS LIST */
-import ProductsList from "../products/components/AllProductsCarousel";
 
 /* ⭐ IMPORT WISHLIST */
 import { typography } from "@/src/constants/fonts/typography";
 import { useWishlist } from "../wishlist/hooks/useWishlist";
+import ProductsList from "./components/ProductList";
 
 export default function ProductDetails() {
   const { productId } = useLocalSearchParams();
@@ -291,31 +289,23 @@ export default function ProductDetails() {
                 {/* ⭐ YOU MAY ALSO LIKE */}
 
                 {relatedProducts.length > 0 && (
-                  <View className="mt-6">
-                    <CsText className="text-lg font-semibold mb-3">
-                      You May Also Like
-                    </CsText>
-
-                    <ProductsList
-                      items={relatedProducts}
-                      wishlistItems={wishlist}
-                      onToggleWishlist={handleToggleWishlist}
-                      isWishlistBusy={isBusy}
-                      variant="carousel"
-                    />
-                  </View>
+                  <ProductsList
+                    title="Recommended Products"
+                    items={relatedProducts}
+                    wishlistItems={wishlist}
+                    onToggleWishlist={handleToggleWishlist}
+                    isWishlistBusy={isBusy}
+                    variant="carousel"
+                  />
                 )}
 
                 {/* ⭐ FREQUENTLY BOUGHT */}
 
                 {crossSellProducts.length > 0 && (
                   <View className="mt-6">
-                    <CsText className="text-lg font-semibold mb-3">
-                      Frequently Bought Together
-                    </CsText>
-
                     <ProductsList
                       items={crossSellProducts}
+                      title="Frequently Bought Products"
                       wishlistItems={wishlist}
                       onToggleWishlist={handleToggleWishlist}
                       isWishlistBusy={isBusy}
