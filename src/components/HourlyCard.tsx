@@ -11,8 +11,8 @@ import { Dimensions, ScrollView, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
 import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
+import { shadows } from "../constants/shadows";
 import CsText from "./shared/CsText";
-import ZiraatCard from "./shared/ZiraatProfileCard";
 
 const { width } = Dimensions.get("window");
 const ITEM_WIDTH = 70;
@@ -54,7 +54,6 @@ const renderIcon = (type: string) => {
       return <Sun size={20} color={colors.secondary} />;
   }
 };
-
 
 export default function HourlyCard({ data_1h }) {
   const scrollRef = useRef<ScrollView>(null);
@@ -99,7 +98,6 @@ export default function HourlyCard({ data_1h }) {
     });
   }, [data_1h]);
 
-
   useEffect(() => {
     const index = HOURS.findIndex((h) => h.isNow);
     if (index !== -1) {
@@ -109,7 +107,6 @@ export default function HourlyCard({ data_1h }) {
       });
     }
   }, [HOURS]);
-
 
   const { tempPath, feelsPath, points } = useMemo(() => {
     const temps = HOURS.map((h) => h.temp);
@@ -139,12 +136,23 @@ export default function HourlyCard({ data_1h }) {
     };
   }, [HOURS]);
 
-
   return (
-    <ZiraatCard width="100%"
-      paddingHorizontal={1.3}
-      paddingVertical={1.5}>
-      <CsText style={typography.Poppins_m_medium} className="mb-3">
+    <View
+      style={[
+        {
+          width: "100%",
+          marginVertical: 8,
+          paddingHorizontal: 14,
+          paddingVertical: 16,
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.05)",
+        },
+        shadows.profile_card,
+      ]}
+    >
+      <CsText style={typography.Poppins_m_medium}>
         24-hour forecast (IST)
       </CsText>
 
@@ -154,7 +162,8 @@ export default function HourlyCard({ data_1h }) {
         showsHorizontalScrollIndicator={false}
       >
         <View style={{ width: HOURS.length * ITEM_WIDTH }}>
-          <View style={{ flexDirection: "row" }}>
+          {/* Top Row */}
+          <View style={{ flexDirection: "row", marginTop: 10 }}>
             {HOURS.map((item, index) => (
               <View
                 key={index}
@@ -168,13 +177,17 @@ export default function HourlyCard({ data_1h }) {
                   paddingVertical: 6,
                 }}
               >
-                <CsText style={typography.Poppins_s_regular}>{item.time}</CsText>
+                <CsText style={typography.Poppins_s_regular}>
+                  {item.time}
+                </CsText>
 
                 <View style={{ marginVertical: 2 }}>
                   {renderIcon(item.icon)}
                 </View>
 
-                <CsText style={typography.Poppins_s_regular} className="text-dark">{item.temp}°</CsText>
+                <CsText style={typography.Poppins_s_regular}>
+                  {item.temp}°
+                </CsText>
 
                 <Wind
                   size={14}
@@ -188,6 +201,7 @@ export default function HourlyCard({ data_1h }) {
             ))}
           </View>
 
+          {/* Chart */}
           <Svg width={HOURS.length * ITEM_WIDTH} height={CHART_HEIGHT}>
             <Path
               d={feelsPath}
@@ -196,14 +210,19 @@ export default function HourlyCard({ data_1h }) {
               strokeDasharray="4 4"
               fill="none"
             />
-            <Path d={tempPath} stroke={colors.secondary} strokeWidth={2} fill="none" />
+            <Path
+              d={tempPath}
+              stroke={colors.secondary}
+              strokeWidth={2}
+              fill="none"
+            />
 
             {points.map((p, i) => (
               <Circle key={i} cx={p.x} cy={p.y} r={4} fill={colors.secondary} />
             ))}
           </Svg>
 
-
+          {/* Rain */}
           <View style={{ flexDirection: "row", marginTop: 6 }}>
             {HOURS.map((item, index) => (
               <View
@@ -211,12 +230,14 @@ export default function HourlyCard({ data_1h }) {
                 style={{ width: ITEM_WIDTH, alignItems: "center" }}
               >
                 <Droplet size={14} color={colors.secondary} />
-                <CsText style={typography.Poppins_s_regular}>{item.rain}%</CsText>
+                <CsText style={typography.Poppins_s_regular}>
+                  {item.rain}%
+                </CsText>
               </View>
             ))}
           </View>
         </View>
       </ScrollView>
-    </ZiraatCard>
+    </View>
   );
 }

@@ -1,9 +1,8 @@
 import { Thermometer } from "lucide-react-native";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
-import CsText from "./shared/CsText";
-import ZiraatCard from "./shared/ZiraatProfileCard";
+import { shadows } from "../constants/shadows";
 
 type Props = {
   temp: number;
@@ -20,22 +19,44 @@ export default function FeelsLikeCard({ temp, actualTemp }: Props) {
   };
 
   return (
-    <ZiraatCard
-      width="48%"
-      marginVertical={1}
-      paddingHorizontal={1}
-      paddingVertical={1}
+    <View
+      style={[
+        {
+          width: "95%",
+          marginVertical: 8,
+          paddingHorizontal: 12,
+          paddingVertical: 12,
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          height: 160, 
+          justifyContent: "space-between",
+        },
+        shadows.profile_card, 
+      ]}
     >
-      <View className="flex-row items-center mb-2">
+      {/* Header */}
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Thermometer size={18} color={colors.secondary} />
-        <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
+        <Text
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+        >
           Feels Like
-        </CsText>
+        </Text>
       </View>
 
-      <CsText style={typography.Poppins_l_medium} className="mt-1 text-dark">{temp}°</CsText>
+      {/* Temperature */}
+      <Text
+        style={[typography.Poppins_l_medium, { marginTop: 4, color: "#000" }]}
+      >
+        {temp}°
+      </Text>
 
-      <CsText style={typography.Poppins_xs_regular} className="mt-1 text-dark">{getMessage()}</CsText>
-    </ZiraatCard>
+      {/* Message */}
+      <Text
+        style={[typography.Poppins_xs_regular, { marginTop: 4, color: "#000" }]}
+      >
+        {getMessage()}
+      </Text>
+    </View>
   );
 }
