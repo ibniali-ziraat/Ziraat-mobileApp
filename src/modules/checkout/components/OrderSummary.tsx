@@ -14,7 +14,7 @@ interface Summary {
 
 interface Props {
   summary: Summary;
-  couponCode?: string; // ✅ ADDED
+  couponCode?: string;
 }
 
 const formatRs = (value: string) => value?.replace("$", "₹");
@@ -62,7 +62,7 @@ export const OrderSummary = ({ summary, couponCode }: Props) => (
       value={formatRs(summary.subTotalString)}
     />
 
-    {/* ✅ COUPON DISPLAY */}
+  
     {couponCode && (
       <View className="mb-2 flex-row justify-between items-center">
         <Text className="text-sm">

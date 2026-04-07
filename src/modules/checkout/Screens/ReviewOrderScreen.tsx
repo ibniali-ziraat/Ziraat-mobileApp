@@ -25,7 +25,7 @@ const ReviewOrderScreen = () => {
   const { errorMsg, isPending, paymentOptions, handlePlaceOrder } =
     useReviewOrder();
 
-  // ✅ ADD THIS
+
   const [couponCode, setCouponCode] = useState("");
 
   // ✅ FETCH COUPON
@@ -50,7 +50,7 @@ const ReviewOrderScreen = () => {
         <OrderItems items={summary.items} />
         <DeliveryAddress address={selectedAddress} />
 
-        {/* ✅ PASS COUPON HERE */}
+      
         <OrderSummary summary={summary} couponCode={couponCode} />
 
         <PaymentMethodSelector options={paymentOptions} />
