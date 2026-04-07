@@ -24,7 +24,6 @@ import ProductStickyBar from "./components/ProductStickyBar";
 import Review from "@/src/components/shared/AllReview";
 import WriteReview from "@/src/components/shared/WriteReview";
 
-
 import { toast } from "@backpackapp-io/react-native-toast";
 import { MoveLeft, PackageSearch, X } from "lucide-react-native";
 import { Modal } from "react-native-paper";

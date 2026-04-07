@@ -1,7 +1,10 @@
 import { colors } from "@/src/constants/colors";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 interface ScreenLayoutProps {
   children: React.ReactNode;
@@ -14,18 +17,34 @@ export default function ScreenLayout({
   keyboardOffset = 30,
   scrollable = true,
 }: ScreenLayoutProps) {
+  // ⭐ Get dynamic safe area values
+  const insets = useSafeAreaInsets();
+
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: "#FFFFFF" }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{
+        flex: 1,
+        backgroundColor: "#FFFFFF",
+      }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={keyboardOffset}
     >
-      <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
+      {/* ⭐ Apply safe area properly */}
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: colors.light,
+        }}
+        edges={["top", "bottom"]}
+      >
         {scrollable ? (
           <ScrollView
             contentContainerStyle={{
               flexGrow: 1,
-              paddingBottom: Platform.OS === "android" ? 40 : 100,
+
+              // ⭐ Dynamic bottom spacing
+              paddingBottom: insets.bottom + 0,
+
               backgroundColor: colors.light,
             }}
             keyboardShouldPersistTaps="handled"
@@ -38,7 +57,9 @@ export default function ScreenLayout({
             style={{
               flex: 1,
               backgroundColor: colors.light,
-              paddingBottom: Platform.OS === "android" ? 40 : 100,
+
+              // ⭐ Dynamic bottom spacing
+              paddingBottom: insets.bottom + 80,
             }}
           >
             {children}
