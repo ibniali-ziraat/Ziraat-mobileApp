@@ -1,4 +1,3 @@
-
 import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
@@ -18,6 +17,8 @@ import {
 import { useWishlist } from "@/src/modules/wishlist/hooks/useWishlist";
 import { toast } from "@backpackapp-io/react-native-toast";
 
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 type Props = {
   product: any;
   isInCart: boolean;
@@ -36,16 +37,21 @@ export default function ProductStickyBar({
 
   const [isCartBusy, setIsCartBusy] = useState(false);
 
-  const {
-    addToWishlist,
-    removeFromWishlist,
-    getWishlistItemId,
-  } = useWishlist();
+  const { addToWishlist, removeFromWishlist, getWishlistItemId } =
+    useWishlist();
 
   const wishlistId = getWishlistItemId(product?.id);
   const isWishlisted = !!wishlistId;
 
-  //  Loader Animation
+  //  Safe Area Insets
+  const insets = useSafeAreaInsets();
+
+  // Detect navigation type
+  // Gesture navigation → inset.bottom > 0
+  // Navigation buttons → inset.bottom = 0
+  const bottomOffset = insets.bottom > 0 ? 0 : 28;
+
+  // Loader Animation
   const rotateAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -55,7 +61,7 @@ export default function ProductStickyBar({
         duration: 700,
         easing: Easing.linear,
         useNativeDriver: true,
-      })
+      }),
     ).start();
   }, []);
 
@@ -78,7 +84,7 @@ export default function ProductStickyBar({
     }).start();
   };
 
-  //  CART
+  // CART
   const handleCartPress = async () => {
     if (isCartBusy || actionInProgress.current) return;
 
@@ -97,7 +103,6 @@ export default function ProductStickyBar({
     }
   };
 
- 
   const handleWishlist = async () => {
     try {
       if (wishlistId) {
@@ -115,55 +120,66 @@ export default function ProductStickyBar({
   const cartLabel = isCartBusy
     ? "Adding..."
     : isInCart
-    ? "Go to Cart"
-    : "Add to Cart";
+      ? "Go to Cart"
+      : "Add to Cart";
 
   return (
-    <View style={styles.wrapper}>
+    <View
+      style={[
+        styles.wrapper,
+        {
+          bottom: bottomOffset,
+          paddingBottom:
+            Platform.OS === "ios"
+              ? insets.bottom
+              : insets.bottom > 0
+                ? insets.bottom
+                : 16,
+        },
+      ]}
+    >
       <View style={styles.disclaimerRow}>
         <LegalDisclaimer />
       </View>
 
       <View style={styles.buttonsRow}>
-        {/*  Wishlist */}
+        {/* Wishlist */}
         <Animated.View
           style={{ flex: 1, transform: [{ scale: wishlistBtnScale }] }}
         >
-         <Pressable
-  onPress={handleWishlist}
-  onPressIn={() => animateWishlist(0.96)}
-  onPressOut={() => animateWishlist(1)}
-  style={[
-    styles.cartBtn,
-    {
-      backgroundColor: colors.light, 
-      borderWidth: 1.5,
-      borderColor: colors.secondary, 
-    },
-  ]}
->
-  <Heart
-    size={18}
-    color={colors.secondary} 
-    fill={
-      isWishlisted ? colors.secondary : "transparent" 
-    }
-  />
+          <Pressable
+            onPress={handleWishlist}
+            onPressIn={() => animateWishlist(0.96)}
+            onPressOut={() => animateWishlist(1)}
+            style={[
+              styles.cartBtn,
+              {
+                backgroundColor: colors.light,
+                borderWidth: 1.5,
+                borderColor: colors.secondary,
+              },
+            ]}
+          >
+            <Heart
+              size={18}
+              color={colors.secondary}
+              fill={isWishlisted ? colors.secondary : "transparent"}
+            />
 
-  <Text
-    style={[
-      styles.cartText,
-      {
-        color: colors.secondary, // ALWAYS secondary
-      },
-    ]}
-  >
-    {isWishlisted ? "WISHLISTED" : "WISHLIST"}
-  </Text>
-</Pressable>
+            <Text
+              style={[
+                styles.cartText,
+                {
+                  color: colors.secondary,
+                },
+              ]}
+            >
+              {isWishlisted ? "WISHLISTED" : "WISHLIST"}
+            </Text>
+          </Pressable>
         </Animated.View>
 
-        {/*  Cart */}
+        {/* Cart */}
         <Animated.View
           style={{ flex: 1, transform: [{ scale: cartBtnScale }] }}
         >
@@ -172,30 +188,19 @@ export default function ProductStickyBar({
             onPressIn={() => animateCart(0.96)}
             onPressOut={() => animateCart(1)}
             disabled={isCartBusy}
-            style={[
-              styles.cartBtn,
-              { backgroundColor: colors.secondary },
-            ]}
+            style={[styles.cartBtn, { backgroundColor: colors.secondary }]}
           >
             {isCartBusy ? (
               <View style={styles.loaderRow}>
                 <Animated.View
-                  style={[
-                    styles.circle,
-                    { transform: [{ rotate }] },
-                  ]}
+                  style={[styles.circle, { transform: [{ rotate }] }]}
                 />
                 <Text style={styles.cartText}>{cartLabel}</Text>
               </View>
             ) : (
               <>
-                <ShoppingCart
-                  size={18}
-                  color={colors.light}
-                />
-                <Text style={styles.cartText}>
-                  {cartLabel}
-                </Text>
+                <ShoppingCart size={18} color={colors.light} />
+                <Text style={styles.cartText}>{cartLabel}</Text>
               </>
             )}
           </Pressable>
@@ -208,11 +213,9 @@ export default function ProductStickyBar({
 const styles = StyleSheet.create({
   wrapper: {
     position: "absolute",
-    bottom: 0,
     left: 0,
     right: 0,
     padding: 16,
-    paddingBottom: Platform.OS === "ios" ? 28 : 16,
     backgroundColor: colors.light,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.cardBorder,
