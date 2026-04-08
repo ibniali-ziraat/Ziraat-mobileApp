@@ -13,33 +13,32 @@ import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { toast } from "@backpackapp-io/react-native-toast";
+
 import ProductsList from "../products/components/AllProductsCarousel";
 import { useProductsData } from "../products/hooks/data/useProductsData";
 import { useWishlist } from "../wishlist/hooks/useWishlist";
-import FarmOverviewChart from "./components/FarmOverviewChart";
+
 import FarmerTipsCard from "./components/FarmerTipsCard";
+import FarmOverviewChart from "./components/FarmOverviewChart";
 import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
 
 export default function HomeScreen() {
-  const { coords, loading: locLoading } = useLocation();
+  const { coords } = useLocation();
+
   const {
     wishlist,
     isWishlistBusy,
     addToWishlist,
     removeFromWishlist,
-    isAdding,
-    isRemoving,
   } = useWishlist();
-  // const { products, isLoading: productsLoading } = useProductsData();
+
   const {
     products: allProducts = [],
-    filterOptions = [],
-    isLoading: productsLoading,
   } = useProductsData();
 
-  const { data, isLoading: weatherLoading } = useWeatherQuery({
+  const { data } = useWeatherQuery({
     lat: coords?.lat ?? 34.0837,
     lon: coords?.lon ?? 74.7973,
     asl: 1593,
@@ -68,17 +67,13 @@ export default function HomeScreen() {
     toast.success("Removed from wishlist");
   };
 
-  // if (locLoading || weatherLoading || productsLoading) {
-  //   return <Loader />;
-  // }
-
   return (
     <ScreenLayout>
       <ScreenContent>
         <AnimatedTabContent>
           <View
             style={{ backgroundColor: colors.light }}
-            className="flex-1  pt-4"
+            className="flex-1 pt-4"
           >
             <TouchableOpacity
               onPress={() => router.push(ROUTES.WEATHER.DETAILS)}
@@ -93,29 +88,34 @@ export default function HomeScreen() {
               icon="cube-outline"
             />
 
-            {/* <ProductCarousel items={products.slice(0, 8)} /> */}
-
             <ProductsList
-  items={allProducts}
-  wishlistItems={wishlist}
-  onToggleWishlist={(id) => {
-    const exists = wishlist.some(w => String(w.productId) === String(id));
+              items={allProducts}
+              wishlistItems={wishlist}
+              onToggleWishlist={(id) => {
+                const exists = wishlist.some(
+                  (w) => String(w.productId) === String(id)
+                );
+                router.push("/notifications");
 
-    if (exists) {
-      handleRemoveFromWishlist(id);
-    } else {
-      handleAddToWishlist(id);
-    }
-  }}
-  isWishlistBusy={isWishlistBusy}
-  variant="carousel" 
-/>
+                if (exists) {
+                  handleRemoveFromWishlist(id);
+                } else {
+                  handleAddToWishlist(id);
+                }
+              }}
+              isWishlistBusy={isWishlistBusy}
+              variant="carousel"
+            />
 
             <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
             <FarmOverviewChart />
 
-            <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
+            <SectionTitle
+              title="Farmer Tips & Awareness"
+              icon="bulb-outline"
+            />
             <FarmerTipsCard />
+
             <View className="mb-20">
               <LegalDisclaimer />
             </View>
