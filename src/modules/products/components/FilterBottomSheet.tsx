@@ -14,18 +14,17 @@ import {
 const { height, width } = Dimensions.get("window");
 
 /* ================= FIXED PRICE ================= */
-
 const FIXED_MIN_PRICE = 0;
 const FIXED_MAX_PRICE = 10000;
 
 /* ===================== TYPES ===================== */
-
 type Filters = {
   brand?: string;
   category?: string;
   minPrice?: number;
   maxPrice?: number;
   sort?: string;
+  minRating?: string;
   page?: number;
 };
 
@@ -52,7 +51,6 @@ type Props = {
 };
 
 /* ===================== MAIN ===================== */
-
 export default function FilterBottomSheet({
   visible,
   onClose,
@@ -67,15 +65,15 @@ export default function FilterBottomSheet({
   ]);
   const [sort, setSort] = useState<string | null>(null);
 
+  const [rating, setRating] = useState<number[]>([]);
+
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <Pressable onPress={onClose} style={overlay} />
 
       <View style={sheet}>
-        {/* HANDLE */}
         <View style={handle} />
 
-        {/* HEADER */}
         <View style={header}>
           <CsText style={title}>Filters</CsText>
           <Pressable onPress={onClose}>
@@ -156,6 +154,24 @@ export default function FilterBottomSheet({
               onPress={() => setSort("price-desc")}
             />
           </Section>
+
+
+          <Section title="Sort By Rating">
+            {[5, 4, 3, 2, 1].map((r) => (
+              <Item
+                key={r}
+                label={"★".repeat(r)}
+                selected={rating.includes(r)}
+                onPress={() =>
+                  setRating((prev) =>
+                    prev.includes(r)
+                      ? prev.filter((val) => val !== r)
+                      : [...prev, r]
+                  )
+                }
+              />
+            ))}
+          </Section>
         </ScrollView>
 
         {/* FOOTER */}
@@ -166,6 +182,7 @@ export default function FilterBottomSheet({
               setBrand([]);
               setCategory([]);
               setSort(null);
+              setRating([]);
               setPriceRange([FIXED_MIN_PRICE, FIXED_MAX_PRICE]);
             }}
           >
@@ -181,6 +198,7 @@ export default function FilterBottomSheet({
                 minPrice: priceRange[0],
                 maxPrice: priceRange[1],
                 sort: sort || undefined,
+                minRating: rating.length ? rating.join(",") : undefined,
               });
               onClose();
             }}

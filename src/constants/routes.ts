@@ -28,6 +28,7 @@ export const ROUTES = {
 
   PRODUCTS: {
     SINGLE_PRODUCT_DETAILS: "/single-product-details",
+    RECOMMENDED_PRODUCTS: "/recommended-products",
   },
   ACCOUNT: {
     ADDRESS: "/login",
@@ -89,12 +90,24 @@ export const ROUTES = {
     },
   },
 
+  PAYMENTMETHOD: {
+    Wallet: "/wallet",
+  },
+
   ORDERS: {
     LIST: "/orders-list",
     DETAILS: "/order-details",
     TRACKING: "/orders/tracking",
   },
+  Review:{
+    reviewlist:"/reviewlist",
+  },
 
+
+  Discussion: {
+    discussionForum: "/discussion",
+    QuestionScreen: "/questionScreen",
+  },
   SHIPPING: {
     ADDRESS: "/shipping/address",
     METHOD: "/shipping/method",

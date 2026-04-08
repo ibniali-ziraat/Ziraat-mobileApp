@@ -11,7 +11,7 @@ export const FILTERS = {
 
 export default function Filter({ filter, setFilter }: FilterProps) {
   return (
-    <View className="flex-row mt-3 mb-4 flex-wrap">
+    <View className="flex-row  mb-4 flex-wrap">
       {Object.values(FILTERS).map((f) => (
         <TouchableOpacity
           key={f}

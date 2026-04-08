@@ -1,16 +1,14 @@
 import { Eye } from "lucide-react-native";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
-import CsText from "./shared/CsText";
-import ZiraatCard from "./shared/ZiraatProfileCard";
+import { shadows } from "../constants/shadows";
 
 type Props = {
   distance: number;
 };
 
 export default function VisibilityCard({ distance }: Props) {
-
   const km = (distance / 1000).toFixed(0);
 
   const getNote = (d: number) => {
@@ -21,21 +19,44 @@ export default function VisibilityCard({ distance }: Props) {
   };
 
   return (
-    <ZiraatCard width="48%" paddingHorizontal={1.4} paddingVertical={1.4}>
-      <View className="flex-row items-center mb-2">
+    <View
+      style={[
+        {
+          width: "98%",
+          marginVertical: 8,
+          paddingHorizontal: 14,
+          paddingVertical: 14,
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          height: 160,
+          justifyContent: "space-between",
+        },
+        shadows.profile_card, // 👈 shadow applied
+      ]}
+    >
+      {/* Header */}
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Eye size={18} color={colors.secondary} />
-        <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
+        <Text
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+        >
           VISIBILITY
-        </CsText>
+        </Text>
       </View>
 
-      <CsText style={typography.Poppins_l_medium} className=" text-dark">
+      {/* Value */}
+      <Text
+        style={[typography.Poppins_l_medium, { color: "#000" }]}
+      >
         {km} km
-      </CsText>
+      </Text>
 
-      <CsText style={typography.Poppins_xs_regular} className="mt-1 text-dark">
+      {/* Note */}
+      <Text
+        style={[typography.Poppins_xs_regular, { color: "#000", marginTop: 4 }]}
+      >
         {getNote(distance)}
-      </CsText>
-    </ZiraatCard>
+      </Text>
+    </View>
   );
 }

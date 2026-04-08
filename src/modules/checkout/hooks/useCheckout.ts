@@ -6,8 +6,10 @@ import {
   createCheckoutShipping,
   createShippingAddress,
   getCheckoutShipping,
+  getCoupon,
   getPaymentProviders,
   updateTaxAndShippingPrices,
+  upiCheckoutService,
 } from "../services/checkout.services";
 
 export const useCouponCode = () => {
@@ -15,6 +17,15 @@ export const useCouponCode = () => {
     mutationFn: (payload: { couponCode: string }) => applyCoupon(payload),
   });
 };
+
+export const useGetCouponCode = (couponCode?: string) => {
+  return useQuery({
+    queryKey: ["coupon", couponCode],
+    queryFn: () => getCoupon(couponCode),
+    enabled: true, // ✅ ALWAYS FETCH
+  });
+};
+
 
 export const useCheckout = () => {
   return useMutation({
@@ -84,5 +95,16 @@ export const usePaymentProviders = () => {
 export const useCodCheckout = () => {
   return useMutation({
     mutationFn: (checkoutId: number) => codCheckoutService(checkoutId),
+  });
+};
+
+export const useUpiCheckout = () => {
+  return useMutation({
+    mutationFn: (payload: {
+      checkoutId: string;
+      paymentId: string;
+      orderId: string;
+      signature: string;
+    }) => upiCheckoutService(payload),
   });
 };

@@ -1,10 +1,9 @@
 import { Sunset } from "lucide-react-native";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
 import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
-import CsText from "./shared/CsText";
-import ZiraatCard from "./shared/ZiraatProfileCard";
+import { shadows } from "../constants/shadows";
 
 type Props = {
   sunset: string;
@@ -12,13 +11,11 @@ type Props = {
 };
 
 export default function SunsetCard({ sunset, sunrise }: Props) {
-
   const formatTimeManual = (timeStr?: string) => {
     if (!timeStr || typeof timeStr !== "string" || !timeStr.includes(":"))
       return "--:--";
 
     try {
-
       const timePart = timeStr.split(" ")[1] || timeStr;
       let [hours, minutes] = timePart.split(":").map(Number);
 
@@ -27,11 +24,10 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
       const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
       return `${displayHours}:${displayMinutes} ${ampm}`;
-    } catch (e) {
+    } catch {
       return "--:--";
     }
   };
-
 
   const parseSafeDate = (dateStr: string) => {
     if (!dateStr) return null;
@@ -58,7 +54,9 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
     const t = progress;
 
     const y =
-      Math.pow(1 - t, 2) * 36 + 2 * (1 - t) * t * 16 + Math.pow(t, 2) * 36;
+      Math.pow(1 - t, 2) * 36 +
+      2 * (1 - t) * t * 16 +
+      Math.pow(t, 2) * 36;
 
     return { x, y };
   };
@@ -66,20 +64,35 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
   const { x, y } = calculatePosition();
 
   return (
-    <ZiraatCard
-      width="48%"
-      paddingHorizontal={1.4}
-      paddingVertical={1.4}
-      className="border border-light"
+    <View
+      style={[
+        {
+          width: "98%",
+          marginVertical: 8,
+          paddingHorizontal: 14,
+          paddingVertical: 14,
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          height: 160, 
+          justifyContent: "space-between",
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.05)",
+        },
+        shadows.profile_card,
+      ]}
     >
-      <View className="flex-row items-center">
+      {/* Header (Sunrise) */}
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Sunset size={18} color={colors.secondary} />
-        <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
+        <Text
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+        >
           SUNRISE: {formatTimeManual(sunrise)}
-        </CsText>
+        </Text>
       </View>
 
-      <View className="items-center justify-center my-1">
+      {/* Curve + Sun */}
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
         <Svg
           width={160}
           height={50}
@@ -99,9 +112,12 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
         </Svg>
       </View>
 
-      <CsText style={typography.Poppins_s_medium} className="text-dark">
+      {/* Sunset */}
+      <Text
+        style={[typography.Poppins_s_medium, { color: "#000" }]}
+      >
         Sunset: {formatTimeManual(sunset)}
-      </CsText>
-    </ZiraatCard>
+      </Text>
+    </View>
   );
 }

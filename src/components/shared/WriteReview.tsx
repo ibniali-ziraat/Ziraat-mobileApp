@@ -1,11 +1,16 @@
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { WriteReviewProps } from "@/src/types/write-review.type";
 import { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
+  const { userId } = useAuth(); // ✅ GET USER ID
+
+  console.log(userId, "userId.....");
+
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [title, setTitle] = useState("");
@@ -22,12 +27,22 @@ export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
       return;
     }
 
+    if (!userId) {
+      setError("User not logged in");
+      return;
+    }
+
     setError("");
 
     const newReview = {
       id: Date.now(),
+
+      // ✅ IMPORTANT
+      userId: userId,
+
       user: "Anonymous",
-      date: new Date().toLocaleDateString(),
+      date: new Date().toISOString(),
+
       rating,
       comment,
       title,
@@ -42,7 +57,7 @@ export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
   };
 
   return (
-    <View className="p-4 bg-light rounded-2xl">
+    <View className="px-8 bg-light rounded-2xl mt-6">
       <Text style={typography.Poppins_l_semibold} className="mb-3">
         Write a Review
       </Text>
@@ -83,8 +98,7 @@ export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
           style={typography.Poppins_s_semibold}
           className="text-center text-light"
         >
-          Submit Review
-          {loading ? "Submitting..." : ""}
+          {loading ? "Submitting..." : "Submit Review"}
         </Text>
       </TouchableOpacity>
     </View>

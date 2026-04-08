@@ -35,7 +35,7 @@ export default function TabLayout() {
           position: "absolute",
           bottom: 0,
 
-          height: 60 + insets.bottom,
+          height: 65 + insets.bottom,
 
           backgroundColor: colors.bgColor,
           borderTopWidth: 0,
@@ -48,7 +48,7 @@ export default function TabLayout() {
 
           paddingHorizontal: 10,
 
-          paddingTop: isGestureNav ? 14 : 10,
+          paddingTop: isGestureNav ? 14 : 0,
 
           paddingBottom: isIOS
             ? Math.max(insets.bottom, 6)

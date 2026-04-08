@@ -1,4 +1,4 @@
-import CartListScreen from "@/src/modules/products/CartListScreen";
+import CartListScreen from "@/src/modules/carts/pages/CartListScreen";
 import React from "react";
 
 export default function Cartlist() {
