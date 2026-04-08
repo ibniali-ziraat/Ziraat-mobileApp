@@ -8,6 +8,12 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
+import { toast } from "@backpackapp-io/react-native-toast";
+
+import ProductsList from "../products/components/AllProductsCarousel";
+import { useProductsData } from "../products/hooks/data/useProductsData";
+import { useWishlist } from "../wishlist/hooks/useWishlist";
+
 
 import ProductsList from "../products/components/ProductList";
 import { useProductsData } from "../products/hooks/data/useProductsData";
@@ -18,6 +24,7 @@ import { useHomeWishlist } from "./hooks/useHomeWishlist";
 import { JSX } from "react";
 import FarmOverviewChart from "./components/FarmOverviewChart";
 import FarmerTipsCard from "./components/FarmerTipsCard";
+import FarmOverviewChart from "./components/FarmOverviewChart";
 import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
@@ -31,7 +38,10 @@ export default function HomeScreen(): JSX.Element {
     <ScreenLayout>
       <ScreenContent>
         <AnimatedTabContent>
-          <View style={{ backgroundColor: colors.light }} className="flex-1">
+          <View
+            style={{ backgroundColor: colors.light }}
+            className="flex-1 pt-4"
+          >
             <TouchableOpacity
               onPress={() => router.push(ROUTES.WEATHER.DETAILS)}
             >
@@ -57,7 +67,10 @@ export default function HomeScreen(): JSX.Element {
             <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
             <FarmOverviewChart />
 
-            <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
+            <SectionTitle
+              title="Farmer Tips & Awareness"
+              icon="bulb-outline"
+            />
             <FarmerTipsCard />
 
             <View className="mb-20">
