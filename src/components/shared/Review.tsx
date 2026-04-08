@@ -5,7 +5,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ThumbsUp, User, X } from "lucide-react-native";
 import React, { useState } from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import data from "../../data/Review.json";
 
 export default function Review() {
@@ -148,8 +148,8 @@ export default function Review() {
       </View>
 
       {/* Modal */}
-      <Modal animationType="slide" transparent visible={modalVisible}>
-        <View className="flex-1 justify-center items-center bg-black/40">
+      {/* <Modal animationType="slide" transparent visible={modalVisible}> */}
+        {/* <View className="flex-1 justify-center items-center bg-black/40"> */}
           <View
             style={{ backgroundColor: colors.light }}
             className=" rounded-2xl p-5 w-11/12"
@@ -163,8 +163,8 @@ export default function Review() {
 
             <WriteReview onSubmit={addReview} />
           </View>
-        </View>
-      </Modal>
+        {/* </View> */}
+      {/* </Modal> */}
     </View>
   );
 }

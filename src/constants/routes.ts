@@ -99,6 +99,10 @@ export const ROUTES = {
     DETAILS: "/order-details",
     TRACKING: "/orders/tracking",
   },
+  Review:{
+    reviewlist:"/reviewlist",
+  },
+
 
   Discussion: {
     discussionForum: "/discussion",

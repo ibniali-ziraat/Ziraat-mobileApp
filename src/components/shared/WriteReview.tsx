@@ -57,7 +57,7 @@ export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
   };
 
   return (
-    <View className="p-4 bg-light rounded-2xl">
+    <View className="px-8 bg-light rounded-2xl mt-6">
       <Text style={typography.Poppins_l_semibold} className="mb-3">
         Write a Review
       </Text>
