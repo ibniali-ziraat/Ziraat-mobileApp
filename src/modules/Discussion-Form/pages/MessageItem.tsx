@@ -43,7 +43,7 @@ function getInitials(name: string) {
 }
 
 function AuthorAvatar({ name, size = 30 }: any) {
-  const palette = ["#b45309",];
+  const palette = ["#b45309"];
   const idx = name ? name.charCodeAt(0) % palette.length : 0;
 
   return (
@@ -80,9 +80,7 @@ function VoteColumn({ votes = 0 }: any) {
         <ChevronUp size={20} color={vote === 1 ? colors.primary : "#bbb"} />
       </TouchableOpacity>
 
-      <Text style={{ fontWeight: "800", marginVertical: 4 }}>
-        {count}
-      </Text>
+      <Text style={{ fontWeight: "800", marginVertical: 4 }}>{count}</Text>
 
       <TouchableOpacity
         onPress={() => {
@@ -165,7 +163,9 @@ export default function MessageItem({ item, depth = 0 }: any) {
                 {item.author || "Unknown"}
               </Text>
 
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
+              >
                 <Clock size={11} color="#777" />
                 <Text style={{ fontSize: 11, color: "#777" }}>
                   asked {time}
@@ -208,14 +208,18 @@ export default function MessageItem({ item, depth = 0 }: any) {
                 marginTop: 10,
               }}
             >
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              >
                 <Eye size={12} color="#777" />
                 <Text style={{ fontSize: 11, color: "#777" }}>
                   {item.views || 0}
                 </Text>
               </View>
 
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+              <View
+                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
+              >
                 <MessageSquare size={12} color="#777" />
                 <Text style={{ fontSize: 11, color: "#777" }}>
                   {item.children?.length || 0}
@@ -271,9 +275,7 @@ export default function MessageItem({ item, depth = 0 }: any) {
                   borderRadius: 8,
                   borderWidth: 1,
                   borderColor: liked ? colors.error : colors.cardBorder,
-                  backgroundColor: liked
-                    ? colors.error + "15"
-                    : colors.light,
+                  backgroundColor: liked ? colors.error + "15" : colors.light,
                 }}
               >
                 <Heart

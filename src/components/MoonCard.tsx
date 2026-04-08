@@ -1,18 +1,35 @@
 import { Moon } from "lucide-react-native";
-import { Image, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
-import CsText from "./shared/CsText";
-import ZiraatCard from "./shared/ZiraatProfileCard";
+import { shadows } from "../constants/shadows";
 
 const InfoRow = ({ label, value }: { label: string; value: string }) => (
-  <View className="flex-row justify-between py-2">
-    <CsText className="text-sm text-neutral-400">{label}</CsText>
-    <CsText className="text-sm text-neutral-300 font-medium">{value}</CsText>
+  <View
+    style={{
+      flexDirection: "row",
+      justifyContent: "space-between",
+      paddingVertical: 6,
+    }}
+  >
+    <Text style={[typography.Poppins_s_regular, { color: "#666" }]}>
+      {label}
+    </Text>
+    <Text style={[typography.Poppins_s_regular, { color: "#000" }]}>
+      {value}
+    </Text>
   </View>
 );
 
-const Divider = () => <View className="h-[1px] bg-overlay opacity-20" />;
+const Divider = () => (
+  <View
+    style={{
+      height: 1,
+      backgroundColor: "rgba(0,0,0,0.08)",
+      marginVertical: 2,
+    }}
+  />
+);
 
 type Props = {
   phaseValue?: number;
@@ -21,36 +38,36 @@ type Props = {
 };
 
 export function MoonCard({ phaseValue, illumination, moonrise }: Props) {
-
   const getPhaseName = (deg?: number) => {
-    if (deg === undefined || deg === null) return "Waxing Crescent"; // Sensible default
+    if (deg === undefined || deg === null) return "Waxing Crescent";
     if (deg >= 337.5 || deg < 22.5) return "New Moon";
-    if (deg >= 22.5 && deg < 67.5) return "Waxing Crescent";
-    if (deg >= 67.5 && deg < 112.5) return "First Quarter";
-    if (deg >= 112.5 && deg < 157.5) return "Waxing Gibbous";
-    if (deg >= 157.5 && deg < 202.5) return "Full Moon";
-    if (deg >= 202.5 && deg < 247.5) return "Waning Gibbous";
-    if (deg >= 247.5 && deg < 292.5) return "Last Quarter";
-    if (deg >= 292.5 && deg < 337.5) return "Waning Crescent";
+    if (deg < 67.5) return "Waxing Crescent";
+    if (deg < 112.5) return "First Quarter";
+    if (deg < 157.5) return "Waxing Gibbous";
+    if (deg < 202.5) return "Full Moon";
+    if (deg < 247.5) return "Waning Gibbous";
+    if (deg < 292.5) return "Last Quarter";
+    if (deg < 337.5) return "Waning Crescent";
     return "Moon Phase";
   };
 
   const formatTimeManual = (timeStr?: string) => {
     if (!timeStr) return "--:--";
     try {
-      // If it contains a space, take the second part. If not, take the whole thing.
-      const timePart = timeStr.includes(" ") ? timeStr.split(" ")[1] : timeStr;
+      const timePart = timeStr.includes(" ")
+        ? timeStr.split(" ")[1]
+        : timeStr;
+
       let [h, m] = timePart.split(":").map(Number);
       const ampm = h >= 12 ? "PM" : "AM";
       const displayHours = h % 12 || 12;
+
       return `${displayHours}:${m < 10 ? "0" + m : m} ${ampm}`;
-    } catch (e) {
+    } catch {
       return "--:--";
     }
   };
 
-  // 3. Helper: Fallback Illumination calculation
-  // If API illumination is missing, we calculate it: 100% at 180 deg, 0% at 0/360 deg
   const displayIllumination =
     illumination ??
     (phaseValue !== undefined
@@ -58,44 +75,75 @@ export function MoonCard({ phaseValue, illumination, moonrise }: Props) {
       : 0);
 
   return (
-    <ZiraatCard
-      width="100%"
-      marginTop={1}
-      paddingHorizontal={1.3}
-      paddingVertical={1.4}
-      marginBottom={1}
+    <View
+      style={[
+        {
+          width: "100%",
+          marginVertical: 8,
+          paddingHorizontal: 14,
+          paddingVertical: 14,
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          height: 180, 
+          justifyContent: "space-between",
+          borderWidth: 1,
+          borderColor: "rgba(0,0,0,0.05)",
+        },
+        shadows.profile_card, 
+      ]}
     >
-      <View className="flex-row items-center">
+      {/* Header */}
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Moon size={18} color={colors.secondary} />
-        <CsText style={typography.Poppins_m_medium} className="ml-2 text-dark">
+        <Text
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+        >
           {getPhaseName(phaseValue)}
-        </CsText>
+        </Text>
       </View>
 
-      <View className="flex-row justify-between items-center mt-2">
-        <View className="flex-1 pr-3">
-          <InfoRow label="Illumination" value={`${displayIllumination}%`} />
+      {/* Content */}
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: 8,
+        }}
+      >
+        {/* Left Info */}
+        <View style={{ flex: 1, paddingRight: 10 }}>
+          <InfoRow
+            label="Illumination"
+            value={`${displayIllumination}%`}
+          />
           <Divider />
-          <InfoRow label="Next Moonrise" value={formatTimeManual(moonrise)} />
+          <InfoRow
+            label="Next Moonrise"
+            value={formatTimeManual(moonrise)}
+          />
           <Divider />
           <InfoRow
             label="Next Full Moon"
             value={
               phaseValue !== undefined
-                ? `${Math.round(((180 - phaseValue + 360) % 360) / 12.2)} days`
+                ? `${Math.round(
+                    ((180 - phaseValue + 360) % 360) / 12.2
+                  )} days`
                 : "17 days"
             }
           />
         </View>
 
-        <View className="w-24 h-24">
+        {/* Moon Image */}
+        <View style={{ width: 90, height: 90 }}>
           <Image
             source={require("../../assets/images/moon.png")}
-            className="w-full h-full"
+            style={{ width: "100%", height: "100%" }}
             resizeMode="contain"
           />
         </View>
       </View>
-    </ZiraatCard>
+    </View>
   );
 }

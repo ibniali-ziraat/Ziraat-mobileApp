@@ -1,13 +1,12 @@
 import { GitGraph } from "lucide-react-native";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 import { colors } from "../constants/colors";
 import { typography } from "../constants/fonts/typography";
-import CsText from "./shared/CsText";
-import ZiraatCard from "./shared/ZiraatProfileCard";
+import { shadows } from "../constants/shadows";
 
 type Props = {
   currentMax?: number;
-  averageMax?: number; // e.g. seasonal average
+  averageMax?: number;
 };
 
 export default function AveragesCard({
@@ -15,39 +14,63 @@ export default function AveragesCard({
   averageMax = 10,
 }: Props) {
   const diff = currentMax - averageMax;
-  const status = diff > 0 ? "Above" : "Below";
-  const diffColor = diff > 0 ? colors.primary : colors.error;
+  const safeDiff = isNaN(diff) ? 0 : diff;
+
+  const status = safeDiff > 0 ? "Above" : "Below";
+  const diffColor = safeDiff > 0 ? colors.primary : colors.error;
 
   return (
-    <ZiraatCard width="48%"
-      paddingHorizontal={1.4}
-      paddingVertical={1.4}>
-      <View className="flex justify-center">
-
-        <View className="flex-row items-center mb-1">
-          <GitGraph size={18} color={colors.secondary} />
-          <CsText
-            className="ml-2 text-sm  tracking-wide uppercase"
-            style={typography.Poppins_m_medium}
-          >
-            Averages
-          </CsText>
-        </View>
-
-
-
-        <CsText style={typography.Poppins_l_medium} className="text-dark">
-          {diff > 0 ? `+${diff}` : diff}°
-        </CsText>
-
-        <CsText style={typography.Poppins_xs_regular} className="mt-1 text-dark">
-          {status} average daily high.
-        </CsText>
-
-        <CsText style={typography.Poppins_xs_regular} className=" text-dark mt-1">
-          Today: {currentMax}° | Avg: {averageMax}°
-        </CsText>
+    <View
+      style={[
+        {
+          width: "98%",
+          marginVertical: 8,
+          paddingHorizontal: 14,
+          paddingVertical: 14,
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          height: 160, 
+          justifyContent: "space-between",
+        },
+        shadows.profile_card, // 👈 shadow applied
+      ]}
+    >
+      {/* Header */}
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <GitGraph size={18} color={colors.secondary} />
+        <Text
+          style={[
+            typography.Poppins_m_medium,
+            { marginLeft: 8, color: "#000", textTransform: "uppercase" },
+          ]}
+        >
+          Averages
+        </Text>
       </View>
-    </ZiraatCard>
+
+      {/* Difference */}
+      <Text
+        style={[
+          typography.Poppins_l_medium,
+          { color: diffColor },
+        ]}
+      >
+        {safeDiff > 0 ? `+${safeDiff}` : `${safeDiff}`}°
+      </Text>
+
+      {/* Status */}
+      <Text
+        style={[typography.Poppins_xs_regular, { color: "#000" }]}
+      >
+        {status} average daily high.
+      </Text>
+
+      {/* Extra Info */}
+      <Text
+        style={[typography.Poppins_xs_regular, { color: "#000" }]}
+      >
+        Today: {currentMax ?? 0}° | Avg: {averageMax ?? 0}°
+      </Text>
+    </View>
   );
 }

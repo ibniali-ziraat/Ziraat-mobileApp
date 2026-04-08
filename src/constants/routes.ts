@@ -1,4 +1,3 @@
-
 export const ROUTES = {
   TABS: {
     HOME: "/(tabs)",
@@ -29,6 +28,7 @@ export const ROUTES = {
 
   PRODUCTS: {
     SINGLE_PRODUCT_DETAILS: "/single-product-details",
+    RECOMMENDED_PRODUCTS: "/recommended-products",
   },
   ACCOUNT: {
     ADDRESS: "/login",
@@ -90,10 +90,9 @@ export const ROUTES = {
     },
   },
 
-   PAYMENTMETHOD: {
-    Wallet:"/wallet",
-   },
-
+  PAYMENTMETHOD: {
+    Wallet: "/wallet",
+  },
 
   ORDERS: {
     LIST: "/orders-list",
@@ -105,9 +104,9 @@ export const ROUTES = {
   },
 
 
-  Discussion:{
-    discussionForum:"/discussion",
-    QuestionScreen:"/questionScreen",
+  Discussion: {
+    discussionForum: "/discussion",
+    QuestionScreen: "/questionScreen",
   },
   SHIPPING: {
     ADDRESS: "/shipping/address",

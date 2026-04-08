@@ -1,4 +1,4 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
@@ -8,7 +8,6 @@ import {
 } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
-import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
@@ -21,10 +20,11 @@ import ProductStickyBar from "./components/ProductStickyBar";
 
 import Review from "@/src/components/shared/AllReview";
 import ProductFaq from "@/src/components/shared/ProductFaq";
-
-import faqData from "../../data/Faq.json";
+import WriteReview from "@/src/components/shared/WriteReview";
 
 import { toast } from "@backpackapp-io/react-native-toast";
+import { MoveLeft, PackageSearch, X } from "lucide-react-native";
+import { Modal } from "react-native-paper";
 
 import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
@@ -33,6 +33,13 @@ import ProductImages from "./components/ProductImages";
 import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
 import { useProductByIdQuery } from "./hooks/queries/products.queries";
+
+/* ⭐ IMPORT PRODUCTS LIST */
+
+/* ⭐ IMPORT WISHLIST */
+import { typography } from "@/src/constants/fonts/typography";
+import { useWishlist } from "../wishlist/hooks/useWishlist";
+import ProductsList from "./components/ProductList";
 
 export default function ProductDetails() {
   const { productId } = useLocalSearchParams();
@@ -44,6 +51,40 @@ export default function ProductDetails() {
 
   const { mutate: submitReview, isPending } = useAddReview();
   const { cart, addToCart, removeFromCart, isCartBusy } = useCart();
+
+  /* ⭐ WISHLIST */
+  const {
+    wishlist,
+    isBusy,
+    addToWishlist,
+    removeFromWishlist,
+    getWishlistItemId,
+  } = useWishlist();
+
+  const handleToggleWishlist = async (productId: string | number) => {
+    const id = getWishlistItemId(productId);
+
+    try {
+      if (id) {
+        await removeFromWishlist({ id });
+        toast.success("Removed from wishlist");
+      } else {
+        await addToWishlist({
+          productId,
+          quantity: 1,
+        });
+        toast.success("Added to wishlist");
+      }
+    } catch (error) {}
+  };
+
+  /* ⭐ RELATED PRODUCTS */
+  const relatedProducts = product?.relatedProducts ?? [];
+
+  /* ⭐ CROSS SELL PRODUCTS */
+  const crossSellProducts = product?.crossSellProducts ?? [];
+
+  /* ---------------- REVIEWS ---------------- */
 
   const [pageNumber, setPageNumber] = useState(1);
   const pageSize = 5;
@@ -62,6 +103,7 @@ export default function ProductDetails() {
   const reviewsRaw = reviewsData?.items?.data ?? [];
 
   const totalItems = reviewsData?.items?.totalItems ?? 0;
+
   const totalPages = Math.ceil(totalItems / pageSize);
 
   const summary = {
@@ -108,6 +150,7 @@ export default function ProductDetails() {
       onSuccess: () => {
         toast.success("Review added");
         setPageNumber(1);
+        setModalVisible(false);
       },
     });
   };
@@ -121,28 +164,84 @@ export default function ProductDetails() {
   }
 
   if (isError || !product) {
+    const router = useRouter();
+
     return (
       <ScreenLayout>
-        <CsText>Product not found</CsText>
+        <View className="flex-1 items-center justify-center px-8 bg-white">
+          {/* Icon Container */}
+          <View
+            style={{ backgroundColor: `${colors.secondary}10` }}
+            className="p-6 rounded-full mb-6"
+          >
+            <PackageSearch
+              size={80}
+              color={colors.secondary}
+              strokeWidth={1.5}
+            />
+          </View>
+
+          {/* Text Content */}
+          <Text
+            style={typography.Poppins_l_semibold}
+            className="text-neutral-900 text-center text-xl mb-2"
+          >
+            Product Not Found
+          </Text>
+
+          <Text
+            style={typography.Poppins_s_regular}
+            className="text-neutral-400 text-center mb-10 leading-5"
+          >
+            We couldn't find the item you're looking for. It might have been
+            removed or the link is incorrect.
+          </Text>
+
+          {/* Action Button */}
+          <Pressable
+            onPress={() => router.back()}
+            className="flex-row items-center justify-center bg-neutral-900 px-8 py-4 rounded-2xl w-full active:opacity-80"
+          >
+            <MoveLeft size={20} color="white" className="mr-2" />
+            <Text className="text-white font-bold text-base ml-2">Go Back</Text>
+          </Pressable>
+        </View>
       </ScreenLayout>
     );
   }
 
-  const handleAddToCart = async () => {
-    if (!product?.id) return;
-    await addToCart({
-      productId: Number(product.id),
-      quantity: Number(quantity),
-    });
-  };
+  /* ---------------- CART ---------------- */
 
   const cartItem = cart.find((i) => i.productId === product.id);
+
   const isInCart = Boolean(cartItem);
+
+  const handleAddToCart = async () => {
+    if (!product?.id) return;
+
+    try {
+      await addToCart({
+        productId: Number(product.id),
+        quantity: Number(quantity),
+      });
+    } catch {}
+  };
 
   const handleRemoveFromCart = async () => {
     if (!cartItem?.id) return;
-    await removeFromCart({ id: cartItem.id });
-    toast.success("Removed from cart");
+
+    try {
+      await removeFromCart({
+        id: cartItem.id,
+      });
+
+      toast.success("Removed from cart");
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Could not remove item";
+
+      toast.error(`Error: ${errorMessage}`);
+    }
   };
 
   return (
@@ -158,18 +257,23 @@ export default function ProductDetails() {
             ListHeaderComponent={
               <>
                 <ProductImages product={product} />
+
                 <ProductPriceCard product={product} />
+
                 <ProductQuantitySelector
                   quantity={quantity}
                   setQuantity={setQuantity}
                 />
-                <View className="mt-6" />
+
                 <ProductDescription product={product} />
+
                 <ProductSpecifications product={product} />
               </>
             }
             ListFooterComponent={
               <View className="pb-32">
+                {/* REVIEWS */}
+
                 {reviewsLoading ? (
                   <ActivityIndicator color={colors.primary} />
                 ) : reviewsError ? (
@@ -195,7 +299,37 @@ export default function ProductDetails() {
                   </>
                 )}
 
-                <ProductFaq data={faqData} />
+                {/* ⭐ YOU MAY ALSO LIKE */}
+
+                {relatedProducts.length > 0 && (
+                  <ProductsList
+                    title="Recommended Products"
+                    items={relatedProducts}
+                    wishlistItems={wishlist}
+                    onToggleWishlist={handleToggleWishlist}
+                    isWishlistBusy={isBusy}
+                    variant="carousel"
+                  />
+                )}
+
+                {/* ⭐ FREQUENTLY BOUGHT */}
+
+                {crossSellProducts.length > 0 && (
+                  <View className="mt-6">
+                    <ProductsList
+                      items={crossSellProducts}
+                      title="Frequently Bought Products"
+                      wishlistItems={wishlist}
+                      onToggleWishlist={handleToggleWishlist}
+                      isWishlistBusy={isBusy}
+                      variant="carousel"
+                    />
+                  </View>
+                )}
+
+                {/* FAQ */}
+
+                {/* <ProductFaq data={faqData} /> */}
               </View>
             }
           />

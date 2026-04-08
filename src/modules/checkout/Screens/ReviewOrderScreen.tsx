@@ -2,8 +2,12 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
 import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react"; // ✅ ADD
 import { FormProvider, useForm } from "react-hook-form";
 import { Text, TouchableOpacity } from "react-native";
+
+import AsyncStorage from "@react-native-async-storage/async-storage"; // ✅ ADD
+
 import { DeliveryAddress } from "../components/DeliveryAddress";
 import { OrderItems } from "../components/OrderItems";
 import { OrderSummary } from "../components/OrderSummary";
@@ -21,6 +25,21 @@ const ReviewOrderScreen = () => {
   const { errorMsg, isPending, paymentOptions, handlePlaceOrder } =
     useReviewOrder();
 
+
+  const [couponCode, setCouponCode] = useState("");
+
+  // ✅ FETCH COUPON
+  useEffect(() => {
+    const getCoupon = async () => {
+      const stored = await AsyncStorage.getItem("appliedCoupon");
+      if (stored) {
+        setCouponCode(stored);
+      }
+    };
+
+    getCoupon();
+  }, []);
+
   if (!summary || !selectedAddress) return null;
 
   return (
@@ -30,7 +49,10 @@ const ReviewOrderScreen = () => {
 
         <OrderItems items={summary.items} />
         <DeliveryAddress address={selectedAddress} />
-        <OrderSummary summary={summary} />
+
+      
+        <OrderSummary summary={summary} couponCode={couponCode} />
+
         <PaymentMethodSelector options={paymentOptions} />
 
         {!!errorMsg && (
@@ -45,7 +67,7 @@ const ReviewOrderScreen = () => {
               handlePlaceOrder(
                 selectedPayment,
                 summary.orderTotal,
-                selectedAddress.contactName,
+                selectedAddress.contactName
               )
             }
             disabled={isPending}

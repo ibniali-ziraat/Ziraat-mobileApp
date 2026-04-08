@@ -5,6 +5,14 @@ export const applyCoupon = async (payload: { couponCode: string }) => {
   return data;
 };
 
+export const getCoupon = async (couponCode?: string) => {
+  const { data } = await axiosInstance.get(
+    `/api/coupons/available${couponCode ? `?code=${couponCode}` : ""}`
+  );
+
+  return data?.data || []; 
+};
+
 export const checkout = async (payload: { couponCode: string }) => {
   const { data } = await axiosInstance.post("/checkout", payload);
   return data;
