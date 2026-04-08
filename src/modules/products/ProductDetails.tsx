@@ -1,8 +1,9 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { router, useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  Pressable,
   Text,
   View
 } from "react-native";
@@ -19,12 +20,9 @@ import ProductSpecifications from "./components/ProductSpecifications";
 import ProductStickyBar from "./components/ProductStickyBar";
 
 import Review from "@/src/components/shared/AllReview";
-import ProductFaq from "@/src/components/shared/ProductFaq";
-import WriteReview from "@/src/components/shared/WriteReview";
 
 import { toast } from "@backpackapp-io/react-native-toast";
-import { MoveLeft, PackageSearch, X } from "lucide-react-native";
-import { Modal } from "react-native-paper";
+import { MoveLeft, PackageSearch } from "lucide-react-native";
 
 import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
