@@ -1,12 +1,10 @@
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
-  Pressable,
   Text,
-  TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
@@ -23,15 +21,14 @@ import ProductStickyBar from "./components/ProductStickyBar";
 
 import Review from "@/src/components/shared/AllReview";
 import ProductFaq from "@/src/components/shared/ProductFaq";
-import WriteReview from "@/src/components/shared/WriteReview";
 
 import faqData from "../../data/Faq.json";
 
 import { toast } from "@backpackapp-io/react-native-toast";
-import { X } from "lucide-react-native";
-import { Modal } from "react-native-paper";
 
 import Loader from "@/src/components/shared/Loader";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import ProductImages from "./components/ProductImages";
 import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
@@ -40,6 +37,8 @@ import { useProductByIdQuery } from "./hooks/queries/products.queries";
 export default function ProductDetails() {
   const { productId } = useLocalSearchParams();
   const [quantity, setQuantity] = useState(1);
+
+  const { userId } = useAuth();
 
   const { data: product, isLoading, isError } = useProductByIdQuery(productId);
 
@@ -79,11 +78,17 @@ export default function ProductDetails() {
       comment: r.comment,
       title: r.title,
       date: new Date(r.createdOn).toLocaleDateString(),
-      helpful: 0, // backend doesn’t provide yet
+      helpful: 0,
     }));
   }, [reviewsRaw]);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const hasUserReviewed = useMemo(() => {
+    if (!userId) return false;
+
+    return reviews.some(
+      (r: any) => String(r.userId) === String(userId)
+    );
+  }, [reviews, userId]);
 
   const addReview = (formData: any) => {
     if (!product) return;
@@ -101,8 +106,8 @@ export default function ProductDetails() {
 
     submitReview(payload, {
       onSuccess: () => {
-        toast.success("Review added ");
-        setModalVisible(false);
+        toast.success("Review added");
+        setPageNumber(1);
       },
     });
   };
@@ -122,41 +127,23 @@ export default function ProductDetails() {
       </ScreenLayout>
     );
   }
+
   const handleAddToCart = async () => {
     if (!product?.id) return;
-
-    try {
-      await addToCart({
-        productId: Number(product.id),
-        quantity: Number(quantity),
-      });
-
-      // toast.success("Added to cart");
-    } catch (error: any) {
-      // console.error("Add to cart error details:", error.response?.data);
-      // toast.error("Failed to add to cart");
-    }
-  };
-  const handleRemoveFromCart = async () => {
-    if (!cartItem?.id) return;
-
-    try {
-      await removeFromCart({
-        id: cartItem.id,
-      });
-
-      toast.success("Removed from cart");
-    } catch (error) {
-      console.error("Failed to remove item from cart:", error);
-
-      const errorMessage =
-        error instanceof Error ? error.message : "Could not remove item";
-      toast.error(`Error: ${errorMessage}`);
-    }
+    await addToCart({
+      productId: Number(product.id),
+      quantity: Number(quantity),
+    });
   };
 
   const cartItem = cart.find((i) => i.productId === product.id);
   const isInCart = Boolean(cartItem);
+
+  const handleRemoveFromCart = async () => {
+    if (!cartItem?.id) return;
+    await removeFromCart({ id: cartItem.id });
+    toast.success("Removed from cart");
+  };
 
   return (
     <>
@@ -172,13 +159,11 @@ export default function ProductDetails() {
               <>
                 <ProductImages product={product} />
                 <ProductPriceCard product={product} />
-                {/* <ProductMeta product={product} /> */}
-
                 <ProductQuantitySelector
                   quantity={quantity}
                   setQuantity={setQuantity}
                 />
-                <View className="mt-6">{/* <LegalDisclaimer/> */}</View>
+                <View className="mt-6" />
                 <ProductDescription product={product} />
                 <ProductSpecifications product={product} />
               </>
@@ -192,18 +177,21 @@ export default function ProductDetails() {
                 ) : (
                   <>
                     <Review
-                      reviews={reviews}
-                      summary={summary}
-                      onWriteReviewPress={() => setModalVisible(true)}
-                    />
+ 
+  reviews={reviews}
+  summary={summary}
+  hasUserReviewed={hasUserReviewed}
+  onSubmitReview={addReview}
+  loading={isPending}
+  onViewAllPress={() =>
+    router.push({
+      pathname:ROUTES.Review.reviewlist,
+      params: { productId: product.id },
+    })
+  }
+/>
 
-                    {pageNumber < totalPages && (
-                      <TouchableOpacity
-                        onPress={() => setPageNumber((prev) => prev + 1)}
-                      >
-                        <Text>Load More Reviews</Text>
-                      </TouchableOpacity>
-                    )}
+                   
                   </>
                 )}
 
@@ -211,26 +199,6 @@ export default function ProductDetails() {
               </View>
             }
           />
-
-          <Modal
-            visible={modalVisible}
-            onDismiss={() => setModalVisible(false)}
-            contentContainerStyle={{
-              backgroundColor: "white",
-              margin: 20,
-              borderRadius: 20,
-              padding: 16,
-            }}
-          >
-            <Pressable
-              onPress={() => setModalVisible(false)}
-              style={{ alignSelf: "flex-end" }}
-            >
-              <X size={26} color="black" />
-            </Pressable>
-
-            <WriteReview onSubmit={addReview} loading={isPending} />
-          </Modal>
         </ScreenContent>
       </ScreenLayout>
 
