@@ -1,11 +1,6 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Text,
-  View
-} from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
@@ -19,12 +14,9 @@ import ProductSpecifications from "./components/ProductSpecifications";
 import ProductStickyBar from "./components/ProductStickyBar";
 
 import Review from "@/src/components/shared/AllReview";
-import ProductFaq from "@/src/components/shared/ProductFaq";
-import WriteReview from "@/src/components/shared/WriteReview";
 
 import { toast } from "@backpackapp-io/react-native-toast";
-import { MoveLeft, PackageSearch, X } from "lucide-react-native";
-import { Modal } from "react-native-paper";
+import { MoveLeft, PackageSearch } from "lucide-react-native";
 
 import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
@@ -127,9 +119,7 @@ export default function ProductDetails() {
   const hasUserReviewed = useMemo(() => {
     if (!userId) return false;
 
-    return reviews.some(
-      (r: any) => String(r.userId) === String(userId)
-    );
+    return reviews.some((r: any) => String(r.userId) === String(userId));
   }, [reviews, userId]);
 
   const addReview = (formData: any) => {
@@ -169,7 +159,6 @@ export default function ProductDetails() {
     return (
       <ScreenLayout>
         <View className="flex-1 items-center justify-center px-8 bg-white">
-          {/* Icon Container */}
           <View
             style={{ backgroundColor: `${colors.secondary}10` }}
             className="p-6 rounded-full mb-6"
@@ -197,7 +186,6 @@ export default function ProductDetails() {
             removed or the link is incorrect.
           </Text>
 
-          {/* Action Button */}
           <Pressable
             onPress={() => router.back()}
             className="flex-row items-center justify-center bg-neutral-900 px-8 py-4 rounded-2xl w-full active:opacity-80"
@@ -247,9 +235,8 @@ export default function ProductDetails() {
   return (
     <>
       <ScreenLayout scrollable>
+        <BackHeader title="Product Details" />
         <ScreenContent>
-          <BackHeader title="Product Details" />
-
           <FlatList
             scrollEnabled={false}
             data={[{ key: "content" }]}
@@ -272,34 +259,27 @@ export default function ProductDetails() {
             }
             ListFooterComponent={
               <View className="pb-32">
-                {/* REVIEWS */}
-
                 {reviewsLoading ? (
-                  <ActivityIndicator color={colors.primary} />
+                  <Loader />
                 ) : reviewsError ? (
                   <Text>Failed to load reviews</Text>
                 ) : (
                   <>
                     <Review
- 
-  reviews={reviews}
-  summary={summary}
-  hasUserReviewed={hasUserReviewed}
-  onSubmitReview={addReview}
-  loading={isPending}
-  onViewAllPress={() =>
-    router.push({
-      pathname:ROUTES.Review.reviewlist,
-      params: { productId: product.id },
-    })
-  }
-/>
-
-                   
+                      reviews={reviews}
+                      summary={summary}
+                      hasUserReviewed={hasUserReviewed}
+                      onSubmitReview={addReview}
+                      loading={isPending}
+                      onViewAllPress={() =>
+                        router.push({
+                          pathname: ROUTES.Review.reviewlist,
+                          params: { productId: product.id },
+                        })
+                      }
+                    />
                   </>
                 )}
-
-                {/* ⭐ YOU MAY ALSO LIKE */}
 
                 {relatedProducts.length > 0 && (
                   <ProductsList

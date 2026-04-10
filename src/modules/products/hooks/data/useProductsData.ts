@@ -22,7 +22,7 @@ export const useProductsData = () => {
 
   return {
     products,
-    filterOptions, // ✅ exported here
+    filterOptions,
     total: query.data?.totalProduct ?? 0,
     isLoading: query.isLoading,
     isFetching: query.isFetching,

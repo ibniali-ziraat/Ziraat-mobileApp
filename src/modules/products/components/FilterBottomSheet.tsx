@@ -3,13 +3,7 @@ import { colors } from "@/src/constants/colors";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import { Check, X } from "lucide-react-native";
 import { useState } from "react";
-import {
-  Dimensions,
-  Modal,
-  Pressable,
-  ScrollView,
-  View,
-} from "react-native";
+import { Dimensions, Modal, Pressable, ScrollView, View } from "react-native";
 
 const { height, width } = Dimensions.get("window");
 
@@ -94,7 +88,7 @@ export default function FilterBottomSheet({
                   setBrand((prev) =>
                     prev.includes(item.slug)
                       ? prev.filter((b) => b !== item.slug)
-                      : [...prev, item.slug]
+                      : [...prev, item.slug],
                   )
                 }
               />
@@ -113,7 +107,7 @@ export default function FilterBottomSheet({
                   setCategory((prev) =>
                     prev.includes(item.slug)
                       ? prev.filter((c) => c !== item.slug)
-                      : [...prev, item.slug]
+                      : [...prev, item.slug],
                   )
                 }
               />
@@ -155,7 +149,6 @@ export default function FilterBottomSheet({
             />
           </Section>
 
-
           <Section title="Sort By Rating">
             {[5, 4, 3, 2, 1].map((r) => (
               <Item
@@ -166,7 +159,7 @@ export default function FilterBottomSheet({
                   setRating((prev) =>
                     prev.includes(r)
                       ? prev.filter((val) => val !== r)
-                      : [...prev, r]
+                      : [...prev, r],
                   )
                 }
               />
@@ -175,9 +168,9 @@ export default function FilterBottomSheet({
         </ScrollView>
 
         {/* FOOTER */}
-        <View style={footer}>
+        <View>
           <Pressable
-            style={resetBtn}
+            // style={resetBtn}
             onPress={() => {
               setBrand([]);
               setCategory([]);
@@ -190,7 +183,7 @@ export default function FilterBottomSheet({
           </Pressable>
 
           <Pressable
-            style={applyBtn}
+            // style={applyBtn}
             onPress={() => {
               onApplyFilters({
                 brand: brand.length ? brand.join(",") : undefined,

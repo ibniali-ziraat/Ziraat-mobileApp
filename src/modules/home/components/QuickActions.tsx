@@ -23,13 +23,13 @@ export default function QuickActions() {
       bg: colors.primary + "15",
       onPress: () => router.push("/orchards/orchard-registration"),
     },
-    {
-      title: "Add Spray",
-      icon: "flask-outline",
-      color: colors.secondary,
-      bg: colors.secondary + "15",
-      onPress: () => router.push("/orchards/orchard-registration"),
-    },
+    // {
+    //   title: "Add Spray",
+    //   icon: "flask-outline",
+    //   color: colors.secondary,
+    //   bg: colors.secondary + "15",
+    //   onPress: () => router.push("/orchards/orchard-registration"),
+    // },
   ];
 
   return (
@@ -40,7 +40,7 @@ export default function QuickActions() {
             key={idx}
             onPress={item.onPress}
             style={{
-              width: "32%",
+              width: "48%",
               backgroundColor: "#ffffff",
               borderRadius: 18,
               paddingVertical: 16,
@@ -73,9 +73,7 @@ export default function QuickActions() {
               {item.title}
            </CsText> */}
 
-            <CsText style ={[typography.Poppins_s_regular]}>{item.title}</CsText>
-
-           
+            <CsText style={[typography.Poppins_s_regular]}>{item.title}</CsText>
           </TouchableOpacity>
         ))}
       </View>
