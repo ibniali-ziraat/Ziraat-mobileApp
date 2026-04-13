@@ -1,26 +1,23 @@
-import { toast } from "@backpackapp-io/react-native-toast";
-import { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Pressable, Text, View } from "react-native";
-
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { useDebounce } from "@/src/hooks/useDebounce";
+import { toast } from "@backpackapp-io/react-native-toast";
+import { useEffect, useRef, useState } from "react";
+import { Pressable, Text, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { useWishlist } from "../wishlist/hooks/useWishlist";
 import FilterBottomSheet from "./components/FilterBottomSheet";
 import ProductSearchBar from "./components/ProductSearchBar";
-
-import { useWishlist } from "../wishlist/hooks/useWishlist";
-
-import { ScrollView } from "react-native-gesture-handler";
 import { useProductsData } from "./hooks/data/useProductsData";
 import { useProductSearch } from "./hooks/queries/products.queries";
 
 import {
   ArrowUp,
-  ChevronRight,
   CookingPotIcon,
   Layers2,
   LayoutGrid,
+  Package,
   Sofa,
 } from "lucide-react-native";
 
@@ -51,6 +48,7 @@ export default function ProductScreen() {
   } = useWishlist();
 
   const { products: allProducts = [], filterOptions = [] } = useProductsData();
+  console.log(allProducts);
 
   const { data: filteredProductsData = {} } = useProductSearch({
     query: debouncedSearch,
@@ -91,7 +89,6 @@ export default function ProductScreen() {
     } catch (error) {}
   };
 
-  //  UPDATED CATEGORY ICON STRUCTURE
   const categories = [
     { label: "All", icon: LayoutGrid },
     { label: "Furniture", icon: Sofa },
@@ -100,7 +97,7 @@ export default function ProductScreen() {
   ];
 
   return (
-    <ScreenLayout scrollable={false}>
+    <ScreenLayout>
       <ScreenContent>
         <ScrollView
           ref={scrollRef}
@@ -121,14 +118,12 @@ export default function ProductScreen() {
             setShowTopBtn(contentOffset.y > 300);
           }}
         >
-          {/* SEARCH */}
           <ProductSearchBar
             search={search}
             setSearch={setSearch}
             onFilterPress={() => setFilterOpen(true)}
           />
 
-          {/* FILTER */}
           <FilterBottomSheet
             visible={filterOpen}
             onClose={() => setFilterOpen(false)}
@@ -136,7 +131,6 @@ export default function ProductScreen() {
             filterOptions={filterOptions}
           />
 
-          {/* CATEGORY CHIPS */}
           {!isFiltering && (
             <ScrollView
               horizontal
@@ -164,7 +158,6 @@ export default function ProductScreen() {
                       elevation: isActive ? 4 : 2,
                     }}
                   >
-                    {/* ICON */}
                     <View style={{ marginRight: 6 }}>
                       <item.icon
                         size={14}
@@ -172,7 +165,6 @@ export default function ProductScreen() {
                       />
                     </View>
 
-                    {/* TEXT */}
                     <Text
                       style={{
                         fontWeight: "600",
@@ -188,30 +180,11 @@ export default function ProductScreen() {
             </ScrollView>
           )}
 
-          <View style={{ marginTop: 24 }}>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: 8,
-              }}
-            >
-              <SectionTitle title="Popular Picks" icon="flame-outline" />
-
-              {/* RIGHT ARROW */}
-              <View
-                style={{
-                  backgroundColor: colors.light,
-                  padding: 6,
-                  borderRadius: 20,
-                  borderWidth: 1,
-                  borderColor: colors.cardBorder,
-                }}
-              >
-                <ChevronRight size={16} color={colors.dark} />
-              </View>
-            </View>
+          {/* <View style={{ marginTop: 24 }}>
+            <ListHeader
+              title="Popular Products"
+              icon={<Star size={20} color={colors.secondary} />}
+            />
 
             <ProductsList
               items={allProducts.slice(3, 8)}
@@ -220,12 +193,13 @@ export default function ProductScreen() {
               isWishlistBusy={isBusy}
               variant="carousel"
             />
-          </View>
+          </View> */}
 
-          {/* ALL PRODUCTS */}
           <View style={{ marginTop: 24 }}>
-            <SectionTitle title="All Products" icon="grid-outline" />
-
+            <SectionTitle
+              title={"All Products"}
+              icon={<Package size={20} color={colors.secondary} />}
+            />
             <ProductsList
               items={visibleProducts}
               wishlistItems={wishlist}
@@ -235,15 +209,13 @@ export default function ProductScreen() {
             />
           </View>
 
-          {/* LOADER */}
-          {isMoreLoading && (
+          {/* {isMoreLoading && (
             <View style={{ paddingVertical: 20, alignItems: "center" }}>
               <ActivityIndicator size="large" color={colors.primary} />
             </View>
-          )}
+          )} */}
         </ScrollView>
 
-        {/* SCROLL TO TOP */}
         {showTopBtn && (
           <View style={{ position: "absolute", bottom: 30, right: 20 }}>
             <Pressable
