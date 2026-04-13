@@ -8,12 +8,8 @@ function AppProvider({ children }) {
     <AppQueryClientProvider>
       <AuthProvider>
         <OrchardProvider>
-          <NotificationProvider>
-            {children}
-          </NotificationProvider>
-
+          <NotificationProvider>{children}</NotificationProvider>
         </OrchardProvider>
-
       </AuthProvider>
     </AppQueryClientProvider>
   );

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "821061079441",
+    "project_id": "testpushnotification-8ce5d",
+    "storage_bucket": "testpushnotification-8ce5d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821061079441:android:27c51b158e48f37eea0a30",
+        "android_client_info": {
+          "package_name": "com.codestrix.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApD2JrJdGAifnNP1GVOvs4vd-R7xAnvsY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
