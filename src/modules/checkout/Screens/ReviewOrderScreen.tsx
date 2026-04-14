@@ -25,10 +25,8 @@ const ReviewOrderScreen = () => {
   const { errorMsg, isPending, paymentOptions, handlePlaceOrder } =
     useReviewOrder();
 
-
   const [couponCode, setCouponCode] = useState("");
 
-  // ✅ FETCH COUPON
   useEffect(() => {
     const getCoupon = async () => {
       const stored = await AsyncStorage.getItem("appliedCoupon");
@@ -50,7 +48,6 @@ const ReviewOrderScreen = () => {
         <OrderItems items={summary.items} />
         <DeliveryAddress address={selectedAddress} />
 
-      
         <OrderSummary summary={summary} couponCode={couponCode} />
 
         <PaymentMethodSelector options={paymentOptions} />
@@ -67,7 +64,7 @@ const ReviewOrderScreen = () => {
               handlePlaceOrder(
                 selectedPayment,
                 summary.orderTotal,
-                selectedAddress.contactName
+                selectedAddress.contactName,
               )
             }
             disabled={isPending}
