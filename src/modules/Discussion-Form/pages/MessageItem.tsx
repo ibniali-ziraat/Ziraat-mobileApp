@@ -4,326 +4,427 @@ import { useRouter } from "expo-router";
 import {
   ChevronDown,
   ChevronUp,
-  Clock,
   Eye,
   Heart,
-  MessageSquare,
-  Share2,
+  Share2
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
-import DiscussionInput from "./DiscussionInput";
-import MessageRenderer from "./MessageRenderer";
+import { useVote } from "../hooks/useQuestion";
 
-/* ─── TIME ─── */
+
 function useTimeAgo(date: any) {
   const [time, setTime] = useState("");
-
   useEffect(() => {
+    if (!date) return setTime("");
     const diff = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
-    if (diff < 60) setTime(`${diff}s ago`);
-    else if (diff < 3600) setTime(`${Math.floor(diff / 60)}m ago`);
-    else if (diff < 86400) setTime(`${Math.floor(diff / 3600)}h ago`);
-    else setTime(`${Math.floor(diff / 86400)}d ago`);
-  }, []);
-
+    if (diff < 60) setTime(`${diff}s`);
+    else if (diff < 3600) setTime(`${Math.floor(diff / 60)}m`);
+    else if (diff < 86400) setTime(`${Math.floor(diff / 3600)}h`);
+    else setTime(`${Math.floor(diff / 86400)}d`);
+  }, [date]);
   return time;
 }
 
-/* ─── AVATAR ─── */
+
 function getInitials(name: string) {
   return (
-    name
-      ?.split(" ")
-      .map((n) => n[0])
-      .join("")
-      .slice(0, 2)
-      .toUpperCase() || "?"
+    name?.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() || "?"
   );
 }
 
-function AuthorAvatar({ name, size = 30 }: any) {
-  const palette = ["#b45309"];
-  const idx = name ? name.charCodeAt(0) % palette.length : 0;
-
+function AuthorAvatar({ name }: any) {
   return (
     <View
       style={{
-        width: size,
-        height: size,
-        borderRadius: size / 2,
-        backgroundColor: palette[idx],
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        backgroundColor: colors.secondary,
         alignItems: "center",
         justifyContent: "center",
+        // Subtle inner glow via shadow
+        shadowColor: colors.secondary,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.35,
+        shadowRadius: 6,
+        elevation: 3,
       }}
     >
-      <Text style={{ color: "#fff", fontWeight: "700" }}>
+      <Text style={{
+        color: colors.light,
+        fontWeight: "700",
+        fontSize: 13,
+        letterSpacing: 0.8,
+      }}>
         {getInitials(name)}
       </Text>
     </View>
   );
 }
 
-/* ─── VOTE ─── */
-function VoteColumn({ votes = 0 }: any) {
+function VoteColumn({
+  votes = 0,
+  targetId,
+  targetType,
+}: {
+  votes: number;
+  targetId: number;
+  targetType: "question" | "answer";
+}) {
   const [count, setCount] = useState(votes);
   const [vote, setVote] = useState(0);
 
+  const { mutate: voteApi, isPending } = useVote();
+
+  const handleVote = (value: number) => {
+    if (isPending) return;
+
+    let newVote = value;
+    let newCount = count;
+
+    if (vote === value) {
+      newVote = 0;
+      newCount = count - value;
+    } else {
+      newCount = count + value - vote;
+    }
+
+    setVote(newVote);
+    setCount(newCount);
+
+    voteApi(
+      {
+        userId: 2,
+        targetId,
+        targetType,
+        value: newVote,
+      },
+      {
+        onError: () => {
+          setVote(vote);
+          setCount(count);
+        },
+      }
+    );
+  };
+
   return (
-    <View style={{ alignItems: "center", width: 42 }}>
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        backgroundColor: colors.light,
+        borderRadius: 24,
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+        overflow: "hidden",
+        shadowColor: colors.cardShadow,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.06,
+        shadowRadius: 4,
+        elevation: 1,
+      }}
+    >
       <TouchableOpacity
-        onPress={() => {
-          setVote(1);
-          setCount(count + 1);
+        onPress={() => handleVote(1)}
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 6,
+          backgroundColor: vote === 1 ? colors.primary + "14" : "transparent",
         }}
       >
-        <ChevronUp size={20} color={vote === 1 ? colors.primary : "#bbb"} />
+        <ChevronUp
+          size={15}
+          color={vote === 1 ? colors.primary : colors.overlay}
+          strokeWidth={vote === 1 ? 2.5 : 1.8}
+        />
       </TouchableOpacity>
 
-      <Text style={{ fontWeight: "800", marginVertical: 4 }}>{count}</Text>
+      <Text style={{
+        fontWeight: "700",
+        fontSize: 13,
+        color: vote === 1 ? colors.primary : vote === -1 ? colors.error : "#555",
+        minWidth: 18,
+        textAlign: "center",
+      }}>
+        {count}
+      </Text>
 
       <TouchableOpacity
-        onPress={() => {
-          setVote(-1);
-          setCount(count - 1);
+        onPress={() => handleVote(-1)}
+        style={{
+          paddingHorizontal: 10,
+          paddingVertical: 6,
+          backgroundColor: vote === -1 ? colors.error + "14" : "transparent",
         }}
       >
-        <ChevronDown size={20} color={vote === -1 ? colors.error : "#bbb"} />
+        <ChevronDown
+          size={15}
+          color={vote === -1 ? colors.error : colors.overlay}
+          strokeWidth={vote === -1 ? 2.5 : 1.8}
+        />
       </TouchableOpacity>
     </View>
   );
 }
 
-/* ─── MAIN ─── */
+/* ─── STAT PILL ─── */
+function StatPill({ icon, value }: { icon: React.ReactNode; value: string | number }) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 5,
+        paddingHorizontal: 11,
+        paddingVertical: 6,
+        borderRadius: 24,
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+        backgroundColor: colors.light,
+        shadowColor: colors.cardShadow,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.04,
+        shadowRadius: 3,
+        elevation: 1,
+      }}
+    >
+      {icon}
+      <Text style={{ fontSize: 12, fontWeight: "600", color: "#666" }}>{value}</Text>
+    </View>
+  );
+}
+
+/* ─── ICON PILL ─── */
+function IconPill({ children }: any) {
+  return (
+    <TouchableOpacity
+      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+      style={{
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        borderRadius: 24,
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+        backgroundColor: colors.light,
+          shadowColor: colors.cardShadow,
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.04,
+        shadowRadius: 3,
+        elevation: 1,
+      }}
+    >
+      {children}
+    </TouchableOpacity>
+  );
+}
+
 export default function MessageItem({ item, depth = 0 }: any) {
   const router = useRouter();
   const time = useTimeAgo(item.createdAt);
-
-  const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(item.likes ?? 0);
-
-  const [showReply, setShowReply] = useState(false);
-  const [message, setMessage] = useState("");
-  const [inputText, setInputText] = useState("");
-  const [replyTo, setReplyTo] = useState(null);
-
-  const handleLike = (e: any) => {
-    e.stopPropagation();
-    setLiked(!liked);
-    setLikes((prev) => (liked ? prev - 1 : prev + 1));
-  };
-
-  const handleSend = (text: string) => {
-    if (!text.trim()) return;
-    console.log("Reply:", text);
-    setMessage("");
-    setShowReply(false);
-  };
-
   const isQuestion = depth === 0;
 
   return (
-    <TouchableOpacity
-      activeOpacity={0.95}
-      onPress={() => {
-        if (isQuestion) {
-          router.push({
-            pathname: ROUTES.Discussion.QuestionScreen,
-            params: { data: JSON.stringify(item) },
-          });
-        }
+    <View
+      style={{
+        backgroundColor: colors.light,
+        marginHorizontal: 14,
+        marginTop: 12,
+        borderRadius: 20,
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+        overflow: "hidden",
+         shadowColor: colors.cardShadow,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.08,
+        shadowRadius: 10,
+        elevation: 4,
       }}
     >
-      <View
-        style={{
-          backgroundColor: colors.light,
-          borderBottomWidth: 1,
-          borderColor: colors.cardBorder,
+      {/* Top accent stripe for questions */}
+      {isQuestion && (
+        <View
+          style={{
+            height: 3,
+            backgroundColor: colors.primary,
+            opacity: 0.85,
+          }}
+        />
+      )}
+
+      {/* BODY */}
+      <TouchableOpacity
+        activeOpacity={0.82}
+        style={{ padding: 16 }}
+        onPress={() => {
+          if (isQuestion) {
+            router.push({
+              pathname: ROUTES.Discussion.QuestionScreen,
+              params: { id: item.id },
+            });
+          }
         }}
       >
-        {/* HEADER */}
-        <View style={{ padding: 16 }}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              marginBottom: 10,
-            }}
-          >
-            <AuthorAvatar name={item.author} />
+        {/* HEADER ROW */}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            marginBottom: 12,
+          }}
+        >
+          {/* LEFT: Avatar + Name + Time */}
+          <View style={{ flexDirection: "row", gap: 11, alignItems: "center" }}>
+            <View style={{ alignItems: "center" }}>
+              <AuthorAvatar name={item.author} />
+            </View>
 
-            <View style={{ marginLeft: 10, flex: 1 }}>
+            <View style={{ justifyContent: "center", gap: 2 }}>
               <Text
                 style={{
-                  fontSize: 13,
                   fontWeight: "700",
-                  color: colors.neutral,
+                  fontSize: 14,
+                  color: colors.primary,
+                  letterSpacing: 0.1,
                 }}
               >
-                {item.author || "Unknown"}
+                {item.author}
               </Text>
-
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
-              >
-                <Clock size={11} color="#777" />
-                <Text style={{ fontSize: 11, color: "#777" }}>
-                  asked {time}
-                </Text>
-              </View>
-            </View>
-          </View>
-
-          {/* TITLE */}
-          {isQuestion && (
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "800",
-                color: colors.neutral,
-                lineHeight: 22,
-              }}
-            >
-              {item.excerpt || item.title || item.content?.slice(0, 90)}
-            </Text>
-          )}
-
-          {/* CONTENT */}
-          <View style={{ marginTop: 6 }}>
-            {isQuestion ? (
-              <Text style={{ color: "#555", fontSize: 14, lineHeight: 20 }}>
-                {item.content?.slice(0, 140)}...
-              </Text>
-            ) : (
-              <MessageRenderer text={item.content} />
-            )}
-          </View>
-
-          {/* STATS (only for question) */}
-          {isQuestion && (
-            <View
-              style={{
-                flexDirection: "row",
-                gap: 12,
-                marginTop: 10,
-              }}
-            >
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-              >
-                <Eye size={12} color="#777" />
-                <Text style={{ fontSize: 11, color: "#777" }}>
-                  {item.views || 0}
-                </Text>
-              </View>
-
-              <View
-                style={{ flexDirection: "row", alignItems: "center", gap: 4 }}
-              >
-                <MessageSquare size={12} color="#777" />
-                <Text style={{ fontSize: 11, color: "#777" }}>
-                  {item.children?.length || 0}
-                </Text>
-              </View>
-            </View>
-          )}
-        </View>
-
-        {/* BODY (for BOTH) */}
-        <View style={{ flexDirection: "row", padding: 16 }}>
-          <VoteColumn votes={item.votes} />
-
-          <View style={{ flex: 1 }}>
-            {/* ACTIONS */}
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 10,
-                gap: 10,
-                flexWrap: "wrap",
-              }}
-            >
-              {/* REPLY */}
-              <TouchableOpacity
-                onPress={(e) => {
-                  e.stopPropagation();
-                  setShowReply((prev) => !prev);
-                }}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  backgroundColor: colors.primary,
-                  paddingHorizontal: 14,
-                  paddingVertical: 7,
-                  borderRadius: 8,
-                }}
-              >
-                <MessageSquare size={14} color={colors.light} />
-                <Text style={{ color: colors.light, marginLeft: 6 }}>
-                  Reply
-                </Text>
-              </TouchableOpacity>
-
-              {/* LIKE */}
-              <TouchableOpacity
-                onPress={handleLike}
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingHorizontal: 12,
-                  paddingVertical: 7,
-                  borderRadius: 8,
-                  borderWidth: 1,
-                  borderColor: liked ? colors.error : colors.cardBorder,
-                  backgroundColor: liked ? colors.error + "15" : colors.light,
-                }}
-              >
-                <Heart
-                  size={14}
-                  color={liked ? colors.error : "#777"}
-                  fill={liked ? colors.error : "transparent"}
-                />
+              {!!time && (
                 <Text
                   style={{
-                    marginLeft: 5,
-                    color: liked ? colors.error : "#777",
-                    fontWeight: "600",
+                    fontSize: 11,
+                    color: colors.overlay,
+                    fontWeight: "400",
                   }}
                 >
-                  {likes}
+                  {time} ago
                 </Text>
-              </TouchableOpacity>
-
-              {/* SHARE */}
-              <TouchableOpacity style={{ padding: 8 }}>
-                <Share2 size={14} color="#777" />
-              </TouchableOpacity>
+              )}
             </View>
+          </View>
 
-            {/* INLINE REPLY */}
-            {showReply && (
-              <View
+          {/* QUESTION BADGE */}
+          {isQuestion && (
+            <View
+              style={{
+                backgroundColor: colors.primary + "15",
+                borderWidth: 1,
+                borderColor: colors.primary + "30",
+                paddingHorizontal: 11,
+                paddingVertical: 4,
+                borderRadius: 20,
+              }}
+            >
+              <Text
                 style={{
-                  marginTop: 12,
-                  borderTopWidth: 1,
-                  borderColor: colors.cardBorder,
-                  paddingTop: 10,
+                  fontSize: 10,
+                  color: colors.primary,
+                  fontWeight: "700",
+                  letterSpacing: 0.6,
+                  textTransform: "uppercase",
                 }}
               >
-                <DiscussionInput
-                  message={message}
-                  setMessage={setMessage}
-                  replyTo={replyTo}
-                  setReplyTo={setReplyTo}
-                  onSend={handleSend}
-                  inputText={inputText}
-                  setInputText={setInputText}
-                />
+                Question
+              </Text>
+            </View>
+          )}
+        </View>
+
+        {/* TITLE */}
+        {isQuestion && (
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "700",
+              marginBottom: 7,
+              lineHeight: 23,
+            
+              letterSpacing: 0.1,
+            }}
+          >
+            {item.title || item.excerpt}
+          </Text>
+        )}
+
+        {/* CONTENT */}
+        <Text
+          style={{
+            fontSize: 13.5,
+            lineHeight: 22,
+            fontWeight: "400",
+            color: colors.neutral,
+          }}
+          numberOfLines={3}
+        >
+          {item.content}
+        </Text>
+
+        {/* TAGS */}
+        {item.tags?.length > 0 && (
+          <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 12, gap: 6 }}>
+            {item.tags.map((tag: string) => (
+              <View
+                key={tag}
+                style={{
+                  backgroundColor: colors.primary + "12",
+                  borderWidth: 1,
+                  borderColor: colors.primary + "30",
+                  paddingHorizontal: 11,
+                  paddingVertical: 5,
+                  borderRadius: 20,
+                }}
+              >
+                <Text style={{
+                  fontSize: 11,
+                  color: colors.primary,
+                  fontWeight: "600",
+                  letterSpacing: 0.2,
+                }}>
+                  #{tag}
+                </Text>
               </View>
-            )}
+            ))}
           </View>
+        )}
+      </TouchableOpacity>
+
+      {/* FOOTER */}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 16,
+          paddingVertical: 11,
+          borderTopWidth: 1,
+          borderTopColor: colors.cardBorder,
+          backgroundColor: colors.primary + "04",
+        }}
+      >
+        <VoteColumn
+          votes={item.votes}
+          targetId={Number(item.id)}
+          targetType={depth === 0 ? "question" : "answer"}
+        />
+
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
+          <StatPill
+            icon={<Eye size={12} color={colors.overlay} strokeWidth={2} />}
+            value={item.views || 0}
+          />
+
+          <IconPill>
+            <Heart size={14} color={colors.overlay} strokeWidth={1.8} />
+          </IconPill>
+
+          <IconPill>
+            <Share2 size={14} color={colors.overlay} strokeWidth={1.8} />
+          </IconPill>
         </View>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }

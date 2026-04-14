@@ -1,8 +1,9 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { router, useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
+  Pressable,
   Text,
   View
 } from "react-native";
@@ -19,12 +20,9 @@ import ProductSpecifications from "./components/ProductSpecifications";
 import ProductStickyBar from "./components/ProductStickyBar";
 
 import Review from "@/src/components/shared/AllReview";
-import ProductFaq from "@/src/components/shared/ProductFaq";
-import WriteReview from "@/src/components/shared/WriteReview";
 
 import { toast } from "@backpackapp-io/react-native-toast";
-import { MoveLeft, PackageSearch, X } from "lucide-react-native";
-import { Modal } from "react-native-paper";
+import { MoveLeft, PackageSearch } from "lucide-react-native";
 
 import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
@@ -34,9 +32,9 @@ import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
 import { useProductByIdQuery } from "./hooks/queries/products.queries";
 
-/* ⭐ IMPORT PRODUCTS LIST */
+/*  IMPORT PRODUCTS LIST */
 
-/* ⭐ IMPORT WISHLIST */
+/*  IMPORT WISHLIST */
 import { typography } from "@/src/constants/fonts/typography";
 import { useWishlist } from "../wishlist/hooks/useWishlist";
 import ProductsList from "./components/ProductList";
@@ -52,7 +50,7 @@ export default function ProductDetails() {
   const { mutate: submitReview, isPending } = useAddReview();
   const { cart, addToCart, removeFromCart, isCartBusy } = useCart();
 
-  /* ⭐ WISHLIST */
+  /*  WISHLIST */
   const {
     wishlist,
     isBusy,
@@ -299,7 +297,7 @@ export default function ProductDetails() {
                   </>
                 )}
 
-                {/* ⭐ YOU MAY ALSO LIKE */}
+                {/*  YOU MAY ALSO LIKE */}
 
                 {relatedProducts.length > 0 && (
                   <ProductsList
@@ -312,7 +310,7 @@ export default function ProductDetails() {
                   />
                 )}
 
-                {/* ⭐ FREQUENTLY BOUGHT */}
+                {/*  FREQUENTLY BOUGHT */}
 
                 {crossSellProducts.length > 0 && (
                   <View className="mt-6">
