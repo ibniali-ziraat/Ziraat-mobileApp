@@ -2,7 +2,7 @@ import { getItem } from "@/src/utils/universalSecureToken";
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3001/", 
+  baseURL: "https://discussionapi.onrender.com/",
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,7 +19,7 @@ axiosInstance.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 export default axiosInstance;
