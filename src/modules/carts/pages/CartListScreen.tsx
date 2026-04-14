@@ -36,18 +36,10 @@ type CouponType = {
 const CartListScreen = () => {
   const router = useRouter();
 
-  const {
-    cart,
-    isLoading,
-    updateCartItem,
-    removeFromCart,
-  } = useCart() as {
+  const { cart, isLoading, updateCartItem, removeFromCart } = useCart() as {
     cart: CartItemType[];
     isLoading: boolean;
-    updateCartItem: (data: {
-      cartItemId: string;
-      quantity: number;
-    }) => void;
+    updateCartItem: (data: { cartItemId: string; quantity: number }) => void;
     removeFromCart: (data: { id: string }) => Promise<void>;
   };
 
@@ -58,27 +50,21 @@ const CartListScreen = () => {
   const [showCoupons, setShowCoupons] = useState<boolean>(false);
   const [selectedCoupon, setSelectedCoupon] = useState<string>("");
 
-  const {
-    data: couponData = [],
-    isLoading: isCheckingCoupon,
-  } = useGetCouponCode(couponCode) as {
-    data: CouponType[];
-    isLoading: boolean;
-  };
+  const { data: couponData = [], isLoading: isCheckingCoupon } =
+    useGetCouponCode(couponCode) as {
+      data: CouponType[];
+      isLoading: boolean;
+    };
 
- 
   const handleRemoveItem = async (id: string) => {
     await removeFromCart({ id });
     toast.success("Removed from cart");
   };
 
-  const handleQtyChange = (
-    cartItemId: string,
-    quantity: number
-  ) => updateCartItem({ cartItemId, quantity });
+  const handleQtyChange = (cartItemId: string, quantity: number) =>
+    updateCartItem({ cartItemId, quantity });
 
-  const handleStartShopping = () =>
-    router.push(ROUTES.TABS.PRODUCTS);
+  const handleStartShopping = () => router.push(ROUTES.TABS.PRODUCTS);
 
   const resetCoupon = () => {
     setSelectedCoupon("");
@@ -97,18 +83,12 @@ const CartListScreen = () => {
         await AsyncStorage.setItem("checkoutId", checkoutId);
       }
 
-      await AsyncStorage.setItem(
-        "appliedCoupon",
-        selectedCoupon || ""
-      );
+      await AsyncStorage.setItem("appliedCoupon", selectedCoupon || "");
 
-      router.push(
-        ROUTES.SHOPPING.CHECKOUT.SELECT_ADDRESS
-      );
+      router.push(ROUTES.SHOPPING.CHECKOUT.SELECT_ADDRESS);
     } catch (err: any) {
       toast.error(
-        err?.response?.data?.message ||
-          "Checkout failed due to coupon"
+        err?.response?.data?.message || "Checkout failed due to coupon",
       );
       resetCoupon();
     }
@@ -131,42 +111,30 @@ const CartListScreen = () => {
         resetCoupon();
       }
     } catch (err: any) {
-      toast.error(
-        err?.response?.data?.message || "Invalid coupon"
-      );
+      toast.error(err?.response?.data?.message || "Invalid coupon");
       resetCoupon();
     }
   };
 
-  const createQtyChangeHandler =
-    (itemId: string) => (qty: number) =>
-      handleQtyChange(itemId, qty);
+  const createQtyChangeHandler = (itemId: string) => (qty: number) =>
+    handleQtyChange(itemId, qty);
 
-  const createRemoveHandler =
-    (itemId: string) => () =>
-      handleRemoveItem(itemId);
+  const createRemoveHandler = (itemId: string) => () =>
+    handleRemoveItem(itemId);
 
   // ✅ CALCULATIONS
   const subtotalRaw =
     cart?.reduce<number>(
       (sum, { total, quantity }) =>
-        sum +
-        (Number(total) || 0) *
-          (Number(quantity) || 0),
-      0
+        sum + (Number(total) || 0) * (Number(quantity) || 0),
+      0,
     ) || 0;
 
   const discount =
-    couponData.find(
-      (c: CouponType) =>
-        c.code === selectedCoupon
-    )?.discountAmount || 0;
+    couponData.find((c: CouponType) => c.code === selectedCoupon)
+      ?.discountAmount || 0;
 
-  const subtotal = Math.max(
-    subtotalRaw - discount,
-    0
-  );
-
+  const subtotal = Math.max(subtotalRaw - discount, 0);
 
   if (isLoading)
     return (
@@ -179,23 +147,14 @@ const CartListScreen = () => {
   if (!cart?.length)
     return (
       <ScreenLayout>
-        <BackHeader
-          title="My Cart"
-          desc="Your selected items"
-        />
-        <EmptyCartView
-          onStartShopping={handleStartShopping}
-        />
+        <BackHeader title="My Cart" desc="Your selected items" />
+        <EmptyCartView onStartShopping={handleStartShopping} />
       </ScreenLayout>
     );
 
-
   return (
     <ScreenLayout scrollable={false}>
-      <BackHeader
-        title="My Cart"
-        desc={`${cart.length} items`}
-      />
+      <BackHeader title="My Cart" desc={`${cart.length} items`} />
 
       <FlatList<CartItemType>
         data={cart}
@@ -210,12 +169,8 @@ const CartListScreen = () => {
             <CartListItem
               item={item}
               quantity={item.quantity}
-              onQtyChange={createQtyChangeHandler(
-                item.id
-              )}
-              handleRemoveItem={createRemoveHandler(
-                item.id
-              )}
+              onQtyChange={createQtyChangeHandler(item.id)}
+              handleRemoveItem={createRemoveHandler(item.id)}
             />
           </View>
         )}
@@ -237,7 +192,6 @@ const CartListScreen = () => {
           borderTopRightRadius: 20,
         }}
       >
-      
         <CouponSection
           showCoupons={showCoupons}
           setShowCoupons={setShowCoupons}

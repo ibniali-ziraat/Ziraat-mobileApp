@@ -140,7 +140,7 @@ export default function ProductDetails() {
       onSuccess: () => {
         toast.success("Review added");
         setPageNumber(1);
-        setModalVisible(false);
+        // setModalVisible(false);
       },
     });
   };
