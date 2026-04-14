@@ -6,7 +6,7 @@ import { WishlistItem } from "../../wishlist/types/wishlist.types";
 
 interface SharedWishlistProps {
   wishlistItems: WishlistItem[];
-  onToggleWishlist: (id: string) => void;
+  onToggleWishlist: (id: string | number) => void;
   isWishlistBusy: boolean;
   onSeeMore: () => void;
   variant: "carousel";

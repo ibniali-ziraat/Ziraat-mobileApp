@@ -14,24 +14,30 @@ import {
 import RouteGuard from "@/src/components/RouteGuard";
 import { DisableBackWrapper } from "@/src/components/shared/DisableBackWrapper";
 import AppProvider from "@/src/contexts/AppProvider";
-
 import { useAppFonts } from "@/src/hooks/useAppFonts";
 import { colors } from "../constants/colors";
 import { paperTheme } from "../constants/theme";
 
 registerTranslation("en-GB", enGB);
 
+// ✅ Separate component so hook runs inside NotificationProvider
+// function NotificationInitializer() {
+//   useAutoNotifications();
+//   return null;
+// }
+
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
   const fontsLoaded = useAppFonts();
 
-  if (!fontsLoaded) {
-    return null;
-  }
+  if (!fontsLoaded) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar style="dark" translucent animated />
+
+      {/* <NotificationProvider> */}
+      {/* <NotificationInitializer /> */}
 
       <AppProvider>
         <DisableBackWrapper>
@@ -56,8 +62,9 @@ export default function RootLayout() {
           </RouteGuard>
         </DisableBackWrapper>
       </AppProvider>
+      {/* </NotificationProvider> */}
 
-      <Toasts defaultPosition={ToastPosition.BOTTOM} />
+      <Toasts defaultPosition={ToastPosition.TOP} />
     </GestureHandlerRootView>
   );
 }

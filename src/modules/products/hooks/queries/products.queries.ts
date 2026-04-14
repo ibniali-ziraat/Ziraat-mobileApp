@@ -1,9 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 import {
   buyProduct,
+  compareProducts,
+  getBestDeals,
   getProductById,
   getProductBySearch,
   getProducts,
+  getTrendingProducts,
+  searchWithVendors,
 } from "../../services/product.service";
 
 export const useProductsQuery = () =>
@@ -19,8 +24,6 @@ export const useProductByIdQuery = (id: string) =>
     enabled: !!id,
   });
 
-// useProductSearch.ts
-
 export const useProductSearch = (params: {
   query?: string;
   brand?: string;
@@ -29,7 +32,7 @@ export const useProductSearch = (params: {
   minPrice?: number;
   maxPrice?: number;
   sort?: string;
-    minRating?: number; 
+  minRating?: number;
 }) =>
   useQuery({
     queryKey: ["product-search", params],
@@ -49,3 +52,41 @@ export const useBuyProductMutation = () => {
     },
   });
 };
+
+// Trending Products (30 min cache)
+export const useTrendingProducts = () =>
+  useQuery({
+    queryKey: ["trending-products"],
+    queryFn: getTrendingProducts,
+    staleTime: 1000 * 60 * 30, // 30 minutes
+  });
+
+// Best Deals (5 min cache)
+export const useBestDeals = () =>
+  useQuery({
+    queryKey: ["best-deals"],
+    queryFn: getBestDeals,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+  });
+
+// Search with Vendors
+export const useSearchWithVendors = (payload: {
+  query?: string;
+  brand?: string;
+  category?: string;
+  page?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  sort?: string;
+}) =>
+  useQuery({
+    queryKey: ["search-with-vendors", payload],
+    queryFn: () => searchWithVendors(payload),
+    enabled: !!payload, // always runs if payload exists
+  });
+
+// Compare Products (Mutation)
+export const useCompareProducts = () =>
+  useMutation({
+    mutationFn: compareProducts,
+  });

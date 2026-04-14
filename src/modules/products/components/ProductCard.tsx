@@ -45,7 +45,6 @@ export default function ProductCard({
         marginBottom: isCarousel ? 0 : 16,
       }}
     >
-      {/* Card Image */}
       <View
         className="rounded-2xl overflow-hidden"
         style={{ backgroundColor: colors.light, elevation: 2 }}
