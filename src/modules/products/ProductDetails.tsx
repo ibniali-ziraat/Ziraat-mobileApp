@@ -1,4 +1,4 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { router, useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 
@@ -26,9 +26,9 @@ import { useCart } from "./hooks/data/useCart";
 import { useAddReview, useListReviews } from "./hooks/data/useReview";
 import { useProductByIdQuery } from "./hooks/queries/products.queries";
 
-/* ⭐ IMPORT PRODUCTS LIST */
+/*  IMPORT PRODUCTS LIST */
 
-/* ⭐ IMPORT WISHLIST */
+/*  IMPORT WISHLIST */
 import { typography } from "@/src/constants/fonts/typography";
 import { useWishlist } from "../wishlist/hooks/useWishlist";
 import ProductsList from "./components/ProductList";
@@ -44,7 +44,7 @@ export default function ProductDetails() {
   const { mutate: submitReview, isPending } = useAddReview();
   const { cart, addToCart, removeFromCart, isCartBusy } = useCart();
 
-  /* ⭐ WISHLIST */
+  /*  WISHLIST */
   const {
     wishlist,
     isBusy,
@@ -281,6 +281,8 @@ export default function ProductDetails() {
                   </>
                 )}
 
+                {/*  YOU MAY ALSO LIKE */}
+
                 {relatedProducts.length > 0 && (
                   <ProductsList
                     title="Recommended Products"
@@ -292,7 +294,7 @@ export default function ProductDetails() {
                   />
                 )}
 
-                {/* ⭐ FREQUENTLY BOUGHT */}
+                {/*  FREQUENTLY BOUGHT */}
 
                 {crossSellProducts.length > 0 && (
                   <View className="mt-6">
