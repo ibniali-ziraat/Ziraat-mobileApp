@@ -1,6 +1,9 @@
-import "../../styles/global.css";
-
+import RouteGuard from "@/src/components/RouteGuard";
+import { DisableBackWrapper } from "@/src/components/shared/DisableBackWrapper";
+import AppProvider from "@/src/contexts/AppProvider";
+import { useAppFonts } from "@/src/hooks/useAppFonts";
 import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
+import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -10,34 +13,29 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-
-import RouteGuard from "@/src/components/RouteGuard";
-import { DisableBackWrapper } from "@/src/components/shared/DisableBackWrapper";
-import AppProvider from "@/src/contexts/AppProvider";
-import { useAppFonts } from "@/src/hooks/useAppFonts";
+import "../../styles/global.css";
 import { colors } from "../constants/colors";
 import { paperTheme } from "../constants/theme";
 
 registerTranslation("en-GB", enGB);
 
-// ✅ Separate component so hook runs inside NotificationProvider
-// function NotificationInitializer() {
-//   useAutoNotifications();
-//   return null;
-// }
-
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
   const fontsLoaded = useAppFonts();
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowBanner: true,
+      shouldShowList: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+  });
 
   if (!fontsLoaded) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <StatusBar style="dark" translucent animated />
-
-      {/* <NotificationProvider> */}
-      {/* <NotificationInitializer /> */}
 
       <AppProvider>
         <DisableBackWrapper>
@@ -62,7 +60,6 @@ export default function RootLayout() {
           </RouteGuard>
         </DisableBackWrapper>
       </AppProvider>
-      {/* </NotificationProvider> */}
 
       <Toasts defaultPosition={ToastPosition.TOP} />
     </GestureHandlerRootView>

@@ -1,24 +1,17 @@
-import { router } from "expo-router";
-import { Pressable, View } from "react-native";
-
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
-
-import { useProductsData } from "../products/hooks/data/useProductsData";
-
-import { useHomeWeather } from "./hooks/useHomeWeather";
-import { useHomeWishlist } from "./hooks/useHomeWishlist";
-
+import { router } from "expo-router";
 import { Flame, Tag } from "lucide-react-native";
 import { JSX } from "react";
+import { Pressable, View } from "react-native";
 import BestDealsList from "../products/components/BestDealsList";
 import ListHeader from "../products/components/ListHeader";
 import TrendingProductsList from "../products/components/TrendingProductsList";
+import { useProductsData } from "../products/hooks/data/useProductsData";
 import {
   useBestDeals,
   useTrendingProducts,
@@ -28,6 +21,8 @@ import FarmOverviewChart from "./components/FarmOverviewChart";
 import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
+import { useHomeWeather } from "./hooks/useHomeWeather";
+import { useHomeWishlist } from "./hooks/useHomeWishlist";
 
 export default function HomeScreen(): JSX.Element {
   const { currentWeather } = useHomeWeather();
@@ -35,11 +30,7 @@ export default function HomeScreen(): JSX.Element {
   const { data: trendingData, isLoading: trendingLoading } =
     useTrendingProducts();
   const { data: bestDealsData, isLoading: bestDealsLoading } = useBestDeals();
-  console.log(bestDealsData, "best deals data...");
-
-  console.log(trendingData, "trending data");
   const { products: allProducts = [] } = useProductsData();
-  console.log(allProducts, "allproducts...");
 
   return (
     <ScreenLayout>

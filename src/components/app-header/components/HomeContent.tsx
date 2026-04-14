@@ -2,7 +2,6 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
-import { useNotifications } from "@/src/contexts/NotificationContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { router } from "expo-router";
 import { BarChart2, Bell } from "lucide-react-native";
@@ -11,11 +10,9 @@ import { Pressable, Text, View } from "react-native";
 const HomeContent = () => {
   const { userId } = useAuth();
   const { data } = useProfileQuery(userId);
-  const { notifications } = useNotifications();
 
   const title = data?.fullName ?? "Ziraat";
-  const count = notifications.length;
-  const label = count > 99 ? "99+" : String(count);
+  // const label = count > 99 ? "99+" : String(count);
 
   return (
     <View
@@ -43,7 +40,6 @@ const HomeContent = () => {
           <BarChart2 size={20} color={colors.secondary} />
         </Pressable>
 
-
         <Pressable
           className="p-2 mr-3 rounded-full border"
           style={({ pressed }) => ({
@@ -54,7 +50,7 @@ const HomeContent = () => {
         >
           <Bell size={24} color={colors.secondary} />
 
-          {count > 0 && (
+          {/* {count > 0 && (
             <View
               style={{
                 position: "absolute",
@@ -80,7 +76,7 @@ const HomeContent = () => {
                 {label}
               </Text>
             </View>
-          )}
+          )} */}
         </Pressable>
 
         <Pressable

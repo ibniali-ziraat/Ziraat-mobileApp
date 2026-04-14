@@ -1,80 +1,86 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Notifications from "expo-notifications";
 import React, {
-    createContext,
-    useCallback,
-    useContext,
-    useEffect,
-    useState,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
+import { registerForPushNotificationsAsync } from "../utils/registerForPushNotificationsAsync";
 
-const STORAGE_KEY = "ziraat_notifications";
-
-export type Notification = {
-    id: number;
-    title: string;
-    message: string;
-    time: string;
-};
-
-type NotificationContextType = {
-    notifications: Notification[];
-    addNotification: (notif: Notification) => void;
-    removeNotification: (id: number) => void;
-    clearAll: () => void;
-};
-
-const NotificationContext = createContext<NotificationContextType>({
-    notifications: [],
-    addNotification: () => { },
-    removeNotification: () => { },
-    clearAll: () => { },
-});
-
-export function NotificationProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    const [notifications, setNotifications] = useState<Notification[]>([]);
-
-    useEffect(() => {
-        const load = async () => {
-            const raw = await AsyncStorage.getItem(STORAGE_KEY);
-            if (raw) setNotifications(JSON.parse(raw));
-        };
-        load();
-    }, []);
-
-    useEffect(() => {
-        AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
-    }, [notifications]);
-
-    // 🔥 KEY FIX: deduplicate only by ID, not title+message+time
-    // This prevents the listener from blocking valid new notifications
-    const addNotification = useCallback((notif: Notification) => {
-        setNotifications((prev) => {
-            const exists = prev.some((n) => n.id === notif.id);
-            if (exists) return [...prev];
-            return [notif, ...prev].slice(0, 20);
-        });
-    }, []);
-
-    const removeNotification = useCallback((id: number) => {
-        setNotifications((prev) => [...prev.filter((n) => n.id !== id)]);
-    }, []);
-
-    const clearAll = useCallback(() => {
-        setNotifications([]);
-        AsyncStorage.removeItem(STORAGE_KEY);
-    }, []);
-
-    return (
-        <NotificationContext.Provider
-            value={{ notifications, addNotification, removeNotification, clearAll }}
-        >
-            {children}
-        </NotificationContext.Provider>
-    );
+interface NotificationContextType {
+  expoPushToken: string | null;
+  devicePushToken: string | null;
+  notification: Notifications.Notification | null;
+  error: Error | null;
 }
 
-export const useNotifications = () => useContext(NotificationContext);
+const NotificationContext = createContext<NotificationContextType | undefined>(
+  undefined,
+);
+
+export const useNotification = () => {
+  const context = useContext(NotificationContext);
+  if (context === undefined) {
+    throw new Error(
+      "useNotification must be used within a NotificationProvider",
+    );
+  }
+  return context;
+};
+
+interface NotificationProviderProps {
+  children: ReactNode;
+}
+
+export const NotificationProvider: React.FC<NotificationProviderProps> = ({
+  children,
+}) => {
+  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
+  const [devicePushToken, setDevicePushToken] = useState<string | null>(null);
+  const [notification, setNotification] =
+    useState<Notifications.Notification | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(
+      (token) => setExpoPushToken(token),
+      (error) => setError(error),
+    );
+
+    Notifications.getDevicePushTokenAsync().then(
+      (devicePushToken) => {
+        console.log({ devicePushToken });
+        setDevicePushToken(devicePushToken.data);
+      },
+      (error) => {
+        setError(error);
+      },
+    );
+
+    const notificationListener = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log("🔔 Notification Received: ", notification);
+        setNotification(notification);
+      },
+    );
+
+    const responseListener =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log("🔔 Notification Response: ", response);
+      });
+
+    return () => {
+      notificationListener.remove();
+      responseListener.remove();
+    };
+  }, []);
+
+  return (
+    <NotificationContext.Provider
+      value={{ expoPushToken, devicePushToken, notification, error }}
+    >
+      {children}
+    </NotificationContext.Provider>
+  );
+};

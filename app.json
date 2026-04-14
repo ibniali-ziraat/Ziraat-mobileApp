@@ -14,7 +14,7 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.ziraat",
+      "bundleIdentifier": "com.codestrix.test",
       "jsEngine": "hermes",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -28,7 +28,8 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.ziraat",
+      "package": "com.codestrix.test",
+      "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
           "apiKey": "YOUR_GOOGLE_MAPS_API_KEY"
@@ -60,9 +61,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "eb1acd0b-f05b-4ad6-a2ae-45703981e690"
+        "projectId": "bab73ba3-ca71-458a-855d-5e182933be27"
       }
     },
-    "owner": "ummarmukhtar"
+    "owner": "naikummarmukhtar"
   }
 }
