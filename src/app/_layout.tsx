@@ -16,20 +16,25 @@ import {
 import "../../styles/global.css";
 import { colors } from "../constants/colors";
 import { paperTheme } from "../constants/theme";
+import NavigationReadyHandler from "../modules/notifications/components/NavigationReadyHandler";
+
+// ✅ Removed useNotificationNavigation import — no longer called here
 
 registerTranslation("en-GB", enGB);
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
   const fontsLoaded = useAppFonts();
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowBanner: true,
-      shouldShowList: true,
-      shouldPlaySound: true,
-      shouldSetBadge: true,
-    }),
-  });
+
+  // ✅ Removed: useNotificationNavigation() — was called before router was ready
 
   if (!fontsLoaded) return null;
 
@@ -49,12 +54,15 @@ export default function RootLayout() {
               }}
             >
               <PaperProvider theme={paperTheme}>
+                {/* ✅ Stack renders first — navigation tree is mounted */}
                 <Stack
                   screenOptions={{
                     headerShown: false,
                     animation: "slide_from_right",
                   }}
                 />
+                {/* ✅ Hook runs here — after Stack, router is guaranteed ready */}
+                <NavigationReadyHandler />
               </PaperProvider>
             </SafeAreaView>
           </RouteGuard>

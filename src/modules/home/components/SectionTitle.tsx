@@ -1,6 +1,5 @@
-import CsText from "@/src/components/shared/CsText";
 import { typography } from "@/src/constants/fonts/typography";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 type Props = {
   title: string;
@@ -18,13 +17,10 @@ export default function SectionTitle({ title, icon }: Props) {
         marginTop: 16,
       }}
     >
-      {/* ICON */}
-      {icon ? <View style={{ marginRight: 8 }}>{icon}</View> : null}
-
-      {/* TITLE */}
-      <CsText style={[typography.Poppins_m_semibold]} className="text-xl">
+      {icon ? <Text style={{ marginRight: 8 }}>{icon}</Text> : null}
+      <Text style={[typography.Poppins_m_semibold]} className="text-xl">
         {title}
-      </CsText>
+      </Text>
     </View>
   );
 }
