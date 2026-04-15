@@ -37,8 +37,11 @@ export default function HomeScreen(): JSX.Element {
       <ScreenContent>
         <AnimatedTabContent>
           <View
-            style={{ backgroundColor: colors.light }}
-            className="flex-1 pt-4"
+            style={{
+              backgroundColor: colors.light,
+              flex: 1,
+              paddingTop: 16,
+            }}
           >
             <Pressable onPress={() => router.push(ROUTES.WEATHER.DETAILS)}>
               <WeatherCard current={currentWeather} />
@@ -68,11 +71,11 @@ export default function HomeScreen(): JSX.Element {
                 variant="carousel"
               />
             </View>
-            <SectionTitle title="Farm Overview" icon="stats-chart-outline" />
+            <SectionTitle title="Farm Overview" icon={null} />
             <FarmOverviewChart />
-            <SectionTitle title="Farmer Tips & Awareness" icon="bulb-outline" />
+            <SectionTitle title="Farmer Tips & Awareness" icon={null} />
             <FarmerTipsCard />
-            <View className="mb-20">
+            <View style={{ marginBottom: 80 }}>
               <LegalDisclaimer />
             </View>
           </View>

@@ -19,6 +19,7 @@ export interface NormalizedProduct {
   oldPrice?: number;
   image?: string;
   rating?: number;
+  discount?: number;
 }
 
 export interface WishlistItem {

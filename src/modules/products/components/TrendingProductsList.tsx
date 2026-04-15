@@ -1,7 +1,7 @@
 import Loader from "@/src/components/shared/Loader";
 import { Dimensions, FlatList, View } from "react-native";
 import { LAYOUT } from "../constants/constants";
-import ProductCard from "./ProductCard";
+import TrendingProductCard from "./TrendingProductsCard";
 
 type Props = {
   items: any;
@@ -58,14 +58,8 @@ export default function TrendingProductsList({
           !isCarousel ? { justifyContent: "space-between" } : undefined
         }
         renderItem={({ item }) => (
-          <ProductCard
-            item={{
-              id: String(item.productId),
-              title: item.productName,
-              price: item.lowestPrice || item.originalPrice,
-              image: item.thumbnailUrl,
-              rating: item.ratingAverage,
-            }}
+          <TrendingProductCard
+            item={item}
             cardWidth={cardWidth}
             isCarousel={isCarousel}
             wishlistItems={wishlistItems}

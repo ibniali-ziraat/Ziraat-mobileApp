@@ -1,7 +1,7 @@
 import Loader from "@/src/components/shared/Loader";
 import { Dimensions, FlatList, View } from "react-native";
 import { LAYOUT } from "../constants/constants";
-import ProductCard from "./ProductCard";
+import DealProductCard from "./DealProductCard";
 
 type Props = {
   data: any;
@@ -54,16 +54,8 @@ export default function BestDealsList({
           !isCarousel ? { justifyContent: "space-between" } : undefined
         }
         renderItem={({ item }) => (
-          <ProductCard
-            item={{
-              id: String(item.productId),
-              title: item.productName,
-              price: item.discountedPrice, // ✅ BEST DEALS use discounted price
-              oldPrice: item.originalPrice, // optional strike price
-              image: item.thumbnailUrl, // if available
-              rating: item.ratingAverage,
-              discount: item.savingsPercentage, // optional badge
-            }}
+          <DealProductCard
+            item={item}
             cardWidth={cardWidth}
             isCarousel={isCarousel}
             wishlistItems={wishlistItems}
