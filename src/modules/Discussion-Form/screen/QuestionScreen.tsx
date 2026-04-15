@@ -18,7 +18,7 @@ import {
 } from "../hooks/useQuestion";
 
 
-import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import MessageItem from "../pages/MessageItem";
 
@@ -154,10 +154,12 @@ export default function QuestionScreen() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <BackHeader title="Discussion" />
+   <ScreenLayout>
+     <View style={{ flex: 1 }}>
+  
 
-      <ScreenContent >
+     
+         <BackHeader title="Discussion" />
         <ScrollView contentContainerStyle={{ paddingBottom: 120, }}>
           {question && <MessageItem item={question} depth={0} />}
 
@@ -165,7 +167,7 @@ export default function QuestionScreen() {
             <View key={a.id}>
               <MessageItem item={a} depth={1} />
 
-              {/* COMMENTS */}
+              
               <AnswerComments answerId={Number(a.id)} />
 
               {/* REPLY */}
@@ -173,7 +175,7 @@ export default function QuestionScreen() {
             </View>
           ))}
         </ScrollView>
-      </ScreenContent>
+     
 
     <View
   style={{
@@ -238,5 +240,6 @@ export default function QuestionScreen() {
   </TouchableOpacity>
 </View>
     </View>
+   </ScreenLayout>
   );
 }

@@ -3,9 +3,8 @@ import { ROUTES } from "@/src/constants/routes";
 import { useRouter } from "expo-router";
 import {
   ChevronDown,
+  ChevronRight,
   ChevronUp,
-  Eye,
-  Heart,
   Share2
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
@@ -306,31 +305,43 @@ export default function MessageItem({ item, depth = 0 }: any) {
             </View>
           </View>
 
-          {/* QUESTION BADGE */}
-          {isQuestion && (
-            <View
-              style={{
-                backgroundColor: colors.primary + "15",
-                borderWidth: 1,
-                borderColor: colors.primary + "30",
-                paddingHorizontal: 11,
-                paddingVertical: 4,
-                borderRadius: 20,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 10,
-                  color: colors.primary,
-                  fontWeight: "700",
-                  letterSpacing: 0.6,
-                  textTransform: "uppercase",
-                }}
-              >
-                Question
-              </Text>
-            </View>
-          )}
+         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+  
+  {isQuestion && (
+    <View
+      style={{
+        backgroundColor: colors.primary + "15",
+        borderWidth: 1,
+        borderColor: colors.primary + "30",
+        paddingHorizontal: 11,
+        paddingVertical: 4,
+        borderRadius: 20,
+      }}
+    >
+      <Text
+        style={{
+          fontSize: 10,
+          color: colors.primary,
+          fontWeight: "700",
+          letterSpacing: 0.6,
+          textTransform: "uppercase",
+        }}
+      >
+        Question
+      </Text>
+    </View>
+  )}
+
+  {/* CLICK INDICATOR */}
+  {isQuestion && (
+    <ChevronRight
+      size={18}
+      color={colors.overlay}
+      strokeWidth={2}
+    />
+  )}
+
+</View>
         </View>
 
         {/* TITLE */}
@@ -411,17 +422,10 @@ export default function MessageItem({ item, depth = 0 }: any) {
         />
 
         <View style={{ flexDirection: "row", alignItems: "center", gap: 7 }}>
-          <StatPill
-            icon={<Eye size={12} color={colors.overlay} strokeWidth={2} />}
-            value={item.views || 0}
-          />
+          
 
           <IconPill>
-            <Heart size={14} color={colors.overlay} strokeWidth={1.8} />
-          </IconPill>
-
-          <IconPill>
-            <Share2 size={14} color={colors.overlay} strokeWidth={1.8} />
+            <Share2 size={15} color={colors.secondary} strokeWidth={1.8} />
           </IconPill>
         </View>
       </View>
