@@ -25,7 +25,7 @@ export default function ScreenLayout({
           <ScrollView
             contentContainerStyle={{
               flexGrow: 1,
-              paddingBottom: Platform.OS === "android" ? 40 : 100,
+              paddingBottom: Platform.OS === "android" ? 20 : 60,
               backgroundColor: colors.light,
             }}
             keyboardShouldPersistTaps="handled"

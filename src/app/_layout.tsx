@@ -6,6 +6,7 @@ import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
 import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";
@@ -17,8 +18,6 @@ import "../../styles/global.css";
 import { colors } from "../constants/colors";
 import { paperTheme } from "../constants/theme";
 import NavigationReadyHandler from "../modules/notifications/components/NavigationReadyHandler";
-
-// ✅ Removed useNotificationNavigation import — no longer called here
 
 registerTranslation("en-GB", enGB);
 Notifications.setNotificationHandler({
@@ -34,8 +33,7 @@ export default function RootLayout() {
   const insets = useSafeAreaInsets();
   const fontsLoaded = useAppFonts();
 
-  // ✅ Removed: useNotificationNavigation() — was called before router was ready
-
+  const isWeb = Platform.OS === "web";
   if (!fontsLoaded) return null;
 
   return (
@@ -54,15 +52,13 @@ export default function RootLayout() {
               }}
             >
               <PaperProvider theme={paperTheme}>
-                {/* ✅ Stack renders first — navigation tree is mounted */}
                 <Stack
                   screenOptions={{
                     headerShown: false,
                     animation: "slide_from_right",
                   }}
                 />
-                {/* ✅ Hook runs here — after Stack, router is guaranteed ready */}
-                <NavigationReadyHandler />
+                {!isWeb && <NavigationReadyHandler />}
               </PaperProvider>
             </SafeAreaView>
           </RouteGuard>
