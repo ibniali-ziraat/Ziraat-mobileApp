@@ -1,3 +1,5 @@
+
+
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
@@ -9,14 +11,28 @@ import {
   CalendarDays,
   ChevronRight,
   Package,
+  PackageSearch,
   ShoppingBag,
+  SlidersHorizontal,
 } from "lucide-react-native";
 
-import { FlatList, Image, Pressable, Text, View } from "react-native";
+import {
+  FlatList,
+  Image,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import Loader from "@/src/components/shared/Loader";
+import SearchBar from "@/src/components/shared/SearchBar";
+
+
 import { ROUTES } from "@/src/constants/routes";
+import { useMemo, useState } from "react";
 import { useUserOrders } from "../../hooks/UseOders";
+import OrderFilterModal from "./OrderFilterModal";
 
 const ORDER_STATUS = {
   1: { label: "New", bg: colors.primary + "12", text: colors.primary },
@@ -52,6 +68,10 @@ const OrdersListScreen = () => {
   const { data, isLoading } = useUserOrders();
   const orders = data || [];
 
+  const [search, setSearch] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState<number | null>(null);
+  const [filterVisible, setFilterVisible] = useState(false);
+
   const formatDate = (date: string) => {
     if (!date) return "N/A";
     const d = new Date(date);
@@ -78,6 +98,24 @@ const OrdersListScreen = () => {
     });
   };
 
+  const filteredOrders = useMemo(() => {
+    return orders.filter((order) => {
+      const firstProduct = order.orderItems?.[0];
+
+      const matchesSearch =
+        !search ||
+        order.id.toString().includes(search) ||
+        firstProduct?.productName
+          ?.toLowerCase()
+          .includes(search.toLowerCase());
+
+      const matchesStatus =
+        selectedStatus === null || order.orderStatus === selectedStatus;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [orders, search, selectedStatus]);
+
   if (isLoading) {
     return (
       <ScreenLayout>
@@ -89,11 +127,7 @@ const OrdersListScreen = () => {
   if (!orders.length) {
     return (
       <ScreenLayout>
-        <BackHeader
-          title="My Orders"
-          desc="Track and manage your orders"
-          // onPress={() => router.replace(ROUTES.TABS.MORE)}
-        />
+        <BackHeader title="My Orders" desc="Track and manage your orders" />
 
         <View className="flex-1 items-center justify-center px-8">
           <View
@@ -134,7 +168,7 @@ const OrdersListScreen = () => {
               borderRadius: 30,
             }}
           >
-            <Text style={{ color: "#fff", fontWeight: "600" }}>
+            <Text style={{ color: colors.light, fontWeight: "600" }}>
               Start Shopping
             </Text>
           </Pressable>
@@ -149,12 +183,11 @@ const OrdersListScreen = () => {
 
     return (
       <Pressable
-        activeOpacity={0.92}
+       
         onPress={() => handleOrderPress(item)}
         style={[baseCard, shadows.profile_card]}
       >
         <View className="flex-row">
-          {/* IMAGE */}
           <Image
             source={{ uri: firstProduct?.thumbnailImage }}
             style={{
@@ -166,18 +199,17 @@ const OrdersListScreen = () => {
             resizeMode="cover"
           />
 
-          {/* CONTENT */}
           <View className="flex-1 ml-3 ">
-            {/* HEADER */}
             <View className="flex-row justify-between items-center">
-              <Text style={[typography.Poppins_s_bold, { color: colors.dark }]}>
+              <Text
+                style={[typography.Poppins_s_bold, { color: colors.dark }]}
+              >
                 Order #{item.id}
               </Text>
 
               <ChevronRight size={16} color={colors.neutral} />
             </View>
 
-            {/* PRODUCT */}
             <Text
               numberOfLines={1}
               style={{
@@ -189,40 +221,26 @@ const OrdersListScreen = () => {
               {firstProduct?.productName || "Multiple Items"}
             </Text>
 
-            {/* META */}
             <View className="flex-row items-center mt-3 gap-6">
               <View className="flex-row items-center mr-12">
                 <CalendarDays size={13} color={colors.secondary} />
-                <Text
-                  style={{
-                    marginLeft: 4,
-                    color: colors.neutral,
-                    fontSize: 12,
-                  }}
-                >
+                <Text style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}>
                   {formatDate(item.createdOn)}
                 </Text>
               </View>
 
               <View className="flex-row items-center">
                 <ShoppingBag size={13} color={colors.secondary} />
-                <Text
-                  style={{
-                    marginLeft: 4,
-                    color: colors.neutral,
-                    fontSize: 12,
-                  }}
-                >
+                <Text style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}>
                   {item.orderItems?.length} Items
                 </Text>
               </View>
             </View>
 
-            {/* PRICE + STATUS */}
             <View className="flex-row justify-between items-center mt-4">
               <Text
                 style={[
-                  typography.Poppins_s_bold,
+                  typography.Poppins_s_medium,
                   { color: colors.primary, fontSize: 16 },
                 ]}
               >
@@ -256,22 +274,114 @@ const OrdersListScreen = () => {
 
   return (
     <ScreenLayout>
-      <BackHeader
-        title="My Orders"
-        desc="Track and manage your orders"
-        // onPress={() => router.replace(ROUTES.TABS.MORE)}
-      />
+      <BackHeader title="My Orders" desc="Track and manage your orders" />
 
-      <FlatList
-        scrollEnabled={false}
-        data={orders}
-        keyExtractor={(item) => String(item.id)}
-        renderItem={renderOrder}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          padding: 16,
-          paddingBottom: 60,
+      <View style={{ paddingHorizontal: 16, marginTop: 10 }}>
+        <SearchBar
+          search={search}
+          setSearch={setSearch}
+          placeholder="Search orders..."
+          RightIcon={SlidersHorizontal}
+          onIconPress={() => setFilterVisible(true)}
+        />
+      </View>
+
+    {filteredOrders.length === 0 ? (
+  <View
+    style={{
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      paddingHorizontal: 24,
+      marginTop: 60,
+    }}
+  >
+    {/* ICON */}
+    <View
+      style={{
+        height: 90,
+        width: 90,
+        borderRadius: 45,
+        backgroundColor: colors.primary + "12",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 16,
+      }}
+    >
+      <PackageSearch size={40} color={colors.primary} />
+    </View>
+
+    {/* TITLE */}
+    <Text
+      style={[
+        typography.Poppins_s_bold,
+        { fontSize: 17, marginBottom: 6 },
+      ]}
+    >
+      No Orders Found
+    </Text>
+
+    {/* SUBTEXT */}
+    <Text
+      style={{
+        color: colors.neutral,
+        textAlign: "center",
+        marginBottom: 18,
+        fontSize: 13,
+        lineHeight: 18,
+      }}
+    >
+      Try adjusting your filters or search to find what you're looking for
+    </Text>
+
+    {/* BUTTON */}
+    <Pressable
+      onPress={() => {
+        setSelectedStatus(null);
+        setSearch("");
+      }}
+      style={{
+        backgroundColor: colors.primary,
+        paddingHorizontal: 22,
+        paddingVertical: 11,
+        borderRadius: 30,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 6,
+      }}
+    >
+      <Text
+        style={{
+          color: colors.light,
+          fontWeight: "600",
+          fontSize: 14,
         }}
+      >
+        Reset Filters
+      </Text>
+    </Pressable>
+  </View>
+) : (
+  <FlatList
+    scrollEnabled={false}
+    data={filteredOrders}
+    keyExtractor={(item) => String(item.id)}
+    renderItem={renderOrder}
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{
+      padding: 16,
+      paddingBottom: 60,
+    }}
+  />
+)}
+
+      {/* FILTER COMPONENT */}
+      <OrderFilterModal
+        visible={filterVisible}
+        onClose={() => setFilterVisible(false)}
+        selectedStatus={selectedStatus}
+        setSelectedStatus={setSelectedStatus}
+        ORDER_STATUS={ORDER_STATUS}
       />
     </ScreenLayout>
   );

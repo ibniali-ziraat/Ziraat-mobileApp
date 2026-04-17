@@ -59,10 +59,7 @@
       "expo-maps"
     ],
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "bab73ba3-ca71-458a-855d-5e182933be27"
-      }
+      "router": {}
     },
     "owner": "naikummarmukhtar"
   }
