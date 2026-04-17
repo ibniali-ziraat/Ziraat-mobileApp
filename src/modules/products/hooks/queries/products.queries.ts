@@ -35,10 +35,9 @@ export const useProductSearch = (params: {
   minRating?: number;
 }) =>
   useQuery({
-    queryKey: ["product-search", params],
+    queryKey: ["product-search", JSON.stringify(params)], // ✅ FIXED
     queryFn: () => getProductBySearch(params),
-    // enabled: !!params.query,
-    // keepPreviousData: true, // keeps old data while fetching new
+    keepPreviousData: true,
   });
 
 export const useBuyProductMutation = () => {
