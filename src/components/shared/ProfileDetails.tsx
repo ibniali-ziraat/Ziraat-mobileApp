@@ -7,7 +7,7 @@ import {
   User,
   VenetianMask,
 } from "lucide-react-native";
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import CsText from "./CsText";
 import ZiraatCard from "./ZiraatProfileCard";
 
@@ -89,9 +89,9 @@ export default function ProfileDetails({
           }}
         >
           Personal Details
-       </CsText>
+        </CsText>
 
-        <TouchableOpacity
+        <Pressable
           onPress={onEdit}
           style={{
             padding: 8,
@@ -105,7 +105,7 @@ export default function ProfileDetails({
           activeOpacity={0.7}
         >
           <PencilLine size={18} color={colors.primary} />
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* Accent Underline */}
@@ -161,7 +161,7 @@ export default function ProfileDetails({
                   }}
                 >
                   {item.title}
-               </CsText>
+                </CsText>
 
                 <CsText
                   style={{
@@ -171,7 +171,7 @@ export default function ProfileDetails({
                   }}
                 >
                   {item.value || "—"}
-               </CsText>
+                </CsText>
               </View>
             </View>
 

@@ -158,7 +158,7 @@ const OrdersListScreen = () => {
             Start shopping to see your orders here
           </Text>
 
-          <TouchableOpacity
+          <Pressable
             onPress={() => router.replace("/")}
             style={{
               marginTop: 16,
@@ -171,7 +171,7 @@ const OrdersListScreen = () => {
             <Text style={{ color: colors.light, fontWeight: "600" }}>
               Start Shopping
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </ScreenLayout>
     );

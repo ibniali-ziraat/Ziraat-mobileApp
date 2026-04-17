@@ -4,7 +4,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react"; // ✅ ADD
 import { FormProvider, useForm } from "react-hook-form";
-import { Text, TouchableOpacity } from "react-native";
+import { Pressable, Text } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage"; // ✅ ADD
 
@@ -59,7 +59,7 @@ const ReviewOrderScreen = () => {
         )}
 
         {!!selectedPayment && (
-          <TouchableOpacity
+          <Pressable
             onPress={() =>
               handlePlaceOrder(
                 selectedPayment,
@@ -76,7 +76,7 @@ const ReviewOrderScreen = () => {
             >
               {isPending ? "Placing Order..." : "Place Order"}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
       </ScreenLayout>
     </FormProvider>

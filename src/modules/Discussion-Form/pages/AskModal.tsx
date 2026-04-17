@@ -8,7 +8,6 @@ import {
   Switch,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -52,13 +51,12 @@ export default function AskModal({
       bountyAmount: isBounty ? Number(bountyAmount || 0) : 0,
     };
 
-    onSubmit(payload); 
+    onSubmit(payload);
   };
 
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
-        
         {/* BACKDROP */}
         <Pressable
           onPress={onClose}
@@ -73,7 +71,7 @@ export default function AskModal({
         <View
           style={{
             height: height * 0.9,
-            backgroundColor:colors.light,
+            backgroundColor: colors.light,
             borderTopLeftRadius: 28,
             borderTopRightRadius: 28,
             paddingBottom: 20,
@@ -100,11 +98,8 @@ export default function AskModal({
           </View>
 
           <View style={{ padding: 20 }}>
-            
             {/* TITLE */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>
-              Title
-            </Text>
+            <Text style={{ fontWeight: "700", marginBottom: 6 }}>Title</Text>
             <TextInput
               placeholder="How to handle file uploads in FastAPI with S3?"
               value={title}
@@ -139,9 +134,7 @@ export default function AskModal({
             />
 
             {/* TAGS */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>
-              Tags
-            </Text>
+            <Text style={{ fontWeight: "700", marginBottom: 6 }}>Tags</Text>
 
             <View style={{ flexDirection: "row", marginBottom: 10 }}>
               <TextInput
@@ -156,7 +149,7 @@ export default function AskModal({
                   padding: 10,
                 }}
               />
-              <TouchableOpacity
+              <Pressable
                 onPress={addTag}
                 style={{
                   marginLeft: 8,
@@ -167,30 +160,36 @@ export default function AskModal({
                 }}
               >
                 <Text style={{ color: colors.light }}>Add</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             {/* TAG LIST */}
-            <View style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 16 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                marginBottom: 16,
+              }}
+            >
               {tags.map((tag) => (
-                <TouchableOpacity
-      key={tag}
-      onPress={() => removeTag(tag)}
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        backgroundColor: colors.secondary,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 20,
-        marginRight: 8,
-      }}
-    >
-      <Text style={{ color: colors.light, marginRight: 4,  }}>
-        #{tag}
-      </Text>
-      <X size={15} color={colors.light} />
-    </TouchableOpacity>
+                <Pressable
+                  key={tag}
+                  onPress={() => removeTag(tag)}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    backgroundColor: colors.secondary,
+                    paddingHorizontal: 12,
+                    paddingVertical: 6,
+                    borderRadius: 20,
+                    marginRight: 8,
+                  }}
+                >
+                  <Text style={{ color: colors.light, marginRight: 4 }}>
+                    #{tag}
+                  </Text>
+                  <X size={15} color={colors.light} />
+                </Pressable>
               ))}
             </View>
 
@@ -202,9 +201,7 @@ export default function AskModal({
                 marginBottom: 10,
               }}
             >
-              <Text style={{ fontWeight: "700", flex: 1 }}>
-                Add Bounty
-              </Text>
+              <Text style={{ fontWeight: "700", flex: 1 }}>Add Bounty</Text>
               <Switch value={isBounty} onValueChange={setIsBounty} />
             </View>
 
@@ -225,7 +222,7 @@ export default function AskModal({
             )}
 
             {/* SUBMIT */}
-            <TouchableOpacity
+            <Pressable
               onPress={handleSubmit}
               disabled={loading}
               style={{
@@ -235,10 +232,10 @@ export default function AskModal({
                 alignItems: "center",
               }}
             >
-              <Text style={{ color:colors.light , fontWeight: "700" }}>
+              <Text style={{ color: colors.light, fontWeight: "700" }}>
                 {loading ? "Posting..." : "Post Question"}
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>

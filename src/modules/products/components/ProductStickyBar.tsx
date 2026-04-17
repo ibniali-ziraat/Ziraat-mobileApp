@@ -3,7 +3,7 @@ import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import { Heart, ShoppingCart } from "lucide-react-native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   Animated,
   Easing,
@@ -16,26 +16,30 @@ import {
 
 import { useWishlist } from "@/src/modules/wishlist/hooks/useWishlist";
 import { toast } from "@backpackapp-io/react-native-toast";
-
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type Props = {
   product: any;
   isInCart: boolean;
+  isCartBusy: boolean;
+  isWishlistBusy: boolean;
   onAddToCart: () => Promise<void>;
+  onRemoveFromCart?: () => Promise<void>;
+  onToggleWishlist?: (productId: number) => Promise<void>;
 };
 
 export default function ProductStickyBar({
   product,
   isInCart,
+  isCartBusy,
+  isWishlistBusy,
   onAddToCart,
+  onToggleWishlist,
 }: Props) {
   const actionInProgress = useRef(false);
 
   const cartBtnScale = useRef(new Animated.Value(1)).current;
   const wishlistBtnScale = useRef(new Animated.Value(1)).current;
-
-  const [isCartBusy, setIsCartBusy] = useState(false);
 
   const { addToWishlist, removeFromWishlist, getWishlistItemId } =
     useWishlist();
@@ -43,12 +47,9 @@ export default function ProductStickyBar({
   const wishlistId = getWishlistItemId(product?.id);
   const isWishlisted = !!wishlistId;
 
-  //  Safe Area Insets
   const insets = useSafeAreaInsets();
 
-  // Detect navigation type
-  // Gesture navigation → inset.bottom > 0
-  // Navigation buttons → inset.bottom = 0
+  // ✅ KEEP YOUR ORIGINAL STICKY LOGIC
   const bottomOffset = insets.bottom > 0 ? 0 : 28;
 
   // Loader Animation
@@ -89,7 +90,6 @@ export default function ProductStickyBar({
     if (isCartBusy || actionInProgress.current) return;
 
     actionInProgress.current = true;
-    setIsCartBusy(true);
 
     try {
       if (isInCart) {
@@ -98,22 +98,31 @@ export default function ProductStickyBar({
         await onAddToCart();
       }
     } finally {
-      setIsCartBusy(false);
       actionInProgress.current = false;
     }
   };
 
   const handleWishlist = async () => {
+    if (isWishlistBusy || actionInProgress.current) return;
+
+    actionInProgress.current = true;
+
     try {
-      if (wishlistId) {
-        await removeFromWishlist({ id: wishlistId });
-        toast.success("Removed from wishlist");
+      if (onToggleWishlist) {
+        await onToggleWishlist(product.id);
       } else {
-        await addToWishlist({ productId: product.id, quantity: 1 });
-        toast.success("Added to wishlist");
+        if (wishlistId) {
+          await removeFromWishlist({ id: wishlistId });
+          toast.success("Removed from wishlist");
+        } else {
+          await addToWishlist({ productId: product.id, quantity: 1 });
+          toast.success("Added to wishlist");
+        }
       }
     } catch {
       toast.error("Something went wrong");
+    } finally {
+      actionInProgress.current = false;
     }
   };
 
@@ -138,6 +147,7 @@ export default function ProductStickyBar({
         },
       ]}
     >
+      {/* KEEP DISCLAIMER */}
       <View style={styles.disclaimerRow}>
         <LegalDisclaimer />
       </View>
@@ -151,6 +161,7 @@ export default function ProductStickyBar({
             onPress={handleWishlist}
             onPressIn={() => animateWishlist(0.96)}
             onPressOut={() => animateWishlist(1)}
+            disabled={isWishlistBusy}
             style={[
               styles.cartBtn,
               {
@@ -160,22 +171,34 @@ export default function ProductStickyBar({
               },
             ]}
           >
-            <Heart
-              size={18}
-              color={colors.secondary}
-              fill={isWishlisted ? colors.secondary : "transparent"}
-            />
-
-            <Text
-              style={[
-                styles.cartText,
-                {
-                  color: colors.secondary,
-                },
-              ]}
-            >
-              {isWishlisted ? "WISHLISTED" : "WISHLIST"}
-            </Text>
+            {isWishlistBusy ? (
+              <View style={styles.loaderRow}>
+                <Animated.View
+                  style={[
+                    styles.circle,
+                    {
+                      borderColor: colors.secondary,
+                      borderTopColor: "transparent",
+                      transform: [{ rotate }],
+                    },
+                  ]}
+                />
+                <Text style={[styles.cartText, { color: colors.secondary }]}>
+                  {wishlistId ? "Removing..." : "Adding..."}
+                </Text>
+              </View>
+            ) : (
+              <>
+                <Heart
+                  size={18}
+                  color={colors.secondary}
+                  fill={isWishlisted ? colors.secondary : "transparent"}
+                />
+                <Text style={[styles.cartText, { color: colors.secondary }]}>
+                  {isWishlisted ? "WISHLISTED" : "WISHLIST"}
+                </Text>
+              </>
+            )}
           </Pressable>
         </Animated.View>
 
@@ -212,7 +235,7 @@ export default function ProductStickyBar({
 
 const styles = StyleSheet.create({
   wrapper: {
-    position: "absolute",
+    position: "absolute", // ✅ sticky preserved
     left: 0,
     right: 0,
     padding: 16,
@@ -220,16 +243,13 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: colors.cardBorder,
   },
-
   disclaimerRow: {
     marginBottom: 10,
   },
-
   buttonsRow: {
     flexDirection: "row",
     gap: 10,
   },
-
   cartBtn: {
     flex: 1,
     flexDirection: "row",
@@ -239,13 +259,11 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     borderRadius: 12,
   },
-
   loaderRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
   },
-
   circle: {
     height: 16,
     width: 16,
@@ -254,7 +272,6 @@ const styles = StyleSheet.create({
     borderColor: colors.light,
     borderTopColor: "transparent",
   },
-
   cartText: {
     color: colors.light,
     fontWeight: "700",

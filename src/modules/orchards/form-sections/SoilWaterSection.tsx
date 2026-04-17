@@ -101,7 +101,7 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
 
       {/* {soilTestRecordsDone === true && (
           <>
-            <TouchableOpacity
+            <Pressable
               onPress={() => setOpen((prev) => !prev)}
               className="flex-row justify-between items-center mt-3 mb-1"
             >
@@ -111,7 +111,7 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
               <CsText className="text-primary text-sm">
                 {open ? "Hide ▲" : "Show ▼"}
               </CsText>
-            </TouchableOpacity>
+            </Pressable>
 
             {open && (
               <View className="mt-2">

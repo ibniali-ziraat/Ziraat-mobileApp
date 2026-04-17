@@ -1,6 +1,6 @@
 // src/components/ui/Button.tsx
 import { colors } from "@/src/constants/colors";
-import { Text, TouchableOpacity } from "react-native";
+import { Pressable, Text } from "react-native";
 
 interface ButtonProps {
   title: string;
@@ -14,7 +14,7 @@ export default function Button({
   disabled = false,
 }: ButtonProps) {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       disabled={disabled}
       style={{
@@ -36,6 +36,6 @@ export default function Button({
       >
         {title}
       </Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 }

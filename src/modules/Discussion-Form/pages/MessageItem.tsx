@@ -6,12 +6,11 @@ import {
   ChevronUp,
   Eye,
   Heart,
-  Share2
+  Share2,
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { useVote } from "../hooks/useQuestion";
-
 
 function useTimeAgo(date: any) {
   const [time, setTime] = useState("");
@@ -26,10 +25,14 @@ function useTimeAgo(date: any) {
   return time;
 }
 
-
 function getInitials(name: string) {
   return (
-    name?.split(" ").map((n) => n[0]).join("").slice(0, 2).toUpperCase() || "?"
+    name
+      ?.split(" ")
+      .map((n) => n[0])
+      .join("")
+      .slice(0, 2)
+      .toUpperCase() || "?"
   );
 }
 
@@ -51,12 +54,14 @@ function AuthorAvatar({ name }: any) {
         elevation: 3,
       }}
     >
-      <Text style={{
-        color: colors.light,
-        fontWeight: "700",
-        fontSize: 13,
-        letterSpacing: 0.8,
-      }}>
+      <Text
+        style={{
+          color: colors.light,
+          fontWeight: "700",
+          fontSize: 13,
+          letterSpacing: 0.8,
+        }}
+      >
         {getInitials(name)}
       </Text>
     </View>
@@ -105,7 +110,7 @@ function VoteColumn({
           setVote(vote);
           setCount(count);
         },
-      }
+      },
     );
   };
 
@@ -126,7 +131,7 @@ function VoteColumn({
         elevation: 1,
       }}
     >
-      <TouchableOpacity
+      <Pressable
         onPress={() => handleVote(1)}
         style={{
           paddingHorizontal: 10,
@@ -139,19 +144,22 @@ function VoteColumn({
           color={vote === 1 ? colors.primary : colors.overlay}
           strokeWidth={vote === 1 ? 2.5 : 1.8}
         />
-      </TouchableOpacity>
+      </Pressable>
 
-      <Text style={{
-        fontWeight: "700",
-        fontSize: 13,
-        color: vote === 1 ? colors.primary : vote === -1 ? colors.error : "#555",
-        minWidth: 18,
-        textAlign: "center",
-      }}>
+      <Text
+        style={{
+          fontWeight: "700",
+          fontSize: 13,
+          color:
+            vote === 1 ? colors.primary : vote === -1 ? colors.error : "#555",
+          minWidth: 18,
+          textAlign: "center",
+        }}
+      >
         {count}
       </Text>
 
-      <TouchableOpacity
+      <Pressable
         onPress={() => handleVote(-1)}
         style={{
           paddingHorizontal: 10,
@@ -164,13 +172,19 @@ function VoteColumn({
           color={vote === -1 ? colors.error : colors.overlay}
           strokeWidth={vote === -1 ? 2.5 : 1.8}
         />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }
 
 /* ─── STAT PILL ─── */
-function StatPill({ icon, value }: { icon: React.ReactNode; value: string | number }) {
+function StatPill({
+  icon,
+  value,
+}: {
+  icon: React.ReactNode;
+  value: string | number;
+}) {
   return (
     <View
       style={{
@@ -191,7 +205,9 @@ function StatPill({ icon, value }: { icon: React.ReactNode; value: string | numb
       }}
     >
       {icon}
-      <Text style={{ fontSize: 12, fontWeight: "600", color: "#666" }}>{value}</Text>
+      <Text style={{ fontSize: 12, fontWeight: "600", color: "#666" }}>
+        {value}
+      </Text>
     </View>
   );
 }
@@ -199,7 +215,7 @@ function StatPill({ icon, value }: { icon: React.ReactNode; value: string | numb
 /* ─── ICON PILL ─── */
 function IconPill({ children }: any) {
   return (
-    <TouchableOpacity
+    <Pressable
       hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
       style={{
         paddingHorizontal: 10,
@@ -208,7 +224,7 @@ function IconPill({ children }: any) {
         borderWidth: 1,
         borderColor: colors.cardBorder,
         backgroundColor: colors.light,
-          shadowColor: colors.cardShadow,
+        shadowColor: colors.cardShadow,
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.04,
         shadowRadius: 3,
@@ -216,7 +232,7 @@ function IconPill({ children }: any) {
       }}
     >
       {children}
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
@@ -235,7 +251,7 @@ export default function MessageItem({ item, depth = 0 }: any) {
         borderWidth: 1,
         borderColor: colors.cardBorder,
         overflow: "hidden",
-         shadowColor: colors.cardShadow,
+        shadowColor: colors.cardShadow,
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.08,
         shadowRadius: 10,
@@ -254,7 +270,7 @@ export default function MessageItem({ item, depth = 0 }: any) {
       )}
 
       {/* BODY */}
-      <TouchableOpacity
+      <Pressable
         activeOpacity={0.82}
         style={{ padding: 16 }}
         onPress={() => {
@@ -341,7 +357,7 @@ export default function MessageItem({ item, depth = 0 }: any) {
               fontWeight: "700",
               marginBottom: 7,
               lineHeight: 23,
-            
+
               letterSpacing: 0.1,
             }}
           >
@@ -364,7 +380,14 @@ export default function MessageItem({ item, depth = 0 }: any) {
 
         {/* TAGS */}
         {item.tags?.length > 0 && (
-          <View style={{ flexDirection: "row", flexWrap: "wrap", marginTop: 12, gap: 6 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+              marginTop: 12,
+              gap: 6,
+            }}
+          >
             {item.tags.map((tag: string) => (
               <View
                 key={tag}
@@ -377,19 +400,21 @@ export default function MessageItem({ item, depth = 0 }: any) {
                   borderRadius: 20,
                 }}
               >
-                <Text style={{
-                  fontSize: 11,
-                  color: colors.primary,
-                  fontWeight: "600",
-                  letterSpacing: 0.2,
-                }}>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    color: colors.primary,
+                    fontWeight: "600",
+                    letterSpacing: 0.2,
+                  }}
+                >
                   #{tag}
                 </Text>
               </View>
             ))}
           </View>
         )}
-      </TouchableOpacity>
+      </Pressable>
 
       {/* FOOTER */}
       <View

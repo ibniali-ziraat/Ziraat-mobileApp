@@ -1,6 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import { MoreVertical } from "lucide-react-native";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 
 interface OrchardImageProps {
   source?: any;
@@ -17,9 +17,9 @@ export default function OrchardImage({ source }: OrchardImageProps) {
         resizeMode="cover"
       />
 
-      <TouchableOpacity className="absolute top-3 right-0 bg-light p-2 mr-4 mt-2 rounded-full shadow z-50">
+      <Pressable className="absolute top-3 right-0 bg-light p-2 mr-4 mt-2 rounded-full shadow z-50">
         <MoreVertical size={20} color={colors.dark} />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

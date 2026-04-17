@@ -8,7 +8,7 @@ import {
   Wallet,
 } from "lucide-react-native";
 import React, { useState } from "react";
-import { TouchableOpacity, View, useWindowDimensions } from "react-native";
+import { Pressable, View, useWindowDimensions } from "react-native";
 
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
@@ -38,7 +38,7 @@ const MetricCard = ({ title, value, icon, width }: any) => (
           height: 150,
           backgroundColor: colors.light,
           borderRadius: 16,
-         
+
           borderColor: colors.neutral,
           paddingVertical: 10,
           paddingHorizontal: 10,
@@ -72,7 +72,13 @@ const MetricCard = ({ title, value, icon, width }: any) => (
 );
 
 const SummaryRow = ({ label, value, bold }: any) => (
-  <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 6 }}>
+  <View
+    style={{
+      flexDirection: "row",
+      justifyContent: "space-between",
+      paddingVertical: 6,
+    }}
+  >
     <CsText
       style={{
         fontWeight: bold ? "700" : "400",
@@ -95,7 +101,13 @@ const SummaryRow = ({ label, value, bold }: any) => (
 );
 
 const EfficiencyTag = ({ label, score }: any) => (
-  <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 8 }}>
+  <View
+    style={{
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: 8,
+    }}
+  >
     <CsText style={{ fontSize: 15, color: colors.dark }}>{label}</CsText>
     <CsText style={{ fontSize: 16, fontWeight: "600", color: colors.primary }}>
       {score || "0"}
@@ -145,7 +157,6 @@ export default function InputResourceUsageScreen() {
   return (
     <ScreenLayout scrollable>
       <ScreenContent className="pt-4 pb-8">
-
         {/* Metrics */}
         <View className="w-full flex-row flex-wrap justify-between">
           {resourceData.metrics.map((m: any, i: number) => (
@@ -162,7 +173,7 @@ export default function InputResourceUsageScreen() {
         </View>
 
         {/* Button */}
-        <TouchableOpacity
+        <Pressable
           style={{
             backgroundColor: colors.secondary,
             borderRadius: 12,
@@ -182,10 +193,17 @@ export default function InputResourceUsageScreen() {
           >
             Calculate Efficiency
           </CsText>
-        </TouchableOpacity>
+        </Pressable>
 
         {/* Summary */}
-        <CsText style={{ fontSize: 22, fontWeight: "700", marginBottom: 16, color: colors.dark }}>
+        <CsText
+          style={{
+            fontSize: 22,
+            fontWeight: "700",
+            marginBottom: 16,
+            color: colors.dark,
+          }}
+        >
           Resource Summary
         </CsText>
 
@@ -194,7 +212,7 @@ export default function InputResourceUsageScreen() {
             {
               backgroundColor: colors.light,
               borderRadius: 16,
-             
+
               borderColor: colors.neutral,
               padding: 14,
               marginBottom: 12,
@@ -214,7 +232,15 @@ export default function InputResourceUsageScreen() {
 
         {/* Efficiency */}
         <CsText
-          style={[typography.Poppins_m_semibold, { fontSize: 22, marginTop: 20, marginBottom: 16, color: colors.dark }]}
+          style={[
+            typography.Poppins_m_semibold,
+            {
+              fontSize: 22,
+              marginTop: 20,
+              marginBottom: 16,
+              color: colors.dark,
+            },
+          ]}
         >
           Input Efficiency Overview
         </CsText>
@@ -224,7 +250,7 @@ export default function InputResourceUsageScreen() {
             {
               backgroundColor: colors.light,
               borderRadius: 16,
-             
+
               borderColor: colors.neutral,
               padding: 14,
               marginBottom: 12,
@@ -243,7 +269,15 @@ export default function InputResourceUsageScreen() {
 
         {/* Insights */}
         <CsText
-          style={[typography.Poppins_m_semibold, { fontSize: 22, marginTop: 20, marginBottom: 16, color: colors.dark }]}
+          style={[
+            typography.Poppins_m_semibold,
+            {
+              fontSize: 22,
+              marginTop: 20,
+              marginBottom: 16,
+              color: colors.dark,
+            },
+          ]}
         >
           Performance Insights
         </CsText>
@@ -253,7 +287,7 @@ export default function InputResourceUsageScreen() {
             {
               backgroundColor: colors.light,
               borderRadius: 16,
-            
+
               borderColor: colors.neutral,
               padding: 14,
             },

@@ -1,6 +1,6 @@
 import { RatingStarsProps } from "@/src/types/rating-stars.types";
 import { Star } from "lucide-react-native";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { colors } from "../../constants/colors";
 
 export default function RatingStars({
@@ -23,7 +23,7 @@ export default function RatingStars({
         const isHalf = i === fullStars && hasHalfStar;
 
         return (
-          <TouchableOpacity
+          <Pressable
             key={i}
             activeOpacity={0.7}
             onPress={handlePress}
@@ -64,7 +64,7 @@ export default function RatingStars({
                 style={{ marginRight: 2 }}
               />
             )}
-          </TouchableOpacity>
+          </Pressable>
         );
       })}
     </View>
