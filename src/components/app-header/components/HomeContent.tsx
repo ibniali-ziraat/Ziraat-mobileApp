@@ -10,7 +10,9 @@ import { Pressable, Text, View } from "react-native";
 const HomeContent = () => {
   const { userId } = useAuth();
   const { data } = useProfileQuery(userId);
+
   const title = data?.fullName ?? "Ziraat";
+  // const label = count > 99 ? "99+" : String(count);
 
   return (
     <View
@@ -47,6 +49,34 @@ const HomeContent = () => {
           onPress={() => router.push(ROUTES.NOTIFICATIONS)}
         >
           <Bell size={24} color={colors.secondary} />
+
+          {/* {count > 0 && (
+            <View
+              style={{
+                position: "absolute",
+                top: -4,
+                right: -4,
+                backgroundColor: colors.error,
+                borderRadius: 999,
+                minWidth: 16,
+                height: 16,
+                paddingHorizontal: 4,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: colors.light,
+                  fontSize: 9,
+                  fontWeight: "700",
+                  lineHeight: 12,
+                }}
+              >
+                {label}
+              </Text>
+            </View>
+          )} */}
         </Pressable>
 
         <Pressable

@@ -1,6 +1,5 @@
-// components/home/QuickActions.tsx
 import CsText from "@/src/components/shared/CsText";
-import { colors } from "@/src/constants/colors"; // use your global theme
+import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { Ionicons } from "@expo/vector-icons";
@@ -23,24 +22,17 @@ export default function QuickActions() {
       bg: colors.primary + "15",
       onPress: () => router.push("/orchards/orchard-registration"),
     },
-    {
-      title: "Add Spray",
-      icon: "flask-outline",
-      color: colors.secondary,
-      bg: colors.secondary + "15",
-      onPress: () => router.push("/orchards/orchard-registration"),
-    },
   ];
 
   return (
-    <View className="mb-8">
-      <View className="flex-row justify-between">
+    <View style={{ marginBottom: 32 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         {actions.map((item, idx) => (
           <TouchableOpacity
             key={idx}
             onPress={item.onPress}
             style={{
-              width: "32%",
+              width: "48%",
               backgroundColor: "#ffffff",
               borderRadius: 18,
               paddingVertical: 16,
@@ -66,16 +58,7 @@ export default function QuickActions() {
               <Ionicons name={item.icon} size={24} color={item.color} />
             </View>
 
-            {/* <CsText
-              className="text-[13px] font-semibold text-center"
-              style={{ color: colors.dark }}
-            >
-              {item.title}
-           </CsText> */}
-
-            <CsText style ={[typography.Poppins_s_regular]}>{item.title}</CsText>
-
-           
+            <CsText style={[typography.Poppins_s_regular]}>{item.title}</CsText>
           </TouchableOpacity>
         ))}
       </View>

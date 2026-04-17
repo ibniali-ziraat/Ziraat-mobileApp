@@ -16,7 +16,7 @@ interface ProductCardProps {
   isWishlistBusy?: boolean;
   onToggleWishlist?: (productId: string) => void;
 }
-
+//
 export default function ProductCard({
   item,
   cardWidth,
@@ -45,10 +45,13 @@ export default function ProductCard({
         marginBottom: isCarousel ? 0 : 16,
       }}
     >
-      {/* Card Image */}
       <View
-        className="rounded-2xl overflow-hidden"
-        style={{ backgroundColor: colors.light, elevation: 2 }}
+        style={{
+          backgroundColor: colors.light,
+          elevation: 2,
+          borderRadius: 16,
+          overflow: "hidden",
+        }}
       >
         <Pressable onPress={goToProduct}>
           <Image
@@ -63,7 +66,14 @@ export default function ProductCard({
           hitSlop={10}
           disabled={isWishlistBusy}
           onPress={() => onToggleWishlist?.(item.id)}
-          className="absolute top-2 right-2 bg-white/90 p-2 rounded-full"
+          style={{
+            position: "absolute",
+            top: 8,
+            right: 8,
+            backgroundColor: "rgba(255, 255, 255, 0.9)",
+            padding: 8,
+            borderRadius: 24,
+          }}
         >
           <Heart
             size={18}
@@ -75,8 +85,15 @@ export default function ProductCard({
         {/* Discount Badge */}
         {discount && (
           <View
-            className="absolute bottom-2 left-2 px-2 py-0.5 rounded-md"
-            style={{ backgroundColor: colors.secondary }}
+            style={{
+              position: "absolute",
+              bottom: 8,
+              left: 8,
+              paddingHorizontal: 8,
+              paddingVertical: 2,
+              borderRadius: 6,
+              backgroundColor: colors.secondary,
+            }}
           >
             <Text style={{ color: colors.light, fontSize: 10 }}>
               {discount}% OFF
@@ -86,12 +103,12 @@ export default function ProductCard({
       </View>
 
       {/* Info */}
-      <Pressable className="mt-2" onPress={goToProduct}>
+      <Pressable style={{ marginTop: 8 }} onPress={goToProduct}>
         <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
           {item.title}
         </Text>
 
-        <View className="flex-row items-center gap-2">
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
           <Text style={typography.Poppins_s_medium}>₹{item.price}</Text>
           {item.oldPrice && (
             <Text
@@ -107,7 +124,7 @@ export default function ProductCard({
         </View>
       </Pressable>
 
-      <View className="mt-1">
+      <View style={{ marginTop: 4 }}>
         <RatingStars rating={item.rating ?? 0} />
       </View>
     </View>

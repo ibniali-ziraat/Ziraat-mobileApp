@@ -4,7 +4,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { WriteReviewProps } from "@/src/types/write-review.type";
 import { useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 
 export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
   const { userId } = useAuth(); // ✅ GET USER ID
@@ -57,7 +57,7 @@ export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
   };
 
   return (
-    <View className="px-8 bg-light rounded-2xl mt-6">
+    <View className="px-0 bg-light rounded-2xl mt-6">
       <Text style={typography.Poppins_l_semibold} className="mb-3">
         Write a Review
       </Text>
@@ -89,7 +89,7 @@ export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
         </Text>
       ) : null}
 
-      <TouchableOpacity
+      <Pressable
         onPress={handleSubmit}
         disabled={loading}
         className={`p-3 rounded-xl ${loading ? "bg-gray-400" : "bg-secondary"}`}
@@ -100,7 +100,7 @@ export default function WriteReview({ onSubmit, loading }: WriteReviewProps) {
         >
           {loading ? "Submitting..." : "Submit Review"}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

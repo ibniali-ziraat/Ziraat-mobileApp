@@ -49,7 +49,7 @@ export default function MyOrchardsScreen() {
         />
       )}
 
-      <AddOrchardFAB />
+      {!hasNoOrchards && <AddOrchardFAB />}
     </View>
   );
 }
