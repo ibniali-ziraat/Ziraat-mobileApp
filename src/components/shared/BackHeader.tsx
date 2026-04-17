@@ -2,7 +2,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { useRouter } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import CsText from "./CsText";
 import { ScreenContent } from "./ScreenContent";
 
@@ -19,13 +19,13 @@ export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
     <ScreenContent>
       <View className="bg-light mb-4">
         <View className="flex-row items-center">
-          <TouchableOpacity
+          <Pressable
             onPress={onPress ?? (() => router.dismiss())}
             className="p-2 mr-3 rounded-full pl-0"
             activeOpacity={0.7}
           >
             <ArrowLeft size={26} color={colors.dark} />
-          </TouchableOpacity>
+          </Pressable>
 
           <View className="flex-1">
             <CsText

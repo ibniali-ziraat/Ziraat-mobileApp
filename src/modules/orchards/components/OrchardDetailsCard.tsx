@@ -2,7 +2,7 @@ import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { PencilLine, Plus, Trash2 } from "lucide-react-native";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 interface DetailItem {
   title: string;
@@ -71,14 +71,14 @@ export default function OrchardDetailsCard({
           {!isEmpty && (
             <View className="flex-row gap-4">
               {onEdit && (
-                <TouchableOpacity onPress={onEdit} hitSlop={10}>
+                <Pressable onPress={onEdit} hitSlop={10}>
                   <PencilLine size={18} color={colors.primary} />
-                </TouchableOpacity>
+                </Pressable>
               )}
               {onDelete && (
-                <TouchableOpacity onPress={onDelete} hitSlop={10}>
+                <Pressable onPress={onDelete} hitSlop={10}>
                   <Trash2 size={18} color={colors.error} />
-                </TouchableOpacity>
+                </Pressable>
               )}
             </View>
           )}
@@ -87,7 +87,7 @@ export default function OrchardDetailsCard({
         {/* CONTENT */}
         <View className=" p-2 pb-4 pt-4">
           {isEmpty ? (
-            <TouchableOpacity
+            <Pressable
               onPress={onAdd}
               className="flex-row items-center gap-2 rounded-xl border border-dashed p-3"
               style={{ borderColor: `${colors.primary}55` }}
@@ -99,7 +99,7 @@ export default function OrchardDetailsCard({
               >
                 {emptyActionLabel}
               </CsText>
-            </TouchableOpacity>
+            </Pressable>
           ) : (
             <View className="gap-5">
               {items.map((item, index) => (

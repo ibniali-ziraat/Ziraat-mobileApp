@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import CsText from "../../shared/CsText";
 
 export default function RadioGroup({
@@ -53,7 +53,7 @@ export default function RadioGroup({
               const selected = value === opt;
 
               return (
-                <TouchableOpacity
+                <Pressable
                   key={opt}
                   onPress={() => handleSelect(opt)}
                   style={{
@@ -89,7 +89,7 @@ export default function RadioGroup({
                   </View>
 
                   <CsText>{opt}</CsText>
-                </TouchableOpacity>
+                </Pressable>
               );
             })}
 

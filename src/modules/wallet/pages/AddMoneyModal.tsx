@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-    Modal,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from "react-native";
+import { Modal, Pressable, Text, TextInput, View } from "react-native";
 
 import { colors } from "@/src/constants/colors";
 
@@ -74,7 +68,7 @@ const AddMoneyModal = ({ visible, onClose, onAdd }: Props) => {
           />
 
           {/* Button */}
-          <TouchableOpacity
+          <Pressable
             onPress={handleAdd}
             activeOpacity={0.85}
             style={{
@@ -94,7 +88,7 @@ const AddMoneyModal = ({ visible, onClose, onAdd }: Props) => {
             >
               Add ₹{amount || 0}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </Modal>

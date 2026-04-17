@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { menuGroups } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import CsText from "./shared/CsText";
 
 export default function MenuList() {
@@ -10,25 +10,24 @@ export default function MenuList() {
       <ScrollView style={{ flex: 1, padding: 16 }}>
         <SectionTitle title="E-Commerce" />
         <MenuItem
-          label="Marketplace"menu
+          label="Marketplace"
+          menu
           onPress={() => router.push("/marketplace")}
         />
-        <MenuItem label="My Orders" onPress={() => router.push("/orders")}/>
-        <MenuItem label="My Cart" onPress={() => router.push("/cart")}/>
-        <MenuItem label="Wishlist" onPress={() => router.push("/wishlist")}/>
-        <MenuItem label="Profile" onPress={() => router.push("/profile")}/>
+        <MenuItem label="My Orders" onPress={() => router.push("/orders")} />
+        <MenuItem label="My Cart" onPress={() => router.push("/cart")} />
+        <MenuItem label="Wishlist" onPress={() => router.push("/wishlist")} />
+        <MenuItem label="Profile" onPress={() => router.push("/profile")} />
         <MenuItem
           label="Saved Addresses"
           onPress={() => router.push("/addresses")}
         />
-     
-
 
         <MenuItem
           label="Payment Methods"
           onPress={() => router.push("/payments")}
         />
-        <MenuItem label="Support" onPress={() => router.push("/support")}/>
+        <MenuItem label="Support" onPress={() => router.push("/support")} />
 
         {menuGroups.map((group) => (
           <View key={group.title} style={{ marginTop: 28 }}>
@@ -60,13 +59,13 @@ function SectionTitle({ title }) {
       }}
     >
       {title}
-   </CsText>
+    </CsText>
   );
 }
 
 function MenuItem({ label, onPress }) {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       style={{
         paddingVertical: 14,
@@ -75,7 +74,7 @@ function MenuItem({ label, onPress }) {
         borderBottomWidth: 1,
       }}
     >
-      <CsText style={{ fontSize: 16, color: colors.dark }}>{label}</Text>
-    </TouchableOpacity>
+      <CsText style={{ fontSize: 16, color: colors.dark }}>{label}</CsText>
+    </Pressable>
   );
 }

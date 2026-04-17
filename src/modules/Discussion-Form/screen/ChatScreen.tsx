@@ -1,19 +1,10 @@
-
 import { useRef, useState } from "react";
-import {
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
 import { MessageCircleMore, PlusCircle } from "lucide-react-native";
-import {
-  useCreateQuestion,
-  useQuestions,
-} from "../hooks/useQuestion";
+import { useCreateQuestion, useQuestions } from "../hooks/useQuestion";
 import AskModal from "../pages/AskModal";
 import MessageItem from "../pages/MessageItem";
 
@@ -77,7 +68,7 @@ export default function Discussionforum() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor:colors.light }}>
+    <View style={{ flex: 1, backgroundColor: colors.light }}>
       {/* HEADER */}
       <BackHeader title="Discussion" />
 
@@ -90,7 +81,7 @@ export default function Discussionforum() {
           borderColor: colors.cardBorder,
         }}
       >
-        <TouchableOpacity
+        <Pressable
           onPress={() => setAskVisible(true)}
           style={{
             flexDirection: "row",
@@ -113,7 +104,7 @@ export default function Discussionforum() {
           >
             Ask a Question
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* LIST */}
@@ -138,7 +129,7 @@ export default function Discussionforum() {
           </Text>
         ) : discussionList.length === 0 ? (
           <View style={{ alignItems: "center", marginTop: 80 }}>
-        <MessageCircleMore size={40} color={colors.secondary} />
+            <MessageCircleMore size={40} color={colors.secondary} />
             <Text
               style={{
                 marginTop: 10,
@@ -148,9 +139,7 @@ export default function Discussionforum() {
             >
               No questions yet
             </Text>
-            <Text style={{  marginTop: 4 }}>
-              Be the first to ask something
-            </Text>
+            <Text style={{ marginTop: 4 }}>Be the first to ask something</Text>
           </View>
         ) : (
           discussionList.map((item) => (

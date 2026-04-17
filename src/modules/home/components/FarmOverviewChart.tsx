@@ -3,7 +3,7 @@ import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { useState } from "react";
-import { Dimensions, TouchableOpacity, View } from "react-native";
+import { Dimensions, Pressable, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 
 const screenWidth = Dimensions.get("window").width;
@@ -12,22 +12,20 @@ const chartWidth = screenWidth - 60;
 export default function FarmOverviewChart() {
   const [mode, setMode] = useState<"WEEK" | "MONTH">("WEEK");
 
-  
   const dataSet = {
     WEEK: {
-      current: [12, 10, 8], 
-      previous: [10, 9, 7], 
+      current: [12, 10, 8],
+      previous: [10, 9, 7],
     },
     MONTH: {
-      current: [50, 42, 36], 
-      previous: [46, 40, 30], 
+      current: [50, 42, 36],
+      previous: [46, 40, 30],
     },
   };
 
   const currentValues = dataSet[mode].current;
   const previousValues = dataSet[mode].previous;
 
-  
   const growthValues = currentValues.map((curr, i) => {
     const prev = previousValues[i];
     const growth = ((curr - prev) / prev) * 100;
@@ -73,7 +71,7 @@ export default function FarmOverviewChart() {
         shadowRadius: 8,
         elevation: 2,
         marginBottom: 18,
-        marginTop:6,
+        marginTop: 6,
       }}
     >
       {/* ---------------------------------------------- */}
@@ -82,7 +80,7 @@ export default function FarmOverviewChart() {
       <View className="flex-row justify-end mb-2">
         <View className="flex-row bg-primary/5 rounded-full p-1">
           {["WEEK", "MONTH"].map((opt) => (
-            <TouchableOpacity
+            <Pressable
               key={opt}
               onPress={() => setMode(opt as any)}
               style={{
@@ -95,26 +93,28 @@ export default function FarmOverviewChart() {
               <CsText
                 style={[
                   typography.Poppins_s_medium,
-                  
-                  { color: mode === opt ? "#fff" : colors.primary,}
-                ]
-                 
-                }
+
+                  { color: mode === opt ? "#fff" : colors.primary },
+                ]}
               >
                 {opt === "WEEK" ? "Weekly" : "Monthly"}
-             </CsText>
-            </TouchableOpacity>
+              </CsText>
+            </Pressable>
           ))}
         </View>
       </View>
 
       <CsText
-      style={[typography.Poppins_xs_medium]}
-      className="text-xs text-dark mb-4">
-        Activity comparison ({mode === "WEEK" ? "This Week vs Last Week" : "This Month vs Last Month"})
-     </CsText>
+        style={[typography.Poppins_xs_medium]}
+        className="text-xs text-dark mb-4"
+      >
+        Activity comparison (
+        {mode === "WEEK"
+          ? "This Week vs Last Week"
+          : "This Month vs Last Month"}
+        )
+      </CsText>
 
-     
       <BarChart
         data={chartData}
         width={chartWidth}
@@ -123,10 +123,9 @@ export default function FarmOverviewChart() {
         flatColor
         showValuesOnTopOfBars
         chartConfig={chartConfig}
-        style={{ borderRadius: 16,  }}
+        style={{ borderRadius: 16 }}
       />
 
-      
       <View className="mt-4 flex-row justify-between px-1">
         {["Orchards", "Harvest", "Spray"].map((label, i) => {
           const g = growthValues[i];
@@ -134,17 +133,20 @@ export default function FarmOverviewChart() {
           return (
             <View key={i} className="items-center">
               <CsText
-              style={[typography.Poppins_s_medium]}
-              
-              className="text-neutral-700">{label}</CsText>
+                style={[typography.Poppins_s_medium]}
+                className="text-neutral-700"
+              >
+                {label}
+              </CsText>
               <CsText
-              style={[typography.Poppins_xs_medium,
+                style={[
+                  typography.Poppins_xs_medium,
 
-                { color: positive ? colors.secondary : "red" }
-              ]}
+                  { color: positive ? colors.secondary : "red" },
+                ]}
               >
                 {positive ? `+${g}% ↑` : `${g}% ↓`}
-             </CsText>
+              </CsText>
             </View>
           );
         })}

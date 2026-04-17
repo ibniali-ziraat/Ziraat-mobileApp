@@ -5,7 +5,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ThumbsUp, User, X } from "lucide-react-native";
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import data from "../../data/Review.json";
 
 export default function Review() {
@@ -43,7 +43,7 @@ export default function Review() {
       <View className="flex-row justify-between items-center mb-4">
         <Text style={typography.Poppins_l_semibold}>Customer Reviews</Text>
 
-        <TouchableOpacity
+        <Pressable
           onPress={() => setModalVisible(true)}
           className="px-4 py-2 rounded-full"
           style={{ backgroundColor: colors.secondary }}
@@ -51,7 +51,7 @@ export default function Review() {
           <Text style={{ color: colors.light }} className=" text-sm">
             Write Review
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* Summary */}
@@ -149,21 +149,21 @@ export default function Review() {
 
       {/* Modal */}
       {/* <Modal animationType="slide" transparent visible={modalVisible}> */}
-        {/* <View className="flex-1 justify-center items-center bg-black/40"> */}
-          <View
-            style={{ backgroundColor: colors.light }}
-            className=" rounded-2xl p-5 w-11/12"
-          >
-            <TouchableOpacity
-              onPress={() => setModalVisible(false)}
-              className="self-end mb-2"
-            >
-              <X size={24} color={colors.dark} />
-            </TouchableOpacity>
+      {/* <View className="flex-1 justify-center items-center bg-black/40"> */}
+      <View
+        style={{ backgroundColor: colors.light }}
+        className=" rounded-2xl p-5 w-11/12"
+      >
+        <Pressable
+          onPress={() => setModalVisible(false)}
+          className="self-end mb-2"
+        >
+          <X size={24} color={colors.dark} />
+        </Pressable>
 
-            <WriteReview onSubmit={addReview} />
-          </View>
-        {/* </View> */}
+        <WriteReview onSubmit={addReview} />
+      </View>
+      {/* </View> */}
       {/* </Modal> */}
     </View>
   );

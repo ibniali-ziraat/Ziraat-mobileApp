@@ -1,23 +1,22 @@
 import { colors } from "@/src/constants/colors";
 import {
-    Bold,
-    Italic,
-    List,
-    Mic,
-    Paperclip,
-    Send,
-    Smile,
+  Bold,
+  Italic,
+  List,
+  Mic,
+  Paperclip,
+  Send,
+  Smile,
 } from "lucide-react-native";
 import { useRef, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { WebView } from "react-native-webview";
 
 export default function DiscussionInput() {
   const webRef = useRef<any>(null);
   const [html, setHtml] = useState("");
 
-  const isEmpty =
-    !html || html === "<br>" || html === "<div><br></div>";
+  const isEmpty = !html || html === "<br>" || html === "<div><br></div>";
 
   const editorHTML = `
     <!DOCTYPE html>
@@ -115,9 +114,9 @@ export default function DiscussionInput() {
           }}
         >
           {/*  Emoji */}
-          <TouchableOpacity style={{ marginRight: 6 }}>
+          <Pressable style={{ marginRight: 6 }}>
             <Smile size={22} color={colors.darkHover} />
-          </TouchableOpacity>
+          </Pressable>
 
           {/*  Editor */}
           <View
@@ -139,13 +138,13 @@ export default function DiscussionInput() {
           </View>
 
           {/* 📎 Attachment */}
-          <TouchableOpacity style={{ marginLeft: 6 }}>
+          <Pressable style={{ marginLeft: 6 }}>
             <Paperclip size={20} color={colors.darkHover} />
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/*  ACTION BUTTON (Dynamic) */}
-        <TouchableOpacity
+        <Pressable
           onPress={handleSend}
           style={{
             marginLeft: 8,
@@ -163,7 +162,7 @@ export default function DiscussionInput() {
           ) : (
             <Send size={20} color="#fff" />
           )}
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* 🔹 TOOLBAR (Optional Formatting) */}
@@ -192,7 +191,7 @@ export default function DiscussionInput() {
 /* 🔹 Toolbar Button */
 function ToolbarButton({ children, onPress }) {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       style={{
         marginRight: 10,
@@ -202,6 +201,6 @@ function ToolbarButton({ children, onPress }) {
       }}
     >
       {children}
-    </TouchableOpacity>
+    </Pressable>
   );
 }

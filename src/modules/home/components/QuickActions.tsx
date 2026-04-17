@@ -4,7 +4,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 export default function QuickActions() {
   const actions = [
@@ -28,7 +28,7 @@ export default function QuickActions() {
     <View style={{ marginBottom: 32 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         {actions.map((item, idx) => (
-          <TouchableOpacity
+          <Pressable
             key={idx}
             onPress={item.onPress}
             style={{
@@ -59,7 +59,7 @@ export default function QuickActions() {
             </View>
 
             <CsText style={[typography.Poppins_s_regular]}>{item.title}</CsText>
-          </TouchableOpacity>
+          </Pressable>
         ))}
       </View>
     </View>

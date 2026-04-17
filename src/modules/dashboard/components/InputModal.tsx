@@ -1,12 +1,7 @@
 import CsText from "@/src/components/shared/CsText";
 import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
 import { X } from "lucide-react-native";
-import {
-  Modal,
-  TextInput,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Modal, Pressable, TextInput, View } from "react-native";
 
 export default function InputModal({
   visible,
@@ -33,11 +28,11 @@ export default function InputModal({
           <View className="flex-row justify-between items-center mb-4">
             <CsText className="text-xl font-bold text-dark">
               Enter Field Inputs
-           </CsText>
+            </CsText>
 
-            <TouchableOpacity onPress={onClose}>
+            <Pressable onPress={onClose}>
               <X size={22} color="#000" />
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           {/* INPUTS */}
@@ -60,14 +55,14 @@ export default function InputModal({
           />
 
           {/* ACTION BUTTON */}
-          <TouchableOpacity
+          <Pressable
             className="bg-secondary p-4 rounded-xl mt-3"
             onPress={onClose}
           >
             <CsText className="text-light text-center font-semibold">
               Apply & Calculate
-           </CsText>
-          </TouchableOpacity>
+            </CsText>
+          </Pressable>
         </ZiraatCard>
       </View>
     </Modal>

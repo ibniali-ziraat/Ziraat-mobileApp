@@ -10,8 +10,8 @@ import { useEffect, useRef, useState } from "react";
 import {
   Animated,
   Dimensions,
+  Pressable,
   ScrollView,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -105,7 +105,7 @@ export default function DashboardPage() {
               const isActive = activeTab === index;
 
               return (
-                <TouchableOpacity
+                <Pressable
                   key={tab.name}
                   className="mx-1 items-center justify-center rounded-full overflow-hidden"
                   style={{
@@ -132,7 +132,7 @@ export default function DashboardPage() {
                   >
                     {tab.label.split(" ")[0]}
                   </CsText>
-                </TouchableOpacity>
+                </Pressable>
               );
             })}
           </ScrollView>

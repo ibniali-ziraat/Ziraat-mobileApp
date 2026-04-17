@@ -14,7 +14,7 @@ import {
   Wheat,
 } from "lucide-react-native";
 import { useState } from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 
 const iconMap = {
   Wheat,
@@ -40,7 +40,7 @@ export default function AboutUs() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   const toggleExpand = (index: number) => {
-    setExpandedIndex(prev => (prev === index ? null : index));
+    setExpandedIndex((prev) => (prev === index ? null : index));
   };
 
   return (
@@ -57,7 +57,7 @@ export default function AboutUs() {
 
         // ✅ Check if any content is long
         const hasLongContent = section.content.some(
-          (item: string) => item.length > 80
+          (item: string) => item.length > 80,
         );
 
         return (
@@ -69,9 +69,7 @@ export default function AboutUs() {
             marginBottom={3}
           >
             <View
-              className={`flex-row ${
-                isEven ? "flex-row" : "flex-row-reverse"
-              }`}
+              className={`flex-row ${isEven ? "flex-row" : "flex-row-reverse"}`}
             >
               {/* Image */}
               {section.image && (
@@ -102,9 +100,7 @@ export default function AboutUs() {
 
                   {section.content.map((item: string, idx: number) => (
                     <View key={idx} className="flex-row mb-1">
-                      <CsText className="mr-2 text-[13px] text-dark">
-                        •
-                      </CsText>
+                      <CsText className="mr-2 text-[13px] text-dark">•</CsText>
                       <CsText
                         className="flex-1 text-[13px] text-normal leading-[18px]"
                         numberOfLines={isExpanded ? undefined : 2}
@@ -118,11 +114,11 @@ export default function AboutUs() {
                 {/* ✅ Show only if content is long */}
                 {hasLongContent && (
                   <View className="items-end mt-2">
-                    <TouchableOpacity onPress={() => toggleExpand(index)}>
+                    <Pressable onPress={() => toggleExpand(index)}>
                       <CsText className="text-[12px] text-secondary font-medium">
                         {isExpanded ? "Read Less ↑" : "Read More →"}
                       </CsText>
-                    </TouchableOpacity>
+                    </Pressable>
                   </View>
                 )}
               </View>

@@ -1,13 +1,7 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import {
-  ScrollView,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 
 import {
   useAnswers,
@@ -17,11 +11,9 @@ import {
   useQuestion,
 } from "../hooks/useQuestion";
 
-
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import MessageItem from "../pages/MessageItem";
-
 
 // ─── SHOW COMMENTS ──
 function AnswerComments({ answerId }: { answerId: number }) {
@@ -29,9 +21,7 @@ function AnswerComments({ answerId }: { answerId: number }) {
 
   if (isLoading) {
     return (
-      <Text style={{ marginLeft: 20, fontSize: 12 }}>
-        Loading replies...
-      </Text>
+      <Text style={{ marginLeft: 20, fontSize: 12 }}>Loading replies...</Text>
     );
   }
 
@@ -50,7 +40,6 @@ function AnswerComments({ answerId }: { answerId: number }) {
     </View>
   );
 }
-
 
 // ─── REPLY INPUT ───
 function AnswerReplyInput({ answerId }: { answerId: number }) {
@@ -73,16 +62,16 @@ function AnswerReplyInput({ answerId }: { answerId: number }) {
           setReplyText("");
           setIsOpen(false);
         },
-      }
+      },
     );
   };
 
   return (
     <View style={{ marginHorizontal: 16, marginBottom: 10 }}>
       {!isOpen ? (
-        <TouchableOpacity onPress={() => setIsOpen(true)}>
+        <Pressable onPress={() => setIsOpen(true)}>
           <Text style={{ color: colors.primary }}>Reply</Text>
-        </TouchableOpacity>
+        </Pressable>
       ) : (
         <>
           <TextInput
@@ -92,15 +81,14 @@ function AnswerReplyInput({ answerId }: { answerId: number }) {
             style={{ borderWidth: 1, borderRadius: 10, padding: 8 }}
           />
 
-          <TouchableOpacity onPress={handleSubmitReply}>
+          <Pressable onPress={handleSubmitReply}>
             <Text>{isPending ? "Posting..." : "Post Reply"}</Text>
-          </TouchableOpacity>
+          </Pressable>
         </>
       )}
     </View>
   );
 }
-
 
 // ─── MAIN SCREEN ───────────────────────────
 export default function QuestionScreen() {
@@ -118,7 +106,7 @@ export default function QuestionScreen() {
         id: data.id?.toString(),
         author: data.user?.displayName || "Unknown",
         title: data.title,
-    
+
         content: data.body,
         votes: data.votes,
         tags: data.tags || [],
@@ -130,7 +118,7 @@ export default function QuestionScreen() {
     answersData?.map((a: any) => ({
       id: a.id?.toString(),
       author: a.user?.displayName || "Unknown",
-      
+
       content: a.body,
       votes: a.votes || 0,
       children: [],
@@ -143,13 +131,13 @@ export default function QuestionScreen() {
       {
         questionId,
         payload: {
-        body: input,
-        userId: 2,
+          body: input,
+          userId: 2,
         },
       },
       {
         onSuccess: () => setInput(""),
-      }
+      },
     );
   };
 
@@ -157,8 +145,8 @@ export default function QuestionScreen() {
     <View style={{ flex: 1 }}>
       <BackHeader title="Discussion" />
 
-      <ScreenContent >
-        <ScrollView contentContainerStyle={{ paddingBottom: 120, }}>
+      <ScreenContent>
+        <ScrollView contentContainerStyle={{ paddingBottom: 120 }}>
           {question && <MessageItem item={question} depth={0} />}
 
           {answers.map((a) => (
@@ -175,68 +163,68 @@ export default function QuestionScreen() {
         </ScrollView>
       </ScreenContent>
 
-    <View
-  style={{
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderTopWidth: 0.5,
-    borderColor: colors.cardBorder,
-    backgroundColor: colors.light,
-  }}
->
-  {/* INPUT BOX */}
-  <View
-    style={{
-      flex: 1,
-      flexDirection: "row",
-      alignItems: "center",
-      backgroundColor: colors.light,
-      borderRadius: 25,
-      paddingHorizontal: 14,
-      borderWidth: 1,
-      borderColor: colors.cardBorder,
-    }}
-  >
-    <TextInput
-      placeholder="Write your answer..."
-      value={input}
-      onChangeText={setInput}
-      style={{
-        flex: 1,
-        paddingVertical: 10,
-        fontSize: 14,
-      }}
-      placeholderTextColor={colors.overlay}
-    />
-  </View>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingHorizontal: 12,
+          paddingVertical: 10,
+          borderTopWidth: 0.5,
+          borderColor: colors.cardBorder,
+          backgroundColor: colors.light,
+        }}
+      >
+        {/* INPUT BOX */}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: colors.light,
+            borderRadius: 25,
+            paddingHorizontal: 14,
+            borderWidth: 1,
+            borderColor: colors.cardBorder,
+          }}
+        >
+          <TextInput
+            placeholder="Write your answer..."
+            value={input}
+            onChangeText={setInput}
+            style={{
+              flex: 1,
+              paddingVertical: 10,
+              fontSize: 14,
+            }}
+            placeholderTextColor={colors.overlay}
+          />
+        </View>
 
-  {/* BUTTON */}
-  <TouchableOpacity
-    onPress={handleAnswer}
-    style={{
-      marginLeft: 10,
-      backgroundColor: colors.secondary,
-      paddingHorizontal: 18,
-      paddingVertical: 10,
-      borderRadius: 20,
-      opacity: input.trim() ? 1 : 0.5, 
-    }}
-    disabled={!input.trim() || isPending}
-  >
-    <Text
-      style={{
-        color: colors.light,
-        fontWeight: "700",
-        fontSize: 13,
-        letterSpacing: 0.4,
-      }}
-    >
-      {isPending ? "Posting…" : "Post"}
-    </Text>
-  </TouchableOpacity>
-</View>
+        {/* BUTTON */}
+        <Pressable
+          onPress={handleAnswer}
+          style={{
+            marginLeft: 10,
+            backgroundColor: colors.secondary,
+            paddingHorizontal: 18,
+            paddingVertical: 10,
+            borderRadius: 20,
+            opacity: input.trim() ? 1 : 0.5,
+          }}
+          disabled={!input.trim() || isPending}
+        >
+          <Text
+            style={{
+              color: colors.light,
+              fontWeight: "700",
+              fontSize: 13,
+              letterSpacing: 0.4,
+            }}
+          >
+            {isPending ? "Posting…" : "Post"}
+          </Text>
+        </Pressable>
+      </View>
     </View>
   );
 }

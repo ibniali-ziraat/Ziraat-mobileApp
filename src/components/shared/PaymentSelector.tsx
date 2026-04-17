@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { Check, ChevronDown, ChevronUp } from "lucide-react-native";
 import { useState } from "react";
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, Pressable, View } from "react-native";
 import CsText from "./CsText";
 
 const PAYMENT_METHODS = [
@@ -22,7 +22,7 @@ export default function PaymentSelector({
   return (
     <View className="my-2">
       {/* Selector Button */}
-      <TouchableOpacity
+      <Pressable
         onPress={() => setOpenDropdown(!openDropdown)}
         className="flex-row items-center justify-between px-4 py-3 rounded-xl border border-dark bg-white"
       >
@@ -36,7 +36,7 @@ export default function PaymentSelector({
         ) : (
           <ChevronDown size={20} color={colors.dark} />
         )}
-      </TouchableOpacity>
+      </Pressable>
 
       {/* Dropdown */}
       {openDropdown && (
@@ -47,7 +47,7 @@ export default function PaymentSelector({
             renderItem={({ item }) => {
               const isSelected = item.id === paymentMethod;
               return (
-                <TouchableOpacity
+                <Pressable
                   onPress={() => {
                     setPaymentMethod(item.id);
                     setOpenDropdown(false);
@@ -62,7 +62,7 @@ export default function PaymentSelector({
                     {item.label}
                   </CsText>
                   {isSelected && <Check size={18} color={colors.primary} />}
-                </TouchableOpacity>
+                </Pressable>
               );
             }}
           />
