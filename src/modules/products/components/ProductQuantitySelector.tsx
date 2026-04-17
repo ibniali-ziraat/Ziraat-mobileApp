@@ -2,7 +2,7 @@ import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { Minus, Plus } from "lucide-react-native";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 type Props = {
   quantity: number;
@@ -27,29 +27,25 @@ export default function ProductQuantitySelector({
 
   return (
     <View className=" mx-4">
-
       <View className="flex-row items-center justify-between">
-
         {/* Label */}
-        <CsText
-          style={[typography.Poppins_m_semibold, { color: colors.dark }]}
-        >
+        <CsText style={[typography.Poppins_m_semibold, { color: colors.dark }]}>
           Quantity
         </CsText>
 
         {/* Controls */}
-        <View className="flex-row items-center border rounded-xl"
+        <View
+          className="flex-row items-center border rounded-xl"
           style={{ borderColor: colors.dark + "20" }}
         >
-
-          <TouchableOpacity
+          <Pressable
             onPress={decrement}
             disabled={quantity === 1}
             className="p-3"
             style={{ opacity: quantity === 1 ? 0.3 : 1 }}
           >
             <Minus size={18} color={colors.dark} />
-          </TouchableOpacity>
+          </Pressable>
 
           <View className="px-4">
             <CsText
@@ -59,15 +55,14 @@ export default function ProductQuantitySelector({
             </CsText>
           </View>
 
-          <TouchableOpacity
+          <Pressable
             onPress={increment}
             disabled={!!isMax}
             className="p-3"
             style={{ opacity: isMax ? 0.3 : 1 }}
           >
             <Plus size={18} color={colors.primary} />
-          </TouchableOpacity>
-
+          </Pressable>
         </View>
       </View>
 

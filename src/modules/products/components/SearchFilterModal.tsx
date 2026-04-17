@@ -1,6 +1,6 @@
 import { X } from "lucide-react-native";
 import { useState } from "react";
-import { Modal, ScrollView, TouchableOpacity, View } from "react-native";
+import { Modal, Pressable, ScrollView, View } from "react-native";
 
 import CsText from "@/src/components/shared/CsText";
 import SearchBar from "@/src/components/shared/SearchBar";
@@ -34,9 +34,9 @@ export default function SearchFilterModal({ visible, onClose }: Props) {
             Search & Filters
           </CsText>
 
-          <TouchableOpacity onPress={onClose}>
+          <Pressable onPress={onClose}>
             <X size={22} color={colors.dark} />
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         {/* Search */}
@@ -90,7 +90,7 @@ export default function SearchFilterModal({ visible, onClose }: Props) {
 
         {/* Footer */}
         <View className="p-4 border-t border-gray-200">
-          <TouchableOpacity
+          <Pressable
             className="bg-primary py-3 rounded-xl items-center"
             onPress={() => {
               console.log({ search, brand, category, sort });
@@ -98,7 +98,7 @@ export default function SearchFilterModal({ visible, onClose }: Props) {
             }}
           >
             <CsText className="text-white">Apply Filters</CsText>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </Modal>

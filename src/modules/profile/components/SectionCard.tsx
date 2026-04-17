@@ -1,43 +1,7 @@
-// import { colors } from "@/src/constants/colors";
-// import { Feather } from "@expo/vector-icons";
-// import { Text, TouchableOpacity, View } from "react-native";
-
-// export default function SectionCard({
-//   title,
-//   onEdit,
-//   onDelete,
-//   children,
-//   style,
-// }) {
-//   return (
-//     <View className="border border-slate-300 p-5 rounded-sm mb-5" style={style}>
-//       <View className="flex-row justify-between mb-3">
-//         <CsText className="text-base font-semibold">{title}</Text>
-
-//         <View className="flex-row gap-3">
-//           {onEdit && (
-//             <TouchableOpacity onPress={onEdit}>
-//               <Feather name="edit-3" size={18} color={colors.primary} />
-//             </TouchableOpacity>
-//           )}
-
-//           {onDelete && (
-//             <TouchableOpacity onPress={onDelete}>
-//               <Feather name="trash-2" size={18} color="red" />
-//             </TouchableOpacity>
-//           )}
-//         </View>
-//       </View>
-
-//       {children}
-//     </View>
-//   );
-// }
-
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Feather } from "@expo/vector-icons";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 export default function SectionCard({
   title,
@@ -59,15 +23,15 @@ export default function SectionCard({
         {/* RIGHT : Edit/Delete */}
         <View className="flex-row gap-3">
           {onEdit && (
-            <TouchableOpacity onPress={onEdit}>
+            <Pressable onPress={onEdit}>
               <Feather name="edit-3" size={18} color={colors.primary} />
-            </TouchableOpacity>
+            </Pressable>
           )}
 
           {onDelete && (
-            <TouchableOpacity onPress={onDelete}>
+            <Pressable onPress={onDelete}>
               <Feather name="trash-2" size={18} color="red" />
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
       </View>

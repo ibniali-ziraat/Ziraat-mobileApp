@@ -12,7 +12,7 @@ import {
   ShoppingBag,
 } from "lucide-react-native";
 
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 
 import Loader from "@/src/components/shared/Loader";
 import { ROUTES } from "@/src/constants/routes";
@@ -124,7 +124,7 @@ const OrdersListScreen = () => {
             Start shopping to see your orders here
           </Text>
 
-          <TouchableOpacity
+          <Pressable
             onPress={() => router.replace("/")}
             style={{
               marginTop: 16,
@@ -137,7 +137,7 @@ const OrdersListScreen = () => {
             <Text style={{ color: "#fff", fontWeight: "600" }}>
               Start Shopping
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </ScreenLayout>
     );
@@ -148,7 +148,7 @@ const OrdersListScreen = () => {
     const status = getStatus(item.orderStatus);
 
     return (
-      <TouchableOpacity
+      <Pressable
         activeOpacity={0.92}
         onPress={() => handleOrderPress(item)}
         style={[baseCard, shadows.profile_card]}
@@ -250,7 +250,7 @@ const OrdersListScreen = () => {
             </View>
           </View>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     );
   };
 

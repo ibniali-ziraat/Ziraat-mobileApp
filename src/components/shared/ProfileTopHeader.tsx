@@ -16,7 +16,6 @@ import {
   Modal,
   Pressable,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -139,7 +138,7 @@ export default function ProfileTopHeader({
   return (
     <View className="w-full items-center py-5 bg-white rounded-[20px]">
       <View className="relative">
-        <TouchableOpacity
+        <Pressable
           activeOpacity={0.9}
           onPress={() => profilePic && setIsPreviewVisible(true)}
           className="w-[100px] h-[100px] rounded-full border-[3px] items-center justify-center overflow-hidden bg-slate-100"
@@ -154,9 +153,9 @@ export default function ProfileTopHeader({
               {initials}
             </Text>
           )}
-        </TouchableOpacity>
+        </Pressable>
 
-        <TouchableOpacity
+        <Pressable
           onPress={() => setIsMenuVisible(true)}
           className="absolute bottom-0 right-0 w-[34px] h-[34px] rounded-full items-center justify-center border-2 border-white shadow-md"
           style={{ backgroundColor: colors.primary }}
@@ -166,7 +165,7 @@ export default function ProfileTopHeader({
           ) : (
             <Feather name="edit-2" size={16} color="#fff" />
           )}
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       <Text
@@ -200,7 +199,7 @@ export default function ProfileTopHeader({
             </Text>
 
             <View className="flex-row justify-around">
-              <TouchableOpacity
+              <Pressable
                 onPress={() => openPicker("camera")}
                 className="items-center"
               >
@@ -212,9 +211,9 @@ export default function ProfileTopHeader({
                 >
                   Camera
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
 
-              <TouchableOpacity
+              <Pressable
                 onPress={() => openPicker("library")}
                 className="items-center"
               >
@@ -229,13 +228,10 @@ export default function ProfileTopHeader({
                 >
                   Gallery
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
 
               {profilePic && (
-                <TouchableOpacity
-                  onPress={handleDeletePhoto}
-                  className="items-center"
-                >
+                <Pressable onPress={handleDeletePhoto} className="items-center">
                   <View className="w-14 h-14 bg-red-50 rounded-full items-center justify-center mb-2">
                     <Feather name="trash-2" size={24} color="#ef4444" />
                   </View>
@@ -247,11 +243,11 @@ export default function ProfileTopHeader({
                   >
                     Remove
                   </Text>
-                </TouchableOpacity>
+                </Pressable>
               )}
             </View>
 
-            <TouchableOpacity
+            <Pressable
               onPress={() => setIsMenuVisible(false)}
               className="mt-8 py-4 bg-gray-100 rounded-xl items-center"
             >
@@ -260,7 +256,7 @@ export default function ProfileTopHeader({
               >
                 Close
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </Pressable>
       </Modal>
@@ -273,12 +269,12 @@ export default function ProfileTopHeader({
         onRequestClose={() => setIsPreviewVisible(false)}
       >
         <View className="flex-1 bg-black justify-center items-center">
-          <TouchableOpacity
+          <Pressable
             className="absolute top-12 right-5"
             onPress={() => setIsPreviewVisible(false)}
           >
             <Feather name="x" size={30} color="#fff" />
-          </TouchableOpacity>
+          </Pressable>
           <Image
             source={{ uri: profilePic }}
             style={{ width: width, height: width }}

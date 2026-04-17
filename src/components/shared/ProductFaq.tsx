@@ -2,7 +2,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ChevronDown, ChevronUp } from "lucide-react-native";
 import { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import CsText from "./CsText";
 
 export default function ProductFaq({ data }) {
@@ -14,7 +14,6 @@ export default function ProductFaq({ data }) {
 
   return (
     <View className="mt-6">
-
       {/* Header */}
       <CsText
         style={[typography.Poppins_l_semibold, { color: colors.dark }]}
@@ -28,19 +27,19 @@ export default function ProductFaq({ data }) {
 
         return (
           <View key={index}>
-
             {/* Row */}
-            <TouchableOpacity
+            <Pressable
               onPress={() => toggleFAQ(index)}
               activeOpacity={0.85}
               className="px-2 py-4"
               style={{
-                backgroundColor: isOpen ? colors.secondary + "08" : "transparent",
+                backgroundColor: isOpen
+                  ? colors.secondary + "08"
+                  : "transparent",
                 borderRadius: 12,
               }}
             >
               <View className="flex-row items-start">
-
                 {/* Active Bar */}
                 <View
                   className="w-[3px] mr-3 rounded-full"
@@ -88,7 +87,7 @@ export default function ProductFaq({ data }) {
                   )}
                 </View>
               </View>
-            </TouchableOpacity>
+            </Pressable>
 
             {/* Divider */}
             {!isOpen && (

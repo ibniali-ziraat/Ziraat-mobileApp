@@ -2,7 +2,7 @@ import { colors } from "@/src/constants/colors";
 import { Plus, X } from "lucide-react-native"; // Lucide icons
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { TextInput, TouchableOpacity, View } from "react-native";
+import { Pressable, TextInput, View } from "react-native";
 import { HelperText } from "react-native-paper";
 import CsText from "../../shared/CsText";
 import { ChipInputProps } from "../../shared/inputs/types";
@@ -51,12 +51,12 @@ export default function ChipInput({
                   className="flex-row items-center bg-white border border-neutral px-3 py-1 rounded-full"
                 >
                   <CsText className="text-dark text-sm">{item}</CsText>
-                  <TouchableOpacity
+                  <Pressable
                     className="ml-2"
                     onPress={() => handleRemove(index)}
                   >
                     <X size={14} color={colors.error} />
-                  </TouchableOpacity>
+                  </Pressable>
                 </View>
               ))}
             </View>
@@ -69,9 +69,9 @@ export default function ChipInput({
                 value={input}
                 onChangeText={setInput}
               />
-              <TouchableOpacity onPress={handleAdd} className="ml-2">
+              <Pressable onPress={handleAdd} className="ml-2">
                 <Plus size={24} color={colors.primary} />
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             {error && (

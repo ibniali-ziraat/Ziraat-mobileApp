@@ -5,7 +5,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ArrowRight, ThumbsUp } from "lucide-react-native";
 import { useMemo, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { ScreenContent } from "./ScreenContent";
 import ScreenLayout from "./ScreenLayout";
 
@@ -168,7 +168,7 @@ export default function Review({
 
             {/* VIEW ALL BUTTON */}
             {!showAll && reviews.length > 2 && (
-              <TouchableOpacity
+              <Pressable
                 onPress={onViewAllPress}
                 className="mt-2 p-4 rounded-xl flex-row items-center justify-center gap-2"
                 style={{ backgroundColor: `${colors.secondary}15` }}
@@ -181,7 +181,7 @@ export default function Review({
                 </Text>
 
                 <ArrowRight size={16} color={colors.secondary} />
-              </TouchableOpacity>
+              </Pressable>
             )}
           </View>
         </View>

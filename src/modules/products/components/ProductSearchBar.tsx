@@ -1,7 +1,7 @@
 import SearchBar from "@/src/components/shared/SearchBar";
 import { colors } from "@/src/constants/colors";
 import { SlidersHorizontal } from "lucide-react-native";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 type Props = {
   search: string;
@@ -21,9 +21,6 @@ export default function ProductSearchBar({
         alignItems: "center",
 
         borderRadius: 16,
-       
-
-       
       }}
     >
       {/* SEARCH */}
@@ -32,7 +29,7 @@ export default function ProductSearchBar({
       </View>
 
       {/* FILTER */}
-      <TouchableOpacity
+      <Pressable
         onPress={onFilterPress}
         activeOpacity={0.85}
         style={{
@@ -46,7 +43,7 @@ export default function ProductSearchBar({
         }}
       >
         <SlidersHorizontal size={21} color={colors.secondary} />
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

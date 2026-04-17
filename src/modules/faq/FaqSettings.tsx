@@ -4,9 +4,9 @@ import {
   FlatList,
   LayoutAnimation,
   Platform,
-  TouchableOpacity,
+  Pressable,
   UIManager,
-  View
+  View,
 } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
@@ -26,9 +26,7 @@ const FaqItem = ({ item }: any) => {
   const [open, setOpen] = useState(false);
 
   const toggle = () => {
-    LayoutAnimation.configureNext(
-      LayoutAnimation.Presets.easeInEaseOut
-    );
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setOpen(!open);
   };
 
@@ -40,27 +38,27 @@ const FaqItem = ({ item }: any) => {
         borderColor: colors.cardBorder,
       }}
     >
-      <TouchableOpacity
+      <Pressable
         onPress={toggle}
         activeOpacity={0.85}
         style={{ flexDirection: "row", alignItems: "center" }}
       >
-        <CsText style={[typography.Poppins_s_regular,
+        <CsText
+          style={[
+            typography.Poppins_s_regular,
 
             {
-            flex: 1,
-           
-            color: colors.dark,
-            lineHeight: 21,
-            paddingRight: 12,
-          }
-        ]}
-          
+              flex: 1,
+
+              color: colors.dark,
+              lineHeight: 21,
+              paddingRight: 12,
+            },
+          ]}
         >
           {item.question}
         </CsText>
 
-         
         <ChevronDown
           size={16}
           color={open ? colors.primary : colors.neutral}
@@ -68,19 +66,20 @@ const FaqItem = ({ item }: any) => {
             transform: [{ rotate: open ? "180deg" : "0deg" }],
           }}
         />
-      </TouchableOpacity>
+      </Pressable>
 
       {open && (
-        <CsText  
-          style={[typography.Poppins_xs_regular,
+        <CsText
+          style={[
+            typography.Poppins_xs_regular,
             {
-            marginTop: 10,
-          
-            lineHeight: 20,
-            color: colors.neutral,
-            maxWidth: "95%",
-            }
-         ]} 
+              marginTop: 10,
+
+              lineHeight: 20,
+              color: colors.neutral,
+              maxWidth: "95%",
+            },
+          ]}
         >
           {item.answer}
         </CsText>
@@ -101,19 +100,10 @@ const FaqSettings = () => {
         contentContainerStyle={{ paddingBottom: 40 }}
         ListHeaderComponent={
           <ScreenContent>
-
-             <BackHeader title="FAQs" />
+            <BackHeader title="FAQs" />
             <View style={{ paddingTop: 20, paddingBottom: 18 }}>
               {/* TITLE */}
-              <CsText  style={[typography.Poppins_l_semibold,
-            {
-           
-            }
-         ]} 
-                
-              >
-             FAQs
-              </CsText>
+              <CsText style={[typography.Poppins_l_semibold, {}]}>FAQs</CsText>
 
               {/* ACCENT */}
               <View
@@ -129,14 +119,15 @@ const FaqSettings = () => {
 
               {/* SUBTITLE */}
               <CsText
-                style={[typography.Poppins_xs_regular,
-                  
+                style={[
+                  typography.Poppins_xs_regular,
+
                   {
-                  lineHeight: 20,
-                  color: colors.darkHover,
-                  maxWidth: "95%",
-                  }
-               ] }
+                    lineHeight: 20,
+                    color: colors.darkHover,
+                    maxWidth: "95%",
+                  },
+                ]}
               >
                 Find answers about pesticides, crop safety, usage guidelines,
                 and responsible farming practices.
@@ -149,22 +140,21 @@ const FaqSettings = () => {
             <View style={{ marginTop: 24 }}>
               {/* SECTION TITLE */}
               <CsText
-                style={[typography.Poppins_xs_medium,{
-                     color: colors.primary,
-                  marginBottom: 10,
-                  textTransform: "uppercase",
-                  letterSpacing: 0.8,
-                } ]
-                  
-                 
-                }
+                style={[
+                  typography.Poppins_xs_medium,
+                  {
+                    color: colors.primary,
+                    marginBottom: 10,
+                    textTransform: "uppercase",
+                    letterSpacing: 0.8,
+                  },
+                ]}
               >
                 {item.title}
               </CsText>
 
               <View
                 style={{
-                 
                   borderRadius: 14,
                   paddingHorizontal: 16,
                 }}
@@ -178,58 +168,57 @@ const FaqSettings = () => {
         )}
         ListFooterComponent={
           <ScreenContent>
-  <View
-    style={{
-      marginTop: 32,
-      marginBottom: 24,
-      backgroundColor: "#F9FAFB",
-      borderRadius: 16,
-      padding: 18,
-    }}
-  >
-    <CsText
-      style={[typography.Poppins_s_semibold,]}
-    >
-      Need more help?
-    </CsText>
+            <View
+              style={{
+                marginTop: 32,
+                marginBottom: 24,
+                backgroundColor: "#F9FAFB",
+                borderRadius: 16,
+                padding: 18,
+              }}
+            >
+              <CsText style={[typography.Poppins_s_semibold]}>
+                Need more help?
+              </CsText>
 
-    <CsText
-      style={[typography.Poppins_xs_regular,{
-        color: colors.neutral,
-        marginTop: 6,
-        lineHeight: 18,
-      }]}
-    >
-      Didn’t find what you were looking for? Our support team is just a tap
-      away.
-    </CsText>
+              <CsText
+                style={[
+                  typography.Poppins_xs_regular,
+                  {
+                    color: colors.neutral,
+                    marginTop: 6,
+                    lineHeight: 18,
+                  },
+                ]}
+              >
+                Didn’t find what you were looking for? Our support team is just
+                a tap away.
+              </CsText>
 
-    <TouchableOpacity
-      activeOpacity={0.85}
-      style={{
-        marginTop: 16,
-        borderWidth: 1,
-        borderColor: colors.primary,
-        height: 44,
-        borderRadius: 12,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor:colors.primary,
-      }}
-    >
-      <CsText
-        style={[typography.Poppins_s_semibold,
-{ color: colors.light,
-          
-          }
-        ]}
-      >
-        Contact Support
-      </CsText>
-    </TouchableOpacity>
-  </View>
-</ScreenContent>
-
+              <Pressable
+                activeOpacity={0.85}
+                style={{
+                  marginTop: 16,
+                  borderWidth: 1,
+                  borderColor: colors.primary,
+                  height: 44,
+                  borderRadius: 12,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: colors.primary,
+                }}
+              >
+                <CsText
+                  style={[
+                    typography.Poppins_s_semibold,
+                    { color: colors.light },
+                  ]}
+                >
+                  Contact Support
+                </CsText>
+              </Pressable>
+            </View>
+          </ScreenContent>
         }
       />
     </View>

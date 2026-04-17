@@ -1,6 +1,6 @@
 import CsText from "@/src/components/shared/CsText";
 import { typography } from "@/src/constants/fonts/typography";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 type Props = {
   value: number;
@@ -19,7 +19,7 @@ const QuantitySelector = ({
 }: Props) => {
   return (
     <View className="flex-row items-center">
-      <TouchableOpacity
+      <Pressable
         onPress={onDecrease}
         disabled={value <= min}
         className={`px-3 py-1 rounded ${
@@ -27,7 +27,7 @@ const QuantitySelector = ({
         }`}
       >
         <CsText style={typography.Poppins_m_medium}>-</CsText>
-      </TouchableOpacity>
+      </Pressable>
 
       <CsText
         className="mx-4 min-w-[24px] text-center"
@@ -36,7 +36,7 @@ const QuantitySelector = ({
         {value}
       </CsText>
 
-      <TouchableOpacity
+      <Pressable
         onPress={onIncrease}
         disabled={max ? value >= max : false}
         className={`px-3 py-1 rounded ${
@@ -44,7 +44,7 @@ const QuantitySelector = ({
         }`}
       >
         <CsText style={typography.Poppins_m_medium}>+</CsText>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };
