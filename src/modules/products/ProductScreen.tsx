@@ -31,6 +31,7 @@ export default function ProductScreen() {
   const { filterOptions = [] } = useProductsData();
   const { wishlist, isBusy, handleToggleWishlist } = useWishlistToggle();
   const { showTopBtn, handleScroll } = useScrollToTop();
+  const [refreshing, setRefreshing] = useState(false);
 
   const {
     scrollRef,
@@ -39,7 +40,15 @@ export default function ProductScreen() {
     isFetchingMore,
     hasMore,
     handleEndReached,
+    refresh,
+    productSearchRefetch,
   } = usePaginatedProducts({ search, filters, activeCategory });
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refresh();
+    await productSearchRefetch();
+    setRefreshing(false);
+  };
 
   // if (isLoading) return <Loader />;
 
@@ -49,6 +58,8 @@ export default function ProductScreen() {
         <FlatList<NormalizedProduct>
           ref={scrollRef}
           data={displayedProducts}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
           numColumns={2}
           keyExtractor={(item, index) =>
             item?.id ? String(item.id) : `fallback-${index}`
