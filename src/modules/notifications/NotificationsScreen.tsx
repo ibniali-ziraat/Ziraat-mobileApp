@@ -1,6 +1,6 @@
 import { useNotification } from "@/src/contexts/NotificationContext";
 import * as Notifications from "expo-notifications";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Image,
   Platform,
@@ -13,6 +13,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRegisterDeviceToken } from "./hooks/notification.hooks";
 
 function getNotificationImage(
   notification: Notifications.Notification,
@@ -66,14 +67,49 @@ export default function NotificationsScreen() {
   const { notification, expoPushToken, devicePushToken, error } =
     useNotification();
 
+  const { mutate: saveToken } = useRegisterDeviceToken();
+
   const [copiedExpo, setCopiedExpo] = useState(false);
   const [copiedDevice, setCopiedDevice] = useState(false);
 
-  const copy = async (
-    value: string | null,
-    title: string,
-    setCopied: (v: boolean) => void,
-  ) => {
+  useEffect(() => {
+    registerForPush();
+  }, []);
+
+  // const registerForPush = async () => {
+  //   try {
+  //     const token = await Notifications.getDevicePushTokenAsync();
+
+  //     console.log("DEVICE TOKEN:", token);
+
+  //     if (token?.data) {
+  //       saveToken({
+  //         token: token.data,
+  //         type: token.type,
+  //       });
+  //     }
+  //   } catch (err) {
+  //     console.log("Token error:", err);
+  //   }
+  // };
+
+  const registerForPush = async () => {
+    try {
+      const token = await Notifications.getDevicePushTokenAsync();
+
+      if (token?.data) {
+        saveToken({
+          userId: 0,
+          token: token.data,
+          type: token.type,
+        });
+      }
+    } catch (err) {
+      console.log("Token error:", err);
+    }
+  };
+
+  const copy = async (value, title, setCopied) => {
     if (!value) return;
     await Share.share({ message: value, title });
     setCopied(true);
@@ -104,7 +140,7 @@ export default function NotificationsScreen() {
           </Text>
         </View>
 
-        {/* Tokens Section */}
+        {/* Tokens */}
         <Text style={styles.sectionLabel}>PUSH TOKENS</Text>
 
         <TokenCard
@@ -118,18 +154,15 @@ export default function NotificationsScreen() {
           label="Device Token"
           value={devicePushToken}
           copied={copiedDevice}
-          onCopy={() =>
-            copy(devicePushToken, "Device Push Token", setCopiedDevice)
-          }
+          onCopy={() => copy(devicePushToken, "Device Token", setCopiedDevice)}
         />
 
-        {/* Latest Notification Section */}
+        {/* Notification UI */}
         {notification ? (
           <View style={styles.notificationSection}>
             <Text style={styles.sectionLabel}>LATEST NOTIFICATION</Text>
 
             <View style={styles.notificationCard}>
-              {/* Title row */}
               <View style={styles.notificationTitleRow}>
                 <View style={styles.dot} />
                 <Text style={styles.notificationTitle}>
@@ -137,7 +170,6 @@ export default function NotificationsScreen() {
                 </Text>
               </View>
 
-              {/* Body / Message */}
               {notification.request.content.body && (
                 <View style={styles.messageBox}>
                   <Text style={styles.messageLabel}>Message</Text>
@@ -147,7 +179,6 @@ export default function NotificationsScreen() {
                 </View>
               )}
 
-              {/* Data payload */}
               {notification.request.content.data &&
                 Object.keys(notification.request.content.data).length > 0 && (
                   <View style={styles.dataBox}>
@@ -162,7 +193,6 @@ export default function NotificationsScreen() {
                   </View>
                 )}
 
-              {/* Image */}
               {getNotificationImage(notification) && (
                 <Image
                   source={{ uri: getNotificationImage(notification) }}
