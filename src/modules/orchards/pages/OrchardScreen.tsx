@@ -9,9 +9,15 @@ import OrchardList from "../components/OrchardList";
 import { useOrchardsByUserQuery } from "../hooks/useOrchardsQuery";
 
 export default function MyOrchardsScreen() {
-  const { data: orchardData, isPending, isError } = useOrchardsByUserQuery();
+  const {
+    data: orchardData,
+    isPending,
+    isError,
+    refetch,
+  } = useOrchardsByUserQuery();
   const { setOrchardProfileId } = useAuth();
   const [search, setSearch] = useState("");
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (!orchardData?.length) setOrchardProfileId(null);
@@ -35,6 +41,13 @@ export default function MyOrchardsScreen() {
     );
   }, [orchardData, search]);
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+
+    setRefreshing(false);
+  };
+
   return (
     <View style={{ flex: 1 }} className="bg-light">
       {hasNoOrchards ? (
@@ -46,6 +59,8 @@ export default function MyOrchardsScreen() {
           orchards={filteredOrchards}
           search={search}
           setSearch={setSearch}
+          onRefresh={handleRefresh}
+          refreshing={refreshing}
         />
       )}
 

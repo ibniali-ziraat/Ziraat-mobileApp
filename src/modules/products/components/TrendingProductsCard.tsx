@@ -15,6 +15,7 @@ interface TrendingProductCardProps {
     totalStock: number;
     vendorCount: number;
     views: number;
+    thumbnail?: string;
   };
   cardWidth: number;
   isCarousel: boolean;
@@ -88,7 +89,7 @@ export default function TrendingProductCard({
       >
         <Pressable onPress={goToProduct}>
           <Image
-            source={{ uri: placeholderUrl }}
+            source={{ uri: item.thumbnail }}
             style={{
               width: "100%",
               height: isCarousel ? cardWidth : 160,

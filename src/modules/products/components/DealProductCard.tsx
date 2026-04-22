@@ -14,6 +14,7 @@ interface DealProductCardProps {
     originalPrice: number;
     savingsPercentage: number;
     vendorProductId: string | number;
+    thumbnail?: string;
   };
   cardWidth: number;
   isCarousel: boolean;
@@ -68,7 +69,7 @@ export default function DealProductCard({
       >
         <Pressable onPress={goToProduct}>
           <Image
-            source={{ uri: placeholderUrl }}
+            source={{ uri: item.thumbnail }}
             style={{ width: "100%", height: isCarousel ? cardWidth : 160 }}
             resizeMode="cover"
           />

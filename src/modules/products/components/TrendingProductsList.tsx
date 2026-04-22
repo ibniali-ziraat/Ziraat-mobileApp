@@ -11,6 +11,8 @@ type Props = {
   variant?: "grid" | "carousel";
   title?: string;
   onSeeMore?: any;
+  refreshing?: boolean;
+  onRefresh?: () => void;
 };
 
 export default function TrendingProductsList({
@@ -19,6 +21,8 @@ export default function TrendingProductsList({
   onToggleWishlist,
   isWishlistBusy,
   variant = "grid",
+  refreshing = false,
+  onRefresh,
 }: Props) {
   const screenWidth = Dimensions.get("window").width;
   const isCarousel = variant === "carousel";
@@ -50,6 +54,8 @@ export default function TrendingProductsList({
         keyExtractor={(item) => String(item.productId)}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={!isCarousel}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         contentContainerStyle={{
           paddingHorizontal: LAYOUT.PADDING,
           paddingBottom: isCarousel ? 0 : 30,
