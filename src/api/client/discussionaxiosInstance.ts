@@ -2,7 +2,9 @@ import { getItem } from "@/src/utils/universalSecureToken";
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://discussionapi.onrender.com/",
+  // baseURL: "https://discussionapi.onrender.com/",
+   baseURL: "http://localhost:3001/",
+  // baseURL:"https://v4g9793f-7229.inc1.devtunnels.ms/",
   headers: {
     "Content-Type": "application/json",
   },

@@ -1,245 +1,490 @@
-import BackHeader from "@/src/components/shared/BackHeader";
-import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
+
 import {
   ScrollView,
   Text,
-  TextInput,
-  TouchableOpacity,
-  View
+  View,
 } from "react-native";
+
+import { useLocalSearchParams } from "expo-router";
+
+import BackHeader from "@/src/components/shared/BackHeader";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import {
   useAnswers,
-  useComments,
   useCreateAnswer,
-  useCreateComment,
   useQuestion,
 } from "../hooks/useQuestion";
 
-
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { colors } from "@/src/constants/colors";
 import MessageItem from "../pages/MessageItem";
 
-
-// ─── SHOW COMMENTS ──
-function AnswerComments({ answerId }: { answerId: number }) {
-  const { data, isLoading } = useComments(answerId);
-
-  if (isLoading) {
-    return (
-      <Text style={{ marginLeft: 20, fontSize: 12 }}>
-        Loading replies...
-      </Text>
-    );
-  }
-
-  if (!data || data.length === 0) return null;
-
-  return (
-    <View style={{ marginLeft: 20, marginTop: 6 }}>
-      {data.map((c: any) => (
-        <View key={c.id} style={{ marginBottom: 6 }}>
-          <Text style={{ fontSize: 12, color: "#64748b" }}>
-            {c.user?.displayName || "User"}
-          </Text>
-          <Text style={{ fontSize: 13 }}>{c.body}</Text>
-        </View>
-      ))}
-    </View>
-  );
-}
+import {
+  MessageCircle,
+  Sparkles,
+} from "lucide-react-native";
 
 
-// ─── REPLY INPUT ───
-function AnswerReplyInput({ answerId }: { answerId: number }) {
-  const [replyText, setReplyText] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+import { colors } from "@/src/constants/colors";
+import AnswerComments from "../pages/AnswerComments";
+import BottomAnswerInput from "../pages/BottomAnswerInput";
+import ReplyInput from "../pages/ReplyInput";
 
-  const { mutate: createCommentApi, isPending } = useCreateComment();
-
-  const handleSubmitReply = () => {
-    if (!replyText.trim()) return;
-
-    createCommentApi(
-      {
-        body: replyText,
-        userId: 2,
-        answerId,
-      },
-      {
-        onSuccess: () => {
-          setReplyText("");
-          setIsOpen(false);
-        },
-      }
-    );
-  };
-
-  return (
-    <View style={{ marginHorizontal: 16, marginBottom: 10 }}>
-      {!isOpen ? (
-        <TouchableOpacity onPress={() => setIsOpen(true)}>
-          <Text style={{ color: colors.primary }}>Reply</Text>
-        </TouchableOpacity>
-      ) : (
-        <>
-          <TextInput
-            placeholder="Write a reply..."
-            value={replyText}
-            onChangeText={setReplyText}
-            style={{ borderWidth: 1, borderRadius: 10, padding: 8 }}
-          />
-
-          <TouchableOpacity onPress={handleSubmitReply}>
-            <Text>{isPending ? "Posting..." : "Post Reply"}</Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </View>
-  );
-}
-
-
-// ─── MAIN SCREEN ───────────────────────────
 export default function QuestionScreen() {
-  const { id } = useLocalSearchParams();
-  const questionId = Number(id);
+  const { id } =
+    useLocalSearchParams();
 
-  const { data, isLoading } = useQuestion(questionId);
-  const { data: answersData } = useAnswers(questionId);
-  const { mutate: createAnswerApi, isPending } = useCreateAnswer();
+  const questionId =
+    Number(id);
 
-  const [input, setInput] = useState("");
+  const { data } =
+    useQuestion(questionId);
 
+  const {
+    data: answersData,
+  } = useAnswers(questionId);
+
+  const {
+    mutate: createAnswerApi,
+    isPending,
+  } = useCreateAnswer();
+
+  const [input, setInput] =
+    useState("");
+
+  // QUESTION
   const question = data
     ? {
         id: data.id?.toString(),
-        author: data.user?.displayName || "Unknown",
+
+        author:
+          data.user
+            ?.displayName ||
+          "Unknown",
+
         title: data.title,
-    
+
         content: data.body,
+
         votes: data.votes,
-        tags: data.tags || [],
+ createdAt:
+          data.createdAt,
+        tags:
+          data.tags ||
+          data.questionTags ||
+          [],
+
         children: [],
       }
     : null;
 
-  const answers =
-    answersData?.map((a: any) => ({
-      id: a.id?.toString(),
-      author: a.user?.displayName || "Unknown",
-      
-      content: a.body,
-      votes: a.votes || 0,
-      children: [],
-    })) || [];
+  // REMOVE DUPLICATES
+  const answersMap =
+    new Map();
 
+  answersData?.forEach(
+    (a: any) => {
+      if (
+        !answersMap.has(a.id)
+      ) {
+        answersMap.set(a.id, {
+          id: a.id?.toString(),
+
+          author:
+            a.user
+              ?.displayName ||
+            "Unknown",
+
+          content: a.body,
+
+          votes:
+            a.votes || 0,
+   createdAt:
+          a.createdAt,
+
+          children: [],
+        });
+      }
+    }
+  );
+
+  const answers = Array.from(
+    answersMap.values()
+  );
+
+  // ANSWER
   const handleAnswer = () => {
-    if (!input.trim()) return;
+    if (
+      !input.trim() ||
+      isPending
+    )
+      return;
 
     createAnswerApi(
       {
         questionId,
+
         payload: {
-        body: input,
-        userId: 2,
+          body: input,
+          userId: 2,
         },
       },
       {
-        onSuccess: () => setInput(""),
+        onSuccess: () => {
+          setInput("");
+        },
       }
     );
   };
 
   return (
-   <ScreenLayout>
-     <View style={{ flex: 1 }}>
-  
+    <ScreenLayout>
+      <View
+        style={{
+          flex: 1,
+          backgroundColor:colors.light,
+        }}
+      >
+        {/* HEADER */}
+        <BackHeader title="Discussion" />
 
-     
-         <BackHeader title="Discussion" />
-        <ScrollView contentContainerStyle={{ paddingBottom: 120, }}>
-          {question && <MessageItem item={question} depth={0} />}
-
-          {answers.map((a) => (
-            <View key={a.id}>
-              <MessageItem item={a} depth={1} />
-
-              
-              <AnswerComments answerId={Number(a.id)} />
-
-              {/* REPLY */}
-              <AnswerReplyInput answerId={Number(a.id)} />
+        {/* CONTENT */}
+        <ScrollView
+          showsVerticalScrollIndicator={
+            false
+          }
+          contentContainerStyle={{
+            paddingBottom: 140,
+          }}
+        >
+          {/* QUESTION */}
+          {question && (
+            <View
+              style={{
+                marginBottom: 10,
+              }}
+            >
+              <MessageItem
+                item={question}
+                depth={0}
+              />
             </View>
-          ))}
+          )}
+
+          {/* ANSWERS TOP SECTION */}
+          <View
+            style={{
+              marginTop: 8,
+              marginBottom: 16,
+              marginHorizontal: 18,
+            }}
+          >
+            <View
+              style={{
+                flexDirection:
+                  "row",
+
+                alignItems:
+                  "center",
+
+                justifyContent:
+                  "space-between",
+              }}
+            >
+              {/* LEFT */}
+              <View
+                style={{
+                  flexDirection:
+                    "row",
+
+                  alignItems:
+                    "center",
+                }}
+              >
+                <View
+                  style={{
+                    width: 48,
+                    height: 48,
+
+                    borderRadius: 24,
+
+                
+
+                    alignItems:
+                      "center",
+
+                    justifyContent:
+                      "center",
+
+                    
+                  }}
+                >
+                  <Sparkles
+                    size={22}
+                    color={colors.secondary}
+                  />
+                </View>
+
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 22,
+
+                      fontWeight:
+                        "600",
+
+                      color:colors.dark,
+                    }}
+                  >
+                 Community discussion
+                  </Text>
+
+                 
+                </View>
+              </View>
+
+              {/* COUNT */}
+              <View
+               
+              >
+                <Text
+                  style={{
+                    color:colors.secondary,
+
+                    fontWeight:
+                      "800",
+
+                    fontSize: 14,
+                  }}
+                >
+                  {answers.length}{" "}
+                  {answers.length ===
+                  1
+                    ? "Answer"
+                    : "Answers"}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* ANSWERS */}
+          {answers.length >
+          0 ? (
+            answers.map((a, i) => (
+              <View
+                key={a.id}
+                style={{
+                  marginBottom: 22,
+                }}
+              >
+                {/* ANSWER CARD */}
+                <View
+                  style={{
+                    position:
+                      "relative",
+                  }}
+                >
+                  {/* LEFT TIMELINE */}
+                  <View
+                    style={{
+                      position:
+                        "absolute",
+
+                      left: 30,
+
+                      top: 0,
+
+                      bottom: -24,
+
+                      width: 2,
+
+                      backgroundColor:
+                        colors.dark,
+
+                      opacity: 0.08,
+                    }}
+                  />
+
+                  {/* INDEX DOT */}
+                  <View
+                    style={{
+                      position:
+                        "absolute",
+
+                      left: 20,
+
+                      top: 18,
+
+                      width: 22,
+
+                      height: 22,
+
+                      borderRadius: 11,
+
+                      backgroundColor:
+                        colors.dark,
+
+                      zIndex: 20,
+
+                      alignItems:
+                        "center",
+
+                      justifyContent:
+                        "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color:
+                          colors.light,
+
+                        fontSize: 10,
+
+                        fontWeight:
+                          "800",
+                      }}
+                    >
+                      {i + 1}
+                    </Text>
+                  </View>
+
+                  {/* CARD */}
+                  <View
+                    style={{
+                      marginLeft: 34,
+                    }}
+                  >
+                    <MessageItem
+                      item={a}
+                      depth={1}
+                    />
+                  </View>
+                </View>
+
+                {/* COMMENTS */}
+                <View
+                  style={{
+                    marginTop: 8,
+                    marginLeft: 54,
+                  }}
+                >
+                  <AnswerComments
+                    answerId={Number(
+                      a.id
+                    )}
+                  />
+
+                  <ReplyInput
+                    answerId={Number(
+                      a.id
+                    )}
+                  />
+                </View>
+              </View>
+            ))
+          ) : (
+            /* EMPTY STATE */
+            <View
+              style={{
+                marginHorizontal: 18,
+
+                marginTop: 30,
+
+                paddingVertical: 70,
+
+                paddingHorizontal: 26,
+
+                borderRadius: 32,
+
+             
+
+                borderWidth: 1,
+
+                borderColor:
+        colors.cardBorder,
+
+                alignItems:
+                  "center",
+              }}
+            >
+              {/* ICON */}
+              <View
+                style={{
+                  width: 92,
+
+                  height: 92,
+
+                  borderRadius: 46,
+
+                 
+
+                  alignItems:
+                    "center",
+
+                  justifyContent:
+                    "center",
+
+                }}
+              >
+                <MessageCircle
+                  size={38}
+                  color={colors.secondary}
+                  strokeWidth={2.1}
+                />
+              </View>
+
+              {/* TITLE */}
+              <Text
+                style={{
+                  fontSize: 24,
+
+                  fontWeight:
+                    "900",
+
+                  color:colors.dark,
+
+                  marginBottom: 12,
+                }}
+              >
+                No answers yet
+              </Text>
+
+              {/* DESC */}
+              <Text
+                style={{
+                  fontSize: 14,
+
+                  lineHeight: 26,
+
+                  textAlign:
+                    "center",
+
+                  color: "#000",
+
+                  opacity: 0.6,
+
+                  maxWidth: 280,
+                }}
+              >
+                Be the first person
+                to join the discussion
+                and help solve this
+                question.
+              </Text>
+            </View>
+          )}
         </ScrollView>
-     
 
-    <View
-  style={{
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderTopWidth: 0.5,
-    borderColor: colors.cardBorder,
-    backgroundColor: colors.light,
-  }}
->
-  {/* INPUT BOX */}
-  <View
-    style={{
-      flex: 1,
-      flexDirection: "row",
-      alignItems: "center",
-      backgroundColor: colors.light,
-      borderRadius: 25,
-      paddingHorizontal: 14,
-      borderWidth: 1,
-      borderColor: colors.cardBorder,
-    }}
-  >
-    <TextInput
-      placeholder="Write your answer..."
-      value={input}
-      onChangeText={setInput}
-      style={{
-        flex: 1,
-        paddingVertical: 10,
-        fontSize: 14,
-      }}
-      placeholderTextColor={colors.overlay}
-    />
-  </View>
-
-  {/* BUTTON */}
-  <TouchableOpacity
-    onPress={handleAnswer}
-    style={{
-      marginLeft: 10,
-      backgroundColor: colors.secondary,
-      paddingHorizontal: 18,
-      paddingVertical: 10,
-      borderRadius: 20,
-      opacity: input.trim() ? 1 : 0.5, 
-    }}
-    disabled={!input.trim() || isPending}
-  >
-    <Text
-      style={{
-        color: colors.light,
-        fontWeight: "700",
-        fontSize: 13,
-        letterSpacing: 0.4,
-      }}
-    >
-      {isPending ? "Posting…" : "Post"}
-    </Text>
-  </TouchableOpacity>
-</View>
-    </View>
-   </ScreenLayout>
+        {/* INPUT */}
+        <BottomAnswerInput
+          input={input}
+          setInput={setInput}
+          handleAnswer={
+            handleAnswer
+          }
+          isPending={isPending}
+        />
+      </View>
+    </ScreenLayout>
   );
 }
