@@ -99,8 +99,8 @@ export const ROUTES = {
     DETAILS: "/order-details",
     TRACKING: "/orders/tracking",
   },
-  Review:{
-    reviewlist:"/reviewlist",
+  Review: {
+    reviewlist: "/reviewlist",
   },
 
 
@@ -118,4 +118,5 @@ export const ROUTES = {
     DETAILS: "/weather-details",
   },
   SETTINGS: "/settings",
+  CHAT_BOT: "/chat-bot",
 } as const;
