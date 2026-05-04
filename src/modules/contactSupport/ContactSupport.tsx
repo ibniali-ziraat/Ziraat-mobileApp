@@ -134,11 +134,11 @@ export default function ContactUsScreen() {
 
         <ContactRow
           icon={<MessageCircle size={18} color={colors.primary} />}
-          title="WhatsApp"
-          subtitle="Chat with our agriculture experts"
+          title="WhatsApp Support"
+          subtitle="+91 98765 43210 • Chat with our agriculture support team"
           onPress={() =>
             Linking.openURL(
-              "https://wa.me/919876543210?text=Hello%20I%20need%20support",
+              "https://wa.me/919876543210?text=Hello%20Ziraat%20Support%2C%20I%20need%20help%20with%20your%20app.",
             )
           }
         />
