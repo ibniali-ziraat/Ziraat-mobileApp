@@ -2,7 +2,7 @@ import { getItem } from "@/src/utils/universalSecureToken";
 import axios from "axios";
 
 const notificationInstance = axios.create({
-  baseURL: "http://192.168.1.29:3001/",
+  baseURL: "https://pushnotificationserver.onrender.com/",
 
   headers: {
     "Content-Type": "application/json",

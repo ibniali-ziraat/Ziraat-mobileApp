@@ -1,4 +1,5 @@
 import { useNotification } from "@/src/contexts/NotificationContext";
+import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
 import {
@@ -97,10 +98,22 @@ export default function NotificationsScreen() {
     try {
       const token = await Notifications.getDevicePushTokenAsync();
 
-      if (token?.data) {
+      let tokenValue = token.data;
+
+      // iOS returns raw APNs hex token — use Expo push token instead for consistency
+      if (Platform.OS === "ios") {
+        const expoPushToken = await Notifications.getExpoPushTokenAsync({
+          projectId:
+            Constants?.expoConfig?.extra?.eas?.projectId ??
+            Constants?.easConfig?.projectId,
+        });
+        tokenValue = expoPushToken.data;
+      }
+
+      if (tokenValue) {
         saveToken({
           userId: 0,
-          token: token.data,
+          token: tokenValue,
           type: token.type,
         });
       }
