@@ -28,7 +28,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.codestrix.test",
+      "package": "com.alilals.ziraat",
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
