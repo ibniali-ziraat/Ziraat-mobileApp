@@ -24,6 +24,7 @@ import WeatherCard from "./components/weatherCard";
 import { useHomeWeather } from "./hooks/useHomeWeather";
 import { useHomeWishlist } from "./hooks/useHomeWishlist";
 
+<<<<<<< HEAD
 export default function HomeScreen(): JSX.Element {
   const { currentWeather } = useHomeWeather();
   const { sharedWishlistProps } = useHomeWishlist();
@@ -31,6 +32,27 @@ export default function HomeScreen(): JSX.Element {
     useTrendingProducts();
   const { data: bestDealsData, isLoading: bestDealsLoading } = useBestDeals();
   const { products: allProducts = [] } = useProductsData();
+=======
+import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
+import ProductCarousel from "@/src/components/shared/ProductCarousel";
+
+import products from "@/src/Data/products.json";
+import { imageMapper } from "@/src/Data/imageMapper";
+import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
+import { useState } from "react";
+import Loader from "@/src/components/shared/Loader";
+
+export default function HomeScreen() {
+  // const [cityData, setCityData] = useState("srinagar");
+  // const { data, isPending, isError } = useWeatherQuery(cityData);
+  // console.log(data, "data...");
+
+  // if (isPending) return <Loader />;
+
+  const sections = [
+    { title: "Top Pesticides for Healthy Crop Growth", slice: [0, 8] },
+  ];
+>>>>>>> 989965dbab3969b6105de85136a3a74827a93bd6
 
   return (
     <ScreenLayout>

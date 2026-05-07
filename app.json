@@ -14,11 +14,15 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
+<<<<<<< HEAD
       "bundleIdentifier": "com.codestrix.test",
       "jsEngine": "hermes",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
+=======
+      "bundleIdentifier": "com.alilals.ziraat"
+>>>>>>> 989965dbab3969b6105de85136a3a74827a93bd6
     },
     "android": {
       "adaptiveIcon": {
