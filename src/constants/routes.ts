@@ -1,123 +1,122 @@
-// export const ROUTES = {
-//   // AUTH SCREENS
-//   AUTH: {
-//     LOGIN: "/auth/login",
-//     REGISTER: "/auth/register",
-//     FORGOT_PASSWORD: "/auth/forgot-password",
-//     VENDOR_ONBOARD: "/auth/vendor",
-//     VENDOR_PROFILE: "/auth/vendor/vendor-profile-screen",
-//   },
-
-//   // USER SCREENS
-//   USER: {
-//     HOME: "/auth/user",
-//     PROFILE: "/auth/user/profile",
-//     EDIT_PROFILE: "/",
-//     EDUCATION:"/auth/user/education",
-//     PROFESSION:"/auth/user/profession",
-//     ADDRESS:"/auth/user/address",
-//     REGISTRATION:"/auth/user/user-registration",
-
-//   },
-
-//   // VENDOR / SUPPLIER SCREENS
-//   VENDOR: {
-//     HOME:"/auth/vendor",
-//     PROFILE: "/auth/vendor/profile",
-//     NOTIFICATIONS: "/auth/vendor/notifications",
-//     SUPPORT: "/auth/vendor/support",
-//     PAYMENTS: "/auth/vendor/payments",
-//     STORE: "/auth/vendor/store",
-//     LICENSE:"/auth/vendor/license",
-//     OPERATIONS:"/auth/vendor/operations",
-//     PRODUCTS:"/auth/vendor/products",
-//     FINANCIAL:"/auth/vendor/financial",
-//   },
-
-//   DASHBOARDS:{
-//     FARMER:{
-//     PROFILE: "/dashboard/advisory-profile",
-//     ALERT: "/dashboard/alert-profile",
-//     FINANCIAL: "/dashboard/financial-profile",
-//     NUTRIENT: "/dashboard/nutrient-profile",
-//     ORCHARD: "/dashboard/orchard-profile",
-//     PESTDISEASE: "/dashboard/pestdisease-profile",
-//     RESOURCES: "/dashboard/resources-profile",
-//     WEATHER: "/dashboard/weather-profile",
-//     },
-//     VENDOR:{
-//       PROFILE:"/dashboard/vendor-profile",
-//       CREDITS:"/dashboard/vendor-credits",
-//       DELIVERY:"/dashboard/vendor-delivery",
-//       FINANCIAL:"/dashboard/vendor-financial",
-//       NOTIFICATION:"/dashboard/vendor-notification",
-//       OFFERS:"/dashboard/vendor-offers",
-//       PLATFORMS:"/dashboard/vendor-platform",
-//       PRODUCTS:"/dashboard/vendor-products",
-//       REPORTS:"/dashboard/vendor-reports",
-//       SALES:"/dashboard/vendor-sales",
-//       USER_DETAILS:"/dashboard/vendoer-user-details",
-//     }
-
-//   },
-//   PRODUCTS:{
-//     WISHLIST:"/wishlist",
-//     CARTLIST:"/cartlist",
-//     SINGLE_PRODUCT_DETAILS:"/single-product-details"
-//   },
-
-//   ORDERS:{
-//     SHIPPING:"/shipping",
-//   },
-
-//   ORCHARDS:{
-//      REGISTRATION:"/orchard-registration",
-//   },
-//   SUPPLIER:{
-//     REGISTRATION:"/supplier-registration"
-//   },
-
-//   SPRAY:{
-//   REGISTRATION:"/spray-registration"
-//   },
-
-//   TABS: {
-//     MENU: "/(tabs)/menu",
-//     HOME: "/(tabs)",
-//     PROFILE: "/(tabs)/profile",
-//     PRODUCTS:"/(tabs)/products",
-//     SPRAY:"/(tabs)/spray"
-//   },
-// } as const;
-
 export const ROUTES = {
-  // AUTH SCREENS
-  AUTH: {
-    LOGIN: "/auth/login",
-    REGISTER: "/auth/register",
-    FORGOT_PASSWORD: "/auth/forgot-password",
-    VENDOR_ONBOARD: "/auth/vendor",
-    VENDOR_PROFILE: "/auth/vendor/vendor-profile-screen",
+  TABS: {
+    HOME: "/(tabs)",
+    MORE: "/(tabs)/more",
+    ORCHARDS: "/(tabs)/orchards",
+    PRODUCTS: "/(tabs)/products",
+  },
+  DASHBOARD: {
+    MAIN: "/dashboard",
+    PEST_DISEASE_PROFILE: "/pest-disease-profile",
+    ORCHARD_PROFILE: "/orchard-profile",
+    NUTRIENT_PROFILE: "/nutrient-profile",
+    RESOURCES_PROFILE: "/resources-profile",
+    FINANCIAL_PROFILE: "/financial-profile",
+    ADVISORY_PROFILE: "/advisory-profile",
+    ALERT_PROFILE: "/alert-profile",
+    WEATHER_PROFILE: "/weather-profile",
+  },
+  MORE: {
+    SUPPORT: "/more/support",
+    SETTINGS: "/settings",
+    ORDERS: "/orders-list",
+    PAYMENTS: "/more/payments",
+    ABOUT_US: "/about-us",
+    DISCUSSION: "/more/discussion",
+    PROFILE: "/profile-view",
   },
 
-  // USER SCREENS
+  PRODUCTS: {
+    SINGLE_PRODUCT_DETAILS: "/single-product-details",
+    RECOMMENDED_PRODUCTS: "/recommended-products",
+  },
+  ACCOUNT: {
+    ADDRESS: "/login",
+    PROFILE: "/profile-view",
+    FORGOT_PASSWORD: "/forgot-password",
+    CHANGE_PASSWORD: "/change-password",
+    DELETE_ACCOUNT: "/vendor/vendor-profile-screen",
+    ADD_ADDRESS: "/add-addresses",
+    ADDRESS_FORM: "/address-form",
+  },
+
+  AUTH: {
+    LOGIN: "/login",
+    SIGNUP: "/signup",
+    FORGOT_PASSWORD: "/auth/forgot-password",
+  },
+
   USER: {
     HOME: "/",
-    PROFILE: "/user-profile",
-    EDIT_PROFILE: "/user-profile/edit",
+    FORMS: {
+      PROFILE: "/profile-form",
+      ADDRESS: "/address",
+      EDUCATION: "/education",
+      PROFESSION: "/profession",
+    },
   },
 
-  // VENDOR / SUPPLIER SCREENS
-  VENDOR: {
-    PROFILE: "/vendor/profile",
-    NOTIFICATIONS: "/vendor/notifications",
-    SUPPORT: "/vendor/support",
-    PAYMENTS: "/vendor/payments",
-    STORE: "/vendor/store",
+  ORCHARDS: {
+    REGISTRATION: {
+      BASIC_INFO: "/basic-info",
+      CROP_INFO: "/crop-info",
+      FARM_INFO: "/farm-info",
+      FUTURE_INFO: "/future-info",
+      INPUT_COST_INFO: "/inputcost-info",
+      PLANT_PROTECTION_INFO: "/plant-protection-info",
+      PRODUCTION_INFO: "/production-info",
+      SOIL_WATER_INFO: "/soil-water-info",
+      SOIL_TEST_REPORTS: "/soil-test-reports",
+      VARIETY_INFO: "/variety-info",
+      ALL_VARIETIES: "/all-varieties",
+    },
+    DETAILS: {
+      ORCHARD_DETAILS: "/orchard-details",
+    },
+    MEASUREMENT: {
+      MEASURE_BY_TAP: "/tap-measure",
+      MEASURE_BY_WALK: "/walk-measure",
+    },
   },
-  TABS: {
-    MENU: "/(tabs)/menu",
-    HOME: "/(tabs)",
-    PROFILE: "/(tabs)/profile",
+
+  SHOPPING: {
+    WISHLIST: "/wishlist",
+    CART: "/cart-list",
+    CHECKOUT: {
+      SELECT_ADDRESS: "/select-address",
+      CREATE_ADDRESS: "/create-address",
+      REVIEW_ORDER: "/review-order",
+      ORDER_SUCCESS: "/order-success",
+    },
   },
+
+  PAYMENTMETHOD: {
+    Wallet: "/wallet",
+  },
+
+  ORDERS: {
+    LIST: "/orders-list",
+    DETAILS: "/order-details",
+    TRACKING: "/orders/tracking",
+  },
+  Review: {
+    reviewlist: "/reviewlist",
+  },
+
+
+  Discussion: {
+    discussionForum: "/discussion",
+    QuestionScreen: "/questionScreen",
+  },
+  SHIPPING: {
+    ADDRESS: "/shipping/address",
+    METHOD: "/shipping/method",
+    CONFIRMATION: "/shipping/confirmation",
+  },
+  NOTIFICATIONS: "/notifications",
+  WEATHER: {
+    DETAILS: "/weather-details",
+  },
+  SETTINGS: "/settings",
+  CHAT_BOT: "/chat-bot",
 } as const;

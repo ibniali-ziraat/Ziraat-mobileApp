@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
-import { Pressable, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, {
   FadeInLeft,
   FadeInUp,
@@ -10,6 +10,7 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
+import CsText from "./CsText";
 
 // ======================= DOCUMENT DATA ==========================
 const documents = [
@@ -78,22 +79,34 @@ const documents = [
 // ======================= STATUS BADGE ==========================
 function StatusBadge({ status }) {
   const map = {
-    verified: { icon: "checkmark-circle", text: "Verified", color: colors.primary },
-    uploaded: { icon: "cloud-done-outline", text: "Uploaded", color: colors.secondary },
-    pending: { icon: "alert-circle-outline", text: "Pending", color: colors.error },
+    verified: {
+      icon: "checkmark-circle",
+      text: "Verified",
+      color: colors.primary,
+    },
+    uploaded: {
+      icon: "cloud-done-outline",
+      text: "Uploaded",
+      color: colors.secondary,
+    },
+    pending: {
+      icon: "alert-circle-outline",
+      text: "Pending",
+      color: colors.error,
+    },
   };
 
   const s = map[status];
 
   return (
-    <View
-      className="px-2 py-[3px] rounded-lg flex-row items-center"
-      
-    >
+    <View className="px-2 py-[3px] rounded-lg flex-row items-center">
       <Ionicons name={s.icon} size={13} color={s.color} />
-      <Text className="ml-1 text-[10px] font-semibold" style={{ color: s.color }}>
+      <CsText
+        className="ml-1 text-[10px] font-semibold"
+        style={{ color: s.color }}
+      >
         {s.text}
-      </Text>
+      </CsText>
     </View>
   );
 }
@@ -107,15 +120,21 @@ function FileTypeIcon({ type, color }) {
     other: "file-document-outline",
   };
 
-  return <MaterialCommunityIcons name={icons[type] || icons.other} size={24} color={color} />;
+  return (
+    <MaterialCommunityIcons
+      name={icons[type] || icons.other}
+      size={24}
+      color={color}
+    />
+  );
 }
 
 // ======================= INFO ROW ==========================
 function InfoRow({ label, value }) {
   return (
-    <Text className="text-[12px] mb-1" style={{ color: colors.dark }}>
-      {label}: <Text className="font-semibold">{value}</Text>
-    </Text>
+    <CsText className="text-[12px] mb-1" style={{ color: colors.dark }}>
+      {label}: <CsText className="font-semibold">{value}</CsText>
+    </CsText>
   );
 }
 
@@ -129,37 +148,38 @@ export default function DocumentCard() {
       entering={FadeInUp.duration(650)}
       layout={Layout.springify()}
       className="mt-4 "
-      
     >
       {/* ================= HEADER ================= */}
       <View className="flex-row justify-between items-center">
         <View>
-          <Text className="text-lg font-extrabold" style={{ color: colors.dark }}>
+          <CsText
+            className="text-lg font-extrabold"
+            style={{ color: colors.dark }}
+          >
             Documents & Verification
-          </Text>
-          <Text className="text-[11px] mt-[2px]" style={{ color: colors.dark }}>
+          </CsText>
+          <CsText
+            className="text-[11px] mt-[2px]"
+            style={{ color: colors.dark }}
+          >
             Legal, compliance and business verification
-          </Text>
+          </CsText>
         </View>
 
-        <View
-          className="w-10 h-10 rounded-xl items-center justify-center"
-         
-        >
+        <View className="w-10 h-10 rounded-xl items-center justify-center">
           <Ionicons name="folder-open" size={22} color={colors.primary} />
         </View>
       </View>
 
       {/* ================= DOCUMENT LIST ================= */}
       <View className="mt-5">
-
         {documents.map((doc, index) => {
           const color =
             doc.status === "verified"
               ? colors.primary
               : doc.status === "uploaded"
-              ? colors.secondary
-              : colors.error;
+                ? colors.secondary
+                : colors.error;
 
           const isOpen = openIndex === index;
 
@@ -175,7 +195,6 @@ export default function DocumentCard() {
               entering={FadeInLeft.delay(index * 90)}
               layout={Layout.springify()}
               className="rounded-xl overflow-hidden mb-3"
-              
             >
               {/* CARD HEADER */}
               <Pressable
@@ -183,35 +202,46 @@ export default function DocumentCard() {
                 onPressOut={() => (scale.value = withSpring(1))}
                 onPress={() => toggle(index)}
                 style={{ padding: 16 }}
-                
               >
-                <Animated.View style={pressStyle} className="flex-row justify-between">
+                <Animated.View
+                  style={pressStyle}
+                  className="flex-row justify-between"
+                >
                   {/* LEFT SIDE */}
                   <View className="flex-row items-center">
-                    <View
-                      className="w-12 h-12 rounded-xl items-center justify-center"
-                      
-                    >
+                    <View className="w-12 h-12 rounded-xl items-center justify-center">
                       <FileTypeIcon type={doc.type} color={color} />
                     </View>
 
                     {/* TEXT SECTION */}
                     <View className="ml-3">
-                      <Text className="text-sm font-semibold" style={{ color: colors.dark }}>
+                      <CsText
+                        className="text-sm font-semibold"
+                        style={{ color: colors.dark }}
+                      >
                         {doc.title}
-                      </Text>
+                      </CsText>
 
-                      <Text className="text-[10px] mt-[1px]" style={{ color: colors.dark }}>
+                      <CsText
+                        className="text-[10px] mt-[1px]"
+                        style={{ color: colors.dark }}
+                      >
                         Size: {doc.fileSize} • Type: {doc.type.toUpperCase()}
-                      </Text>
+                      </CsText>
 
-                      <Text className="text-[10px] mt-[1px]" style={{ color: colors.dark }}>
+                      <CsText
+                        className="text-[10px] mt-[1px]"
+                        style={{ color: colors.dark }}
+                      >
                         Updated: {doc.updated}
-                      </Text>
+                      </CsText>
 
-                      <Text className="text-[11px] mt-[1px]" style={{ color: colors.dark }}>
+                      <CsText
+                        className="text-[11px] mt-[1px]"
+                        style={{ color: colors.dark }}
+                      >
                         {doc.category}
-                      </Text>
+                      </CsText>
                     </View>
                   </View>
 
@@ -243,11 +273,14 @@ export default function DocumentCard() {
                     <InfoRow label="Validity" value={doc.validity} />
                   </View>
 
-                  <Text className="text-[12px] mt-3" style={{ color: colors.dark }}>
-                    Notes: <Text className="font-medium">{doc.notes}</Text>
-                  </Text>
+                  <CsText
+                    className="text-[12px] mt-3"
+                    style={{ color: colors.dark }}
+                  >
+                    Notes: <CsText className="font-medium">{doc.notes}</CsText>
+                  </CsText>
 
-                  <TouchableOpacity
+                  <Pressable
                     className="rounded-full px-5 py-2 mt-4"
                     style={{
                       backgroundColor: colors.primary,
@@ -257,10 +290,10 @@ export default function DocumentCard() {
                       elevation: 2,
                     }}
                   >
-                    <Text className="text-white text-[12px] font-semibold text-center">
+                    <CsText className="text-white text-[12px] font-semibold text-center">
                       View Document
-                    </Text>
-                  </TouchableOpacity>
+                    </CsText>
+                  </Pressable>
                 </Animated.View>
               )}
             </Animated.View>

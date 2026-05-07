@@ -1,5 +1,6 @@
-import SHIPPING_OPTIONS from "@/src/Data/shippingOptions.json";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import CsText from "@/src/components/shared/CsText";
+import SHIPPING_OPTIONS from "@/src/data/shippingOptions.json";
+import { FlatList, Pressable, View } from "react-native";
 
 export default function ShippingOptionList({
   selectedOption,
@@ -13,12 +14,11 @@ export default function ShippingOptionList({
         const isSelected = selectedOption?.id === item.id;
 
         return (
-          <TouchableOpacity
+          <Pressable
             onPress={() => setSelectedOption(item)}
-            className="p-4 mb-2  rounded-xl border border-neutral"
+            className="p-4 mb-2  rounded-xl border border-light"
           >
             <View className="flex-row justify-between items-center">
-          
               <View className="flex-row items-start gap-3">
                 <View
                   className={`h-5 w-5 rounded-full border-2 ${
@@ -30,19 +30,17 @@ export default function ShippingOptionList({
                   )}
                 </View>
 
-      
                 <View>
-                  <Text className="font-bold">{item.title}</Text>
-                  <Text className="text-dark">{item.delivery}</Text>
+                  <CsText className="font-bold">{item.title}</CsText>
+                  <CsText className="text-dark">{item.delivery}</CsText>
                 </View>
               </View>
 
-            
-              <Text className="text-secondary font-semibold">
+              <CsText className="text-secondary font-semibold">
                 {item.price}
-              </Text>
+              </CsText>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         );
       }}
     />

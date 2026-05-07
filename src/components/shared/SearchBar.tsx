@@ -1,42 +1,103 @@
-import { Search } from "lucide-react-native";
-import React from "react";
-import { TextInput, View } from "react-native";
+import { colors } from "@/src/constants/colors";
+import { LucideIcon, Search, X } from "lucide-react-native";
+import { Platform, Pressable, View } from "react-native";
+import { TextInput } from "react-native-paper";
 
 type Props = {
-    search: string;
-    setSearch: (text: string) => void;
+  search: string;
+  setSearch: (text: string) => void;
+  RightIcon?: LucideIcon;
+  onIconPress?: () => void;
+  onPress?: () => void;
+  pressable?: boolean;
+  placeholder?: string;
 };
 
-export default function SearchBar({ search, setSearch }: Props) {
-    return (
-        <View
-            className="
-                w-[90%] self-center 
-                flex-row items-center
-                bg-white
-                rounded-full
-                px-4 py-2
-                shadow-md 
-                border border-gray-200
-                 mb-6
-            "
-            style={{ height: 48 }}
-        >
-            <Search size={20} color="#c7611f" strokeWidth={2} />
+export default function SearchBar({
+  search = "",
+  setSearch,
+  RightIcon,
+  onIconPress,
+  onPress,
+  pressable = false,
+  placeholder = "Search products, crops...",
+}: Props) {
+  return (
+    <Pressable
+      activeOpacity={0.8}
+      onPress={pressable ? onPress : undefined}
+      disabled={!pressable}
+      className="w-full pl-1"
+      style={{
+        alignSelf: "stretch",
+      }}
+    >
+      <View
+        pointerEvents={pressable ? "none" : "auto"}
+        className="flex-row items-center  rounded-full px-4"
+        style={{
+          height: 48,
+          width: "100%",
+          backgroundColor: colors.light,
+          elevation: Platform.OS === "android" ? 4 : 0,
 
-            <TextInput
-                placeholder="Search..."
-                placeholderTextColor="#9CA3AF"
-                value={search}
-                onChangeText={setSearch}
-                className="
-                    ml-3
-                    flex-1
-                    text-base text-black
-                "
-                autoCorrect={false}
-                autoCapitalize="none"
-            />
-        </View>
-    );
+          ...(Platform.OS === "ios" && {
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.1,
+            shadowRadius: 3,
+          }),
+
+          ...(Platform.OS === "web" && {
+            boxShadow: "0px 2px 6px rgba(0,0,0,0.15)",
+          }),
+        }}
+      >
+        <Search size={20} color={colors.primary} strokeWidth={2} />
+
+        <TextInput
+          mode="flat"
+          underlineColor="transparent"
+          activeUnderlineColor="transparent"
+          placeholder={placeholder}
+          placeholderTextColor="#999"
+          value={search}
+          onChangeText={setSearch}
+          editable={!pressable}
+          autoCorrect={false}
+          autoCapitalize="none"
+          outlineColor="transparent"
+          cursorColor={colors.neutral}
+          selectionColor={colors.primary}
+          textColor={colors.dark}
+          style={{
+            backgroundColor: "transparent",
+            flex: 1,
+            fontSize: 16,
+            height: 40,
+            paddingVertical: 0,
+            paddingTop: Platform.OS === "ios" ? 1 : 0,
+          }}
+        />
+
+        {/* CLEAR X */}
+        {!!search && (
+          <Pressable
+            onPress={() => setSearch("")}
+            style={{
+              marginRight: RightIcon ? 8 : 0,
+            }}
+          >
+            <X size={18} color={colors.neutral} />
+          </Pressable>
+        )}
+
+        {RightIcon && (
+          <Pressable onPress={onIconPress}>
+            <RightIcon size={20} color={colors.secondary} />
+          </Pressable>
+        )}
+      </View>
+    </Pressable>
+  );
 }

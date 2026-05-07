@@ -1,8 +1,10 @@
-// components/home/QuickActions.tsx
-import { colors } from "@/src/constants/colors"; // use your global theme
+import CsText from "@/src/components/shared/CsText";
+import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
+import { ROUTES } from "@/src/constants/routes";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { router } from "expo-router";
+import { Pressable, View } from "react-native";
 
 export default function QuickActions() {
   const actions = [
@@ -11,33 +13,26 @@ export default function QuickActions() {
       icon: "add-circle-outline",
       color: colors.primary,
       bg: colors.primary + "15",
-      onPress: () => {},
+      onPress: () => router.push(ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO),
     },
     {
       title: "Log Harvest",
       icon: "book-outline",
       color: colors.primary,
       bg: colors.primary + "15",
-      onPress: () => {},
-    },
-    {
-      title: "Add Spray",
-      icon: "flask-outline",
-      color: colors.secondary,
-      bg: colors.secondary + "15",
-      onPress: () => {},
+      onPress: () => router.push("/orchards/orchard-registration"),
     },
   ];
 
   return (
-    <View className="mb-8">
-      <View className="flex-row justify-between">
+    <View style={{ marginBottom: 32 }}>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         {actions.map((item, idx) => (
-          <TouchableOpacity
+          <Pressable
             key={idx}
             onPress={item.onPress}
             style={{
-              width: "32%",
+              width: "48%",
               backgroundColor: "#ffffff",
               borderRadius: 18,
               paddingVertical: 16,
@@ -63,13 +58,8 @@ export default function QuickActions() {
               <Ionicons name={item.icon} size={24} color={item.color} />
             </View>
 
-            <Text
-              className="text-[13px] font-semibold text-center"
-              style={{ color: colors.dark }}
-            >
-              {item.title}
-            </Text>
-          </TouchableOpacity>
+            <CsText style={[typography.Poppins_s_regular]}>{item.title}</CsText>
+          </Pressable>
         ))}
       </View>
     </View>

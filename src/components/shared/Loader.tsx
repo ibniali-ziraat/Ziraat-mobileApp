@@ -1,123 +1,74 @@
-import React, { useEffect, useRef } from "react";
-import { View, Animated, Image, Easing } from "react-native";
 import { colors } from "@/src/constants/colors";
+import { useEffect, useRef } from "react";
+import { Animated, Easing, StyleSheet, View } from "react-native";
 
 export default function Loader() {
-  // Logo animation
-  const scale = useRef(new Animated.Value(0.96)).current;
-
-  // Dots animation
-  const dot1 = useRef(new Animated.Value(0)).current;
-  const dot2 = useRef(new Animated.Value(0)).current;
-  const dot3 = useRef(new Animated.Value(0)).current;
+  const rotation = useRef(new Animated.Value(0)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // 🔹 Logo breathing (NO opacity change)
-    const logoBreathing = Animated.loop(
-      Animated.sequence([
-        Animated.timing(scale, {
-          toValue: 1,
-          duration: 1600,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.delay(400),
-        Animated.timing(scale, {
-          toValue: 0.96,
-          duration: 1600,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-      ])
-    );
+    // 1. Smooth Fade-in so it doesn't "pop" aggressively
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 400,
+      useNativeDriver: true,
+    }).start();
 
-    // 🔹 Dot animation
-    const animateDot = (dot: Animated.Value, delay: number) =>
-      Animated.loop(
-        Animated.sequence([
-          Animated.delay(delay),
-          Animated.timing(dot, {
-            toValue: 1,
-            duration: 1600,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-          Animated.timing(dot, {
-            toValue: 0,
-            duration: 1600,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-        ])
-      );
+    // 2. Infinite smooth rotation
+    Animated.loop(
+      Animated.timing(rotation, {
+        toValue: 1,
+        duration: 800, // Slightly faster for a "snappy" high-performance feel
+        easing: Easing.linear,
+        useNativeDriver: true,
+      }),
+    ).start();
+  }, [rotation, fadeAnim]);
 
-    logoBreathing.start();
-    animateDot(dot1, 0).start();
-    animateDot(dot2, 200).start();
-    animateDot(dot3, 400).start();
-
-    return () => logoBreathing.stop();
-  }, []);
-
-  const dotStyle = (dot: Animated.Value) => ({
-    opacity: dot.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0.3, 1],
-    }),
-    transform: [
-      {
-        translateY: dot.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, -4],
-        }),
-      },
-    ],
+  const rotateData = rotation.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["0deg", "360deg"],
   });
 
   return (
-    <View
-      className="w-full h-full items-center justify-center "
-      style={{ backgroundColor: colors.light }}
-    >
-      {/* Logo */}
-      <Animated.View
-        style={{
-          transform: [{ scale }],
-        }}
-      >
-        <Image
-          source={require("../../../assets/images/logo.jpeg")}
-          resizeMode="contain"
-          style={{
-            width: 180,
-            height: 180,
-          }}
+    <View style={[styles.container, { backgroundColor: colors.bgColor }]}>
+      <Animated.View style={{ opacity: fadeAnim }}>
+        {/* The Track (faint background circle) */}
+        <View
+          style={[
+            styles.loaderRing,
+            { borderColor: colors.primary, opacity: 0.1 },
+          ]}
+        />
+
+        {/* The Active Spinner */}
+        <Animated.View
+          style={[
+            styles.loaderRing,
+            {
+              position: "absolute",
+              transform: [{ rotate: rotateData }],
+              borderColor: colors.primary,
+              borderTopColor: "transparent", // Creates the sleek UX gap
+              borderRightColor: "transparent", // Creates a slightly longer, elegant arc
+            },
+          ]}
         />
       </Animated.View>
-
-      {/* Dots */}
-      <View
-        style={{
-          flexDirection: "row",
-          marginTop: 0,
-          gap: 8,
-        }}
-      >
-        {[dot1, dot2, dot3].map((dot, index) => (
-          <Animated.View
-            key={index}
-            style={[
-              {
-                width: 10,
-                height: 10,
-                borderRadius: 6,
-                backgroundColor: colors.primary,
-              },
-              dotStyle(dot),
-            ]}
-          />
-        ))}
-      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  loaderRing: {
+    width: 36, // UX Standard size for mobile loaders
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 3, // Refined line weight
+  },
+});

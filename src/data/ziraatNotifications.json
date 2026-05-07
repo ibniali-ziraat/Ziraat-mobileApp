@@ -1,0 +1,77 @@
+[
+  {
+    "id": 1,
+    "title": "Soil Health",
+    "message": "Use organic compost to improve soil fertility."
+  },
+  {
+    "id": 2,
+    "title": "Irrigation",
+    "message": "Avoid overwatering to prevent root damage."
+  },
+  {
+    "id": 3,
+    "title": "Pest Control",
+    "message": "Use neem oil as a natural pesticide."
+  },
+  {
+    "id": 4,
+    "title": "Crop Rotation",
+    "message": "Rotate crops to maintain soil nutrients."
+  },
+  {
+    "id": 5,
+    "title": "Weather Alert",
+    "message": "Check weather before spraying pesticides."
+  },
+  {
+    "id": 6,
+    "title": "Harvesting",
+    "message": "Harvest crops at the right time for best quality."
+  },
+  {
+    "id": 7,
+    "title": "Market Prices",
+    "message": "Check market prices before selling your produce."
+  },
+  {
+    "id": 8,
+    "title": "Fertilizer Use",
+    "message": "Use fertilizers according to soil test results."
+  },
+  {
+    "id": 9,
+    "title": "Disease Management",
+    "message": "Remove infected plants to prevent disease spread."
+  },
+  {
+    "id": 10,
+    "title": "Sustainable Farming",
+    "message": "Adopt sustainable practices for long-term benefits."
+  },
+  {
+    "id": 11,
+    "title": "Water Conservation",
+    "message": "Use drip irrigation to save water."
+  },
+  {
+    "id": 12,
+    "title": "Seed Selection",
+    "message": "Choose high-quality seeds for better yields."
+  },
+  {
+    "id": 13,
+    "title": "Weed Control",
+    "message": "Mulch around plants to suppress weeds."
+  },
+  {
+    "id": 14,
+    "title": "Livestock Care",
+    "message": "Provide clean water and shelter for livestock."
+  },
+  {
+    "id": 15,
+    "title": "Farm Safety",
+    "message": "Wear protective gear when handling chemicals."
+  }
+]

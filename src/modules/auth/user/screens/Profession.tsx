@@ -1,4 +1,3 @@
-import ProfessionSection from "@/src/modules/auth/user/sections/ProfessionSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -9,13 +8,15 @@ import {
   useProfessionMutation,
   useProfessionQuery,
   useProfessionUpdateMutation,
-} from "@/src/hooks/userQueryHooks";
-import { professionSchema } from "@/src/schemas/user/profession.schema";
+} from "../../../../hooks/userQueryHooks";
+
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import { professionSchema } from "@/src/modules/auth/user/schemas/profession.schema";
+import ProfessionSection from "@/src/modules/auth/user/sections/ProfessionSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { ScrollView } from "react-native";
 
 export default function ProfessionScreen() {
   const { userProfileId } = useAuth();
@@ -52,7 +53,7 @@ export default function ProfessionScreen() {
         showSuccessToast("Profession Info Saved");
       }
 
-      router.replace(ROUTES.USER.PROFILE);
+      router.replace(ROUTES.ACCOUNT.PROFILE);
     } catch (error) {
       const backendError =
         error?.response?.data?.message ||
@@ -67,19 +68,21 @@ export default function ProfessionScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <BackHeader
-          title="Profession"
-          onPress={() => router.replace(ROUTES.USER.PROFILE)}
+          title="Professional Details"
+          desc="Please provide details about your current profession. "
+          onPress={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
         />
-
-        <ProfessionSection control={control} errors={errors} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update " : "Add "}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-          loading={isSaving || isUpdating}
-        />
+        <ScreenContent>
+          <ProfessionSection control={control} errors={errors} />
+          <FormActions
+            cancelLabel={"Cancel"}
+            onCancel={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
+            submitLabel={data ? "Update " : "Add "}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </ScreenContent>
       </FormProvider>
     </ScreenLayout>
   );

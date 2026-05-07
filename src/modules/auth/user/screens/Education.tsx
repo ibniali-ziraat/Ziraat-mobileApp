@@ -1,4 +1,3 @@
-import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
 import BackHeader from "@/src/components/shared/BackHeader";
 import FormActions from "@/src/components/shared/FormActions";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -9,13 +8,15 @@ import {
   useEducationMutation,
   useEducationQuery,
   useEducationUpdateMutation,
-} from "@/src/hooks/userQueryHooks";
-import { educationSchema } from "@/src/schemas/user/education.schema";
+} from "../../../../hooks/userQueryHooks";
+
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import { educationSchema } from "@/src/modules/auth/user/schemas/education.schema";
+import EducationSection from "@/src/modules/auth/user/sections/EducationSection";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
-import { ScrollView } from "react-native";
 
 export default function EducationScreen() {
   const { userProfileId } = useAuth();
@@ -52,7 +53,7 @@ export default function EducationScreen() {
         showSuccessToast("Education Saved");
       }
 
-      router.replace(ROUTES.USER.PROFILE);
+      router.replace(ROUTES.ACCOUNT.PROFILE);
     } catch (error) {
       const backendError =
         error?.response?.data?.message ||
@@ -67,19 +68,22 @@ export default function EducationScreen() {
     <ScreenLayout>
       <FormProvider {...form}>
         <BackHeader
-          title="Education"
-          onPress={() => router.replace(ROUTES.USER.PROFILE)}
+          title="Educational Details"
+          desc="Please provide details about your highest qualification and educational background."
+          onPress={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
         />
 
-        <EducationSection control={control} errors={errors} />
-        <FormActions
-          cancelLabel={"Cancel"}
-          onCancel={() => router.replace(ROUTES.USER.PROFILE)}
-          submitLabel={data ? "Update" : "Add"}
-          onSubmit={handleSubmit(onSubmit)}
-          disabled={isSaving || isUpdating}
-          loading={isSaving || isUpdating}
-        />
+        <ScreenContent>
+          <EducationSection control={control} errors={errors} />
+          <FormActions
+            cancelLabel={"Cancel"}
+            onCancel={() => router.replace(ROUTES.ACCOUNT.PROFILE)}
+            submitLabel={data ? "Update" : "Add"}
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={isSaving || isUpdating}
+            loading={isSaving || isUpdating}
+          />
+        </ScreenContent>
       </FormProvider>
     </ScreenLayout>
   );

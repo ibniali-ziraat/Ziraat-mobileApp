@@ -1,219 +1,322 @@
-import AddToCartButton from "@/src/components/shared/AddToCartButton";
+import { router, useLocalSearchParams, useRouter } from "expo-router";
+import { useMemo, useState } from "react";
+import { FlatList, Pressable, Text, View } from "react-native";
+
 import BackHeader from "@/src/components/shared/BackHeader";
-import BuyNowButton from "@/src/components/shared/BuyNowButton";
-import ProductFaq from "@/src/components/shared/ProductFaq";
-import RatingStars from "@/src/components/shared/RatingStars";
-import Review from "@/src/components/shared/Review";
-// Removed ScreenLayout
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import ProductDetailCarousel from "@/src/modules/products/components/ProductDetailCarousel";
-import { addToCartList } from "@/src/utils/cartlistStore";
-import { router, useLocalSearchParams } from "expo-router";
-import { IndianRupee, Package } from "lucide-react-native";
-// Imported FlatList
-import { FlatList, Text, ToastAndroid, View } from "react-native";
-import faqData from "../../Data/Faq.json";
-// import products from "../../Data/products.json";
 
-// --- START: renderHeader Function (Content moved from ScreenLayout) ---
-const renderHeader = (product, colors) => (
-  <>
-    <ProductDetailCarousel photos={product.photos} label={product.label} />
+import ProductDescription from "./components/ProductDescription";
+import ProductPriceCard from "./components/ProductPriceCard";
+import ProductQuantitySelector from "./components/ProductQuantitySelector";
+import ProductSpecifications from "./components/ProductSpecifications";
+import ProductStickyBar from "./components/ProductStickyBar";
 
-    <View className="mt-8 px-4">
-      <Text className="text-4xl font-bold text-dark mb-2">
-        {String(product.title)}
-      </Text>
+import Review from "@/src/components/shared/AllReview";
 
-      <Text className="text-xl mb-1">
-        Category: {String(product.category)}
-      </Text>
+import { toast } from "@backpackapp-io/react-native-toast";
+import { MoveLeft, PackageSearch } from "lucide-react-native";
 
-      {product.saltComposition && (
-        <Text className="text-xl mb-2 text-dark">
-          <Text className="font-semibold text-primary">
-            {String(product.saltComposition)}
-          </Text>
-        </Text>
-      )}
+import Loader from "@/src/components/shared/Loader";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
+import ProductImages from "./components/ProductImages";
+import { useCart } from "./hooks/data/useCart";
+import { useAddReview, useListReviews } from "./hooks/data/useReview";
+import { useProductByIdQuery } from "./hooks/queries/products.queries";
 
-      {/* PRICE + DISCOUNT */}
-      <View className="flex-row items-center mb-2 w-full">
-        <View className="flex-row items-center">
-          <IndianRupee size={16} color={colors.dark} />
-          <Text
-            className={`text-xl text-dark ${
-              product.discountPrice ? "line-through" : ""
-            }`}
-          >
-            {String(product.price)}
-          </Text>
-        </View>
+/*  IMPORT PRODUCTS LIST */
 
-        {product.discountPrice && (
-          <View className="flex-row items-center ml-2">
-            <IndianRupee size={20} color={colors.dark} />
-            <Text className="text-3xl font-bold text-dark">
-              {String(product.discountPrice)}
-            </Text>
-          </View>
-        )}
-
-        <Text
-          className={`text-sm px-2 py-1 bg-primary rounded-xl ml-3 ${
-            product.inStock ? "text-light" : "text-primary"
-          }`}
-        >
-          {product.inStock ? "In Stock" : "Out of Stock"}
-        </Text>
-      </View>
-
-      {/* RATING */}
-      <View className="flex-row justify-start mb-6">
-        <RatingStars rating={product.rating} />
-      </View>
-
-      <Text className="font-semibold text-xl mb-2">
-        Product Description:
-      </Text>
-
-      {/* DESCRIPTION */}
-      {Array.isArray(product.description) ? (
-        product.description.map((desc, index) => (
-          <Text
-            key={index}
-            className="text-dark text-[15px] mb-2 text-justify"
-          >
-            {String(desc)}
-          </Text>
-        ))
-      ) : (
-        <Text className="text-dark text-[15px] text-justify">
-          {String(product.description)}
-        </Text>
-      )}
-
-      {/* DOSAGE */}
-      {product.dosage && (
-        <Text className="text-[15px] text-dark mb-4 text-justify">
-          <Text className="text-xl font-semibold text-dark">Dosage: </Text>
-          {String(product.dosage)}
-        </Text>
-      )}
-
-      {/* PACKAGING */}
-      {product.packaging && (
-        <View className="mt-4">
-          <Text className="font-semibold text-xl mb-2">Packaging:</Text>
-
-          {product.packaging.map((pack, index) => (
-            <View key={index} className="flex-row items-center mb-1">
-              <Package size={18} color={colors.secondary} />
-              <Text className="text-dark text-[15px] ml-2">
-                {String(pack.type)}: {String(pack.size)}
-                {pack.weight ? ` (${String(pack.weight)})` : ""}
-                {pack.packOf ? ` - Pack of ${String(pack.packOf)}` : ""}
-              </Text>
-            </View>
-          ))}
-        </View>
-      )}
-
-      {/* TAGS */}
-      {product.tag && (
-        <Text className="text-dark text-xl font-medium mt-4">
-          Tags:{" "}
-          <Text className="text-primary font-semibold">
-            {String(product.tag)}
-          </Text>
-        </Text>
-      )}
-    </View>
-  </>
-);
-// --- END: renderHeader Function ---
+/*  IMPORT WISHLIST */
+import { typography } from "@/src/constants/fonts/typography";
+import { useWishlist } from "../wishlist/hooks/useWishlist";
+import ProductsList from "./components/ProductList";
 
 export default function ProductDetails() {
   const { productId } = useLocalSearchParams();
+  const [quantity, setQuantity] = useState(1);
 
-  if (!productId) {
+  const { userId } = useAuth();
+
+  const { data: product, isLoading, isError } = useProductByIdQuery(productId);
+
+  const { mutate: submitReview, isPending } = useAddReview();
+  const { cart, addToCart, removeFromCart, isCartBusy } = useCart();
+
+  /*  WISHLIST */
+  const {
+    wishlist,
+    isWishlistBusy,
+    addToWishlist,
+    removeFromWishlist,
+    getWishlistItemId,
+  } = useWishlist();
+
+  const handleToggleWishlist = async (productId: string | number) => {
+    const id = getWishlistItemId(productId);
+
+    try {
+      if (id) {
+        await removeFromWishlist({ id });
+        toast.success("Removed from wishlist");
+      } else {
+        await addToWishlist({
+          productId,
+          quantity: 1,
+        });
+        toast.success("Added to wishlist");
+      }
+    } catch (error) {}
+  };
+
+  /* ⭐ RELATED PRODUCTS */
+  const relatedProducts = product?.relatedProducts ?? [];
+
+  /* ⭐ CROSS SELL PRODUCTS */
+  const crossSellProducts = product?.crossSellProducts ?? [];
+
+  /* ---------------- REVIEWS ---------------- */
+
+  const [pageNumber, setPageNumber] = useState(1);
+  const pageSize = 5;
+
+  const {
+    data: reviewsData,
+    isLoading: reviewsLoading,
+    isError: reviewsError,
+  } = useListReviews({
+    entityId: product?.id,
+    entityTypeId: "Product",
+    pageNumber,
+    pageSize,
+  });
+
+  const reviewsRaw = reviewsData?.items?.data ?? [];
+
+  const summary = {
+    averageRating: reviewsData?.ratingAverage ?? 0,
+    totalReviews: reviewsData?.reviewsCount ?? 0,
+  };
+
+  const reviews = useMemo(() => {
+    return reviewsRaw.map((r: any) => ({
+      id: r.id,
+      user: r.reviewerName,
+      userId: r.userId,
+      rating: r.rating,
+      comment: r.comment,
+      title: r.title,
+      date: new Date(r.createdOn).toLocaleDateString(),
+      helpful: 0,
+    }));
+  }, [reviewsRaw]);
+
+  const hasUserReviewed = useMemo(() => {
+    if (!userId) return false;
+
+    return reviews.some((r: any) => String(r.userId) === String(userId));
+  }, [reviews, userId]);
+
+  const addReview = (formData: any) => {
+    if (!product) return;
+
+    const payload = {
+      rating: formData.rating,
+      title: "",
+      comment: formData.comment,
+      reviewerName: "",
+      entityId: product.id,
+      entityTypeId: "Product",
+      hasBoughtProduct: true,
+      loggedUserName: "",
+    };
+
+    submitReview(payload, {
+      onSuccess: () => {
+        toast.success("Review added");
+        setPageNumber(1);
+        // setModalVisible(false);
+      },
+    });
+  };
+
+  if (isLoading) {
     return (
-      <View className="flex-1 justify-center items-center bg-light">
-        <Text className="text-lg text-dark">Please provide a product ID</Text>
-      </View>
+      <ScreenLayout>
+        <Loader />
+      </ScreenLayout>
     );
   }
 
-  const product = products.find((p) => String(p._id) === String(productId));
+  if (isError || !product) {
+    const router = useRouter();
 
-  if (!product) {
     return (
-      <View className="flex-1 justify-center items-center bg-light">
-        <Text className="text-lg text-dark">Product not found</Text>
-      </View>
+      <ScreenLayout>
+        <View className="flex-1 items-center justify-center px-8 bg-white">
+          <View
+            style={{ backgroundColor: `${colors.secondary}10` }}
+            className="p-6 rounded-full mb-6"
+          >
+            <PackageSearch
+              size={80}
+              color={colors.secondary}
+              strokeWidth={1.5}
+            />
+          </View>
+
+          {/* Text Content */}
+          <Text
+            style={typography.Poppins_l_semibold}
+            className="text-neutral-900 text-center text-xl mb-2"
+          >
+            Product Not Found
+          </Text>
+
+          <Text
+            style={typography.Poppins_s_regular}
+            className="text-neutral-400 text-center mb-10 leading-5"
+          >
+            We couldn't find the item you're looking for. It might have been
+            removed or the link is incorrect.
+          </Text>
+
+          <Pressable
+            onPress={() => router.back()}
+            className="flex-row items-center justify-center bg-neutral-900 px-8 py-4 rounded-2xl w-full active:opacity-80"
+          >
+            <MoveLeft size={20} color="white" className="mr-2" />
+            <Text className="text-white font-bold text-base ml-2">Go Back</Text>
+          </Pressable>
+        </View>
+      </ScreenLayout>
     );
   }
+
+  /* ---------------- CART ---------------- */
+
+  const cartItem = cart.find((i) => i.productId === product.id);
+
+  const isInCart = Boolean(cartItem);
 
   const handleAddToCart = async () => {
+    if (!product?.id) return;
+
     try {
-      await addToCartList({
-        id: String(product._id),
-        title: String(product.title),
-        category: String(product.category),
-        price: String(product.price),
-        discountPrice: product.discountPrice ? String(product.discountPrice) : null,
-        photos: product.photos || [],
+      await addToCart({
+        productId: Number(product.id),
+        quantity: Number(quantity),
       });
-      ToastAndroid.show("Added to Cart", ToastAndroid.SHORT);
+    } catch {}
+  };
+
+  const handleRemoveFromCart = async () => {
+    if (!cartItem?.id) return;
+
+    try {
+      await removeFromCart({
+        id: cartItem.id,
+      });
+
+      toast.success("Removed from cart");
     } catch (error) {
-      console.error("Add to cart failed:", error);
-      ToastAndroid.show("Failed to add to cart", ToastAndroid.SHORT);
+      const errorMessage =
+        error instanceof Error ? error.message : "Could not remove item";
+
+      toast.error(`Error: ${errorMessage}`);
     }
   };
 
   return (
-    <View className="flex-1 bg-light">
-      <BackHeader />
+    <>
+      <ScreenLayout scrollable>
+        <BackHeader title="Product Details" />
+        <ScreenContent>
+          <FlatList
+            scrollEnabled={false}
+            data={[{ key: "content" }]}
+            renderItem={() => null}
+            ListHeaderComponent={
+              <>
+                <ProductImages product={product} />
 
-      {/* FIX: Use FlatList as the main scroll container for the page content */}
-      <FlatList
-        data={[{ key: 'details-footer' }]} // Dummy data for FlatList structure
-        keyExtractor={(item) => item.key}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={renderHeader(product, colors)} // Passes the top details section
-        ListFooterComponent={
-            <>
-                {/* REVIEWS */}
-                <View className="mt-6 px-4">
-                    <Review />
-                </View>
+                <ProductPriceCard product={product} />
 
-                {/* FAQ */}
-                <View className="mt-2 px-4 pb-8">
-                    <ProductFaq data={faqData} />
-                </View>
-            </>
-        }
-        renderItem={() => null} // Don't render dummy item
-      />
+                <ProductQuantitySelector
+                  quantity={quantity}
+                  setQuantity={setQuantity}
+                />
 
-      {/* BUY NOW + ADD TO CART (Fixed Position) */}
-      <View className="flex-row p-4 mb-6">
-        <View className="flex-1 mr-2 h-12">
-          <BuyNowButton
-            onPress={() =>
-              router.push({
-                pathname: "/shipping",
-                params: { productId: String(product._id) },
-              })
+                <ProductDescription product={product} />
+
+                <ProductSpecifications product={product} />
+              </>
+            }
+            ListFooterComponent={
+              <View className="pb-32">
+                {reviewsLoading ? (
+                  <Loader />
+                ) : reviewsError ? (
+                  <Text>Failed to load reviews</Text>
+                ) : (
+                  <>
+                    <Review
+                      reviews={reviews}
+                      summary={summary}
+                      hasUserReviewed={hasUserReviewed}
+                      onSubmitReview={addReview}
+                      loading={isPending}
+                      onViewAllPress={() =>
+                        router.push({
+                          pathname: ROUTES.Review.reviewlist,
+                          params: { productId: product.id },
+                        })
+                      }
+                    />
+                  </>
+                )}
+
+                {relatedProducts.length > 0 && (
+                  <ProductsList
+                    title="Recommended Products"
+                    items={relatedProducts}
+                    wishlistItems={wishlist}
+                    onToggleWishlist={handleToggleWishlist}
+                    isWishlistBusy={isWishlistBusy}
+                    variant="carousel"
+                  />
+                )}
+
+                {crossSellProducts.length > 0 && (
+                  <View className="mt-6">
+                    <ProductsList
+                      items={crossSellProducts}
+                      title="Frequently Bought Products"
+                      wishlistItems={wishlist}
+                      onToggleWishlist={handleToggleWishlist}
+                      isWishlistBusy={isWishlistBusy}
+                      variant="carousel"
+                    />
+                  </View>
+                )}
+              </View>
             }
           />
-        </View>
+        </ScreenContent>
+      </ScreenLayout>
 
-        <View className="flex-1 h-12">
-          <AddToCartButton onPress={handleAddToCart} />
-        </View>
+      <View className="mt-10">
+        <ProductStickyBar
+          product={product}
+          isInCart={isInCart}
+          onAddToCart={handleAddToCart}
+          onRemoveFromCart={handleRemoveFromCart}
+          isCartBusy={isCartBusy}
+          isWishlistBusy={isWishlistBusy}
+          onToggleWishlist={handleToggleWishlist}
+        />
       </View>
-    </View>
+    </>
   );
 }

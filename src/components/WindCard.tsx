@@ -1,56 +1,87 @@
 import { Wind } from "lucide-react-native";
-import { Animated, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { typography } from "../constants/fonts/typography";
+import { shadows } from "../constants/shadows";
+import WindCompass from "./WindCompass";
 
-export default function WindCard({ speed, gust, dir }) {
-    const degMap: Record<string, number> = {
-        N: 0, NE: 45, E: 90, SE: 135,
-        S: 180, SW: 225, W: 270, NW: 315
-    };
+type Props = {
+  speed: number;
+  gusts: number;
+  degree: number;
+  direction: string;
+};
 
-    const deg = degMap[dir] ?? 0;
+export default function WindCard({ speed, gusts, degree, direction }: Props) {
+  return (
+    <View
+      style={[
+        {
+          width: "100%",
+          marginVertical: 8,
+          paddingHorizontal: 12,
+          paddingVertical: 12,
+          backgroundColor: "#fff",
+          borderRadius: 16,
+          height: 160, // 👈 fixed height
+          justifyContent: "space-between",
+        },
+        shadows.profile_card, // 👈 shadow applied
+      ]}
+    >
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        
+        {/* Left Section */}
+        <View style={{ width: 140 }}>
+          {/* Header */}
+          <View style={{ flexDirection: "row", paddingBottom: 10 }}>
+            <Wind size={18} color="#c7611f" />
+            <Text
+              style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+            >
+              WIND
+            </Text>
+          </View>
 
-    return (
-        <View className="bg-white rounded-2xl p-5 mb-4 border border-neutral border-sm shadow-md">
-
-
-            <Text className="text-black text-base font-semibold mb-3">Wind</Text>
-
-            <View className="flex-row justify-between items-center">
-
-                <View>
-                    <Text className="text-black text-3xl font-bold">{speed} kph</Text>
-
-                    <Text className="text-black/60 mt-1 text-sm">
-                        Gusts: {gust} kph
-                    </Text>
-
-                    <Text className="text-black/60 mt-1 text-sm">
-                        Direction: {dir} ({deg}°)
-                    </Text>
-                </View>
-
-                <View className="items-center justify-center">
-
-
-                    <View className="w-28 h-28 rounded-full border-2 border-secondary items-center justify-center relative">
-
-                        <Text className="absolute top-1 text-[10px] text-black/60">N</Text>
-                        <Text className="absolute bottom-1 text-[10px] text-black/60">S</Text>
-                        <Text className="absolute left-1 text-[10px] text-black/60">W</Text>
-                        <Text className="absolute right-1 text-[10px] text-black/60">E</Text>
-
-
-                        <Animated.View style={{ transform: [{ rotate: `${deg}deg` }] }}>
-                            <Wind size={42} color="#c7611f" />
-                        </Animated.View>
-                    </View>
-
-
-                    <Text className="text-black/70 text-xs mt-2">
-                        {speed} kph • {dir}
-                    </Text>
-                </View>
-            </View>
+          {/* Data */}
+          <View>
+            <Row label="Wind" value={`${speed} kph`} />
+            <Row label="Gusts" value={`${gusts} kph`} />
+            <Row label="Direction" value={`${degree}° ${direction}`} />
+          </View>
         </View>
-    );
+
+        {/* Right Section */}
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
+          <View style={{ paddingBottom: 6 }}>
+            <WindCompass speed={speed} degree={degree} />
+          </View>
+
+          <Text
+            style={[typography.Poppins_m_regular, { color: "#000" }]}
+          >
+            {direction}
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 6,
+      }}
+    >
+      <Text style={[typography.Poppins_s_regular, { color: "#000" }]}>
+        {label} -
+      </Text>
+      <Text style={[typography.Poppins_xs_regular, { color: "#000" }]}>
+        {value}
+      </Text>
+    </View>
+  );
 }

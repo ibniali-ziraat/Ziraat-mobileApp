@@ -1,5 +1,6 @@
 import { FilterProps } from "@/src/types/filter.type";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
+import CsText from "./CsText";
 
 export const FILTERS = {
   LATEST: "Latest",
@@ -10,23 +11,21 @@ export const FILTERS = {
 
 export default function Filter({ filter, setFilter }: FilterProps) {
   return (
-    <View className="flex-row mt-3 mb-4 flex-wrap">
+    <View className="flex-row  mb-4 flex-wrap">
       {Object.values(FILTERS).map((f) => (
-        <TouchableOpacity
+        <Pressable
           key={f}
           onPress={() => setFilter(f)}
-          className={`px-3 py-2 rounded-xl mr-2 mb-2 shadow-sm rounded border border-neutral ${
-            filter === f ? "bg-secondary": "bg-white"
+          className={`px-3 py-2 rounded-xl mr-2 mb-5 shadow-sm  border border-secondary ${
+            filter === f ? "bg-secondary" : "bg-light"
           }`}
         >
-          <Text
-            className={`text-sm ${
-              filter === f ? "text-white" : "text-dark"
-            }`}
+          <CsText
+            className={`text-sm ${filter === f ? "text-light" : "text-dark"}`}
           >
             {f}
-          </Text>
-        </TouchableOpacity>
+          </CsText>
+        </Pressable>
       ))}
     </View>
   );

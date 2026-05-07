@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { Check, ChevronDown, ChevronUp } from "lucide-react-native";
 import { useState } from "react";
-import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { FlatList, Pressable, View } from "react-native";
+import CsText from "./CsText";
 
 const PAYMENT_METHODS = [
   { id: "card", label: "Credit/Debit Card" },
@@ -21,21 +22,21 @@ export default function PaymentSelector({
   return (
     <View className="my-2">
       {/* Selector Button */}
-      <TouchableOpacity
+      <Pressable
         onPress={() => setOpenDropdown(!openDropdown)}
         className="flex-row items-center justify-between px-4 py-3 rounded-xl border border-dark bg-white"
       >
-        <Text className="text-dark font-semibold text-lg">
+        <CsText className="text-dark font-semibold text-lg">
           {paymentMethod
             ? PAYMENT_METHODS.find((p) => p.id === paymentMethod)?.label
             : "Select Payment Method"}
-        </Text>
+        </CsText>
         {openDropdown ? (
           <ChevronUp size={20} color={colors.dark} />
         ) : (
           <ChevronDown size={20} color={colors.dark} />
         )}
-      </TouchableOpacity>
+      </Pressable>
 
       {/* Dropdown */}
       {openDropdown && (
@@ -46,7 +47,7 @@ export default function PaymentSelector({
             renderItem={({ item }) => {
               const isSelected = item.id === paymentMethod;
               return (
-                <TouchableOpacity
+                <Pressable
                   onPress={() => {
                     setPaymentMethod(item.id);
                     setOpenDropdown(false);
@@ -55,11 +56,13 @@ export default function PaymentSelector({
                     isSelected ? "bg-light" : ""
                   }`}
                 >
-                  <Text className={`text-dark ${isSelected ? "font-semibold" : ""}`}>
+                  <CsText
+                    className={`text-dark ${isSelected ? "font-semibold" : ""}`}
+                  >
                     {item.label}
-                  </Text>
+                  </CsText>
                   {isSelected && <Check size={18} color={colors.primary} />}
-                </TouchableOpacity>
+                </Pressable>
               );
             }}
           />

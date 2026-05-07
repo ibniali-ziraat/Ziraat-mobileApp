@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
-import { RefreshCcw, XCircle, Search } from "lucide-react-native";
-import { useEffect, useState, useMemo, useRef } from "react";
-import { Controller } from "react-hook-form";
+import { ChevronDown, Search, XCircle } from "lucide-react-native";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 import {
   Animated,
   FlatList,
@@ -9,51 +9,34 @@ import {
   Pressable,
   Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
-import { HelperText, Portal } from "react-native-paper";
-
-interface Option {
-  label: string;
-  value: string | number;
-}
-
-interface DropdownProps {
-  control: any;
-  name: string;
-  label: string;
-  options: Option[];
-  optional?: boolean;
-  error?: any;
-  modalLabel?: string;
-  onValueChange?: (value: string | number) => void;
-  disabled?: boolean;
-  searchable?: boolean;
-}
+import CsText from "../../shared/CsText";
+import { SingleSelectInputProps } from "../../shared/inputs/types";
 
 export default function SingleSelectInput({
-  control,
   name,
   label,
   options,
   optional = false,
   error,
-  modalLabel = "",
-  showInputLabel = true,
+  modalLabel = "Select",
   onValueChange,
   disabled = false,
   searchable = false,
-}: DropdownProps) {
+  placeholder = label,
+}: SingleSelectInputProps) {
   const [visible, setVisible] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState("");
   const [searchText, setSearchText] = useState("");
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const { control } = useFormContext();
+  if (!control) return null;
 
   const filteredOptions = useMemo(() => {
     if (!searchable || !searchText) return options;
     return options.filter((o) =>
-      o.label.toLowerCase().includes(searchText.toLowerCase())
+      o.label.toLowerCase().includes(searchText.toLowerCase()),
     );
   }, [options, searchText, searchable]);
 
@@ -88,38 +71,34 @@ export default function SingleSelectInput({
 
         return (
           <View style={{ marginBottom: 16 }}>
-            {/* Label */}
-            {showInputLabel && (
-              <Text
-                style={{
-                  marginBottom: 6,
-                  fontSize: 14,
-                  fontWeight: "500",
-                  color: colors.dark,
-                }}
-              >
-                {label}{" "}
-                {!optional && <Text style={{ color: colors.error }}> *</Text>}
-              </Text>
-            )}
-
-            {/* Selector */}
-            <TouchableOpacity
+            <CsText
+              style={{
+                marginBottom: 6,
+                fontSize: 14,
+                fontWeight: "500",
+                color: colors.dark,
+              }}
+            >
+              Select {label}
+              {!optional && <CsText style={{ color: colors.error }}> *</CsText>}
+            </CsText>
+            <Pressable
               disabled={disabled}
               style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                borderWidth: liveError ? 2 : 1,
+                borderWidth: 1,
                 borderColor: liveError
                   ? colors.error
                   : disabled
-                    ? colors.neutral + "88"
-                    : colors.neutral,
-                borderRadius: 8,
+                    ? colors.darkHover
+                    : colors.darkHover,
                 paddingHorizontal: 16,
-                paddingVertical: 12,
+                paddingVertical: 14,
                 backgroundColor: colors.light,
+                borderRadius: 10,
+                // Add these two lines for layout
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
               onPress={() => {
                 if (!disabled) {
@@ -128,66 +107,91 @@ export default function SingleSelectInput({
                 }
               }}
             >
-              <Text
+              <CsText
                 style={{
                   fontSize: 16,
-                  color: disabled ? colors.neutral + "88" : colors.dark,
+                  color: disabled ? colors.neutral + "88" : colors.darkHover,
+                  flex: 1, // Ensures text doesn't overlap the icon
                 }}
               >
-                {selectedLabel || `${label}`}
-                {!optional &&
-                  !selectedLabel &&
-                  !disabled &&
-                  !showInputLabel && (
-                    <Text style={{ color: colors.error }}> *</Text>
-                  )}
-              </Text>
-            </TouchableOpacity>
+                {selectedLabel || placeholder}
+              </CsText>
 
-            {liveError && (
-              <HelperText
-                type="error"
-                visible
+              {/* 2. Added Chevron Icon */}
+              <ChevronDown
+                size={20}
+                color={disabled ? colors.neutral + "88" : colors.darkHover}
+              />
+            </Pressable>
+            {/* <Pressable
+              disabled={disabled}
+              style={{
+                borderWidth: liveError ? 1 : 1,
+                borderColor: liveError
+                  ? colors.error
+                  : disabled
+                    ? colors.darkHover
+                    : colors.darkHover,
+                paddingHorizontal: 16,
+                paddingVertical: 14,
+                backgroundColor: colors.light,
+                borderRadius: 10,
+              }}
+              onPress={() => {
+                if (!disabled) {
+                  setVisible(true);
+                  if (searchable) showSearchBar();
+                }
+              }}
+            >
+              <CsText
                 style={{
-                  color: colors.error,
-                  paddingVertical: 0,
-                  paddingBottom: 0,
-                  marginTop: 2,
-                  marginBottom: 0,
+                  fontSize: 16,
+                  color: disabled ? colors.neutral + "88" : colors.darkHover,
                 }}
               >
+                {selectedLabel || placeholder}
+              </CsText>
+            </Pressable> */}
+            {liveError && (
+              <Text style={{ color: colors.error, marginTop: 6 }}>
                 Required Field
-              </HelperText>
+              </Text>
             )}
-
             {/* Modal */}
             {!disabled && (
               <Modal visible={visible} transparent animationType="slide">
-                <Pressable
+                <View
                   style={{
-                    position: "absolute",
-                    top: 0,
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
+                    flex: 1,
+                    backgroundColor: colors.overlay,
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: colors.overlay, // semi-transparent backdrop
-                  }}
-                  onPress={() => {
-                    setVisible(false);
-                    hideSearchBar();
                   }}
                 >
+                  {/* Backdrop */}
+                  <Pressable
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                    }}
+                    onPress={() => {
+                      setVisible(false);
+                      hideSearchBar();
+                    }}
+                  />
+
+                  {/* Modal Content */}
                   <View
+                    pointerEvents="box-none"
                     style={{
                       width: "80%",
                       backgroundColor: colors.light,
                       borderRadius: 16,
                       maxHeight: 400,
-                      shadowOffset: { width: 0, height: 2 },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 4,
                       elevation: 5,
                       paddingBottom: 12,
                     }}
@@ -197,48 +201,29 @@ export default function SingleSelectInput({
                       style={{
                         paddingHorizontal: 16,
                         paddingVertical: 12,
-                        borderBottomColor: colors.neutral,
                         flexDirection: "row",
                         justifyContent: "space-between",
                         alignItems: "center",
                       }}
                     >
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "500",
-                          color: colors.dark,
-                        }}
-                      >
+                      <CsText style={{ fontSize: 16, fontWeight: "500" }}>
                         {modalLabel}
-                      </Text>
+                      </CsText>
 
-                      <View
-                        style={{ flexDirection: "row", alignItems: "center" }}
-                      >
-                        <TouchableOpacity
+                      <View style={{ flexDirection: "row" }}>
+                        {/* <Pressable
                           onPress={() => {
                             onChange("");
-                            if (onValueChange) onValueChange("");
+                            onValueChange?.("");
                             setSelectedLabel("");
-                            setVisible(false);
-                            hideSearchBar();
+                            // hideSearchBar();
                           }}
-                          style={{ padding: 6, marginRight: 6 }}
+                          style={{ padding: 6 }}
                         >
                           <RefreshCcw size={20} color={colors.primary} />
-                        </TouchableOpacity>
+                        </Pressable> */}
 
-                        <View
-                          style={{
-                            width: 1,
-                            height: 20,
-                            backgroundColor: colors.neutral,
-                            marginHorizontal: 6,
-                          }}
-                        />
-
-                        <TouchableOpacity
+                        <Pressable
                           onPress={() => {
                             setVisible(false);
                             hideSearchBar();
@@ -246,11 +231,11 @@ export default function SingleSelectInput({
                           style={{ padding: 6 }}
                         >
                           <XCircle size={20} color={colors.error} />
-                        </TouchableOpacity>
+                        </Pressable>
                       </View>
                     </View>
 
-                    {/* Search Bar */}
+                    {/* Search */}
                     {searchable && (
                       <Animated.View style={{ opacity: fadeAnim }}>
                         <View
@@ -261,52 +246,50 @@ export default function SingleSelectInput({
                             borderWidth: 1,
                             borderColor: colors.neutral,
                             borderRadius: 8,
-                            backgroundColor: colors.light,
                             paddingHorizontal: 8,
                           }}
                         >
-                          <Search size={20} color={colors.neutral} />
+                          <Search size={18} color={colors.neutral} />
                           <TextInput
                             value={searchText}
                             onChangeText={setSearchText}
                             placeholder={`Search ${label}`}
+                            underlineColorAndroid="transparent"
+                            selectionColor="transparent"
                             style={{
                               flex: 1,
                               paddingVertical: 8,
                               paddingHorizontal: 8,
                               fontSize: 16,
                               color: colors.dark,
+                              backgroundColor: "transparent",
+                              borderWidth: 0,
                             }}
                           />
                         </View>
                       </Animated.View>
                     )}
 
-                    {/* Options List */}
+                    {/* Options */}
                     <FlatList
                       data={filteredOptions}
                       keyExtractor={(item) => item.value.toString()}
-                      keyboardShouldPersistTaps="handled" // <--- KEY FIX
-                      renderItem={({ item, index }) => (
-                        <TouchableOpacity
+                      keyboardShouldPersistTaps="handled"
+                      renderItem={({ item }) => (
+                        <Pressable
                           style={{
-                            paddingTop:
-                              index === filteredOptions.length - 1 ? 16 : 16,
-                            paddingBottom:
-                              index === filteredOptions.length - 1 ? 8 : 16,
-                            paddingHorizontal: 20,
-                            borderBottomWidth:
-                              index === filteredOptions.length - 1 ? 0 : 1,
+                            padding: 16,
+                            borderBottomWidth: 1,
                             borderBottomColor: colors.neutral,
                           }}
                           onPress={() => {
                             onChange(item.value);
-                            if (onValueChange) onValueChange(item.value);
+                            onValueChange?.(item.value);
                             setVisible(false);
                             hideSearchBar();
                           }}
                         >
-                          <Text
+                          <CsText
                             style={{
                               fontSize: 16,
                               color:
@@ -316,12 +299,12 @@ export default function SingleSelectInput({
                             }}
                           >
                             {item.label}
-                          </Text>
-                        </TouchableOpacity>
+                          </CsText>
+                        </Pressable>
                       )}
                     />
                   </View>
-                </Pressable>
+                </View>
               </Modal>
             )}
           </View>

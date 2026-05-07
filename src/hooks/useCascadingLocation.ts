@@ -1,21 +1,29 @@
-import { useState } from "react";
-import locations from "@/src/Data/locations.json";
+import locations from "@/src/data/locations.json";
+import { useMemo, useState } from "react";
 
-export function useCascadingLocation() {
-  const [selectedState, setSelectedState] = useState<string | null>(null);
+type StateName = string | null;
+
+export function useCascadingLocation(fixedState?: string) {
+  const [selectedState, setSelectedState] = useState<StateName>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
 
-  const states = Object.keys(locations);
+  // Decide which state to use
+  const effectiveState = fixedState ?? selectedState;
 
-  const districts = selectedState ? Object.keys(locations[selectedState]) : [];
+  const states = useMemo(() => Object.keys(locations), []);
 
-  const tehsils =
-    selectedState && selectedDistrict
-      ? locations[selectedState][selectedDistrict]
-      : [];
+  const districts = useMemo(() => {
+    if (!effectiveState) return [];
+    return Object.keys(locations[effectiveState] ?? {});
+  }, [effectiveState]);
+
+  const tehsils = useMemo(() => {
+    if (!effectiveState || !selectedDistrict) return [];
+    return locations[effectiveState]?.[selectedDistrict] ?? [];
+  }, [effectiveState, selectedDistrict]);
 
   return {
-    states,
+    states, // only useful when you want state selection
     districts,
     tehsils,
     selectedState,

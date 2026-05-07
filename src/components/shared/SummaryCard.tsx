@@ -1,7 +1,8 @@
 import QuantitySelector from "@/src/components/shared/QuantitySelector";
 import { colors } from "@/src/constants/colors";
 import { IndianRupee } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { View } from "react-native";
+import CsText from "./CsText";
 
 export default function SummaryCard({
   quantity,
@@ -17,9 +18,9 @@ export default function SummaryCard({
   return (
     <View className="bg-white p-4 rounded-2xl border border-neutral mb-4">
       <View className="flex-row items-center justify-between">
-        <Text className="text-lg font-semibold text-dark">
+        <CsText className="text-lg font-semibold text-dark">
           Selected items: {quantity}{quantity > 1 ? " items" : ""}
-        </Text>
+       </CsText>
 
         {!hideQuantitySelector && (
           <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
@@ -28,29 +29,29 @@ export default function SummaryCard({
 
       <View className="mt-4 space-y-2">
         <View className="flex-row justify-between items-center">
-          <Text className="text-base text-dark">Product price</Text>
-          <Text className="text-base text-dark font-semibold">
+          <CsText className="text-base text-dark">Product price</CsText>
+          <CsText className="text-base text-dark font-semibold">
             <IndianRupee size={12} color={colors.dark} /> {numericTotal}
-          </Text>
+         </CsText>
         </View>
 
         {selectedShipping && (
           <View className="flex-row justify-between items-center">
-            <Text className="text-base text-dark">
+            <CsText className="text-base text-dark">
               Shipping: {selectedShipping.name}
-            </Text>
-            <Text className="text-base text-dark font-semibold">
+           </CsText>
+            <CsText className="text-base text-dark font-semibold">
               <IndianRupee size={12} color={colors.dark} /> {shippingPrice}
-            </Text>
+           </CsText>
           </View>
         )}
       </View>
 
       <View className="flex-row items-center justify-between mt-5 border-t pt-3">
-        <Text className="text-lg text-dark font-semibold">Final Amount:</Text>
+        <CsText className="text-lg text-dark font-semibold">Final Amount:</CsText>
         <View className="flex-row items-center">
           <IndianRupee size={20} color={colors.dark} />
-          <Text className="text-2xl font-bold text-dark ml-1">{finalAmount}</Text>
+          <CsText className="text-2xl font-bold text-dark ml-1">{finalAmount}</CsText>
         </View>
       </View>
     </View>

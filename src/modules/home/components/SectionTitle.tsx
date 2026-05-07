@@ -1,13 +1,26 @@
-import { colors } from "@/src/constants/colors";
-import { Ionicons } from "@expo/vector-icons";
+import { typography } from "@/src/constants/fonts/typography";
 import { Text, View } from "react-native";
 
-export default function SectionTitle({ title, icon }) {
-  return (
-    <View className="flex-row items-center mb-6 px-1 mt-4">
-      <Ionicons name={icon} size={22} color={colors.secondary} />
+type Props = {
+  title: string;
+  icon?: React.ReactNode;
+};
 
-      <Text className="text-xl font-semibold text-black ml-2">{title}</Text>
+export default function SectionTitle({ title, icon }: Props) {
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        marginBottom: 24,
+        paddingHorizontal: 4,
+        marginTop: 16,
+      }}
+    >
+      {icon ? <Text style={{ marginRight: 8 }}>{icon}</Text> : null}
+      <Text style={[typography.Poppins_m_semibold]} className="text-xl">
+        {title}
+      </Text>
     </View>
   );
 }

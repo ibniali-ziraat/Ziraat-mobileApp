@@ -1,58 +1,57 @@
-import { colors } from "@/src/constants/colors"; // Import root colors
 import { FormFieldProps } from "@/src/types/formFieldProps";
+import { showErrorToast } from "@/src/utils/toast";
 import * as DocumentPicker from "expo-document-picker";
 import { Eye, Upload, X } from "lucide-react-native";
-import { Controller } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
-import { HelperText } from "react-native-paper";
-import React, { useState } from "react";
+import { useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { Pressable, Text, View } from "react-native";
 import FilePreviewModal from "../../shared/FilePreviewModal";
 
 export default function FormFileInput({
-  control,
   name,
-  label = "Upload License Copy",
-  optional = false, // if true → no error shown
+  label = "Upload File",
+  optional = false,
   error,
 }: FormFieldProps) {
-  const [isModalVisible, setIsModalVisible] = useState(false); // To control modal visibility
-  const [imageUri, setImageUri] = useState(""); // To store image URI for preview
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [imageUri, setImageUri] = useState("");
 
-  const pickFile = async (onChange) => {
+  const { control } = useFormContext();
+  if (!control) return;
+
+  const pickFile = async (onChange: any) => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: "*/*", // Pick any file
+        type: ["application/pdf", "image/*"],
         copyToCacheDirectory: true,
       });
 
-      if (!result.canceled) {
-        onChange(result.assets[0]);
+      if (!result.canceled && result.assets?.length > 0) {
+        onChange(result.assets[0]); // store full file object
       }
     } catch (err) {
-      console.log("Picker Error:", err);
+      showErrorToast("File picker failed");
     }
   };
 
-  // Function to handle file preview (only for images)
-  const previewFile = (fileUri) => {
-    if (!fileUri) return;
-    const fileExtension = fileUri.split(".").pop()?.toLowerCase();
-    if (
-      fileExtension === "jpg" ||
-      fileExtension === "jpeg" ||
-      fileExtension === "png" ||
-      fileExtension === "gif"
-    ) {
-      setImageUri(fileUri); // Set the image URI to show in modal
-      setIsModalVisible(true); // Show modal
+  // 📌 Preview file (supports URL string OR file object)
+  const previewFile = (value: any) => {
+    const uri = typeof value === "string" ? value : value?.uri;
+
+    if (!uri) return;
+
+    // Check if it's image
+    if (uri.match(/\.(jpeg|jpg|png|gif|webp)$/i)) {
+      setImageUri(uri);
+      setIsModalVisible(true);
     } else {
-      alert("File type not supported for preview");
+      showErrorToast("Preview available only for image files");
     }
   };
 
   const closeModal = () => {
-    setIsModalVisible(false); // Close the modal
-    setImageUri(""); // Clear the image URI
+    setIsModalVisible(false);
+    setImageUri("");
   };
 
   return (
@@ -63,87 +62,77 @@ export default function FormFileInput({
         field: { onChange, value },
         fieldState: { error: fieldError },
       }) => {
-        const hasFile = !!value?.uri;
-        const showError = !optional && !!(fieldError || error);
+        const fileUri = typeof value === "string" ? value : value?.uri;
+        const fileName =
+          typeof value === "string" ? value.split("/").pop() : value?.name;
+        const hasFile = !!fileUri;
+        const isInvalid = !optional && !!(fieldError || error);
 
         return (
-          <View style={{ marginBottom: 20 }}>
-            <View
+          <View>
+            <Pressable
+              onPress={() => !hasFile && pickFile(onChange)}
+              activeOpacity={0.8}
               style={{
-                borderWidth: 1.6,
-                borderColor: showError ? colors.error : colors.neutral,
-                backgroundColor: colors.light, // White background
-                paddingVertical: 16,
-                paddingHorizontal: 14,
-                borderRadius: 10,
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "space-between",
+                backgroundColor: "#FFFFFF",
+                padding: 14,
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: isInvalid ? "#EF4444" : "#D1D5DB",
               }}
             >
-              <TouchableOpacity
-                onPress={() => !hasFile && pickFile(onChange)}
-                activeOpacity={0.7}
-                style={{ flex: 1 }}
-              >
-                <Text
-                  style={{
-                    color: colors.dark, // Text color based on root color
-                    fontSize: 15,
-                    fontWeight: hasFile ? "500" : "400",
-                  }}
-                  numberOfLines={1}
-                >
-                  {hasFile
-                    ? value?.name.split(" ")[0] // Display the file name if available
-                    : `${label}${optional ? " (Optional)" : ""}`}
-                </Text>
-              </TouchableOpacity>
-
-              <View style={{ flexDirection: "row", gap: 14 }}>
+              {/* Icon Section */}
+              <View style={{ marginRight: 12 }}>
                 {hasFile ? (
-                  <View style={{ flexDirection: "row" }}>
-                    <TouchableOpacity
-                      onPress={() => previewFile(value.uri)}
-                      style={{ marginRight: 14 }}
-                    >
-                      <Eye size={22} color={colors.primary} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => onChange(null)}>
-                      <View>
-                        <X size={22} color={colors.error} />
-                      </View>
-                    </TouchableOpacity>
-                  </View>
+                  <Eye
+                    size={20}
+                    color="#2563EB"
+                    onPress={() => previewFile(value)}
+                  />
                 ) : (
-                  <TouchableOpacity onPress={() => pickFile(onChange)}>
-                    <View>
-                      <Upload size={22} color={colors.primary} />
-                    </View>
-                  </TouchableOpacity>
+                  <Upload size={20} color="#6B7280" />
                 )}
               </View>
-            </View>
 
-            {/* ERROR TEXT (only if required) */}
-            {showError && (
-              <HelperText
-                type="error"
-                visible
+              {/* Text Section */}
+              <View style={{ flex: 1 }}>
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    color: hasFile ? "#1F2937" : "#9CA3AF",
+                    fontSize: 15,
+                  }}
+                >
+                  {hasFile ? fileName : label}
+                </Text>
+              </View>
+
+              {/* Remove Action */}
+              {hasFile && (
+                <Pressable
+                  onPress={() => onChange(null)}
+                  style={{ padding: 4 }}
+                >
+                  <X size={18} color="#9CA3AF" />
+                </Pressable>
+              )}
+            </Pressable>
+
+            {isInvalid && (
+              <Text
                 style={{
-                  color: colors.error,
-                  paddingVertical: 0,
-                  paddingBottom: 0,
-                  marginTop: 2,
-                  marginBottom: 0,
+                  color: "#EF4444",
+                  fontSize: 12,
+                  marginTop: 4,
+                  marginLeft: 4,
                 }}
               >
-                Required Field
-              </HelperText>
+                {fieldError?.message || error}
+              </Text>
             )}
 
-            {/* File preview modal */}
             <FilePreviewModal
               isVisible={isModalVisible}
               fileUri={imageUri}

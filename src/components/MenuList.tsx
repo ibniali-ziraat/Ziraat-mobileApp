@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { menuGroups } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
+import CsText from "./shared/CsText";
 
 export default function MenuList() {
   return (
@@ -10,6 +11,7 @@ export default function MenuList() {
         <SectionTitle title="E-Commerce" />
         <MenuItem
           label="Marketplace"
+          menu
           onPress={() => router.push("/marketplace")}
         />
         <MenuItem label="My Orders" onPress={() => router.push("/orders")} />
@@ -20,6 +22,7 @@ export default function MenuList() {
           label="Saved Addresses"
           onPress={() => router.push("/addresses")}
         />
+
         <MenuItem
           label="Payment Methods"
           onPress={() => router.push("/payments")}
@@ -45,7 +48,7 @@ export default function MenuList() {
 
 function SectionTitle({ title }) {
   return (
-    <Text
+    <CsText
       style={{
         color: colors.secondary,
         fontSize: 14,
@@ -56,13 +59,13 @@ function SectionTitle({ title }) {
       }}
     >
       {title}
-    </Text>
+    </CsText>
   );
 }
 
 function MenuItem({ label, onPress }) {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       style={{
         paddingVertical: 14,
@@ -71,7 +74,7 @@ function MenuItem({ label, onPress }) {
         borderBottomWidth: 1,
       }}
     >
-      <Text style={{ fontSize: 16, color: colors.dark }}>{label}</Text>
-    </TouchableOpacity>
+      <CsText style={{ fontSize: 16, color: colors.dark }}>{label}</CsText>
+    </Pressable>
   );
 }

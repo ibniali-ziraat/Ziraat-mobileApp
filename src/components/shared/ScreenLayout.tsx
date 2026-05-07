@@ -6,29 +6,44 @@ import { SafeAreaView } from "react-native-safe-area-context";
 interface ScreenLayoutProps {
   children: React.ReactNode;
   keyboardOffset?: number;
+  scrollable?: boolean;
 }
 
 export default function ScreenLayout({
   children,
   keyboardOffset = 30,
+  scrollable = true,
 }: ScreenLayoutProps) {
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: colors.light }}
+      style={{ flex: 1, backgroundColor: "#FFFFFF" }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={keyboardOffset}
     >
       <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingBottom: Platform.OS == "android" ? 40 : 100,
-          }}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={{ flex: 1 }}>{children}</View>
-        </ScrollView>
+        {scrollable ? (
+          <ScrollView
+            contentContainerStyle={{
+              flexGrow: 1,
+              paddingBottom: Platform.OS === "android" ? 20 : 60,
+              backgroundColor: colors.light,
+            }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={{ flex: 1 }}>{children}</View>
+          </ScrollView>
+        ) : (
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: colors.light,
+              paddingBottom: Platform.OS === "android" ? 40 : 100,
+            }}
+          >
+            {children}
+          </View>
+        )}
       </SafeAreaView>
     </KeyboardAvoidingView>
   );

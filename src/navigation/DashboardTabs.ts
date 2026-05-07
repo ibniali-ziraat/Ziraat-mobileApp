@@ -1,35 +1,22 @@
 import * as Lucide from "lucide-react-native";
 
-import AdvisoryProfile from "../app/dashboards/(farmer)/advisory-profile";
-import AlertProfile from "../app/dashboards/(farmer)/alert-profile";
-import FinancialProfile from "../app/dashboards/(farmer)/financial-profile";
-import NutrientProfile from "../app/dashboards/(farmer)/nutrient-profile";
-import OrchardProfile from "../app/dashboards/(farmer)/orchard-profile";
-import PestDiseaseProfile from "../app/dashboards/(farmer)/pestdisease-profile";
-import ResourcesProfile from "../app/dashboards/(farmer)/resources-profile";
-import WeatherProfile from "../app/dashboards/(farmer)/weather-profile";
-import Delivery from "../app/dashboards/(vendor)/vendor-delivery";
-import Profile from "../app/dashboards/(vendor)/vendor-profile";
-import SalesScreen from "../app/SalesScreen";
-import CreditScreen from "../modules/vendor/screens/CreditScreen";
-import FinancialScreen from "../modules/vendor/screens/FinancialScreen";
-import NotificationScreen from "../modules/vendor/screens/NotificationScreen";
-import OffersScreen from "../modules/vendor/screens/OffersScreen";
-import PlatformScreen from "../modules/vendor/screens/PlatformScreen";
-import ProductsScreen from "../modules/vendor/screens/ProductsScreen";
-import ReportsScreen from "../modules/vendor/screens/ReportsScreen";
-import UserScreen from "../modules/vendor/screens/UserScreen";
+import AdvisoryProfile from "../app/(dashboards)/(sections)/advisory-profile";
+import AlertProfile from "../app/(dashboards)/(sections)/alert-profile";
+import FinancialProfile from "../app/(dashboards)/(sections)/financial-profile";
+import NutrientProfile from "../app/(dashboards)/(sections)/nutrient-profile";
+import OrchardProfile from "../app/(dashboards)/(sections)/orchard-profile";
+import PestDiseaseProfile from "../app/(dashboards)/(sections)/pest-disease-profile";
+import ResourcesProfile from "../app/(dashboards)/(sections)/resources-profile";
+import WeatherProfile from "../app/(dashboards)/(sections)/weather-profile";
+import { ROUTES } from "../constants/routes";
 
-// ------------------------------
-// FINAL REGISTRY WITH ICONS, LABELS & NAME
 export const DashboardTabs = {
-  // Farmer
   orchardProfile: {
     name: "orchardProfile",
     component: OrchardProfile,
     icon: Lucide.TreeDeciduous,
     label: "Orchard Profile",
-    link: "dashboards/orchard-profile",
+    link: ROUTES.DASHBOARD.ORCHARD_PROFILE,
     role: "farmer",
   },
   weatherProfile: {
@@ -37,7 +24,7 @@ export const DashboardTabs = {
     component: WeatherProfile,
     icon: Lucide.CloudSun,
     label: "Weather & Climate",
-    link: "dashboards/weather-profile",
+    link: ROUTES.DASHBOARD.WEATHER_PROFILE,
     role: "farmer",
   },
   nutrientProfile: {
@@ -45,7 +32,7 @@ export const DashboardTabs = {
     component: NutrientProfile,
     icon: Lucide.Droplet,
     label: "Nutrient Management",
-    link: "dashboards/nutrient-profile",
+    link: ROUTES.DASHBOARD.NUTRIENT_PROFILE,
     role: "farmer",
   },
   pestDiseaseProfile: {
@@ -53,7 +40,7 @@ export const DashboardTabs = {
     component: PestDiseaseProfile,
     icon: Lucide.Bug,
     label: "Pest & Disease",
-    link: "dashboards/pestdisease-profile",
+    link: ROUTES.DASHBOARD.PEST_DISEASE_PROFILE,
     role: "farmer",
   },
   resourcesProfile: {
@@ -61,7 +48,7 @@ export const DashboardTabs = {
     component: ResourcesProfile,
     icon: Lucide.Package,
     label: "Resources Usage",
-    link: "dashboards/resources-profile",
+    link: ROUTES.DASHBOARD.RESOURCES_PROFILE,
     role: "farmer",
   },
   financialProfile: {
@@ -69,7 +56,7 @@ export const DashboardTabs = {
     component: FinancialProfile,
     icon: Lucide.CreditCard,
     label: "Financial",
-    link: "dashboards/financial-profile",
+    link: ROUTES.DASHBOARD.FINANCIAL_PROFILE,
     role: "farmer",
   },
   advisoryProfile: {
@@ -77,7 +64,7 @@ export const DashboardTabs = {
     component: AdvisoryProfile,
     icon: Lucide.MessageSquare,
     label: "Advisory",
-    link: "dashboards/advisory-profile",
+    link: ROUTES.DASHBOARD.ADVISORY_PROFILE,
     role: "farmer",
   },
   alertProfile: {
@@ -85,101 +72,7 @@ export const DashboardTabs = {
     component: AlertProfile,
     icon: Lucide.Bell,
     label: "Alerts",
-    link: "dashboards/alert-profile",
+    link: ROUTES.DASHBOARD.ALERT_PROFILE,
     role: "farmer",
   },
-
-  // Vendor
-  vendorProfile: {
-    name: "vendorProfile",
-    component: Profile,
-    icon: Lucide.User,
-    label: "Profile",
-    link: "dashboards/vendor-profile",
-    role: "supplier",
-  },
-  vendorSales: {
-    name: "vendorSales",
-    component: SalesScreen,
-    icon: Lucide.ShoppingCart,
-    label: "Sales",
-    link: "dashboards/vendor-sales",
-    role: "supplier",
-  },
-  vendorNotification: {
-    name: "vendorNotification",
-    component: NotificationScreen,
-    icon: Lucide.Bell,
-    label: "Notifications",
-    link: "dashboards/vendor-notification",
-    role: "supplier",
-  },
-  vendorUserDetails: {
-    name: "vendorUserDetails",
-    component: UserScreen,
-    icon: Lucide.Users,
-    label: "Customers",
-    link: "dashboards/vendor-user-details",
-    role: "supplier",
-  },
-  vendorDelivery: {
-    name: "vendorDelivery",
-    component: Delivery,
-    icon: Lucide.Truck,
-    label: "Delivery",
-    link: "dashboards/vendor-delivery",
-    role: "supplier",
-  },
-  vendorCredits: {
-    name: "vendorCredits",
-    component: CreditScreen,
-    icon: Lucide.DollarSign,
-    label: "Credits",
-    link: "dashboards/vendor-credits",
-    role: "supplier",
-  },
-  vendorReports: {
-    name: "vendorReports",
-    component: ReportsScreen,
-    icon: Lucide.BarChart2,
-    label: "Reports",
-    link: "dashboards/vendor-reports",
-    role: "supplier",
-  },
-  vendorFinancial: {
-    name: "vendorFinancial",
-    component: FinancialScreen,
-    icon: Lucide.CreditCard,
-    label: "Financial",
-    link: "dashboards/vendor-financial",
-    role: "supplier",
-  },
-  
-  vendorOffers: {
-    name: "vendorOffers",
-    component: OffersScreen,
-    icon: Lucide.Tag,
-    label: "Offers",
-    link: "dashboards/vendor-offers",
-    role: "supplier",
-  },
-  vendorPlatform: {
-    name: "vendorPlatform",
-    component: PlatformScreen,
-    icon: Lucide.Server,
-    label: "Platform",
-    link: "dashboards/vendor-platform",
-    role: "supplier",
-  },
-  vendorProducts: {
-    name: "vendorProducts",
-    component: ProductsScreen,
-    icon: Lucide.Box,
-    label: "Products",
-    link: "dashboards/vendor-products",
-    role: "supplier",
-  },
-  
-  
-  
 };

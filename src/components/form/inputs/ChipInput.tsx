@@ -1,20 +1,13 @@
-import { useState } from "react";
-import { Controller } from "react-hook-form";
-import { Text, TextInput, View, TouchableOpacity } from "react-native";
-import { X, Plus } from "lucide-react-native"; // Lucide icons
 import { colors } from "@/src/constants/colors";
+import { Plus, X } from "lucide-react-native"; // Lucide icons
+import { useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { Pressable, TextInput, View } from "react-native";
 import { HelperText } from "react-native-paper";
-
-interface ChipInputProps {
-  control: any;
-  name: string;
-  label: string;
-  placeholder?: string;
-  error?: any;
-}
+import CsText from "../../shared/CsText";
+import { ChipInputProps } from "../../shared/inputs/types";
 
 export default function ChipInput({
-  control,
   name,
   label,
   placeholder = "Add",
@@ -22,6 +15,8 @@ export default function ChipInput({
   required = false,
 }: ChipInputProps) {
   const [input, setInput] = useState("");
+  const { control } = useFormContext();
+  if (!control) return null;
 
   return (
     <Controller
@@ -43,10 +38,10 @@ export default function ChipInput({
 
         return (
           <View style={{ marginBottom: 10 }}>
-            <Text className="text-dark text-base font-semibold mb-2">
+            <CsText className="text-dark text-base font-semibold mb-2">
               {label}
-              {required && <Text className="text-red-500"> *</Text>}
-            </Text>
+              {required && <CsText className="text-red-500"> *</CsText>}
+            </CsText>
 
             {/* Chips */}
             <View className="flex-row flex-wrap gap-2 mb-2">
@@ -55,18 +50,17 @@ export default function ChipInput({
                   key={item + index}
                   className="flex-row items-center bg-white border border-neutral px-3 py-1 rounded-full"
                 >
-                  <Text className="text-dark text-sm">{item}</Text>
-                  <TouchableOpacity
+                  <CsText className="text-dark text-sm">{item}</CsText>
+                  <Pressable
                     className="ml-2"
                     onPress={() => handleRemove(index)}
                   >
                     <X size={14} color={colors.error} />
-                  </TouchableOpacity>
+                  </Pressable>
                 </View>
               ))}
             </View>
 
-            {/* Input */}
             <View className="flex-row items-center border border-neutral rounded-md bg-white px-3 py-4">
               <TextInput
                 className="flex-1 text-dark text-base p-0 m-0"
@@ -75,9 +69,9 @@ export default function ChipInput({
                 value={input}
                 onChangeText={setInput}
               />
-              <TouchableOpacity onPress={handleAdd} className="ml-2">
+              <Pressable onPress={handleAdd} className="ml-2">
                 <Plus size={24} color={colors.primary} />
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             {error && (

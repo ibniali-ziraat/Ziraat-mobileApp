@@ -1,24 +1,28 @@
 // components/home/FarmerTipsCard.tsx
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import {
-    ChevronRight,
-    Droplets,
-    Leaf,
-    ShieldCheck,
-    Sun
+  ChevronRight,
+  Droplets,
+  Leaf,
+  ShieldCheck,
+  Sun,
 } from "lucide-react-native";
 import { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from "react-native-reanimated";
 
 // Weather-based warnings
 function getWeatherWarning(title: string) {
-  if (title.includes("Spray")) return "Avoid spraying during rain or strong winds.";
-  if (title.includes("Irrigate")) return " Best done early morning or late evening.";
+  if (title.includes("Spray"))
+    return "Avoid spraying during rain or strong winds.";
+  if (title.includes("Irrigate"))
+    return " Best done early morning or late evening.";
   return null;
 }
 
@@ -47,14 +51,14 @@ const tips = [
 
 export default function FarmerTipsCard() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  
-  const tipOfDayIndex = 0; 
+
+  const tipOfDayIndex = 0;
 
   return (
     <View
       className="rounded-2xl mb-8"
       style={{
-        backgroundColor: "#fff",
+        backgroundColor: colors.light,
         borderWidth: 1,
         borderColor: "rgba(0,0,0,0.06)",
         shadowColor: "#000",
@@ -63,13 +67,11 @@ export default function FarmerTipsCard() {
         elevation: 2,
       }}
     >
-     
-
       <View className="px-4 pb-4">
         {tips.map((tip, index) => {
           const IconComponent = tip.icon;
           const isOpen = openIndex === index;
-          
+
           const warning = getWeatherWarning(tip.title);
 
           // Accordion animations
@@ -93,17 +95,10 @@ export default function FarmerTipsCard() {
             expand.value = withTiming(open ? 1 : 0, { duration: 220 });
           };
 
-         
-
           return (
-            <View
-              key={index}
-              
-            >
-              
-
+            <View key={index}>
               {/* Header Row */}
-              <TouchableOpacity
+              <Pressable
                 onPress={toggle}
                 activeOpacity={0.7}
                 className="flex-row items-center justify-between py-3"
@@ -112,37 +107,45 @@ export default function FarmerTipsCard() {
                   {/* Icon bubble */}
                   <View
                     style={{
-                      
-                      padding: 8,
+                      padding: 5,
                       borderRadius: 10,
                     }}
                   >
                     <IconComponent size={22} color={colors.primary} />
                   </View>
 
-                  <Text className="ml-3 font-semibold text-black text-[15px]">
+                  <CsText
+                    style={[typography.Poppins_s_medium]}
+                    className="ml-3   "
+                  >
                     {tip.title}
-                  </Text>
+                  </CsText>
                 </View>
 
                 <Animated.View style={arrowStyle}>
                   <ChevronRight size={22} color="#777" />
                 </Animated.View>
-              </TouchableOpacity>
+              </Pressable>
 
               {/* Expanded Content */}
               <Animated.View style={[contentStyle, { overflow: "hidden" }]}>
                 <View className="ml-14 mb-4">
-                  <Text className="text-sm text-gray-700 leading-5">
+                  <CsText
+                    style={[typography.Poppins_xs_regular]}
+                    className="eading-5 text-neutral"
+                  >
                     {tip.desc}
-                  </Text>
+                  </CsText>
 
                   {/* Weather Warning */}
                   {warning && (
-                    <Text className="text-xs text-red-600 mt-2">{warning}</Text>
+                    <CsText
+                      style={{ color: colors.error }}
+                      className="text-xs  mt-2"
+                    >
+                      {warning}
+                    </CsText>
                   )}
-
-                  
                 </View>
               </Animated.View>
 

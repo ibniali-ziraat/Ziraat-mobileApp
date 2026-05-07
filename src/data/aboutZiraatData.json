@@ -1,0 +1,76 @@
+[
+  {
+    "title": "Ziraat",
+    "icon": "Wheat",
+    "image": "aboutus",
+    "content": [
+      "Ziraat is a modern agriculture focused platform built to strengthen farmers and agricultural communities.",
+      "Inspired by traditional farming wisdom and powered by modern technology Ziraat bridges knowledge resources and sustainable growth."
+      
+    ]
+  },
+  {
+    "title": "Our Story",
+    "icon": "BookOpen",
+    "image": "aboutus1",
+    "content": [
+      "Ziraat was founded to make agriculture efficient transparent and farmer friendly.",
+      "The platform has grown to provide insights tools and services that improve productivity and livelihoods."
+    ]
+  },
+  {
+    "title": "What Ziraat Offers",
+    "icon": "Layers",
+    "image": "aboutus2",
+    "content": [
+      "Crop planning and seasonal guidance",
+      "Soil health and fertility management",
+      "Weather based farming recommendations",
+      "Pest and disease prevention strategies"
+    ]
+  },
+  {
+    "title": "Sustainability",
+    "icon": "Recycle",
+    "image": "aboutus3",
+    "content": [
+      "Efficient water and irrigation practices",
+      "Reduced chemical usage and organic alternatives",
+      "Soil regeneration and biodiversity protection",
+      "Climate resilient farming techniques"
+    ]
+  },
+  {
+    "title": "Our Vision",
+    "icon": "Target",
+    "image": "aboutus4",
+    "content": [
+      "Knowledge driven decision making",
+      "Accessible and affordable technology",
+      "Sustainable farming practices",
+      "Reliable market connections"
+    ]
+  },
+  {
+    "title": "Who We Serve",
+    "icon": "Handshake",
+    "image": "aboutus5",
+    "content": [
+      "Small and marginal farmers",
+      "Large scale agricultural producers",
+      "Agri entrepreneurs and startups",
+      "Agricultural researchers and advisors"
+    ]
+  },
+  {
+    "title": "Our Impact",
+    "icon": "BarChart3",
+    "image": "aboutus6",
+    "content": [
+      "Improved farm productivity and income",
+      "Reduced waste of natural resources",
+      "Better access to agricultural knowledge",
+      "Support for rural economic growth"
+    ]
+  }
+]

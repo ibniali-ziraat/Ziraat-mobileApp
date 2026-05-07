@@ -8,7 +8,7 @@ interface FormActionsProps {
   onSubmit: () => void | Promise<void>;
   onCancel?: () => void;
   disabled?: boolean;
-  loading?: boolean; // NEW: loading state
+  loading?: boolean;
 }
 
 export default function FormActions({
@@ -17,37 +17,64 @@ export default function FormActions({
   onSubmit,
   onCancel,
   disabled = false,
-  loading = false, // new
+  loading = false,
 }: FormActionsProps) {
   const showCancel = !!cancelLabel && !!onCancel;
   const isDisabled = disabled || loading;
 
   return (
     <View
-      className={`w-full mt-2 gap-6 bg-light ${showCancel ? "flex-row" : "items-center"
-        }`}
+      style={{
+        width: "100%",
+
+        marginTop: 16,
+        flexDirection: showCancel ? "row" : "column",
+        gap: 14,
+
+        alignItems: showCancel ? "stretch" : "center",
+        padding: 0,
+      }}
     >
+      {/* Cancel Button */}
       {showCancel && (
         <Button
           mode="outlined"
           textColor={colors.dark}
-          style={{ borderColor: colors.dark }}
-          className="flex-1 rounded-lg"
           onPress={onCancel}
-          disabled={isDisabled}
+          // disabled={isDisabled}
+          style={{
+            flex: 1,
+            borderRadius: 12,
+            borderColor: colors.darkHover,
+          }}
+          contentStyle={{
+            paddingVertical: 0,
+            paddingHorizontal: 0,
+          }}
         >
           {cancelLabel}
         </Button>
       )}
 
+      {/* Submit Button */}
       <Button
         mode="contained"
         buttonColor={colors.primary}
         textColor={colors.light}
-        loading={loading}          // NEW: loader
-        disabled={isDisabled}      // disabled when loading or disabled
-        className={`${showCancel ? "flex-1" : "w-1/2"} rounded-lg`}
+        loading={loading}
+        disabled={isDisabled}
         onPress={onSubmit}
+        style={{
+          flex: showCancel ? 1 : undefined,
+          width: showCancel ? undefined : "60%",
+          borderRadius: 12,
+          elevation: 2, // subtle depth
+          padding: 0,
+        }}
+        contentStyle={{
+          paddingVertical: 0,
+          paddingHorizontal: 0,
+        }}
       >
         {submitLabel}
       </Button>

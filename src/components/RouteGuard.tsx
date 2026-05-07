@@ -1,6 +1,8 @@
 import { router } from "expo-router";
 import { ReactNode, useEffect, useRef } from "react";
 import { View } from "react-native";
+import { colors } from "../constants/colors";
+import { ROUTES } from "../constants/routes";
 import { useAuth } from "../contexts/AuthContext";
 import { scheduleAutoLogout } from "../utils/tokenExpiryCheck";
 
@@ -15,31 +17,28 @@ export default function RouteGuard({ children }: RouteGuardProps) {
   useEffect(() => {
     if (!initialized) return;
 
-    // No token -> immediate logout and redirect
     if (!userToken) {
       logoutUser();
-      router.replace("/auth/user");
+      router.replace(ROUTES.AUTH.LOGIN);
+      router.replace("/");
       return;
     }
 
-    // Clear previous scheduled logout if present
     if (cancelRef.current) {
       cancelRef.current();
       cancelRef.current = null;
     }
 
-    // Schedule auto-logout based on expiry (if parseable)
     cancelRef.current = scheduleAutoLogout(
       userTokenExp,
       () => {
         logoutUser();
       },
       () => {
-        router.replace("/auth/user");
-      }
+        router.replace(ROUTES.AUTH.LOGIN);
+      },
     );
 
-    // Cleanup
     return () => {
       if (cancelRef.current) {
         cancelRef.current();
@@ -50,5 +49,7 @@ export default function RouteGuard({ children }: RouteGuardProps) {
 
   if (!initialized) return null;
 
-  return <View style={{ flex: 1, backgroundColor: "white" }}>{children}</View>;
+  return (
+    <View style={{ flex: 1, backgroundColor: colors.light }}>{children}</View>
+  );
 }
