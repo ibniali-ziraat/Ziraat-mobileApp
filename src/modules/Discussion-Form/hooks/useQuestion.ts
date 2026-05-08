@@ -7,11 +7,12 @@ import {
   createAnswer,
   createComment,
   createQuestion,
+  deleteQuestion,
   getAnswers,
-
   getCommentsByAnswer,
   getQuestionById,
-  getQuestions
+  getQuestions,
+  getQuestionViews
 } from "../services/question.service";
 
 //  ALL QUESTIONS
@@ -74,39 +75,65 @@ export const useCreateAnswer = () => {
 };
 
 
-// comment
+// delete question
 
 
+// export const useDeleteQuestion =
+//   () => {
+//     return useMutation({
+//       mutationFn: (
+//         id: number
+//       ) =>
+//         deleteQuestion(id),
+//     });
+//   };
 
 
-//  CREATE COMMENT
+export const useDeleteQuestion =
+  () => {
+    const queryClient =
+      useQueryClient();
+
+    return useMutation({
+      mutationFn: (
+        id: number
+      ) =>
+        deleteQuestion(id),
+
+      onSuccess: () => {
+        queryClient.invalidateQueries(
+          {
+            queryKey: [
+              "questions",
+            ],
+          }
+        );
+      },
+    });
+  };
+
+
+export const useComments = (answerId: number) => {
+  return useQuery({
+    queryKey: ["comments", answerId],
+    queryFn: () => getCommentsByAnswer(answerId),
+    enabled: !!answerId,
+  });
+};
+
 export const useCreateComment = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: createComment,
-
     onSuccess: (_, variables) => {
-      //  VERY IMPORTANT (fixes your issue)
+   
       queryClient.invalidateQueries({
         queryKey: ["comments", variables.answerId],
       });
     },
   });
 };
-
-//  GET COMMENTS
-export const useComments = (answerId: number) => {
-  return useQuery({
-    queryKey: ["comments", answerId],
-    queryFn: () => getCommentsByAnswer(answerId),
-    enabled: !!answerId,
-    staleTime: 0,
-  });
-};
-
-
-
 
 
 // votes
@@ -128,3 +155,21 @@ export const useVote = () => {
     },
   });
 };
+
+
+// hooks/useQuestion.ts
+
+export const useQuestionViews = (
+  questionId: number,
+  userId?: number
+) => {
+  return useQuery({
+    queryKey: ["question-views", questionId],
+    queryFn: () => getQuestionViews(questionId, userId),
+    enabled: !!questionId,
+  });
+};
+
+
+
+
