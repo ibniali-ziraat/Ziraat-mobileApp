@@ -197,6 +197,7 @@ const FaqSettings = () => {
 
               <Pressable
                 activeOpacity={0.85}
+                onPress={() => navigation.navigate("contact-Support")}
                 style={{
                   marginTop: 16,
                   borderWidth: 1,

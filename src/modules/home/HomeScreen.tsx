@@ -6,12 +6,11 @@ import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import { Flame, Tag } from "lucide-react-native";
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import { Pressable, View } from "react-native";
 import BestDealsList from "../products/components/BestDealsList";
 import ListHeader from "../products/components/ListHeader";
 import TrendingProductsList from "../products/components/TrendingProductsList";
-import { useProductsData } from "../products/hooks/data/useProductsData";
 import {
   useBestDeals,
   useTrendingProducts,
@@ -24,35 +23,21 @@ import WeatherCard from "./components/weatherCard";
 import { useHomeWeather } from "./hooks/useHomeWeather";
 import { useHomeWishlist } from "./hooks/useHomeWishlist";
 
-<<<<<<< HEAD
 export default function HomeScreen(): JSX.Element {
   const { currentWeather } = useHomeWeather();
   const { sharedWishlistProps } = useHomeWishlist();
-  const { data: trendingData, isLoading: trendingLoading } =
+  const { data: trendingData, refetch: refetchTrending } =
     useTrendingProducts();
-  const { data: bestDealsData, isLoading: bestDealsLoading } = useBestDeals();
-  const { products: allProducts = [] } = useProductsData();
-=======
-import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
-import ProductCarousel from "@/src/components/shared/ProductCarousel";
+  const [refreshing, setRefreshing] = useState(false);
 
-import products from "@/src/Data/products.json";
-import { imageMapper } from "@/src/Data/imageMapper";
-import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
-import { useState } from "react";
-import Loader from "@/src/components/shared/Loader";
+  const { data: bestDealsData, refetch: refetchBestDeals } = useBestDeals();
+  const handleRefresh = async () => {
+    setRefreshing(true);
 
-export default function HomeScreen() {
-  // const [cityData, setCityData] = useState("srinagar");
-  // const { data, isPending, isError } = useWeatherQuery(cityData);
-  // console.log(data, "data...");
+    await Promise.all([refetchTrending(), refetchBestDeals()]);
 
-  // if (isPending) return <Loader />;
-
-  const sections = [
-    { title: "Top Pesticides for Healthy Crop Growth", slice: [0, 8] },
-  ];
->>>>>>> 989965dbab3969b6105de85136a3a74827a93bd6
+    setRefreshing(false);
+  };
 
   return (
     <ScreenLayout>
@@ -78,6 +63,8 @@ export default function HomeScreen() {
                 items={trendingData}
                 {...sharedWishlistProps}
                 variant="carousel"
+                refreshing={refreshing}
+                onRefresh={handleRefresh}
               />
             </View>
 

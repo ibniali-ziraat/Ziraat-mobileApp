@@ -14,15 +14,7 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-<<<<<<< HEAD
-      "bundleIdentifier": "com.codestrix.test",
-      "jsEngine": "hermes",
-      "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
-      }
-=======
       "bundleIdentifier": "com.alilals.ziraat"
->>>>>>> 989965dbab3969b6105de85136a3a74827a93bd6
     },
     "android": {
       "adaptiveIcon": {
@@ -63,8 +55,10 @@
       "expo-maps"
     ],
     "extra": {
-      "router": {}
-    },
-    "owner": "naikummarmukhtar"
+      "router": {},
+      "eas": {
+        "projectId": "eb037198-286f-4d69-bb7e-13b6f0a445e9"
+      }
+    }
   }
 }

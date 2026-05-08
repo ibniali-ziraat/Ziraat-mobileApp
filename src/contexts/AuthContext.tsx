@@ -145,12 +145,8 @@ export const AuthProvider = ({ children }: any) => {
     setUserTokenExpState(null);
 
     setUserProfileIdState(null);
-<<<<<<< HEAD
-    setOrchardProfileIdState(null);
-=======
 
     // router.replace("/auth/user"); // redirect to login
->>>>>>> 989965dbab3969b6105de85136a3a74827a93bd6
   };
 
   const logoutVendor = () => {

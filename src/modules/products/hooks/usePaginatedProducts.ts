@@ -25,7 +25,12 @@ export function usePaginatedProducts({
   const debouncedSearch = useDebounce(search, 500);
   const isFiltering = Object.keys(filters).length > 0 || !!debouncedSearch;
 
-  const { data, isFetching, isLoading } = useProductSearch({
+  const {
+    data,
+    isFetching,
+    isLoading,
+    refetch: productSearchRefetch,
+  } = useProductSearch({
     query: debouncedSearch || undefined,
     category:
       !isFiltering && activeCategory !== "All" ? activeCategory : undefined,
@@ -68,7 +73,15 @@ export function usePaginatedProducts({
           (p) => Number((p as any).rating ?? 0) >= Number(filters.minRating),
         )
       : normalizedProducts;
+  const refresh = async () => {
+    setIsFetchingMore(false);
+    setHasMore(true);
+    setAccumulatedProducts([]);
+    setPage(1);
 
+    // Optional: scroll to top
+    scrollRef.current?.scrollToOffset({ offset: 0, animated: true });
+  };
   return {
     scrollRef,
     displayedProducts,
@@ -77,5 +90,7 @@ export function usePaginatedProducts({
     isFetchingMore,
     hasMore,
     handleEndReached,
+    refresh,
+    productSearchRefetch,
   };
 }

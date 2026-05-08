@@ -28,6 +28,7 @@ const iconMap = {
 
 const aboutUsImages = {
   aboutus: require("../../../assets/images/about-us/aboutus.webp"),
+  
   aboutus1: require("../../../assets/images/about-us/aboutus1.avif"),
   aboutus2: require("../../../assets/images/about-us/aboutus2.jpg"),
   aboutus3: require("../../../assets/images/about-us/aboutus3.jpg"),
@@ -73,13 +74,24 @@ export default function AboutUs() {
             >
               {/* Image */}
               {section.image && (
-                <View className="w-[45%] h-[140px] rounded-xl overflow-hidden">
-                  <Image
-                    source={aboutUsImages[section.image]}
-                    className="w-full h-full"
-                    resizeMode="cover"
-                  />
-                </View>
+               <View
+  style={{
+    width: "45%",
+    height: 140,
+    borderRadius: 16,
+    overflow: "hidden",
+    backgroundColor: "#f3f4f6",
+  }}
+>
+  <Image
+    source={aboutUsImages[section.image]}
+    resizeMode="cover"
+    style={{
+      width: "100%",
+      height: "100%",
+    }}
+  />
+</View>
               )}
 
               {/* Content */}

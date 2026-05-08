@@ -7,14 +7,24 @@ type Props = {
   orchards: any[];
   search: string;
   setSearch: (val: string) => void;
+  onRefresh: () => void;
+  refreshing: any;
 };
 
-export default function OrchardList({ orchards, search, setSearch }: Props) {
+export default function OrchardList({
+  orchards,
+  search,
+  setSearch,
+  onRefresh,
+  refreshing,
+}: Props) {
   return (
     <View style={{ flex: 1 }}>
       <FlatList
         data={orchards}
         keyExtractor={(item) => String(item.id)}
+        onRefresh={onRefresh}
+        refreshing={refreshing}
         renderItem={({ item }) => <OrchardCard orchard={item} />}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
