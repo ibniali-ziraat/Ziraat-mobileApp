@@ -1,4 +1,4 @@
-import { useChatbot } from "@/src/hooks/useChatbot";
+import { useChatbot } from "@/src/modules/chatbot/hooks/useChatbot";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef, useState } from "react";

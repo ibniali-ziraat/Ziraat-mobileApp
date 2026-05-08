@@ -1,7 +1,7 @@
-import { colors } from "@/src/constants/colors";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { colors } from "../../constants/colors";
 
 interface ScreenLayoutProps {
   children: React.ReactNode;

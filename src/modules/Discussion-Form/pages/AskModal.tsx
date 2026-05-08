@@ -6,11 +6,8 @@ import {
   Modal,
   Pressable,
   Text,
-<<<<<<< HEAD
-  TouchableOpacity,
-=======
   TextInput,
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
+  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -93,41 +90,18 @@ export default function AskModal({
       bountyAmount:
         isBounty
           ? Number(
-              data.bountyAmount ||
-                0
-            )
+            data.bountyAmount ||
+            0
+          )
           : 0,
     };
 
     onSubmit(payload);
-<<<<<<< HEAD
-
-    reset();
-
-    setIsBounty(false);
-  };
-
-  return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-    >
-      <View
-        style={{
-          flex: 1,
-
-          justifyContent:
-            "flex-end",
-        }}
-      >
-=======
   };
 
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
         {/* BACKDROP */}
         <Pressable
           onPress={onClose}
@@ -145,32 +119,11 @@ export default function AskModal({
         {/* SHEET */}
         <View
           style={{
-<<<<<<< HEAD
-            height:
-              height * 0.9,
-
-            backgroundColor:
-              colors.light,
-
-            borderTopLeftRadius: 34,
-
-            borderTopRightRadius: 34,
-
-            overflow:
-              "hidden",
-
-            borderWidth: 1,
-
-            borderColor:
-              colors.overlay +
-              "08",
-=======
             height: height * 0.9,
             backgroundColor: colors.light,
             borderTopLeftRadius: 28,
             borderTopRightRadius: 28,
             paddingBottom: 20,
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
           }}
         >
           {/* HANDLE */}
@@ -221,9 +174,6 @@ export default function AskModal({
                 "08",
             }}
           >
-<<<<<<< HEAD
-            {/* LEFT */}
-=======
             <HelpCircle size={20} />
             <Text style={{ fontSize: 18, fontWeight: "800", marginLeft: 10 }}>
               Ask Question
@@ -331,7 +281,6 @@ export default function AskModal({
             </View>
 
             {/* BOUNTY */}
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
             <View
               style={{
                 flexDirection:
@@ -341,83 +290,6 @@ export default function AskModal({
                   "center",
               }}
             >
-<<<<<<< HEAD
-              {/* ICON */}
-              <View
-                style={{
-                  width: 48,
-                  height: 48,
-
-                  borderRadius: 24,
-
-                  alignItems:
-                    "center",
-
-                  justifyContent:
-                    "center",
-
-                  backgroundColor:
-                    colors.primary +
-                    "12",
-
-                  borderWidth: 1,
-
-                  borderColor:
-                    colors.primary +
-                    "18",
-
-                  marginRight: 14,
-                }}
-              >
-                <HelpCircle
-                  size={22}
-                  color={
-                    colors.primary
-                  }
-                  strokeWidth={2.4}
-                />
-              </View>
-
-              {/* TEXT */}
-              <View>
-                <Text
-                  style={{
-                    fontSize: 20,
-
-                    fontWeight:
-                      "800",
-
-                    color:
-                      colors.dark,
-                  }}
-                >
-                  Ask Question
-                </Text>
-
-                <Text
-                  style={{
-                    fontSize: 12,
-
-                    color:
-                      colors.overlay,
-
-                    marginTop: 3,
-
-                    fontWeight:
-                      "500",
-                  }}
-                >
-                  Start a new
-                  discussion
-                </Text>
-              </View>
-            </View>
-
-            {/* CLOSE */}
-            <TouchableOpacity
-              onPress={onClose}
-              activeOpacity={0.8}
-=======
               <Text style={{ fontWeight: "700", flex: 1 }}>Add Bounty</Text>
               <Switch value={isBounty} onValueChange={setIsBounty} />
             </View>
@@ -442,7 +314,6 @@ export default function AskModal({
             <Pressable
               onPress={handleSubmit}
               disabled={loading}
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
               style={{
                 width: 40,
                 height: 40,
@@ -465,21 +336,10 @@ export default function AskModal({
                   "12",
               }}
             >
-<<<<<<< HEAD
-              <X
-                size={18}
-                color={
-                  colors.dark
-                }
-                strokeWidth={2.4}
-              />
-            </TouchableOpacity>
-=======
               <Text style={{ color: colors.light, fontWeight: "700" }}>
                 {loading ? "Posting..." : "Post Question"}
               </Text>
             </Pressable>
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
           </View>
 
           {/* FORM */}
@@ -605,7 +465,7 @@ export default function AskModal({
                         validationErrors
                           .tagsInput
                           .message ||
-                          "Please add valid tags"
+                        "Please add valid tags"
                       );
 
                       return;
@@ -618,7 +478,7 @@ export default function AskModal({
                         validationErrors
                           .title
                           .message ||
-                          "Invalid title"
+                        "Invalid title"
                       );
 
                       return;
@@ -631,7 +491,7 @@ export default function AskModal({
                         validationErrors
                           .body
                           .message ||
-                          "Invalid description"
+                        "Invalid description"
                       );
 
                       return;
@@ -667,10 +527,10 @@ export default function AskModal({
                     colors.secondary,
 
                   shadowOffset:
-                    {
-                      width: 0,
-                      height: 5,
-                    },
+                  {
+                    width: 0,
+                    height: 5,
+                  },
 
                   shadowOpacity: 0.18,
 
