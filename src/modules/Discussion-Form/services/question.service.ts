@@ -38,24 +38,48 @@ export const createAnswer = async (questionId: number, payload: any) => {
 };
 
 
+// deletequestion
+export const deleteQuestion = async (
+  id: number
+) => {
+  const response =
+    await axiosInstance.delete(
+      `/api/v1/questions/${id}`
+    );
+
+  return response.status;
+};
 
 
+
+// comment answer
+
+
+
+export const getCommentsByAnswer = async (answerId: number) => {
+  const { data } = await axiosInstance.get(
+    `/api/v1/answers/${answerId}/comments`
+  );
+
+  return data?.data?.comments || [];
+};
 
 export const createComment = async (payload: {
   userId: number;
   answerId: number;
   body: string;
 }) => {
-  const { data } = await axiosInstance.post("/api/v1/comments", payload);
-  return data;
-};
-
-export const getCommentsByAnswer = async (answerId: number) => {
-  const { data } = await axiosInstance.get(
-    `/api/v1/comments?answerId=${answerId}`
+  const { data } = await axiosInstance.post(
+    "/api/v1/comments",
+    payload
   );
   return data;
 };
+
+
+
+
+
 
 
 
@@ -71,3 +95,28 @@ export const castVote = async (payload: {
   const { data } = await axiosInstance.post("/api/v1/votes", payload);
   return data;
 };
+
+
+
+
+
+// services/questionService.ts
+
+export const getQuestionViews = async (
+  questionId: number,
+  userId?: number
+) => {
+  const { data } = await axiosInstance.get(
+    `/api/v1/questions/${questionId}/views`,
+    {
+      params: {
+        userId,
+      },
+    }
+  );
+
+  return data?.data;
+};
+
+
+

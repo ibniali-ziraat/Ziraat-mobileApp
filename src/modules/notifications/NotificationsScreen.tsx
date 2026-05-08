@@ -1,4 +1,5 @@
 import { useNotification } from "@/src/contexts/NotificationContext";
+import { useLocation } from "@/src/hooks/useLocationPermission";
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
@@ -69,38 +70,22 @@ export default function NotificationsScreen() {
     useNotification();
 
   const { mutate: saveToken } = useRegisterDeviceToken();
+  const { coords, loading: locationLoading } = useLocation();
 
   const [copiedExpo, setCopiedExpo] = useState(false);
   const [copiedDevice, setCopiedDevice] = useState(false);
 
+  // ✅ Single effect — fires once when location resolves (loading flips to false)
   useEffect(() => {
+    if (locationLoading) return;
     registerForPush();
-  }, []);
-
-  // const registerForPush = async () => {
-  //   try {
-  //     const token = await Notifications.getDevicePushTokenAsync();
-
-  //     console.log("DEVICE TOKEN:", token);
-
-  //     if (token?.data) {
-  //       saveToken({
-  //         token: token.data,
-  //         type: token.type,
-  //       });
-  //     }
-  //   } catch (err) {
-  //     console.log("Token error:", err);
-  //   }
-  // };
+  }, [locationLoading]);
 
   const registerForPush = async () => {
     try {
       const token = await Notifications.getDevicePushTokenAsync();
-
       let tokenValue = token.data;
 
-      // iOS returns raw APNs hex token — use Expo push token instead for consistency
       if (Platform.OS === "ios") {
         const expoPushToken = await Notifications.getExpoPushTokenAsync({
           projectId:
@@ -115,6 +100,8 @@ export default function NotificationsScreen() {
           userId: 0,
           token: tokenValue,
           type: token.type,
+          lat: coords?.lat,
+          lon: coords?.lon,
         });
       }
     } catch (err) {
@@ -122,7 +109,11 @@ export default function NotificationsScreen() {
     }
   };
 
-  const copy = async (value, title, setCopied) => {
+  const copy = async (
+    value: string | null,
+    title: string,
+    setCopied: (v: boolean) => void,
+  ) => {
     if (!value) return;
     await Share.share({ message: value, title });
     setCopied(true);
