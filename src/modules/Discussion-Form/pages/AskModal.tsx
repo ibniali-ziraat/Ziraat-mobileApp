@@ -6,18 +6,12 @@ import {
   Modal,
   Pressable,
   Text,
-<<<<<<< HEAD
-  TouchableOpacity,
-=======
   TextInput,
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
+  TouchableOpacity,
   View,
 } from "react-native";
 
-import {
-  HelpCircle,
-  X,
-} from "lucide-react-native";
+import { HelpCircle, X } from "lucide-react-native";
 
 import ChipInput from "@/src/components/form/inputs/ChipInput";
 
@@ -28,14 +22,11 @@ import { colors } from "@/src/constants/colors";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
 
-import {
-  AskQuestionSchema,
-} from "../schemas/discussion.schema";
+import { AskQuestionSchema } from "../schemas/discussion.schema";
 
 import { showErrorToast } from "@/src/utils/toast";
 
-const { height } =
-  Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
 type Props = {
   visible: boolean;
@@ -51,10 +42,7 @@ export default function AskModal({
   loading = false,
 }: Props) {
   // FORM
-  const methods =
-    useZodForm(
-      AskQuestionSchema
-    );
+  const methods = useZodForm(AskQuestionSchema);
 
   const {
     handleSubmit,
@@ -63,20 +51,15 @@ export default function AskModal({
     formState: { errors },
   } = methods;
 
-  const title =
-    watch("title");
+  const title = watch("title");
 
-  const body =
-    watch("body");
+  const body = watch("body");
 
   // STATES
-  const [isBounty, setIsBounty] =
-    useState(false);
+  const [isBounty, setIsBounty] = useState(false);
 
   // SUBMIT
-  const handleQuestionSubmit = (
-    data: any
-  ) => {
+  const handleQuestionSubmit = (data: any) => {
     const payload = {
       title: data.title,
 
@@ -84,100 +67,45 @@ export default function AskModal({
 
       userId: 1,
 
-      tags:
-        data.tagsInput ||
-        [],
+      tags: data.tagsInput || [],
 
       isBounty,
 
-      bountyAmount:
-        isBounty
-          ? Number(
-              data.bountyAmount ||
-                0
-            )
-          : 0,
+      bountyAmount: isBounty ? Number(data.bountyAmount || 0) : 0,
     };
 
     onSubmit(payload);
-<<<<<<< HEAD
-
-    reset();
-
-    setIsBounty(false);
-  };
-
-  return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-    >
-      <View
-        style={{
-          flex: 1,
-
-          justifyContent:
-            "flex-end",
-        }}
-      >
-=======
   };
 
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={{ flex: 1, justifyContent: "flex-end" }}>
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
         {/* BACKDROP */}
         <Pressable
           onPress={onClose}
           style={{
-            position:
-              "absolute",
+            position: "absolute",
 
             inset: 0,
 
-            backgroundColor:
-              colors.overlay,
+            backgroundColor: colors.overlay,
           }}
         />
 
         {/* SHEET */}
         <View
           style={{
-<<<<<<< HEAD
-            height:
-              height * 0.9,
-
-            backgroundColor:
-              colors.light,
-
-            borderTopLeftRadius: 34,
-
-            borderTopRightRadius: 34,
-
-            overflow:
-              "hidden",
-
-            borderWidth: 1,
-
-            borderColor:
-              colors.overlay +
-              "08",
-=======
             height: height * 0.9,
             backgroundColor: colors.light,
             borderTopLeftRadius: 28,
             borderTopRightRadius: 28,
             paddingBottom: 20,
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
           }}
         >
           {/* HANDLE */}
           <View
             style={{
-              alignItems:
-                "center",
+              alignItems: "center",
 
               paddingTop: 12,
 
@@ -191,9 +119,7 @@ export default function AskModal({
 
                 borderRadius: 999,
 
-                backgroundColor:
-                  colors.primary +
-                  "25",
+                backgroundColor: colors.primary + "25",
               }}
             />
           </View>
@@ -201,14 +127,11 @@ export default function AskModal({
           {/* HEADER */}
           <View
             style={{
-              flexDirection:
-                "row",
+              flexDirection: "row",
 
-              alignItems:
-                "center",
+              alignItems: "center",
 
-              justifyContent:
-                "space-between",
+              justifyContent: "space-between",
 
               paddingHorizontal: 22,
 
@@ -216,14 +139,9 @@ export default function AskModal({
 
               borderBottomWidth: 1,
 
-              borderBottomColor:
-                colors.overlay +
-                "08",
+              borderBottomColor: colors.overlay + "08",
             }}
           >
-<<<<<<< HEAD
-            {/* LEFT */}
-=======
             <HelpCircle size={20} />
             <Text style={{ fontSize: 18, fontWeight: "800", marginLeft: 10 }}>
               Ask Question
@@ -331,93 +249,13 @@ export default function AskModal({
             </View>
 
             {/* BOUNTY */}
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
             <View
               style={{
-                flexDirection:
-                  "row",
+                flexDirection: "row",
 
-                alignItems:
-                  "center",
+                alignItems: "center",
               }}
             >
-<<<<<<< HEAD
-              {/* ICON */}
-              <View
-                style={{
-                  width: 48,
-                  height: 48,
-
-                  borderRadius: 24,
-
-                  alignItems:
-                    "center",
-
-                  justifyContent:
-                    "center",
-
-                  backgroundColor:
-                    colors.primary +
-                    "12",
-
-                  borderWidth: 1,
-
-                  borderColor:
-                    colors.primary +
-                    "18",
-
-                  marginRight: 14,
-                }}
-              >
-                <HelpCircle
-                  size={22}
-                  color={
-                    colors.primary
-                  }
-                  strokeWidth={2.4}
-                />
-              </View>
-
-              {/* TEXT */}
-              <View>
-                <Text
-                  style={{
-                    fontSize: 20,
-
-                    fontWeight:
-                      "800",
-
-                    color:
-                      colors.dark,
-                  }}
-                >
-                  Ask Question
-                </Text>
-
-                <Text
-                  style={{
-                    fontSize: 12,
-
-                    color:
-                      colors.overlay,
-
-                    marginTop: 3,
-
-                    fontWeight:
-                      "500",
-                  }}
-                >
-                  Start a new
-                  discussion
-                </Text>
-              </View>
-            </View>
-
-            {/* CLOSE */}
-            <TouchableOpacity
-              onPress={onClose}
-              activeOpacity={0.8}
-=======
               <Text style={{ fontWeight: "700", flex: 1 }}>Add Bounty</Text>
               <Switch value={isBounty} onValueChange={setIsBounty} />
             </View>
@@ -442,50 +280,31 @@ export default function AskModal({
             <Pressable
               onPress={handleSubmit}
               disabled={loading}
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
               style={{
                 width: 40,
                 height: 40,
 
                 borderRadius: 999,
 
-                alignItems:
-                  "center",
+                alignItems: "center",
 
-                justifyContent:
-                  "center",
+                justifyContent: "center",
 
-                backgroundColor:
-                  colors.light,
+                backgroundColor: colors.light,
 
                 borderWidth: 1,
 
-                borderColor:
-                  colors.overlay +
-                  "12",
+                borderColor: colors.overlay + "12",
               }}
             >
-<<<<<<< HEAD
-              <X
-                size={18}
-                color={
-                  colors.dark
-                }
-                strokeWidth={2.4}
-              />
-            </TouchableOpacity>
-=======
               <Text style={{ color: colors.light, fontWeight: "700" }}>
                 {loading ? "Posting..." : "Post Question"}
               </Text>
             </Pressable>
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
           </View>
 
           {/* FORM */}
-          <FormProvider
-            {...methods}
-          >
+          <FormProvider {...methods}>
             <View
               style={{
                 flex: 1,
@@ -505,9 +324,7 @@ export default function AskModal({
                   name="title"
                   label="Title"
                   placeholder="How to handle file uploads in FastAPI with S3?"
-                  error={
-                    errors.title
-                  }
+                  error={errors.title}
                   required
                 />
               </View>
@@ -522,9 +339,7 @@ export default function AskModal({
                   name="body"
                   label="Description"
                   placeholder="Explain your problem..."
-                  error={
-                    errors.body
-                  }
+                  error={errors.body}
                   required
                 />
               </View>
@@ -539,9 +354,7 @@ export default function AskModal({
                   name="tagsInput"
                   label="Tags"
                   placeholder="Add tag (react-native, api...)"
-                  error={
-                    errors.tagsInput
-                  }
+                  error={errors.tagsInput}
                   required
                 />
               </View>
@@ -549,15 +362,11 @@ export default function AskModal({
               {/* INFO BOX */}
               <View
                 style={{
-                  backgroundColor:
-                    colors.primary +
-                    "08",
+                  backgroundColor: colors.primary + "08",
 
                   borderWidth: 1,
 
-                  borderColor:
-                    colors.primary +
-                    "12",
+                  borderColor: colors.primary + "12",
 
                   borderRadius: 18,
 
@@ -576,18 +385,13 @@ export default function AskModal({
 
                     lineHeight: 21,
 
-                    color:
-                      colors.neutral,
+                    color: colors.neutral,
 
-                    fontWeight:
-                      "500",
+                    fontWeight: "500",
                   }}
                 >
-                  Add clear title,
-                  detailed description
-                  and useful tags to
-                  get faster and better
-                  answers.
+                  Add clear title, detailed description and useful tags to get
+                  faster and better answers.
                 </Text>
               </View>
 
@@ -595,82 +399,54 @@ export default function AskModal({
               <TouchableOpacity
                 onPress={handleSubmit(
                   handleQuestionSubmit,
-                  (
-                    validationErrors
-                  ) => {
-                    if (
-                      validationErrors.tagsInput
-                    ) {
+                  (validationErrors) => {
+                    if (validationErrors.tagsInput) {
                       showErrorToast(
-                        validationErrors
-                          .tagsInput
-                          .message ||
-                          "Please add valid tags"
+                        validationErrors.tagsInput.message ||
+                          "Please add valid tags",
                       );
 
                       return;
                     }
 
-                    if (
-                      validationErrors.title
-                    ) {
+                    if (validationErrors.title) {
                       showErrorToast(
-                        validationErrors
-                          .title
-                          .message ||
-                          "Invalid title"
+                        validationErrors.title.message || "Invalid title",
                       );
 
                       return;
                     }
 
-                    if (
-                      validationErrors.body
-                    ) {
+                    if (validationErrors.body) {
                       showErrorToast(
-                        validationErrors
-                          .body
-                          .message ||
-                          "Invalid description"
+                        validationErrors.body.message || "Invalid description",
                       );
 
                       return;
                     }
 
-                    showErrorToast(
-                      "Please complete all required fields"
-                    );
-                  }
+                    showErrorToast("Please complete all required fields");
+                  },
                 )}
-                disabled={
-                  loading
-                }
-                activeOpacity={
-                  0.9
-                }
+                disabled={loading}
+                activeOpacity={0.9}
                 style={{
-                  backgroundColor:
-                    loading
-                      ? colors.overlay
-                      : colors.secondary,
+                  backgroundColor: loading ? colors.overlay : colors.secondary,
 
                   paddingVertical: 17,
 
                   borderRadius: 22,
 
-                  alignItems:
-                    "center",
+                  alignItems: "center",
 
                   marginTop: 4,
 
-                  shadowColor:
-                    colors.secondary,
+                  shadowColor: colors.secondary,
 
-                  shadowOffset:
-                    {
-                      width: 0,
-                      height: 5,
-                    },
+                  shadowOffset: {
+                    width: 0,
+                    height: 5,
+                  },
 
                   shadowOpacity: 0.18,
 
@@ -681,20 +457,16 @@ export default function AskModal({
               >
                 <Text
                   style={{
-                    color:
-                      colors.light,
+                    color: colors.light,
 
-                    fontWeight:
-                      "800",
+                    fontWeight: "800",
 
                     fontSize: 15,
 
                     letterSpacing: 0.3,
                   }}
                 >
-                  {loading
-                    ? "Posting..."
-                    : "Post Question"}
+                  {loading ? "Posting..." : "Post Question"}
                 </Text>
               </TouchableOpacity>
             </View>
