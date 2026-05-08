@@ -4,19 +4,9 @@ import { ROUTES } from "@/src/constants/routes";
 
 import { useRouter } from "expo-router";
 
+import { ChevronRight, Hash } from "lucide-react-native";
 import {
-  ChevronDown,
-  ChevronRight,
-  ChevronUp,
-  Eye,
-  Hash,
-  Share2,
-  Trash2,
-} from "lucide-react-native";
-
-import {
-  useEffect,
-  useState,
+  useEffect, useState,
 } from "react";
 
 import {
@@ -25,13 +15,12 @@ import {
   View,
 } from "react-native";
 
-import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
+
 
 import {
-  useDeleteQuestion,
   useQuestionViews,
-  useVote,
 } from "../hooks/useQuestion";
+import MessageFooter from "./MessageFooter";
 
 function useTimeAgo(date: any) {
   const [time, setTime] =
@@ -46,7 +35,7 @@ function useTimeAgo(date: any) {
         new Date(
           date
         ).getTime()) /
-        1000
+      1000
     );
 
     if (diff < 60)
@@ -102,15 +91,7 @@ function AuthorAvatar({
         alignItems: "center",
         justifyContent:
           "center",
-        shadowColor:
-          colors.secondary,
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.35,
-        shadowRadius: 6,
-        elevation: 3,
+     
       }}
     >
       <Text
@@ -128,207 +109,12 @@ function AuthorAvatar({
   );
 }
 
-function VoteColumn({
-  votes = 0,
-  targetId,
-  targetType,
-}: {
-  votes: number;
-  targetId: number;
-  targetType:
-    | "question"
-    | "answer";
-}) {
-  const [count, setCount] =
-    useState(votes);
 
-  const [vote, setVote] =
-    useState(0);
-
-  const {
-    mutate: voteApi,
-    isPending,
-  } = useVote();
-
-  const handleVote = (
-    value: number
-  ) => {
-    if (isPending) return;
-
-    let newVote = value;
-    let newCount = count;
-
-    if (vote === value) {
-      newVote = 0;
-      newCount =
-        count - value;
-    } else {
-      newCount =
-        count +
-        value -
-        vote;
-    }
-
-    setVote(newVote);
-    setCount(newCount);
-
-    voteApi(
-      {
-        userId: 2,
-        targetId,
-        targetType,
-        value: newVote,
-      },
-      {
-        onError: () => {
-          setVote(vote);
-          setCount(count);
-        },
-      }
-    );
-  };
-
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems:
-          "center",
-
-        backgroundColor:
-          colors.light,
-
-        borderRadius: 24,
-
-        borderWidth: 1,
-
-        borderColor:
-          colors.cardBorder,
-
-        overflow: "hidden",
-      }}
-    >
-      {/* UPVOTE */}
-      <TouchableOpacity
-        onPress={() =>
-          handleVote(1)
-        }
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 6,
-
-          backgroundColor:
-            vote === 1
-              ? colors.primary +
-                "14"
-              : "transparent",
-        }}
-      >
-        <ChevronUp
-          size={16}
-          color={
-            vote === 1
-              ? colors.primary
-              : colors.overlay
-          }
-          strokeWidth={
-            vote === 1
-              ? 2.5
-              : 1.8
-          }
-        />
-      </TouchableOpacity>
-
-      {/* COUNT */}
-      <Text
-        style={{
-          fontWeight: "700",
-
-          fontSize: 14,
-
-          color:
-            vote === 1
-              ? colors.primary
-              : vote === -1
-              ? colors.error
-              : "#555",
-
-          minWidth: 18,
-
-          textAlign: "center",
-        }}
-      >
-        {count}
-      </Text>
-
-      {/* DOWNVOTE */}
-      <TouchableOpacity
-        onPress={() =>
-          handleVote(-1)
-        }
-        style={{
-          paddingHorizontal: 10,
-          paddingVertical: 6,
-
-          backgroundColor:
-            vote === -1
-              ? colors.error +
-                "14"
-              : "transparent",
-        }}
-      >
-        <ChevronDown
-          size={16}
-          color={
-            vote === -1
-              ? colors.error
-              : colors.overlay
-          }
-          strokeWidth={
-            vote === -1
-              ? 2.5
-              : 1.8
-          }
-        />
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-function IconPill({
-  children,
-}: any) {
-  return (
-    <TouchableOpacity
-      hitSlop={{
-        top: 8,
-        bottom: 8,
-        left: 8,
-        right: 8,
-      }}
-      style={{
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-
-        borderRadius: 24,
-
-        borderWidth: 1,
-
-        borderColor:
-          colors.cardBorder,
-
-        backgroundColor:
-          colors.light,
-      }}
-    >
-      {children}
-    </TouchableOpacity>
-  );
-}
 
 export default function MessageItem({
-  item,
+    item,
   depth = 0,
+  hideArrow = false,
 }: any) {
   const router = useRouter();
 
@@ -339,17 +125,33 @@ export default function MessageItem({
   const isQuestion =
     depth === 0;
 
-  const [
-    deleteModalVisible,
-    setDeleteModalVisible,
-  ] = useState(false);
 
-  // FIX DUPLICATE TAGS / SAFE TAG FORMAT
-  const tags =
-    item.tags ||
-    item.tagNames ||
-    item.questionTags ||
+
+
+
+
+
+
+  //  const tags =
+  //   item.tags ||
+  //   item.tagsInput ||
+  //   item.tagNames ||
+  //   item.questionTags ||
+  //   [];
+
+  // AFTER
+  const rawTags =
+    (Array.isArray(item.tags) && item.tags.length > 0 ? item.tags : null) ||
+    (Array.isArray(item.tagsInput) && item.tagsInput.length > 0 ? item.tagsInput : null) ||
+    (Array.isArray(item.tagNames) && item.tagNames.length > 0 ? item.tagNames : null) ||
+    (Array.isArray(item.questionTags) && item.questionTags.length > 0 ? item.questionTags : null) ||
     [];
+
+  const tags = rawTags;
+
+
+
+
 
   const {
     data: viewsData,
@@ -364,33 +166,6 @@ export default function MessageItem({
     viewsData?.views ||
     item.views ||
     0;
-
-  const isOwner = true;
-
-  const {
-    mutate: deleteQuestionApi,
-    isPending:
-      isDeletingQuestion,
-  } = useDeleteQuestion();
-
-  const handleDelete = () => {
-    deleteQuestionApi(
-      Number(item.id),
-      {
-        onSuccess: () => {
-          setDeleteModalVisible(
-            false
-          );
-        },
-
-        onError: () => {
-          setDeleteModalVisible(
-            false
-          );
-        },
-      }
-    );
-  };
 
   return (
     <View
@@ -481,7 +256,7 @@ export default function MessageItem({
                   fontWeight:
                     "700",
 
-                  fontSize: 17,
+                  fontSize: 14,
 
                   color:
                     colors.primary,
@@ -493,7 +268,7 @@ export default function MessageItem({
               {!!time && (
                 <Text
                   style={{
-                    fontSize: 13,
+                    fontSize: 12,
 
                     color:
                       colors.neutral,
@@ -539,7 +314,7 @@ export default function MessageItem({
               >
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 12,
 
                     color:
                       colors.primary,
@@ -553,14 +328,15 @@ export default function MessageItem({
               </View>
             )}
 
-            {isQuestion && (
-              <ChevronRight
-                size={19}
-                color={
-                  colors.overlay
-                }
-              />
-            )}
+          {isQuestion &&
+  !hideArrow && (
+    <ChevronRight
+      size={15}
+      color={
+        colors.overlay
+      }
+    />
+)}
           </View>
         </View>
 
@@ -568,7 +344,7 @@ export default function MessageItem({
         {isQuestion && (
           <Text
             style={{
-              fontSize: 18,
+              fontSize: 15,
 
               fontWeight: "700",
 
@@ -585,277 +361,120 @@ export default function MessageItem({
         {/* CONTENT */}
         <Text
           style={{
-            fontSize: 15,
+            fontSize: 12,
 
             lineHeight: 22,
-  fontWeight: "400",
+            fontWeight: "400",
             color:
               colors.neutral,
           }}
-         
+
         >
           {item.content ||
             item.body}
         </Text>
 
-       {/* TAGS */}
-{Array.isArray(tags) &&
-  tags.length > 0 && (
-    <View
-      style={{
-        flexDirection: "row",
-        flexWrap: "wrap",
-
-        gap: 8,
-
-        marginTop: 16,
-      }}
-    >
-      {[
-        ...new Set(
-          tags
-            .map((tag: any) => {
-              // STRING TAG
-              if (
-                typeof tag ===
-                "string"
-              ) {
-                return tag.trim();
-              }
-
-              // OBJECT TAG
-              if (
-                typeof tag ===
-                  "object" &&
-                tag !== null
-              ) {
-                return (
-                  tag.name ||
-                  tag.label ||
-                  tag.tag ||
-                  ""
-                ).trim();
-              }
-
-              return "";
-            })
-            .filter(Boolean)
-        ),
-      ].map(
-        (
-          tag: any,
-          index: number
-        ) => (
-          <View
-            key={index}
-            style={{
-             
-
-              borderWidth: 2,
-              borderColor:colors.cardBorder,
- backgroundColor:
-                      colors.primary +
-                      "20",
-              paddingHorizontal: 12,
-              paddingVertical: 7,
-
-              borderRadius: 999,
-            }}
-          >
-           <View
-  style={{
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-  }}
->
-  <Hash
-    size={12}
-    color={colors.primary}
-    strokeWidth={2.5}
-  />
-
-  <Text
-    style={{
-      color: colors.primary,
-
-      fontSize: 13,
-
-      fontWeight: "700",
-
-   
-    }}
-  >
-    {tag}
-  </Text>
-</View>
-          </View>
-        )
-      )}
-    </View>
-  )}
-      </TouchableOpacity>
-
-      {/* FOOTER */}
-      <View
-        style={{
-          flexDirection:
-            "row",
-
-          alignItems:
-            "center",
-
-          justifyContent:
-            "space-between",
-
-          paddingHorizontal: 16,
-          paddingVertical: 11,
-
-          borderTopWidth: 1,
-
-          borderTopColor:
-            colors.cardBorder,
-        }}
-      >
-        {/* VOTES */}
-        <VoteColumn
-          votes={item.votes}
-          targetId={Number(
-            item.id
-          )}
-          targetType={
-            depth === 0
-              ? "question"
-              : "answer"
-          }
-        />
-
-        {/* ACTIONS */}
-        <View
-          style={{
-            flexDirection:
-              "row",
-
-            alignItems:
-              "center",
-
-            gap: 7,
-          }}
-        >
-          {/* VIEWS */}
-          <IconPill>
+        {/* TAGS */}
+        {Array.isArray(tags) &&
+          tags.length > 0 && (
             <View
               style={{
-                flexDirection:
-                  "row",
+                flexDirection: "row",
+                flexWrap: "wrap",
 
-                alignItems:
-                  "center",
-
-                gap: 5,
+                gap: 8,
+              
+                marginTop: 12,
               }}
             >
-              <Eye
-                size={15}
-                color={
-                  colors.secondary
-                }
-              />
+              {[
+                ...new Set(
+                  tags
+                    .map((tag: any) => {
+                      // STRING TAG
+                      if (
+                        typeof tag ===
+                        "string"
+                      ) {
+                        return tag.trim();
+                      }
 
-              <Text
-                style={{
-                  fontSize: 12,
+                      // OBJECT TAG
+                      if (
+                        typeof tag ===
+                        "object" &&
+                        tag !== null
+                      ) {
+                        return (
+                          tag.name ||
+                          tag.label ||
+                          tag.tag ||
 
-                  fontWeight:
-                    "600",
+                          ""
+                        ).trim();
+                      }
 
-                  color:
-                    colors.secondary,
-                }}
-              >
-                {views}
-              </Text>
+                      return "";
+                    })
+                    .filter(Boolean)
+                ),
+              ].map(
+                (
+                  tag: any,
+                  index: number
+                ) => (
+                  <View
+                    key={index}
+                    style={{
+
+
+                      borderWidth: 2,
+                      borderColor: colors.cardBorder,
+                      backgroundColor:
+                        colors.primary +
+                        "20",
+                      paddingHorizontal: 10,
+                      paddingVertical: 6,
+
+                      borderRadius: 999,
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 5,
+                      }}
+                    >
+                      <Hash
+                        size={12}
+                        color={colors.primary}
+                        strokeWidth={2.5}
+                      />
+                      <Text
+                        style={{
+                          color: colors.primary,
+                          fontSize: 10,
+                          fontWeight: "700",
+                        }}
+                      >
+                        {tag}
+                      </Text>
+                    </View>
+                  </View>
+                )
+              )}
             </View>
-          </IconPill>
+          )}
+      </TouchableOpacity>
 
-          {/* SHARE */}
-          <IconPill>
-            <Share2
-              size={15}
-              color={
-                colors.secondary
-              }
-            />
-          </IconPill>
-
-          {/* DELETE */}
-          {isOwner &&
-            isQuestion && (
-              <>
-                <TouchableOpacity
-                  onPress={() =>
-                    setDeleteModalVisible(
-                      true
-                    )
-                  }
-                  activeOpacity={
-                    0.82
-                  }
-                  disabled={
-                    isDeletingQuestion
-                  }
-                  style={{
-                    paddingHorizontal: 10,
-                    paddingVertical: 6,
-
-                    borderRadius: 24,
-
-                    borderWidth: 1,
-
-                    borderColor:
-                      colors.error +
-                      "25",
-
-                    backgroundColor:
-                      colors.error +
-                      "08",
-                  }}
-                >
-                  <Trash2
-                    size={15}
-                    color={
-                      isDeletingQuestion
-                        ? colors.overlay
-                        : colors.error
-                    }
-                    strokeWidth={2}
-                  />
-                </TouchableOpacity>
-
-                <ConfirmDeleteModal
-                  visible={
-                    deleteModalVisible
-                  }
-                  title="Delete Question?"
-                  description="This question will be permanently removed."
-                  confirmText="Delete"
-                  cancelText="Cancel"
-                  loading={
-                    isDeletingQuestion
-                  }
-                  onCancel={() =>
-                    setDeleteModalVisible(
-                      false
-                    )
-                  }
-                  onConfirm={
-                    handleDelete
-                  }
-                />
-              </>
-            )}
-        </View>
+  <MessageFooter
+  item={item}
+  depth={depth}
+  views={views}
+/>
+    
       </View>
-    </View>
+    
   );
 }

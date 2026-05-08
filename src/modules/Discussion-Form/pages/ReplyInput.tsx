@@ -1,3 +1,4 @@
+
 import { useRef, useState } from "react";
 
 import {
@@ -11,7 +12,6 @@ import {
 import {
   CornerDownRight,
   SendHorizonal,
-  Sparkles,
   X,
 } from "lucide-react-native";
 
@@ -28,38 +28,24 @@ export default function ReplyInput({
   answerId,
   parentCommentId,
 }: ReplyInputProps) {
-  const [replyText, setReplyText] =
-    useState("");
+  const [replyText, setReplyText] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
 
-  const [isOpen, setIsOpen] =
-    useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const scaleAnim = useRef(new Animated.Value(0.97)).current;
+  const heightAnim = useRef(new Animated.Value(0)).current;
 
-  const [isFocused, setIsFocused] =
-    useState(false);
-
-  const fadeAnim = useRef(
-    new Animated.Value(0)
-  ).current;
-
-  const scaleAnim = useRef(
-    new Animated.Value(0.96)
-  ).current;
-
-  const {
-    mutate: createCommentApi,
-    isPending,
-  } = useCreateComment();
+  const { mutate: createCommentApi, isPending } = useCreateComment();
 
   const openInput = () => {
     setIsOpen(true);
-
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 220,
+        duration: 200,
         useNativeDriver: true,
       }),
-
       Animated.spring(scaleAnim, {
         toValue: 1,
         friction: 7,
@@ -73,13 +59,12 @@ export default function ReplyInput({
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 180,
+        duration: 160,
         useNativeDriver: true,
       }),
-
       Animated.timing(scaleAnim, {
-        toValue: 0.96,
-        duration: 180,
+        toValue: 0.97,
+        duration: 160,
         useNativeDriver: true,
       }),
     ]).start(() => {
@@ -89,546 +74,281 @@ export default function ReplyInput({
   };
 
   const handleSubmitReply = () => {
-    if (
-      !replyText.trim() ||
-      isPending
-    )
-      return;
+    if (!replyText.trim() || isPending) return;
 
     createCommentApi(
       {
         body: parentCommentId
           ? `@reply-${parentCommentId} ${replyText}`
           : replyText,
-
         userId: 2,
-
         answerId,
       },
       {
         onSuccess: () => {
           setReplyText("");
-
           setIsOpen(false);
-
           fadeAnim.setValue(0);
-
-          scaleAnim.setValue(0.96);
+          scaleAnim.setValue(0.97);
         },
       }
     );
   };
 
-  const canSend =
-    replyText.trim() &&
-    !isPending;
+  const canSend = replyText.trim() && !isPending;
 
   return (
-    <View
-      style={{
-        marginTop: 8,
-      }}
-    >
+    <View style={{ marginTop: 6 }}>
       {!isOpen ? (
-        /* REPLY BUTTON */
+        /* ── REPLY TRIGGER BUTTON ── */
         <TouchableOpacity
           onPress={openInput}
-          activeOpacity={0.82}
+          activeOpacity={0.75}
           style={{
             alignSelf: "flex-start",
-
             flexDirection: "row",
-
             alignItems: "center",
-
-            paddingVertical: 9,
-
-            paddingHorizontal: 16,
-
+            gap: 5,
+          
+              paddingVertical: 5,
             borderRadius: 999,
-
-            backgroundColor:
-              colors.light,
-
+            backgroundColor: colors.primary + "0D",
             borderWidth: 1,
-
-            borderColor:
-              colors.primary +
-              "12",
-
-            shadowColor:
-              colors.dark,
-
-            shadowOffset: {
-              width: 0,
-              height: 4,
-            },
-
-            shadowOpacity: 0.04,
-
-            shadowRadius: 10,
-
-            elevation: 2,
+            borderColor: colors.primary + "20",
           }}
         >
-          <View
-            style={{
-              width: 24,
-              height: 24,
-
-              borderRadius: 999,
-
-              alignItems:
-                "center",
-
-              justifyContent:
-                "center",
-
-              backgroundColor:
-                colors.primary +
-                "10",
-
-              marginRight: 8,
-            }}
-          >
-            <CornerDownRight
-              size={12}
-              color={
-                colors.primary
-              }
-              strokeWidth={2.7}
-            />
-          </View>
-
+          <CornerDownRight
+            size={11}
+            color={colors.primary}
+            strokeWidth={2.8}
+          />
           <Text
             style={{
-              fontSize: 12.5,
-
-              fontWeight: "800",
-
-              color:
-                colors.primary,
-
-              letterSpacing: 0.3,
+              fontSize: 11.5,
+              fontWeight: "700",
+              color: colors.primary,
+              letterSpacing: 0.2,
             }}
           >
             Reply
           </Text>
         </TouchableOpacity>
       ) : (
-        /* COMPOSER */
+        /* ── COMPOSER (expands below the action row) ── */
         <Animated.View
           style={{
             opacity: fadeAnim,
-
             transform: [
               {
-                translateY:
-                  fadeAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [12, 0],
-                  }),
+                translateY: fadeAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [8, 0],
+                }),
               },
-
-              {
-                scale: scaleAnim,
-              },
+              { scale: scaleAnim },
             ],
-
-            marginTop: 12,
-
-            borderRadius: 30,
-
-            backgroundColor:
-              colors.light,
-
+            marginTop: 10,
+            borderRadius: 18,
+            backgroundColor: colors.light,
             borderWidth: 1.2,
-
             borderColor: isFocused
-              ? colors.primary +
-                "30"
-              : colors.overlay +
-                "08",
-
+              ? colors.primary + "35"
+              : colors.overlay + "14",
             overflow: "hidden",
-
-            shadowColor:
-              colors.dark,
-
-            shadowOffset: {
-              width: 0,
-              height: 10,
-            },
-
-            shadowOpacity: isFocused
-              ? 0.08
-              : 0.04,
-
-            shadowRadius: 18,
-
-            elevation: isFocused
-              ? 6
-              : 2,
+            shadowColor: colors.primary,
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: isFocused ? 0.08 : 0.03,
+            shadowRadius: 12,
+            elevation: 2,
           }}
         >
-          {/* HEADER */}
+          {/* ── TOP BAR ── */}
           <View
             style={{
               flexDirection: "row",
-
               alignItems: "center",
-
-              justifyContent:
-                "space-between",
-
-              paddingHorizontal: 16,
-
-              paddingTop: 14,
-
-              paddingBottom: 10,
+              justifyContent: "space-between",
+              paddingHorizontal: 14,
+              paddingTop: 11,
+              paddingBottom: 8,
+              borderBottomWidth: 1,
+              borderBottomColor: colors.overlay + "08",
             }}
           >
-            {/* LEFT */}
+            {/* Label */}
             <View
               style={{
                 flexDirection: "row",
-
-                alignItems:
-                  "center",
+                alignItems: "center",
+                gap: 7,
               }}
             >
               <View
                 style={{
-                  width: 30,
-                  height: 30,
-
+                  width: 22,
+                  height: 22,
                   borderRadius: 999,
-
-                  alignItems:
-                    "center",
-
-                  justifyContent:
-                    "center",
-
-                  backgroundColor:
-                    colors.primary +
-                    "10",
-
-                  marginRight: 10,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: colors.primary + "12",
                 }}
               >
-                <Sparkles
-                  size={14}
-                  color={
-                    colors.primary
-                  }
-                  strokeWidth={2.5}
+                <CornerDownRight
+                  size={11}
+                  color={colors.primary}
+                  strokeWidth={2.7}
                 />
               </View>
-
-              <View>
-                <Text
-                  style={{
-                    fontSize: 12,
-
-                    fontWeight:
-                      "800",
-
-                    color:
-                      colors.primary,
-
-                    letterSpacing: 0.6,
-                  }}
-                >
-                  {parentCommentId
-                    ? "REPLYING"
-                    : "NEW REPLY"}
-                </Text>
-
-                <Text
-                  style={{
-                    marginTop: 2,
-
-                    fontSize: 11,
-
-                    color:
-                      colors.overlay,
-
-                    fontWeight:
-                      "500",
-                  }}
-                >
-                  Join the
-                  discussion
-                </Text>
-              </View>
+              <Text
+                style={{
+                  fontSize: 11,
+                  fontWeight: "800",
+                  color: colors.primary,
+                  letterSpacing: 0.8,
+                  textTransform: "uppercase",
+                }}
+              >
+                {parentCommentId ? "Replying" : "New Reply"}
+              </Text>
             </View>
 
-            {/* CLOSE */}
+            {/* Close */}
             <TouchableOpacity
               onPress={closeInput}
-              activeOpacity={0.8}
+              activeOpacity={0.75}
               style={{
-                width: 32,
-                height: 32,
-
+                width: 26,
+                height: 26,
                 borderRadius: 999,
-
-                alignItems:
-                  "center",
-
-                justifyContent:
-                  "center",
-
-                backgroundColor:
-                  colors.bgColor,
-
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: colors.bgColor,
                 borderWidth: 1,
-
-                borderColor:
-                  colors.overlay +
-                  "08",
+                borderColor: colors.overlay + "12",
               }}
             >
-              <X
-                size={15}
-                color={
-                  colors.dark
-                }
-                strokeWidth={2.5}
-              />
+              <X size={13} color={colors.dark} strokeWidth={2.5} />
             </TouchableOpacity>
           </View>
 
-          {/* INPUT */}
+          {/* ── TEXT INPUT ── */}
           <TextInput
-            placeholder="Write your reply..."
-            placeholderTextColor={
-              colors.overlay
-            }
+            placeholder="Write your reply…"
+            placeholderTextColor={colors.overlay}
             value={replyText}
             onChangeText={setReplyText}
             multiline
             autoFocus
-            onFocus={() =>
-              setIsFocused(true)
-            }
-            onBlur={() =>
-              setIsFocused(false)
-            }
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             textAlignVertical="top"
             style={{
-              paddingHorizontal: 18,
-
-              paddingTop: 6,
-
-              paddingBottom: 18,
-
-              minHeight: 90,
-
-              maxHeight: 150,
-
-              fontSize: 14.5,
-
-              lineHeight: 24,
-
-              color:
-                colors.dark,
-
+              paddingHorizontal: 16,
+              paddingTop: 12,
+              paddingBottom: 12,
+              minHeight: 78,
+              maxHeight: 130,
+              fontSize: 14,
+              lineHeight: 23,
+              color: colors.dark,
               fontWeight: "500",
             }}
           />
 
-          {/* FOOTER */}
+          {/* ── FOOTER ── */}
           <View
             style={{
               flexDirection: "row",
-
               alignItems: "center",
-
-              justifyContent:
-                "space-between",
-
-              paddingHorizontal: 14,
-
-              paddingTop: 12,
-
-              paddingBottom: 14,
-
+              justifyContent: "space-between",
+              paddingHorizontal: 12,
+              paddingVertical: 10,
               borderTopWidth: 1,
-
-              borderTopColor:
-                colors.overlay +
-                "06",
-
-              backgroundColor:
-                colors.bgColor,
+              borderTopColor: colors.overlay + "07",
+              backgroundColor: colors.bgColor,
             }}
           >
-            {/* LEFT */}
+            {/* Status pill */}
             <View
               style={{
-                flexDirection:
-                  "row",
-
-                alignItems:
-                  "center",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 5,
+                paddingHorizontal: 9,
+                paddingVertical: 4,
+                borderRadius: 999,
+                backgroundColor: canSend
+                  ? colors.primary + "0D"
+                  : colors.overlay + "08",
               }}
             >
               <View
                 style={{
-                  width: 7,
-                  height: 7,
-
+                  width: 5,
+                  height: 5,
                   borderRadius: 999,
-
-                  backgroundColor:
-                    canSend
-                      ? colors.primary
-                      : colors.overlay,
-
-                  marginRight: 7,
+                  backgroundColor: canSend ? colors.primary : colors.overlay,
                 }}
               />
-
               <Text
                 style={{
-                  fontSize: 11.5,
-
-                  color:
-                    canSend
-                      ? colors.primary
-                      : colors.overlay,
-
-                  fontWeight:
-                    "700",
+                  fontSize: 11,
+                  fontWeight: "700",
+                  color: canSend ? colors.primary : colors.overlay,
+                  letterSpacing: 0.1,
                 }}
               >
-                {isPending
-                  ? "Sending..."
-                  : canSend
-                  ? "Ready to send"
-                  : "Waiting"}
+                {isPending ? "Sending…" : canSend ? "Ready" : "Waiting"}
               </Text>
             </View>
 
-            {/* RIGHT */}
+            {/* Right side: char count + send */}
             <View
-              style={{
-                flexDirection:
-                  "row",
-
-                alignItems:
-                  "center",
-              }}
+              style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
             >
-              {!!replyText.length && (
-                <View
+              {replyText.length > 0 && (
+                <Text
                   style={{
-                    paddingHorizontal: 10,
-
-                    paddingVertical: 5,
-
-                    borderRadius: 999,
-
-                    backgroundColor:
-                      colors.primary +
-                      "10",
-
-                    marginRight: 10,
+                    fontSize: 10.5,
+                    fontWeight: "700",
+                    color: colors.overlay,
                   }}
                 >
-                  <Text
-                    style={{
-                      fontSize: 10,
-
-                      fontWeight:
-                        "800",
-
-                      color:
-                        colors.primary,
-                    }}
-                  >
-                    {
-                      replyText.length
-                    }
-                  </Text>
-                </View>
+                  {replyText.length}
+                </Text>
               )}
 
-              {/* SEND */}
               <TouchableOpacity
-                onPress={
-                  handleSubmitReply
-                }
+                onPress={handleSubmitReply}
                 disabled={!canSend}
-                activeOpacity={0.88}
+                activeOpacity={0.85}
                 style={{
-                  flexDirection:
-                    "row",
-
-                  alignItems:
-                    "center",
-
-                  paddingVertical: 11,
-
-                  paddingHorizontal: 18,
-
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 6,
+                  paddingVertical: 9,
+                  paddingHorizontal: 16,
                   borderRadius: 999,
-
-                  backgroundColor:
-                    canSend
-                      ? colors.secondary
-                      : colors.overlay +
-                        "10",
-
-                  shadowColor:
-                    canSend
-                      ? colors.secondary
-                      : "transparent",
-
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-
-                  shadowOpacity:
-                    canSend
-                      ? 0.24
-                      : 0,
-
-                  shadowRadius: 10,
-
-                  elevation:
-                    canSend
-                      ? 4
-                      : 0,
+                  backgroundColor: canSend
+                    ? colors.secondary
+                    : colors.overlay + "10",
+                  shadowColor: canSend ? colors.secondary : "transparent",
+                  shadowOffset: { width: 0, height: 4 },
+                  shadowOpacity: canSend ? 0.22 : 0,
+                  shadowRadius: 8,
+                  elevation: canSend ? 3 : 0,
                 }}
               >
                 <SendHorizonal
-                  size={14}
-                  color={
-                    canSend
-                      ? colors.light
-                      : colors.overlay
-                  }
+                  size={13}
+                  color={canSend ? colors.light : colors.overlay}
                   strokeWidth={2.6}
                 />
-
                 <Text
                   style={{
-                    marginLeft: 7,
-
-                    fontSize: 12.5,
-
-                    fontWeight:
-                      "800",
-
-                    color:
-                      canSend
-                        ? colors.light
-                        : colors.overlay,
-
+                    fontSize: 12,
+                    fontWeight: "800",
+                    color: canSend ? colors.light : colors.overlay,
                     letterSpacing: 0.3,
                   }}
                 >

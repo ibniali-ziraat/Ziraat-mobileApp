@@ -3,6 +3,8 @@ import { useState } from "react";
 import {
   ScrollView,
   Text,
+  TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 
@@ -20,468 +22,601 @@ import {
 import MessageItem from "../pages/MessageItem";
 
 import {
+  Clock,
+  Heart,
   MessageCircle,
+  Send,
   Sparkles,
 } from "lucide-react-native";
 
-
 import { colors } from "@/src/constants/colors";
-import AnswerComments from "../pages/AnswerComments";
+import Avatar from "../pages/Avatar";
 import BottomAnswerInput from "../pages/BottomAnswerInput";
-import ReplyInput from "../pages/ReplyInput";
 
 export default function QuestionScreen() {
-  const { id } =
-    useLocalSearchParams();
 
-  const questionId =
-    Number(id);
 
-  const { data } =
-    useQuestion(questionId);
 
-  const {
-    data: answersData,
-  } = useAnswers(questionId);
 
-  const {
-    mutate: createAnswerApi,
-    isPending,
-  } = useCreateAnswer();
 
-  const [input, setInput] =
-    useState("");
+  
+  const { id } = useLocalSearchParams();
+  const questionId = Number(id);
 
-  // QUESTION
+  const { data } = useQuestion(questionId);
+  const { data: answersData } = useAnswers(questionId);
+  const { mutate: createAnswerApi, isPending } = useCreateAnswer();
+
+  const [input, setInput] = useState("");
+
+  // ================= REPLY =================
+  const [activeReplyId, setActiveReplyId] = useState<number | null>(null);
+  const [replyMessage, setReplyMessage] = useState("");
+
+  // ================= QUESTION =================
   const question = data
     ? {
         id: data.id?.toString(),
-
-        author:
-          data.user
-            ?.displayName ||
-          "Unknown",
-
+        author: data.user?.displayName || "Unknown",
         title: data.title,
-
         content: data.body,
-
         votes: data.votes,
- createdAt:
-          data.createdAt,
-        tags:
-          data.tags ||
-          data.questionTags ||
-          [],
-
+        createdAt: data.createdAt,
+        tags: data.tags || data.questionTags || [],
         children: [],
       }
     : null;
 
-  // REMOVE DUPLICATES
-  const answersMap =
-    new Map();
+  // ================= ANSWERS =================
+  const answersMap = new Map();
 
-  answersData?.forEach(
-    (a: any) => {
-      if (
-        !answersMap.has(a.id)
-      ) {
-        answersMap.set(a.id, {
-          id: a.id?.toString(),
-
-          author:
-            a.user
-              ?.displayName ||
-            "Unknown",
-
-          content: a.body,
-
-          votes:
-            a.votes || 0,
-   createdAt:
-          a.createdAt,
-
-          children: [],
-        });
-      }
+  answersData?.forEach((a: any) => {
+    if (!answersMap.has(a.id)) {
+      answersMap.set(a.id, {
+        id: a.id,
+        author: a.user?.displayName || "Unknown",
+        content: a.body,
+        votes: a.votes || 0,
+        createdAt: a.createdAt,
+        user: a.user,
+        replies: [],
+      });
     }
-  );
+  });
 
-  const answers = Array.from(
-    answersMap.values()
-  );
+  const answers = Array.from(answersMap.values());
 
-  // ANSWER
+  // ================= CREATE ANSWER =================
   const handleAnswer = () => {
-    if (
-      !input.trim() ||
-      isPending
-    )
-      return;
+    if (!input.trim() || isPending) return;
+    createAnswerApi(
+      { questionId, payload: { body: input, userId: 2 } },
+      { onSuccess: () => setInput("") }
+    );
+  };
 
+  // ================= SEND REPLY =================
+  const handleReply = () => {
+    if (!replyMessage.trim() || !activeReplyId) return;
     createAnswerApi(
       {
         questionId,
-
         payload: {
-          body: input,
+          body: `@reply-${activeReplyId} ${replyMessage}`,
           userId: 2,
         },
       },
       {
         onSuccess: () => {
-          setInput("");
+          setReplyMessage("");
+          setActiveReplyId(null);
         },
       }
     );
   };
 
-  return (
-    <ScreenLayout>
+  // ================= BUILD TREE =================
+  const getParentId = (body: string) => {
+    const match = body?.match(/@reply-(\d+)/);
+    return match ? Number(match[1]) : null;
+  };
+
+  const buildTree = (items: any[]) => {
+    const map: any = {};
+    const roots: any[] = [];
+    items.forEach((item) => { map[item.id] = { ...item, replies: [] }; });
+    items.forEach((item) => {
+      const parentId = getParentId(item.content);
+      if (parentId && map[parentId]) {
+        map[parentId].replies.push(map[item.id]);
+      } else {
+        roots.push(map[item.id]);
+      }
+    });
+    return roots;
+  };
+
+  const answersTree = buildTree(answers);
+
+  // ================= FORMAT MESSAGE =================
+  const formatMessage = (body: string) =>
+    body.replace(/@reply-\d+\s?/, "").trim();
+
+  const renderReplies = (replies: any[], level = 1) => {
+    const isDeep = level > 1;
+    const avatarSize = isDeep ? 26 : 28;
+    const textSize = isDeep ? 12 : 13;
+
+    return replies.map((reply: any) => (
       <View
+        key={reply.id}
         style={{
-          flex: 1,
-          backgroundColor:colors.light,
+          flexDirection: "row",
+          marginTop: 8,
         }}
       >
-        {/* HEADER */}
-        <BackHeader title="Discussion" />
-
-        {/* CONTENT */}
-        <ScrollView
-          showsVerticalScrollIndicator={
-            false
-          }
-          contentContainerStyle={{
-            paddingBottom: 140,
-          }}
-        >
-          {/* QUESTION */}
-          {question && (
-            <View
-              style={{
-                marginBottom: 10,
-              }}
-            >
-              <MessageItem
-                item={question}
-                depth={0}
-              />
-            </View>
-          )}
-
-          {/* ANSWERS TOP SECTION */}
+        {/* ── Content: flex:1 so it fills exactly what's left ── */}
+        <View style={{ flex: 1, minWidth: 0 }}>
           <View
             style={{
-              marginTop: 8,
-              marginBottom: 16,
-              marginHorizontal: 18,
+              backgroundColor: isDeep ? "#f1f5f9" : "#f7f9fc",
+              borderRadius: 14,
+              borderWidth: 1,
+              borderColor: isDeep ? "#e2e8f0" : "#dde3ee",
+              padding: 11,
             }}
           >
-            <View
-              style={{
-                flexDirection:
-                  "row",
+            <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+              <Avatar
+                name={reply.user?.displayName || "U"}
+                size={avatarSize}
+                fontSize={avatarSize * 0.38}
+              />
 
-                alignItems:
-                  "center",
-
-                justifyContent:
-                  "space-between",
-              }}
-            >
-              {/* LEFT */}
-              <View
-                style={{
-                  flexDirection:
-                    "row",
-
-                  alignItems:
-                    "center",
-                }}
-              >
+              <View style={{ flex: 1, marginLeft: 9, minWidth: 0 }}>
+                {/* NAME + TIME */}
                 <View
                   style={{
-                    width: 48,
-                    height: 48,
-
-                    borderRadius: 24,
-
-                
-
-                    alignItems:
-                      "center",
-
-                    justifyContent:
-                      "center",
-
-                    
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Sparkles
-                    size={22}
-                    color={colors.secondary}
-                  />
-                </View>
-
-                <View>
                   <Text
+                    numberOfLines={1}
                     style={{
-                      fontSize: 22,
-
-                      fontWeight:
-                        "600",
-
-                      color:colors.dark,
+                      fontSize: textSize,
+                      fontWeight: "700",
+                      color: "#0f172a",
+                      flexShrink: 1,
                     }}
                   >
-                 Community discussion
+                    {reply.author}
                   </Text>
-
-                 
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 3,
+                      flexShrink: 0,
+                      marginLeft: 6,
+                    }}
+                  >
+                    <Clock size={9} color="#94a3b8" />
+                    <Text style={{ fontSize: 10, color: "#94a3b8" }}>now</Text>
+                  </View>
                 </View>
-              </View>
 
-              {/* COUNT */}
-              <View
-               
-              >
+                {/* MESSAGE */}
                 <Text
                   style={{
-                    color:colors.secondary,
-
-                    fontWeight:
-                      "800",
-
-                    fontSize: 14,
+                    marginTop: 5,
+                    fontSize: textSize,
+                    lineHeight: 19,
+                    color: "#475569",
                   }}
                 >
-                  {answers.length}{" "}
-                  {answers.length ===
-                  1
-                    ? "Answer"
-                    : "Answers"}
+                  {formatMessage(reply.content)}
                 </Text>
+
+                {/* ACTIONS */}
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: 9,
+                    gap: 8,
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 4,
+                      paddingVertical: 3,
+                      paddingHorizontal: 9,
+                      backgroundColor: "#f1f5f9",
+                      borderRadius: 999,
+                      borderWidth: 1,
+                      borderColor: "#e2e8f0",
+                    }}
+                  >
+                    <Heart size={10} color="#94a3b8" />
+                    <Text style={{ fontSize: 10, fontWeight: "600", color: "#94a3b8" }}>
+                      Like
+                    </Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => setActiveReplyId(reply.id)}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 4,
+                      paddingVertical: 3,
+                      paddingHorizontal: 9,
+                      backgroundColor:
+                        activeReplyId === reply.id
+                          ? colors.primary + "15"
+                          : "#f1f5f9",
+                      borderRadius: 999,
+                      borderWidth: 1,
+                      borderColor:
+                        activeReplyId === reply.id
+                          ? colors.primary + "40"
+                          : "#e2e8f0",
+                    }}
+                  >
+                    <MessageCircle size={10} color={colors.primary} />
+                    <Text style={{ fontSize: 10, fontWeight: "600", color: colors.primary }}>
+                      Reply
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                {/* REPLY INPUT */}
+                {activeReplyId === reply.id && (
+                  <View
+                    style={{
+                      marginTop: 10,
+                      borderWidth: 1,
+                      borderColor: colors.primary + "30",
+                      borderRadius: 12,
+                      padding: 10,
+                      backgroundColor: "#fff",
+                    }}
+                  >
+                    <TextInput
+                      value={replyMessage}
+                      onChangeText={setReplyMessage}
+                      placeholder="Write a reply..."
+                      multiline
+                      autoFocus
+                      style={{ minHeight: 36, fontSize: 13, color: "#1e293b" }}
+                      placeholderTextColor="#94a3b8"
+                    />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                        marginTop: 8,
+                        gap: 8,
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => setActiveReplyId(null)}
+                        style={{
+                          paddingHorizontal: 12,
+                          paddingVertical: 6,
+                          borderRadius: 999,
+                          borderWidth: 1,
+                          borderColor: "#e2e8f0",
+                        }}
+                      >
+                        <Text style={{ fontSize: 12, color: "#64748b", fontWeight: "600" }}>
+                          Cancel
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={handleReply}
+                        style={{
+                          backgroundColor: colors.primary,
+                          paddingHorizontal: 14,
+                          paddingVertical: 6,
+                          borderRadius: 999,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 5,
+                        }}
+                      >
+                        <Send size={12} color="#fff" />
+                        <Text style={{ fontSize: 12, color: "#fff", fontWeight: "600" }}>
+                          Send
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
               </View>
             </View>
           </View>
 
-          {/* ANSWERS */}
-          {answers.length >
-          0 ? (
-            answers.map((a, i) => (
+          {/* CHILDREN — same fixed layout at every depth */}
+          {reply.replies?.length > 0 && renderReplies(reply.replies, level + 1)}
+        </View>
+      </View>
+    ));
+  };
+
+  return (
+    <ScreenLayout>
+      <View style={{ flex: 1, backgroundColor: colors.light }}>
+        <BackHeader title="Discussion" />
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingBottom: 140 }}
+        >
+          {/* QUESTION */}
+          {question && (
+            <View style={{ marginBottom: 10 }}>
+            <MessageItem
+  item={question}
+  depth={0}
+  hideArrow
+/>
+            </View>
+          )}
+
+          {/* SECTION HEADER */}
+          <View
+            style={{
+              marginTop: 6,
+              marginBottom: 12,
+              marginHorizontal: 16,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
               <View
-                key={a.id}
                 style={{
-                  marginBottom: 22,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 6,
+                  backgroundColor: colors.secondary + "14",
+                  paddingHorizontal: 10,
+                  paddingVertical: 6,
+                  borderRadius: 999,
+                  borderWidth: 1,
+                  borderColor: colors.secondary + "20",
                 }}
               >
-                {/* ANSWER CARD */}
+                <Sparkles size={14} color={colors.secondary} />
+              </View>
+              <Text
+                style={{
+                  fontSize: 13,
+                  fontWeight: "700",
+                  color: colors.secondary,
+                  letterSpacing: 0.1,
+                }}
+              >
+                Community discussion
+              </Text>
+            </View>
+
+            {/* Answer count badge */}
+            <View
+              style={{
+                backgroundColor: "#fff",
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                borderRadius: 999,
+                borderWidth: 1,
+                borderColor: "#dde4f0",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#5a6a85",
+                  fontWeight: "700",
+                  fontSize: 12,
+                  letterSpacing: 0.2,
+                }}
+              >
+                {answersTree.length} Answers
+              </Text>
+            </View>
+          </View>
+
+          {/* THREADS */}
+          {answersTree.map((answer: any, index: number) => (
+            <View
+              key={answer.id}
+              style={{
+                marginBottom: 16,
+                marginHorizontal: 16,
+                backgroundColor: "#ffffff",
+                borderRadius: 18,
+                borderWidth: 1,
+                borderColor: "#e8edf5",
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.04,
+                shadowRadius: 4,
+                elevation: 1,
+                overflow: "hidden",
+              }}
+            >
+              {/* Top accent bar */}
+              <View style={{ height: 3, backgroundColor: colors.primary, opacity: 0.7 }} />
+
+              <View style={{ padding: 14 }}>
+
+                {/* ── ANSWER NUMBER BADGE ── */}
                 <View
                   style={{
-                    position:
-                      "relative",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 7,
+                    marginBottom: 10,
                   }}
                 >
-                  {/* LEFT TIMELINE */}
                   <View
                     style={{
-                      position:
-                        "absolute",
-
-                      left: 30,
-
-                      top: 0,
-
-                      bottom: -24,
-
-                      width: 2,
-
-                      backgroundColor:
-                        colors.dark,
-
-                      opacity: 0.08,
-                    }}
-                  />
-
-                  {/* INDEX DOT */}
-                  <View
-                    style={{
-                      position:
-                        "absolute",
-
-                      left: 20,
-
-                      top: 18,
-
                       width: 22,
-
                       height: 22,
-
-                      borderRadius: 11,
-
-                      backgroundColor:
-                        colors.dark,
-
-                      zIndex: 20,
-
-                      alignItems:
-                        "center",
-
-                      justifyContent:
-                        "center",
+                      borderRadius: 999,
+                      backgroundColor: colors.primary,
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
                   >
                     <Text
                       style={{
-                        color:
-                          colors.light,
-
-                        fontSize: 10,
-
-                        fontWeight:
-                          "800",
+                        fontSize: 11,
+                        fontWeight: "800",
+                        color: "#fff",
                       }}
                     >
-                      {i + 1}
+                      {index + 1}
                     </Text>
                   </View>
-
-                  {/* CARD */}
-                  <View
+                  <Text
                     style={{
-                      marginLeft: 34,
+                      fontSize: 11,
+                      fontWeight: "700",
+                      color: colors.primary,
+                      letterSpacing: 0.6,
+                      textTransform: "uppercase",
+                      opacity: 0.7,
                     }}
                   >
-                    <MessageItem
-                      item={a}
-                      depth={1}
-                    />
-                  </View>
+                    Answer {index + 1}
+                  </Text>
                 </View>
 
-                {/* COMMENTS */}
+                <MessageItem item={answer} depth={1} />
+
+                {/* REPLY BUTTON */}
                 <View
                   style={{
-                    marginTop: 8,
-                    marginLeft: 54,
+                    flexDirection: "row",
+                    marginTop: 12,
+                    paddingTop: 10,
+                    borderTopWidth: 1,
+                    borderTopColor: "#f1f5f9",
                   }}
                 >
-                  <AnswerComments
-                    answerId={Number(
-                      a.id
-                    )}
-                  />
-
-                  <ReplyInput
-                    answerId={Number(
-                      a.id
-                    )}
-                  />
+                  <TouchableOpacity
+                    onPress={() => setActiveReplyId(answer.id)}
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 5,
+                      paddingVertical: 5,
+                      paddingHorizontal: 12,
+                      backgroundColor:
+                        activeReplyId === answer.id
+                          ? colors.primary + "12"
+                          : "#f8fafc",
+                      borderRadius: 999,
+                      borderWidth: 1,
+                      borderColor:
+                        activeReplyId === answer.id
+                          ? colors.primary + "35"
+                          : "#e2e8f0",
+                    }}
+                  >
+                    <MessageCircle size={12} color={colors.primary} />
+                    <Text style={{ fontSize: 12, fontWeight: "700", color: colors.primary }}>
+                      Reply
+                    </Text>
+                  </TouchableOpacity>
                 </View>
+
+                {/* ANSWER-LEVEL REPLY INPUT */}
+                {activeReplyId === answer.id && (
+                  <View
+                    style={{
+                      marginTop: 10,
+                      borderWidth: 1,
+                      borderColor: colors.primary + "30",
+                      borderRadius: 14,
+                      padding: 12,
+                      backgroundColor: "#fafcff",
+                    }}
+                  >
+                    <TextInput
+                      value={replyMessage}
+                      onChangeText={setReplyMessage}
+                      placeholder="Write a reply..."
+                      multiline
+                      autoFocus
+                      style={{ minHeight: 40, fontSize: 14, color: "#1e293b" }}
+                      placeholderTextColor="#94a3b8"
+                    />
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                        marginTop: 8,
+                        gap: 8,
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => setActiveReplyId(null)}
+                        style={{
+                          paddingHorizontal: 14,
+                          paddingVertical: 7,
+                          borderRadius: 999,
+                          borderWidth: 1,
+                          borderColor: "#e2e8f0",
+                        }}
+                      >
+                        <Text style={{ fontSize: 12, color: "#64748b", fontWeight: "600" }}>
+                          Cancel
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={handleReply}
+                        style={{
+                          backgroundColor: colors.primary,
+                          paddingHorizontal: 16,
+                          paddingVertical: 7,
+                          borderRadius: 999,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 6,
+                        }}
+                      >
+                        <Send size={13} color="#fff" />
+                        <Text style={{ fontSize: 12, color: "#fff", fontWeight: "700" }}>
+                          Send
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+
+                {/* NESTED REPLIES */}
+                {answer.replies?.length > 0 && (
+                  <View style={{ marginTop: 10 }}>
+                    {renderReplies(answer.replies)}
+                  </View>
+                )}
               </View>
-            ))
-          ) : (
-            /* EMPTY STATE */
-            <View
-              style={{
-                marginHorizontal: 18,
-
-                marginTop: 30,
-
-                paddingVertical: 70,
-
-                paddingHorizontal: 26,
-
-                borderRadius: 32,
-
-             
-
-                borderWidth: 1,
-
-                borderColor:
-        colors.cardBorder,
-
-                alignItems:
-                  "center",
-              }}
-            >
-              {/* ICON */}
-              <View
-                style={{
-                  width: 92,
-
-                  height: 92,
-
-                  borderRadius: 46,
-
-                 
-
-                  alignItems:
-                    "center",
-
-                  justifyContent:
-                    "center",
-
-                }}
-              >
-                <MessageCircle
-                  size={38}
-                  color={colors.secondary}
-                  strokeWidth={2.1}
-                />
-              </View>
-
-              {/* TITLE */}
-              <Text
-                style={{
-                  fontSize: 24,
-
-                  fontWeight:
-                    "900",
-
-                  color:colors.dark,
-
-                  marginBottom: 12,
-                }}
-              >
-                No answers yet
-              </Text>
-
-              {/* DESC */}
-              <Text
-                style={{
-                  fontSize: 14,
-
-                  lineHeight: 26,
-
-                  textAlign:
-                    "center",
-
-                  color: "#000",
-
-                  opacity: 0.6,
-
-                  maxWidth: 280,
-                }}
-              >
-                Be the first person
-                to join the discussion
-                and help solve this
-                question.
-              </Text>
             </View>
-          )}
+          ))}
         </ScrollView>
 
-        {/* INPUT */}
+        {/* ANSWER INPUT */}
         <BottomAnswerInput
           input={input}
           setInput={setInput}
-          handleAnswer={
-            handleAnswer
-          }
+          handleAnswer={handleAnswer}
           isPending={isPending}
         />
       </View>
