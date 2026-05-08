@@ -1,4 +1,3 @@
-import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -42,53 +41,53 @@ export default function HomeScreen(): JSX.Element {
   return (
     <ScreenLayout>
       <ScreenContent>
-        <AnimatedTabContent>
-          <View
-            style={{
-              backgroundColor: colors.light,
-              flex: 1,
-              paddingTop: 16,
-            }}
-          >
-            <Pressable onPress={() => router.push(ROUTES.WEATHER.DETAILS)}>
-              <WeatherCard current={currentWeather} />
-            </Pressable>
-            <QuickActions />
-            <View style={{ marginTop: 18 }}>
-              <ListHeader
-                title="Trending Products"
-                icon={<Flame size={22} color={colors.secondary} />}
-              />
-              <TrendingProductsList
-                items={trendingData}
-                {...sharedWishlistProps}
-                variant="carousel"
-                refreshing={refreshing}
-                onRefresh={handleRefresh}
-              />
-            </View>
-
-            <View style={{ marginTop: 52 }}>
-              <ListHeader
-                title="Best Deals"
-                icon={<Tag size={22} color={colors.secondary} />}
-              />
-
-              <BestDealsList
-                data={bestDealsData}
-                {...sharedWishlistProps}
-                variant="carousel"
-              />
-            </View>
-            <SectionTitle title="Farm Overview" icon={null} />
-            <FarmOverviewChart />
-            <SectionTitle title="Farmer Tips & Awareness" icon={null} />
-            <FarmerTipsCard />
-            <View style={{ marginBottom: 80 }}>
-              <LegalDisclaimer />
-            </View>
+        {/* <AnimatedTabContent> */}
+        <View
+          style={{
+            backgroundColor: colors.light,
+            flex: 1,
+            paddingTop: 16,
+          }}
+        >
+          <Pressable onPress={() => router.push(ROUTES.WEATHER.DETAILS)}>
+            <WeatherCard current={currentWeather} />
+          </Pressable>
+          <QuickActions />
+          <View style={{ marginTop: 18 }}>
+            <ListHeader
+              title="Trending Products"
+              icon={<Flame size={22} color={colors.secondary} />}
+            />
+            <TrendingProductsList
+              items={trendingData}
+              {...sharedWishlistProps}
+              variant="carousel"
+              refreshing={refreshing}
+              onRefresh={handleRefresh}
+            />
           </View>
-        </AnimatedTabContent>
+
+          <View style={{ marginTop: 52 }}>
+            <ListHeader
+              title="Best Deals"
+              icon={<Tag size={22} color={colors.secondary} />}
+            />
+
+            <BestDealsList
+              data={bestDealsData}
+              {...sharedWishlistProps}
+              variant="carousel"
+            />
+          </View>
+          <SectionTitle title="Farm Overview" icon={null} />
+          <FarmOverviewChart />
+          <SectionTitle title="Farmer Tips & Awareness" icon={null} />
+          <FarmerTipsCard />
+          <View style={{ marginBottom: 80 }}>
+            <LegalDisclaimer />
+          </View>
+        </View>
+        {/* </AnimatedTabContent> */}
       </ScreenContent>
     </ScreenLayout>
   );

@@ -31,7 +31,7 @@ export default function Loader() {
   });
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.bgColor }]}>
+    <View style={[styles.container,]}>
       <Animated.View style={{ opacity: fadeAnim }}>
         {/* The Track (faint background circle) */}
         <View

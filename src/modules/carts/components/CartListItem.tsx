@@ -1,4 +1,6 @@
-import { useState } from "react";
+
+
+import { useEffect, useState } from "react";
 import { Image, Pressable, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -13,16 +15,26 @@ export default function CartListItem({
   handleRemoveItem,
 }) {
 
- const [quantity, setQuantity] = useState(1);
+const [quantity, setQuantity] = useState(apiQuantity || 1);
+
+useEffect(() => {
+  setQuantity(apiQuantity || 1);
+}, [apiQuantity]);
 
 
-  const decrease = () => {
-    if (quantity > 1) setQuantity((p) => p - 1);
-  };
+const decrease = () => {
+  if (quantity > 1) {
+    const newQty = quantity - 1;
+    setQuantity(newQty);
+    onQtyChange?.(newQty);
+  }
+};
 
-  const increase = () => {
-    setQuantity((p) => p + 1);
-  };
+const increase = () => {
+  const newQty = quantity + 1;
+  setQuantity(newQty);
+  onQtyChange?.(newQty);
+};
   const price =
     item?.calculatedProductPrice?.price ?? item?.productPrice ?? 0;
 
