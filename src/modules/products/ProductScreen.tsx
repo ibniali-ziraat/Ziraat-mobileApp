@@ -1,237 +1,115 @@
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { colors } from "@/src/constants/colors";
-import { useDebounce } from "@/src/hooks/useDebounce";
-import { toast } from "@backpackapp-io/react-native-toast";
-import { useEffect, useRef, useState } from "react";
-import { Pressable, Text, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import { useWishlist } from "../wishlist/hooks/useWishlist";
-import FilterBottomSheet from "./components/FilterBottomSheet";
-import ProductSearchBar from "./components/ProductSearchBar";
+import { useState } from "react";
+import { Dimensions, FlatList } from "react-native";
+import ProductCard from "./components/ProductCard";
+
+import Loader from "@/src/components/shared/Loader";
+import ProductListHeader from "./components/ProductListHeader";
+import { ProductListFooter } from "./components/ProductListStates";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 import { useProductsData } from "./hooks/data/useProductsData";
-import { useProductSearch } from "./hooks/queries/products.queries";
-
+import { usePaginatedProducts } from "./hooks/usePaginatedProducts";
+import { useScrollToTop } from "./hooks/useScrollToTop";
+import { useWishlistToggle } from "./hooks/useWishlistToggle";
 import {
-  ArrowUp,
-  CookingPotIcon,
-  Layers2,
-  LayoutGrid,
-  Package,
-  Sofa,
-} from "lucide-react-native";
+  NormalizedProduct,
+  ProductFilters,
+  WishlistItem,
+} from "./types/productlist.types";
 
-import SectionTitle from "../home/components/SectionTitle";
-import ProductsList from "./components/ProductList";
+const CARD_WIDTH = Dimensions.get("window").width * 0.42;
 
 export default function ProductScreen() {
   const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState({});
+  const [filters, setFilters] = useState<ProductFilters>({});
   const [filterOpen, setFilterOpen] = useState(false);
-
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const pageSize = 6;
-  const [visibleCount, setVisibleCount] = useState(pageSize);
+  const isFiltering = Object.keys(filters).length > 0 || !!search;
 
-  const [showTopBtn, setShowTopBtn] = useState(false);
-  const scrollRef = useRef<any>(null);
-
-  const debouncedSearch = useDebounce(search, 500);
+  const { filterOptions = [] } = useProductsData();
+  const { wishlist, isBusy, handleToggleWishlist } = useWishlistToggle();
+  const { showTopBtn, handleScroll } = useScrollToTop();
+  const [refreshing, setRefreshing] = useState(false);
 
   const {
-    wishlist,
-    isBusy,
-    addToWishlist,
-    removeFromWishlist,
-    getWishlistItemId,
-  } = useWishlist();
-
-  const { products: allProducts = [], filterOptions = [] } = useProductsData();
-  console.log(allProducts);
-
-  const { data: filteredProductsData = {} } = useProductSearch({
-    query: debouncedSearch,
-    ...filters,
-  });
-
-  let filteredProducts = Array.isArray(filteredProductsData?.products)
-    ? filteredProductsData.products
-    : [];
-
-  if (filters?.minRating !== undefined && filters?.minRating !== null) {
-    filteredProducts = filteredProducts.filter(
-      (p: any) => Number(p.ratingAverage || 0) >= Number(filters.minRating),
-    );
-  }
-
-  const isFiltering = Object.keys(filters).length > 0 || debouncedSearch;
-  const displayedProducts = isFiltering ? filteredProducts : allProducts;
-
-  const visibleProducts = displayedProducts.slice(0, visibleCount);
-  const isMoreLoading = visibleCount < displayedProducts.length;
-
-  useEffect(() => {
-    setVisibleCount(pageSize);
-  }, [debouncedSearch, filters]);
-
-  const handleToggleWishlist = async (productId: string | number) => {
-    const id = getWishlistItemId(productId);
-
-    try {
-      if (id) {
-        await removeFromWishlist({ id });
-        toast.success("Removed from wishlist");
-      } else {
-        await addToWishlist({ productId, quantity: 1 });
-        toast.success("Added to wishlist");
-      }
-    } catch (error) {}
+    scrollRef,
+    displayedProducts,
+    isLoading,
+    isFetchingMore,
+    hasMore,
+    handleEndReached,
+    refresh,
+    productSearchRefetch,
+  } = usePaginatedProducts({ search, filters, activeCategory });
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refresh();
+    await productSearchRefetch();
+    setRefreshing(false);
   };
 
-  const categories = [
-    { label: "All", icon: LayoutGrid },
-    { label: "Furniture", icon: Sofa },
-    { label: "Carpets", icon: Layers2 },
-    { label: "Utensils", icon: CookingPotIcon },
-  ];
+  // if (isLoading) return <Loader />;
 
   return (
-    <ScreenLayout>
+    <ScreenLayout scrollable={false}>
       <ScreenContent>
-        <ScrollView
+        <FlatList<NormalizedProduct>
           ref={scrollRef}
+          data={displayedProducts}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          numColumns={2}
+          keyExtractor={(item, index) =>
+            item?.id ? String(item.id) : `fallback-${index}`
+          }
+          ListHeaderComponent={
+            <ProductListHeader
+              search={search}
+              setSearch={setSearch}
+              filterOpen={filterOpen}
+              setFilterOpen={setFilterOpen}
+              filters={filters}
+              setFilters={setFilters}
+              filterOptions={filterOptions}
+              isFiltering={isFiltering}
+              activeCategory={activeCategory}
+              setActiveCategory={setActiveCategory}
+            />
+          }
+          ListFooterComponent={
+            <ProductListFooter
+              isFetchingMore={isFetchingMore}
+              hasMore={hasMore}
+              productCount={displayedProducts.length}
+            />
+          }
+          ListEmptyComponent={<Loader />}
           showsVerticalScrollIndicator={false}
-          scrollEventThrottle={300}
-          onScroll={(e) => {
-            const { layoutMeasurement, contentOffset, contentSize } =
-              e.nativeEvent;
-
-            const isCloseToBottom =
-              layoutMeasurement.height + contentOffset.y >=
-              contentSize.height - 80;
-
-            if (isCloseToBottom && isMoreLoading) {
-              setVisibleCount((prev) => prev + pageSize);
-            }
-
-            setShowTopBtn(contentOffset.y > 300);
-          }}
-        >
-          <ProductSearchBar
-            search={search}
-            setSearch={setSearch}
-            onFilterPress={() => setFilterOpen(true)}
-          />
-
-          <FilterBottomSheet
-            visible={filterOpen}
-            onClose={() => setFilterOpen(false)}
-            onApplyFilters={setFilters}
-            filterOptions={filterOptions}
-          />
-
-          {!isFiltering && (
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              style={{ marginTop: 18 }}
-              contentContainerStyle={{ paddingRight: 10 }}
-            >
-              {categories.map((item, i) => {
-                const isActive = activeCategory === item.label;
-
-                return (
-                  <Pressable
-                    key={i}
-                    onPress={() => setActiveCategory(item.label)}
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      paddingHorizontal: 16,
-                      paddingVertical: 10,
-                      borderRadius: 24,
-                      marginRight: 10,
-                      backgroundColor: isActive ? colors.primary : colors.light,
-                      borderWidth: 1,
-                      borderColor: isActive ? colors.primary : colors.secondary,
-                      elevation: isActive ? 4 : 2,
-                    }}
-                  >
-                    <View style={{ marginRight: 6 }}>
-                      <item.icon
-                        size={14}
-                        color={isActive ? colors.light : colors.secondary}
-                      />
-                    </View>
-
-                    <Text
-                      style={{
-                        fontWeight: "600",
-                        fontSize: 13,
-                        color: isActive ? colors.light : colors.secondary,
-                      }}
-                    >
-                      {item.label}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </ScrollView>
+          contentContainerStyle={{ paddingBottom: 30 }}
+          columnWrapperStyle={{ justifyContent: "space-between" }}
+          onEndReached={handleEndReached}
+          onEndReachedThreshold={0.3}
+          onScroll={handleScroll}
+          renderItem={({ item }) => (
+            <ProductCard
+              item={item}
+              cardWidth={CARD_WIDTH}
+              isCarousel={false}
+              wishlistItems={wishlist as WishlistItem[]}
+              isWishlistBusy={isBusy}
+              onToggleWishlist={handleToggleWishlist}
+            />
           )}
-
-          {/* <View style={{ marginTop: 24 }}>
-            <ListHeader
-              title="Popular Products"
-              icon={<Star size={20} color={colors.secondary} />}
-            />
-
-            <ProductsList
-              items={allProducts.slice(3, 8)}
-              wishlistItems={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-              isWishlistBusy={isBusy}
-              variant="carousel"
-            />
-          </View> */}
-
-          <View style={{ marginTop: 24 }}>
-            <SectionTitle
-              title={"All Products"}
-              icon={<Package size={20} color={colors.secondary} />}
-            />
-            <ProductsList
-              items={visibleProducts}
-              wishlistItems={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-              isWishlistBusy={isBusy}
-              variant="grid"
-            />
-          </View>
-
-          {/* {isMoreLoading && (
-            <View style={{ paddingVertical: 20, alignItems: "center" }}>
-              <ActivityIndicator size="large" color={colors.primary} />
-            </View>
-          )} */}
-        </ScrollView>
+        />
 
         {showTopBtn && (
-          <View style={{ position: "absolute", bottom: 30, right: 20 }}>
-            <Pressable
-              onPress={() =>
-                scrollRef.current?.scrollTo({ y: 0, animated: true })
-              }
-              style={{
-                backgroundColor: colors.primary,
-                padding: 16,
-                borderRadius: 100,
-                elevation: 10,
-              }}
-            >
-              <ArrowUp size={18} color={colors.light} />
-            </Pressable>
-          </View>
+          <ScrollToTopButton
+            onPress={() =>
+              scrollRef.current?.scrollToOffset({ offset: 0, animated: true })
+            }
+          />
         )}
       </ScreenContent>
     </ScreenLayout>

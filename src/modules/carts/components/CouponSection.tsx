@@ -3,13 +3,7 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { X } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
-
-type CouponType = {
-  code: string;
-  ruleName: string;
-  discountAmount: number;
-  endDate: string;
-};
+import { CouponType } from "../types/cart.types";
 
 type Props = {
   showCoupons: boolean;
@@ -47,10 +41,7 @@ const CouponSection = ({
 
         <Pressable onPress={() => setShowCoupons(!showCoupons)}>
           <Text
-            style={[
-              typography.Poppins_s_regular,
-              { color: colors.primary },
-            ]}
+            style={[typography.Poppins_s_regular, { color: colors.primary }]}
           >
             {showCoupons ? "Hide" : "View All"}
           </Text>
@@ -80,10 +71,7 @@ const CouponSection = ({
                     borderRadius: 16,
                     backgroundColor: colors.light,
                     borderWidth: 1,
-                    borderColor: isSelected
-                      ? colors.primary
-                      : colors.darkHover,
-                   
+                    borderColor: isSelected ? colors.primary : colors.darkHover,
                   }}
                 >
                   <View
@@ -91,7 +79,6 @@ const CouponSection = ({
                       flexDirection: "row",
                       justifyContent: "space-between",
                       alignItems: "center",
-                     
                     }}
                   >
                     <Text
@@ -99,9 +86,7 @@ const CouponSection = ({
                         typography.Poppins_m_semibold,
                         {
                           fontSize: 15,
-                          color: isSelected
-                            ? colors.primary
-                            : colors.dark,
+                          color: isSelected ? colors.primary : colors.dark,
                         },
                       ]}
                     >
@@ -120,11 +105,7 @@ const CouponSection = ({
                   </View>
 
                   {/* Rule */}
-                  <Text
-                    style={[
-                      typography.Poppins_s_regular,
-                    ]}
-                  >
+                  <Text style={[typography.Poppins_s_regular]}>
                     {coupon.ruleName}
                   </Text>
 
@@ -142,13 +123,10 @@ const CouponSection = ({
                       }}
                     >
                       Expires{" "}
-                      {new Date(coupon.endDate).toLocaleDateString(
-                        "en-IN",
-                        {
-                          day: "numeric",
-                          month: "short",
-                        }
-                      )}
+                      {new Date(coupon.endDate).toLocaleDateString("en-IN", {
+                        day: "numeric",
+                        month: "short",
+                      })}
                     </Text>
 
                     {/* Small Button */}
@@ -229,7 +207,7 @@ const CouponSection = ({
               fontWeight: "600",
             }}
           >
-            🎉 {selectedCoupon} applied
+            {selectedCoupon} applied
           </Text>
 
           <Pressable onPress={onResetCoupon}>

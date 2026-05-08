@@ -1,15 +1,8 @@
-
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ChevronDown, Filter, Search } from "lucide-react-native";
 import { useMemo, useState } from "react";
-import {
-  FlatList,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Pressable, Text, TextInput, View } from "react-native";
 
 interface Option {
   label: string;
@@ -40,45 +33,39 @@ export default function SimpleDropdownFilter({
   const filteredOptions = useMemo(() => {
     if (!searchable || !searchText) return options;
     return options.filter((o) =>
-      o.label.toLowerCase().includes(searchText.toLowerCase())
+      o.label.toLowerCase().includes(searchText.toLowerCase()),
     );
   }, [options, searchText, searchable]);
 
   return (
     <View style={{ marginBottom: 16 }}>
       {/* Selector */}
-     <TouchableOpacity
-  onPress={() => setOpen((p) => !p)}
-  style={{
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderWidth: 1,
-    borderColor: colors.neutral,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    backgroundColor: colors.light,
-  }}
->
-  {/* Left: Filter icon + label */}
-  <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-    <Filter size={18} color={colors.dark} />
+      <Pressable
+        onPress={() => setOpen((p) => !p)}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderWidth: 1,
+          borderColor: colors.neutral,
+          borderRadius: 12,
+          paddingHorizontal: 14,
+          paddingVertical: 12,
+          backgroundColor: colors.light,
+        }}
+      >
+        {/* Left: Filter icon + label */}
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <Filter size={18} color={colors.dark} />
 
-    <Text
-      style={[
-        typography.Poppins_m_regular,
-        { color: colors.dark },
-      ]}
-    >
-      {selectedLabel}
-    </Text>
-  </View>
+          <Text style={[typography.Poppins_m_regular, { color: colors.dark }]}>
+            {selectedLabel}
+          </Text>
+        </View>
 
-  {/* Right: Dropdown arrow */}
-  <ChevronDown size={18} color={colors.dark} />
-</TouchableOpacity>
-
+        {/* Right: Dropdown arrow */}
+        <ChevronDown size={18} color={colors.dark} />
+      </Pressable>
 
       {/* Dropdown */}
       {open && (
@@ -128,7 +115,7 @@ export default function SimpleDropdownFilter({
             keyExtractor={(item) => item.value.toString()}
             keyboardShouldPersistTaps="handled"
             renderItem={({ item }) => (
-              <TouchableOpacity
+              <Pressable
                 onPress={() => {
                   onChange(item.value);
                   setOpen(false);
@@ -138,9 +125,7 @@ export default function SimpleDropdownFilter({
                   paddingVertical: 12,
                   paddingHorizontal: 14,
                   backgroundColor:
-                    item.value === value
-                      ? colors.primary + "22"
-                      : colors.light,
+                    item.value === value ? colors.primary + "22" : colors.light,
                 }}
               >
                 <Text
@@ -148,15 +133,13 @@ export default function SimpleDropdownFilter({
                     typography.Poppins_m_regular,
                     {
                       color:
-                        item.value === value
-                          ? colors.primary
-                          : colors.dark,
+                        item.value === value ? colors.primary : colors.dark,
                     },
                   ]}
                 >
                   {item.label}
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             )}
           />
         </View>

@@ -4,12 +4,7 @@ import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import {
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Image, Pressable, ScrollView, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -62,9 +57,7 @@ function ProductCard({ product }) {
   }, []);
 
   const productIcon =
-    product.tag?.toLowerCase() === "organic"
-      ? "leaf-outline"
-      : "flask-outline";
+    product.tag?.toLowerCase() === "organic" ? "leaf-outline" : "flask-outline";
 
   return (
     <Animated.View
@@ -104,7 +97,6 @@ function ProductCard({ product }) {
               resizeMode="cover"
             />
 
-           
             <View
               style={{
                 position: "absolute",
@@ -128,7 +120,7 @@ function ProductCard({ product }) {
           style={{ color: colors.dark }}
         >
           {product.name}
-       </CsText>
+        </CsText>
       )}
 
       {/* DESCRIPTION */}
@@ -138,12 +130,12 @@ function ProductCard({ product }) {
           style={{ color: colors.dark + "AA" }}
         >
           {product.desc}
-       </CsText>
+        </CsText>
       )}
 
       {/* VIEW BUTTON */}
       {!loading && (
-        <TouchableOpacity
+        <Pressable
           className="mt-5 py-2 rounded-full flex-row items-center justify-center"
           style={{
             backgroundColor: colors.secondary,
@@ -152,8 +144,10 @@ function ProductCard({ product }) {
             shadowRadius: 6,
           }}
         >
-          <CsText className="text-white ml-2 text-[13px] font-medium">View</CsText>
-        </TouchableOpacity>
+          <CsText className="text-white ml-2 text-[13px] font-medium">
+            View
+          </CsText>
+        </Pressable>
       )}
     </Animated.View>
   );

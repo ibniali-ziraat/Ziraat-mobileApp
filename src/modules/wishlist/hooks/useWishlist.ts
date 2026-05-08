@@ -35,7 +35,8 @@ export const useWishlist = () => {
     isFetchingWishlist: isFetching,
     isAdding: addMutation.isPending,
     isRemoving: deleteMutation.isPending,
-    isBusy: isLoading || addMutation.isPending || deleteMutation.isPending,
+    isWishlistBusy:
+      isLoading || addMutation.isPending || deleteMutation.isPending,
     isError,
     isInWishlist,
     getWishlistItemId,

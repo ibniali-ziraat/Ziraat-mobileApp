@@ -1,12 +1,12 @@
 import CsText from "@/src/components/shared/CsText";
-import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 import { ModeButtonProps } from "../types/auth.types";
 
 export function ModeButton({ title, onPress }: ModeButtonProps) {
   const isRegisterMode = title.includes("Register");
 
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       className="flex-row self-center mt-1 mb-5 px-5 py-1"
     >
@@ -27,6 +27,6 @@ export function ModeButton({ title, onPress }: ModeButtonProps) {
           <CsText className="text-primary font-bold text-sm">Login</CsText>
         </>
       )}
-    </TouchableOpacity>
+    </Pressable>
   );
 }

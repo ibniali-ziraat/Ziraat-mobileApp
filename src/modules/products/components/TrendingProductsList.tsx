@@ -1,7 +1,7 @@
 import Loader from "@/src/components/shared/Loader";
 import { Dimensions, FlatList, View } from "react-native";
 import { LAYOUT } from "../constants/constants";
-import ProductCard from "./ProductCard";
+import TrendingProductCard from "./TrendingProductsCard";
 
 type Props = {
   items: any;
@@ -11,6 +11,8 @@ type Props = {
   variant?: "grid" | "carousel";
   title?: string;
   onSeeMore?: any;
+  refreshing?: boolean;
+  onRefresh?: () => void;
 };
 
 export default function TrendingProductsList({
@@ -19,6 +21,8 @@ export default function TrendingProductsList({
   onToggleWishlist,
   isWishlistBusy,
   variant = "grid",
+  refreshing = false,
+  onRefresh,
 }: Props) {
   const screenWidth = Dimensions.get("window").width;
   const isCarousel = variant === "carousel";
@@ -50,6 +54,8 @@ export default function TrendingProductsList({
         keyExtractor={(item) => String(item.productId)}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={!isCarousel}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         contentContainerStyle={{
           paddingHorizontal: LAYOUT.PADDING,
           paddingBottom: isCarousel ? 0 : 30,
@@ -58,14 +64,8 @@ export default function TrendingProductsList({
           !isCarousel ? { justifyContent: "space-between" } : undefined
         }
         renderItem={({ item }) => (
-          <ProductCard
-            item={{
-              id: String(item.productId),
-              title: item.productName,
-              price: item.lowestPrice || item.originalPrice,
-              image: item.thumbnailUrl,
-              rating: item.ratingAverage,
-            }}
+          <TrendingProductCard
+            item={item}
             cardWidth={cardWidth}
             isCarousel={isCarousel}
             wishlistItems={wishlistItems}

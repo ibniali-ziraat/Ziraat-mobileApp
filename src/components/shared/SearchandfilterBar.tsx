@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { TextInput } from "react-native-paper";
 import CsText from "./CsText";
 
@@ -40,15 +40,13 @@ export default function Searchandfilter() {
         {FILTERS.map((f) => {
           const isActive = active === f;
           return (
-            <TouchableOpacity
+            <Pressable
               key={f}
               onPress={() => setActive(isActive ? "" : f)}
               activeOpacity={0.7}
               className="px-3 py-[6px] rounded-full mr-2"
               style={{
-                backgroundColor: isActive
-                  ? `${colors.primary}1A`
-                  : "#f3f4f6",
+                backgroundColor: isActive ? `${colors.primary}1A` : "#f3f4f6",
                 borderColor: isActive ? colors.primary : "#d1d5db",
                 borderWidth: 1,
               }}
@@ -60,8 +58,8 @@ export default function Searchandfilter() {
                 }}
               >
                 {f}
-             </CsText>
-            </TouchableOpacity>
+              </CsText>
+            </Pressable>
           );
         })}
       </View>

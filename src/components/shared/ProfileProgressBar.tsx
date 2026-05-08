@@ -1,19 +1,8 @@
-
-
 import { colors } from "@/src/constants/colors";
 import { shadows } from "@/src/constants/shadows";
-import {
-  CheckCircle,
-  ChevronRight,
-  XCircle,
-} from "lucide-react-native";
+import { CheckCircle, ChevronRight, XCircle } from "lucide-react-native";
 import { useEffect, useRef } from "react";
-import {
-  Animated,
-  ScrollView,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Animated, Pressable, ScrollView, View } from "react-native";
 import CsText from "./CsText";
 
 interface ProgressBarProps {
@@ -159,9 +148,7 @@ export default function ProfileProgressBar({
                     ? colors.primary + "12"
                     : "#F8FAFC",
                   borderWidth: 1,
-                  borderColor: isCompleted
-                    ? colors.primary + "30"
-                    : "#E5E7EB",
+                  borderColor: isCompleted ? colors.primary + "30" : "#E5E7EB",
 
                   // subtle depth
                   shadowColor: "#000",
@@ -217,7 +204,7 @@ export default function ProfileProgressBar({
           />
 
           {/* CLICKABLE ARROW */}
-          <TouchableOpacity
+          <Pressable
             onPress={() => {
               scrollRef.current?.scrollTo({
                 x: 120,
@@ -230,7 +217,7 @@ export default function ProfileProgressBar({
             }}
           >
             <ChevronRight size={20} color={colors.neutral} />
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
 
@@ -254,7 +241,7 @@ export default function ProfileProgressBar({
               color: colors.primary,
             }}
           >
-            Profile completed 
+            Profile completed
           </CsText>
         </View>
       )}

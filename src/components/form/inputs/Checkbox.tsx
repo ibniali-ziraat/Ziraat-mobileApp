@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 export default function Checkbox({ control: controlProp, name, label }) {
   let formContext;
@@ -30,7 +30,7 @@ export default function Checkbox({ control: controlProp, name, label }) {
 
         return (
           <View style={{ marginBottom: 20 }}>
-            <TouchableOpacity
+            <Pressable
               onPress={toggle}
               activeOpacity={0.7}
               style={{
@@ -68,7 +68,7 @@ export default function Checkbox({ control: controlProp, name, label }) {
               {/* LABEL */}
 
               <Text>{label}</Text>
-            </TouchableOpacity>
+            </Pressable>
 
             {error && (
               <Text style={{ color: "red", marginTop: 4 }}>

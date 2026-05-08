@@ -1,7 +1,7 @@
+import { checkout } from "@/src/services/user-address.service";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   applyCoupon,
-  checkout,
   codCheckoutService,
   createCheckoutShipping,
   createShippingAddress,
@@ -10,7 +10,7 @@ import {
   getPaymentProviders,
   updateTaxAndShippingPrices,
   upiCheckoutService,
-} from "../services/checkout.services";
+} from "../../checkout/services/checkout.services";
 
 export const useCouponCode = () => {
   return useMutation({
@@ -25,7 +25,6 @@ export const useGetCouponCode = (couponCode?: string) => {
     enabled: true, // ✅ ALWAYS FETCH
   });
 };
-
 
 export const useCheckout = () => {
   return useMutation({

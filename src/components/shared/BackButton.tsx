@@ -1,7 +1,7 @@
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { BuyNowButtonProps } from "@/src/types/buy.type";
-import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 import CsText from "./CsText";
 
 export default function BackButton({
@@ -9,7 +9,7 @@ export default function BackButton({
   title = "Back",
 }: BuyNowButtonProps) {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
       activeOpacity={0.85}
       className="h-12 rounded-xl items-center justify-center"
@@ -24,6 +24,6 @@ export default function BackButton({
       >
         {title}
       </CsText>
-    </TouchableOpacity>
+    </Pressable>
   );
 }

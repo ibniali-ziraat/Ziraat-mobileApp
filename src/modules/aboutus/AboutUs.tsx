@@ -14,7 +14,7 @@ import {
   Wheat,
 } from "lucide-react-native";
 import { useState } from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, Pressable, View } from "react-native";
 
 const iconMap = {
   Wheat,
@@ -28,6 +28,7 @@ const iconMap = {
 
 const aboutUsImages = {
   aboutus: require("../../../assets/images/about-us/aboutus.webp"),
+  
   aboutus1: require("../../../assets/images/about-us/aboutus1.avif"),
   aboutus2: require("../../../assets/images/about-us/aboutus2.jpg"),
   aboutus3: require("../../../assets/images/about-us/aboutus3.jpg"),
@@ -40,7 +41,7 @@ export default function AboutUs() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   const toggleExpand = (index: number) => {
-    setExpandedIndex(prev => (prev === index ? null : index));
+    setExpandedIndex((prev) => (prev === index ? null : index));
   };
 
   return (
@@ -57,7 +58,7 @@ export default function AboutUs() {
 
         // ✅ Check if any content is long
         const hasLongContent = section.content.some(
-          (item: string) => item.length > 80
+          (item: string) => item.length > 80,
         );
 
         return (
@@ -69,19 +70,28 @@ export default function AboutUs() {
             marginBottom={3}
           >
             <View
-              className={`flex-row ${
-                isEven ? "flex-row" : "flex-row-reverse"
-              }`}
+              className={`flex-row ${isEven ? "flex-row" : "flex-row-reverse"}`}
             >
               {/* Image */}
               {section.image && (
-                <View className="w-[45%] h-[140px] rounded-xl overflow-hidden">
-                  <Image
-                    source={aboutUsImages[section.image]}
-                    className="w-full h-full"
-                    resizeMode="cover"
-                  />
-                </View>
+               <View
+  style={{
+    width: "45%",
+    height: 140,
+    borderRadius: 16,
+    overflow: "hidden",
+    backgroundColor: "#f3f4f6",
+  }}
+>
+  <Image
+    source={aboutUsImages[section.image]}
+    resizeMode="cover"
+    style={{
+      width: "100%",
+      height: "100%",
+    }}
+  />
+</View>
               )}
 
               {/* Content */}
@@ -102,9 +112,7 @@ export default function AboutUs() {
 
                   {section.content.map((item: string, idx: number) => (
                     <View key={idx} className="flex-row mb-1">
-                      <CsText className="mr-2 text-[13px] text-dark">
-                        •
-                      </CsText>
+                      <CsText className="mr-2 text-[13px] text-dark">•</CsText>
                       <CsText
                         className="flex-1 text-[13px] text-normal leading-[18px]"
                         numberOfLines={isExpanded ? undefined : 2}
@@ -118,11 +126,11 @@ export default function AboutUs() {
                 {/* ✅ Show only if content is long */}
                 {hasLongContent && (
                   <View className="items-end mt-2">
-                    <TouchableOpacity onPress={() => toggleExpand(index)}>
+                    <Pressable onPress={() => toggleExpand(index)}>
                       <CsText className="text-[12px] text-secondary font-medium">
                         {isExpanded ? "Read Less ↑" : "Read More →"}
                       </CsText>
-                    </TouchableOpacity>
+                    </Pressable>
                   </View>
                 )}
               </View>

@@ -1,11 +1,6 @@
-
 import { Ionicons } from "@expo/vector-icons";
 import { useState } from "react";
-import {
-  PanResponder,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { PanResponder, Pressable, View } from "react-native";
 
 import Animated, {
   Easing,
@@ -106,7 +101,9 @@ function ProgressRing({ percent }) {
         },
       ]}
     >
-      <CsText className="font-extrabold text-lg text-primary">{percent}%</CsText>
+      <CsText className="font-extrabold text-lg text-primary">
+        {percent}%
+      </CsText>
     </Animated.View>
   );
 }
@@ -163,13 +160,13 @@ export default function OverviewCard() {
         <View>
           <CsText className="text-lg font-extrabold text-black">
             Onboarding Status
-         </CsText>
+          </CsText>
           <CsText className="text-[11px] text-gray-700 mt-[2px]">
             Vendor KYC + Document Verification
-         </CsText>
+          </CsText>
         </View>
 
-        <TouchableOpacity
+        <Pressable
           onPress={() => setExpanded(!expanded)}
           className="p-2 rounded-full bg-gray-100"
         >
@@ -178,7 +175,7 @@ export default function OverviewCard() {
             size={20}
             color="#333"
           />
-        </TouchableOpacity>
+        </Pressable>
       </View>
 
       {/* PROGRESS SECTION */}
@@ -194,10 +191,10 @@ export default function OverviewCard() {
           <View className="ml-4 flex-1">
             <CsText className="font-semibold text-black text-sm">
               Completion Progress
-           </CsText>
+            </CsText>
             <CsText className="text-xs text-gray-700 mt-[2px]">
               {vendor.completion}% onboarding complete
-           </CsText>
+            </CsText>
           </View>
         </View>
 
@@ -233,15 +230,19 @@ export default function OverviewCard() {
           >
             <Ionicons name="alert-circle" size={22} color={secondary} />
             <View className="ml-3 flex-1">
-              <CsText className="text-secondary font-semibold">Next Step</CsText>
-              <CsText className="text-xs text-gray-700">{vendor.nextTask}</CsText>
+              <CsText className="text-secondary font-semibold">
+                Next Step
+              </CsText>
+              <CsText className="text-xs text-gray-700">
+                {vendor.nextTask}
+              </CsText>
             </View>
           </Animated.View>
 
           {/* VERIFICATION TIMELINE */}
           <CsText className="font-semibold text-lg text-gray-900 mt-6 mb-3">
             Verification Timeline
-         </CsText>
+          </CsText>
 
           {vendor.kyc.map((step, index) => (
             <Animated.View
@@ -267,17 +268,17 @@ export default function OverviewCard() {
                   }`}
                 >
                   {step.label}
-               </CsText>
+                </CsText>
 
                 <CsText className="text-[11px] text-gray-700 mt-[3px]">
                   {step.details}
-               </CsText>
+                </CsText>
 
                 <View className="flex-row items-center mt-2">
                   <Ionicons name="calendar-outline" size={12} color="#777" />
                   <CsText className="text-[10px] text-gray-600 ml-1">
                     {step.timestamp}
-                 </CsText>
+                  </CsText>
                 </View>
 
                 {index !== vendor.kyc.length - 1 && (
@@ -296,18 +297,18 @@ export default function OverviewCard() {
               <Ionicons name="shield-checkmark" size={16} color={primary} />
               <CsText className="text-primary font-semibold text-sm ml-2">
                 Vendor Code
-             </CsText>
+              </CsText>
             </View>
 
             <CsText className="text-2xl font-extrabold text-primary tracking-wide">
               {vendor.vendorCode}
-           </CsText>
+            </CsText>
 
             <View className="h-[1px] bg-primary/20 mt-3 mb-2" />
 
             <CsText className="text-[11px] text-gray-600 leading-4">
               Used for ZIRAAT mapping and credit approvals.
-           </CsText>
+            </CsText>
           </Animated.View>
 
           {/* ZONE DETAILS */}
@@ -327,7 +328,7 @@ export default function OverviewCard() {
               <Ionicons name="location-outline" size={22} color={secondary} />
               <CsText className="ml-3 text-black font-semibold text-lg">
                 {vendor.zone.title}
-             </CsText>
+              </CsText>
             </View>
 
             {vendor.zone.items.map((item, index) => (
@@ -345,7 +346,7 @@ export default function OverviewCard() {
 
                 <CsText className="text-gray-800 text-sm flex-1 ml-2 leading-5">
                   {item}
-               </CsText>
+                </CsText>
               </Animated.View>
             ))}
           </Animated.View>

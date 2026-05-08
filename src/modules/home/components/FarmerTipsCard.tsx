@@ -7,10 +7,10 @@ import {
   Droplets,
   Leaf,
   ShieldCheck,
-  Sun
+  Sun,
 } from "lucide-react-native";
 import { useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -19,8 +19,10 @@ import Animated, {
 
 // Weather-based warnings
 function getWeatherWarning(title: string) {
-  if (title.includes("Spray")) return "Avoid spraying during rain or strong winds.";
-  if (title.includes("Irrigate")) return " Best done early morning or late evening.";
+  if (title.includes("Spray"))
+    return "Avoid spraying during rain or strong winds.";
+  if (title.includes("Irrigate"))
+    return " Best done early morning or late evening.";
   return null;
 }
 
@@ -49,8 +51,8 @@ const tips = [
 
 export default function FarmerTipsCard() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  
-  const tipOfDayIndex = 0; 
+
+  const tipOfDayIndex = 0;
 
   return (
     <View
@@ -65,13 +67,11 @@ export default function FarmerTipsCard() {
         elevation: 2,
       }}
     >
-     
-
       <View className="px-4 pb-4">
         {tips.map((tip, index) => {
           const IconComponent = tip.icon;
           const isOpen = openIndex === index;
-          
+
           const warning = getWeatherWarning(tip.title);
 
           // Accordion animations
@@ -95,17 +95,10 @@ export default function FarmerTipsCard() {
             expand.value = withTiming(open ? 1 : 0, { duration: 220 });
           };
 
-         
-
           return (
-            <View
-              key={index}
-              
-            >
-              
-
+            <View key={index}>
               {/* Header Row */}
-              <TouchableOpacity
+              <Pressable
                 onPress={toggle}
                 activeOpacity={0.7}
                 className="flex-row items-center justify-between py-3"
@@ -114,7 +107,6 @@ export default function FarmerTipsCard() {
                   {/* Icon bubble */}
                   <View
                     style={{
-                      
                       padding: 5,
                       borderRadius: 10,
                     }}
@@ -122,37 +114,38 @@ export default function FarmerTipsCard() {
                     <IconComponent size={22} color={colors.primary} />
                   </View>
 
-                  <CsText 
-                  style={[typography.Poppins_s_medium,]}
-                  
-                  className="ml-3   ">
+                  <CsText
+                    style={[typography.Poppins_s_medium]}
+                    className="ml-3   "
+                  >
                     {tip.title}
-                 </CsText>
+                  </CsText>
                 </View>
 
                 <Animated.View style={arrowStyle}>
                   <ChevronRight size={22} color="#777" />
                 </Animated.View>
-              </TouchableOpacity>
+              </Pressable>
 
               {/* Expanded Content */}
               <Animated.View style={[contentStyle, { overflow: "hidden" }]}>
                 <View className="ml-14 mb-4">
-                  <CsText 
-                  style={[typography.Poppins_xs_regular]}
-                  
-                  className="eading-5 text-neutral">
+                  <CsText
+                    style={[typography.Poppins_xs_regular]}
+                    className="eading-5 text-neutral"
+                  >
                     {tip.desc}
-                 </CsText>
+                  </CsText>
 
                   {/* Weather Warning */}
                   {warning && (
-                    <CsText 
-                    style={{color:colors.error}}
-                    className="text-xs  mt-2">{warning}</CsText>
+                    <CsText
+                      style={{ color: colors.error }}
+                      className="text-xs  mt-2"
+                    >
+                      {warning}
+                    </CsText>
                   )}
-
-                  
                 </View>
               </Animated.View>
 

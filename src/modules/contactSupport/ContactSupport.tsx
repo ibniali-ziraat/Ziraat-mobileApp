@@ -1,4 +1,3 @@
-
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
@@ -13,18 +12,13 @@ import {
   Phone,
   Twitter,
 } from "lucide-react-native";
-import {
-  Linking,
-  ScrollView,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Linking, Pressable, ScrollView, View } from "react-native";
 
 /* ---------- Contact Row ---------- */
 
 const ContactRow = ({ icon, title, subtitle, onPress }) => {
   return (
-    <TouchableOpacity
+    <Pressable
       activeOpacity={0.85}
       onPress={onPress}
       style={{
@@ -58,20 +52,26 @@ const ContactRow = ({ icon, title, subtitle, onPress }) => {
       {/* Text */}
       <View style={{ marginLeft: 14, flex: 1 }}>
         <CsText
-          style={[typography.Poppins_s_semibold,{ 
-            fontWeight: "600",
-            color: colors.dark,}]}
+          style={[
+            typography.Poppins_s_semibold,
+            {
+              fontWeight: "600",
+              color: colors.dark,
+            },
+          ]}
         >
           {title}
         </CsText>
 
         <CsText
-          style={[typography.Poppins_xs_regular,{
-             
-            color: colors.dark,
-            marginTop: 4,
-            opacity: 0.85,
-          }]}
+          style={[
+            typography.Poppins_xs_regular,
+            {
+              color: colors.dark,
+              marginTop: 4,
+              opacity: 0.85,
+            },
+          ]}
         >
           {subtitle}
         </CsText>
@@ -79,7 +79,7 @@ const ContactRow = ({ icon, title, subtitle, onPress }) => {
 
       {/* Arrow */}
       <ChevronRight size={18} color={colors.dark} />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -94,15 +94,9 @@ export default function ContactUsScreen() {
       <ScreenContent>
         <BackHeader title="Support" />
         <View style={{ paddingTop: 20, paddingBottom: 22 }}>
-           <CsText  style={[typography.Poppins_l_semibold,
-                      {
-                     
-                      }
-                   ]} 
-                          
-                        >
-                       Contact Support
-                        </CsText>
+          <CsText style={[typography.Poppins_l_semibold, {}]}>
+            Contact Support
+          </CsText>
 
           <View
             style={{
@@ -116,15 +110,16 @@ export default function ContactUsScreen() {
           />
 
           <CsText
-                         style={[typography.Poppins_xs_regular,
-                           
-                           {
-                           lineHeight: 20,
-                           color: colors.darkHover,
-                           maxWidth: "95%",
-                           }
-                        ] }
-                       >
+            style={[
+              typography.Poppins_xs_regular,
+
+              {
+                lineHeight: 20,
+                color: colors.darkHover,
+                maxWidth: "95%",
+              },
+            ]}
+          >
             Contact our support team through any of the options below.
           </CsText>
         </View>
@@ -139,11 +134,11 @@ export default function ContactUsScreen() {
 
         <ContactRow
           icon={<MessageCircle size={18} color={colors.primary} />}
-          title="WhatsApp"
-          subtitle="Chat with our agriculture experts"
+          title="WhatsApp Support"
+          subtitle="+91 98765 43210 • Chat with our agriculture support team"
           onPress={() =>
             Linking.openURL(
-              "https://wa.me/919876543210?text=Hello%20I%20need%20support"
+              "https://wa.me/919876543210?text=Hello%20Ziraat%20Support%2C%20I%20need%20help%20with%20your%20app.",
             )
           }
         />
@@ -187,20 +182,27 @@ export default function ContactUsScreen() {
           }}
         >
           <CsText
-            style={[typography.Poppins_xs_semibold,{
+            style={[
+              typography.Poppins_xs_semibold,
+              {
                 color: colors.error,
-            }]}
+              },
+            ]}
           >
             Emergency Safety Notice
           </CsText>
 
           <CsText
-            style={[typography.Poppins_xs_regular,
-                { marginTop: 6,
-            
-              color: colors.error,
-              lineHeight: 18,
-              opacity: 0.9,}]}
+            style={[
+              typography.Poppins_xs_regular,
+              {
+                marginTop: 6,
+
+                color: colors.error,
+                lineHeight: 18,
+                opacity: 0.9,
+              },
+            ]}
           >
             In case of pesticide poisoning or severe exposure, immediately
             contact local medical services.

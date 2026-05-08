@@ -4,7 +4,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react"; // ✅ ADD
 import { FormProvider, useForm } from "react-hook-form";
-import { Text, TouchableOpacity } from "react-native";
+import { Pressable, Text } from "react-native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage"; // ✅ ADD
 
@@ -25,10 +25,8 @@ const ReviewOrderScreen = () => {
   const { errorMsg, isPending, paymentOptions, handlePlaceOrder } =
     useReviewOrder();
 
-
   const [couponCode, setCouponCode] = useState("");
 
-  // ✅ FETCH COUPON
   useEffect(() => {
     const getCoupon = async () => {
       const stored = await AsyncStorage.getItem("appliedCoupon");
@@ -50,7 +48,6 @@ const ReviewOrderScreen = () => {
         <OrderItems items={summary.items} />
         <DeliveryAddress address={selectedAddress} />
 
-      
         <OrderSummary summary={summary} couponCode={couponCode} />
 
         <PaymentMethodSelector options={paymentOptions} />
@@ -62,12 +59,12 @@ const ReviewOrderScreen = () => {
         )}
 
         {!!selectedPayment && (
-          <TouchableOpacity
+          <Pressable
             onPress={() =>
               handlePlaceOrder(
                 selectedPayment,
                 summary.orderTotal,
-                selectedAddress.contactName
+                selectedAddress.contactName,
               )
             }
             disabled={isPending}
@@ -79,7 +76,7 @@ const ReviewOrderScreen = () => {
             >
               {isPending ? "Placing Order..." : "Place Order"}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         )}
       </ScreenLayout>
     </FormProvider>

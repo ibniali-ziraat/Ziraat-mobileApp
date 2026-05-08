@@ -6,3 +6,4 @@ export const userRoutes = {
 } as const;
 
 export type UserRouteKey = keyof typeof userRoutes;
+

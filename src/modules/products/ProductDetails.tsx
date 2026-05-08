@@ -47,7 +47,7 @@ export default function ProductDetails() {
   /*  WISHLIST */
   const {
     wishlist,
-    isBusy,
+    isWishlistBusy,
     addToWishlist,
     removeFromWishlist,
     getWishlistItemId,
@@ -94,10 +94,6 @@ export default function ProductDetails() {
 
   const reviewsRaw = reviewsData?.items?.data ?? [];
 
-  const totalItems = reviewsData?.items?.totalItems ?? 0;
-
-  const totalPages = Math.ceil(totalItems / pageSize);
-
   const summary = {
     averageRating: reviewsData?.ratingAverage ?? 0,
     totalReviews: reviewsData?.reviewsCount ?? 0,
@@ -140,7 +136,7 @@ export default function ProductDetails() {
       onSuccess: () => {
         toast.success("Review added");
         setPageNumber(1);
-        setModalVisible(false);
+        // setModalVisible(false);
       },
     });
   };
@@ -281,20 +277,16 @@ export default function ProductDetails() {
                   </>
                 )}
 
-                {/*  YOU MAY ALSO LIKE */}
-
                 {relatedProducts.length > 0 && (
                   <ProductsList
                     title="Recommended Products"
                     items={relatedProducts}
                     wishlistItems={wishlist}
                     onToggleWishlist={handleToggleWishlist}
-                    isWishlistBusy={isBusy}
+                    isWishlistBusy={isWishlistBusy}
                     variant="carousel"
                   />
                 )}
-
-                {/*  FREQUENTLY BOUGHT */}
 
                 {crossSellProducts.length > 0 && (
                   <View className="mt-6">
@@ -303,29 +295,28 @@ export default function ProductDetails() {
                       title="Frequently Bought Products"
                       wishlistItems={wishlist}
                       onToggleWishlist={handleToggleWishlist}
-                      isWishlistBusy={isBusy}
+                      isWishlistBusy={isWishlistBusy}
                       variant="carousel"
                     />
                   </View>
                 )}
-
-                {/* FAQ */}
-
-                {/* <ProductFaq data={faqData} /> */}
               </View>
             }
           />
         </ScreenContent>
       </ScreenLayout>
 
-      <ProductStickyBar
-        product={product}
-        quantity={quantity}
-        isInCart={isInCart}
-        onAddToCart={handleAddToCart}
-        onRemoveFromCart={handleRemoveFromCart}
-        isCartBusy={isCartBusy}
-      />
+      <View className="mt-10">
+        <ProductStickyBar
+          product={product}
+          isInCart={isInCart}
+          onAddToCart={handleAddToCart}
+          onRemoveFromCart={handleRemoveFromCart}
+          isCartBusy={isCartBusy}
+          isWishlistBusy={isWishlistBusy}
+          onToggleWishlist={handleToggleWishlist}
+        />
+      </View>
     </>
   );
 }

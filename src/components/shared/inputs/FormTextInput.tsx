@@ -141,9 +141,12 @@ const FormTextInput = ({
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 underlineColorAndroid="transparent"
-                selectionColor={colors.primary}
                 editable={!disabled}
                 pointerEvents={disabled ? "none" : "auto"}
+                autoCorrect={false}
+                contextMenuHidden
+                cursorColor={colors.dark}
+                selectionColor={colors.primary}
               />
 
               {type === "password" && (
@@ -206,8 +209,11 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 15,
+    lineHeight: 20,
+    paddingVertical: 0,
     color: colors.dark,
     fontFamily: fonts.poppins.regular,
+    includeFontPadding: false,
   },
 
   countryCode: {

@@ -1,15 +1,15 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
 import {
-    ArrowDownCircle, ArrowUpCircle,
-    Building2,
-    CircleCheck, CreditCard, Plus, ReceiptText,
-    Smartphone, TrendingDown, TrendingUp, Wallet, X, Zap
+  ArrowDownCircle, ArrowUpCircle,
+  Building2,
+  CircleCheck, CreditCard, Plus, ReceiptText,
+  Smartphone, TrendingDown, TrendingUp, Wallet, X, Zap
 } from "lucide-react-native";
 import { useRef, useState } from "react";
 import {
-    Alert, Animated, Modal, Pressable, ScrollView, Text, TextInput,
-    View
+  Alert, Animated, Modal, Pressable, ScrollView, Text, TextInput,
+  View
 } from "react-native";
 
 // ── HELPERS ──────────────────────────────────────────────────
@@ -33,40 +33,40 @@ type Transaction = {
 const INITIAL_BALANCE = 3200;
 
 const INITIAL_TXS: Transaction[] = [
-  { id: "1", type: "credit", label: "Added via UPI",   sub: "PhonePe · Auto top-up", amount: 2000, date: "Mar 28" },
-  { id: "2", type: "debit",  label: "Order #ORD-8821", sub: "Wireless Headphones",   amount: 1500, date: "Mar 22" },
-  { id: "3", type: "credit", label: "Cashback Reward", sub: "5% on last order",      amount: 120,  date: "Mar 22" },
-  { id: "4", type: "credit", label: "Added via Card",  sub: "Visa •••• 4242",        amount: 1000, date: "Mar 10" },
-  { id: "5", type: "debit",  label: "Order #ORD-7714", sub: "GaN Charger 65W",       amount: 420,  date: "Feb 28" },
-  { id: "6", type: "debit",  label: "Order #ORD-7201", sub: "Smart Fitness Watch",   amount: 980,  date: "Feb 14" },
+  { id: "1", type: "credit", label: "Added via UPI", sub: "PhonePe · Auto top-up", amount: 2000, date: "Mar 28" },
+  { id: "2", type: "debit", label: "Order #ORD-8821", sub: "Wireless Headphones", amount: 1500, date: "Mar 22" },
+  { id: "3", type: "credit", label: "Cashback Reward", sub: "5% on last order", amount: 120, date: "Mar 22" },
+  { id: "4", type: "credit", label: "Added via Card", sub: "Visa •••• 4242", amount: 1000, date: "Mar 10" },
+  { id: "5", type: "debit", label: "Order #ORD-7714", sub: "GaN Charger 65W", amount: 420, date: "Feb 28" },
+  { id: "6", type: "debit", label: "Order #ORD-7201", sub: "Smart Fitness Watch", amount: 980, date: "Feb 14" },
 ];
 
 const QUICK_AMOUNTS = [
-  { value: 500,   tag: "Popular"      },
-  { value: 1000,  tag: "+₹10 bonus"  },
-  { value: 2000,  tag: "+₹30 bonus"  },
-  { value: 5000,  tag: "+₹100 bonus" },
+  { value: 500, tag: "Popular" },
+  { value: 1000, tag: "+₹10 bonus" },
+  { value: 2000, tag: "+₹30 bonus" },
+  { value: 5000, tag: "+₹100 bonus" },
   { value: 10000, tag: "+₹250 bonus" },
 ];
 
 
 export default function WalletComponent() {
-  const [balance, setBalance]             = useState(INITIAL_BALANCE);
-  const [txs, setTxs]                     = useState<Transaction[]>(INITIAL_TXS);
-  const [modalVisible, setModalVisible]   = useState(false);
+  const [balance, setBalance] = useState(INITIAL_BALANCE);
+  const [txs, setTxs] = useState<Transaction[]>(INITIAL_TXS);
+  const [modalVisible, setModalVisible] = useState(false);
   const [selectedQuick, setSelectedQuick] = useState(500);
-  const [customAmt, setCustomAmt]         = useState("500");
-  const [payMethod, setPayMethod]         = useState<AddPayMethod>("card");
-  const [toastVisible, setToastVisible]   = useState(false);
-  const [toastMsg, setToastMsg]           = useState({ title: "", sub: "" });
-  const toastAnim                         = useRef(new Animated.Value(0)).current;
+  const [customAmt, setCustomAmt] = useState("500");
+  const [payMethod, setPayMethod] = useState<AddPayMethod>("card");
+  const [toastVisible, setToastVisible] = useState(false);
+  const [toastMsg, setToastMsg] = useState({ title: "", sub: "" });
+  const toastAnim = useRef(new Animated.Value(0)).current;
 
-  
+
   const totalAdded = txs.filter((t) => t.type === "credit").reduce((s, t) => s + t.amount, 0);
-  const totalUsed  = txs.filter((t) => t.type === "debit").reduce((s, t) => s + t.amount, 0);
- 
+  const totalUsed = txs.filter((t) => t.type === "debit").reduce((s, t) => s + t.amount, 0);
 
-  
+
+
   const handleConfirm = () => {
     const amt = parseInt(customAmt, 10);
     if (!amt || amt < 1) { Alert.alert("Invalid Amount", "Please enter a valid amount."); return; }
@@ -103,14 +103,14 @@ export default function WalletComponent() {
         showsVerticalScrollIndicator={false}
       >
 
-       
+
         <View
           style={{
             backgroundColor: colors.primary,
             borderRadius: 22,
             padding: 22,
             marginBottom: 20,
-           
+
           }}
         >
           {/* Top row */}
@@ -118,7 +118,7 @@ export default function WalletComponent() {
             <View
               style={{
                 width: 38, height: 38, borderRadius: 12,
-            backgroundColor: colors.cardBorder,
+                backgroundColor: colors.cardBorder,
                 alignItems: "center", justifyContent: "center",
               }}
             >
@@ -127,7 +127,7 @@ export default function WalletComponent() {
 
             <Pressable
               onPress={() => setModalVisible(true)}
-             
+
               style={{
                 flexDirection: "row", alignItems: "center", gap: 5,
                 backgroundColor: colors.cardBorder,
@@ -143,7 +143,7 @@ export default function WalletComponent() {
           <Text
             style={{
               fontSize: 10, fontWeight: "600", letterSpacing: 1.8,
-          color: colors.light, textTransform: "uppercase", marginBottom: 4,
+              color: colors.light, textTransform: "uppercase", marginBottom: 4,
             }}
           >
             Available Balance
@@ -164,73 +164,73 @@ export default function WalletComponent() {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
               <TrendingUp size={13} color={colors.light} strokeWidth={2} />
-              <Text style={{ fontSize: 12,color: colors.light, fontWeight: "500" }}>
+              <Text style={{ fontSize: 12, color: colors.light, fontWeight: "500" }}>
                 Added {fmt(totalAdded)}
               </Text>
             </View>
             <View style={{ width: 3, height: 3, borderRadius: 2, backgroundColor: colors.light }} />
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
               <TrendingDown size={13} color={colors.light} strokeWidth={2} />
-              <Text style={{ fontSize: 12, color: colors.light,fontWeight: "500" }}>
+              <Text style={{ fontSize: 12, color: colors.light, fontWeight: "500" }}>
                 Spent {fmt(totalUsed)}
               </Text>
             </View>
           </View>
         </View>
 
-    
+
         <View
-  style={{
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 16,
-  }}
->
-  {/* LEFT SECTION */}
-  <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
-    
-    {/* Icon badge */}
-    <View
-      style={{
-        width: 36,
-        height: 36,
-        borderRadius: 12,
-      
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <ReceiptText size={20} color={colors.secondary} strokeWidth={2} />
-    </View>
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 16,
+          }}
+        >
+          {/* LEFT SECTION */}
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
 
-    {/* Title + subtitle */}
-    <View>
-      <Text
-        style={{
-          fontSize: 16,
-          fontWeight: "800",
-          color: colors.neutral,
-          marginTop:6,
-        }}
-      >
-        Wallet Statement
-      </Text>
+            {/* Icon badge */}
+            <View
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: 12,
 
-      <Text
-        style={{
-          fontSize: 12,
-         color: colors.neutral,
-          marginTop: 2,
-        }}
-      >
-        Recent activity
-      </Text>
-    </View>
-  </View>
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ReceiptText size={20} color={colors.secondary} strokeWidth={2} />
+            </View>
 
-  
-</View>
+            {/* Title + subtitle */}
+            <View>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "800",
+                  color: colors.neutral,
+                  marginTop: 6,
+                }}
+              >
+                Wallet Statement
+              </Text>
+
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: colors.neutral,
+                  marginTop: 2,
+                }}
+              >
+                Recent activity
+              </Text>
+            </View>
+          </View>
+
+
+        </View>
 
         <View
           style={{
@@ -239,7 +239,7 @@ export default function WalletComponent() {
             paddingHorizontal: 16,
             borderWidth: 1,
             borderColor: colors.cardBorder,
-           
+
           }}
         >
           {txs.map((tx, idx) => (
@@ -249,7 +249,7 @@ export default function WalletComponent() {
 
       </ScrollView>
 
-   
+
       <Modal
         visible={modalVisible}
         transparent
@@ -271,25 +271,25 @@ export default function WalletComponent() {
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 22 }}>
               <View>
                 <Text style={{ fontSize: 18, fontWeight: "700", color: colors.neutral }}>Add Money</Text>
-                <Text style={{ fontSize: 13,  marginTop: 3 }}>Top up your wallet instantly</Text>
+                <Text style={{ fontSize: 13, marginTop: 3 }}>Top up your wallet instantly</Text>
               </View>
-             <Pressable
-  onPress={() => setModalVisible(false)}
-  style={{
-    width: 30,
-    height: 30,
-    borderRadius: 8,
-    backgroundColor: colors.bgColor, 
-    alignItems: "center",
-    justifyContent: "center",
-  }}
->
-  <X size={16} color={colors.neutral} strokeWidth={2.5} />
-</Pressable>
+              <Pressable
+                onPress={() => setModalVisible(false)}
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 8,
+                  backgroundColor: colors.bgColor,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <X size={16} color={colors.neutral} strokeWidth={2.5} />
+              </Pressable>
             </View>
 
             {/* Quick Select */}
-            <Text style={{ fontSize: 10, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase",  marginBottom: 10 }}>
+            <Text style={{ fontSize: 10, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase", marginBottom: 10 }}>
               Quick Select
             </Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
@@ -316,7 +316,7 @@ export default function WalletComponent() {
             </View>
 
             {/* Custom Amount */}
-            <Text style={{ fontSize: 10, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase",  marginBottom: 10 }}>
+            <Text style={{ fontSize: 10, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase", marginBottom: 10 }}>
               Custom Amount
             </Text>
             <View
@@ -330,11 +330,24 @@ export default function WalletComponent() {
               <Text style={{ fontSize: 22, fontWeight: "700", color: colors.primary, marginRight: 4 }}>₹</Text>
               <TextInput
                 value={customAmt}
-                onChangeText={(v) => { setCustomAmt(v.replace(/[^0-9]/g, "")); setSelectedQuick(0); }}
+                onChangeText={(v) => {
+                  setCustomAmt(v.replace(/[^0-9]/g, ""));
+                  setSelectedQuick(0);
+                }}
                 keyboardType="numeric"
                 placeholder="Enter amount"
-              
-                style={{ flex: 1, fontSize: 24, fontWeight: "700", color: colors.neutral, paddingVertical: 13 }}
+                cursorColor="transparent"
+                selectionColor="transparent"
+                underlineColorAndroid="transparent"
+                contextMenuHidden
+                selectTextOnFocus={false}
+                style={{
+                  flex: 1,
+                  fontSize: 24,
+                  fontWeight: "700",
+                  color: colors.neutral,
+                  paddingVertical: 13,
+                }}
               />
             </View>
 
@@ -346,8 +359,8 @@ export default function WalletComponent() {
               {(
                 [
                   { key: "card" as AddPayMethod, Icon: CreditCard, label: "Card" },
-                  { key: "upi"  as AddPayMethod, Icon: Smartphone, label: "UPI"  },
-                  { key: "bank" as AddPayMethod, Icon: Building2,  label: "Bank" },
+                  { key: "upi" as AddPayMethod, Icon: Smartphone, label: "UPI" },
+                  { key: "bank" as AddPayMethod, Icon: Building2, label: "Bank" },
                 ]
               ).map(({ key, Icon, label }) => {
                 const active = payMethod === key;
@@ -363,7 +376,7 @@ export default function WalletComponent() {
                     }}
                   >
                     <Icon size={18} color={active ? colors.primary : colors.overlay} strokeWidth={2} />
-                    <Text style={{ fontSize: 12, fontWeight: "600", color: active ? colors.primary : colors.overlay}}>
+                    <Text style={{ fontSize: 12, fontWeight: "600", color: active ? colors.primary : colors.overlay }}>
                       {label}
                     </Text>
                   </Pressable>
@@ -374,7 +387,7 @@ export default function WalletComponent() {
             {/* Confirm Button */}
             <Pressable
               onPress={handleConfirm}
-            
+
               style={{
                 flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8,
                 backgroundColor: colors.primary, borderRadius: 16, paddingVertical: 16,
@@ -399,7 +412,7 @@ export default function WalletComponent() {
             backgroundColor: colors.light,
             borderRadius: 16, padding: 16,
             flexDirection: "row", alignItems: "center", gap: 12,
-           
+
             borderWidth: 1, borderColor: colors.cardBorder,
             opacity: toastAnim,
             transform: [{
@@ -410,7 +423,7 @@ export default function WalletComponent() {
           <CircleCheck size={22} color={colors.primary} strokeWidth={2} />
           <View>
             <Text style={{ fontSize: 14, fontWeight: "700", color: colors.primary }}>{toastMsg.title}</Text>
-            <Text style={{ fontSize: 12,  marginTop: 2 }}>{toastMsg.sub}</Text>
+            <Text style={{ fontSize: 12, marginTop: 2 }}>{toastMsg.sub}</Text>
           </View>
         </Animated.View>
       )}
@@ -424,87 +437,87 @@ export default function WalletComponent() {
 function TxRow({ tx, last }: { tx: Transaction; last: boolean }) {
   const isCredit = tx.type === "credit";
   return (
-   <View
-  style={{
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-    paddingVertical: 16,
-
-    borderBottomWidth: last ? 0 : 0.6,
-    borderBottomColor:colors.cardBorder,
-  }}
->
-  {/* ICON */}
-  <View
-    style={{
-      width: 42,
-      height: 42,
-      borderRadius: 14,
-
-      backgroundColor: isCredit
-        ? "rgba(34,197,94,0.12)"
-        : "rgba(239,68,68,0.12)",
-
-      alignItems: "center",
-      justifyContent: "center",
-    }}
-  >
-    {isCredit ? (
-      <ArrowDownCircle size={20} color={colors.primary} strokeWidth={2} />
-    ) : (
-      <ArrowUpCircle size={20} color={colors.error} strokeWidth={2} />
-    )}
-  </View>
-
-  {/* TEXT */}
-  <View style={{ flex: 1, minWidth: 0 }}>
-    <Text
-      numberOfLines={1}
+    <View
       style={{
-        fontSize: 14.5,
-        fontWeight: "700",
-        color: colors.neutral,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 14,
+        paddingVertical: 16,
+
+        borderBottomWidth: last ? 0 : 0.6,
+        borderBottomColor: colors.cardBorder,
       }}
     >
-      {tx.label}
-    </Text>
+      {/* ICON */}
+      <View
+        style={{
+          width: 42,
+          height: 42,
+          borderRadius: 14,
 
-    <Text
-      numberOfLines={1}
-      style={{
-        fontSize: 12.5,
-      color:colors.overlay,
-        marginTop: 3,
-      }}
-    >
-      {tx.sub}
-    </Text>
-  </View>
+          backgroundColor: isCredit
+            ? "rgba(34,197,94,0.12)"
+            : "rgba(239,68,68,0.12)",
 
-  {/* RIGHT */}
-  <View style={{ alignItems: "flex-end" }}>
-    <Text
-      style={{
-        fontSize: 15,
-        fontWeight: "800",
-        color: isCredit ? colors.primary : colors.error,
-      }}
-    >
-      {isCredit ? "+" : "−"}{fmt(tx.amount)}
-    </Text>
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {isCredit ? (
+          <ArrowDownCircle size={20} color={colors.primary} strokeWidth={2} />
+        ) : (
+          <ArrowUpCircle size={20} color={colors.error} strokeWidth={2} />
+        )}
+      </View>
 
-    <Text
-      style={{
-        fontSize: 11.5,
-        color:colors.overlay,
-        marginTop: 4,
-      }}
-    >
-      {tx.date}
-    </Text>
-  </View>
-</View>
+      {/* TEXT */}
+      <View style={{ flex: 1, minWidth: 0 }}>
+        <Text
+          numberOfLines={1}
+          style={{
+            fontSize: 14.5,
+            fontWeight: "700",
+            color: colors.neutral,
+          }}
+        >
+          {tx.label}
+        </Text>
+
+        <Text
+          numberOfLines={1}
+          style={{
+            fontSize: 12.5,
+            color: colors.overlay,
+            marginTop: 3,
+          }}
+        >
+          {tx.sub}
+        </Text>
+      </View>
+
+      {/* RIGHT */}
+      <View style={{ alignItems: "flex-end" }}>
+        <Text
+          style={{
+            fontSize: 15,
+            fontWeight: "800",
+            color: isCredit ? colors.primary : colors.error,
+          }}
+        >
+          {isCredit ? "+" : "−"}{fmt(tx.amount)}
+        </Text>
+
+        <Text
+          style={{
+            fontSize: 11.5,
+            color: colors.overlay,
+            marginTop: 4,
+          }}
+        >
+          {tx.date}
+        </Text>
+      </View>
+    </View>
   );
 }
 

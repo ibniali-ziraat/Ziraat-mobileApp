@@ -3,11 +3,10 @@ import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { showErrorToast } from "@/src/utils/toast";
 import { FileText, Plus, Trash2 } from "lucide-react-native";
-import { Linking, TouchableOpacity, View } from "react-native";
+import { Linking, Pressable, View } from "react-native";
 
 interface Props {
   reportUrls?: string[];
-  // CHANGE: Changed from (index: number) to (url: string)
   onDeleteReport?: (url: string) => void;
   onAdd?: () => void;
 }
@@ -54,19 +53,16 @@ export default function SoilTestReportsCard({
           </View>
 
           {onAdd && hasReports && (
-            <TouchableOpacity
-              onPress={onAdd}
-              className="flex-row items-center gap-1"
-            >
+            <Pressable onPress={onAdd} className="flex-row items-center gap-1">
               <Plus size={18} color={colors.primary} />
               <CsText style={{ color: colors.primary }}>Add More</CsText>
-            </TouchableOpacity>
+            </Pressable>
           )}
         </View>
 
         <View className="p-4 pt-3">
           {!hasReports ? (
-            <TouchableOpacity
+            <Pressable
               onPress={onAdd}
               className="flex-row items-center gap-2 rounded-xl border border-dashed p-3"
               style={{ borderColor: `${colors.primary}55` }}
@@ -78,14 +74,14 @@ export default function SoilTestReportsCard({
               >
                 Add Soil Test Report
               </CsText>
-            </TouchableOpacity>
+            </Pressable>
           ) : (
             <View className="gap-4">
               {reportUrls.map((url, index) => (
                 <View key={index}>
                   <View className="flex-row items-center justify-between">
                     {/* Left - File Info */}
-                    <TouchableOpacity
+                    <Pressable
                       onPress={() => openReport(url)}
                       className="flex-row items-center gap-4 flex-1"
                     >
@@ -110,18 +106,18 @@ export default function SoilTestReportsCard({
                           Download Report
                         </CsText>
                       </View>
-                    </TouchableOpacity>
+                    </Pressable>
 
                     {/* Right actions */}
                     <View className="flex-row items-center gap-3">
                       {onDeleteReport && (
-                        <TouchableOpacity
+                        <Pressable
                           // CHANGE: Now passing the 'url' string instead of 'index'
                           onPress={() => onDeleteReport(url)}
                           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
                         >
                           <Trash2 size={18} color={colors.error} />
-                        </TouchableOpacity>
+                        </Pressable>
                       )}
                     </View>
                   </View>

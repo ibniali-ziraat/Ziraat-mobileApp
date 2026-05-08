@@ -53,8 +53,8 @@ import { useState } from "react";
 import {
   LayoutAnimation,
   Platform,
+  Pressable,
   Text,
-  TouchableOpacity,
   UIManager,
   View,
 } from "react-native";
@@ -96,7 +96,7 @@ export default function LegalDisclaimer() {
       />
 
       {/* Header */}
-      <TouchableOpacity
+      <Pressable
         activeOpacity={0.8}
         onPress={toggle}
         style={{
@@ -131,7 +131,7 @@ export default function LegalDisclaimer() {
           size={20}
           color={colors.neutral}
         />
-      </TouchableOpacity>
+      </Pressable>
 
       {/* Divider */}
       {expanded && (

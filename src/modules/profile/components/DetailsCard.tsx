@@ -2,7 +2,7 @@ import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { shadows } from "@/src/constants/shadows";
 import { PencilLine, Plus, Trash2 } from "lucide-react-native";
-import { TouchableOpacity, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 interface DetailItem {
   title: string;
@@ -32,21 +32,23 @@ export default function DetailsCard({
 
   return (
     <View
-      style={[{
-        backgroundColor: colors.light,
-        borderRadius: 16,
-        padding: 16,
-        marginVertical: 8,
+      style={[
+        {
+          backgroundColor: colors.light,
+          borderRadius: 16,
+          padding: 16,
+          marginVertical: 8,
 
-        
-        // shadowColor: colors.dark,
-        // shadowOffset: { width: 0, height: 3 },
-        // shadowOpacity: 0.08,
-        // shadowRadius: 1,
-        // elevation: 3,
-        // borderWidth: 1,
-        // borderColor: colors.light,
-      },shadows.profile_card]}
+          // shadowColor: colors.dark,
+          // shadowOffset: { width: 0, height: 3 },
+          // shadowOpacity: 0.08,
+          // shadowRadius: 1,
+          // elevation: 3,
+          // borderWidth: 1,
+          // borderColor: colors.light,
+        },
+        shadows.profile_card,
+      ]}
     >
       {/* Header */}
       <View
@@ -70,73 +72,72 @@ export default function DetailsCard({
         {!isEmpty && (
           <View style={{ flexDirection: "row", gap: 12 }}>
             {onEdit && (
-              <TouchableOpacity onPress={onEdit}>
+              <Pressable onPress={onEdit}>
                 <PencilLine size={18} color={colors.primary} />
-              </TouchableOpacity>
+              </Pressable>
             )}
 
             {onDelete && (
-              <TouchableOpacity onPress={onDelete}>
+              <Pressable onPress={onDelete}>
                 <Trash2 size={18} color={colors.secondary} />
-              </TouchableOpacity>
+              </Pressable>
             )}
           </View>
         )}
       </View>
 
       {isEmpty ? (
-  <TouchableOpacity
-    onPress={onAdd}
-    activeOpacity={0.85}
-    style={{
-      alignItems: "center",
-      justifyContent: "center",
-      paddingVertical: 15,
-      borderRadius: 14,
-      borderWidth: 1.5,
-      borderStyle: "dashed",
-      borderColor: colors.primary + "55",
-      backgroundColor: colors.primary + "08",
-    }}
-  >
-    {/* Icon bubble */}
-    <View
-      style={{
-        width: 33,
-        height: 33,
-        borderRadius: 22,
-        backgroundColor: colors.primary + "20",
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 10,
-      }}
-    >
-      <Plus size={20} color={colors.primary} />
-    </View>
+        <Pressable
+          onPress={onAdd}
+          activeOpacity={0.85}
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            paddingVertical: 15,
+            borderRadius: 14,
+            borderWidth: 1.5,
+            borderStyle: "dashed",
+            borderColor: colors.primary + "55",
+            backgroundColor: colors.primary + "08",
+          }}
+        >
+          {/* Icon bubble */}
+          <View
+            style={{
+              width: 33,
+              height: 33,
+              borderRadius: 22,
+              backgroundColor: colors.primary + "20",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 10,
+            }}
+          >
+            <Plus size={20} color={colors.primary} />
+          </View>
 
-    <CsText
-      style={{
-        fontSize: 15,
-        fontWeight: "700",
-        color: colors.primary,
-      }}
-    >
-      {emptyActionLabel}
-    </CsText>
+          <CsText
+            style={{
+              fontSize: 15,
+              fontWeight: "700",
+              color: colors.primary,
+            }}
+          >
+            {emptyActionLabel}
+          </CsText>
 
-    <CsText
-      style={{
-        fontSize: 12,
-        color: colors.neutral,
-        marginTop: 4,
-        textAlign: "center",
-      }}
-    >
-      Tap to add information
-    </CsText>
-  </TouchableOpacity>
-) : (
-
+          <CsText
+            style={{
+              fontSize: 12,
+              color: colors.neutral,
+              marginTop: 4,
+              textAlign: "center",
+            }}
+          >
+            Tap to add information
+          </CsText>
+        </Pressable>
+      ) : (
         <View style={{ gap: 20 }}>
           {items.map((item, index) => (
             <View key={item.title}>

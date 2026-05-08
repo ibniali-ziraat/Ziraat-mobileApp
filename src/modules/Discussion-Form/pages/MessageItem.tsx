@@ -12,7 +12,7 @@ import {
 import {
   Text,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 
 
@@ -184,7 +184,6 @@ export default function MessageItem({
           colors.cardBorder,
 
         overflow: "hidden",
-
       }}
     >
       {/* TOP ACCENT */}

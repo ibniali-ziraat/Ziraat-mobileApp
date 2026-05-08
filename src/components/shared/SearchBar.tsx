@@ -1,6 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import { LucideIcon, Search, X } from "lucide-react-native";
-import { Platform, TouchableOpacity, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 import { TextInput } from "react-native-paper";
 
 type Props = {
@@ -23,7 +23,7 @@ export default function SearchBar({
   placeholder = "Search products, crops...",
 }: Props) {
   return (
-    <TouchableOpacity
+    <Pressable
       activeOpacity={0.8}
       onPress={pressable ? onPress : undefined}
       disabled={!pressable}
@@ -82,22 +82,22 @@ export default function SearchBar({
 
         {/* CLEAR X */}
         {!!search && (
-          <TouchableOpacity
+          <Pressable
             onPress={() => setSearch("")}
             style={{
               marginRight: RightIcon ? 8 : 0,
             }}
           >
             <X size={18} color={colors.neutral} />
-          </TouchableOpacity>
+          </Pressable>
         )}
 
         {RightIcon && (
-          <TouchableOpacity onPress={onIconPress}>
+          <Pressable onPress={onIconPress}>
             <RightIcon size={20} color={colors.secondary} />
-          </TouchableOpacity>
+          </Pressable>
         )}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
