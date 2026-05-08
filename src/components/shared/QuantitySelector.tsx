@@ -1,24 +1,52 @@
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-export default function QuantitySelector({ quantity, setQuantity }) {
+import CsText from "@/src/components/shared/CsText";
+import { typography } from "@/src/constants/fonts/typography";
+import { Pressable, View } from "react-native";
+
+type Props = {
+  value: number;
+  onIncrease: () => void;
+  onDecrease: () => void;
+  min?: number;
+  max?: number;
+};
+
+const QuantitySelector = ({
+  value,
+  onIncrease,
+  onDecrease,
+  min = 1,
+  max,
+}: Props) => {
   return (
-    <View className="flex-row items-center rounded-xl border border-dark bg-white">
-      <TouchableOpacity
-        onPress={() => quantity > 1 && setQuantity(quantity - 1)}
-        className="px-4 py-1"
+    <View className="flex-row items-center">
+      <Pressable
+        onPress={onDecrease}
+        disabled={value <= min}
+        className={`px-3 py-1 rounded ${
+          value <= min ? "bg-gray-100" : "bg-gray-200"
+        }`}
       >
-        <Text className="text-dark text-lg font-bold">-</Text>
-      </TouchableOpacity>
+        <CsText style={typography.Poppins_m_medium}>-</CsText>
+      </Pressable>
 
-      <Text className="mx-4 text-xl font-bold text-dark">{quantity}</Text>
-
-    
-      <TouchableOpacity
-        onPress={() => setQuantity(quantity + 1)}
-        className="px-4 py-1"
+      <CsText
+        className="mx-4 min-w-[24px] text-center"
+        style={typography.Poppins_m_medium}
       >
-        <Text className="text-dark text-lg font-bold">+</Text>
-      </TouchableOpacity>
+        {value}
+      </CsText>
+
+      <Pressable
+        onPress={onIncrease}
+        disabled={max ? value >= max : false}
+        className={`px-3 py-1 rounded ${
+          max && value >= max ? "bg-gray-100" : "bg-gray-200"
+        }`}
+      >
+        <CsText style={typography.Poppins_m_medium}>+</CsText>
+      </Pressable>
     </View>
   );
-}
+};
+
+export default QuantitySelector;

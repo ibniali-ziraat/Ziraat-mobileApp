@@ -2,15 +2,18 @@
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+
 import {
   deleteAddressSection,
   deleteEducationSection,
   deleteProfessionSection,
   deleteProfileSection,
   getAddressSection,
+  getAuthProviders,
   getEducationSection,
   getProfessionSection,
   getProfileSection,
+  googleLogin,
   login,
   saveAddressSection,
   saveEducationSection,
@@ -28,13 +31,30 @@ import {
 // ----------------------------------------------------
 // 🔐 LOGIN
 // ----------------------------------------------------
-export const useLoginMutation = () => useMutation({ mutationFn: login });
+export const useLoginMutation = () =>
+  useMutation({
+    mutationFn: login,
+  });
+
+export const useGetAuthProviders = () =>
+  useMutation({
+    mutationFn: getAuthProviders,
+  });
+
+export const UseGoogleLogin = () =>
+  useMutation({
+    mutationFn: googleLogin,
+  });
 
 export const useSendOtpMutation = () =>
   useMutation({ mutationFn: sendUserOtp });
 
 export const useOtpVerifyMutation = () =>
   useMutation({ mutationFn: verifyUserOtp });
+
+
+
+
 
 // ----------------------------------------------------
 // 👤 PROFILE
@@ -112,8 +132,4 @@ export const useProfessionUpdateMutation = () =>
 export const useProfessionDeleteMutation = () =>
   useMutation({ mutationFn: deleteProfessionSection });
 
-
-
-
-export const useCheckUserExists = () =>
-  useMutation({ mutationFn: userExists });
+export const useCheckUserExists = () => useMutation({ mutationFn: userExists });

@@ -1,11 +1,12 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { clear, load, save } from "../utils/authStorage";
-import { router } from "expo-router";
 
 interface AuthContextType {
   userToken: string | null;
   vendorToken: string | null;
   userTokenExp: string | null;
+
+  orchardProfileId: number | null;
 
   userId: number | null;
   vendorId: number | null;
@@ -22,6 +23,7 @@ interface AuthContextType {
 
   setUserId: (v: number | null) => Promise<void>;
   setVendorId: (v: number | null) => void;
+  setOrchardProfileId: (v: number | null) => void;
 
   setUserProfileId: (v: number | null) => void;
   setVendorProfileId: (v: number | null) => void;
@@ -38,6 +40,9 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 export const AuthProvider = ({ children }: any) => {
   const [userToken, setUserTokenState] = useState<string | null>(null);
   const [vendorToken, setVendorTokenState] = useState<string | null>(null);
+  const [orchardProfileId, setOrchardProfileIdState] = useState<number | null>(
+    null,
+  );
 
   const [userId, setUserIdState] = useState<number | null>(null);
   const [vendorId, setVendorIdState] = useState<number | null>(null);
@@ -45,11 +50,11 @@ export const AuthProvider = ({ children }: any) => {
 
   const [userProfileId, setUserProfileIdState] = useState<number | null>(null);
   const [vendorProfileId, setVendorProfileIdState] = useState<number | null>(
-    null
+    null,
   );
 
   const [roleMode, setRoleModeState] = useState<"farmer" | "supplier">(
-    "farmer"
+    "farmer",
   );
   const [initialized, setInitialized] = useState(false);
 
@@ -125,6 +130,9 @@ export const AuthProvider = ({ children }: any) => {
   const setVendorProfileId = (v: number | null) => setVendorProfileIdState(v);
 
   const setRoleMode = (mode: "farmer" | "supplier") => setRoleModeState(mode);
+  const setOrchardProfileId = (v: number | null) => {
+    setOrchardProfileIdState(v);
+  };
 
   // ---------------- LOGOUT ----------------
   const logoutUser = async () => {
@@ -137,8 +145,12 @@ export const AuthProvider = ({ children }: any) => {
     setUserTokenExpState(null);
 
     setUserProfileIdState(null);
+<<<<<<< HEAD
 
     // router.replace("/auth/user"); // redirect to login
+=======
+    setOrchardProfileIdState(null);
+>>>>>>> 54af13bc22235eb1974d61deb50ec43074e7247c
   };
 
   const logoutVendor = () => {
@@ -158,6 +170,7 @@ export const AuthProvider = ({ children }: any) => {
         userToken,
         vendorToken,
         userTokenExp,
+        orchardProfileId,
         setUserTokenExp,
         userId,
         vendorId,
@@ -171,6 +184,7 @@ export const AuthProvider = ({ children }: any) => {
         setVendorId,
         setUserProfileId,
         setVendorProfileId,
+        setOrchardProfileId,
         setRoleMode,
         logoutUser,
         logoutVendor,

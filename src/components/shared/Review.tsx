@@ -2,15 +2,15 @@ import ReviewFilters, { FILTERS } from "@/src/components/shared/Filter";
 import RatingStars from "@/src/components/shared/RatingStars";
 import WriteReview from "@/src/components/shared/WriteReview";
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import { ThumbsUp, User, X } from "lucide-react-native";
 import React, { useState } from "react";
-import { Modal, Text, TouchableOpacity, View } from "react-native";
-import data from "../../Data/Review.json";
+import { Pressable, Text, View } from "react-native";
+import data from "../../data/Review.json";
 
 export default function Review() {
   const { summary, reviews: initialReviews } = data;
   const [reviews, setReviews] = useState(initialReviews);
-
   const [modalVisible, setModalVisible] = useState(false);
   const [filter, setFilter] = useState(FILTERS.LATEST);
 
@@ -18,114 +18,153 @@ export default function Review() {
     setReviews([newReview, ...reviews]);
     setModalVisible(false);
   };
+
   const sortedReviews = React.useMemo(() => {
     let sorted = [...reviews];
-
     switch (filter) {
       case FILTERS.HELPFUL:
         sorted.sort((a, b) => b.helpful - a.helpful);
         break;
-
       case FILTERS.HIGH_RATING:
         sorted.sort((a, b) => b.rating - a.rating);
         break;
-
       case FILTERS.LOW_RATING:
         sorted.sort((a, b) => a.rating - b.rating);
         break;
-
-      case FILTERS.LATEST:
       default:
         sorted.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
-
     return sorted;
   }, [reviews, filter]);
 
   return (
-    <View className="bg-light">
-      <TouchableOpacity
-        onPress={() => setModalVisible(true)}
-        className="bg-secondary p-3 rounded-xl mt-4"
-      >
-        <Text className="text-white text-center font-semibold text-lg">
-          Write a Review
-        </Text>
-      </TouchableOpacity>
+    <View className="mt-6 ">
+      {/* Header */}
+      <View className="flex-row justify-between items-center mb-4">
+        <Text style={typography.Poppins_l_semibold}>Customer Reviews</Text>
 
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View className="flex-1 justify-center items-center">
-          <View className="bg-white rounded-2xl p-5 w-11/12 shadow-lg">
-            <TouchableOpacity
-              onPress={() => setModalVisible(false)}
-              className="self-end mb-2"
-            >
-              <X size={26} color="black" />
-            </TouchableOpacity>
-
-            <WriteReview onSubmit={addReview} />
-          </View>
-        </View>
-      </Modal>
-
-      <Text className="text-3xl font-bold pt-6 mt-4 border-t border-dark">
-        Customer Reviews
-      </Text>
-
-      <View className="mb-4 mt-2">
-        <Text className="text-2xl font-semibold flex-row items-center">
-          {summary.averageRating}{" "}
-          <RatingStars rating={summary.averageRating} size={14} />
-        </Text>
-
-        <Text className="text-dark mt-1">
-          {summary.totalReviews} Reviews
-        </Text>
+        <Pressable
+          onPress={() => setModalVisible(true)}
+          className="px-4 py-2 rounded-full"
+          style={{ backgroundColor: colors.secondary }}
+        >
+          <Text style={{ color: colors.light }} className=" text-sm">
+            Write Review
+          </Text>
+        </Pressable>
       </View>
 
-     
-      <ReviewFilters filter={filter} setFilter={setFilter} />
+      {/* Summary */}
+      <View className="mb-4">
+        <View className="flex-row items-center">
+          <Text style={typography.Poppins_xl_semibold}>
+            {summary.averageRating}
+          </Text>
 
- 
-      {sortedReviews.map((r) => (
-        <View
-          key={r.id}
-          className="mb-4 pb-4 p-4 shadow-sm rounded-2xl  border border-neutral  bg-white "
-        >
-          <View className="flex-row items-center justify-between mb-1">
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 rounded-full justify-center items-center mr-3 border border-secondary">
-                <User size={20} color={colors.secondary} />
-              </View>
-
-              <View>
-                <Text className="font-semibold text-xl">{r.user}</Text>
-                <Text className="text-md text-dark">{r.date}</Text>
-              </View>
-            </View>
-
-            <RatingStars rating={r.rating} size={16} />
-          </View>
-
-          <Text className="text-dark mt-1">{r.comment}</Text>
-
-          <View className="flex-row items-center mt-3 mb-1">
-            <ThumbsUp
-              size={20}
-              color={colors.secondary}
-              fill={colors.secondary}
-            />
-            <Text className="text-dark ml-1 text-sm">
-              {r.helpful} People found it helpful
+          <View className="ml-3">
+            <RatingStars rating={summary.averageRating} size={14} />
+            <Text
+              style={[
+                typography.Poppins_s_regular,
+                { color: colors.dark, opacity: 0.6 },
+              ]}
+            >
+              {summary.totalReviews} Reviews
             </Text>
           </View>
         </View>
-      ))}
+      </View>
+
+      {/* Filters */}
+      <ReviewFilters filter={filter} setFilter={setFilter} />
+
+      {/* Reviews */}
+      <View className="mt-4">
+        {sortedReviews.map((r, idx) => (
+          <View key={r.id} className="py-4">
+            {/* User Row */}
+            <View className="flex-row items-center justify-between mb-2">
+              <View className="flex-row items-center">
+                <View
+                  className="w-9 h-9 rounded-full justify-center items-center mr-3"
+                  style={{ backgroundColor: colors.secondary + "15" }}
+                >
+                  <User size={18} color={colors.secondary} />
+                </View>
+
+                <View>
+                  <Text style={typography.Poppins_m_semibold}>{r.user}</Text>
+                  <Text
+                    style={[
+                      typography.Poppins_xs_regular,
+                      { color: colors.dark, opacity: 0.5 },
+                    ]}
+                  >
+                    {r.date}
+                  </Text>
+                </View>
+              </View>
+
+              <RatingStars rating={r.rating} size={14} />
+            </View>
+
+            {/* Comment */}
+            <Text
+              style={[
+                typography.Poppins_s_regular,
+                { color: colors.dark, opacity: 0.8 },
+              ]}
+            >
+              {r.comment}
+            </Text>
+
+            {/* Helpful */}
+            <View className="flex-row items-center mt-3">
+              <ThumbsUp size={14} color={colors.secondary} />
+              <Text
+                style={[
+                  typography.Poppins_xs_regular,
+                  { color: colors.dark, opacity: 0.6 },
+                ]}
+                className="ml-2"
+              >
+                {r.helpful} found this helpful
+              </Text>
+            </View>
+
+            {/* Divider */}
+            {idx !== sortedReviews.length - 1 && (
+              <View
+                className="mt-4"
+                style={{
+                  height: 1,
+                  backgroundColor: colors.dark,
+                  opacity: 0.08,
+                }}
+              />
+            )}
+          </View>
+        ))}
+      </View>
+
+      {/* Modal */}
+      {/* <Modal animationType="slide" transparent visible={modalVisible}> */}
+      {/* <View className="flex-1 justify-center items-center bg-black/40"> */}
+      <View
+        style={{ backgroundColor: colors.light }}
+        className=" rounded-2xl p-5 w-11/12"
+      >
+        <Pressable
+          onPress={() => setModalVisible(false)}
+          className="self-end mb-2"
+        >
+          <X size={24} color={colors.dark} />
+        </Pressable>
+
+        <WriteReview onSubmit={addReview} />
+      </View>
+      {/* </View> */}
+      {/* </Modal> */}
     </View>
   );
 }

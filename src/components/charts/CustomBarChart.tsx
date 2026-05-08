@@ -1,5 +1,6 @@
-import { Dimensions, Text, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { BarChart, LineChart, PieChart } from "react-native-chart-kit";
+import CsText from "../shared/CsText";
 
 const getScreenWidth = () => Math.max(320, Dimensions.get("window").width - 32);
 
@@ -24,9 +25,9 @@ export default function CustomBarChart({
   if (!labels.length || !values.length || labels.length !== values.length) {
     return (
       <View style={{ paddingVertical: 12 }}>
-        <Text style={{ fontSize: 12, color: "#6B7280", textAlign: "center" }}>
+        <CsText style={{ fontSize: 12, color: "#6B7280", textAlign: "center" }}>
           No chart data available.
-        </Text>
+       </CsText>
       </View>
     );
   }
@@ -43,9 +44,9 @@ export default function CustomBarChart({
     return (
       <View>
         {title ? (
-          <Text style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>
+          <CsText style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>
             {title}
-          </Text>
+         </CsText>
         ) : null}
         <PieChart
           data={pieData}
@@ -66,9 +67,9 @@ export default function CustomBarChart({
   return (
     <View>
       {title ? (
-        <Text style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>
+        <CsText style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>
           {title}
-        </Text>
+       </CsText>
       ) : null}
       {type === "bar" ? (
         <BarChart

@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { Text, View } from "react-native";
-import { RadioButton } from "react-native-paper";
+import { Pressable, View } from "react-native";
+import CsText from "../../shared/CsText";
 
 export default function RadioGroup({
   control: controlProp,
@@ -9,19 +9,15 @@ export default function RadioGroup({
   options,
   error,
 }) {
-
-  // Attempt to read form context (if using FormProvider)
   let formContext;
+
   try {
     formContext = useFormContext();
   } catch (e) {
     formContext = null;
   }
 
-  // Prefer passed control, otherwise take from context
   const controllerControl = controlProp || formContext?.control;
-
-  // Clear errors must come from form context — NOT from control
   const clearErrors = formContext?.clearErrors;
 
   return (
@@ -34,7 +30,6 @@ export default function RadioGroup({
         const handleSelect = (selected) => {
           onChange(selected);
 
-          // Clear error immediately after selecting a radio option
           if (selected && typeof clearErrors === "function") {
             clearErrors(name);
           }
@@ -42,26 +37,67 @@ export default function RadioGroup({
 
         return (
           <View style={{ marginBottom: 20 }}>
-            <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 6 }}>
+            {/* Label */}
+            <CsText
+              style={{
+                fontSize: 16,
+                fontWeight: "bold",
+                marginBottom: 10,
+              }}
+            >
               {label}
-            </Text>
+            </CsText>
 
-            <RadioButton.Group onValueChange={handleSelect} value={value}>
-              {options.map((opt) => (
-                <View
+            {/* Options */}
+            {options.map((opt) => {
+              const selected = value === opt;
+
+              return (
+                <Pressable
                   key={opt}
-                  style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}
+                  onPress={() => handleSelect(opt)}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 10,
+                  }}
                 >
-                  <RadioButton value={opt} />
-                  <Text>{opt}</Text>
-                </View>
-              ))}
-            </RadioButton.Group>
+                  {/* Radio Outer Circle */}
+                  <View
+                    style={{
+                      height: 20,
+                      width: 20,
+                      borderRadius: 10,
+                      borderWidth: 2,
+                      borderColor: selected ? "#2d6b06" : "#aaa",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: 10,
+                    }}
+                  >
+                    {/* Inner Circle */}
+                    {selected && (
+                      <View
+                        style={{
+                          height: 10,
+                          width: 10,
+                          borderRadius: 5,
+                          backgroundColor: "#2d6b06",
+                        }}
+                      />
+                    )}
+                  </View>
 
+                  <CsText>{opt}</CsText>
+                </Pressable>
+              );
+            })}
+
+            {/* Error */}
             {liveError && (
-              <Text style={{ color: "red", marginTop: 4 }}>
+              <CsText style={{ color: "red", marginTop: 4 }}>
                 {liveError.message}
-              </Text>
+              </CsText>
             )}
           </View>
         );

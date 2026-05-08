@@ -1,8 +1,9 @@
 import { colors } from "@/src/constants/colors";
-import { Asterisk } from "lucide-react-native";
-import { Controller, useWatch } from "react-hook-form";
-import { Modal, Text, TouchableOpacity, View, FlatList } from "react-native";
+import { Asterisk, ChevronDown } from "lucide-react-native";
 import { useEffect, useState } from "react";
+import { Controller, useWatch } from "react-hook-form";
+import { FlatList, Modal, Pressable, Text, View } from "react-native";
+import { MultiSelectInputProps } from "../../shared/inputs/types";
 
 export default function MultiSelectInput({
   control,
@@ -11,14 +12,13 @@ export default function MultiSelectInput({
   options = [],
   error,
   optional = false,
-}: FormFieldProps) {
+  placeholder = label,
+}: MultiSelectInputProps) {
   const [visible, setVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
 
-  // ✅ watch RHF value safely
   const value = useWatch({ control, name });
 
-  // ✅ sync modal state with prefill
   useEffect(() => {
     if (Array.isArray(value)) {
       setSelectedOptions(value);
@@ -29,7 +29,7 @@ export default function MultiSelectInput({
 
   const toggleOption = (val: string | number) => {
     setSelectedOptions((prev) =>
-      prev.includes(val) ? prev.filter((x) => x !== val) : [...prev, val]
+      prev.includes(val) ? prev.filter((x) => x !== val) : [...prev, val],
     );
   };
 
@@ -39,10 +39,9 @@ export default function MultiSelectInput({
       name={name}
       render={({ field: { onChange } }) => (
         <View style={{ marginBottom: 16 }}>
-          {/* Label */}
           <View style={{ flexDirection: "row", marginBottom: 8 }}>
             <Text
-              style={{ fontSize: 16, fontWeight: "600", color: colors.dark }}
+              style={{ fontSize: 14, fontWeight: "500", color: colors.dark }}
             >
               {label}
             </Text>
@@ -55,35 +54,39 @@ export default function MultiSelectInput({
             )}
           </View>
 
-          {/* Trigger */}
-          <TouchableOpacity
+          <Pressable
             onPress={() => setVisible(true)}
             style={{
               borderWidth: 1,
               borderColor: colors.neutral,
-              padding: 12,
+              padding: 16,
               borderRadius: 6,
               backgroundColor: "white",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
             <Text
               style={{ color: value?.length ? colors.dark : colors.neutral }}
             >
-              {value?.length ? value.join(", ") : `Select ${label}`}
+              {value?.length ? value.join(", ") : `Select ${placeholder}`}
             </Text>
-          </TouchableOpacity>
+            <ChevronDown
+              size={16}
+              color={colors.neutral}
+              style={{ marginLeft: 8 }}
+            />
+          </Pressable>
 
-          {/* Error */}
           {error && (
-            <Text style={{ color: colors.error, fontSize: 12 }}>
+            <Text style={{ color: colors.error, marginTop: 6 }}>
               {error.message || error}
             </Text>
           )}
 
-          {/* Modal */}
           <Modal visible={visible} transparent animationType="fade">
-            <TouchableOpacity
-              activeOpacity={1}
+            <Pressable
               onPress={() => setVisible(false)}
               style={{
                 flex: 1,
@@ -107,7 +110,7 @@ export default function MultiSelectInput({
                   renderItem={({ item }) => {
                     const selected = selectedOptions.includes(item.value);
                     return (
-                      <TouchableOpacity
+                      <Pressable
                         onPress={() => toggleOption(item.value)}
                         style={{
                           flexDirection: "row",
@@ -128,12 +131,12 @@ export default function MultiSelectInput({
                           {selected ? "✓" : ""}
                         </Text>
                         <Text>{item.label}</Text>
-                      </TouchableOpacity>
+                      </Pressable>
                     );
                   }}
                 />
 
-                <TouchableOpacity
+                <Pressable
                   onPress={() => {
                     onChange(selectedOptions);
                     setVisible(false);
@@ -147,9 +150,9 @@ export default function MultiSelectInput({
                   }}
                 >
                   <Text style={{ color: "white" }}>Add</Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
-            </TouchableOpacity>
+            </Pressable>
           </Modal>
         </View>
       )}

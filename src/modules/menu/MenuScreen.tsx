@@ -1,60 +1,75 @@
+// import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
+// import MenuItem from "@/src/components/shared/MenuItem";
+// import { ScreenContent } from "@/src/components/shared/ScreenContent";
+// import ScreenLayout from "@/src/components/shared/ScreenLayout";
+// import { MenuLinks } from "@/src/navigation/MenuLinks";
+// import { router } from "expo-router";
+// import { View } from "react-native";
+
+// export default function MenuScreen() {
+//   return (
+//     <ScreenLayout>
+//       <AnimatedTabContent>
+//         <View className="flex-1 bg-light">
+//           <ScreenContent>
+//             {MenuLinks.farmer.map((group) => (
+//               <View key={group.title} className="">
+//                 {group.routes.map((route) => (
+//                   <MenuItem
+//                     key={route.screen}
+//                     label={route.label}
+//                     onPress={() => router.push(`${route.screen}`)}
+//                   />
+//                 ))}
+//               </View>
+//             ))}
+//           </ScreenContent>
+//         </View>
+//       </AnimatedTabContent>
+//     </ScreenLayout>
+//   );
+// }
+
+
+
+
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
-import { useAuth } from "@/src/contexts/AuthContext";
+import MenuItem from "@/src/components/shared/MenuItem";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { MenuLinks } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
-import { Repeat } from "lucide-react-native";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Bot } from "lucide-react-native";
+import { TouchableOpacity, View } from "react-native";
 
 export default function MenuScreen() {
-  const { roleMode, setRoleMode } = useAuth();
-
-  const toggleRole = () => {
-    const newRole = roleMode === "farmer" ? "supplier" : "farmer";
-    setRoleMode(newRole);
-  };
-
-  // Show menu based on role only
-  const menuGroupsToShow =
-    roleMode === "farmer" ? MenuLinks.farmer : MenuLinks.supplier;
-
   return (
-    <AnimatedTabContent>
-      <View className="flex-1 bg-light">
-        <ScrollView className="flex-1">
-          {menuGroupsToShow.map((group) => (
-            <View key={group.title} className="">
-              {group.routes.map((route) => (
-                <MenuItem
-                  key={route.screen}
-                  label={route.label}
-                  onPress={() => router.push(`/${route.screen}`)}
-                />
-              ))}
-            </View>
-          ))}
-        </ScrollView>
+    <ScreenLayout>
+      <AnimatedTabContent>
+        <View className="flex-1 bg-light">
+          <ScreenContent>
+            {MenuLinks.farmer.map((group) => (
+              <View key={group.title}>
+                {group.routes.map((route) => (
+                  <MenuItem
+                    key={route.screen}
+                    label={route.label}
+                    onPress={() => router.push(`${route.screen}`)}
+                  />
+                ))}
+              </View>
+            ))}
+          </ScreenContent>
 
-        <TouchableOpacity
-          onPress={toggleRole}
-          className="absolute bottom-6 right-6 bg-dark rounded-full flex-row items-center px-4 py-2"
-        >
-          <Repeat size={20} color="white" />
-          <Text className="text-white font-medium ml-2">
-            {roleMode === "farmer" ? "Switch to Supplier" : "Switch to Farmer"}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </AnimatedTabContent>
-  );
-}
-
-function MenuItem({ label, onPress }) {
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      className="py-3 border-b border-gray-200"
-    >
-      <Text className="text-lg text-gray-900">{label}</Text>
-    </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => router.push("/chat-bot")}
+            className="absolute bottom-6 right-6 bg-primary p-4 rounded-full"
+            activeOpacity={0.8}
+          >
+            <Bot size={26} color="white" strokeWidth={2} />
+          </TouchableOpacity>
+        </View>
+      </AnimatedTabContent>
+    </ScreenLayout>
   );
 }

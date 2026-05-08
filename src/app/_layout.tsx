@@ -1,5 +1,12 @@
+import RouteGuard from "@/src/components/RouteGuard";
+import { DisableBackWrapper } from "@/src/components/shared/DisableBackWrapper";
+import AppProvider from "@/src/contexts/AppProvider";
+import { useAppFonts } from "@/src/hooks/useAppFonts";
 import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
+import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";
@@ -7,18 +14,27 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
-
 import "../../styles/global.css";
 import { colors } from "../constants/colors";
-import AppProvider from "../contexts/AppProvider";
-import { DisableBackWrapper } from "../components/shared/DisableBackWrapper";
-import RouteGuard from "../components/RouteGuard";
+import { paperTheme } from "../constants/theme";
+import NavigationReadyHandler from "../modules/notifications/components/NavigationReadyHandler";
 
 registerTranslation("en-GB", enGB);
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
+  const fontsLoaded = useAppFonts();
+
+  const isWeb = Platform.OS === "web";
+  if (!fontsLoaded) return null;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -31,18 +47,18 @@ export default function RootLayout() {
               edges={["left", "right"]}
               style={{
                 flex: 1,
-                backgroundColor: colors.bgColor,
-                paddingTop: insets.top + 20,
-                paddingHorizontal: 10,
+                paddingTop: insets.top,
+                backgroundColor: colors.light,
               }}
             >
-              <PaperProvider>
+              <PaperProvider theme={paperTheme}>
                 <Stack
                   screenOptions={{
                     headerShown: false,
                     animation: "slide_from_right",
                   }}
                 />
+                {!isWeb && <NavigationReadyHandler />}
               </PaperProvider>
             </SafeAreaView>
           </RouteGuard>

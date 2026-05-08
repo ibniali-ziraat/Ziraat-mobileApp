@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { typography } from "@/src/constants/fonts/typography";
+import { useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -8,7 +9,7 @@ import {
   Text,
   View,
 } from "react-native";
-import { imageMapper } from "../../../Data/imageMapper";
+import { imageMapper } from "../../../data/imageMapper";
 
 const { width } = Dimensions.get("window");
 const ITEM_WIDTH = width * 1;
@@ -22,7 +23,6 @@ export default function ProductDetailCarousel({
   label?: string;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef<FlatList>(null);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / width);
@@ -30,19 +30,28 @@ export default function ProductDetailCarousel({
   };
 
   const renderItem = ({ item }: { item: string }) => {
-    const imgSource = imageMapper[item];
-    if (!imgSource) return null;
+    // ✅ support both local mapped images and remote URLs
+    const mappedImage = imageMapper[item];
 
-    const source = typeof imgSource === "string" ? { uri: imgSource } : imgSource;
+    const source = mappedImage
+      ? typeof mappedImage === "string"
+        ? { uri: mappedImage }
+        : mappedImage
+      : { uri: item }; // ✅ fallback to remote URL
 
     return (
       <View style={{ width: ITEM_WIDTH }}>
-        <View className="w-[90%] aspect-[4/5] rounded-xl overflow-hidden relative">
+        <View className="w-[95%] aspect-[4/5] rounded-xl overflow-hidden relative">
           <Image source={source} resizeMode="cover" className="w-full h-full" />
 
           {label && (
-            <View className="absolute top-3 left-2 bg-primary px-3 py-1 rounded-full">
-              <Text className="text-light font-semibold text-sm">{label}</Text>
+            <View className="absolute top-3 left-2 bg-primary px-2 py-1 rounded-full">
+              <Text
+                style={typography.Poppins_xs_regular}
+                className="text-light"
+              >
+                {label}
+              </Text>
             </View>
           )}
         </View>
@@ -62,18 +71,19 @@ export default function ProductDetailCarousel({
         onScroll={handleScroll}
         scrollEventThrottle={16}
         renderItem={renderItem}
+        keyExtractor={(_, index) => String(index)}
       />
-      
-      <View className="absolute bottom-4 w-full flex-row justify-center">
-        {photos.map((_, i) => {
-          const bgColor = currentIndex === i ? "bg-neutral" : "bg-dark"; // fixed colors
-          return (
-            <View
-              key={i}
-              className={`w-3 h-3 rounded-full mx-1 ${bgColor}`}
-            />
-          );
-        })}
+
+      {/* DOT INDICATOR */}
+      <View className="absolute bottom-2 w-full flex-row justify-center">
+        {photos.map((_, i) => (
+          <View
+            key={i}
+            className={`w-2 h-2 rounded-full mx-1 ${
+              currentIndex === i ? "bg-secondary" : "bg-light"
+            }`}
+          />
+        ))}
       </View>
     </View>
   );

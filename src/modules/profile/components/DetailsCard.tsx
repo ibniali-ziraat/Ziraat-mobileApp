@@ -1,7 +1,8 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { PencilLine, Trash2, Plus } from "lucide-react-native";
-import ZiraatCard from "@/src/components/shared/ZiraatProfileCard";
+import { shadows } from "@/src/constants/shadows";
+import { PencilLine, Plus, Trash2 } from "lucide-react-native";
+import { Pressable, View } from "react-native";
 
 interface DetailItem {
   title: string;
@@ -11,11 +12,10 @@ interface DetailItem {
 
 interface DetailsCardProps {
   heading: string;
-  items?: DetailItem[]; // 👈 optional
+  items?: DetailItem[];
   onEdit?: () => void;
   onDelete?: () => void;
 
-  /** Empty state */
   onAdd?: () => void;
   emptyActionLabel?: string;
 }
@@ -31,15 +31,24 @@ export default function DetailsCard({
   const isEmpty = items.length === 0;
 
   return (
-    <ZiraatCard
-      width="100%"
-      paddingHorizontal={1}
-      paddingVertical={1.4}
-      marginVertical={1}
-      borderRadius={24}
-      backgroundColor="#fff"
-      borderWidth={1}
-      borderColor="#f0f0f0"
+    <View
+      style={[
+        {
+          backgroundColor: colors.light,
+          borderRadius: 16,
+          padding: 16,
+          marginVertical: 8,
+
+          // shadowColor: colors.dark,
+          // shadowOffset: { width: 0, height: 3 },
+          // shadowOpacity: 0.08,
+          // shadowRadius: 1,
+          // elevation: 3,
+          // borderWidth: 1,
+          // borderColor: colors.light,
+        },
+        shadows.profile_card,
+      ]}
     >
       {/* Header */}
       <View
@@ -50,84 +59,95 @@ export default function DetailsCard({
           marginBottom: 14,
         }}
       >
-        <Text
+        <CsText
           style={{
-            fontSize: 20,
-            fontWeight: "700",
+            fontSize: 18,
+            fontWeight: "600",
             color: colors.dark,
           }}
         >
           {heading}
-        </Text>
+        </CsText>
 
         {!isEmpty && (
-          <View style={{ flexDirection: "row", gap: 10 }}>
+          <View style={{ flexDirection: "row", gap: 12 }}>
             {onEdit && (
-              <TouchableOpacity onPress={onEdit}>
+              <Pressable onPress={onEdit}>
                 <PencilLine size={18} color={colors.primary} />
-              </TouchableOpacity>
+              </Pressable>
             )}
+
             {onDelete && (
-              <TouchableOpacity onPress={onDelete}>
-                <Trash2 size={18} color="#E53935" />
-              </TouchableOpacity>
+              <Pressable onPress={onDelete}>
+                <Trash2 size={18} color={colors.secondary} />
+              </Pressable>
             )}
           </View>
         )}
       </View>
 
-      {/* Accent */}
-      <View
-        style={{
-          height: 3,
-          width: 70,
-          backgroundColor: colors.primary,
-          opacity: 0.25,
-          borderRadius: 10,
-          marginBottom: 20,
-        }}
-      />
-
-      {/* EMPTY STATE */}
       {isEmpty ? (
-        <TouchableOpacity
+        <Pressable
           onPress={onAdd}
-          activeOpacity={0.8}
+          activeOpacity={0.85}
           style={{
-            flexDirection: "row",
             alignItems: "center",
             justifyContent: "center",
-            paddingVertical: 18,
-            borderRadius: 16,
-            backgroundColor: colors.primary + "10",
-            borderWidth: 1,
-            borderColor: colors.primary + "30",
+            paddingVertical: 15,
+            borderRadius: 14,
+            borderWidth: 1.5,
+            borderStyle: "dashed",
+            borderColor: colors.primary + "55",
+            backgroundColor: colors.primary + "08",
           }}
         >
-          <Plus size={18} color={colors.primary} />
-          <Text
+          {/* Icon bubble */}
+          <View
             style={{
-              marginLeft: 8,
+              width: 33,
+              height: 33,
+              borderRadius: 22,
+              backgroundColor: colors.primary + "20",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 10,
+            }}
+          >
+            <Plus size={20} color={colors.primary} />
+          </View>
+
+          <CsText
+            style={{
               fontSize: 15,
-              fontWeight: "600",
+              fontWeight: "700",
               color: colors.primary,
             }}
           >
             {emptyActionLabel}
-          </Text>
-        </TouchableOpacity>
+          </CsText>
+
+          <CsText
+            style={{
+              fontSize: 12,
+              color: colors.neutral,
+              marginTop: 4,
+              textAlign: "center",
+            }}
+          >
+            Tap to add information
+          </CsText>
+        </Pressable>
       ) : (
-        /* ROWS */
-        <View style={{ gap: 22 }}>
+        <View style={{ gap: 20 }}>
           {items.map((item, index) => (
             <View key={item.title}>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
                 <View
                   style={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: 14,
-                    backgroundColor: colors.primary + "18",
+                    width: 44,
+                    height: 44,
+                    borderRadius: 12,
+                    backgroundColor: colors.primary + "15",
                     alignItems: "center",
                     justifyContent: "center",
                     marginRight: 14,
@@ -137,7 +157,7 @@ export default function DetailsCard({
                 </View>
 
                 <View style={{ flex: 1 }}>
-                  <Text
+                  <CsText
                     style={{
                       fontSize: 13,
                       fontWeight: "600",
@@ -145,26 +165,26 @@ export default function DetailsCard({
                     }}
                   >
                     {item.title}
-                  </Text>
-                  <Text
+                  </CsText>
+
+                  <CsText
                     style={{
                       color: colors.neutral,
                       fontSize: 14,
-                      flexWrap: "wrap", // ← allow line wrap
                     }}
                   >
                     {item.value || "—"}
-                  </Text>
+                  </CsText>
                 </View>
               </View>
 
               {index < items.length - 1 && (
                 <View
                   style={{
-                    marginLeft: 62,
-                    marginTop: 6,
+                    marginLeft: 58,
+                    marginTop: 10,
                     height: 1,
-                    backgroundColor: colors.neutral + "30",
+                    backgroundColor: colors.light,
                   }}
                 />
               )}
@@ -172,6 +192,6 @@ export default function DetailsCard({
           ))}
         </View>
       )}
-    </ZiraatCard>
+    </View>
   );
 }

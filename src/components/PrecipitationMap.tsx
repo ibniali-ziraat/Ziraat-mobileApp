@@ -1,35 +1,61 @@
-import { View } from "react-native";
-import { Text } from "react-native-paper";
+import { Platform, View } from "react-native";
+import CsText from "./shared/CsText";
+// import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function PrecipitationMap() {
-  const camera = {
-    coordinates: {
-      latitude: 34.083656,
-      longitude: 74.797371,
-    },
-    zoom: 8,
+  const region = {
+    latitude: 34.083656,
+    longitude: 74.797371,
+    latitudeDelta: 0.45,
+    longitudeDelta: 0.45,
   };
 
-  // if (Platform.OS === "ios") {
-  //   return (
-  //     <View className="h-44 w-full rounded-xl overflow-hidden border border-gray-300">
-  //       <AppleMaps.View style={{ flex: 1 }} cameraPosition={camera} />
-  //     </View>
-  //   );
-  // }
+  if (Platform.OS === "web") {
+    return (
+      <View
+        style={{
+          height: 220,
+          width: "100%",
+          borderRadius: 12,
+          backgroundColor: "#FFFFFF",
+          alignItems: "center",
+          justifyContent: "center",
+          borderWidth: 1,
+          borderColor: "#E5E7EB",
+        }}
+      >
+        <CsText style={{ fontSize: 12, color: "#6B7280" }}>
+          Map not supported on web
+       </CsText>
+      </View>
+    );
+  }
 
-  // if (Platform.OS === "android") {
-  //   return (
-  //     <View className="h-44 w-full rounded-xl overflow-hidden border border-gray-300">
-  //       <GoogleMaps.View style={{ flex: 1 }} cameraPosition={camera} />
-  //     </View>
-  //   );
-  // }
-
-  // fallback for web
   return (
-    <View>
-      <Text>maps not supported with web</Text>
+    <View
+      style={{
+        height: 220,
+        width: "100%",
+        borderRadius: 12,
+        overflow: "hidden",
+        backgroundColor: "#FFFFFF",
+      }}
+    >
+      {/* <MapView
+        style={{ flex: 1 }}
+        initialRegion={region}
+        provider={
+          Platform.OS === "android"
+            ? PROVIDER_GOOGLE
+            : undefined
+        }
+        mapType="standard"
+        showsBuildings={false}
+        showsIndoors={false}
+        toolbarEnabled={false}
+        scrollEnabled
+        zoomEnabled
+      /> */}
     </View>
   );
 }

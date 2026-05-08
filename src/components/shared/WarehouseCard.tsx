@@ -1,7 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Animated, { FadeInLeft, FadeInUp } from "react-native-reanimated";
+import CsText from "./CsText";
 
 const warehouses = [
   {
@@ -36,12 +37,12 @@ export default function WarehouseCard() {
         
       >
         <View>
-          <Text className="text-lg font-extrabold" style={{ color: colors.dark }}>
+          <CsText className="text-lg font-extrabold" style={{ color: colors.dark }}>
             Warehouses & Contacts
-          </Text>
-          <Text className="text-[11px] mt-[3px]" style={{ color: colors.dark }}>
+         </CsText>
+          <CsText className="text-[11px] mt-[3px]" style={{ color: colors.dark }}>
             Total Facilities: {warehouses.length}
-          </Text>
+         </CsText>
         </View>
 
         <View
@@ -69,17 +70,17 @@ export default function WarehouseCard() {
          }} 
         >
           {/* Title */}
-          <Text className="font-bold text-base" style={{ color: colors.dark }}>
+          <CsText className="font-bold text-base" style={{ color: colors.dark }}>
             {w.title}
-          </Text>
+         </CsText>
 
           {/* Place */}
-          <Text
+          <CsText
             className="text-sm mt-[3px]"
             style={{ color: colors.primary}}
           >
             {w.place}
-          </Text>
+         </CsText>
 
           
 
@@ -93,9 +94,9 @@ export default function WarehouseCard() {
                 <Ionicons name={item.icon} size={16} color={colors.secondary} />
               </View>
 
-              <Text className="ml-3 text-sm" style={{ color: colors.dark }}>
+              <CsText className="ml-3 text-sm" style={{ color: colors.dark }}>
                 {item.label}
-              </Text>
+             </CsText>
             </View>
           ))}
         </Animated.View>

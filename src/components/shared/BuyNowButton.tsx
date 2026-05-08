@@ -1,15 +1,21 @@
+import { colors } from "@/src/constants/colors";
 import { BuyNowButtonProps } from "@/src/types/buy.type";
-import { Text, TouchableOpacity } from "react-native";
+import { Pressable, Text } from "react-native";
 
-export default function BuyNowButton({ onPress, title = "Buy Now" }: BuyNowButtonProps) {
+export default function BuyNowButton({
+  onPress,
+  title = "Buy Now",
+}: BuyNowButtonProps) {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
-      className="flex-1 py-3 rounded-lg items-center bg-secondary shadow"
+      activeOpacity={0.85}
+      className="h-12 rounded-xl items-center justify-center"
+      style={{
+        backgroundColor: colors.secondary,
+      }}
     >
-      <Text className="font-bold text-light text-lg text-center">
-        {title?.toString() || "Buy Now"}
-      </Text>
-    </TouchableOpacity>
+      <Text className="text-white font-bold">{title}</Text>
+    </Pressable>
   );
 }

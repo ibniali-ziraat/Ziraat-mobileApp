@@ -4,7 +4,7 @@ export default function ZiraatCard({
   children,
   className = "",
 
-  // padding props
+  // padding props (INNER)
   paddingTop,
   paddingBottom,
   paddingLeft,
@@ -12,21 +12,15 @@ export default function ZiraatCard({
   paddingHorizontal,
   paddingVertical,
 
-  // margin props
+  // margin props (OUTER vertical only)
   marginTop,
   marginBottom,
-  marginLeft,
-  marginRight,
-  marginHorizontal,
   marginVertical,
 
-  // required
-  width,
   height,
 
-  // border (static unless overridden)
-  borderWidth = 0.25,
-  borderColor = "#CCCCCC",
+  borderWidth = 0,
+  borderColor = "#E6E6E6",
   borderRadius = 12,
 
   backgroundColor = "#FFFFFF",
@@ -36,131 +30,109 @@ export default function ZiraatCard({
 }) {
   const REM = 16;
 
-  if (!width) {
-    throw new Error("ZiraatCard requires width  props.");
-  }
-
-  // PADDING
+  /* ---------------- INNER PADDING ---------------- */
   const computedPadding = {
     paddingTop:
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingTop
-        ? paddingTop * REM
-        : 0,
+          ? paddingTop * REM
+          : 0,
 
     paddingBottom:
       paddingVertical !== undefined
         ? paddingVertical * REM
         : paddingBottom
-        ? paddingBottom * REM
-        : 0,
+          ? paddingBottom * REM
+          : 0,
 
     paddingLeft:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingLeft
-        ? paddingLeft * REM
-        : 0,
+          ? paddingLeft * REM
+          : 0,
 
     paddingRight:
       paddingHorizontal !== undefined
         ? paddingHorizontal * REM
         : paddingRight
-        ? paddingRight * REM
-        : 0,
+          ? paddingRight * REM
+          : 0,
   };
 
-  // MARGIN
-  const computedMargin = {
-    marginTop:
-      marginVertical !== undefined ? marginVertical * REM : marginTop * REM,
-    marginBottom:
-      marginVertical !== undefined ? marginVertical * REM : marginBottom * REM,
-    marginLeft:
-      marginHorizontal !== undefined ? marginHorizontal * REM : marginLeft * REM,
-    marginRight:
-      marginHorizontal !== undefined
-        ? marginHorizontal * REM
-        : marginRight * REM,
-  };
+  const CardContent = (
+    <View
+      className={className}
+      style={[
+        styles.card,
+        {
+          ...(height ? { height } : {}),
+          borderRadius,
+          backgroundColor,
+          borderWidth,
+          borderColor,
+          ...computedPadding,
+        },
+        style,
+      ]}
+    >
+      {children}
+    </View>
+  );
 
-  // SHADOW WRAPPER (STATIC PER PLATFORM)
-  const ShadowWrapper = ({ children }) => (
-  <View
-    style={[
-      styles.shadowWrapper,
-      {
-        width,
-        ...(height ? { height } : {}), // 👈 conditional height
-        borderRadius,
-        ...computedMargin,
-      },
-    ]}
-  >
-    {children}
-  </View>
-);
-
-
-  // INNER CARD (NO SHADOW)
- const CardInner = (
-  <View
-    className={`overflow-hidden ${className}`}
-    style={[
-      {
-        width: "100%",
-        borderRadius,
-        backgroundColor,
-        borderWidth,
-        borderColor,
-        ...computedPadding,
-
-        // ✅ ONLY apply height when explicitly provided
-        ...(height ? { height: "100%" } : {}),
-      },
-      style,
-    ]}
-  >
-    {children}
-  </View>
-);
+  const Card = onPress ? (
+    <Pressable onPress={onPress}>{CardContent}</Pressable>
+  ) : (
+    CardContent
+  );
 
   return (
-    <ShadowWrapper>
-      {onPress ? <Pressable onPress={onPress}>{CardInner}</Pressable> : CardInner}
-    </ShadowWrapper>
+    <View
+      style={[
+        styles.wrapper,
+        {
+          marginTop: marginVertical ?? marginTop ?? 0,
+          marginBottom: marginVertical ?? marginBottom ?? 0,
+        },
+      ]}
+    >
+      {Card}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  shadowWrapper: {
+  /* ---------- OUTER WRAPPER ---------- */
+  wrapper: {
+    marginHorizontal: -15,
+    paddingHorizontal: 15,
+    paddingBottom: 15,
+  },
+
+  /* ---------- CARD ---------- */
+  card: {
+    width: "100%",
     backgroundColor: "#FFFFFF",
-    borderRadius: 24,
+    borderRadius: 12,
 
-    /* ----------------------------------------
-       ⚡ STATIC iOS SHADOW
-    ----------------------------------------- */
+    /* ---------- iOS ---------- */
     ...(Platform.OS === "ios" && {
-      shadowColor: "#000000",
-      shadowOpacity: 0.12,
-      shadowRadius: 16,
-      shadowOffset: { width: 0, height: 8 },
+      shadowColor: "#000",
+      shadowOpacity: 0.25,
+      shadowRadius: 5,
+      shadowOffset: { width: 0, height: 4 },
     }),
 
-    /* ----------------------------------------
-       ⚡ STATIC ANDROID SHADOW
-    ----------------------------------------- */
+    /* ---------- ANDROID ---------- */
     ...(Platform.OS === "android" && {
-      elevation: 15,
-      shadowColor: "gray",
+      elevation: 6,
     }),
 
-    /* ----------------------------------------
-       ⚡ STATIC WEB SHADOW
-    ----------------------------------------- */
+    /* ---------- WEB ---------- */
     ...(Platform.OS === "web" && {
-      boxShadow: "0px 8px 22px rgba(0,0,0,0.12)",
+      boxShadow:
+        "0px 2px 8px rgba(0, 0, 0, 0.06), 0px 4px 16px rgba(0, 0, 0, 0.08)",
     }),
   },
 });
