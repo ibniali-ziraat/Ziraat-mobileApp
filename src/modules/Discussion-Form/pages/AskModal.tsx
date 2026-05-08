@@ -6,11 +6,7 @@ import {
   Modal,
   Pressable,
   Text,
-<<<<<<< HEAD
   TouchableOpacity,
-=======
-  TextInput,
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
   View,
 } from "react-native";
 
@@ -100,7 +96,6 @@ export default function AskModal({
     };
 
     onSubmit(payload);
-<<<<<<< HEAD
 
     reset();
 
@@ -121,13 +116,6 @@ export default function AskModal({
             "flex-end",
         }}
       >
-=======
-  };
-
-  return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
         {/* BACKDROP */}
         <Pressable
           onPress={onClose}
@@ -145,7 +133,6 @@ export default function AskModal({
         {/* SHEET */}
         <View
           style={{
-<<<<<<< HEAD
             height:
               height * 0.9,
 
@@ -164,13 +151,6 @@ export default function AskModal({
             borderColor:
               colors.overlay +
               "08",
-=======
-            height: height * 0.9,
-            backgroundColor: colors.light,
-            borderTopLeftRadius: 28,
-            borderTopRightRadius: 28,
-            paddingBottom: 20,
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
           }}
         >
           {/* HANDLE */}
@@ -221,117 +201,7 @@ export default function AskModal({
                 "08",
             }}
           >
-<<<<<<< HEAD
             {/* LEFT */}
-=======
-            <HelpCircle size={20} />
-            <Text style={{ fontSize: 18, fontWeight: "800", marginLeft: 10 }}>
-              Ask Question
-            </Text>
-
-            <Pressable onPress={onClose} style={{ marginLeft: "auto" }}>
-              <X size={18} />
-            </Pressable>
-          </View>
-
-          <View style={{ padding: 20 }}>
-            {/* TITLE */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>Title</Text>
-            <TextInput
-              placeholder="How to handle file uploads in FastAPI with S3?"
-              value={title}
-              onChangeText={setTitle}
-              style={{
-                borderWidth: 1,
-                borderColor: colors.cardBorder,
-                borderRadius: 10,
-                padding: 12,
-                marginBottom: 16,
-              }}
-            />
-
-            {/* BODY */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>
-              Description
-            </Text>
-            <TextInput
-              placeholder="Explain your problem..."
-              value={body}
-              onChangeText={setBody}
-              multiline
-              style={{
-                borderWidth: 1,
-                borderColor: "#ddd",
-                borderRadius: 10,
-                padding: 12,
-                height: 120,
-                marginBottom: 16,
-                textAlignVertical: "top",
-              }}
-            />
-
-            {/* TAGS */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>Tags</Text>
-
-            <View style={{ flexDirection: "row", marginBottom: 10 }}>
-              <TextInput
-                placeholder="Add tag (fastapi, s3...)"
-                value={tagsInput}
-                onChangeText={setTagsInput}
-                style={{
-                  flex: 1,
-                  borderWidth: 1,
-                  borderColor: colors.cardBorder,
-                  borderRadius: 10,
-                  padding: 10,
-                }}
-              />
-              <Pressable
-                onPress={addTag}
-                style={{
-                  marginLeft: 8,
-                  backgroundColor: colors.secondary,
-                  paddingHorizontal: 14,
-                  justifyContent: "center",
-                  borderRadius: 10,
-                }}
-              >
-                <Text style={{ color: colors.light }}>Add</Text>
-              </Pressable>
-            </View>
-
-            {/* TAG LIST */}
-            <View
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                marginBottom: 16,
-              }}
-            >
-              {tags.map((tag) => (
-                <Pressable
-                  key={tag}
-                  onPress={() => removeTag(tag)}
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: colors.secondary,
-                    paddingHorizontal: 12,
-                    paddingVertical: 6,
-                    borderRadius: 20,
-                    marginRight: 8,
-                  }}
-                >
-                  <Text style={{ color: colors.light, marginRight: 4 }}>
-                    #{tag}
-                  </Text>
-                  <X size={15} color={colors.light} />
-                </Pressable>
-              ))}
-            </View>
-
-            {/* BOUNTY */}
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
             <View
               style={{
                 flexDirection:
@@ -341,7 +211,6 @@ export default function AskModal({
                   "center",
               }}
             >
-<<<<<<< HEAD
               {/* ICON */}
               <View
                 style={{
@@ -417,32 +286,6 @@ export default function AskModal({
             <TouchableOpacity
               onPress={onClose}
               activeOpacity={0.8}
-=======
-              <Text style={{ fontWeight: "700", flex: 1 }}>Add Bounty</Text>
-              <Switch value={isBounty} onValueChange={setIsBounty} />
-            </View>
-
-            {isBounty && (
-              <TextInput
-                placeholder="Enter bounty amount"
-                keyboardType="numeric"
-                value={bountyAmount}
-                onChangeText={setBountyAmount}
-                style={{
-                  borderWidth: 1,
-                  borderColor: colors.cardBorder,
-                  borderRadius: 10,
-                  padding: 12,
-                  marginBottom: 20,
-                }}
-              />
-            )}
-
-            {/* SUBMIT */}
-            <Pressable
-              onPress={handleSubmit}
-              disabled={loading}
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
               style={{
                 width: 40,
                 height: 40,
@@ -465,7 +308,6 @@ export default function AskModal({
                   "12",
               }}
             >
-<<<<<<< HEAD
               <X
                 size={18}
                 color={
@@ -474,12 +316,6 @@ export default function AskModal({
                 strokeWidth={2.4}
               />
             </TouchableOpacity>
-=======
-              <Text style={{ color: colors.light, fontWeight: "700" }}>
-                {loading ? "Posting..." : "Post Question"}
-              </Text>
-            </Pressable>
->>>>>>> 0d5fbc02629764616a337be3fd6a4b736aace586
           </View>
 
           {/* FORM */}

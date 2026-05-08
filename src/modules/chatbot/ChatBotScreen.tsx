@@ -1,4 +1,4 @@
-import { useChatbot } from "@/src/hooks/useChatbot";
+
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +11,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import { useChatbot } from "./hooks/useChatbot";
 
 export default function ChatbotScreen() {
     const {

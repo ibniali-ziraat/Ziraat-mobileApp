@@ -34,23 +34,10 @@ export default function HomeScreen(): JSX.Element {
   const handleRefresh = async () => {
     setRefreshing(true);
 
-<<<<<<< HEAD
-export default function HomeScreen() {
-  // const [cityData, setCityData] = useState("srinagar");
-  // const { data, isPending, isError } = useWeatherQuery(cityData);
-  // console.log(data, "data...");
-
-  // if (isPending) return <Loader />;
-
-  const sections = [
-    { title: "Top Pesticides for Healthy Crop Growth", slice: [0, 8] },
-  ];
-=======
     await Promise.all([refetchTrending(), refetchBestDeals()]);
 
     setRefreshing(false);
   };
->>>>>>> 54af13bc22235eb1974d61deb50ec43074e7247c
 
   return (
     <ScreenLayout>
