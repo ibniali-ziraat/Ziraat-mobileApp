@@ -28,7 +28,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "bundleIdentifier": "com.alilals.ziraat",
+      "package": "com.alilals.ziraat",
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
