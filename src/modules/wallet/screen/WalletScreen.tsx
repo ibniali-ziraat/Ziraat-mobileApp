@@ -92,6 +92,9 @@ export default function WalletComponent() {
     ]).start(() => setToastVisible(false));
   };
 
+
+
+  
   // ─────────────────────────────────────────────────────────
   return (
     <View style={{ flex: 1, backgroundColor: colors.bgColor }}>
@@ -328,27 +331,32 @@ export default function WalletComponent() {
               }}
             >
               <Text style={{ fontSize: 22, fontWeight: "700", color: colors.primary, marginRight: 4 }}>₹</Text>
-              <TextInput
-                value={customAmt}
-                onChangeText={(v) => {
-                  setCustomAmt(v.replace(/[^0-9]/g, ""));
-                  setSelectedQuick(0);
-                }}
-                keyboardType="numeric"
-                placeholder="Enter amount"
-                cursorColor="transparent"
-                selectionColor="transparent"
-                underlineColorAndroid="transparent"
-                contextMenuHidden
-                selectTextOnFocus={false}
-                style={{
-                  flex: 1,
-                  fontSize: 24,
-                  fontWeight: "700",
-                  color: colors.neutral,
-                  paddingVertical: 13,
-                }}
-              />
+  <TextInput
+  value={customAmt}
+  onChangeText={(v) => {
+    const numericValue = v.replace(/[^0-9]/g, "");
+
+   
+    if (numericValue.length > 7) return;
+
+    setCustomAmt(numericValue);
+    setSelectedQuick(0);
+  }}
+  keyboardType="numeric"
+  placeholder="Enter amount"
+  cursorColor="transparent"
+  selectionColor="transparent"
+  underlineColorAndroid="transparent"
+  contextMenuHidden
+  selectTextOnFocus={false}
+  style={{
+    flex: 1,
+    fontSize: 24,
+    fontWeight: "700",
+    color: colors.neutral,
+    paddingVertical: 13,
+  }}
+/>
             </View>
 
             {/* Pay Via */}
