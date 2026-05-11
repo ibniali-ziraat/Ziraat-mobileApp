@@ -3,6 +3,7 @@ import { DisableBackWrapper } from "@/src/components/shared/DisableBackWrapper";
 import AppProvider from "@/src/contexts/AppProvider";
 import { useAppFonts } from "@/src/hooks/useAppFonts";
 import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
+import { firebase } from '@react-native-firebase/app';
 import * as Notifications from "expo-notifications";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -18,6 +19,30 @@ import "../../styles/global.css";
 import { colors } from "../constants/colors";
 import { paperTheme } from "../constants/theme";
 import NavigationReadyHandler from "../modules/notifications/components/NavigationReadyHandler";
+
+const credentials = Platform.select({
+  ios: {
+    appId: '1:462562878618:ios:015b7f60458a16da4d6b23',
+    apiKey: 'AIzaSyA3XGnfcWSEVu74f_oWgKlqbwQq8OcZjBE',
+    projectId: 'ziraat-mobile-f5ff4',
+    messagingSenderId: '462562878618',
+    storageBucket: 'ziraat-mobile-f5ff4.firebasestorage.app',
+    databaseURL: ''
+  },
+  android: {
+    appId: '1:462562878618:android:e06e6b4f455891964d6b23',
+    apiKey: 'AIzaSyCwP-z0v0cztvCeKftGr0cXtF6Ae0_mVMw',
+    projectId: 'ziraat-mobile-f5ff4',
+    messagingSenderId: '462562878618',
+    storageBucket: 'ziraat-mobile-f5ff4.firebasestorage.app',
+    databaseURL: ''
+  },
+});
+
+// Only call if not already initialized natively
+if (!firebase.apps.length && credentials) {
+  firebase.initializeApp(credentials);
+}
 
 registerTranslation("en-GB", enGB);
 Notifications.setNotificationHandler({
