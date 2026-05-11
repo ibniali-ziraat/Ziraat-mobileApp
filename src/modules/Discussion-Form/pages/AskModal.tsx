@@ -6,7 +6,6 @@ import {
   Modal,
   Pressable,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -75,11 +74,21 @@ export default function AskModal({
     };
 
     onSubmit(payload);
+
+    reset();
+
+    setIsBounty(false);
   };
 
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
+      <View
+        style={{
+          flex: 1,
+
+          justifyContent: "flex-end",
+        }}
+      >
         {/* BACKDROP */}
         <Pressable
           onPress={onClose}
@@ -96,10 +105,18 @@ export default function AskModal({
         <View
           style={{
             height: height * 0.9,
+
             backgroundColor: colors.light,
-            borderTopLeftRadius: 28,
-            borderTopRightRadius: 28,
-            paddingBottom: 20,
+
+            borderTopLeftRadius: 34,
+
+            borderTopRightRadius: 34,
+
+            overflow: "hidden",
+
+            borderWidth: 1,
+
+            borderColor: colors.overlay + "08",
           }}
         >
           {/* HANDLE */}
@@ -142,113 +159,7 @@ export default function AskModal({
               borderBottomColor: colors.overlay + "08",
             }}
           >
-            <HelpCircle size={20} />
-            <Text style={{ fontSize: 18, fontWeight: "800", marginLeft: 10 }}>
-              Ask Question
-            </Text>
-
-            <Pressable onPress={onClose} style={{ marginLeft: "auto" }}>
-              <X size={18} />
-            </Pressable>
-          </View>
-
-          <View style={{ padding: 20 }}>
-            {/* TITLE */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>Title</Text>
-            <TextInput
-              placeholder="How to handle file uploads in FastAPI with S3?"
-              value={title}
-              onChangeText={setTitle}
-              style={{
-                borderWidth: 1,
-                borderColor: colors.cardBorder,
-                borderRadius: 10,
-                padding: 12,
-                marginBottom: 16,
-              }}
-            />
-
-            {/* BODY */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>
-              Description
-            </Text>
-            <TextInput
-              placeholder="Explain your problem..."
-              value={body}
-              onChangeText={setBody}
-              multiline
-              style={{
-                borderWidth: 1,
-                borderColor: "#ddd",
-                borderRadius: 10,
-                padding: 12,
-                height: 120,
-                marginBottom: 16,
-                textAlignVertical: "top",
-              }}
-            />
-
-            {/* TAGS */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>Tags</Text>
-
-            <View style={{ flexDirection: "row", marginBottom: 10 }}>
-              <TextInput
-                placeholder="Add tag (fastapi, s3...)"
-                value={tagsInput}
-                onChangeText={setTagsInput}
-                style={{
-                  flex: 1,
-                  borderWidth: 1,
-                  borderColor: colors.cardBorder,
-                  borderRadius: 10,
-                  padding: 10,
-                }}
-              />
-              <Pressable
-                onPress={addTag}
-                style={{
-                  marginLeft: 8,
-                  backgroundColor: colors.secondary,
-                  paddingHorizontal: 14,
-                  justifyContent: "center",
-                  borderRadius: 10,
-                }}
-              >
-                <Text style={{ color: colors.light }}>Add</Text>
-              </Pressable>
-            </View>
-
-            {/* TAG LIST */}
-            <View
-              style={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-                marginBottom: 16,
-              }}
-            >
-              {tags.map((tag) => (
-                <Pressable
-                  key={tag}
-                  onPress={() => removeTag(tag)}
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: colors.secondary,
-                    paddingHorizontal: 12,
-                    paddingVertical: 6,
-                    borderRadius: 20,
-                    marginRight: 8,
-                  }}
-                >
-                  <Text style={{ color: colors.light, marginRight: 4 }}>
-                    #{tag}
-                  </Text>
-                  <X size={15} color={colors.light} />
-                </Pressable>
-              ))}
-            </View>
-
-            {/* BOUNTY */}
+            {/* LEFT */}
             <View
               style={{
                 flexDirection: "row",
@@ -256,30 +167,68 @@ export default function AskModal({
                 alignItems: "center",
               }}
             >
-              <Text style={{ fontWeight: "700", flex: 1 }}>Add Bounty</Text>
-              <Switch value={isBounty} onValueChange={setIsBounty} />
+              {/* ICON */}
+              <View
+                style={{
+                  width: 48,
+                  height: 48,
+
+                  borderRadius: 24,
+
+                  alignItems: "center",
+
+                  justifyContent: "center",
+
+                  backgroundColor: colors.primary + "12",
+
+                  borderWidth: 1,
+
+                  borderColor: colors.primary + "18",
+
+                  marginRight: 14,
+                }}
+              >
+                <HelpCircle
+                  size={22}
+                  color={colors.primary}
+                  strokeWidth={2.4}
+                />
+              </View>
+
+              {/* TEXT */}
+              <View>
+                <Text
+                  style={{
+                    fontSize: 20,
+
+                    fontWeight: "800",
+
+                    color: colors.dark,
+                  }}
+                >
+                  Ask Question
+                </Text>
+
+                <Text
+                  style={{
+                    fontSize: 12,
+
+                    color: colors.overlay,
+
+                    marginTop: 3,
+
+                    fontWeight: "500",
+                  }}
+                >
+                  Start a new discussion
+                </Text>
+              </View>
             </View>
 
-            {isBounty && (
-              <TextInput
-                placeholder="Enter bounty amount"
-                keyboardType="numeric"
-                value={bountyAmount}
-                onChangeText={setBountyAmount}
-                style={{
-                  borderWidth: 1,
-                  borderColor: colors.cardBorder,
-                  borderRadius: 10,
-                  padding: 12,
-                  marginBottom: 20,
-                }}
-              />
-            )}
-
-            {/* SUBMIT */}
-            <Pressable
-              onPress={handleSubmit}
-              disabled={loading}
+            {/* CLOSE */}
+            <TouchableOpacity
+              onPress={onClose}
+              activeOpacity={0.8}
               style={{
                 width: 40,
                 height: 40,
@@ -297,10 +246,8 @@ export default function AskModal({
                 borderColor: colors.overlay + "12",
               }}
             >
-              <Text style={{ color: colors.light, fontWeight: "700" }}>
-                {loading ? "Posting..." : "Post Question"}
-              </Text>
-            </Pressable>
+              <X size={18} color={colors.dark} strokeWidth={2.4} />
+            </TouchableOpacity>
           </View>
 
           {/* FORM */}

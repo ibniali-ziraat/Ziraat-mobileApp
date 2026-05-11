@@ -21,7 +21,11 @@ export default function RouteGuard({ children }: RouteGuardProps) {
     if (!userToken) {
       logoutUser();
       router.replace(ROUTES.AUTH.LOGIN);
+<<<<<<< HEAD
       router.replace("/");
+=======
+      // router.replace("/");
+>>>>>>> fe327f18f466ed8cb60f9b3bad4c3b2be4c16ca5
       return;
     }
 
