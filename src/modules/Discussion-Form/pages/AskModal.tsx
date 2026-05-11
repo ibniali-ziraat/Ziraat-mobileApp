@@ -225,45 +225,10 @@ export default function AskModal({
               </View>
             </View>
 
-<<<<<<< HEAD
             {/* CLOSE */}
             <TouchableOpacity
               onPress={onClose}
               activeOpacity={0.8}
-=======
-            {/* BOUNTY */}
-            <View
-              style={{
-                flexDirection: "row",
-
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontWeight: "700", flex: 1 }}>Add Bounty</Text>
-              <Switch value={isBounty} onValueChange={setIsBounty} />
-            </View>
-
-            {isBounty && (
-              <TextInput
-                placeholder="Enter bounty amount"
-                keyboardType="numeric"
-                value={bountyAmount}
-                onChangeText={setBountyAmount}
-                style={{
-                  borderWidth: 1,
-                  borderColor: colors.cardBorder,
-                  borderRadius: 10,
-                  padding: 12,
-                  marginBottom: 20,
-                }}
-              />
-            )}
-
-            {/* SUBMIT */}
-            <Pressable
-              onPress={handleSubmit}
-              disabled={loading}
->>>>>>> cdb5b87af7178b47b40ce5c8a4f9dc94d81915f5
               style={{
                 width: 40,
                 height: 40,
