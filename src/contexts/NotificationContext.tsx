@@ -1,17 +1,18 @@
-import * as Notifications from "expo-notifications";
+import messaging, {
+  FirebaseMessagingTypes,
+} from "@react-native-firebase/messaging";
 import React, {
   createContext,
   ReactNode,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
-import { registerForPushNotificationsAsync } from "../utils/registerForPushNotificationsAsync";
 
 interface NotificationContextType {
-  expoPushToken: string | null;
-  devicePushToken: string | null;
-  notification: Notifications.Notification | null;
+  fcmToken: string | null;
+  notification: FirebaseMessagingTypes.RemoteMessage | null;
   error: Error | null;
 }
 
@@ -36,50 +37,81 @@ interface NotificationProviderProps {
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   children,
 }) => {
-  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
-  const [devicePushToken, setDevicePushToken] = useState<string | null>(null);
+  const [fcmToken, setFcmToken] = useState<string | null>(null);
   const [notification, setNotification] =
-    useState<Notifications.Notification | null>(null);
+    useState<FirebaseMessagingTypes.RemoteMessage | null>(null);
   const [error, setError] = useState<Error | null>(null);
 
+  const tokenRefreshUnsubscribeRef = useRef<(() => void) | null>(null);
+
   useEffect(() => {
-    registerForPushNotificationsAsync().then(
-      (token) => setExpoPushToken(token),
-      (error) => setError(error),
-    );
+    const init = async () => {
+      try {
+        const authStatus = await messaging().requestPermission();
+        const enabled =
+          authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+          authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    Notifications.getDevicePushTokenAsync().then(
-      (devicePushToken) => {
-        console.log({ devicePushToken });
-        setDevicePushToken(devicePushToken.data);
-      },
-      (error) => {
-        setError(error);
-      },
-    );
+        if (!enabled) {
+          setError(new Error("Push notification permission denied"));
+          return;
+        }
 
-    const notificationListener = Notifications.addNotificationReceivedListener(
-      (notification) => {
-        console.log("🔔 Notification Received: ", notification);
-        setNotification(notification);
-      },
-    );
+        const token = await messaging().getToken();
+        console.log("FCM Token:", token);
+        setFcmToken(token);
 
-    const responseListener =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("🔔 Notification Response: ", response);
-      });
+        tokenRefreshUnsubscribeRef.current = messaging().onTokenRefresh(
+          (newToken) => {
+            console.log("FCM Token refreshed:", newToken);
+            setFcmToken(newToken);
+          },
+        );
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error(String(err)));
+      }
+    };
+
+    init();
 
     return () => {
-      notificationListener.remove();
-      responseListener.remove();
+      tokenRefreshUnsubscribeRef.current?.();
     };
   }, []);
 
+  // ─── Foreground messages ───────────────────────────────────────────────────
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      console.log("🔔 Foreground notification:", remoteMessage);
+      setNotification(remoteMessage);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  // ─── Background / quit state ──────────────────────────────────────────────
+  useEffect(() => {
+    const unsubscribeOpened = messaging().onNotificationOpenedApp(
+      (remoteMessage) => {
+        console.log("🔔 Opened from background:", remoteMessage);
+        setNotification(remoteMessage);
+      },
+    );
+
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          console.log("🔔 Opened from quit state:", remoteMessage);
+          setNotification(remoteMessage);
+        }
+      });
+
+    return unsubscribeOpened;
+  }, []);
+
   return (
-    <NotificationContext.Provider
-      value={{ expoPushToken, devicePushToken, notification, error }}
-    >
+    <NotificationContext.Provider value={{ fcmToken, notification, error }}>
       {children}
     </NotificationContext.Provider>
   );
