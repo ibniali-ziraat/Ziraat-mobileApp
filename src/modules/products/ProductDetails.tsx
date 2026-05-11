@@ -35,11 +35,16 @@ import ProductsList from "./components/ProductList";
 
 export default function ProductDetails() {
   const { productId } = useLocalSearchParams();
+
+  console.log(productId, "productid");
+
   const [quantity, setQuantity] = useState(1);
 
   const { userId } = useAuth();
 
   const { data: product, isLoading, isError } = useProductByIdQuery(productId);
+
+  console.log(product, "product");
 
   const { mutate: submitReview, isPending } = useAddReview();
   const { cart, addToCart, removeFromCart, isCartBusy } = useCart();

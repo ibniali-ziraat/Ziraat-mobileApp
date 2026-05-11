@@ -15,13 +15,7 @@ import {
 
 import { useState } from "react";
 
-import {
-  Modal,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
 // ───────────────── TYPES ─────────────────
 type FilterState = {
@@ -383,12 +377,9 @@ export default function FilterModal({
     onClose();
   };
 
-  const activeCount = [
-    noAnswers,
-    closed,
-    mostViewed,
-    mostVoted,
-  ].filter(Boolean).length;
+  const activeCount = [noAnswers, closed, mostViewed, mostVoted].filter(
+    Boolean,
+  ).length;
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
@@ -495,7 +486,6 @@ export default function FilterModal({
               onPress={() => setNoAnswers(!noAnswers)}
               icon={<MessageSquareOff size={18} color={colors.primary} />}
             />
-
 
             <CheckboxRow
               label="Most viewed"

@@ -18,6 +18,7 @@ interface ProductListHeaderProps {
   isFiltering: boolean;
   activeCategory: string;
   setActiveCategory: (val: string) => void;
+  categories: any[];
 }
 
 export default function ProductListHeader({
@@ -51,6 +52,7 @@ export default function ProductListHeader({
         <CategoryTabs
           activeCategory={activeCategory}
           onSelect={setActiveCategory}
+          categories={filterOptions.categories}
         />
       )}
 

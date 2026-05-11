@@ -5,7 +5,7 @@ import { Feather } from "@expo/vector-icons";
 import { Image, Pressable, View } from "react-native";
 
 export default function ProfileHeader({ data, onEdit }) {
-  console.log(data, "data at profile header");
+  // console.log(data, "data at profile header");
 
   return (
     <View className="items-center mb-6">

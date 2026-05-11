@@ -9,6 +9,7 @@ export const getProductById = async (id: string) => {
   const { data } = await axiosInstance.get(
     `/api/catalog/ProductsApi/detail/${id}`,
   );
+
   return data;
 };
 

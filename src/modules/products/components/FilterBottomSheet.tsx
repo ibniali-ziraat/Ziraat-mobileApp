@@ -60,6 +60,9 @@ export default function FilterBottomSheet({
     FIXED_MIN_PRICE,
     FIXED_MAX_PRICE,
   ]);
+
+  // console.log(filterOptions.categories, "ALL CATEGORIES");
+
   const [sort, setSort] = useState<string | null>(null);
   const [rating, setRating] = useState<number[]>([]);
 

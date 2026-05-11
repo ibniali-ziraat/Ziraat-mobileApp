@@ -1,17 +1,35 @@
 import { colors } from "@/src/constants/colors";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { PRODUCT_CATEGORIES } from "../constants/categories";
+
+interface CategoryItem {
+  id: number;
+  name: string;
+  slug: string;
+  count: number;
+}
 
 interface CategoryTabsProps {
   activeCategory: string;
-  onSelect: (label: string) => void;
+  onSelect: (slug: string) => void;
+  categories: CategoryItem[];
 }
 
 export default function CategoryTabs({
   activeCategory,
   onSelect,
+  categories,
 }: CategoryTabsProps) {
+  const allCategories = [
+    {
+      id: 0,
+      name: "All",
+      slug: "All",
+      count: 0,
+    },
+
+    ...categories,
+  ];
   return (
     <ScrollView
       horizontal
@@ -19,12 +37,13 @@ export default function CategoryTabs({
       style={{ marginTop: 18 }}
       contentContainerStyle={{ paddingRight: 10 }}
     >
-      {PRODUCT_CATEGORIES.map((item, i) => {
-        const isActive = activeCategory === item.label;
+      {allCategories.map((item, i) => {
+        const isActive = activeCategory === item.slug;
+
         return (
           <Pressable
             key={i}
-            onPress={() => onSelect(item.label)}
+            onPress={() => onSelect(item.slug)}
             style={{
               flexDirection: "row",
               alignItems: "center",
@@ -38,12 +57,6 @@ export default function CategoryTabs({
               elevation: isActive ? 4 : 2,
             }}
           >
-            <View style={{ marginRight: 6 }}>
-              <item.icon
-                size={14}
-                color={isActive ? colors.light : colors.secondary}
-              />
-            </View>
             <Text
               style={{
                 fontWeight: "600",
@@ -51,7 +64,7 @@ export default function CategoryTabs({
                 color: isActive ? colors.light : colors.secondary,
               }}
             >
-              {item.label}
+              {item.name}
             </Text>
           </Pressable>
         );
