@@ -6,15 +6,11 @@ import {
   Modal,
   Pressable,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 
-import {
-  HelpCircle,
-  X,
-} from "lucide-react-native";
+import { HelpCircle, X } from "lucide-react-native";
 
 import ChipInput from "@/src/components/form/inputs/ChipInput";
 
@@ -25,14 +21,11 @@ import { colors } from "@/src/constants/colors";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
 
-import {
-  AskQuestionSchema,
-} from "../schemas/discussion.schema";
+import { AskQuestionSchema } from "../schemas/discussion.schema";
 
 import { showErrorToast } from "@/src/utils/toast";
 
-const { height } =
-  Dimensions.get("window");
+const { height } = Dimensions.get("window");
 
 type Props = {
   visible: boolean;
@@ -48,10 +41,7 @@ export default function AskModal({
   loading = false,
 }: Props) {
   // FORM
-  const methods =
-    useZodForm(
-      AskQuestionSchema
-    );
+  const methods = useZodForm(AskQuestionSchema);
 
   const {
     handleSubmit,
@@ -60,20 +50,15 @@ export default function AskModal({
     formState: { errors },
   } = methods;
 
-  const title =
-    watch("title");
+  const title = watch("title");
 
-  const body =
-    watch("body");
+  const body = watch("body");
 
   // STATES
-  const [isBounty, setIsBounty] =
-    useState(false);
+  const [isBounty, setIsBounty] = useState(false);
 
   // SUBMIT
-  const handleQuestionSubmit = (
-    data: any
-  ) => {
+  const handleQuestionSubmit = (data: any) => {
     const payload = {
       title: data.title,
 
@@ -81,38 +66,38 @@ export default function AskModal({
 
       userId: 1,
 
-      tags:
-        data.tagsInput ||
-        [],
+      tags: data.tagsInput || [],
 
       isBounty,
 
-      bountyAmount:
-        isBounty
-          ? Number(
-            data.bountyAmount ||
-            0
-          )
-          : 0,
+      bountyAmount: isBounty ? Number(data.bountyAmount || 0) : 0,
     };
 
     onSubmit(payload);
+
+    reset();
+
+    setIsBounty(false);
   };
 
   return (
     <Modal visible={visible} transparent animationType="slide">
-      <View style={{ flex: 1, justifyContent: "flex-end" }}>
+      <View
+        style={{
+          flex: 1,
+
+          justifyContent: "flex-end",
+        }}
+      >
         {/* BACKDROP */}
         <Pressable
           onPress={onClose}
           style={{
-            position:
-              "absolute",
+            position: "absolute",
 
             inset: 0,
 
-            backgroundColor:
-              colors.overlay,
+            backgroundColor: colors.overlay,
           }}
         />
 
@@ -120,17 +105,24 @@ export default function AskModal({
         <View
           style={{
             height: height * 0.9,
+
             backgroundColor: colors.light,
-            borderTopLeftRadius: 28,
-            borderTopRightRadius: 28,
-            paddingBottom: 20,
+
+            borderTopLeftRadius: 34,
+
+            borderTopRightRadius: 34,
+
+            overflow: "hidden",
+
+            borderWidth: 1,
+
+            borderColor: colors.overlay + "08",
           }}
         >
           {/* HANDLE */}
           <View
             style={{
-              alignItems:
-                "center",
+              alignItems: "center",
 
               paddingTop: 12,
 
@@ -144,9 +136,7 @@ export default function AskModal({
 
                 borderRadius: 999,
 
-                backgroundColor:
-                  colors.primary +
-                  "25",
+                backgroundColor: colors.primary + "25",
               }}
             />
           </View>
@@ -154,14 +144,11 @@ export default function AskModal({
           {/* HEADER */}
           <View
             style={{
-              flexDirection:
-                "row",
+              flexDirection: "row",
 
-              alignItems:
-                "center",
+              alignItems: "center",
 
-              justifyContent:
-                "space-between",
+              justifyContent: "space-between",
 
               paddingHorizontal: 22,
 
@@ -169,183 +156,102 @@ export default function AskModal({
 
               borderBottomWidth: 1,
 
-              borderBottomColor:
-                colors.overlay +
-                "08",
+              borderBottomColor: colors.overlay + "08",
             }}
           >
-            <HelpCircle size={20} />
-            <Text style={{ fontSize: 18, fontWeight: "800", marginLeft: 10 }}>
-              Ask Question
-            </Text>
-
-            <Pressable onPress={onClose} style={{ marginLeft: "auto" }}>
-              <X size={18} />
-            </Pressable>
-          </View>
-
-          <View style={{ padding: 20 }}>
-            {/* TITLE */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>Title</Text>
-            <TextInput
-              placeholder="How to handle file uploads in FastAPI with S3?"
-              value={title}
-              onChangeText={setTitle}
-              style={{
-                borderWidth: 1,
-                borderColor: colors.cardBorder,
-                borderRadius: 10,
-                padding: 12,
-                marginBottom: 16,
-              }}
-            />
-
-            {/* BODY */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>
-              Description
-            </Text>
-            <TextInput
-              placeholder="Explain your problem..."
-              value={body}
-              onChangeText={setBody}
-              multiline
-              style={{
-                borderWidth: 1,
-                borderColor: "#ddd",
-                borderRadius: 10,
-                padding: 12,
-                height: 120,
-                marginBottom: 16,
-                textAlignVertical: "top",
-              }}
-            />
-
-            {/* TAGS */}
-            <Text style={{ fontWeight: "700", marginBottom: 6 }}>Tags</Text>
-
-            <View style={{ flexDirection: "row", marginBottom: 10 }}>
-              <TextInput
-                placeholder="Add tag (fastapi, s3...)"
-                value={tagsInput}
-                onChangeText={setTagsInput}
-                style={{
-                  flex: 1,
-                  borderWidth: 1,
-                  borderColor: colors.cardBorder,
-                  borderRadius: 10,
-                  padding: 10,
-                }}
-              />
-              <Pressable
-                onPress={addTag}
-                style={{
-                  marginLeft: 8,
-                  backgroundColor: colors.secondary,
-                  paddingHorizontal: 14,
-                  justifyContent: "center",
-                  borderRadius: 10,
-                }}
-              >
-                <Text style={{ color: colors.light }}>Add</Text>
-              </Pressable>
-            </View>
-
-            {/* TAG LIST */}
+            {/* LEFT */}
             <View
               style={{
                 flexDirection: "row",
-                flexWrap: "wrap",
-                marginBottom: 16,
+
+                alignItems: "center",
               }}
             >
-              {tags.map((tag) => (
-                <Pressable
-                  key={tag}
-                  onPress={() => removeTag(tag)}
+              {/* ICON */}
+              <View
+                style={{
+                  width: 48,
+                  height: 48,
+
+                  borderRadius: 24,
+
+                  alignItems: "center",
+
+                  justifyContent: "center",
+
+                  backgroundColor: colors.primary + "12",
+
+                  borderWidth: 1,
+
+                  borderColor: colors.primary + "18",
+
+                  marginRight: 14,
+                }}
+              >
+                <HelpCircle
+                  size={22}
+                  color={colors.primary}
+                  strokeWidth={2.4}
+                />
+              </View>
+
+              {/* TEXT */}
+              <View>
+                <Text
                   style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    backgroundColor: colors.secondary,
-                    paddingHorizontal: 12,
-                    paddingVertical: 6,
-                    borderRadius: 20,
-                    marginRight: 8,
+                    fontSize: 20,
+
+                    fontWeight: "800",
+
+                    color: colors.dark,
                   }}
                 >
-                  <Text style={{ color: colors.light, marginRight: 4 }}>
-                    #{tag}
-                  </Text>
-                  <X size={15} color={colors.light} />
-                </Pressable>
-              ))}
+                  Ask Question
+                </Text>
+
+                <Text
+                  style={{
+                    fontSize: 12,
+
+                    color: colors.overlay,
+
+                    marginTop: 3,
+
+                    fontWeight: "500",
+                  }}
+                >
+                  Start a new discussion
+                </Text>
+              </View>
             </View>
 
-            {/* BOUNTY */}
-            <View
-              style={{
-                flexDirection:
-                  "row",
-
-                alignItems:
-                  "center",
-              }}
-            >
-              <Text style={{ fontWeight: "700", flex: 1 }}>Add Bounty</Text>
-              <Switch value={isBounty} onValueChange={setIsBounty} />
-            </View>
-
-            {isBounty && (
-              <TextInput
-                placeholder="Enter bounty amount"
-                keyboardType="numeric"
-                value={bountyAmount}
-                onChangeText={setBountyAmount}
-                style={{
-                  borderWidth: 1,
-                  borderColor: colors.cardBorder,
-                  borderRadius: 10,
-                  padding: 12,
-                  marginBottom: 20,
-                }}
-              />
-            )}
-
-            {/* SUBMIT */}
-            <Pressable
-              onPress={handleSubmit}
-              disabled={loading}
+            {/* CLOSE */}
+            <TouchableOpacity
+              onPress={onClose}
+              activeOpacity={0.8}
               style={{
                 width: 40,
                 height: 40,
 
                 borderRadius: 999,
 
-                alignItems:
-                  "center",
+                alignItems: "center",
 
-                justifyContent:
-                  "center",
+                justifyContent: "center",
 
-                backgroundColor:
-                  colors.light,
+                backgroundColor: colors.light,
 
                 borderWidth: 1,
 
-                borderColor:
-                  colors.overlay +
-                  "12",
+                borderColor: colors.overlay + "12",
               }}
             >
-              <Text style={{ color: colors.light, fontWeight: "700" }}>
-                {loading ? "Posting..." : "Post Question"}
-              </Text>
-            </Pressable>
+              <X size={18} color={colors.dark} strokeWidth={2.4} />
+            </TouchableOpacity>
           </View>
 
           {/* FORM */}
-          <FormProvider
-            {...methods}
-          >
+          <FormProvider {...methods}>
             <View
               style={{
                 flex: 1,
@@ -365,9 +271,7 @@ export default function AskModal({
                   name="title"
                   label="Title"
                   placeholder="How to handle file uploads in FastAPI with S3?"
-                  error={
-                    errors.title
-                  }
+                  error={errors.title}
                   required
                 />
               </View>
@@ -382,9 +286,7 @@ export default function AskModal({
                   name="body"
                   label="Description"
                   placeholder="Explain your problem..."
-                  error={
-                    errors.body
-                  }
+                  error={errors.body}
                   required
                 />
               </View>
@@ -399,9 +301,7 @@ export default function AskModal({
                   name="tagsInput"
                   label="Tags"
                   placeholder="Add tag (react-native, api...)"
-                  error={
-                    errors.tagsInput
-                  }
+                  error={errors.tagsInput}
                   required
                 />
               </View>
@@ -409,15 +309,11 @@ export default function AskModal({
               {/* INFO BOX */}
               <View
                 style={{
-                  backgroundColor:
-                    colors.primary +
-                    "08",
+                  backgroundColor: colors.primary + "08",
 
                   borderWidth: 1,
 
-                  borderColor:
-                    colors.primary +
-                    "12",
+                  borderColor: colors.primary + "12",
 
                   borderRadius: 18,
 
@@ -436,18 +332,13 @@ export default function AskModal({
 
                     lineHeight: 21,
 
-                    color:
-                      colors.neutral,
+                    color: colors.neutral,
 
-                    fontWeight:
-                      "500",
+                    fontWeight: "500",
                   }}
                 >
-                  Add clear title,
-                  detailed description
-                  and useful tags to
-                  get faster and better
-                  answers.
+                  Add clear title, detailed description and useful tags to get
+                  faster and better answers.
                 </Text>
               </View>
 
@@ -455,79 +346,51 @@ export default function AskModal({
               <TouchableOpacity
                 onPress={handleSubmit(
                   handleQuestionSubmit,
-                  (
-                    validationErrors
-                  ) => {
-                    if (
-                      validationErrors.tagsInput
-                    ) {
+                  (validationErrors) => {
+                    if (validationErrors.tagsInput) {
                       showErrorToast(
-                        validationErrors
-                          .tagsInput
-                          .message ||
-                        "Please add valid tags"
+                        validationErrors.tagsInput.message ||
+                          "Please add valid tags",
                       );
 
                       return;
                     }
 
-                    if (
-                      validationErrors.title
-                    ) {
+                    if (validationErrors.title) {
                       showErrorToast(
-                        validationErrors
-                          .title
-                          .message ||
-                        "Invalid title"
+                        validationErrors.title.message || "Invalid title",
                       );
 
                       return;
                     }
 
-                    if (
-                      validationErrors.body
-                    ) {
+                    if (validationErrors.body) {
                       showErrorToast(
-                        validationErrors
-                          .body
-                          .message ||
-                        "Invalid description"
+                        validationErrors.body.message || "Invalid description",
                       );
 
                       return;
                     }
 
-                    showErrorToast(
-                      "Please complete all required fields"
-                    );
-                  }
+                    showErrorToast("Please complete all required fields");
+                  },
                 )}
-                disabled={
-                  loading
-                }
-                activeOpacity={
-                  0.9
-                }
+                disabled={loading}
+                activeOpacity={0.9}
                 style={{
-                  backgroundColor:
-                    loading
-                      ? colors.overlay
-                      : colors.secondary,
+                  backgroundColor: loading ? colors.overlay : colors.secondary,
 
                   paddingVertical: 17,
 
                   borderRadius: 22,
 
-                  alignItems:
-                    "center",
+                  alignItems: "center",
 
                   marginTop: 4,
 
-                  shadowColor:
-                    colors.secondary,
+                  shadowColor: colors.secondary,
 
-                  shadowOffset:
-                  {
+                  shadowOffset: {
                     width: 0,
                     height: 5,
                   },
@@ -541,20 +404,16 @@ export default function AskModal({
               >
                 <Text
                   style={{
-                    color:
-                      colors.light,
+                    color: colors.light,
 
-                    fontWeight:
-                      "800",
+                    fontWeight: "800",
 
                     fontSize: 15,
 
                     letterSpacing: 0.3,
                   }}
                 >
-                  {loading
-                    ? "Posting..."
-                    : "Post Question"}
+                  {loading ? "Posting..." : "Post Question"}
                 </Text>
               </TouchableOpacity>
             </View>
