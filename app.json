@@ -14,7 +14,11 @@
     "jsEngine": "hermes",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.alilals.ziraat"
+      "bundleIdentifier": "com.alilals.ziraat",
+      "jsEngine": "hermes",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -24,7 +28,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.codestrix.test",
+      "package": "com.alilals.ziraat",
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {

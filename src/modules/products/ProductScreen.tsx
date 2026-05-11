@@ -26,7 +26,17 @@ export default function ProductScreen() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
 
-  const isFiltering = Object.keys(filters).length > 0 || !!search;
+  // const isFiltering = Object.keys(filters).length > 0 || !!search;
+
+  const isFiltering = Boolean(
+    filters?.brand ||
+    filters?.category ||
+    filters?.minPrice ||
+    filters?.maxPrice ||
+    filters?.sort ||
+    filters?.minRating ||
+    search,
+  );
 
   const { filterOptions = [] } = useProductsData();
   const { wishlist, isBusy, handleToggleWishlist } = useWishlistToggle();
@@ -85,7 +95,9 @@ export default function ProductScreen() {
               productCount={displayedProducts.length}
             />
           }
-          ListEmptyComponent={<Loader />}
+          // ListEmptyComponent={<Loader />}
+
+          ListEmptyComponent={isLoading ? <Loader /> : null}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
           columnWrapperStyle={{ justifyContent: "space-between" }}

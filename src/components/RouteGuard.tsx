@@ -20,7 +20,7 @@ export default function RouteGuard({ children }: RouteGuardProps) {
     if (!userToken) {
       logoutUser();
       router.replace(ROUTES.AUTH.LOGIN);
-      router.replace("/");
+      // router.replace("/");
       return;
     }
 
