@@ -13,6 +13,7 @@ import { MessageCircleMore, Plus } from "lucide-react-native";
 import SearchBar from "@/src/components/shared/SearchBar";
 import { useCreateQuestion, useQuestions } from "../hooks/useQuestion";
 
+
 import AskModal from "../pages/AskModal";
 import FilterModal from "../pages/FilterModal";
 import MessageItem from "../pages/MessageItem";
@@ -385,7 +386,7 @@ if (filter === "mostVoted") {
         loading={isPending}
       />
 
-       {/* ✅ FILTER MODAL */}
+       {/*FILTER MODAL */}
       <FilterModal
         visible={filterModalVisible}
         onClose={() => setFilterModalVisible(false)}
