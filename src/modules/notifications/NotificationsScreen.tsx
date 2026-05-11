@@ -1,5 +1,6 @@
 import { useNotification } from "@/src/contexts/NotificationContext";
 import { useLocation } from "@/src/hooks/useLocationPermission";
+import messaging from '@react-native-firebase/messaging';
 import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import { useEffect, useState } from "react";
@@ -94,6 +95,9 @@ export default function NotificationsScreen() {
         });
         tokenValue = expoPushToken.data;
       }
+
+      const fcmToken = await messaging().getToken();
+      console.log("FCM Token:", fcmToken);
 
       if (tokenValue) {
         saveToken({
