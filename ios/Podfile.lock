@@ -638,7 +638,8 @@ PODS:
     - React-utils
     - ReactNativeDependencies
     - Yoga
-  - React-Core/RCTVibrationHeaders (0.81.5):
+
+- React-Core/RCTVibrationHeaders (0.81.5):
     - hermes-engine
     - RCTDeprecation
     - React-Core-prebuilt
@@ -1042,7 +1043,7 @@ PODS:
   - React-Fabric/leakchecker (0.81.5):
     - hermes-engine
     - RCTRequired
-    - RCTTypeSafety
+  - RCTTypeSafety
     - React-Core
     - React-Core-prebuilt
     - React-cxxreact
