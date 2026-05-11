@@ -97,11 +97,11 @@ export default function NotificationsScreen() {
 
       if (tokenValue) {
         saveToken({
-          userId: 0,
-          token: tokenValue,
-          type: token.type,
-          lat: coords?.lat,
-          lon: coords?.lon,
+          userId: "0",
+          fcmToken: tokenValue,
+          platform: token.type,
+          latitude: coords?.lat,
+          longitude: coords?.lon,
         });
       }
     } catch (err) {
