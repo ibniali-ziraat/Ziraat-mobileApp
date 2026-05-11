@@ -39,11 +39,11 @@ const Wishlist = () => {
     if (!product) return;
 
     try {
-      await addToCart({
-        productId: product.productId,
-        variationName: "",
-        quantity: 1,
-      });
+    await addToCart({
+  productId: product.productId,
+  variationName: "",
+  quantity: product.quantity,
+});
 
       // await handleRemoveFromWishlist(product.id);
 

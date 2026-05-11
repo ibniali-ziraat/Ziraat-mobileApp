@@ -1,3 +1,5 @@
+
+
 import { colors } from "@/src/constants/colors";
 import { LucideIcon, Search, X } from "lucide-react-native";
 import { Platform, Pressable, View } from "react-native";
@@ -20,11 +22,17 @@ export default function SearchBar({
   onIconPress,
   onPress,
   pressable = false,
-  placeholder = "Search products, crops...",
+  placeholder = "Search items...",
 }: Props) {
+  const handleSearchChange = (text: string) => {
+    // Allow only alphabets and spaces
+    const filteredText = text.replace(/[^a-zA-Z\s]/g, "");
+
+    setSearch(filteredText);
+  };
+
   return (
     <Pressable
-      activeOpacity={0.8}
       onPress={pressable ? onPress : undefined}
       disabled={!pressable}
       className="w-full pl-1"
@@ -34,7 +42,7 @@ export default function SearchBar({
     >
       <View
         pointerEvents={pressable ? "none" : "auto"}
-        className="flex-row items-center  rounded-full px-4"
+        className="flex-row items-center rounded-full px-4"
         style={{
           height: 48,
           width: "100%",
@@ -62,10 +70,11 @@ export default function SearchBar({
           placeholder={placeholder}
           placeholderTextColor="#999"
           value={search}
-          onChangeText={setSearch}
+          onChangeText={handleSearchChange}
           editable={!pressable}
           autoCorrect={false}
-          autoCapitalize="none"
+          autoCapitalize="words"
+          keyboardType="default"
           outlineColor="transparent"
           cursorColor={colors.neutral}
           selectionColor={colors.primary}
