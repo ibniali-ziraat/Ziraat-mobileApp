@@ -44,9 +44,7 @@ export default function AskModal({
   loading = false,
 }: Props) {
   // FORM
-  const methods = useZodForm(
-    AskQuestionSchema,
-  );
+  const methods = useZodForm(AskQuestionSchema);
 
   const {
     handleSubmit,
@@ -60,13 +58,10 @@ export default function AskModal({
   const body = watch("body");
 
   // STATES
-  const [isBounty, setIsBounty] =
-    useState(false);
+  const [isBounty, setIsBounty] = useState(false);
 
   // SUBMIT
-  const handleQuestionSubmit = (
-    data: any,
-  ) => {
+  const handleQuestionSubmit = (data: any) => {
     const payload = {
       title: data.title,
 
@@ -78,11 +73,7 @@ export default function AskModal({
 
       isBounty,
 
-      bountyAmount: isBounty
-        ? Number(
-          data.bountyAmount || 0,
-        )
-        : 0,
+      bountyAmount: isBounty ? Number(data.bountyAmount || 0) : 0,
     };
 
     onSubmit(payload);
@@ -93,11 +84,7 @@ export default function AskModal({
   };
 
   return (
-    <Modal
-      visible={visible}
-      transparent
-      animationType="slide"
-    >
+    <Modal visible={visible} transparent animationType="slide">
       <View
         style={{
           flex: 1,
@@ -113,8 +100,7 @@ export default function AskModal({
 
             inset: 0,
 
-            backgroundColor:
-              colors.overlay,
+            backgroundColor: colors.overlay,
           }}
         />
 
@@ -123,8 +109,7 @@ export default function AskModal({
           style={{
             height: height * 0.9,
 
-            backgroundColor:
-              colors.light,
+            backgroundColor: colors.light,
 
             borderTopLeftRadius: 34,
 
@@ -134,8 +119,7 @@ export default function AskModal({
 
             borderWidth: 1,
 
-            borderColor:
-              colors.overlay + "08",
+            borderColor: colors.overlay + "08",
           }}
         >
           {/* HANDLE */}
@@ -155,9 +139,7 @@ export default function AskModal({
 
                 borderRadius: 999,
 
-                backgroundColor:
-                  colors.primary +
-                  "25",
+                backgroundColor: colors.primary + "25",
               }}
             />
           </View>
@@ -169,8 +151,7 @@ export default function AskModal({
 
               alignItems: "center",
 
-              justifyContent:
-                "space-between",
+              justifyContent: "space-between",
 
               paddingHorizontal: 22,
 
@@ -178,9 +159,7 @@ export default function AskModal({
 
               borderBottomWidth: 1,
 
-              borderBottomColor:
-                colors.overlay +
-                "08",
+              borderBottomColor: colors.overlay + "08",
             }}
           >
             {/* LEFT */}
@@ -199,30 +178,22 @@ export default function AskModal({
 
                   borderRadius: 24,
 
-                  alignItems:
-                    "center",
+                  alignItems: "center",
 
-                  justifyContent:
-                    "center",
+                  justifyContent: "center",
 
-                  backgroundColor:
-                    colors.primary +
-                    "12",
+                  backgroundColor: colors.primary + "12",
 
                   borderWidth: 1,
 
-                  borderColor:
-                    colors.primary +
-                    "18",
+                  borderColor: colors.primary + "18",
 
                   marginRight: 14,
                 }}
               >
                 <HelpCircle
                   size={22}
-                  color={
-                    colors.primary
-                  }
+                  color={colors.primary}
                   strokeWidth={2.4}
                 />
               </View>
@@ -235,8 +206,7 @@ export default function AskModal({
 
                     fontWeight: "800",
 
-                    color:
-                      colors.dark,
+                    color: colors.dark,
                   }}
                 >
                   Ask Question
@@ -246,17 +216,14 @@ export default function AskModal({
                   style={{
                     fontSize: 12,
 
-                    color:
-                      colors.overlay,
+                    color: colors.overlay,
 
                     marginTop: 3,
 
-                    fontWeight:
-                      "500",
+                    fontWeight: "500",
                   }}
                 >
-                  Start a new
-                  discussion
+                  Start a new discussion
                 </Text>
               </View>
             </View>
@@ -271,36 +238,24 @@ export default function AskModal({
 
                 borderRadius: 999,
 
-                alignItems:
-                  "center",
+                alignItems: "center",
 
-                justifyContent:
-                  "center",
+                justifyContent: "center",
 
-                backgroundColor:
-                  colors.light,
+                backgroundColor: colors.light,
 
                 borderWidth: 1,
 
-                borderColor:
-                  colors.overlay +
-                  "12",
+                borderColor: colors.overlay + "12",
               }}
             >
-              <X
-                size={18}
-                color={colors.dark}
-                strokeWidth={2.4}
-              />
+              <X size={18} color={colors.dark} strokeWidth={2.4} />
             </TouchableOpacity>
           </View>
 
           {/* FORM */}
           <FormProvider {...methods}>
-            <ScreenLayout
-              scrollable
-              keyboardOffset={80}
-            >
+            <ScreenLayout scrollable keyboardOffset={80}>
               <ScreenContent className="pt-5">
                 {/* TITLE */}
                 <View
@@ -342,9 +297,7 @@ export default function AskModal({
                     name="tagsInput"
                     label="Tags"
                     placeholder="Add tag (react-native, api...)"
-                    error={
-                      errors.tagsInput
-                    }
+                    error={errors.tagsInput}
                     required
                   />
                 </View>
@@ -352,15 +305,11 @@ export default function AskModal({
                 {/* INFO BOX */}
                 <View
                   style={{
-                    backgroundColor:
-                      colors.primary +
-                      "08",
+                    backgroundColor: colors.primary + "08",
 
                     borderWidth: 1,
 
-                    borderColor:
-                      colors.primary +
-                      "12",
+                    borderColor: colors.primary + "12",
 
                     borderRadius: 18,
 
@@ -379,19 +328,13 @@ export default function AskModal({
 
                       lineHeight: 21,
 
-                      color:
-                        colors.neutral,
+                      color: colors.neutral,
 
-                      fontWeight:
-                        "500",
+                      fontWeight: "500",
                     }}
                   >
-                    Add clear title,
-                    detailed
-                    description and
-                    useful tags to
-                    get faster and
-                    better answers.
+                    Add clear title, detailed description and useful tags to get
+                    faster and better answers.
                   </Text>
                 </View>
 
@@ -399,72 +342,52 @@ export default function AskModal({
                 <TouchableOpacity
                   onPress={handleSubmit(
                     handleQuestionSubmit,
-                    (
-                      validationErrors,
-                    ) => {
-                      if (
-                        validationErrors.tagsInput
-                      ) {
+                    (validationErrors) => {
+                      if (validationErrors.tagsInput) {
                         showErrorToast(
-                          validationErrors
-                            .tagsInput
-                            .message ||
-                          "Please add valid tags",
+                          validationErrors.tagsInput.message ||
+                            "Please add valid tags",
                         );
 
                         return;
                       }
 
-                      if (
-                        validationErrors.title
-                      ) {
+                      if (validationErrors.title) {
                         showErrorToast(
-                          validationErrors
-                            .title
-                            .message ||
-                          "Invalid title",
+                          validationErrors.title.message || "Invalid title",
                         );
 
                         return;
                       }
 
-                      if (
-                        validationErrors.body
-                      ) {
+                      if (validationErrors.body) {
                         showErrorToast(
-                          validationErrors
-                            .body
-                            .message ||
-                          "Invalid description",
+                          validationErrors.body.message ||
+                            "Invalid description",
                         );
 
                         return;
                       }
 
-                      showErrorToast(
-                        "Please complete all required fields",
-                      );
+                      showErrorToast("Please complete all required fields");
                     },
                   )}
                   disabled={loading}
                   activeOpacity={0.9}
                   style={{
-                    backgroundColor:
-                      loading
-                        ? colors.overlay
-                        : colors.secondary,
+                    backgroundColor: loading
+                      ? colors.overlay
+                      : colors.secondary,
 
                     paddingVertical: 17,
 
                     borderRadius: 22,
 
-                    alignItems:
-                      "center",
+                    alignItems: "center",
 
                     marginTop: 4,
 
-                    shadowColor:
-                      colors.secondary,
+                    shadowColor: colors.secondary,
 
                     shadowOffset: {
                       width: 0,
@@ -480,20 +403,16 @@ export default function AskModal({
                 >
                   <Text
                     style={{
-                      color:
-                        colors.light,
+                      color: colors.light,
 
-                      fontWeight:
-                        "800",
+                      fontWeight: "800",
 
                       fontSize: 15,
 
                       letterSpacing: 0.3,
                     }}
                   >
-                    {loading
-                      ? "Posting..."
-                      : "Post Question"}
+                    {loading ? "Posting..." : "Post Question"}
                   </Text>
                 </TouchableOpacity>
               </ScreenContent>
