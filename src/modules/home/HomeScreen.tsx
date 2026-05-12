@@ -8,7 +8,7 @@ import { useLocationWatcher } from "@/src/hooks/useLocationWatcher";
 import { router } from "expo-router";
 import { Flame, Tag } from "lucide-react-native";
 import { JSX, useState } from "react";
-import { Pressable, View } from "react-native";
+import { Platform, Pressable, View } from "react-native";
 import BestDealsList from "../products/components/BestDealsList";
 import ListHeader from "../products/components/ListHeader";
 import TrendingProductsList from "../products/components/TrendingProductsList";
@@ -54,7 +54,9 @@ export default function HomeScreen(): JSX.Element {
 
   return (
     <ScreenLayout>
-      <LocationPermissionModal status={status} recheck={recheck} />
+      {Platform.OS !== "web" && (
+        <LocationPermissionModal status={status} recheck={recheck} />
+      )}
 
       <ScreenContent>
         <View

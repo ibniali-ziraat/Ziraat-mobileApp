@@ -1,6 +1,3 @@
-import messaging, {
-  FirebaseMessagingTypes,
-} from "@react-native-firebase/messaging";
 import React, {
   createContext,
   ReactNode,
@@ -9,10 +6,25 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { Platform } from "react-native";
 
+// ─── Native-only Firebase Messaging ──────────────────────────────────────────
+const isNative = Platform.OS === "ios" || Platform.OS === "android";
+
+let messaging: typeof import("@react-native-firebase/messaging").default;
+let FirebaseMessagingTypes: typeof import("@react-native-firebase/messaging");
+
+if (isNative) {
+  const messagingModule = require("@react-native-firebase/messaging");
+
+  messaging = messagingModule.default;
+  FirebaseMessagingTypes = messagingModule;
+}
+
+// ─── Types ───────────────────────────────────────────────────────────────────
 interface NotificationContextType {
   fcmToken: string | null;
-  notification: FirebaseMessagingTypes.RemoteMessage | null;
+  notification: any | null;
   error: Error | null;
 }
 
@@ -22,11 +34,13 @@ const NotificationContext = createContext<NotificationContextType | undefined>(
 
 export const useNotification = () => {
   const context = useContext(NotificationContext);
+
   if (context === undefined) {
     throw new Error(
       "useNotification must be used within a NotificationProvider",
     );
   }
+
   return context;
 };
 
@@ -34,23 +48,30 @@ interface NotificationProviderProps {
   children: ReactNode;
 }
 
+// ─── Provider ────────────────────────────────────────────────────────────────
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   children,
 }) => {
   const [fcmToken, setFcmToken] = useState<string | null>(null);
-  const [notification, setNotification] =
-    useState<FirebaseMessagingTypes.RemoteMessage | null>(null);
+
+  const [notification, setNotification] = useState<any | null>(null);
+
   const [error, setError] = useState<Error | null>(null);
 
   const tokenRefreshUnsubscribeRef = useRef<(() => void) | null>(null);
 
+  // ─── Init FCM ──────────────────────────────────────────────────────────────
   useEffect(() => {
+    if (!isNative) return;
+
     const init = async () => {
       try {
         const authStatus = await messaging().requestPermission();
+
         const enabled =
-          authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-          authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+          authStatus ===
+            FirebaseMessagingTypes.AuthorizationStatus.AUTHORIZED ||
+          authStatus === FirebaseMessagingTypes.AuthorizationStatus.PROVISIONAL;
 
         if (!enabled) {
           setError(new Error("Push notification permission denied"));
@@ -58,16 +79,22 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
         }
 
         const token = await messaging().getToken();
-        console.log("FCM Token:", token);
+
+        console.log("✅ FCM Token:", token);
+
         setFcmToken(token);
 
+        // ─── Token refresh listener ────────────────────────────────────────
         tokenRefreshUnsubscribeRef.current = messaging().onTokenRefresh(
-          (newToken) => {
-            console.log("FCM Token refreshed:", newToken);
+          (newToken: string) => {
+            console.log("🔄 FCM Token refreshed:", newToken);
+
             setFcmToken(newToken);
           },
         );
       } catch (err) {
+        console.log("❌ Notification init error:", err);
+
         setError(err instanceof Error ? err : new Error(String(err)));
       }
     };
@@ -81,8 +108,11 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
   // ─── Foreground messages ───────────────────────────────────────────────────
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+    if (!isNative) return;
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage: any) => {
       console.log("🔔 Foreground notification:", remoteMessage);
+
       setNotification(remoteMessage);
     });
 
@@ -91,18 +121,22 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
   // ─── Background / quit state ──────────────────────────────────────────────
   useEffect(() => {
+    if (!isNative) return;
+
     const unsubscribeOpened = messaging().onNotificationOpenedApp(
-      (remoteMessage) => {
-        console.log("🔔 Opened from background:", remoteMessage);
+      (remoteMessage: any) => {
+        console.log("📲 Opened from background:", remoteMessage);
+
         setNotification(remoteMessage);
       },
     );
 
     messaging()
       .getInitialNotification()
-      .then((remoteMessage) => {
+      .then((remoteMessage: any) => {
         if (remoteMessage) {
-          console.log("🔔 Opened from quit state:", remoteMessage);
+          console.log("🚀 Opened from quit state:", remoteMessage);
+
           setNotification(remoteMessage);
         }
       });
@@ -111,7 +145,13 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   }, []);
 
   return (
-    <NotificationContext.Provider value={{ fcmToken, notification, error }}>
+    <NotificationContext.Provider
+      value={{
+        fcmToken,
+        notification,
+        error,
+      }}
+    >
       {children}
     </NotificationContext.Provider>
   );
