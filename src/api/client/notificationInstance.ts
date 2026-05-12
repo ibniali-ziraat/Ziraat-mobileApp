@@ -3,7 +3,7 @@ import axios from "axios";
 
 const notificationInstance = axios.create({
   // baseURL: "https://pushnotificationserver.onrender.com/",
-  baseURL: "https://9376ngtk-5000.inc1.devtunnels.ms/",
+  baseURL: "https://greedy-chirpy-rambling.ngrok-free.dev/",
 
   headers: {
     "Content-Type": "application/json",
