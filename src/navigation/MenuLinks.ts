@@ -7,9 +7,9 @@ export const MenuLinks = {
       routes: [
         // { label: "Profile", screen: "profile-view" },
         { label: "Notifications", screen: "notifications" },
-        { label: "Support", screen: "settings/farmer/support" },
-        { label: "Payment Methods", screen: "settings/farmer/payments" },
-        { label: "Saved Addresses", screen: "settings/farmer/addresses" },
+        // { label: "Support", screen: "settings/farmer/support" },
+        // { label: "Payment Methods", screen: "settings/farmer/payments" },
+        // { label: "Saved Addresses", screen: "settings/farmer/addresses" },
         { label: "About Us", screen: "about-us" },
         { label: "My Orders", screen: ROUTES.ORDERS.LIST },
         { label: "Chat With Us", screen: "discussion" },
