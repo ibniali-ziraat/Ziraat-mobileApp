@@ -78,7 +78,10 @@ export default function ProfileFormScreen() {
       router.replace(ROUTES.ACCOUNT.PROFILE);
     } catch (error) {
       console.error("Profile submission error:", error);
-      showSuccessToast("Something went wrong. Please try again.");
+      showSuccessToast(
+        error?.response?.data?.message ||
+          "Something went wrong. Please try again.",
+      );
     }
   };
 

@@ -121,7 +121,7 @@ export default function SettingsScreen() {
           <Row
             label="Profile"
             icon={<User size={22} color={colors.neutral} />}
-            onPress={() => router.push("/user/user-profile")}
+            onPress={() => router.push("/profile-view")}
           />
           <Divider />
 
