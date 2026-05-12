@@ -1,7 +1,9 @@
 import { useNotification } from "@/src/contexts/NotificationContext";
 import { useLocation } from "@/src/hooks/useLocationPermission";
-import Constants from "expo-constants";
-import * as Notifications from "expo-notifications";
+import messaging, {
+  FirebaseMessagingTypes,
+} from "@react-native-firebase/messaging";
+
 import { useEffect, useState } from "react";
 import {
   Image,
@@ -18,15 +20,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRegisterDeviceToken } from "./hooks/notification.hooks";
 
 function getNotificationImage(
-  notification: Notifications.Notification,
+  notification: FirebaseMessagingTypes.RemoteMessage,
 ): string | undefined {
-  const data = notification.request.content.data as
-    | Record<string, any>
-    | undefined;
+  const data = notification?.data as Record<string, any> | undefined;
   const iosImage = data?._richContent?.image;
   if (iosImage) return iosImage;
-  const trigger = notification.request.trigger as any;
-  return trigger?.remoteMessage?.notification?.imageUrl;
+  return (
+    (notification as any)?.notification?.android?.imageUrl ??
+    (notification as any)?.notification?.apple?.imageUrl
+  );
 }
 
 function TokenCard({
@@ -66,16 +68,12 @@ function TokenCard({
 }
 
 export default function NotificationsScreen() {
-  const { notification, expoPushToken, devicePushToken, error } =
-    useNotification();
-
+  const { notification, fcmToken, error } = useNotification();
   const { mutate: saveToken } = useRegisterDeviceToken();
   const { coords, loading: locationLoading } = useLocation();
 
-  const [copiedExpo, setCopiedExpo] = useState(false);
-  const [copiedDevice, setCopiedDevice] = useState(false);
+  const [copiedFcm, setCopiedFcm] = useState(false);
 
-  // ✅ Single effect — fires once when location resolves (loading flips to false)
   useEffect(() => {
     if (locationLoading) return;
     registerForPush();
@@ -83,23 +81,14 @@ export default function NotificationsScreen() {
 
   const registerForPush = async () => {
     try {
-      const token = await Notifications.getDevicePushTokenAsync();
-      let tokenValue = token.data;
+      const token = await messaging().getToken();
+      console.log("FCM Token:", token);
 
-      if (Platform.OS === "ios") {
-        const expoPushToken = await Notifications.getExpoPushTokenAsync({
-          projectId:
-            Constants?.expoConfig?.extra?.eas?.projectId ??
-            Constants?.easConfig?.projectId,
-        });
-        tokenValue = expoPushToken.data;
-      }
-
-      if (tokenValue) {
+      if (token) {
         saveToken({
           userId: "0",
-          fcmToken: tokenValue,
-          platform: token.type,
+          fcmToken: token,
+          platform: Platform.OS,
           latitude: coords?.lat,
           longitude: coords?.lon,
         });
@@ -140,25 +129,17 @@ export default function NotificationsScreen() {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>Notifications</Text>
           <Text style={styles.headerSubtitle}>
-            Device push tokens & recent alerts
+            Device push tokens & recent al
           </Text>
         </View>
 
-        {/* Tokens */}
-        <Text style={styles.sectionLabel}>PUSH TOKENS</Text>
-
+        {/* Token */}
+        <Text style={styles.sectionLabel}>PUSH TOKEN</Text>
         <TokenCard
-          label="Expo Token"
-          value={expoPushToken}
-          copied={copiedExpo}
-          onCopy={() => copy(expoPushToken, "Expo Push Token", setCopiedExpo)}
-        />
-
-        <TokenCard
-          label="Device Token"
-          value={devicePushToken}
-          copied={copiedDevice}
-          onCopy={() => copy(devicePushToken, "Device Token", setCopiedDevice)}
+          label="FCM Token"
+          value={fcmToken}
+          copied={copiedFcm}
+          onCopy={() => copy(fcmToken, "FCM Token", setCopiedFcm)}
         />
 
         {/* Notification UI */}
@@ -170,29 +151,25 @@ export default function NotificationsScreen() {
               <View style={styles.notificationTitleRow}>
                 <View style={styles.dot} />
                 <Text style={styles.notificationTitle}>
-                  {notification.request.content.title || "No title"}
+                  {notification.notification?.title || "No title"}
                 </Text>
               </View>
 
-              {notification.request.content.body && (
+              {notification.notification?.body && (
                 <View style={styles.messageBox}>
                   <Text style={styles.messageLabel}>Message</Text>
                   <Text style={styles.messageText}>
-                    {notification.request.content.body}
+                    {notification.notification.body}
                   </Text>
                 </View>
               )}
 
-              {notification.request.content.data &&
-                Object.keys(notification.request.content.data).length > 0 && (
+              {notification.data &&
+                Object.keys(notification.data).length > 0 && (
                   <View style={styles.dataBox}>
                     <Text style={styles.messageLabel}>Data Payload</Text>
                     <Text style={styles.dataText}>
-                      {JSON.stringify(
-                        notification.request.content.data,
-                        null,
-                        2,
-                      )}
+                      {JSON.stringify(notification.data, null, 2)}
                     </Text>
                   </View>
                 )}
@@ -231,8 +208,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F2F2F7",
   },
-
-  // Header
   header: {
     paddingHorizontal: 20,
     paddingTop: 16,
@@ -249,8 +224,6 @@ const styles = StyleSheet.create({
     color: "#8E8E93",
     marginTop: 4,
   },
-
-  // Section label
   sectionLabel: {
     fontSize: 12,
     fontWeight: "600",
@@ -259,8 +232,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginBottom: 10,
   },
-
-  // Token card
   tokenCard: {
     backgroundColor: "#fff",
     borderRadius: 16,
@@ -310,8 +281,6 @@ const styles = StyleSheet.create({
     color: "#3C3C43",
     lineHeight: 18,
   },
-
-  // Notification section
   notificationSection: {
     marginTop: 28,
   },
@@ -380,8 +349,6 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
   },
-
-  // Empty state
   emptyState: {
     alignItems: "center",
     marginTop: 60,
@@ -403,8 +370,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     lineHeight: 20,
   },
-
-  // Error
   errorBox: {
     alignItems: "center",
     padding: 32,

@@ -5,10 +5,8 @@ import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { DashboardTabs } from "@/src/navigation/DashboardTabs";
 import { router } from "expo-router";
-import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import {
-  Animated,
   Dimensions,
   Pressable,
   ScrollView,
@@ -22,53 +20,72 @@ export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState(0);
 
   const scrollRef = useRef<ScrollView>(null);
-  const underlineAnim = useRef(new Animated.Value(0)).current;
 
-  const tabs = Object.values(DashboardTabs).filter((screen) => screen);
+  const tabs = Object.values(DashboardTabs).filter(
+    (screen) => screen
+  );
 
-  const ActiveComponent = tabs[activeTab]?.component ?? null;
-  const containerWidth = screenWidth * 0.7;
-  const tabWidth = containerWidth / 3.5;
+  const ActiveComponent =
+    tabs[activeTab]?.component ?? null;
+
+  // 4 tabs visible
+  const horizontalPadding = 12;
+  const gap = 8;
+
+  const tabWidth =
+    (screenWidth - horizontalPadding * 2 - gap * 3 - 24) /
+    4;
 
   useEffect(() => {
-    Animated.spring(underlineAnim, {
-      toValue: activeTab * (tabWidth + 8),
-      useNativeDriver: true,
-    }).start();
+    const scrollX =
+      activeTab * (tabWidth + gap) -
+      screenWidth / 2 +
+      tabWidth / 2;
 
     scrollRef.current?.scrollTo({
-      x: Math.max(
-        0,
-        activeTab * (tabWidth + 8) - containerWidth / 2 + tabWidth / 2,
-      ),
+      x: Math.max(0, scrollX),
       animated: true,
     });
   }, [activeTab]);
+
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ backgroundColor: colors.light }} className="flex-1">
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: colors.light,
+      }}
+    >
       <BackHeader
         title={tabs[activeTab]?.label}
         desc={"Manage Your Orchards & Fields"}
-        onPress={() => router.replace(ROUTES.TABS.HOME)}
+        onPress={() =>
+          router.replace(ROUTES.TABS.HOME)
+        }
       />
+
       {ActiveComponent ? (
         <ScreenLayout>
           <ActiveComponent />
         </ScreenLayout>
       ) : (
-        <CsText style={{ color: colors.dark }} className="p-4 ">
+        <CsText
+          className="p-4"
+          style={{ color: colors.dark }}
+        >
           No Screen Found
         </CsText>
       )}
 
       <View
-        className="absolute bottom-5 left-0 right-0"
-        style={{ bottom: insets.bottom + 10 }}
+        className="absolute left-0 right-0 bottom-5"
+        style={{
+          bottom: insets.bottom + 10,
+        }}
       >
         <View
-          className="border rounded-full mx-3"
+          className="mx-3 rounded-full border overflow-hidden"
           style={{
             borderColor: colors.neutral,
             backgroundColor: colors.light,
@@ -82,52 +99,73 @@ export default function DashboardPage() {
               top: 0,
               bottom: 0,
               justifyContent: "center",
-              zIndex: 2,
+              zIndex: 10,
             }}
           >
-            <ChevronLeft size={18} color={colors.dark} />
+            {/* 
+            <ChevronLeft
+              size={18}
+              color={colors.dark}
+            /> 
+            */}
           </View>
 
-          {/* Scrollable Tabs */}
+          {/* Tabs */}
           <ScrollView
             horizontal
             ref={scrollRef}
             showsHorizontalScrollIndicator={false}
+            bounces={false}
+            overScrollMode="never"
             contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: "center",
               alignItems: "center",
-              paddingHorizontal: 24, // extra padding for arrows
+              paddingHorizontal: horizontalPadding,
             }}
           >
             {tabs.map((tab, index) => {
-              const Icon = tab.icon ?? (() => null);
-              const isActive = activeTab === index;
+              const Icon =
+                tab.icon ?? (() => null);
+
+              const isActive =
+                activeTab === index;
 
               return (
                 <Pressable
                   key={tab.name}
-                  className="mx-1 items-center justify-center rounded-full overflow-hidden"
+                  onPress={() =>
+                    setActiveTab(index)
+                  }
+                  className="items-center justify-center rounded-full"
                   style={{
                     width: tabWidth,
-                    paddingVertical: 6,
+                    minWidth: tabWidth,
+                    paddingVertical: 8,
+                    marginRight:
+                      index !== tabs.length - 1
+                        ? gap
+                        : 0,
                   }}
-                  onPress={() => setActiveTab(index)}
                 >
-                  {Icon && (
-                    <Icon
-                      size={22}
-                      color={isActive ? colors.primary : colors.dark}
-                    />
-                  )}
+                  <Icon
+                    size={20}
+                    color={
+                      isActive
+                        ? colors.primary
+                        : colors.dark
+                    }
+                  />
 
                   <CsText
-                    className="text-[10px] mt-1 text-center"
                     numberOfLines={1}
                     ellipsizeMode="tail"
+                    className="mt-1 text-center text-[10px]"
                     style={{
-                      color: isActive ? colors.primary : colors.dark,
-                      fontWeight: isActive ? "600" : "400",
+                      color: isActive
+                        ? colors.primary
+                        : colors.dark,
+                      fontWeight: isActive
+                        ? "600"
+                        : "400",
                     }}
                   >
                     {tab.label.split(" ")[0]}
@@ -145,10 +183,15 @@ export default function DashboardPage() {
               top: 0,
               bottom: 0,
               justifyContent: "center",
-              zIndex: 2,
+              zIndex: 10,
             }}
           >
-            <ChevronRight size={18} color={colors.dark} />
+            {/* 
+            <ChevronRight
+              size={18}
+              color={colors.dark}
+            /> 
+            */}
           </View>
         </View>
       </View>

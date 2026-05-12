@@ -1,5 +1,4 @@
 import * as Lucide from "lucide-react-native";
-
 import AdvisoryProfile from "../app/(dashboards)/(sections)/advisory-profile";
 import AlertProfile from "../app/(dashboards)/(sections)/alert-profile";
 import FinancialProfile from "../app/(dashboards)/(sections)/financial-profile";
