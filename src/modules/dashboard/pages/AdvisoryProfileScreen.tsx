@@ -35,16 +35,16 @@ export default function AdvisoryScreen() {
     <ScreenLayout scrollable>
       <ScreenContent className="pt-4 pb-10">
 
-       {/* Key Metrics */}
-<CsText
-  style={[
-    typography.Poppins_m_semibold,
-    { color: colors.dark }
-  ]}
-  className="mb-3"
->
-  Key Metrics
-</CsText>
+        {/* Key Metrics */}
+        <CsText
+          style={[
+            typography.Poppins_m_semibold,
+            { color: colors.dark }
+          ]}
+          className="mb-3"
+        >
+          Key Metrics
+        </CsText>
 
         <ScrollView
           horizontal
@@ -64,7 +64,7 @@ export default function AdvisoryScreen() {
                     marginRight: 12,
                     backgroundColor: colors.light,
                     borderRadius: 16,
-                 
+
                     borderColor: colors.neutral,
                     overflow: "hidden",
                   },
@@ -159,7 +159,7 @@ export default function AdvisoryScreen() {
                       height: 8,
                       width: "100%",
                       borderRadius: 12,
-                     
+
                       borderColor: colors.neutral,
                       overflow: "hidden",
                     }}
@@ -186,7 +186,7 @@ export default function AdvisoryScreen() {
               marginTop: 16,
               backgroundColor: colors.light,
               borderRadius: 16,
-            
+
               borderColor: colors.neutral,
               padding: 14,
             },
@@ -256,7 +256,7 @@ export default function AdvisoryScreen() {
               marginTop: 20,
               backgroundColor: colors.light,
               borderRadius: 16,
-            
+
               borderColor: colors.neutral,
               padding: 14,
             },
@@ -307,7 +307,7 @@ export default function AdvisoryScreen() {
               marginTop: 20,
               backgroundColor: colors.light,
               borderRadius: 16,
-            
+
               borderColor: colors.neutral,
               padding: 14,
             },
@@ -350,7 +350,7 @@ const Tag = ({ label }: any) => {
             paddingHorizontal: 10,
             backgroundColor: colors.light,
             borderRadius: 12,
-         
+
             borderColor: colors.neutral,
           },
           shadows.profile_card,
