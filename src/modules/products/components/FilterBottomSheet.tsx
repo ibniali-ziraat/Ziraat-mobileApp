@@ -61,7 +61,7 @@ export default function FilterBottomSheet({
     FIXED_MAX_PRICE,
   ]);
 
-  // console.log(filterOptions.categories, "ALL CATEGORIES");
+  // console.log(filterOptions, "ALL CATEGORIES");
 
   const [sort, setSort] = useState<string | null>(null);
   const [rating, setRating] = useState<number[]>([]);
@@ -87,7 +87,12 @@ export default function FilterBottomSheet({
   };
 
   return (
-    <Modal visible={visible} animationType="slide" transparent>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      transparent
+      onRequestClose={onClose}
+    >
       <Pressable onPress={onClose} className="flex-1 bg-black/40" />
 
       <View
@@ -104,23 +109,25 @@ export default function FilterBottomSheet({
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Section title="Brand">
-            {filterOptions.brands.map((item) => (
-              <Item
-                key={item.slug}
-                label={item.name}
-                count={item.count}
-                selected={brand.includes(item.slug)}
-                onPress={() =>
-                  setBrand((prev) =>
-                    prev.includes(item.slug)
-                      ? prev.filter((b) => b !== item.slug)
-                      : [...prev, item.slug],
-                  )
-                }
-              />
-            ))}
-          </Section>
+          {filterOptions.brands.length && (
+            <Section title="Brand">
+              {filterOptions.brands.map((item) => (
+                <Item
+                  key={item.slug}
+                  label={item.name}
+                  count={item.count}
+                  selected={brand.includes(item.slug)}
+                  onPress={() =>
+                    setBrand((prev) =>
+                      prev.includes(item.slug)
+                        ? prev.filter((b) => b !== item.slug)
+                        : [...prev, item.slug],
+                    )
+                  }
+                />
+              ))}
+            </Section>
+          )}
 
           <Section title="Category">
             {filterOptions.categories.map((item) => (

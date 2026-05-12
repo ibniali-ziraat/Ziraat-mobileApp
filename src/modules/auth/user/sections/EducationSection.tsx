@@ -13,7 +13,7 @@ export default function EducationSection({ control, errors }: Props) {
         name="highestQualification"
         label="Highest Qualification"
         error={errors.highestQualification}
-        type="name"
+        type="address"
       />
 
       <FormTextInput

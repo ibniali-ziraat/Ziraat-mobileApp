@@ -1,6 +1,5 @@
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import BackHeader from "@/src/components/shared/BackHeader";
-import FormTextAreaInput from "@/src/components/shared/inputs/FormTextAreaInput";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { toast } from "@backpackapp-io/react-native-toast";
@@ -233,6 +232,7 @@ const UserAddressForm = () => {
             label="Contact Name"
             required
             error={errors.contactName}
+            type="name"
           />
 
           <FormTextInput
@@ -268,16 +268,30 @@ const UserAddressForm = () => {
             error={errors.districtId}
           />
 
-          <FormTextAreaInput
+          {/* <FormTextInput
             name="addressLine1"
             label="Address Line 1"
             required
             error={errors.addressLine1}
+          /> */}
+
+          <FormTextInput
+            name="addressLine1"
+            label="Address Line 1"
+            error={errors.addressLine1}
+            type="address"
           />
 
-          <FormTextAreaInput
+          {/* <FormTextInput
             name="addressLine2"
             label="Address Line 2 (Optional)"
+          /> */}
+
+          <FormTextInput
+            name="addressLine2"
+            label="Address Line 2 (Optional)"
+            // error={errors.addressLine1}
+            type="address"
           />
 
           <View style={{ flexDirection: "row", gap: 12 }}>
@@ -286,7 +300,7 @@ const UserAddressForm = () => {
                 name="city"
                 label="City"
                 required
-                type="city"
+                type="address"
                 error={errors.city}
               />
             </View>
