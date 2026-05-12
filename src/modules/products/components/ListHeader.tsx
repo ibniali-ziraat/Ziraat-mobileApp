@@ -1,6 +1,5 @@
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { ChevronRight } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 interface ListHeaderProps {
@@ -57,11 +56,11 @@ export default function ListHeader({
             See all
           </Text>
 
-          <ChevronRight size={16} color={colors.secondary} />
+          {/* <ChevronRight size={16} color={colors.secondary} /> */}
         </Pressable>
       ) : (
         <View style={{ padding: 6 }}>
-          <ChevronRight size={18} color={colors.dark} />
+          {/* <ChevronRight size={18} color={colors.dark} /> */}
         </View>
       )}
     </View>
