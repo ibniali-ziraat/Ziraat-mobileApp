@@ -12,7 +12,10 @@ import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
 
 import SoilTestReportsSection from "../form-sections/SoilTestReportsSection";
-import { useCreateSoilTestReportMutation } from "../hooks/useSoilTestReport";
+import {
+  useCreateSoilTestReportMutation,
+  useSoilTestReportQuery,
+} from "../hooks/useSoilTestReport";
 import { SoilTestReportSchema } from "../schemas/SoilTestReportSchema";
 
 export default function SoilTestReportsScreen() {
@@ -20,6 +23,9 @@ export default function SoilTestReportsScreen() {
   const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
   const { mutateAsync: save, isPending: isSaving } =
     useCreateSoilTestReportMutation();
+
+  // Fetch existing report URLs so we can merge, not overwrite
+  const { data: existingData } = useSoilTestReportQuery(orchardProfileId);
 
   const form = useZodForm(SoilTestReportSchema);
   const {
@@ -29,12 +35,11 @@ export default function SoilTestReportsScreen() {
 
   const onSubmit = async (values: any) => {
     try {
-      const uploadedFiles: string[] = [];
+      // 1. Upload new files
+      const newlyUploadedUrls: string[] = [];
 
       for (const file of values.reports || []) {
         if (file?.uri) {
-          console.log("existed file.uri");
-
           const uploadRes = await uploadFileAsync({
             file: {
               uri: file.uri,
@@ -46,22 +51,33 @@ export default function SoilTestReportsScreen() {
             FileCategory: "documents",
           });
 
-          uploadedFiles.push(uploadRes?.data?.fileUrl);
-          console.log(uploadedFiles, "uploaded files");
-          console.log(uploadRes, "upload res...");
+          const url = uploadRes?.data?.fileUrl;
+          if (url) newlyUploadedUrls.push(url);
+          console.log("[SoilTestReport] uploaded file →", url);
         }
       }
+
+      // 2. Merge with existing URLs — never overwrite
+      const existingUrls: string[] = existingData?.soilTestReportUrls ?? [];
+
+      const mergedUrls = [...existingUrls, ...newlyUploadedUrls];
+
+      console.log("[SoilTestReport] existing URLs →", existingUrls);
+      console.log("[SoilTestReport] new URLs →", newlyUploadedUrls);
+      console.log("[SoilTestReport] merged URLs →", mergedUrls);
+
+      // 3. Patch with the full merged array
       const payload = {
         orchardProfileId,
-        soilTestReportUrls: uploadedFiles,
+        soilTestReportUrls: mergedUrls,
       };
 
       await save(payload);
 
       showSuccessToast("Reports uploaded successfully");
-      // router.push(ROUTES.TABS.ORCHARDS);
       router.dismiss();
     } catch (error: any) {
+      console.warn("[SoilTestReport] upload error →", error);
       showErrorToast("Failed to upload reports");
     }
   };
