@@ -1,158 +1,89 @@
-import React, {
+/**
+ * NotificationContext
+ *
+ * - Background / quit state: Firebase shows OS system tray notification automatically.
+ * - Foreground: Firebase suppresses system notification.
+ *   We fire `onForegroundMessage` listeners so GlobalBanner can show the in-app banner.
+ *
+ * NOTE: No AppState gate here — messaging().onMessage already ONLY fires in foreground.
+ */
+
+import messaging, {
+  FirebaseMessagingTypes,
+} from "@react-native-firebase/messaging";
+import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
 } from "react";
-import { Platform } from "react-native";
 
-// ─── Native-only Firebase Messaging ──────────────────────────────────────────
-const isNative = Platform.OS === "ios" || Platform.OS === "android";
+type MessageHandler = (msg: FirebaseMessagingTypes.RemoteMessage) => void;
 
-let messaging: typeof import("@react-native-firebase/messaging").default;
-let FirebaseMessagingTypes: typeof import("@react-native-firebase/messaging");
-
-if (isNative) {
-  const messagingModule = require("@react-native-firebase/messaging");
-
-  messaging = messagingModule.default;
-  FirebaseMessagingTypes = messagingModule;
+interface NotificationContextValue {
+  notification: FirebaseMessagingTypes.RemoteMessage | null;
+  onForegroundMessage: (cb: MessageHandler) => () => void;
 }
 
-// ─── Types ───────────────────────────────────────────────────────────────────
-interface NotificationContextType {
-  fcmToken: string | null;
-  notification: any | null;
-  error: Error | null;
-}
-
-const NotificationContext = createContext<NotificationContextType | undefined>(
-  undefined,
+const NotificationContext = createContext<NotificationContextValue | null>(
+  null,
 );
 
-export const useNotification = () => {
-  const context = useContext(NotificationContext);
+export function NotificationProvider({ children }: { children: ReactNode }) {
+  const [notification, setNotification] =
+    useState<FirebaseMessagingTypes.RemoteMessage | null>(null);
 
-  if (context === undefined) {
-    throw new Error(
-      "useNotification must be used within a NotificationProvider",
-    );
-  }
+  // Ref so listeners are always current without re-running the onMessage effect
+  const listenersRef = useRef<Set<MessageHandler>>(new Set());
 
-  return context;
-};
-
-interface NotificationProviderProps {
-  children: ReactNode;
-}
-
-// ─── Provider ────────────────────────────────────────────────────────────────
-export const NotificationProvider: React.FC<NotificationProviderProps> = ({
-  children,
-}) => {
-  const [fcmToken, setFcmToken] = useState<string | null>(null);
-
-  const [notification, setNotification] = useState<any | null>(null);
-
-  const [error, setError] = useState<Error | null>(null);
-
-  const tokenRefreshUnsubscribeRef = useRef<(() => void) | null>(null);
-
-  // ─── Init FCM ──────────────────────────────────────────────────────────────
   useEffect(() => {
-    if (!isNative) return;
-
-    const init = async () => {
-      try {
-        const authStatus = await messaging().requestPermission();
-
-        const enabled =
-          authStatus ===
-            FirebaseMessagingTypes.AuthorizationStatus.AUTHORIZED ||
-          authStatus === FirebaseMessagingTypes.AuthorizationStatus.PROVISIONAL;
-
-        if (!enabled) {
-          setError(new Error("Push notification permission denied"));
-          return;
-        }
-
-        const token = await messaging().getToken();
-
-        console.log("✅ FCM Token:", token);
-
-        setFcmToken(token);
-
-        // ─── Token refresh listener ────────────────────────────────────────
-        tokenRefreshUnsubscribeRef.current = messaging().onTokenRefresh(
-          (newToken: string) => {
-            console.log("🔄 FCM Token refreshed:", newToken);
-
-            setFcmToken(newToken);
-          },
-        );
-      } catch (err) {
-        console.log("❌ Notification init error:", err);
-
-        setError(err instanceof Error ? err : new Error(String(err)));
-      }
-    };
-
-    init();
-
-    return () => {
-      tokenRefreshUnsubscribeRef.current?.();
-    };
-  }, []);
-
-  // ─── Foreground messages ───────────────────────────────────────────────────
-  useEffect(() => {
-    if (!isNative) return;
-
-    const unsubscribe = messaging().onMessage(async (remoteMessage: any) => {
-      console.log("🔔 Foreground notification:", remoteMessage);
-
-      setNotification(remoteMessage);
+    // messaging().onMessage fires ONLY when app is foreground — no AppState check needed
+    const unsubForeground = messaging().onMessage(async (msg) => {
+      setNotification(msg);
+      listenersRef.current.forEach((cb) => cb(msg));
     });
 
-    return unsubscribe;
-  }, []);
+    // User tapped a background notification
+    const unsubOpened = messaging().onNotificationOpenedApp((msg) => {
+      setNotification(msg);
+    });
 
-  // ─── Background / quit state ──────────────────────────────────────────────
-  useEffect(() => {
-    if (!isNative) return;
-
-    const unsubscribeOpened = messaging().onNotificationOpenedApp(
-      (remoteMessage: any) => {
-        console.log("📲 Opened from background:", remoteMessage);
-
-        setNotification(remoteMessage);
-      },
-    );
-
+    // App launched from quit state via notification tap
     messaging()
       .getInitialNotification()
-      .then((remoteMessage: any) => {
-        if (remoteMessage) {
-          console.log("🚀 Opened from quit state:", remoteMessage);
-
-          setNotification(remoteMessage);
-        }
+      .then((msg) => {
+        if (msg) setNotification(msg);
       });
 
-    return unsubscribeOpened;
+    return () => {
+      unsubForeground();
+      unsubOpened();
+    };
+  }, []);
+
+  // Stable reference — consumers can safely put this in a useEffect dep array
+  const onForegroundMessage = useCallback((cb: MessageHandler) => {
+    listenersRef.current.add(cb);
+    return () => {
+      listenersRef.current.delete(cb);
+    };
   }, []);
 
   return (
-    <NotificationContext.Provider
-      value={{
-        fcmToken,
-        notification,
-        error,
-      }}
-    >
+    <NotificationContext.Provider value={{ notification, onForegroundMessage }}>
       {children}
     </NotificationContext.Provider>
   );
-};
+}
+
+export function useNotification() {
+  const ctx = useContext(NotificationContext);
+  if (!ctx)
+    throw new Error(
+      "useNotification must be used inside <NotificationProvider>",
+    );
+  return ctx;
+}

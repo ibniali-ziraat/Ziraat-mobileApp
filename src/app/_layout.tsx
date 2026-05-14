@@ -17,6 +17,7 @@ import {
 import "../../styles/global.css";
 import { colors } from "../constants/colors";
 import { paperTheme } from "../constants/theme";
+import GlobalBanner from "../modules/notifications/components/GlobalBanner";
 import NavigationReadyHandler from "../modules/notifications/components/NavigationReadyHandler";
 
 const credentials = Platform.select({
@@ -74,6 +75,7 @@ export default function RootLayout() {
                   }}
                 />
                 {!isWeb && <NavigationReadyHandler />}
+                {!isWeb && <GlobalBanner />}
               </PaperProvider>
             </SafeAreaView>
           </RouteGuard>
