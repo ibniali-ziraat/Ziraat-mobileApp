@@ -29,6 +29,7 @@
     "base-64": "^1.0.0",
     "core-js": "^3.33.0",
     "expo": "~54.0.12",
+    "expo-av": "~16.0.8",
     "expo-clipboard": "~8.0.8",
     "expo-constants": "~18.0.13",
     "expo-device": "~8.0.10",

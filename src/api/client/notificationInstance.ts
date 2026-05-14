@@ -2,8 +2,8 @@ import { getItem } from "@/src/utils/universalSecureToken";
 import axios from "axios";
 
 const notificationInstance = axios.create({
-  // baseURL: "https://pushnotificationserver.onrender.com/",
-  baseURL: "https://greedy-chirpy-rambling.ngrok-free.dev/",
+  baseURL: "https://pushnotificationserver.onrender.com/",
+  // baseURL: "https://greedy-chirpy-rambling.ngrok-free.dev/",
 
   headers: {
     "Content-Type": "application/json",

@@ -1,5 +1,4 @@
 import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
-import LocationPermissionModal from "@/src/components/shared/modals/LocationPermissionModal";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
@@ -8,7 +7,8 @@ import { useLocationWatcher } from "@/src/hooks/useLocationWatcher";
 import { router } from "expo-router";
 import { Flame, Tag } from "lucide-react-native";
 import { JSX, useState } from "react";
-import { Platform, Pressable, View } from "react-native";
+import { Pressable, View } from "react-native";
+import { useRegisterToken } from "../notifications/hooks/useRegisterToken";
 import BestDealsList from "../products/components/BestDealsList";
 import ListHeader from "../products/components/ListHeader";
 import TrendingProductsList from "../products/components/TrendingProductsList";
@@ -30,21 +30,11 @@ export default function HomeScreen(): JSX.Element {
   const { data: trendingData, refetch: refetchTrending } =
     useTrendingProducts();
   const { data: bestDealsData, refetch: refetchBestDeals } = useBestDeals();
-
   const [refreshing, setRefreshing] = useState(false);
 
-  // ── Single source of truth for location ──────────────────────────────────
-  // coords is null until permission is granted + first fix received.
-  // Pass coords downstream to any child that needs lat/lon (e.g. WeatherCard).
-  const { coords, status, recheck } = useLocationWatcher({
-    updateInterval: 10_000, // refresh every 10 s while app is open
-    onStatusChange: (s) => {
-      // Optional: log analytics, trigger alert refetch, etc.
-      if (s === "granted") {
-        // e.g. invalidate weather query so it refetches with new coords
-      }
-    },
-  });
+  const { coords, status } = useLocationWatcher({ updateInterval: 10_000 });
+
+  useRegisterToken(coords);
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -54,10 +44,6 @@ export default function HomeScreen(): JSX.Element {
 
   return (
     <ScreenLayout>
-      {Platform.OS !== "web" && (
-        <LocationPermissionModal status={status} recheck={recheck} />
-      )}
-
       <ScreenContent>
         <View
           style={{ backgroundColor: colors.light, flex: 1, paddingTop: 16 }}

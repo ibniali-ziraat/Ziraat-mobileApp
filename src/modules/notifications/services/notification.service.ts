@@ -1,20 +1,22 @@
 import notificationInstance from "@/src/api/client/notificationInstance";
 
 export const registerDeviceToken = async (payload: {
-  userId: number;
+  userId: string;
   token: string;
-  type: string;
+  platform: string;
   lat?: number;
   lon?: number;
 }) => {
-  console.log("🔥 API HIT", payload);
+  const response = await notificationInstance.post("/save-token", payload);
+  return response.data;
+};
 
-  const response = await notificationInstance.post(
-    "api/device/save-token",
-    payload,
-  );
-
-  console.log("🔥 RESPONSE", response.data);
-
+export const updateTokenLocation = async (payload: {
+  userId: string;
+  token: string;
+  lat: number;
+  lon: number;
+}) => {
+  const response = await notificationInstance.patch("/save-token", payload);
   return response.data;
 };
