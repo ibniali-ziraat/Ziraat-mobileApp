@@ -17,6 +17,9 @@ import ChipInput from "@/src/components/form/inputs/ChipInput";
 import FormTextAreaInput from "@/src/components/shared/inputs/FormTextAreaInput";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
+
 import { colors } from "@/src/constants/colors";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
@@ -252,171 +255,168 @@ export default function AskModal({
 
           {/* FORM */}
           <FormProvider {...methods}>
-            <View
-              style={{
-                flex: 1,
-
-                paddingHorizontal: 20,
-
-                paddingTop: 18,
-              }}
-            >
-              {/* TITLE */}
-              <View
-                style={{
-                  marginBottom: 16,
-                }}
-              >
-                <FormTextInput
-                  name="title"
-                  label="Title"
-                  placeholder="How to handle file uploads in FastAPI with S3?"
-                  error={errors.title}
-                  required
-                />
-              </View>
-
-              {/* DESCRIPTION */}
-              <View
-                style={{
-                  marginBottom: 16,
-                }}
-              >
-                <FormTextAreaInput
-                  name="body"
-                  label="Description"
-                  placeholder="Explain your problem..."
-                  error={errors.body}
-                  required
-                />
-              </View>
-
-              {/* TAGS */}
-              <View
-                style={{
-                  marginBottom: 12,
-                }}
-              >
-                <ChipInput
-                  name="tagsInput"
-                  label="Tags"
-                  placeholder="Add tag (react-native, api...)"
-                  error={errors.tagsInput}
-                  required
-                />
-              </View>
-
-              {/* INFO BOX */}
-              <View
-                style={{
-                  backgroundColor: colors.primary + "08",
-
-                  borderWidth: 1,
-
-                  borderColor: colors.primary + "12",
-
-                  borderRadius: 18,
-
-                  paddingHorizontal: 14,
-
-                  paddingVertical: 14,
-
-                  marginTop: 8,
-
-                  marginBottom: 22,
-                }}
-              >
-                <Text
+            <ScreenLayout scrollable keyboardOffset={80}>
+              <ScreenContent className="pt-5">
+                {/* TITLE */}
+                <View
                   style={{
-                    fontSize: 12.5,
-
-                    lineHeight: 21,
-
-                    color: colors.neutral,
-
-                    fontWeight: "500",
+                    marginBottom: 16,
                   }}
                 >
-                  Add clear title, detailed description and useful tags to get
-                  faster and better answers.
-                </Text>
-              </View>
+                  <FormTextInput
+                    name="title"
+                    label="Title"
+                    placeholder="How to handle file uploads in FastAPI with S3?"
+                    error={errors.title}
+                    required
+                  />
+                </View>
 
-              {/* SUBMIT */}
-              <TouchableOpacity
-                onPress={handleSubmit(
-                  handleQuestionSubmit,
-                  (validationErrors) => {
-                    if (validationErrors.tagsInput) {
-                      showErrorToast(
-                        validationErrors.tagsInput.message ||
-                          "Please add valid tags",
-                      );
-
-                      return;
-                    }
-
-                    if (validationErrors.title) {
-                      showErrorToast(
-                        validationErrors.title.message || "Invalid title",
-                      );
-
-                      return;
-                    }
-
-                    if (validationErrors.body) {
-                      showErrorToast(
-                        validationErrors.body.message || "Invalid description",
-                      );
-
-                      return;
-                    }
-
-                    showErrorToast("Please complete all required fields");
-                  },
-                )}
-                disabled={loading}
-                activeOpacity={0.9}
-                style={{
-                  backgroundColor: loading ? colors.overlay : colors.secondary,
-
-                  paddingVertical: 17,
-
-                  borderRadius: 22,
-
-                  alignItems: "center",
-
-                  marginTop: 4,
-
-                  shadowColor: colors.secondary,
-
-                  shadowOffset: {
-                    width: 0,
-                    height: 5,
-                  },
-
-                  shadowOpacity: 0.18,
-
-                  shadowRadius: 10,
-
-                  elevation: 4,
-                }}
-              >
-                <Text
+                {/* DESCRIPTION */}
+                <View
                   style={{
-                    color: colors.light,
-
-                    fontWeight: "800",
-
-                    fontSize: 15,
-
-                    letterSpacing: 0.3,
+                    marginBottom: 16,
                   }}
                 >
-                  {loading ? "Posting..." : "Post Question"}
-                </Text>
-              </TouchableOpacity>
-            </View>
+                  <FormTextAreaInput
+                    name="body"
+                    label="Description"
+                    placeholder="Explain your problem..."
+                    error={errors.body}
+                    required
+                  />
+                </View>
+
+                {/* TAGS */}
+                <View
+                  style={{
+                    marginBottom: 12,
+                  }}
+                >
+                  <ChipInput
+                    name="tagsInput"
+                    label="Tags"
+                    placeholder="Add tag (react-native, api...)"
+                    error={errors.tagsInput}
+                    required
+                  />
+                </View>
+
+                {/* INFO BOX */}
+                <View
+                  style={{
+                    backgroundColor: colors.primary + "08",
+
+                    borderWidth: 1,
+
+                    borderColor: colors.primary + "12",
+
+                    borderRadius: 18,
+
+                    paddingHorizontal: 14,
+
+                    paddingVertical: 14,
+
+                    marginTop: 8,
+
+                    marginBottom: 22,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontSize: 12.5,
+
+                      lineHeight: 21,
+
+                      color: colors.neutral,
+
+                      fontWeight: "500",
+                    }}
+                  >
+                    Add clear title, detailed description and useful tags to get
+                    faster and better answers.
+                  </Text>
+                </View>
+
+                {/* SUBMIT */}
+                <TouchableOpacity
+                  onPress={handleSubmit(
+                    handleQuestionSubmit,
+                    (validationErrors) => {
+                      if (validationErrors.tagsInput) {
+                        showErrorToast(
+                          validationErrors.tagsInput.message ||
+                            "Please add valid tags",
+                        );
+
+                        return;
+                      }
+
+                      if (validationErrors.title) {
+                        showErrorToast(
+                          validationErrors.title.message || "Invalid title",
+                        );
+
+                        return;
+                      }
+
+                      if (validationErrors.body) {
+                        showErrorToast(
+                          validationErrors.body.message ||
+                            "Invalid description",
+                        );
+
+                        return;
+                      }
+
+                      showErrorToast("Please complete all required fields");
+                    },
+                  )}
+                  disabled={loading}
+                  activeOpacity={0.9}
+                  style={{
+                    backgroundColor: loading
+                      ? colors.overlay
+                      : colors.secondary,
+
+                    paddingVertical: 17,
+
+                    borderRadius: 22,
+
+                    alignItems: "center",
+
+                    marginTop: 4,
+
+                    shadowColor: colors.secondary,
+
+                    shadowOffset: {
+                      width: 0,
+                      height: 5,
+                    },
+
+                    shadowOpacity: 0.18,
+
+                    shadowRadius: 10,
+
+                    elevation: 4,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: colors.light,
+
+                      fontWeight: "800",
+
+                      fontSize: 15,
+
+                      letterSpacing: 0.3,
+                    }}
+                  >
+                    {loading ? "Posting..." : "Post Question"}
+                  </Text>
+                </TouchableOpacity>
+              </ScreenContent>
+            </ScreenLayout>
           </FormProvider>
         </View>
       </View>

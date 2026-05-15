@@ -14,7 +14,7 @@ import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { DUMMY_EMAIL } from "@/src/constants/constants";
 import { profileSchema } from "@/src/modules/auth/user/schemas/profile.schema";
 import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
-import { showSuccessToast } from "@/src/utils/toast";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router } from "expo-router";
 import { useEffect } from "react";
 import { FormProvider } from "react-hook-form";
@@ -32,6 +32,7 @@ export default function ProfileFormScreen() {
   const isUpdate = !!data;
 
   const form = useZodForm(profileSchema(isUpdate)); // re-derives when data loads
+
   const {
     setValue,
     handleSubmit,
@@ -60,7 +61,7 @@ export default function ProfileFormScreen() {
     setUserProfileId(data?.id);
   }, [data]);
 
-  const onSubmit = async (values) => {
+  const onSubmit = async (values: any) => {
     try {
       const payload = {
         id: data?.id,
@@ -68,6 +69,7 @@ export default function ProfileFormScreen() {
         ...values,
         email: values.email?.trim() || `${values.phone}${DUMMY_EMAIL}`,
       };
+
       if (data) {
         await update(payload);
         showSuccessToast("Profile Updated");
@@ -75,10 +77,18 @@ export default function ProfileFormScreen() {
         await save(payload);
         showSuccessToast("Profile Saved");
       }
+
       router.replace(ROUTES.ACCOUNT.PROFILE);
-    } catch (error) {
-      console.error("Profile submission error:", error);
-      showSuccessToast("Something went wrong. Please try again.");
+    } catch (error: any) {
+      console.log(
+        "Profile submission error:",
+        error?.response?.data || error?.message || error,
+      );
+
+      showErrorToast(
+        error?.response?.data?.message ??
+          "Something went wrong. Please try again.",
+      );
     }
   };
 
@@ -95,6 +105,7 @@ export default function ProfileFormScreen() {
       <ScreenContent>
         <FormProvider {...form}>
           <ProfileSection errors={errors} data={data} />
+
           <FormActions
             cancelLabel={"Cancel"}
             onCancel={() => router.replace(ROUTES.ACCOUNT.PROFILE)}

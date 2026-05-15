@@ -57,23 +57,14 @@ export const OrderSummary = ({ summary, couponCode }: Props) => (
       Order Summary
     </Text>
 
-    <SummaryRow
-      label="Subtotal"
-      value={formatRs(summary.subTotalString)}
-    />
+    <SummaryRow label="MRP" value={formatRs(summary.subTotalString)} />
 
-  
     {couponCode && (
       <View className="mb-2 flex-row justify-between items-center">
-        <Text className="text-sm">
-          Coupon Applied
-        </Text>
+        <Text className="text-sm">Coupon Applied</Text>
 
         <View className="flex-row items-center">
-
-          <Text className="ml-1 text-sm">
-            {couponCode}
-          </Text>
+          <Text className="ml-1 text-sm">{couponCode}</Text>
         </View>
       </View>
     )}

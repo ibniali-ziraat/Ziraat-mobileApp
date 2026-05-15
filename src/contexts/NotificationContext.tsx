@@ -1,17 +1,30 @@
-import * as Notifications from "expo-notifications";
 import React, {
   createContext,
   ReactNode,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
-import { registerForPushNotificationsAsync } from "../utils/registerForPushNotificationsAsync";
+import { Platform } from "react-native";
 
+// ─── Native-only Firebase Messaging ──────────────────────────────────────────
+const isNative = Platform.OS === "ios" || Platform.OS === "android";
+
+let messaging: typeof import("@react-native-firebase/messaging").default;
+let FirebaseMessagingTypes: typeof import("@react-native-firebase/messaging");
+
+if (isNative) {
+  const messagingModule = require("@react-native-firebase/messaging");
+
+  messaging = messagingModule.default;
+  FirebaseMessagingTypes = messagingModule;
+}
+
+// ─── Types ───────────────────────────────────────────────────────────────────
 interface NotificationContextType {
-  expoPushToken: string | null;
-  devicePushToken: string | null;
-  notification: Notifications.Notification | null;
+  fcmToken: string | null;
+  notification: any | null;
   error: Error | null;
 }
 
@@ -21,11 +34,13 @@ const NotificationContext = createContext<NotificationContextType | undefined>(
 
 export const useNotification = () => {
   const context = useContext(NotificationContext);
+
   if (context === undefined) {
     throw new Error(
       "useNotification must be used within a NotificationProvider",
     );
   }
+
   return context;
 };
 
@@ -33,52 +48,109 @@ interface NotificationProviderProps {
   children: ReactNode;
 }
 
+// ─── Provider ────────────────────────────────────────────────────────────────
 export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   children,
 }) => {
-  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
-  const [devicePushToken, setDevicePushToken] = useState<string | null>(null);
-  const [notification, setNotification] =
-    useState<Notifications.Notification | null>(null);
+  const [fcmToken, setFcmToken] = useState<string | null>(null);
+
+  const [notification, setNotification] = useState<any | null>(null);
+
   const [error, setError] = useState<Error | null>(null);
 
+  const tokenRefreshUnsubscribeRef = useRef<(() => void) | null>(null);
+
+  // ─── Init FCM ──────────────────────────────────────────────────────────────
   useEffect(() => {
-    registerForPushNotificationsAsync().then(
-      (token) => setExpoPushToken(token),
-      (error) => setError(error),
-    );
+    if (!isNative) return;
 
-    Notifications.getDevicePushTokenAsync().then(
-      (devicePushToken) => {
-        console.log({ devicePushToken });
-        setDevicePushToken(devicePushToken.data);
-      },
-      (error) => {
-        setError(error);
-      },
-    );
+    const init = async () => {
+      try {
+        const authStatus = await messaging().requestPermission();
 
-    const notificationListener = Notifications.addNotificationReceivedListener(
-      (notification) => {
-        console.log("🔔 Notification Received: ", notification);
-        setNotification(notification);
-      },
-    );
+        const enabled =
+          authStatus ===
+            FirebaseMessagingTypes.AuthorizationStatus.AUTHORIZED ||
+          authStatus === FirebaseMessagingTypes.AuthorizationStatus.PROVISIONAL;
 
-    const responseListener =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("🔔 Notification Response: ", response);
-      });
+        if (!enabled) {
+          setError(new Error("Push notification permission denied"));
+          return;
+        }
+
+        const token = await messaging().getToken();
+
+        console.log("✅ FCM Token:", token);
+
+        setFcmToken(token);
+
+        // ─── Token refresh listener ────────────────────────────────────────
+        tokenRefreshUnsubscribeRef.current = messaging().onTokenRefresh(
+          (newToken: string) => {
+            console.log("🔄 FCM Token refreshed:", newToken);
+
+            setFcmToken(newToken);
+          },
+        );
+      } catch (err) {
+        console.log("❌ Notification init error:", err);
+
+        setError(err instanceof Error ? err : new Error(String(err)));
+      }
+    };
+
+    init();
 
     return () => {
-      notificationListener.remove();
-      responseListener.remove();
+      tokenRefreshUnsubscribeRef.current?.();
     };
+  }, []);
+
+  // ─── Foreground messages ───────────────────────────────────────────────────
+  useEffect(() => {
+    if (!isNative) return;
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage: any) => {
+      console.log("🔔 Foreground notification:", remoteMessage);
+
+      setNotification(remoteMessage);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  // ─── Background / quit state ──────────────────────────────────────────────
+  useEffect(() => {
+    if (!isNative) return;
+
+    const unsubscribeOpened = messaging().onNotificationOpenedApp(
+      (remoteMessage: any) => {
+        console.log("📲 Opened from background:", remoteMessage);
+
+        setNotification(remoteMessage);
+      },
+    );
+
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage: any) => {
+        if (remoteMessage) {
+          console.log("🚀 Opened from quit state:", remoteMessage);
+
+          setNotification(remoteMessage);
+        }
+      });
+
+    return unsubscribeOpened;
   }, []);
 
   return (
     <NotificationContext.Provider
-      value={{ expoPushToken, devicePushToken, notification, error }}
+      value={{
+        fcmToken,
+        notification,
+        error,
+      }}
     >
       {children}
     </NotificationContext.Provider>

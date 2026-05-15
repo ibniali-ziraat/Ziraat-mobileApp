@@ -19,7 +19,7 @@ export default function ProfileSection({
     }
   }, [data, setValue]);
 
-  console.log(errors, "errors in profile");
+  // console.log(errors, "errors in profile");
 
   return (
     <View>
@@ -64,6 +64,7 @@ export default function ProfileSection({
         options={[
           { label: "Male", value: "male" },
           { label: "Female", value: "female" },
+          { label: "Other", value: "other" },
         ]}
         error={errors.gender}
         optional={false}

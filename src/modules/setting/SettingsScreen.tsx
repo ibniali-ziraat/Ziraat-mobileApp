@@ -5,14 +5,11 @@ import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import {
   ChevronRight,
-  FileText,
   HelpCircle,
   Lock,
-  MapPin,
   PhoneCall,
-  Shield,
   Trash2,
-  User,
+  User
 } from "lucide-react-native";
 import { useRef } from "react";
 import { Animated, Pressable, View } from "react-native";
@@ -121,7 +118,7 @@ export default function SettingsScreen() {
           <Row
             label="Profile"
             icon={<User size={22} color={colors.neutral} />}
-            onPress={() => router.push("/user/user-profile")}
+            onPress={() => router.push("/profile-view")}
           />
           <Divider />
 
@@ -141,11 +138,11 @@ export default function SettingsScreen() {
           />
           <Divider />
 
-          <Row
+          {/* <Row
             label="Add Address"
             icon={<MapPin size={22} color={colors.neutral} />}
             onPress={() => router.push("/user/add-addresses")}
-          />
+          /> */}
           <Row
             label="FAQs"
             icon={<HelpCircle size={22} color={colors.neutral} />}
@@ -155,18 +152,18 @@ export default function SettingsScreen() {
 
         {/* Privacy */}
         <Section title="Privacy & Security">
-          <Row
+          {/* <Row
             label="Privacy Policy"
             icon={<Shield size={22} color={colors.neutral} />}
             onPress={() => router.push("/user/privacy")}
-          />
+          /> */}
           <Divider />
 
-          <Row
+          {/* <Row
             label="Terms & Conditions"
             icon={<FileText size={22} color={colors.neutral} />}
             onPress={() => router.push("/user/terms")}
-          />
+          /> */}
         </Section>
 
         {/* Danger */}

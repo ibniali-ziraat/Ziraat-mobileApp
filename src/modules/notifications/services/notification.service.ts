@@ -10,7 +10,7 @@ export const registerDeviceToken = async (payload: {
   console.log("🔥 API HIT", payload);
 
   const response = await notificationInstance.post(
-    "api/devices/register",
+    "api/device/save-token",
     payload,
   );
 

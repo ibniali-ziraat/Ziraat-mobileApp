@@ -1,7 +1,7 @@
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
-import { PencilLine, Plus, Trash2 } from "lucide-react-native";
+import { PencilLine, Trash2 } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 interface DetailItem {

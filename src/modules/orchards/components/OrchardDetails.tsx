@@ -79,7 +79,7 @@ export default function OrchardDetails({ orchard }: OrchardDetailsProps) {
             value={orchard.plantationPattern || "-"}
           />
 
-          {/* <DetailRow label="Ownership" value={orchard.ownershipType} isLast /> */}
+          <DetailRow label="Ownership" value={orchard.ownershipType} isLast />
         </View>
       </View>
     </View>

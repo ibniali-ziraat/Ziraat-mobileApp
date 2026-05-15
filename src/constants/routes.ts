@@ -103,7 +103,6 @@ export const ROUTES = {
     reviewlist: "/reviewlist",
   },
 
-
   Discussion: {
     discussionForum: "/discussion",
     QuestionScreen: "/questionScreen",

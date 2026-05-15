@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { ChevronDown } from "lucide-react-native";
 import { useState } from "react";
 import {
@@ -197,7 +198,7 @@ const FaqSettings = () => {
 
               <Pressable
                 activeOpacity={0.85}
-                onPress={() => navigation.navigate("contact-Support")}
+                onPress={() => router.push("/contact-Support")}
                 style={{
                   marginTop: 16,
                   borderWidth: 1,

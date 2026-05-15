@@ -3,7 +3,7 @@ import { DisableBackWrapper } from "@/src/components/shared/DisableBackWrapper";
 import AppProvider from "@/src/contexts/AppProvider";
 import { useAppFonts } from "@/src/hooks/useAppFonts";
 import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
-import * as Notifications from "expo-notifications";
+import { firebase } from "@react-native-firebase/app";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Platform } from "react-native";
@@ -19,15 +19,30 @@ import { colors } from "../constants/colors";
 import { paperTheme } from "../constants/theme";
 import NavigationReadyHandler from "../modules/notifications/components/NavigationReadyHandler";
 
-registerTranslation("en-GB", enGB);
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowBanner: true,
-    shouldShowList: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
+const credentials = Platform.select({
+  ios: {
+    appId: process.env.EXPO_PUBLIC_FIREBASE_IOS_APP_ID!,
+    apiKey: process.env.EXPO_PUBLIC_FIREBASE_IOS_API_KEY!,
+    projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID!,
+    messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+    storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+    databaseURL: process.env.EXPO_PUBLIC_FIREBASE_DATABASE_URL ?? "",
+  },
+  android: {
+    appId: process.env.EXPO_PUBLIC_FIREBASE_ANDROID_APP_ID!,
+    apiKey: process.env.EXPO_PUBLIC_FIREBASE_ANDROID_API_KEY!,
+    projectId: process.env.EXPO_PUBLIC_FIREBASE_PROJECT_ID!,
+    messagingSenderId: process.env.EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+    storageBucket: process.env.EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+    databaseURL: process.env.EXPO_PUBLIC_FIREBASE_DATABASE_URL ?? "",
+  },
 });
+
+if (!firebase.apps.length && credentials) {
+  firebase.initializeApp(credentials);
+}
+
+registerTranslation("en-GB", enGB);
 
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
