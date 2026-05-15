@@ -18,16 +18,25 @@ import {
 } from "../hooks/useSoilTestReport";
 import { SoilTestReportSchema } from "../schemas/SoilTestReportSchema";
 
+const MAX_REPORTS = 3;
+
 export default function SoilTestReportsScreen() {
   const { orchardProfileId } = useAuth();
+
   const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
+
   const { mutateAsync: save, isPending: isSaving } =
     useCreateSoilTestReportMutation();
 
-  // Fetch existing report URLs so we can merge, not overwrite
+  // Existing uploaded reports
   const { data: existingData } = useSoilTestReportQuery(orchardProfileId);
 
+  const existingUrls: string[] = existingData?.soilTestReportUrls ?? [];
+
+  const uploadedReportsCount = existingUrls.length;
+
   const form = useZodForm(SoilTestReportSchema);
+
   const {
     handleSubmit,
     formState: { errors },
@@ -35,9 +44,22 @@ export default function SoilTestReportsScreen() {
 
   const onSubmit = async (values: any) => {
     try {
-      // 1. Upload new files
       const newlyUploadedUrls: string[] = [];
 
+      const remainingAllowed = MAX_REPORTS - uploadedReportsCount;
+
+      // Prevent selecting more than allowed
+      if ((values.reports?.length || 0) > remainingAllowed) {
+        showErrorToast(
+          `You can upload only ${remainingAllowed} more report${
+            remainingAllowed > 1 ? "s" : ""
+          }.`,
+        );
+
+        return;
+      }
+
+      // Upload files
       for (const file of values.reports || []) {
         if (file?.uri) {
           const uploadRes = await uploadFileAsync({
@@ -52,32 +74,34 @@ export default function SoilTestReportsScreen() {
           });
 
           const url = uploadRes?.data?.fileUrl;
-          if (url) newlyUploadedUrls.push(url);
-          console.log("[SoilTestReport] uploaded file →", url);
+
+          if (url) {
+            newlyUploadedUrls.push(url);
+          }
         }
       }
 
-      // 2. Merge with existing URLs — never overwrite
-      const existingUrls: string[] = existingData?.soilTestReportUrls ?? [];
-
+      // Merge existing + new
       const mergedUrls = [...existingUrls, ...newlyUploadedUrls];
 
-      console.log("[SoilTestReport] existing URLs →", existingUrls);
-      console.log("[SoilTestReport] new URLs →", newlyUploadedUrls);
-      console.log("[SoilTestReport] merged URLs →", mergedUrls);
+      // Final safety validation
+      if (mergedUrls.length > MAX_REPORTS) {
+        showErrorToast("Only 3 soil test reports are allowed.");
 
-      // 3. Patch with the full merged array
-      const payload = {
+        return;
+      }
+
+      await save({
         orchardProfileId,
         soilTestReportUrls: mergedUrls,
-      };
-
-      await save(payload);
+      });
 
       showSuccessToast("Reports uploaded successfully");
+
       router.dismiss();
     } catch (error: any) {
       console.warn("[SoilTestReport] upload error →", error);
+
       showErrorToast("Failed to upload reports");
     }
   };
@@ -88,7 +112,10 @@ export default function SoilTestReportsScreen() {
 
       <ScreenContent>
         <FormProvider {...form}>
-          <SoilTestReportsSection errors={errors} />
+          <SoilTestReportsSection
+            errors={errors}
+            uploadedReportsCount={uploadedReportsCount}
+          />
 
           <FormActions
             cancelLabel="Cancel"
