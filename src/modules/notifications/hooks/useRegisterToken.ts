@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "@/src/contexts/AuthContext";
 import messaging from "@react-native-firebase/messaging";
 import { useEffect } from "react";
 import { Platform } from "react-native";
@@ -6,11 +6,11 @@ import { useRegisterDeviceToken } from "../../notifications/hooks/notification.h
 
 export function useRegisterToken(coords: { lat: number; lon: number } | null) {
   const { mutate: registerToken } = useRegisterDeviceToken();
+  const { userId } = useAuth();
 
   useEffect(() => {
     (async () => {
       try {
-        const userId = await AsyncStorage.getItem("user_id");
         if (!userId) {
           console.warn("[useRegisterToken] no user_id in storage, skipping");
           return;
@@ -20,11 +20,11 @@ export function useRegisterToken(coords: { lat: number; lon: number } | null) {
         if (!token) return;
 
         const payload = {
-          userId,
+          userId: userId.toString(),
           token,
           platform: Platform.OS,
-          lat: coords?.lat,
-          lon: coords?.lon,
+          lat: coords?.lat || 0,
+          lon: coords?.lon || 0,
         };
 
         console.log("[useRegisterToken] registering →", payload);
