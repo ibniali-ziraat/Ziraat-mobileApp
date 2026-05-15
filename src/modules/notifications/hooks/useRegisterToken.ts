@@ -9,6 +9,8 @@ export function useRegisterToken(coords: { lat: number; lon: number } | null) {
   const { userId } = useAuth();
 
   useEffect(() => {
+    if (!coords) return;
+
     (async () => {
       try {
         if (!userId) {
@@ -23,8 +25,8 @@ export function useRegisterToken(coords: { lat: number; lon: number } | null) {
           userId: userId.toString(),
           token,
           platform: Platform.OS,
-          lat: coords?.lat || 0,
-          lon: coords?.lon || 0,
+          lat: coords.lat || 0,
+          lon: coords.lon || 0,
         };
 
         console.log("[useRegisterToken] registering →", payload);
@@ -37,6 +39,5 @@ export function useRegisterToken(coords: { lat: number; lon: number } | null) {
         console.warn("[useRegisterToken] token error:", err);
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [coords]); // ✅ re-runs when coords arrive
 }
