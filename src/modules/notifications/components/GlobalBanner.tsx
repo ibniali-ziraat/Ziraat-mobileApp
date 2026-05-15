@@ -47,7 +47,7 @@ export default function GlobalBanner() {
         dismiss();
         router.push(ROUTES.NOTIFICATIONS);
       }}
-      duration={3000}
+      duration={50000}
     />
   );
 }

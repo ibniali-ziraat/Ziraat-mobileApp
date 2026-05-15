@@ -5,7 +5,6 @@ import {
   Animated,
   Dimensions,
   Image,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -14,7 +13,7 @@ import { StoredNotification } from "../types/Notification.types";
 import { timeAgo } from "../utils/timeAge";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
-const DELETE_THRESHOLD = -72;
+const DELETE_THRESHOLD = -40;
 const SWIPE_FULL = -SCREEN_WIDTH;
 
 interface Props {
@@ -35,12 +34,14 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
   const onTouchMove = (e: any) => {
     const dx = e.nativeEvent.pageX - startX;
     if (dx > 0) return;
+
     translateX.setValue(Math.max(dx, -100));
     deleteOpacity.setValue(Math.min(1, Math.abs(dx) / 72));
   };
 
   const onTouchEnd = (e: any) => {
     const dx = e.nativeEvent.pageX - startX;
+
     if (dx < DELETE_THRESHOLD) {
       Animated.spring(translateX, {
         toValue: -80,
@@ -68,6 +69,7 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
         duration: 200,
         useNativeDriver: false,
       }),
+
       Animated.timing(rowScale, {
         toValue: 0,
         duration: 260,
@@ -79,53 +81,83 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
 
   return (
     <Animated.View
-      style={[
-        styles.wrapper,
-        {
-          transform: [
-            {
-              scaleY: rowScale.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0, 1],
-              }),
-            },
-          ],
-          overflow: "hidden",
-        },
-      ]}
+      className="mb-[12px]"
+      style={{
+        transform: [
+          {
+            scaleY: rowScale.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1],
+            }),
+          },
+        ],
+        overflow: "hidden",
+      }}
     >
-      <View style={styles.rowWrap}>
+      <View className="relative">
         {/* Delete background */}
-        <Animated.View style={[styles.deleteBack, { opacity: deleteOpacity }]}>
+        <Animated.View
+          className="absolute right-0 top-0 bottom-0 w-20 rounded-[18px] items-center justify-center"
+          style={{
+            opacity: deleteOpacity,
+            // backgroundColor: colors.error,
+          }}
+        >
           <TouchableOpacity
-            style={styles.deleteAction}
+            className="items-center justify-center gap-[3px]"
             onPress={confirmDelete}
             activeOpacity={0.8}
           >
-            <Trash2 size={20} color={colors.light} />
-            <Text style={styles.deleteLabel}>Delete</Text>
+            <Trash2 size={20} color={colors.secondary} />
+
+            {/* <Text
+              className="text-[11px] font-bold"
+              style={{ color: colors.light }}
+            >
+              Delete
+            </Text> */}
           </TouchableOpacity>
         </Animated.View>
 
         {/* Swipeable card */}
         <Animated.View
-          style={[styles.card, { transform: [{ translateX }] }]}
+          className="bg-white rounded-[20px] flex-row overflow-hidden border border-gray-200"
+          style={{
+            transform: [{ translateX }],
+            // shadowColor: colors.dark,
+            // shadowOpacity: 0.08,
+            // shadowRadius: 8,
+            // shadowOffset: { width: 0, height: 4 },
+            // elevation: 4,
+          }}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          <View style={styles.accent} />
-          <View style={styles.cardBody}>
-            <View style={styles.cardTop}>
-              <View style={styles.unreadDot} />
-              <Text style={styles.cardTitle} numberOfLines={1}>
+          <View className="flex-1 px-[15px] py-[14px]">
+            <View className="flex-row items-center gap-[7px] mb-1">
+              <Text
+                className="text-[14px] font-bold flex-1"
+                numberOfLines={1}
+                style={{ color: colors.dark }}
+              >
                 {item.title}
               </Text>
-              <Text style={styles.cardTime}>{timeAgo(item.receivedAt)}</Text>
+
+              <Text
+                className="text-[11px] font-normal"
+                style={{ color: colors.darkHover }}
+              >
+                {timeAgo(item.receivedAt)}
+              </Text>
             </View>
 
             {item.body ? (
-              <Text style={styles.cardMessage} numberOfLines={2}>
+              <Text
+                className="text-[13px] leading-[19px]"
+                numberOfLines={2}
+                style={{ color: colors.neutral }}
+              >
                 {item.body}
               </Text>
             ) : null}
@@ -133,7 +165,7 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
             {item.imageUrl ? (
               <Image
                 source={{ uri: item.imageUrl }}
-                style={styles.cardImage}
+                className="w-full h-[130px] rounded-[12px] mt-[10px]"
                 resizeMode="cover"
               />
             ) : null}
@@ -143,87 +175,3 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
     </Animated.View>
   );
 }
-
-const styles = StyleSheet.create({
-  wrapper: {
-    marginBottom: 10,
-  },
-  rowWrap: {
-    position: "relative",
-  },
-  deleteBack: {
-    position: "absolute",
-    right: 0,
-    top: 0,
-    bottom: 0,
-    width: 80,
-    backgroundColor: colors.error,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  deleteAction: {
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 3,
-  },
-  deleteLabel: {
-    fontSize: 11,
-    color: colors.light,
-    fontWeight: "700",
-  },
-  card: {
-    backgroundColor: colors.light,
-    borderRadius: 16,
-    flexDirection: "row",
-    overflow: "hidden",
-    shadowColor: colors.cardShadow,
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 3 },
-    elevation: 3,
-  },
-  accent: {
-    width: 4,
-    backgroundColor: colors.primary,
-  },
-  cardBody: {
-    flex: 1,
-    paddingHorizontal: 14,
-    paddingVertical: 13,
-  },
-  cardTop: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 7,
-    marginBottom: 4,
-  },
-  unreadDot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    backgroundColor: colors.secondary,
-  },
-  cardTitle: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: colors.dark,
-    flex: 1,
-  },
-  cardTime: {
-    fontSize: 11,
-    color: colors.darkHover,
-    fontWeight: "400",
-  },
-  cardMessage: {
-    fontSize: 13,
-    color: colors.neutral,
-    lineHeight: 19,
-  },
-  cardImage: {
-    width: "100%",
-    height: 130,
-    borderRadius: 10,
-    marginTop: 10,
-  },
-});

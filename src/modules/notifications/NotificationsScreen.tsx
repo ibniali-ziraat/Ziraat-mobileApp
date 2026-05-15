@@ -24,7 +24,7 @@ export default function NotificationsScreen() {
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={colors.bgColor} />
+      <StatusBar barStyle="dark-content" backgroundColor={colors.primary} />
 
       <ScrollView
         style={styles.scroll}

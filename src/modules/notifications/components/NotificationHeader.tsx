@@ -1,6 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import { Trash2 } from "lucide-react-native";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 
 interface Props {
   count: number;
@@ -9,58 +9,41 @@ interface Props {
 
 export default function NotificationHeader({ count, onClearAll }: Props) {
   return (
-    <View style={styles.header}>
+    <View className="flex-row justify-between items-end pt-4 pb-4">
       <View>
-        <Text style={styles.title}>Notifications</Text>
-        <Text style={styles.sub}>
+        <Text
+          className="text-[28px] font-extrabold tracking-[-0.5px]"
+          style={{ color: colors.dark }}
+        >
+          Notifications
+        </Text>
+
+        <Text
+          className="text-[13px] mt-[2px] font-medium"
+          style={{ color: colors.darkHover }}
+        >
           {count > 0
             ? `${count} message${count !== 1 ? "s" : ""}`
-            : "You're all caught up"}
+            : "See what's new and get notified about important updates"}
         </Text>
       </View>
 
       {count > 0 && (
-        <Pressable onPress={onClearAll} style={styles.clearBtn}>
-          <Trash2 size={14} color={colors.error} />
-          <Text style={styles.clearText}>Clear all</Text>
+        <Pressable
+          onPress={onClearAll}
+          className="flex-row items-center gap-[5px] rounded-[10px] px-3 py-[2px]"
+          // style={{ backgroundColor: colors.bgColor }}
+        >
+          <Trash2 size={14} color={colors.secondary} />
+
+          <Text
+            className="text-[13px] font-semibold"
+            style={{ color: colors.secondary }}
+          >
+            Clear all
+          </Text>
         </Pressable>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-    paddingTop: 16,
-    paddingBottom: 16,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "800",
-    color: colors.dark,
-    letterSpacing: -0.5,
-  },
-  sub: {
-    fontSize: 13,
-    color: colors.darkHover,
-    marginTop: 2,
-    fontWeight: "500",
-  },
-  clearBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-    backgroundColor: colors.bgColor,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 7,
-  },
-  clearText: {
-    fontSize: 13,
-    color: colors.error,
-    fontWeight: "600",
-  },
-});
