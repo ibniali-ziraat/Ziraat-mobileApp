@@ -1,29 +1,39 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import {
   ChevronRight,
+  FileText,
   HelpCircle,
   Lock,
+  MapPin,
   PhoneCall,
+  Shield,
   Trash2,
-  User
+  User,
 } from "lucide-react-native";
 import { useRef } from "react";
-import { Animated, Pressable, View } from "react-native";
+import { Animated, Pressable, ScrollView, Text, View } from "react-native";
+
+/* ---------------- ROW ---------------- */
 
 const Row = ({ icon, label, onPress, danger = false }) => {
   const scale = useRef(new Animated.Value(1)).current;
 
   return (
-    <Animated.View style={{ transform: [{ scale }] }}>
+    <Animated.View
+      style={{
+        transform: [{ scale }],
+      }}
+    >
       <Pressable
         onPress={onPress}
         onPressIn={() =>
           Animated.spring(scale, {
-            toValue: 0.97,
+            toValue: 0.985,
             useNativeDriver: true,
           }).start()
         }
@@ -33,35 +43,28 @@ const Row = ({ icon, label, onPress, danger = false }) => {
             useNativeDriver: true,
           }).start()
         }
-        className="flex-row items-center justify-between py-4 px-4"
+        className="flex-row items-center justify-between py-4"
       >
-        <View className="flex-row items-center">
-          {/* Icon bubble */}
-          <View
-            className="w-10 h-10 rounded-full items-center justify-center mr-4"
-            style={{
-              backgroundColor: danger
-                ? `${colors.error}15`
-                : `${colors.neutral}15`,
-            }}
-          >
-            {icon}
-          </View>
+        {/* LEFT */}
+        <View className="flex-row items-center flex-1">
+          <View className="mr-4">{icon}</View>
 
           <CsText
             style={{
               fontSize: 15,
               color: danger ? colors.error : colors.dark,
+              fontWeight: "500",
             }}
           >
             {label}
           </CsText>
         </View>
 
+        {/* RIGHT */}
         <ChevronRight
           size={18}
           color={colors.neutral}
-          style={{ opacity: 0.6 }}
+          style={{ opacity: 0.5 }}
         />
       </Pressable>
     </Animated.View>
@@ -72,130 +75,156 @@ const Row = ({ icon, label, onPress, danger = false }) => {
 
 const Divider = () => (
   <View
-    className="h-[1px] ml-16"
-    style={{ backgroundColor: `${colors.neutral}15` }}
+    className="ml-9 h-[1px]"
+    style={{
+      backgroundColor: colors.cardBorder,
+    }}
   />
 );
 
-/* ---------------- SECTION ---------------- */
+/* ---------------- SECTION TITLE ---------------- */
 
-const Section = ({ title, children }) => (
-  <View className="mb-8">
-    {title && (
-      <CsText
-        className="text-xs font-semibold mb-2 uppercase ml-1"
-        style={{ color: colors.neutral }}
-      >
-        {title}
-      </CsText>
-    )}
-
-    <View
-      className="rounded-2xl overflow-hidden"
-      style={{
-        backgroundColor: colors.light,
-        shadowColor: "#000",
-        shadowOpacity: 0.05,
-        shadowRadius: 6,
-        elevation: 2,
-      }}
-    >
-      {children}
-    </View>
-  </View>
+const SectionTitle = ({ title }) => (
+  <Text
+    style={{
+      fontSize: 16,
+      color: colors.neutral,
+      fontWeight: "600",
+      marginBottom: 12,
+      marginTop: 28,
+    }}
+  >
+    {title}
+  </Text>
 );
 
-/* ---------------- SETTINGS PAGE ---------------- */
+/* ---------------- SETTINGS SCREEN ---------------- */
 
 export default function SettingsScreen() {
   return (
-    <View className="flex-1" style={{ backgroundColor: colors.light }}>
-      <BackHeader title="Settings & Support" desc="Settings Hub" />
+    <View
+      className="py-4"
+      style={{
+        backgroundColor: colors.light,
+      }}
+    >
+      <BackHeader
+        title="Settings"
+        desc="Manage your account preferences and privacy"
+      />
 
-      <View className="px-4 mt-5">
-        {/* Account */}
-        <Section title="Account">
-          <Row
-            label="Profile"
-            icon={<User size={22} color={colors.neutral} />}
-            onPress={() => router.push("/profile-view")}
-          />
-          <Divider />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: 30,
+        }}
+      >
+        <ScreenContent>
 
-          <Row
-            label="Change Password"
-            icon={<Lock size={22} color={colors.neutral} />}
-            onPress={() => router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD)}
-          />
-        </Section>
+          <View>
 
-        {/* Support */}
-        <Section title="Support & FAQs">
-          <Row
-            label="Contact Support"
-            icon={<PhoneCall size={22} color={colors.neutral} />}
-            onPress={() => router.push("/contact-Support")}
-          />
-          <Divider />
 
-          {/* <Row
-            label="Add Address"
-            icon={<MapPin size={22} color={colors.neutral} />}
-            onPress={() => router.push("/user/add-addresses")}
-          /> */}
-          <Row
-            label="FAQs"
-            icon={<HelpCircle size={22} color={colors.neutral} />}
-            onPress={() => router.push("/faq")}
-          />
-        </Section>
+            <SectionTitle title="Account" />
 
-        {/* Privacy */}
-        <Section title="Privacy & Security">
-          {/* <Row
-            label="Privacy Policy"
-            icon={<Shield size={22} color={colors.neutral} />}
-            onPress={() => router.push("/user/privacy")}
-          /> */}
-          <Divider />
+            <Row
+              label="Profile"
+              icon={<User size={22} color={colors.primary} />}
+              onPress={() => router.push("/profile-view")}
+            />
 
-          {/* <Row
-            label="Terms & Conditions"
-            icon={<FileText size={22} color={colors.neutral} />}
-            onPress={() => router.push("/user/terms")}
-          /> */}
-        </Section>
+            <Divider />
 
-        {/* Danger */}
-        <Section title="Account Management">
-          <Row
-            label="Delete Account"
-            danger
-            icon={<Trash2 size={22} color={colors.error} />}
-            onPress={() => router.push("/user/delete-account")}
-          />
-        </Section>
+            {/* <Row
+              label="Change Password"
+              icon={<Lock size={22} color={colors.dark} />}
+              onPress={() =>
+                router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD)
+              }
+            /> */}
 
-        {/* VERSION */}
-        <View className="items-center mt-10 mb-2">
-          <CsText
-            style={{
-              fontSize: 12,
-              color: colors.neutral,
-              letterSpacing: 0.6,
-            }}
-          >
-            App Version v 1.2.0.1
-          </CsText>
-        </View>
+            {/* SUPPORT */}
+            <SectionTitle title="Support & FAQs" />
 
-        {/* FOOTER */}
-        <View className="items-center mb-4">
-          <CsText style={{ fontSize: 12, color: colors.neutral }}>
-            © 2026 Ziraat • Smart Farming Solutions
-          </CsText>
-        </View>
-      </View>
+            <Row
+              label="Contact Support"
+              icon={<PhoneCall size={22} color={colors.primary} />}
+              onPress={() => router.push("/contact-Support")}
+            />
+
+            <Divider />
+
+            <Row
+              label="Add Address"
+              icon={<MapPin size={22} color={colors.primary} />}
+              onPress={() => router.push("/user/add-addresses")}
+            />
+
+            <Divider />
+
+            <Row
+              label="FAQs"
+              icon={<HelpCircle size={22} color={colors.primary} />}
+              onPress={() => router.push("/faq")}
+            />
+
+            {/* PRIVACY */}
+            <SectionTitle title="Privacy & Security" />
+
+            <Row
+              label="Privacy Policy"
+              icon={<Shield size={22} color={colors.primary} />}
+              onPress={() => router.push("/user/privacy")}
+            />
+            <Divider />
+
+            <Row
+              label="Terms & Conditions"
+              icon={<FileText size={22} color={colors.primary} />}
+              onPress={() => router.push("/user/terms")}
+            />
+
+            {/* ACCOUNT MANAGEMENT */}
+            <SectionTitle title="Account Management" />
+
+
+            <Row
+              label="Change Password"
+              icon={<Lock size={22} color={colors.primary} />}
+              onPress={() =>
+                router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD)
+              }
+            />
+            <Row
+              danger
+              label="Delete Account"
+              icon={<Trash2 size={22} color={colors.error} />}
+              onPress={() => router.push("/user/delete-account")}
+            />
+
+            {/* FOOTER */}
+            <View className="items-center mt-14">
+              <CsText
+                style={{
+                  fontSize: 12,
+                  color: colors.neutral,
+                }}
+              >
+                Version 1.2.0.1
+              </CsText>
+
+              <CsText
+                style={{
+                  fontSize: 11,
+                  color: colors.neutral,
+                  marginTop: 4,
+                }}
+              >
+                © 2026 Ziraat Smart Farming
+              </CsText>
+            </View>
+          </View>
+        </ScreenContent>
+      </ScrollView>
     </View>
   );
 }

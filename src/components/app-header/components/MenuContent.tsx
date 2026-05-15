@@ -3,7 +3,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import { Cog, PhoneCall } from "lucide-react-native";
-import { Text, View } from "react-native";
+import { Linking, Text, View } from "react-native";
 import IconButton from "./IconButton";
 
 const MenuContent = () => (
@@ -17,11 +17,19 @@ const MenuContent = () => (
       </Text>
     </View>
 
+
     <View className="flex-row items-center gap-3">
-      <IconButton onPress={() => console.log("Call Expert")}>
+      <IconButton
+        onPress={() => Linking.openURL("tel:+919876543210")}
+      >
         <PhoneCall size={20} color={colors.primary} />
       </IconButton>
-      <IconButton onPress={() => router.push({ pathname: ROUTES.SETTINGS })}>
+
+      <IconButton
+        onPress={() =>
+          router.push({ pathname: ROUTES.SETTINGS })
+        }
+      >
         <Cog size={20} color={colors.dark} />
       </IconButton>
     </View>

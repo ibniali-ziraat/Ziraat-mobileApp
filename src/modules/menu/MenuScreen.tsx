@@ -39,8 +39,7 @@ import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { MenuLinks } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
-import { Bot } from "lucide-react-native";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 
 export default function MenuScreen() {
   return (
@@ -61,13 +60,13 @@ export default function MenuScreen() {
             ))}
           </ScreenContent>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => router.push("/chat-bot")}
             className="absolute bottom-6 right-6 bg-primary p-4 rounded-full"
             activeOpacity={0.8}
           >
             <Bot size={26} color="white" strokeWidth={2} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </AnimatedTabContent>
     </ScreenLayout>
