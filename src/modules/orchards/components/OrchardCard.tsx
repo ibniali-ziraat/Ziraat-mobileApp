@@ -7,56 +7,16 @@ import { router } from "expo-router";
 import {
   ArrowRight,
   CalendarDays,
-  Trees
+  Ruler,
+  ShieldCheck,
+  Sprout,
+  Trees,
 } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 interface OrchardCardProps {
   orchard: any;
 }
-
-const DetailChip = ({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) => {
-  return (
-    <View
-      className="flex-1 rounded-2xl p-4"
-      style={{
-        backgroundColor: "#FAFAFA",
-      }}
-    >
-      <Text
-        style={[
-          typography.Poppins_m_medium,
-          {
-            fontSize: 11,
-            color: "#8D8D8D",
-            marginBottom: 6,
-          },
-        ]}
-      >
-        {label}
-      </Text>
-
-      <Text
-        numberOfLines={1}
-        style={[
-          typography.Poppins_m_semibold,
-          {
-            fontSize: 15,
-            color: colors.dark,
-          },
-        ]}
-      >
-        {value || "-"}
-      </Text>
-    </View>
-  );
-};
 
 export default function OrchardCard({ orchard }: OrchardCardProps) {
   const orchardSize =
@@ -72,121 +32,338 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
         <View
           className="rounded-[32px] overflow-hidden mb-6"
           style={{
-            backgroundColor: "#fff",
+            backgroundColor: colors.light,
             borderWidth: 1,
-            borderColor: "#F1F1F1",
+            borderColor: colors.cardBorder,
           }}
         >
-          {/* TOP SECTION */}
+
           <View
-            className="px-5 pt-5 pb-6"
+            className="px-5 pt-5 pb-7"
             style={{
               backgroundColor: colors.primary + "08",
             }}
           >
-            <View className="flex-row items-start justify-between">
-              <View className="flex-row flex-1">
-                {/* ICON */}
+            <View className="flex-row items-center">
+              <View
+                className="h-16 w-16 rounded-[24px] items-center justify-center"
+                style={{
+                  backgroundColor: colors.light,
+                }}
+              >
+                <Trees size={30} color={colors.primary} />
+              </View>
+              <View className="ml-4 flex-1">
+                <Text
+                  numberOfLines={2}
+                  style={[
+                    typography.Poppins_m_semibold,
+                    {
+                      fontSize: 22,
+                      color: colors.dark,
+                      lineHeight: 30,
+                    },
+                  ]}
+                >
+                  {orchard.orchardName}
+                </Text>
+
                 <View
-                  className="h-14 w-14 rounded-2xl items-center justify-center"
+                  className="self-start mt-3 px-4 py-1.5 rounded-full"
                   style={{
-                    backgroundColor: "#fff",
+                    backgroundColor: colors.primary + "15",
                   }}
                 >
-                  <Trees size={28} color={colors.primary} />
-                </View>
-
-                {/* TITLE */}
-                <View className="ml-4 flex-1">
                   <Text
-                    numberOfLines={2}
                     style={[
-                      typography.Poppins_m_semibold,
+                      typography.Poppins_m_medium,
                       {
-                        fontSize: 21,
-                        color: colors.dark,
-                        lineHeight: 28,
+                        fontSize: 11,
+                        color: colors.primary,
+                        letterSpacing: 0.3,
                       },
                     ]}
                   >
-                    {orchard.orchardName}
+                    {orchard.ownershipType}
                   </Text>
-
-                  <View
-                    className="self-start mt-3 px-3 py-1 rounded-full"
-                    style={{
-                      backgroundColor: colors.primary + "15",
-                    }}
-                  >
-                    <Text
-                      style={[
-                        typography.Poppins_m_medium,
-                        {
-                          fontSize: 11,
-                          color: colors.primary,
-                        },
-                      ]}
-                    >
-                      {orchard.ownershipType}
-                    </Text>
-                  </View>
                 </View>
               </View>
             </View>
           </View>
 
-          {/* CONTENT */}
+
           <View className="p-5">
-            {/* GRID */}
-            <View className="flex-row gap-3 mb-3">
-              <DetailChip
-                label="Orchard Size"
-                value={orchardSize}
-              />
 
-              <DetailChip
-                label="Established"
-                value={orchard.establishmentYear || "-"}
-              />
-            </View>
-
-            <View className="flex-row gap-3">
-              <DetailChip
-                label="Plantation"
-                value={orchard.plantationPattern || "-"}
-              />
-
-              <DetailChip
-                label="Ownership"
-                value={orchard.ownershipType || "-"}
-              />
-            </View>
-
-            {/* MINI INFO */}
-            <View
-              className="flex-row items-center mt-5 px-4 py-3 rounded-2xl"
-              style={{
-                backgroundColor: colors.light,
-              }}
-            >
-              <CalendarDays size={18} color={colors.primary} />
-
+            <View className="flex-row items-center justify-between mb-4">
               <Text
                 style={[
-                  typography.Poppins_m_medium,
+                  typography.Poppins_m_semibold,
                   {
-                    marginLeft: 10,
                     color: colors.dark,
-                    fontSize: 13,
-                    flex: 1,
+                    fontSize: 16,
                   },
                 ]}
               >
-                Orchard registered information overview
+                Orchard Information
               </Text>
+
+              <View
+                className="px-3 py-1 rounded-full"
+                style={{
+                  backgroundColor: colors.primary + "10",
+                }}
+              >
+                <Text
+                  style={[
+                    typography.Poppins_m_medium,
+                    {
+                      fontSize: 10,
+                      color: colors.primary,
+                    },
+                  ]}
+                >
+                  Registered
+                </Text>
+              </View>
             </View>
 
-            {/* BUTTON */}
+
+            <View className="flex-row gap-3 mb-3">
+
+              <View
+                className="flex-1 rounded-3xl p-4"
+                style={{
+                  backgroundColor: colors.light,
+                  borderWidth: 1,
+                  borderColor: colors.cardBorder,
+                }}
+              >
+                <View className="flex-row items-center mb-3">
+                  <View
+                    className="h-8 w-8 rounded-xl items-center justify-center"
+                    style={{
+                      backgroundColor: colors.primary + "12",
+                    }}
+                  >
+                    <Ruler size={15} color={colors.primary} />
+                  </View>
+
+                  <Text
+                    style={[
+                      typography.Poppins_m_medium,
+                      {
+                        fontSize: 11,
+                        color: colors.neutral,
+                        marginLeft: 8,
+                      },
+                    ]}
+                  >
+                    Orchard Size
+                  </Text>
+                </View>
+
+                <Text
+                  style={[
+                    typography.Poppins_m_semibold,
+                    {
+                      fontSize: 16,
+                      color: colors.dark,
+                    },
+                  ]}
+                >
+                  {orchardSize}
+                </Text>
+              </View>
+              <View
+                className="flex-1 rounded-3xl p-4"
+                style={{
+                  backgroundColor: colors.light,
+                  borderWidth: 1,
+                  borderColor: colors.cardBorder,
+                }}
+              >
+                <View className="flex-row items-center mb-3">
+                  <View
+                    className="h-8 w-8 rounded-xl items-center justify-center"
+                    style={{
+                      backgroundColor: colors.primary + "12",
+                    }}
+                  >
+                    <CalendarDays size={15} color={colors.primary} />
+                  </View>
+
+                  <Text
+                    style={[
+                      typography.Poppins_m_medium,
+                      {
+                        fontSize: 11,
+                        color: colors.neutral,
+                        marginLeft: 8,
+                      },
+                    ]}
+                  >
+                    Established
+                  </Text>
+                </View>
+
+                <Text
+                  style={[
+                    typography.Poppins_m_semibold,
+                    {
+                      fontSize: 16,
+                      color: colors.dark,
+                    },
+                  ]}
+                >
+                  {orchard.establishmentYear || "-"}
+                </Text>
+              </View>
+            </View>
+
+
+            <View className="flex-row gap-3">
+
+              <View
+                className="flex-1 rounded-3xl p-4"
+                style={{
+                  backgroundColor: colors.light,
+                  borderWidth: 1,
+                  borderColor: colors.cardBorder,
+                }}
+              >
+                <View className="flex-row items-center mb-3">
+                  <View
+                    className="h-8 w-8 rounded-xl items-center justify-center"
+                    style={{
+                      backgroundColor: colors.primary + "12",
+                    }}
+                  >
+                    <Sprout size={15} color={colors.primary} />
+                  </View>
+
+                  <Text
+                    style={[
+                      typography.Poppins_m_medium,
+                      {
+                        fontSize: 11,
+                        color: colors.neutral,
+                        marginLeft: 8,
+                      },
+                    ]}
+                  >
+                    Plantation
+                  </Text>
+                </View>
+
+                <Text
+                  numberOfLines={1}
+                  style={[
+                    typography.Poppins_m_semibold,
+                    {
+                      fontSize: 16,
+                      color: colors.dark,
+                    },
+                  ]}
+                >
+                  {orchard.plantationPattern || "-"}
+                </Text>
+              </View>
+
+
+              <View
+                className="flex-1 rounded-3xl p-4"
+                style={{
+                  backgroundColor: colors.light,
+                  borderWidth: 1,
+                  borderColor: colors.cardBorder,
+                }}
+              >
+                <View className="flex-row items-center mb-3">
+                  <View
+                    className="h-8 w-8 rounded-xl items-center justify-center"
+                    style={{
+                      backgroundColor: colors.primary + "12",
+                    }}
+                  >
+                    <ShieldCheck size={15} color={colors.primary} />
+                  </View>
+
+                  <Text
+                    style={[
+                      typography.Poppins_m_medium,
+                      {
+                        fontSize: 11,
+                        color: colors.neutral,
+                        marginLeft: 8,
+                      },
+                    ]}
+                  >
+                    Ownership
+                  </Text>
+                </View>
+
+                <Text
+                  numberOfLines={1}
+                  style={[
+                    typography.Poppins_m_semibold,
+                    {
+                      fontSize: 16,
+                      color: colors.dark,
+                    },
+                  ]}
+                >
+                  {orchard.ownershipType || "-"}
+                </Text>
+              </View>
+            </View>
+
+
+            <View
+              className="flex-row items-center mt-5 px-4 py-4 rounded-3xl"
+              style={{
+                backgroundColor: colors.light,
+                borderWidth: 1,
+                borderColor: colors.cardBorder,
+              }}
+            >
+              <View
+                className="h-11 w-11 rounded-2xl items-center justify-center"
+                style={{
+                  backgroundColor: colors.primary + "12",
+                }}
+              >
+                <CalendarDays size={18} color={colors.primary} />
+              </View>
+
+              <View className="ml-3 flex-1">
+                <Text
+                  style={[
+                    typography.Poppins_m_semibold,
+                    {
+                      color: colors.dark,
+                      fontSize: 13,
+                    },
+                  ]}
+                >
+                  Orchard Overview
+                </Text>
+
+                <Text
+                  style={[
+                    typography.Poppins_m_medium,
+                    {
+                      color: colors.neutral,
+                      fontSize: 11,
+                      marginTop: 2,
+                    },
+                  ]}
+                >
+                  Registered orchard information and details
+                </Text>
+              </View>
+            </View>
+
+
             <Pressable
               onPress={() =>
                 router.push({
@@ -194,7 +371,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
                   params: { id: orchard.id },
                 })
               }
-              className="mt-5 rounded-2xl py-4 px-5 flex-row items-center justify-between"
+              className="mt-5 rounded-[26px] py-4 px-5 flex-row items-center justify-between"
               style={{
                 backgroundColor: colors.primary,
               }}
@@ -216,9 +393,10 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
                   style={[
                     typography.Poppins_m_medium,
                     {
-                      color: "rgba(255,255,255,0.75)",
+                      color: colors.light,
                       fontSize: 11,
-                      marginTop: 2,
+                      marginTop: 3,
+                      opacity: 0.9,
                     },
                   ]}
                 >
@@ -227,9 +405,9 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
               </View>
 
               <View
-                className="h-10 w-10 rounded-full items-center justify-center"
+                className="h-11 w-11 rounded-full items-center justify-center"
                 style={{
-                  backgroundColor: "rgba(255,255,255,0.15)",
+                  backgroundColor: colors.light + "20",
                 }}
               >
                 <ArrowRight size={18} color={colors.light} />
@@ -237,6 +415,17 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
             </Pressable>
           </View>
         </View>
+
+        <View
+          style={{
+            height: 1,
+            backgroundColor: colors.primary + "50",
+            marginHorizontal: 2,
+          }}
+        />
+
+
+
       </ScreenContent>
     </ScreenLayout>
   );
