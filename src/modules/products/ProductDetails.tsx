@@ -203,6 +203,8 @@ export default function ProductDetails() {
 
   const cartItem = cart.find((i) => i.productId === product.id);
 
+  console.log(cartItem, "cartItem");
+
   const isInCart = Boolean(cartItem);
 
   const handleAddToCart = async () => {

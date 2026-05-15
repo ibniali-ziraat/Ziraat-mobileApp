@@ -12,16 +12,31 @@ import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
 
 import SoilTestReportsSection from "../form-sections/SoilTestReportsSection";
-import { useCreateSoilTestReportMutation } from "../hooks/useSoilTestReport";
+import {
+  useCreateSoilTestReportMutation,
+  useSoilTestReportQuery,
+} from "../hooks/useSoilTestReport";
 import { SoilTestReportSchema } from "../schemas/SoilTestReportSchema";
+
+const MAX_REPORTS = 3;
 
 export default function SoilTestReportsScreen() {
   const { orchardProfileId } = useAuth();
+
   const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
+
   const { mutateAsync: save, isPending: isSaving } =
     useCreateSoilTestReportMutation();
 
+  // Existing uploaded reports
+  const { data: existingData } = useSoilTestReportQuery(orchardProfileId);
+
+  const existingUrls: string[] = existingData?.soilTestReportUrls ?? [];
+
+  const uploadedReportsCount = existingUrls.length;
+
   const form = useZodForm(SoilTestReportSchema);
+
   const {
     handleSubmit,
     formState: { errors },
@@ -29,12 +44,24 @@ export default function SoilTestReportsScreen() {
 
   const onSubmit = async (values: any) => {
     try {
-      const uploadedFiles: string[] = [];
+      const newlyUploadedUrls: string[] = [];
 
+      const remainingAllowed = MAX_REPORTS - uploadedReportsCount;
+
+      // Prevent selecting more than allowed
+      if ((values.reports?.length || 0) > remainingAllowed) {
+        showErrorToast(
+          `You can upload only ${remainingAllowed} more report${
+            remainingAllowed > 1 ? "s" : ""
+          }.`,
+        );
+
+        return;
+      }
+
+      // Upload files
       for (const file of values.reports || []) {
         if (file?.uri) {
-          console.log("existed file.uri");
-
           const uploadRes = await uploadFileAsync({
             file: {
               uri: file.uri,
@@ -46,22 +73,35 @@ export default function SoilTestReportsScreen() {
             FileCategory: "documents",
           });
 
-          uploadedFiles.push(uploadRes?.data?.fileUrl);
-          console.log(uploadedFiles, "uploaded files");
-          console.log(uploadRes, "upload res...");
+          const url = uploadRes?.data?.fileUrl;
+
+          if (url) {
+            newlyUploadedUrls.push(url);
+          }
         }
       }
-      const payload = {
-        orchardProfileId,
-        soilTestReportUrls: uploadedFiles,
-      };
 
-      await save(payload);
+      // Merge existing + new
+      const mergedUrls = [...existingUrls, ...newlyUploadedUrls];
+
+      // Final safety validation
+      if (mergedUrls.length > MAX_REPORTS) {
+        showErrorToast("Only 3 soil test reports are allowed.");
+
+        return;
+      }
+
+      await save({
+        orchardProfileId,
+        soilTestReportUrls: mergedUrls,
+      });
 
       showSuccessToast("Reports uploaded successfully");
-      // router.push(ROUTES.TABS.ORCHARDS);
+
       router.dismiss();
     } catch (error: any) {
+      console.warn("[SoilTestReport] upload error →", error);
+
       showErrorToast("Failed to upload reports");
     }
   };
@@ -72,7 +112,10 @@ export default function SoilTestReportsScreen() {
 
       <ScreenContent>
         <FormProvider {...form}>
-          <SoilTestReportsSection errors={errors} />
+          <SoilTestReportsSection
+            errors={errors}
+            uploadedReportsCount={uploadedReportsCount}
+          />
 
           <FormActions
             cancelLabel="Cancel"
