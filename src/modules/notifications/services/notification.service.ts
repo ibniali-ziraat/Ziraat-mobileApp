@@ -7,7 +7,7 @@ export const registerDeviceToken = async (payload: {
   lat?: number;
   lon?: number;
 }) => {
-  const response = await notificationInstance.post("/save-token", payload);
+  const response = await notificationInstance.post("/api/save-token", payload);
   return response.data;
 };
 

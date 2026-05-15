@@ -20,6 +20,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { Platform } from "react-native";
 
 type MessageHandler = (msg: FirebaseMessagingTypes.RemoteMessage) => void;
 
@@ -41,6 +42,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     // messaging().onMessage fires ONLY when app is foreground — no AppState check needed
+    if (Platform.OS === "web") return;
     const unsubForeground = messaging().onMessage(async (msg) => {
       setNotification(msg);
       listenersRef.current.forEach((cb) => cb(msg));
