@@ -62,11 +62,10 @@ export default function ChatbotScreen() {
           {!isUser && <Text className="mr-2 text-lg">🤖</Text>}
 
           <View
-            className={`px-4 py-3 rounded-2xl max-w-[80%] ${
-              isUser
+            className={`px-4 py-3 rounded-2xl max-w-[80%] ${isUser
                 ? "bg-purple-600 rounded-br-none"
                 : "bg-gray-200 rounded-bl-none"
-            }`}
+              }`}
           >
             <Text className={isUser ? "text-white" : "text-black"}>
               {item.text}
@@ -190,16 +189,14 @@ export default function ChatbotScreen() {
             <View className={`mb-4 ${isUser ? "items-end" : "items-start"}`}>
               {/* MESSAGE */}
               <View
-                className={`px-4 py-3 rounded-2xl max-w-[85%] shadow-sm ${
-                  isUser
+                className={`px-4 py-3 rounded-2xl max-w-[85%] shadow-sm ${isUser
                     ? "bg-purple-600 rounded-br-sm"
                     : "bg-white border border-gray-200 rounded-bl-sm"
-                }`}
+                  }`}
               >
                 <Text
-                  className={`text-[14px] ${
-                    isUser ? "text-white" : "text-gray-800"
-                  }`}
+                  className={`text-[14px] ${isUser ? "text-white" : "text-gray-800"
+                    }`}
                 >
                   {item.text}
                 </Text>

@@ -10,7 +10,7 @@ export default function PlantProtection({ data }: any) {
   return (
     <ZiraatCard width="100%" marginBottom={2}>
       <View className="p-4">
-        <CsText className="mb-3"style={[typography.Poppins_m_semibold]}>
+        <CsText className="mb-3" style={[typography.Poppins_m_semibold]}>
           Plant Protection & Health
         </CsText>
 
