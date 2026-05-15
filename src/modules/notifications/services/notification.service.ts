@@ -8,6 +8,8 @@ export const registerDeviceToken = async (payload: {
   lon?: number;
 }) => {
   const response = await notificationInstance.post("/api/save-token", payload);
+  console.log(payload, "payload...");
+
   return response.data;
 };
 
@@ -18,5 +20,6 @@ export const updateTokenLocation = async (payload: {
   lon: number;
 }) => {
   const response = await notificationInstance.patch("/save-token", payload);
+
   return response.data;
 };
