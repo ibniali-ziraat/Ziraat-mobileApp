@@ -17,7 +17,7 @@ export default function AddOrchardFAB() {
       style={{
         position: "absolute",
         right: 24,
-        bottom: 150,
+        bottom: 67,
         zIndex: 999999,
       }}
     >
