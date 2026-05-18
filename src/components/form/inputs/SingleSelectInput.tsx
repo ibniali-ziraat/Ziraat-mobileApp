@@ -11,7 +11,6 @@ import {
   TextInput,
   View,
 } from "react-native";
-import CsText from "../../shared/CsText";
 import { SingleSelectInputProps } from "../../shared/inputs/types";
 
 export default function SingleSelectInput({
@@ -71,7 +70,7 @@ export default function SingleSelectInput({
 
         return (
           <View style={{ marginBottom: 16 }}>
-            <CsText
+            <Text
               style={{
                 marginBottom: 6,
                 fontSize: 14,
@@ -80,8 +79,8 @@ export default function SingleSelectInput({
               }}
             >
               Select {label}
-              {!optional && <CsText style={{ color: colors.error }}> *</CsText>}
-            </CsText>
+              {!optional && <Text style={{ color: colors.error }}> *</Text>}
+            </Text>
             <Pressable
               disabled={disabled}
               style={{
@@ -107,7 +106,7 @@ export default function SingleSelectInput({
                 }
               }}
             >
-              <CsText
+              <Text
                 style={{
                   fontSize: 16,
                   color: disabled ? colors.neutral + "88" : colors.darkHover,
@@ -115,7 +114,7 @@ export default function SingleSelectInput({
                 }}
               >
                 {selectedLabel || placeholder}
-              </CsText>
+              </Text>
 
               {/* 2. Added Chevron Icon */}
               <ChevronDown
@@ -206,9 +205,9 @@ export default function SingleSelectInput({
                         alignItems: "center",
                       }}
                     >
-                      <CsText style={{ fontSize: 16, fontWeight: "500" }}>
+                      <Text style={{ fontSize: 16, fontWeight: "500" }}>
                         {modalLabel}
-                      </CsText>
+                      </Text>
 
                       <View style={{ flexDirection: "row" }}>
                         {/* <Pressable
@@ -289,7 +288,7 @@ export default function SingleSelectInput({
                             hideSearchBar();
                           }}
                         >
-                          <CsText
+                          <Text
                             style={{
                               fontSize: 16,
                               color:
@@ -299,7 +298,7 @@ export default function SingleSelectInput({
                             }}
                           >
                             {item.label}
-                          </CsText>
+                          </Text>
                         </Pressable>
                       )}
                     />

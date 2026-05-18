@@ -78,7 +78,7 @@ export default function ProductPriceCard({ product }: any) {
         </View>
 
         {/* STOCK BADGE */}
-        <View
+        {/* <View
           className="px-3 py-1 rounded-full"
           style={{
             backgroundColor: inStock
@@ -94,7 +94,7 @@ export default function ProductPriceCard({ product }: any) {
           >
             {inStock ? "In Stock" : "Out of Stock"}
           </CsText>
-        </View>
+        </View> */}
       </View>
 
       {/* DIVIDER */}

@@ -19,15 +19,50 @@ const HomeContent = () => {
       className="w-full flex-row items-center justify-between pt-4"
       style={{ borderBottomColor: colors.neutral }}
     >
-      <View>
+      {/* <View>
         <Text className="text-md" style={[typography.Poppins_m_semibold]}>
           Welcome
         </Text>
-        <Text style={[{ color: colors.dark }, typography.Poppins_m_regular]}>
+        <Text
+          style={[
+            {
+              color: colors.dark,
+              flexShrink: 1,
+              flexWrap: "wrap",
+            },
+            typography.Poppins_m_regular,
+          ]}
+        >
+          {title.toUpperCase()}
+        </Text>
+      </View> */}
+
+      {/* LEFT SECTION */}
+      <View
+        style={{
+          flex: 1,
+          marginRight: 10,
+          paddingRight: 5,
+        }}
+      >
+        <Text className="text-md" style={typography.Poppins_m_semibold}>
+          Welcome
+        </Text>
+
+        <Text
+          numberOfLines={2}
+          ellipsizeMode="tail"
+          style={[
+            {
+              color: colors.dark,
+              lineHeight: 20,
+            },
+            typography.Poppins_m_regular,
+          ]}
+        >
           {title.toUpperCase()}
         </Text>
       </View>
-
       <View className="flex-row items-center">
         <Pressable
           className="p-2 mr-3 rounded-full border"

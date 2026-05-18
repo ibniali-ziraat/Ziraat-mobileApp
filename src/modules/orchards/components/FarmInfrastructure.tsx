@@ -14,10 +14,19 @@ export default function FarmInfrastructure({ data }: any) {
           Farm Infrastructure
         </CsText>
 
-        <DetailRow label="Equipment Owned" value={data.equipment_owned?.join(", ")} />
-        <DetailRow label="Storage Facilities" value={data.storage_facilities?.join(", ")} />
-        <DetailRow label="Permanent Labor" value={data.farm_labor?.permanent} />
-        <DetailRow label="Seasonal Labor" value={data.farm_labor?.seasonal} />
+        <DetailRow
+          label="Equipment Owned"
+          value={data.equipment_owned?.join(", ")}
+        />
+        <DetailRow
+          label="Storage Facilities"
+          value={data.storage_facilities?.join(", ")}
+        />
+        <DetailRow
+          label="Permanent Labour"
+          value={data.farm_labor?.permanent}
+        />
+        <DetailRow label="Seasonal Labour" value={data.farm_labor?.seasonal} />
       </View>
     </ZiraatCard>
   );
