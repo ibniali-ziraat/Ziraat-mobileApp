@@ -6,7 +6,7 @@ import { toast } from "@backpackapp-io/react-native-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { ActivityIndicator, View } from "react-native";
+import { View } from "react-native";
 
 import {
   useCountries,
@@ -18,8 +18,8 @@ import {
 } from "@/src/hooks/useraddress/useUserAddress";
 
 import FormActions from "@/src/components/shared/FormActions";
+import Loader from "@/src/components/shared/Loader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
-import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { addressSchema } from "../../auth/user/schemas/userAdress.schema";
@@ -106,11 +106,7 @@ const UserAddressForm = () => {
   if (isEditMode && isFetchingAddress) {
     return (
       <ScreenLayout>
-        <ActivityIndicator
-          size="large"
-          color={colors.primary}
-          style={{ marginTop: 40 }}
-        />
+        <Loader />
       </ScreenLayout>
     );
   }
@@ -193,7 +189,8 @@ const UserAddressForm = () => {
         onSuccess: () => {
           toast.success("Address saved successfully");
           reset();
-          router.replace(ROUTES.SHOPPING.CHECKOUT.SELECT_ADDRESS);
+          // router.replace(ROUTES.SHOPPING.CHECKOUT.SELECT_ADDRESS);
+          router.dismiss();
         },
         onError: () => toast.error("Failed to save address"),
       });

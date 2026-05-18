@@ -12,7 +12,7 @@ export const MenuLinks = {
         { label: "Saved Addresses", screen: "settings/farmer/addresses" },
         { label: "About Us", screen: "about-us" },
         { label: "My Orders", screen: ROUTES.ORDERS.LIST },
-        { label: "Chat With Us", screen: "discussion" },
+        { label: "Chat With Us", screen: ROUTES.CHAT_BOT },
         { label: "Discussion", screen: ROUTES.Discussion.discussionForum },
         { label: "Wallet", screen: ROUTES.PAYMENTMETHOD.Wallet },
         // { label: "Change Password", screen: "user/change-password" },

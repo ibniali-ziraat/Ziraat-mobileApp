@@ -120,10 +120,7 @@ export default function SettingsScreen() {
         }}
       >
         <ScreenContent>
-
           <View>
-
-
             <SectionTitle title="Account" />
 
             <Row
@@ -156,7 +153,9 @@ export default function SettingsScreen() {
             <Row
               label="Add Address"
               icon={<MapPin size={22} color={colors.primary} />}
-              onPress={() => router.push("/user/add-addresses")}
+              onPress={() =>
+                router.push(ROUTES.SHOPPING.CHECKOUT.CREATE_ADDRESS)
+              }
             />
 
             <Divider />
@@ -186,13 +185,10 @@ export default function SettingsScreen() {
             {/* ACCOUNT MANAGEMENT */}
             <SectionTitle title="Account Management" />
 
-
             <Row
               label="Change Password"
               icon={<Lock size={22} color={colors.primary} />}
-              onPress={() =>
-                router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD)
-              }
+              onPress={() => router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD)}
             />
             <Row
               danger

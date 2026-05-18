@@ -22,7 +22,7 @@ export const ROUTES = {
     ORDERS: "/orders-list",
     PAYMENTS: "/more/payments",
     ABOUT_US: "/about-us",
-    DISCUSSION: "/more/discussion",
+    DISCUSSION: "/mmore/discussion",
     PROFILE: "/profile-view",
   },
 
@@ -91,7 +91,7 @@ export const ROUTES = {
   },
 
   PAYMENTMETHOD: {
-    Wallet: "/wallet",
+    Wallet: "/wwallet",
   },
 
   ORDERS: {
@@ -104,7 +104,7 @@ export const ROUTES = {
   },
 
   Discussion: {
-    discussionForum: "/discussion",
+    discussionForum: "/ddiscussion",
     QuestionScreen: "/questionScreen",
   },
   SHIPPING: {
@@ -117,5 +117,5 @@ export const ROUTES = {
     DETAILS: "/weather-details",
   },
   SETTINGS: "/settings",
-  CHAT_BOT: "/chat-bot",
+  CHAT_BOT: "/cchat-bot",
 } as const;
