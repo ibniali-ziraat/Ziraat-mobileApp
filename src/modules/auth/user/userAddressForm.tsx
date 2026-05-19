@@ -230,6 +230,7 @@ const UserAddressForm = () => {
             label="Contact Name"
             required
             error={errors.contactName}
+            type="name"
           />
 
           <FormTextInput

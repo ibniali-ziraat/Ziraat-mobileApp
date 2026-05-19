@@ -1,30 +1,40 @@
-import { applyCoupon, checkout, createAddress, createCheckout, deleteUserAddress, editUserAddress, fetchCountries, fetchDistrictsByStates, fetchStatesByCountry, getExistingAddressess, getListAddresses, PostSetDefaultAddress } from "@/src/services/user-address.service";
+import {
+  applyCoupon,
+  checkout,
+  createAddress,
+  createCheckout,
+  deleteUserAddress,
+  editUserAddress,
+  fetchCountries,
+  fetchDistrictsByStates,
+  fetchStatesByCountry,
+  getExistingAddressess,
+  getListAddresses,
+  PostSetDefaultAddress,
+} from "@/src/services/user-address.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-
 // import { CreateCheckoutPayload } from "../../services/checkoutTypes";
- 
+
 export const useCouponCode = () => {
   return useMutation({
     mutationFn: (payload: { couponCode: string }) => applyCoupon(payload),
   });
 };
- 
+
 export const useCheckout = () => {
   return useMutation({
     mutationFn: (payload: { couponCode: string }) => checkout(payload),
   });
 };
- 
+
 // -----------------Create Address-----------
- 
+
 // export const useCreateAddress = () => {
 //   return useMutation({
 //     mutationFn: (payload) => createAddress(payload),
 //   });
 // };
- 
-
 
 export const useCreateAddress = () => {
   const queryClient = useQueryClient();
@@ -33,7 +43,6 @@ export const useCreateAddress = () => {
     mutationFn: (payload) => createAddress(payload),
 
     onSuccess: () => {
-    
       queryClient.invalidateQueries({
         queryKey: ["checkout-shipping"],
       });
@@ -46,7 +55,9 @@ export const useCreateCheckout = () => {
     mutationFn: (payload) => createCheckout(payload),
   });
 };
- 
+
+// get all the addresses from the /List
+
 export const useCheckoutShipping = () => {
   return useQuery({
     queryKey: ["checkout-shipping"],
@@ -55,25 +66,19 @@ export const useCheckoutShipping = () => {
   });
 };
 
-
 export const useDeleteUserAddress = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (userAddressId: number) =>
-      deleteUserAddress(userAddressId),
+    mutationFn: (userAddressId: number) => deleteUserAddress(userAddressId),
 
     onSuccess: () => {
-    
       queryClient.invalidateQueries({
         queryKey: ["checkout-shipping"],
-
       });
     },
   });
 };
-
-
 
 // export const useEditUserAddress = () => {
 //   const queryClient = useQueryClient();
@@ -96,18 +101,12 @@ export const useDeleteUserAddress = () => {
 // };
 
 export const useExistingAddress = (userAddressId) => {
- 
-
   return useQuery({
     queryKey: ["existing-addresses", userAddressId],
     queryFn: () => getExistingAddressess(userAddressId),
     enabled: !!userAddressId,
-
-   
   });
 };
-
-
 
 // export const useEditUserAddress = () => {
 //   const queryClient = useQueryClient();
@@ -130,7 +129,6 @@ export const useExistingAddress = (userAddressId) => {
 //   });
 // };
 
-
 export const useEditUserAddress = () => {
   const queryClient = useQueryClient();
 
@@ -141,8 +139,7 @@ export const useEditUserAddress = () => {
     }: {
       userAddressId: number;
       payload: any;
-    }) =>
-      editUserAddress(userAddressId, payload),
+    }) => editUserAddress(userAddressId, payload),
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({
@@ -152,19 +149,13 @@ export const useEditUserAddress = () => {
   });
 };
 
-
-
-
-
-
- 
 export const useCountries = () => {
   return useQuery({
     queryKey: ["countries"],
     queryFn: fetchCountries,
   });
 };
- 
+
 export const useStates = (countryId: string) => {
   return useQuery({
     queryKey: ["states", countryId],
@@ -172,7 +163,7 @@ export const useStates = (countryId: string) => {
     enabled: !!countryId,
   });
 };
- 
+
 export const useDistricts = (stateId: string) => {
   return useQuery({
     queryKey: ["states", stateId],
@@ -180,18 +171,15 @@ export const useDistricts = (stateId: string) => {
     enabled: !!stateId,
   });
 };
- 
-
 
 export const useDefaultAddress = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (userAddressId: number) =>
-      PostSetDefaultAddress(userAddressId),
+    mutationFn: (userAddressId: number) => PostSetDefaultAddress(userAddressId),
 
     onSuccess: () => {
-      queryClient.invalidateQueries(); 
+      queryClient.invalidateQueries();
     },
   });
 };
