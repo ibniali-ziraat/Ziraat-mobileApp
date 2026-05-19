@@ -119,7 +119,10 @@ export default function ProfileViewScreen() {
   // }
   return (
     <ScreenLayout>
-      <BackHeader title="Profile" onPress={() => router.dismiss()} />
+      <BackHeader
+        title="Profile"
+        onPress={() => router.replace(ROUTES.TABS.HOME)}
+      />
       <ScreenContent>
         <ProfileTopHeader
           profilePic={profileData?.profilePic}

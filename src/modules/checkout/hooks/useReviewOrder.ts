@@ -10,12 +10,14 @@ import {
 } from "./useCheckout";
 
 const UPI_OPTION = { label: "UPI", value: "UPI" };
-const COD_OPTION = { label: "Cash on Delivery", value: "COD" };
+// const COD_OPTION = { label: "Cash on Delivery", value: "COD" };
 
 export const useReviewOrder = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const { data: paymentProviders } = usePaymentProviders();
+  console.log(paymentProviders, "paymentprofiders");
+
   const { mutate: codCheckout, isPending: isCodPending } = useCodCheckout();
   const { mutate: upiCheckout, isPending: isUpiPending } = useUpiCheckout();
   const { pay } = usePayment();
@@ -29,7 +31,7 @@ export const useReviewOrder = () => {
           .map((p: any) => ({ label: p.name, value: p.id }))
       : []),
     UPI_OPTION,
-    COD_OPTION,
+    // COD_OPTION,
   ];
 
   const onSuccess = (response: any) => {
@@ -132,7 +134,7 @@ export const useReviewOrder = () => {
     if (!checkoutId) return;
     setErrorMsg("");
 
-    if (selectedPayment === "COD") {
+    if (selectedPayment === "CoD") {
       handleCodPayment(checkoutId);
     } else if (selectedPayment === "UPI") {
       handleUpiPayment(checkoutId, amount, shippingAddress);

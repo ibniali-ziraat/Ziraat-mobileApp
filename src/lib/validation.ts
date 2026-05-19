@@ -44,11 +44,21 @@ export const requiredOTP = () =>
     .regex(/^[0-9]{6}$/, "Enter Valid OTP");
 ///////////
 
+// export const emailValidator = z
+//   .string()
+//   .trim()
+//   .toLowerCase()
+
+//   .optional()
+//   .or(z.literal(""));
+
 export const emailValidator = z
   .string()
   .trim()
   .toLowerCase()
-
+  .refine((v) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v), {
+    message: "Please enter a valid email address",
+  })
   .optional()
   .or(z.literal(""));
 

@@ -159,6 +159,7 @@ export default function ProductDetails() {
 
     return (
       <ScreenLayout>
+        <BackHeader title="Back" />
         <View className="flex-1 items-center justify-center px-8 bg-white">
           <View
             style={{ backgroundColor: `${colors.secondary}10` }}
