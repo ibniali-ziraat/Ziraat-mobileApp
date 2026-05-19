@@ -193,7 +193,7 @@ export default function OrchardDetailsScreen() {
           heading="Soil & Water"
           subheading={
             !hasData(soilWaterData)
-              ? "Soil test reports can only be added after the Soil & Water section is filled."
+              ? "Soil reports can also be added after completing the Soil & Water Section"
               : undefined
           }
           items={

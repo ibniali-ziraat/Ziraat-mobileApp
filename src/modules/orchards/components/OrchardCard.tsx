@@ -37,7 +37,6 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
             borderColor: colors.cardBorder,
           }}
         >
-
           <View
             className="px-5 pt-5 pb-7"
             style={{
@@ -91,9 +90,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
             </View>
           </View>
 
-
           <View className="p-5">
-
             <View className="flex-row items-center justify-between mb-4">
               <Text
                 style={[
@@ -127,9 +124,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
               </View>
             </View>
 
-
             <View className="flex-row gap-3 mb-3">
-
               <View
                 className="flex-1 rounded-3xl p-4"
                 style={{
@@ -220,9 +215,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
               </View>
             </View>
 
-
             <View className="flex-row gap-3">
-
               <View
                 className="flex-1 rounded-3xl p-4"
                 style={{
@@ -268,7 +261,6 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
                   {orchard.plantationPattern || "-"}
                 </Text>
               </View>
-
 
               <View
                 className="flex-1 rounded-3xl p-4"
@@ -317,8 +309,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
               </View>
             </View>
 
-
-            <View
+            {/* <View
               className="flex-row items-center mt-5 px-4 py-4 rounded-3xl"
               style={{
                 backgroundColor: colors.light,
@@ -361,8 +352,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
                   Registered orchard information and details
                 </Text>
               </View>
-            </View>
-
+            </View> */}
 
             <Pressable
               onPress={() =>
@@ -423,9 +413,6 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
             marginHorizontal: 2,
           }}
         />
-
-
-
       </ScreenContent>
     </ScreenLayout>
   );
