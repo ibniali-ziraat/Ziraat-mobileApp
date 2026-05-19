@@ -218,7 +218,7 @@ export default function VarietiesCard({
           <Pressable
             onPress={() =>
               router.push({
-                pathname: "/orchards/all-varieties",
+                pathname: "/all-varieties",
                 params: {
                   varieties: JSON.stringify(varietiesData),
                 },
