@@ -63,20 +63,19 @@ export default function MultiSelectInput({
               borderRadius: 6,
               backgroundColor: "white",
               flexDirection: "row",
-              alignItems: "center",
+              alignItems: "flex-start",
               justifyContent: "space-between",
             }}
           >
-            <Text
-              style={{ color: value?.length ? colors.dark : colors.neutral }}
-            >
-              {value?.length ? value.join(", ") : `Select ${placeholder}`}
-            </Text>
-            <ChevronDown
-              size={16}
-              color={colors.neutral}
-              style={{ marginLeft: 8 }}
-            />
+            <View style={{ flex: 1, marginRight: 8 }}>
+              <Text
+                style={{ color: value?.length ? colors.dark : colors.neutral }}
+              >
+                {value?.length ? value.join(", ") : `Select ${placeholder}`}
+              </Text>
+            </View>
+
+            <ChevronDown size={16} color={colors.neutral} />
           </Pressable>
 
           {error && (

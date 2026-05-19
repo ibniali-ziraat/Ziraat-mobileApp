@@ -277,12 +277,12 @@ export default function OrchardDetailsScreen() {
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
-                    title: "Seasonal Labor",
+                    title: "Seasonal Labour",
                     value: infrastructureData?.seasonalLabor,
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
-                    title: "Contract-based Labor",
+                    title: "Contract-based Labour",
                     value: infrastructureData?.contractBasedLabor,
                     icon: <Users size={20} color={colors.primary} />,
                   },

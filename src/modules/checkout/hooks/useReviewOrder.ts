@@ -10,6 +10,7 @@ import {
 } from "./useCheckout";
 
 const UPI_OPTION = { label: "UPI", value: "UPI" };
+const COD_OPTION = { label: "Cash on Delivery", value: "COD" };
 
 export const useReviewOrder = () => {
   const [errorMsg, setErrorMsg] = useState("");
@@ -28,11 +29,10 @@ export const useReviewOrder = () => {
           .map((p: any) => ({ label: p.name, value: p.id }))
       : []),
     UPI_OPTION,
+    COD_OPTION,
   ];
 
   const onSuccess = (response: any) => {
-    console.log(response, "response is....");
-
     router.push({
       pathname: ROUTES.SHOPPING.CHECKOUT.ORDER_SUCCESS,
       params: { order: JSON.stringify(response) },
@@ -53,104 +53,68 @@ export const useReviewOrder = () => {
   };
 
   const handleCodPayment = (checkoutId: string) => {
+    console.log(checkoutId, "checkout id...");
+
     codCheckout(checkoutId, { onSuccess, onError });
   };
 
   const handleUpiPayment = async (
     checkoutId: string,
     amount: number,
-    contactName: string,
+    shippingAddress: any,
   ) => {
     const result = await pay({
       amount,
       description: "Order Payment",
       user: {
-        name: contactName,
+        name: shippingAddress.contactName,
         email: "test@example.com",
-        contact: "9999999999",
+        contact: shippingAddress.phone,
       },
     });
 
-    // if (result.success) {
-    //   console.log("payment success..");
-
-    //   upiCheckout(
-    //     {
-    //       checkoutId,
-    //       paymentId: result.data.razorpay_payment_id,
-    //       orderId: result.data.razorpay_order_id ?? "",
-    //       signature: result.data.razorpay_signature ?? "",
-    //     },
-    //     { onSuccess, onError },
-    //   );
-    // }
     if (result.success) {
-      // TODO: replace with real upiCheckout API call when backend is ready
+      const addressPayload = {
+        addressLine1: shippingAddress.addressLine1,
+        addressLine2: shippingAddress.addressLine2 ?? "",
+        city: shippingAddress.cityName,
+        contactName: shippingAddress.contactName,
+        country: shippingAddress.countryName ?? null,
+        countryId: shippingAddress.countryId ?? "IN",
+        district: shippingAddress.districtName ?? null,
+        districtId: shippingAddress.districtId ?? null,
+        id: shippingAddress.userAddressId,
+        phone: shippingAddress.phone,
+        stateOrProvince: shippingAddress.stateOrProvinceName,
+        stateOrProvinceId: shippingAddress.stateOrProvinceId,
+        zipCode: shippingAddress.zipCode,
+      };
+
       onSuccess({
         error: null,
         success: true,
         value: {
-          billingAddress: {
-            addressLine1: "Khan mohalla",
-            addressLine2: "",
-            city: "Srinagar",
-            contactName: "Quarat qadir",
-            country: null,
-            countryId: "IN",
-            district: null,
-            districtId: 3,
-            id: 329,
-            phone: "7051059559",
-            stateOrProvince: null,
-            stateOrProvinceId: 3,
-            zipCode: "190009",
-          },
-          billingAddressId: 329,
+          billingAddress: addressPayload,
+          billingAddressId: shippingAddress.userAddressId,
           children: [],
           couponCode: null,
           couponRuleName: null,
-          createdById: 12902,
-          createdOn: "2026-03-31T07:00:23.4481237+00:00",
-          customerId: 12902,
-          discountAmount: 250,
-          id: 165,
+          discountAmount: 0,
           isMasterOrder: false,
-          latestUpdatedById: 12902,
-          latestUpdatedOn: "2026-03-31T07:00:23.4481239+00:00",
           orderItems: [],
           orderNote: null,
           orderStatus: 1,
-          orderTotal: 1050,
+          orderTotal: amount,
           parentId: null,
           paymentFeeAmount: 0,
           paymentMethod: "UPI",
-          shippingAddress: {
-            addressLine1: "Khan mohalla",
-            addressLine2: "",
-            city: "Srinagar",
-            contactName: "Quarat qadir",
-            country: null,
-            countryId: "IN",
-            district: null,
-            districtId: 3,
-            id: 330,
-            phone: "7051059559",
-            stateOrProvince: null,
-            stateOrProvinceId: 3,
-            zipCode: "190009",
-          },
-          shippingAddressId: 330,
+          shippingAddress: addressPayload,
+          shippingAddressId: shippingAddress.userAddressId, // 11
           shippingFeeAmount: 0,
           shippingMethod: "Free",
-          subTotal: 1181.8181818181818,
-          subTotalWithDiscount: 1181.8181818181818,
-          taxAmount: 118.18181818181819,
-          vendorId: null,
         },
       });
     } else {
-      console.log("payment ffailed");
-
       if (result.error.code !== "0") {
         setErrorMsg(
           result.error.description ?? "Payment failed. Please try again.",
@@ -162,16 +126,16 @@ export const useReviewOrder = () => {
   const handlePlaceOrder = async (
     selectedPayment: string,
     amount: number,
-    contactName: string,
+    shippingAddress: any,
   ) => {
     const checkoutId = await AsyncStorage.getItem("checkoutId");
     if (!checkoutId) return;
     setErrorMsg("");
 
-    if (selectedPayment === "CoD") {
+    if (selectedPayment === "COD") {
       handleCodPayment(checkoutId);
     } else if (selectedPayment === "UPI") {
-      handleUpiPayment(checkoutId, amount, contactName);
+      handleUpiPayment(checkoutId, amount, shippingAddress);
     }
   };
 
