@@ -1,12 +1,12 @@
+// ReviewOrderScreen.tsx
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { typography } from "@/src/constants/fonts/typography";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react"; // ✅ ADD
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Pressable, Text } from "react-native";
-
-import AsyncStorage from "@react-native-async-storage/async-storage"; // ✅ ADD
 
 import { DeliveryAddress } from "../components/DeliveryAddress";
 import { OrderItems } from "../components/OrderItems";
@@ -16,6 +16,7 @@ import { useReviewOrder } from "../hooks/useReviewOrder";
 
 const ReviewOrderScreen = () => {
   const { address, orderSummary } = useLocalSearchParams();
+
   const selectedAddress = address ? JSON.parse(address as string) : null;
   const summary = orderSummary ? JSON.parse(orderSummary as string) : null;
 
@@ -30,15 +31,14 @@ const ReviewOrderScreen = () => {
   useEffect(() => {
     const getCoupon = async () => {
       const stored = await AsyncStorage.getItem("appliedCoupon");
-      if (stored) {
-        setCouponCode(stored);
-      }
+      if (stored) setCouponCode(stored);
     };
-
     getCoupon();
   }, []);
 
   if (!summary || !selectedAddress) return null;
+
+  // console.log(selectedAddress, "selected address....");
 
   return (
     <FormProvider {...methods}>
@@ -47,9 +47,7 @@ const ReviewOrderScreen = () => {
 
         <OrderItems items={summary.items} />
         <DeliveryAddress address={selectedAddress} />
-
         <OrderSummary summary={summary} couponCode={couponCode} />
-
         <PaymentMethodSelector options={paymentOptions} />
 
         {!!errorMsg && (
@@ -64,7 +62,7 @@ const ReviewOrderScreen = () => {
               handlePlaceOrder(
                 selectedPayment,
                 summary.orderTotal,
-                selectedAddress.contactName,
+                selectedAddress,
               )
             }
             disabled={isPending}

@@ -38,14 +38,14 @@ export default function FarmInfrastructureScreen({ control, errors }) {
       />
       <FormTextInput
         name="seasonalLabor"
-        label="Seasonal Labor"
+        label="Seasonal Labour"
         type="age"
         error={errors.seasonalLabor}
         required
       />
       <FormTextInput
         name="contractBasedLabor"
-        label="Contract Based Labor"
+        label="Contract Based Labour"
         type="age"
         error={errors.contractBasedLabor}
         required

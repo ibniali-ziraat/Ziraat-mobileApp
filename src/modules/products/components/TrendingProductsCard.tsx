@@ -93,12 +93,12 @@ export default function TrendingProductCard({
             style={{
               width: "100%",
               height: isCarousel ? cardWidth : 160,
-              opacity: isInStock ? 1 : 0.5,
+              opacity: 1,
             }}
             resizeMode="cover"
           />
 
-          {!isInStock && (
+          {/* {!isInStock && (
             <View
               style={{
                 position: "absolute",
@@ -121,7 +121,7 @@ export default function TrendingProductCard({
                 Out of Stock
               </Text>
             </View>
-          )}
+          )} */}
         </Pressable>
 
         {/* Wishlist */}

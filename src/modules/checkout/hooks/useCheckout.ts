@@ -26,7 +26,6 @@ export const useGetCouponCode = (couponCode?: string) => {
   });
 };
 
-
 export const useCheckout = () => {
   return useMutation({
     mutationFn: (payload: { couponCode: string }) => checkout(payload),
