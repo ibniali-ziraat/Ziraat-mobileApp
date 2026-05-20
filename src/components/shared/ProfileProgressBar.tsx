@@ -1,9 +1,7 @@
 import { colors } from "@/src/constants/colors";
-import { shadows } from "@/src/constants/shadows";
-import { CheckCircle, ChevronRight, XCircle } from "lucide-react-native";
+import { CheckCircle, XCircle } from "lucide-react-native";
 import { useEffect, useRef } from "react";
-import { Animated, Pressable, ScrollView, View } from "react-native";
-import CsText from "./CsText";
+import { Animated, ScrollView, Text, View } from "react-native";
 
 interface ProgressBarProps {
   progress: number;
@@ -17,7 +15,6 @@ export default function ProfileProgressBar({
   completedSections = [],
 }: ProgressBarProps) {
   const barAnim = useRef(new Animated.Value(0)).current;
-  const scrollRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     Animated.timing(barAnim, {
@@ -33,19 +30,22 @@ export default function ProfileProgressBar({
   });
 
   const allSections = [...completedSections, ...missingSections];
-  const isComplete = Math.round(progress) === 100;
 
   return (
     <View
-      style={[
-        {
-          backgroundColor: "#fff",
-          borderRadius: 26,
-          padding: 20,
-          marginBottom: 16,
-        },
-        shadows.profile_card,
-      ]}
+      style={{
+        backgroundColor: colors.light,
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 16,
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+        elevation: 2,
+        shadowColor: colors.cardShadow,
+        shadowOpacity: 0.06,
+        shadowRadius: 6,
+        shadowOffset: { width: 0, height: 2 },
+      }}
     >
       {/* HEADER */}
       <View
@@ -53,60 +53,38 @@ export default function ProfileProgressBar({
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: 16,
+          marginBottom: 12,
         }}
       >
-        <View>
-          <CsText
-            style={{
-              fontSize: 18,
-              fontWeight: "700",
-              color: colors.dark,
-            }}
-          >
-            Profile Completion
-          </CsText>
+        <Text
+          style={{ fontSize: 14, fontWeight: "700", color: colors.neutral }}
+        >
+          Profile Completion
+        </Text>
 
-          <CsText
-            style={{
-              fontSize: 12,
-              color: colors.neutral,
-              marginTop: 4,
-            }}
-          >
-            Complete all steps to unlock full access
-          </CsText>
-        </View>
-
-        {/* % BADGE */}
-        <View
+        <Text
           style={{
-            backgroundColor: colors.primary + "12",
-            paddingHorizontal: 14,
-            paddingVertical: 6,
+            fontSize: 13,
+            fontWeight: "800",
+            color: colors.primary,
+            backgroundColor: colors.primary + "15",
+            paddingHorizontal: 10,
+            paddingVertical: 3,
             borderRadius: 20,
           }}
         >
-          <CsText
-            style={{
-              fontSize: 15,
-              fontWeight: "800",
-              color: colors.primary,
-            }}
-          >
-            {Math.round(progress)}%
-          </CsText>
-        </View>
+          {Math.round(progress)}%
+        </Text>
       </View>
 
       {/* PROGRESS BAR */}
       <View
         style={{
-          height: 8,
+          height: 6,
           borderRadius: 30,
           backgroundColor: "#F1F3F6",
           overflow: "hidden",
-          marginBottom: 18,
+          marginBottom: 14,
         }}
       >
         <Animated.View
@@ -119,130 +97,72 @@ export default function ProfileProgressBar({
         />
       </View>
 
-      {/* SECTION PILLS + SCROLL */}
-      <View style={{ position: "relative" }}>
-        <ScrollView
-          ref={scrollRef}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 10,
-            paddingRight: 60,
-          }}
-        >
-          {allSections.map((section) => {
-            const isCompleted = completedSections.includes(section);
-
-            return (
-              <View
-                key={section}
+      {/* SECTION PILLS */}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ flexDirection: "row", gap: 8 }}
+      >
+        {allSections.map((section) => {
+          const isCompleted = completedSections.includes(section);
+          return (
+            <View
+              key={section}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: 12,
+                paddingVertical: 6,
+                borderRadius: 20,
+                backgroundColor: isCompleted
+                  ? colors.primary + "12"
+                  : colors.error + "10",
+                borderWidth: 1,
+                borderColor: isCompleted
+                  ? colors.primary + "30"
+                  : colors.error + "30",
+              }}
+            >
+              {isCompleted ? (
+                <CheckCircle size={13} color={colors.primary} />
+              ) : (
+                <XCircle size={13} color={colors.error} />
+              )}
+              <Text
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingHorizontal: 14,
-                  paddingVertical: 8,
-                  borderRadius: 20,
-                  backgroundColor: isCompleted
-                    ? colors.primary + "12"
-                    : "#F8FAFC",
-                  borderWidth: 1,
-                  borderColor: isCompleted ? colors.primary + "30" : "#E5E7EB",
-
-                  // subtle depth
-                  shadowColor: "#000",
-                  shadowOpacity: 0.03,
-                  shadowRadius: 4,
-                  shadowOffset: { width: 0, height: 2 },
-                  elevation: 1,
+                  marginLeft: 5,
+                  fontSize: 12,
+                  fontWeight: "600",
+                  color: isCompleted ? colors.primary : colors.error,
                 }}
               >
-                {isCompleted ? (
-                  <CheckCircle size={14} color={colors.primary} />
-                ) : (
-                  <XCircle size={14} color="#E57373" />
-                )}
+                {section.charAt(0).toUpperCase() + section.slice(1)}
+              </Text>
+            </View>
+          );
+        })}
+      </ScrollView>
 
-                <CsText
-                  style={{
-                    marginLeft: 6,
-                    fontSize: 12.5,
-                    fontWeight: "600",
-                    color: colors.dark,
-                  }}
-                >
-                  {section.charAt(0).toUpperCase() + section.slice(1)}
-                </CsText>
-              </View>
-            );
-          })}
-        </ScrollView>
-
-        {/* RIGHT FADE + CLICKABLE CHEVRON */}
+      {/* COMPLETE STATE */}
+      {Math.round(progress) === 100 && (
         <View
           style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            bottom: 0,
-            width: 10,
+            marginTop: 14,
+            flexDirection: "row",
+            alignItems: "center",
             justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {/* FADE */}
-          <View
-            style={{
-              position: "absolute",
-              right: 0,
-              top: 0,
-              bottom: 0,
-              width: 20,
-              backgroundColor: "white",
-            }}
-          />
-
-          {/* CLICKABLE ARROW */}
-          <Pressable
-            onPress={() => {
-              scrollRef.current?.scrollTo({
-                x: 120,
-                animated: true,
-              });
-            }}
-            style={{
-              padding: 6,
-              borderRadius: 20,
-            }}
-          >
-            <ChevronRight size={20} color={colors.neutral} />
-          </Pressable>
-        </View>
-      </View>
-
-      {/* SUCCESS */}
-      {isComplete && (
-        <View
-          style={{
-            marginTop: 20,
-            padding: 14,
-            borderRadius: 18,
+            gap: 6,
+            paddingVertical: 10,
+            borderRadius: 12,
             backgroundColor: colors.primary + "12",
-            alignItems: "center",
           }}
         >
-          <CheckCircle size={20} color={colors.primary} />
-
-          <CsText
-            style={{
-              marginTop: 6,
-              fontWeight: "700",
-              color: colors.primary,
-            }}
+          <CheckCircle size={16} color={colors.primary} />
+          <Text
+            style={{ fontWeight: "700", fontSize: 13, color: colors.primary }}
           >
-            Profile completed
-          </CsText>
+            Profile Complete
+          </Text>
         </View>
       )}
     </View>
