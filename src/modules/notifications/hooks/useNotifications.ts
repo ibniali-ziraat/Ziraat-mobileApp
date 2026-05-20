@@ -1,8 +1,6 @@
 import { useLocationContext } from "@/src/contexts/LocationContext";
 import { useNotification } from "@/src/contexts/NotificationContext";
-
 import { deleteItem, getItem, setItem } from "@/src/utils/universalSecureToken";
-
 import { FirebaseMessagingTypes } from "@react-native-firebase/messaging";
 import { useCallback, useEffect, useState } from "react";
 import { Alert } from "react-native";

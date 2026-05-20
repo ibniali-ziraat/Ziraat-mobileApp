@@ -2,7 +2,6 @@ import RouteGuard from "@/src/components/RouteGuard";
 import { DisableBackWrapper } from "@/src/components/shared/DisableBackWrapper";
 import AppProvider from "@/src/contexts/AppProvider";
 import { useAppFonts } from "@/src/hooks/useAppFonts";
-import "@/src/utils/notificationConfig";
 import { ToastPosition, Toasts } from "@backpackapp-io/react-native-toast";
 import { firebase } from "@react-native-firebase/app";
 import { Stack } from "expo-router";
@@ -76,9 +75,9 @@ export default function RootLayout() {
                   }}
                 />
                 {!isWeb && <NavigationReadyHandler />}
-                {!isWeb && <GlobalBanner />}
               </PaperProvider>
             </SafeAreaView>
+            {!isWeb && <GlobalBanner />}
           </RouteGuard>
         </DisableBackWrapper>
       </AppProvider>

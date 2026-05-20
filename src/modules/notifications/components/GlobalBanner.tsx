@@ -1,32 +1,53 @@
+import { ROUTES } from "@/src/constants/routes";
 import { useNotification } from "@/src/contexts/NotificationContext";
-import * as Notifications from "expo-notifications";
+import * as Haptics from "expo-haptics";
+import { useRouter } from "expo-router";
 import { useEffect } from "react";
+import { Platform } from "react-native";
+import { useInAppBanner } from "../hooks/useInAppBanner";
+import InAppNotificationBanner from "./InAppNotificationBanner";
+
+async function triggerSystemNotification() {
+  try {
+    if (Platform.OS === "ios") {
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } else {
+      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    }
+  } catch {}
+}
 
 export default function GlobalBanner() {
   const { onForegroundMessage } = useNotification();
+  const { active, push, dismiss } = useInAppBanner();
+  const router = useRouter();
 
   useEffect(() => {
-    const unsub = onForegroundMessage(async (msg) => {
+    const unsub = onForegroundMessage((msg) => {
       const title = msg.notification?.title ?? "New notification";
-      const body = msg.notification?.body ?? "";
+      const body = msg.notification?.body;
 
-      // Schedule a local notification immediately to show system UI
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          title: title,
-          body: body,
-          sound: true,
-          priority: Notifications.AndroidNotificationPriority.HIGH,
-          // Pass any data you need for navigation
-          data: msg.data || {},
-        },
-        trigger: null, // Show immediately
-      });
+      triggerSystemNotification();
+
+      push({ title, body });
     });
 
     return unsub;
-  }, [onForegroundMessage]);
+  }, [onForegroundMessage, push]);
 
-  // This component no longer renders UI, it just triggers system notifications
-  return null;
+  if (!active) return null;
+
+  return (
+    <InAppNotificationBanner
+      key={active.id}
+      title={active.title}
+      body={active.body}
+      onDismiss={dismiss}
+      onPress={() => {
+        dismiss();
+        router.push(ROUTES.NOTIFICATIONS);
+      }}
+      duration={2000}
+    />
+  );
 }
