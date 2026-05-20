@@ -9,7 +9,9 @@ export default function EmptyState() {
 
       <Text className="mt-4 text-xl font-semibold">No notifications</Text>
 
-      <Text className="text-sm font-normal">You're all caught up for now.</Text>
+      <Text className="text-sm font-normal">
+        We will let you know when there's something new to see.
+      </Text>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import { colors } from "@/src/constants/colors";
-import { Trash2 } from "lucide-react-native";
+import { Bell, Trash2 } from "lucide-react-native";
 import { useRef } from "react";
 import {
   Animated,
@@ -25,6 +25,7 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
   const translateX = useRef(new Animated.Value(0)).current;
   const rowScale = useRef(new Animated.Value(1)).current;
   const deleteOpacity = useRef(new Animated.Value(0)).current;
+
   let startX = 0;
 
   const onTouchStart = (e: any) => {
@@ -33,6 +34,7 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
 
   const onTouchMove = (e: any) => {
     const dx = e.nativeEvent.pageX - startX;
+
     if (dx > 0) return;
 
     translateX.setValue(Math.max(dx, -100));
@@ -53,6 +55,7 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
           toValue: 0,
           useNativeDriver: false,
         }),
+
         Animated.timing(deleteOpacity, {
           toValue: 0,
           duration: 180,
@@ -100,7 +103,6 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
           className="absolute right-0 top-0 bottom-0 w-20 rounded-[18px] items-center justify-center"
           style={{
             opacity: deleteOpacity,
-            // backgroundColor: colors.error,
           }}
         >
           <TouchableOpacity
@@ -109,32 +111,32 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
             activeOpacity={0.8}
           >
             <Trash2 size={20} color={colors.secondary} />
-
-            {/* <Text
-              className="text-[11px] font-bold"
-              style={{ color: colors.light }}
-            >
-              Delete
-            </Text> */}
           </TouchableOpacity>
         </Animated.View>
 
-        {/* Swipeable card */}
+        {/* Swipeable Card */}
         <Animated.View
           className="bg-white rounded-[20px] flex-row overflow-hidden border border-gray-200"
           style={{
             transform: [{ translateX }],
-            // shadowColor: colors.dark,
-            // shadowOpacity: 0.08,
-            // shadowRadius: 8,
-            // shadowOffset: { width: 0, height: 4 },
-            // elevation: 4,
           }}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          <View className="flex-1 px-[15px] py-[14px]">
+          <View className="pl-[14px] pt-[16px]">
+            <View
+              className="w-[42px] h-[42px] rounded-full items-center justify-center"
+              style={{
+                backgroundColor: `${colors.secondary}15`,
+              }}
+            >
+              <Bell size={20} color={colors.secondary} />
+            </View>
+          </View>
+
+          {/* Content */}
+          <View className="flex-1 px-[14px] py-[14px]">
             <View className="flex-row items-center gap-[7px] mb-1">
               <Text
                 className="text-[14px] font-bold flex-1"

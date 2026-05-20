@@ -1,13 +1,8 @@
+import BackHeader from "@/src/components/shared/BackHeader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { useLocationContext } from "@/src/contexts/LocationContext";
-import {
-  RefreshControl,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from "react-native";
+import { RefreshControl, ScrollView, StatusBar, View } from "react-native";
 import EmptyState from "./components/EmptyState";
 import LocationBanner from "./components/LocationBanner";
 import NotificationHeader from "./components/NotificationHeader";
@@ -16,6 +11,7 @@ import { useNotifications } from "./hooks/useNotifications";
 
 export default function NotificationsScreen() {
   const { status: locationStatus } = useLocationContext();
+
   const { items, refreshing, deleteOne, deleteAll, onRefresh } =
     useNotifications();
 
@@ -23,12 +19,17 @@ export default function NotificationsScreen() {
     locationStatus === "denied" || locationStatus === "disabled";
 
   return (
-    <>
+    <View className="flex-1 bg-bgColor">
       <StatusBar barStyle="dark-content" backgroundColor={colors.primary} />
 
+      <BackHeader
+        title="Notifications"
+        desc="See what's new and get notified about important updates"
+      />
+
       <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.content}
+        className="flex-1 bg-bgColor"
+        contentContainerClassName="flex-grow"
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
@@ -40,10 +41,9 @@ export default function NotificationsScreen() {
         }
       >
         <ScreenContent>
-          <View style={styles.inner}>
-            <NotificationHeader count={items.length} onClearAll={deleteAll} />
-
+          <View className="flex-1 bg-light pt-2">
             <LocationBanner visible={locationOff} />
+            <NotificationHeader count={items.length} onClearAll={deleteAll} />
 
             {items.length > 0 ? (
               <NotificationList items={items} onDelete={deleteOne} />
@@ -53,21 +53,6 @@ export default function NotificationsScreen() {
           </View>
         </ScreenContent>
       </ScrollView>
-    </>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  scroll: {
-    flex: 1,
-    backgroundColor: colors.bgColor,
-  },
-  content: {
-    flexGrow: 1,
-  },
-  inner: {
-    flex: 1,
-    backgroundColor: colors.light,
-    paddingTop: 16,
-  },
-});

@@ -9,22 +9,15 @@ interface Props {
 
 export default function NotificationHeader({ count, onClearAll }: Props) {
   return (
-    <View className="flex-row justify-between items-end pt-4 pb-4">
+    <View className="flex-row justify-between items-end pt-2 pb-4">
       <View>
         <Text
-          className="text-[28px] font-extrabold tracking-[-0.5px]"
-          style={{ color: colors.dark }}
-        >
-          Notifications
-        </Text>
-
-        <Text
-          className="text-[13px] mt-[2px] font-medium"
+          className="text-[14px] mt-[2px] font-medium"
           style={{ color: colors.darkHover }}
         >
           {count > 0
             ? `${count} message${count !== 1 ? "s" : ""}`
-            : "See what's new and get notified about important updates"}
+            : "No new messages yet"}
         </Text>
       </View>
 
@@ -32,7 +25,6 @@ export default function NotificationHeader({ count, onClearAll }: Props) {
         <Pressable
           onPress={onClearAll}
           className="flex-row items-center gap-[5px] rounded-[10px] px-3 py-[2px]"
-          // style={{ backgroundColor: colors.bgColor }}
         >
           <Trash2 size={14} color={colors.secondary} />
 
