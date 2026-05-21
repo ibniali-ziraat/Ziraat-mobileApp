@@ -22,6 +22,8 @@ export function useCascadingLocation(fixedState?: string) {
     return locations[effectiveState]?.[selectedDistrict] ?? [];
   }, [effectiveState, selectedDistrict]);
 
+  console.log(states, "states...");
+
   return {
     states, // only useful when you want state selection
     districts,
