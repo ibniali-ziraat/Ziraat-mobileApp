@@ -1,6 +1,12 @@
-import { Bell, X } from "lucide-react-native";
 import { useEffect, useRef } from "react";
-import { Animated, Text, TouchableOpacity, View } from "react-native";
+import {
+  Animated,
+  Dimensions,
+  Image,
+  Pressable,
+  Text,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Props {
@@ -16,11 +22,12 @@ export default function InAppNotificationBanner({
   body,
   onPress,
   onDismiss,
-  duration = 2000,
+  duration = 4000,
 }: Props) {
   const insets = useSafeAreaInsets();
+  const screenWidth = Dimensions.get("window").width;
 
-  const translateY = useRef(new Animated.Value(-120)).current;
+  const translateY = useRef(new Animated.Value(-200)).current;
   const opacity = useRef(new Animated.Value(0)).current;
 
   const dismissTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -32,14 +39,13 @@ export default function InAppNotificationBanner({
 
     Animated.parallel([
       Animated.timing(translateY, {
-        toValue: -120,
-        duration: 280,
+        toValue: -200,
+        duration: 300,
         useNativeDriver: true,
       }),
-
       Animated.timing(opacity, {
         toValue: 0,
-        duration: 280,
+        duration: 300,
         useNativeDriver: true,
       }),
     ]).start(() => {
@@ -51,14 +57,14 @@ export default function InAppNotificationBanner({
     Animated.parallel([
       Animated.spring(translateY, {
         toValue: 0,
+        damping: 15,
+        stiffness: 150,
+        mass: 1,
         useNativeDriver: true,
-        damping: 18,
-        stiffness: 200,
       }),
-
       Animated.timing(opacity, {
         toValue: 1,
-        duration: 200,
+        duration: 300,
         useNativeDriver: true,
       }),
     ]).start();
@@ -77,62 +83,63 @@ export default function InAppNotificationBanner({
   return (
     <Animated.View
       style={{
-        top: insets.top,
-        transform: [{ translateY }],
+        position: "absolute",
+        top: insets.top + 8,
+        alignSelf: "center",
+        width: screenWidth * 0.5,
+        zIndex: 9999,
         opacity,
+        transform: [{ translateY }],
       }}
-      className="absolute left-3 right-3 z-[9999] elevation-20"
     >
-      <View
-        className="flex-row items-center rounded-2xl px-4 py-4"
+      <Pressable
+        onPress={onPress}
         style={{
-          backgroundColor: "#DCFCE7",
+          backgroundColor: "rgba(255, 255, 255, 0.95)",
+          borderRadius: 14,
+          paddingHorizontal: 10,
+          paddingVertical: 2,
+          flexDirection: "row",
+          alignItems: "center",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 4,
+          },
+          shadowOpacity: 0.15,
+          shadowRadius: 12,
+          elevation: 8,
         }}
       >
-        {/* Icon */}
-        <View className="h-9 w-9 items-center justify-center rounded-[10px] me-2">
-          <Bell size={18} color="#166534" strokeWidth={3} />
-        </View>
+        {/* App Icon */}
+        <Image
+          source={require("../../../../assets/images/Icon.png")}
+          resizeMode="contain"
+          style={{
+            width: 30,
+            height: 30,
+            marginRight: 10,
+            borderRadius: 6,
+          }}
+        />
 
-        {/* Clickable Content */}
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={onPress}
-          className="mx-2 flex-1"
-        >
+        {/* Content */}
+        <View style={{ flex: 1 }}>
+          {/* Title */}
           <Text
-            numberOfLines={1}
-            className="text-[16px] font-bold"
+            numberOfLines={2}
             style={{
-              color: "#166534", // dark green
+              fontSize: 14,
+              fontWeight: "600",
+              color: "#000",
+              marginBottom: body ? 2 : 0,
             }}
           >
-            {title}
+            New Notification
+            {/* {title} */}
           </Text>
-
-          {body ? (
-            <Text
-              numberOfLines={1}
-              className="mt-0.5 text-[12px]"
-              style={{
-                color: "#166534", // dark green
-              }}
-            >
-              {body}
-            </Text>
-          ) : null}
-        </TouchableOpacity>
-
-        {/* Close Button */}
-        <TouchableOpacity
-          onPress={dismiss}
-          hitSlop={15}
-          className="p-2"
-          activeOpacity={0.5}
-        >
-          <X size={18} color="#166534" strokeWidth={3} />
-        </TouchableOpacity>
-      </View>
+        </View>
+      </Pressable>
     </Animated.View>
   );
 }

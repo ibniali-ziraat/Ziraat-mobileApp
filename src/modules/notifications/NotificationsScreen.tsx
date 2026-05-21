@@ -52,57 +52,22 @@ export default function NotificationsScreen() {
           className="flex-1 bg-black/10"
           onPress={() => setMenuVisible(false)}
         >
-          <View className="absolute top-24 right-5 w-48 bg-white rounded-xl py-1 shadow-lg">
+          <View
+            style={{
+              position: "absolute",
+              top: 80,
+              right: 30,
+            }}
+            className="w-52 bg-white rounded-xl py-1 shadow-lg"
+          >
             <TouchableOpacity
-              className="px-4 py-3"
-              onPress={() => {
-                console.log("All Notifications");
-                setMenuVisible(false);
-              }}
-            >
-              <Text className="text-[14px] text-gray-800">
-                All Notifications
-              </Text>
-            </TouchableOpacity>
-
-            <View className="h-[1px] bg-gray-100" />
-
-            <TouchableOpacity
-              className="px-4 py-3"
-              onPress={() => {
-                console.log("Unread Notifications");
-                setMenuVisible(false);
-              }}
-            >
-              <Text className="text-[14px] text-gray-800">
-                Unread Notifications
-              </Text>
-            </TouchableOpacity>
-
-            <View className="h-[1px] bg-gray-100" />
-
-            <TouchableOpacity
-              className="px-4 py-3"
-              onPress={() => {
-                console.log("Mark All as Read");
-                setMenuVisible(false);
-              }}
-            >
-              <Text className="text-[14px] text-gray-800">
-                Mark All as Read
-              </Text>
-            </TouchableOpacity>
-
-            <View className="h-[1px] bg-gray-100" />
-
-            <TouchableOpacity
-              className="px-4 py-3"
+              className="px-4 py-2"
               onPress={() => {
                 deleteAll();
                 setMenuVisible(false);
               }}
             >
-              <Text className="text-[14px] text-red-500">
+              <Text className="text-[14px] text-error font-medium">
                 Clear All Notifications
               </Text>
             </TouchableOpacity>
