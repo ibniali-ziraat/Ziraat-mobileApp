@@ -18,7 +18,6 @@ import "../../styles/global.css";
 import { colors } from "../constants/colors";
 import { paperTheme } from "../constants/theme";
 import GlobalBanner from "../modules/notifications/components/GlobalBanner";
-import NavigationReadyHandler from "../modules/notifications/components/NavigationReadyHandler";
 
 const credentials = Platform.select({
   ios: {
@@ -74,7 +73,6 @@ export default function RootLayout() {
                     animation: "slide_from_right",
                   }}
                 />
-                {!isWeb && <NavigationReadyHandler />}
               </PaperProvider>
             </SafeAreaView>
             {!isWeb && <GlobalBanner />}

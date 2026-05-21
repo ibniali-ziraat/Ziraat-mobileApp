@@ -10,19 +10,9 @@ interface BackHeaderProps {
   title: string;
   desc?: string;
   onPress?: () => void;
-
-  // Optional right side icon
-  rightIcon?: React.ReactNode;
-  onRightIconPress?: () => void;
 }
 
-export default function BackHeader({
-  title,
-  desc,
-  onPress,
-  rightIcon,
-  onRightIconPress,
-}: BackHeaderProps) {
+export default function BackHeader({ title, desc, onPress }: BackHeaderProps) {
   const router = useRouter();
 
   return (
@@ -32,6 +22,7 @@ export default function BackHeader({
           <Pressable
             onPress={onPress ?? (() => router.dismiss())}
             className="p-2 mr-3 rounded-full pl-0"
+            activeOpacity={0.7}
           >
             <ArrowLeft size={26} color={colors.dark} />
           </Pressable>
@@ -39,7 +30,7 @@ export default function BackHeader({
           <View className="flex-1">
             <CsText
               style={[typography.Poppins_m_semibold]}
-              className="text-dark"
+              className="text-dark "
               numberOfLines={1}
             >
               {title}
@@ -55,16 +46,6 @@ export default function BackHeader({
               </CsText>
             )}
           </View>
-
-          {/* Optional Right Icon */}
-          {rightIcon && (
-            <Pressable
-              onPress={onRightIconPress}
-              className="p-2 ml-3 rounded-full"
-            >
-              {rightIcon}
-            </Pressable>
-          )}
         </View>
       </View>
     </ScreenContent>
