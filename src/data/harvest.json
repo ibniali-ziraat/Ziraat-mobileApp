@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "cropName": "Wheat",
+    "quantity": "1200 kg",
+    "harvestDate": "2026-05-20",
+    "farmerName": "Ramesh Kumar",
+    "location": "Dara, J&K",
+    "status": "Completed",
+    "quality": "A Grade"
+  },
+  {
+    "id": 2,
+    "cropName": "Rice",
+    "quantity": "800 kg",
+    "harvestDate": "2026-05-18",
+    "farmerName": "Amit Sharma",
+    "location": "Srinagar, J&K",
+    "status": "Pending",
+    "quality": "B Grade"
+  }
+]
