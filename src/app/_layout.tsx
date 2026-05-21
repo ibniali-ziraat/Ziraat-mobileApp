@@ -75,9 +75,9 @@ export default function RootLayout() {
                   }}
                 />
                 {!isWeb && <NavigationReadyHandler />}
-                {!isWeb && <GlobalBanner />}
               </PaperProvider>
             </SafeAreaView>
+            {!isWeb && <GlobalBanner />}
           </RouteGuard>
         </DisableBackWrapper>
       </AppProvider>
