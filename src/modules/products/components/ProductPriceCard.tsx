@@ -12,7 +12,7 @@ export default function ProductPriceCard({ product }: any) {
 
   return (
     <View
-      className="mt-3 rounded-2xl p-4"
+      className="mt-3 rounded-2xl "
       style={{
         backgroundColor: colors.light,
         borderWidth: 1,

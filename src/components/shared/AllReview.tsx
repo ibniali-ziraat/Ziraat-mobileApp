@@ -5,20 +5,46 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ArrowRight, ThumbsUp } from "lucide-react-native";
 import { useMemo, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Platform, Pressable, Text, View } from "react-native";
 import { ScreenContent } from "./ScreenContent";
 import ScreenLayout from "./ScreenLayout";
+
+interface ReviewItem {
+  user: string;
+  date: string;
+  rating: number;
+  comment: string;
+  helpful: number;
+}
+
+interface ReviewSummary {
+  averageRating: string | number;
+  totalReviews: string | number;
+}
+
+interface ReviewProps {
+  reviews?: ReviewItem[];
+  summary?: ReviewSummary;
+  hasUserReviewed?: boolean;
+  onSubmitReview?: () => void;
+  loading?: boolean;
+  onViewAllPress?: () => void;
+  showAll?: boolean;
+  hideHeader?: boolean;
+}
 
 export default function Review({
   reviews = [],
   summary,
-  hasUserReviewed,
+  hasUserReviewed = false,
   onSubmitReview,
-  loading,
+  loading = false,
   onViewAllPress,
   showAll = false,
   hideHeader = false,
-}: any) {
+}: ReviewProps) {
+  const [filter, setFilter] = useState(FILTERS.LATEST);
+
   const getInitials = (name: string = "") => {
     return name
       .split(" ")
@@ -27,8 +53,6 @@ export default function Review({
       .substring(0, 2)
       .toUpperCase();
   };
-
-  const [filter, setFilter] = useState(FILTERS.LATEST);
 
   const sortedReviews = useMemo(() => {
     const sorted = [...reviews];
@@ -47,61 +71,71 @@ export default function Review({
     }
   }, [reviews, filter]);
 
+  const displayedReviews = showAll ? sortedReviews : sortedReviews.slice(0, 2);
+
   return (
     <ScreenLayout>
-      <ScreenContent>
-        <View className="pt-6 px-0">
+      <ScreenContent className="px-0">
+        <View className="">
+          {/* HEADER SECTION */}
           {!hideHeader && (
-            <View className="rounded-[24px] py-6 mb-6">
-              <View className="flex-row justify-between items-center mb-3">
-                <View>
+            <View className="py-5 mb-2">
+              <View className="flex-row">
+                <View className="flex-1 pr-4">
                   <Text
                     style={typography.Poppins_l_semibold}
-                    className="text-neutral-900"
+                    className="text-neutral-900 text-xl leading-tight"
                   >
                     Reviews
                   </Text>
-                  <Text className="text-neutral-400 text-xs uppercase">
+                  <Text className="text-neutral-400 text-xs uppercase tracking-wider mt-0.5">
                     Community Feedback
                   </Text>
                 </View>
 
-                <View className="items-end">
+                <View className="items-end bg-neutral-50 p-3 rounded-xl min-w-[100px]">
                   <Text
                     style={typography.Poppins_l_semibold}
-                    className="text-primary text-3xl"
+                    className="text-primary text-2xl font-bold"
                   >
-                    {Math.round(Number(summary?.averageRating))}
-                    <Text className="text-neutral-300 text-lg">/5</Text>
+                    {Math.round(Number(summary?.averageRating || 0))}
+                    <Text className="text-neutral-400 text-sm font-normal">
+                      /5
+                    </Text>
                   </Text>
 
-                  <RatingStars
-                    rating={Number(summary?.averageRating)}
-                    size={12}
-                  />
+                  <View className="my-1">
+                    <RatingStars
+                      rating={Number(summary?.averageRating || 0)}
+                      size={12}
+                    />
+                  </View>
 
-                  <Text className="text-neutral-400 text-[10px] mt-1">
-                    Based on {summary?.totalReviews} reviews
+                  <Text
+                    className="text-neutral-400 text-[10px] text-right"
+                    numberOfLines={1}
+                  >
+                    {summary?.totalReviews || 0} reviews
                   </Text>
                 </View>
               </View>
 
-              {/* WRITE REVIEW */}
-              <View className="mt-4">
+              {/* WRITE REVIEW CTA */}
+              <View className="mt-5">
                 {!hasUserReviewed ? (
                   <WriteReview onSubmit={onSubmitReview} loading={loading} />
                 ) : (
                   <View
                     style={{
-                      backgroundColor: `${colors.secondary}15`,
-                      borderColor: colors.secondary,
+                      backgroundColor: `${colors.secondary}10`,
+                      borderColor: `${colors.secondary}20`,
                       borderWidth: 1,
                     }}
-                    className="p-4 rounded-2xl items-center"
+                    className="p-4 rounded-lg items-center justify-center"
                   >
                     <Text
                       style={{ color: colors.secondary }}
-                      className="font-medium"
+                      className="font-medium text-sm text-center"
                     >
                       You have already submitted a review
                     </Text>
@@ -111,55 +145,82 @@ export default function Review({
             </View>
           )}
 
-          {/* FILTERS */}
-          <ReviewFilters filter={filter} setFilter={setFilter} />
+          {/* FILTERS CONTAINER */}
+          <View className="mb-4 "></View>
 
-          {/* LIST */}
-          <View className="mt-4">
-            {(showAll ? sortedReviews : sortedReviews.slice(0, 2)).map(
-              (r: any, index: number) => (
-                <View key={index} className=" rounded-2xl p-5 mb-4">
-                  <View className="flex-row justify-between items-start mb-3">
-                    <View className="flex-row items-center">
+          {reviews.length > 1 && (
+            <ReviewFilters filter={filter} setFilter={setFilter} />
+          )}
+
+          {/* REVIEWS LIST */}
+          <View className="flex-1">
+            {(showAll ? displayedReviews : displayedReviews.slice(0, 5)).map(
+              (r, index) => (
+                <View
+                  key={index}
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    ...Platform.select({
+                      ios: {
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 1 },
+                        shadowOpacity: 0.04,
+                        shadowRadius: 3,
+                      },
+                      android: {
+                        elevation: 1,
+                      },
+                    }),
+                  }}
+                  className="rounded-lg p-4 mb-4 border border-n"
+                >
+                  {/* User Info Header */}
+                  <View className="flex-row justify-between items-center mb-3">
+                    <View className="flex-row items-center flex-1 pr-2">
                       <View
                         style={{ backgroundColor: `${colors.secondary}15` }}
-                        className="w-11 h-11 rounded-full justify-center items-center mr-3"
+                        className="w-10 h-10 rounded-full justify-center items-center mr-3"
                       >
                         <Text
                           style={{ color: colors.secondary }}
-                          className="font-bold text-sm"
+                          className="font-bold text-xs"
                         >
                           {getInitials(r.user)}
                         </Text>
                       </View>
 
-                      <View>
+                      <View className="flex-1">
                         <Text
                           style={typography.Poppins_m_semibold}
-                          className="text-neutral-900"
+                          className="text-neutral-900 text-sm"
+                          numberOfLines={1}
                         >
                           {r.user}
                         </Text>
-                        <Text className="text-neutral-400 text-[11px]">
+                        <Text className="text-neutral-400 text-[11px] mt-0.5">
                           {r.date}
                         </Text>
                       </View>
                     </View>
 
-                    <RatingStars rating={r.rating} size={10} />
+                    <View className="bg-neutral-50 px-2 py-1 rounded-md">
+                      <RatingStars rating={r.rating} size={10} />
+                    </View>
                   </View>
 
+                  {/* Review Body */}
                   <Text
                     style={typography.Poppins_s_regular}
-                    className="text-neutral-700"
+                    className="text-neutral-700 text-sm leading-relaxed"
                   >
                     {r.comment}
                   </Text>
 
-                  <View className="flex-row items-center mt-4 pt-3 border-t border-neutral-50">
-                    <ThumbsUp size={14} color={colors.secondary} />
-                    <Text className="text-neutral-500 ml-2">
-                      {r.helpful} found helpful
+                  {/* Footer Feedback */}
+                  <View className="flex-row items-center mt-4 pt-3 border-t border-neutral-100/50">
+                    <ThumbsUp size={13} color={colors.secondary} />
+                    <Text className="text-neutral-500 text-xs ml-2 font-medium">
+                      {r.helpful} found this helpful
                     </Text>
                   </View>
                 </View>
@@ -170,16 +231,18 @@ export default function Review({
             {!showAll && reviews.length > 2 && (
               <Pressable
                 onPress={onViewAllPress}
-                className="mt-2 p-4 rounded-xl flex-row items-center justify-center gap-2"
-                style={{ backgroundColor: `${colors.secondary}15` }}
+                style={({ pressed }) => ({
+                  backgroundColor: `${colors.secondary}15`,
+                  opacity: pressed ? 0.8 : 1,
+                })}
+                className="mt-2 p-4 rounded-lg flex-row items-center justify-center gap-2 active:opacity-70"
               >
                 <Text
                   style={{ color: colors.secondary }}
-                  className="font-semibold"
+                  className="font-semibold text-sm"
                 >
                   View All Reviews
                 </Text>
-
                 <ArrowRight size={16} color={colors.secondary} />
               </Pressable>
             )}

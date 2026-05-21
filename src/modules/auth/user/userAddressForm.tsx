@@ -271,11 +271,13 @@ const UserAddressForm = () => {
             label="Address Line 1"
             required
             error={errors.addressLine1}
+            type="address"
           />
 
           <FormTextAreaInput
             name="addressLine2"
             label="Address Line 2 (Optional)"
+            type="address"
           />
 
           <View style={{ flexDirection: "row", gap: 12 }}>

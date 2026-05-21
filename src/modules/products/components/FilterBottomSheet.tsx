@@ -323,7 +323,7 @@ export default function FilterBottomSheet({
   const insets = useSafeAreaInsets();
 
   const [brand, setBrand] = useState<string[]>([]);
-  const [category, setCategory] = useState<string[]>([]);
+  const [category, setCategory] = useState<string | null>(null);
   const [priceRange, setPriceRange] = useState<number[]>([
     FIXED_MIN_PRICE,
     FIXED_MAX_PRICE,
@@ -334,7 +334,7 @@ export default function FilterBottomSheet({
 
   const resetHandler = () => {
     setBrand([]);
-    setCategory([]);
+    setCategory(null);
     setSort(null);
     setRating([]);
     setPriceRange([FIXED_MIN_PRICE, FIXED_MAX_PRICE]);
@@ -343,7 +343,7 @@ export default function FilterBottomSheet({
   const applyHandler = () => {
     onApplyFilters({
       brand: brand.length ? brand.join(",") : undefined,
-      category: category.length ? category.join(",") : undefined,
+      category: category || undefined,
       minPrice: priceRange[0],
       maxPrice: priceRange[1],
       sort: sort || undefined,
@@ -408,16 +408,14 @@ export default function FilterBottomSheet({
 
             <Section title="Category">
               {filterOptions.categories.map((item) => (
-                <Item
+                <RadioItem
                   key={item.slug}
                   label={item.name}
                   count={item.count}
-                  selected={category.includes(item.slug)}
+                  selected={category === item.slug}
                   onPress={() =>
                     setCategory((prev) =>
-                      prev.includes(item.slug)
-                        ? prev.filter((c) => c !== item.slug)
-                        : [...prev, item.slug],
+                      prev === item.slug ? null : item.slug
                     )
                   }
                 />
@@ -538,6 +536,28 @@ const Item = ({ label, count, selected, onPress }: any) => (
       }}
     >
       {selected && <Check size={14} color={colors.primary} />}
+    </View>
+
+    <Text className="flex-1 text-black">{label}</Text>
+
+    {count !== undefined && <Text className="text-gray-500">{count}</Text>}
+  </Pressable>
+);
+
+const RadioItem = ({ label, count, selected, onPress }: any) => (
+  <Pressable onPress={onPress} className="flex-row items-center py-2.5 gap-3">
+    <View
+      className="h-[18px] w-[18px] rounded-full border items-center justify-center"
+      style={{
+        borderColor: colors.primary,
+      }}
+    >
+      {selected && (
+        <View
+          className="h-[10px] w-[10px] rounded-full"
+          style={{ backgroundColor: colors.primary }}
+        />
+      )}
     </View>
 
     <Text className="flex-1 text-black">{label}</Text>
