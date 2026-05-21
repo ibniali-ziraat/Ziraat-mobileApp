@@ -308,52 +308,6 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
                 </Text>
               </View>
             </View>
-
-            {/* <View
-              className="flex-row items-center mt-5 px-4 py-4 rounded-3xl"
-              style={{
-                backgroundColor: colors.light,
-                borderWidth: 1,
-                borderColor: colors.cardBorder,
-              }}
-            >
-              <View
-                className="h-11 w-11 rounded-2xl items-center justify-center"
-                style={{
-                  backgroundColor: colors.primary + "12",
-                }}
-              >
-                <CalendarDays size={18} color={colors.primary} />
-              </View>
-
-              <View className="ml-3 flex-1">
-                <Text
-                  style={[
-                    typography.Poppins_m_semibold,
-                    {
-                      color: colors.dark,
-                      fontSize: 13,
-                    },
-                  ]}
-                >
-                  Orchard Overview
-                </Text>
-
-                <Text
-                  style={[
-                    typography.Poppins_m_medium,
-                    {
-                      color: colors.neutral,
-                      fontSize: 11,
-                      marginTop: 2,
-                    },
-                  ]}
-                >
-                  Registered orchard information and details
-                </Text>
-              </View>
-            </View> */}
-
             <Pressable
               onPress={() =>
                 router.push({
@@ -361,17 +315,21 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
                   params: { id: orchard.id },
                 })
               }
-              className="mt-5 rounded-[26px] py-4 px-5 flex-row items-center justify-between"
+              className="mt-5 flex-row items-center justify-between rounded-2xl px-4 py-4"
               style={{
-                backgroundColor: colors.primary,
+                backgroundColor: colors.light,
+                borderWidth: 1,
+                borderColor: colors.cardBorder,
               }}
             >
-              <View>
+              <View className="flex-1 pr-3">
                 <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
                   style={[
                     typography.Poppins_m_semibold,
                     {
-                      color: colors.light,
+                      color: colors.neutral,
                       fontSize: 15,
                     },
                   ]}
@@ -380,13 +338,14 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
                 </Text>
 
                 <Text
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
                   style={[
                     typography.Poppins_m_medium,
                     {
-                      color: colors.light,
+                      color: colors.darkHover,
                       fontSize: 11,
-                      marginTop: 3,
-                      opacity: 0.9,
+                      marginTop: 2,
                     },
                   ]}
                 >
@@ -395,12 +354,12 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
               </View>
 
               <View
-                className="h-11 w-11 rounded-full items-center justify-center"
+                className="h-10 w-10 items-center justify-center rounded-full"
                 style={{
-                  backgroundColor: colors.light + "20",
+                  backgroundColor: colors.bgColor,
                 }}
               >
-                <ArrowRight size={18} color={colors.light} />
+                <ArrowRight size={18} color={colors.primary} />
               </View>
             </Pressable>
           </View>

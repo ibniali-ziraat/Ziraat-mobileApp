@@ -89,13 +89,13 @@ export const useReviewOrder = () => {
     addressLine1: shippingAddress.addressLine1,
     addressLine2: shippingAddress.addressLine2 ?? "",
     city: shippingAddress.cityName,
-    contactName: userDetails.name || shippingAddress.contactName,
+    contactName: shippingAddress.contactName,
     country: shippingAddress.countryName ?? null,
     countryId: shippingAddress.countryId ?? "IN",
     district: shippingAddress.districtName ?? null,
     districtId: shippingAddress.districtId ?? null,
     id: shippingAddress.userAddressId,
-    phone: userDetails.phone || shippingAddress.phone,
+    phone: shippingAddress.phone,
     stateOrProvince: shippingAddress.stateOrProvinceName,
     stateOrProvinceId: shippingAddress.stateOrProvinceId,
     zipCode: shippingAddress.zipCode,
@@ -133,7 +133,7 @@ export const useReviewOrder = () => {
       });
     } catch (err) {
       // non-blocking — don't stop navigation if mongo save fails
-      console.error("MongoDB save order failed:", err);
+      console.error("Something went wrong please try after sometime", err);
     }
   };
 
@@ -202,9 +202,9 @@ export const useReviewOrder = () => {
       orderId: razorpayOrderId,
       description: "Order Payment",
       user: {
-        name: userDetails.name || shippingAddress.contactName,
+        name: shippingAddress.contactName,
         email: userDetails.email || "test@example.com",
-        contact: userDetails.phone || shippingAddress.phone,
+        contact: shippingAddress.phone,
       },
     });
 
