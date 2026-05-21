@@ -20,7 +20,7 @@ export default function QuickActions() {
       icon: "book-outline",
       color: colors.primary,
       bg: colors.primary + "15",
-      // onPress: () => router.push("/orchards/orchard-registration"),
+      onPress: () => router.push("/harvest-screen"),
     },
   ];
 

@@ -63,7 +63,10 @@ const UserAddressForm = () => {
     useExistingAddress(isEditMode ? userAddressId : undefined);
 
   const { data: countries } = useCountries();
+
   const { data: states } = useStates(selectedCountry);
+  console.log(states, "countries..");
+
   const { data: districts } = useDistricts(selectedState);
 
   const { mutate: handleCreateAddress, isPending: isCreating } =
