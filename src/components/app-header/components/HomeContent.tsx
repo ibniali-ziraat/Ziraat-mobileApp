@@ -3,6 +3,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
+import { useNotifications } from "@/src/modules/notifications/hooks/useNotifications";
 import { router } from "expo-router";
 import { Bell } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
@@ -10,6 +11,8 @@ import { Pressable, Text, View } from "react-native";
 const HomeContent = () => {
   const { userId } = useAuth();
   const { data } = useProfileQuery(userId);
+  const { count } = useNotifications();
+  // const count = 100;
 
   const title = data?.fullName ?? "Ziraat";
 
@@ -63,7 +66,20 @@ const HomeContent = () => {
           })}
           onPress={() => router.push(ROUTES.NOTIFICATIONS)}
         >
-          <Bell size={24} color={colors.secondary} />
+          <View>
+            <Bell size={24} color={colors.secondary} />
+
+            {count > 0 && (
+              <View
+                className="absolute -top-3 -right-4 min-w-[18px] h-[18px] px-1 rounded-full items-center justify-center"
+                style={{ backgroundColor: colors.error }}
+              >
+                <Text className="text-white text-[12px]">
+                  {count > 99 ? "99" : count}
+                </Text>
+              </View>
+            )}
+          </View>
         </Pressable>
 
         <Pressable

@@ -23,10 +23,10 @@ import { useNotifications } from "./hooks/useNotifications";
 export default function NotificationsScreen() {
   const { status: locationStatus } = useLocationContext();
 
-  const { items, refreshing, deleteOne, deleteAll, onRefresh } =
-    useNotifications();
+  const { items, removeNotification, clearNotifications } = useNotifications();
 
   const [menuVisible, setMenuVisible] = useState(false);
+  const [confirmClearVisible, setConfirmClearVisible] = useState(false);
 
   const locationOff =
     locationStatus === "denied" || locationStatus === "disabled";
@@ -42,6 +42,7 @@ export default function NotificationsScreen() {
         onRightIconPress={() => setMenuVisible(true)}
       />
 
+      {/* MENU MODAL */}
       <Modal
         transparent
         visible={menuVisible}
@@ -55,16 +56,16 @@ export default function NotificationsScreen() {
           <View
             style={{
               position: "absolute",
-              top: 80,
-              right: 30,
+              top: 100,
+              right: 40,
             }}
             className="w-52 bg-white rounded-xl py-1 shadow-lg"
           >
             <TouchableOpacity
               className="px-4 py-2"
               onPress={() => {
-                deleteAll();
                 setMenuVisible(false);
+                setConfirmClearVisible(true);
               }}
             >
               <Text className="text-[14px] text-error font-medium">
@@ -75,13 +76,46 @@ export default function NotificationsScreen() {
         </Pressable>
       </Modal>
 
+      {/* CONFIRM CLEAR MODAL */}
+      <Modal
+        transparent
+        visible={confirmClearVisible}
+        animationType="fade"
+        onRequestClose={() => setConfirmClearVisible(false)}
+      >
+        <Pressable
+          className="flex-1 bg-black/30 justify-center items-center"
+          onPress={() => setConfirmClearVisible(false)}
+        >
+          <View className="w-80 bg-white rounded-xl p-4">
+            <Text className="text-[16px] font-semibold text-dark mb-2">
+              Clear all notifications?
+            </Text>
+
+            <Text className="text-[13px] text-gray-500 mb-4">
+              This action cannot be undone.
+            </Text>
+
+            <View className="flex-row justify-end gap-3">
+              <TouchableOpacity onPress={() => setConfirmClearVisible(false)}>
+                <Text className="text-dark font-medium">Cancel</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  clearNotifications();
+                  setConfirmClearVisible(false);
+                }}
+              >
+                <Text className="text-error font-semibold">Clear</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Pressable>
+      </Modal>
+
       <ScreenLayout scrollable>
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor={colors.primary}
-          colors={[colors.primary]}
-        />
+        <RefreshControl tintColor={colors.primary} colors={[colors.primary]} />
 
         <ScreenContent className="flex-1">
           <View className="flex-1 bg-light">
@@ -90,8 +124,8 @@ export default function NotificationsScreen() {
             {items.length > 0 ? (
               <NotificationList
                 items={items}
-                onDelete={deleteOne}
-                onClearAll={deleteAll}
+                onDelete={removeNotification}
+                onClearAll={clearNotifications}
               />
             ) : (
               <View className="flex-1">
