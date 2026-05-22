@@ -94,7 +94,7 @@ export default function LoginScreen() {
 
           <GoogleAuthButton
             label="Sign in with Google"
-            onPress={() => {}}
+            onPress={() => { }}
             disabled={isPending}
           />
         </View>
