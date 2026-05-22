@@ -9,7 +9,6 @@ import {
   Text,
   View,
 } from "react-native";
-import { imageMapper } from "../../../data/imageMapper";
 
 const { width } = Dimensions.get("window");
 const ITEM_WIDTH = width * 1;
@@ -31,13 +30,8 @@ export default function ProductDetailCarousel({
 
   const renderItem = ({ item }: { item: string }) => {
     // ✅ support both local mapped images and remote URLs
-    const mappedImage = imageMapper[item];
 
-    const source = mappedImage
-      ? typeof mappedImage === "string"
-        ? { uri: mappedImage }
-        : mappedImage
-      : { uri: item }; // ✅ fallback to remote URL
+    const source = { uri: item }
 
     return (
       <View style={{ width: ITEM_WIDTH }}>
@@ -79,9 +73,8 @@ export default function ProductDetailCarousel({
         {photos.map((_, i) => (
           <View
             key={i}
-            className={`w-2 h-2 rounded-full mx-1 ${
-              currentIndex === i ? "bg-secondary" : "bg-light"
-            }`}
+            className={`w-2 h-2 rounded-full mx-1 ${currentIndex === i ? "bg-secondary" : "bg-light"
+              }`}
           />
         ))}
       </View>
