@@ -1,5 +1,3 @@
-
-
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
@@ -16,18 +14,10 @@ import {
   SlidersHorizontal,
 } from "lucide-react-native";
 
-import {
-  FlatList,
-  Image,
-  Pressable,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 
 import Loader from "@/src/components/shared/Loader";
 import SearchBar from "@/src/components/shared/SearchBar";
-
 
 import { ROUTES } from "@/src/constants/routes";
 import { useMemo, useState } from "react";
@@ -105,9 +95,7 @@ const OrdersListScreen = () => {
       const matchesSearch =
         !search ||
         order.id.toString().includes(search) ||
-        firstProduct?.productName
-          ?.toLowerCase()
-          .includes(search.toLowerCase());
+        firstProduct?.productName?.toLowerCase().includes(search.toLowerCase());
 
       const matchesStatus =
         selectedStatus === null || order.orderStatus === selectedStatus;
@@ -183,7 +171,6 @@ const OrdersListScreen = () => {
 
     return (
       <Pressable
-       
         onPress={() => handleOrderPress(item)}
         style={[baseCard, shadows.profile_card]}
       >
@@ -201,9 +188,7 @@ const OrdersListScreen = () => {
 
           <View className="flex-1 ml-3 ">
             <View className="flex-row justify-between items-center">
-              <Text
-                style={[typography.Poppins_s_bold, { color: colors.dark }]}
-              >
+              <Text style={[typography.Poppins_s_bold, { color: colors.dark }]}>
                 Order #{item.id}
               </Text>
 
@@ -224,14 +209,18 @@ const OrdersListScreen = () => {
             <View className="flex-row items-center mt-3 gap-6">
               <View className="flex-row items-center mr-12">
                 <CalendarDays size={13} color={colors.secondary} />
-                <Text style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}>
+                <Text
+                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}
+                >
                   {formatDate(item.createdOn)}
                 </Text>
               </View>
 
               <View className="flex-row items-center">
                 <ShoppingBag size={13} color={colors.secondary} />
-                <Text style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}>
+                <Text
+                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}
+                >
                   {item.orderItems?.length} Items
                 </Text>
               </View>
@@ -286,94 +275,94 @@ const OrdersListScreen = () => {
         />
       </View>
 
-    {filteredOrders.length === 0 ? (
-  <View
-    style={{
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      paddingHorizontal: 24,
-      marginTop: 60,
-    }}
-  >
-    {/* ICON */}
-    <View
-      style={{
-        height: 90,
-        width: 90,
-        borderRadius: 45,
-        backgroundColor: colors.primary + "12",
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 16,
-      }}
-    >
-      <PackageSearch size={40} color={colors.primary} />
-    </View>
+      {filteredOrders.length === 0 ? (
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 24,
+            marginTop: 60,
+          }}
+        >
+          {/* ICON */}
+          <View
+            style={{
+              height: 90,
+              width: 90,
+              borderRadius: 45,
+              backgroundColor: colors.primary + "12",
+              alignItems: "center",
+              justifyContent: "center",
+              marginBottom: 16,
+            }}
+          >
+            <PackageSearch size={40} color={colors.primary} />
+          </View>
 
-    {/* TITLE */}
-    <Text
-      style={[
-        typography.Poppins_s_bold,
-        { fontSize: 17, marginBottom: 6 },
-      ]}
-    >
-      No Orders Found
-    </Text>
+          {/* TITLE */}
+          <Text
+            style={[
+              typography.Poppins_s_bold,
+              { fontSize: 17, marginBottom: 6 },
+            ]}
+          >
+            No Orders Found
+          </Text>
 
-    {/* SUBTEXT */}
-    <Text
-      style={{
-        color: colors.neutral,
-        textAlign: "center",
-        marginBottom: 18,
-        fontSize: 13,
-        lineHeight: 18,
-      }}
-    >
-      Try adjusting your filters or search to find what you're looking for
-    </Text>
+          {/* SUBTEXT */}
+          <Text
+            style={{
+              color: colors.neutral,
+              textAlign: "center",
+              marginBottom: 18,
+              fontSize: 13,
+              lineHeight: 18,
+            }}
+          >
+            Try adjusting your filters or search to find what you're looking for
+          </Text>
 
-    {/* BUTTON */}
-    <Pressable
-      onPress={() => {
-        setSelectedStatus(null);
-        setSearch("");
-      }}
-      style={{
-        backgroundColor: colors.primary,
-        paddingHorizontal: 22,
-        paddingVertical: 11,
-        borderRadius: 30,
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 6,
-      }}
-    >
-      <Text
-        style={{
-          color: colors.light,
-          fontWeight: "600",
-          fontSize: 14,
-        }}
-      >
-        Reset Filters
-      </Text>
-    </Pressable>
-  </View>
-) : (
-  <FlatList
-    scrollEnabled={false}
-    data={filteredOrders}
-    keyExtractor={(item) => String(item.id)}
-    renderItem={renderOrder}
-    showsVerticalScrollIndicator={false}
-    contentContainerStyle={{
-      padding: 16,
-      paddingBottom: 60,
-    }}
-  />
-)}
+          {/* BUTTON */}
+          <Pressable
+            onPress={() => {
+              setSelectedStatus(null);
+              setSearch("");
+            }}
+            style={{
+              backgroundColor: colors.primary,
+              paddingHorizontal: 22,
+              paddingVertical: 11,
+              borderRadius: 30,
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <Text
+              style={{
+                color: colors.light,
+                fontWeight: "600",
+                fontSize: 14,
+              }}
+            >
+              Reset Filters
+            </Text>
+          </Pressable>
+        </View>
+      ) : (
+        <FlatList
+          scrollEnabled={false}
+          data={filteredOrders}
+          keyExtractor={(item) => String(item.id)}
+          renderItem={renderOrder}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            padding: 16,
+            paddingBottom: 60,
+          }}
+        />
+      )}
 
       {/* FILTER COMPONENT */}
       <OrderFilterModal

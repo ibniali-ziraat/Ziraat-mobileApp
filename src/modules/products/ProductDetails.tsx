@@ -36,7 +36,7 @@ import ProductsList from "./components/ProductList";
 export default function ProductDetails() {
   const { productId } = useLocalSearchParams();
 
-  console.log(productId, "productid");
+  // console.log(productId, "productid");
 
   const [quantity, setQuantity] = useState(1);
 
@@ -44,9 +44,10 @@ export default function ProductDetails() {
 
   const { data: product, isLoading, isError } = useProductByIdQuery(productId);
 
-  console.log(product, "product");
+  // console.log(product, "product");
 
-  const { mutate: submitReview, isPending } = useAddReview();
+  // const { mutate: submitReview, isPending } = useAddReview();
+  const { mutateAsync: submitReview, isPending } = useAddReview();
   const { cart, addToCart, removeFromCart, isCartBusy } = useCart();
 
   /*  WISHLIST */
@@ -104,15 +105,37 @@ export default function ProductDetails() {
     totalReviews: reviewsData?.reviewsCount ?? 0,
   };
 
+  // const reviews = useMemo(() => {
+  //   return reviewsRaw.map((r: any) => ({
+  //     id: r.id,
+  //     user: r.reviewerName,
+  //     userId: r.userId,
+  //     rating: r.rating,
+  //     comment: r.comment,
+  //     title: r.title,
+  //     date: new Date(r.createdOn).toLocaleDateString(),
+  //     helpful: 0,
+  //   }));
+  // }, [reviewsRaw]);
+
   const reviews = useMemo(() => {
     return reviewsRaw.map((r: any) => ({
       id: r.id,
-      user: r.reviewerName,
-      userId: r.userId,
-      rating: r.rating,
-      comment: r.comment,
-      title: r.title,
-      date: new Date(r.createdOn).toLocaleDateString(),
+
+      user: r.reviewerName || "Anonymous",
+
+      userId: r.userId || r.customerId || "",
+
+      rating: Number(r.rating || 0),
+
+      comment: r.comment || "",
+
+      title: r.title || "",
+
+      date: r.createdOn
+        ? new Date(r.createdOn).toLocaleDateString()
+        : new Date().toLocaleDateString(),
+
       helpful: 0,
     }));
   }, [reviewsRaw]);
@@ -123,27 +146,76 @@ export default function ProductDetails() {
     return reviews.some((r: any) => String(r.userId) === String(userId));
   }, [reviews, userId]);
 
-  const addReview = (formData: any) => {
+  // const addReview = (formData: any) => {
+  //   if (!product) return;
+
+  //   const payload = {
+  //     rating: formData.rating,
+  //     title: "",
+  //     comment: formData.comment,
+  //     reviewerName: "",
+  //     entityId: product.id,
+  //     entityTypeId: "Product",
+  //     hasBoughtProduct: true,
+  //     loggedUserName: "",
+  //   };
+
+  //   submitReview(payload, {
+  //     onSuccess: () => {
+  //       toast.success("Review added");
+  //       setPageNumber(1);
+  //       // setModalVisible(false);
+  //     },
+  //   });
+  // };
+
+  const addReview = async (formData: any) => {
     if (!product) return;
 
     const payload = {
       rating: formData.rating,
       title: "",
       comment: formData.comment,
-      reviewerName: "",
+
+      reviewerName: "User",
+
       entityId: product.id,
+
       entityTypeId: "Product",
+
       hasBoughtProduct: true,
-      loggedUserName: "",
+
+      loggedUserName: "User",
     };
 
-    submitReview(payload, {
-      onSuccess: () => {
-        toast.success("Review added");
-        setPageNumber(1);
-        // setModalVisible(false);
-      },
-    });
+    try {
+      await submitReview(payload);
+
+      toast.success("Review added");
+
+      setPageNumber(1);
+
+      return {
+        success: true,
+      };
+    } catch (error: any) {
+      // console.log(error, "review error");
+
+      // ✅ GET BACKEND MESSAGE
+      const message =
+        error?.response?.data?.message ||
+        error?.response?.data ||
+        error?.message ||
+        "Failed to submit review";
+
+      // ✅ SHOW TOAST
+      toast.error(message);
+
+      return {
+        success: false,
+        message,
+      };
+    }
   };
 
   if (isLoading) {
@@ -159,6 +231,7 @@ export default function ProductDetails() {
 
     return (
       <ScreenLayout>
+        <BackHeader title="Back" />
         <View className="flex-1 items-center justify-center px-8 bg-white">
           <View
             style={{ backgroundColor: `${colors.secondary}10` }}

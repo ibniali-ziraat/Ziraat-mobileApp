@@ -1,17 +1,9 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import CsText from "@/src/components/shared/CsText";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import { ROUTES } from "@/src/constants/routes";
 import { DashboardTabs } from "@/src/navigation/DashboardTabs";
-import { router } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import {
-  Dimensions,
-  Pressable,
-  ScrollView,
-  View,
-} from "react-native";
+import { Dimensions, Pressable, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { width: screenWidth } = Dimensions.get("window");
@@ -21,26 +13,19 @@ export default function DashboardPage() {
 
   const scrollRef = useRef<ScrollView>(null);
 
-  const tabs = Object.values(DashboardTabs).filter(
-    (screen) => screen
-  );
+  const tabs = Object.values(DashboardTabs).filter((screen) => screen);
 
-  const ActiveComponent =
-    tabs[activeTab]?.component ?? null;
+  const ActiveComponent = tabs[activeTab]?.component ?? null;
 
   // 4 tabs visible
   const horizontalPadding = 12;
   const gap = 8;
 
-  const tabWidth =
-    (screenWidth - horizontalPadding * 2 - gap * 3 - 24) /
-    4;
+  const tabWidth = (screenWidth - horizontalPadding * 2 - gap * 3 - 24) / 4;
 
   useEffect(() => {
     const scrollX =
-      activeTab * (tabWidth + gap) -
-      screenWidth / 2 +
-      tabWidth / 2;
+      activeTab * (tabWidth + gap) - screenWidth / 2 + tabWidth / 2;
 
     scrollRef.current?.scrollTo({
       x: Math.max(0, scrollX),
@@ -60,9 +45,6 @@ export default function DashboardPage() {
       <BackHeader
         title={tabs[activeTab]?.label}
         desc={"Manage Your Orchards & Fields"}
-        onPress={() =>
-          router.replace(ROUTES.TABS.HOME)
-        }
       />
 
       {ActiveComponent ? (
@@ -70,12 +52,9 @@ export default function DashboardPage() {
           <ActiveComponent />
         </ScreenLayout>
       ) : (
-        <CsText
-          className="p-4"
-          style={{ color: colors.dark }}
-        >
+        <Text className="p-4" style={{ color: colors.dark }}>
           No Screen Found
-        </CsText>
+        </Text>
       )}
 
       <View
@@ -91,7 +70,6 @@ export default function DashboardPage() {
             backgroundColor: colors.light,
           }}
         >
-          {/* Left Arrow */}
           <View
             style={{
               position: "absolute",
@@ -123,53 +101,38 @@ export default function DashboardPage() {
             }}
           >
             {tabs.map((tab, index) => {
-              const Icon =
-                tab.icon ?? (() => null);
+              const Icon = tab.icon ?? (() => null);
 
-              const isActive =
-                activeTab === index;
+              const isActive = activeTab === index;
 
               return (
                 <Pressable
                   key={tab.name}
-                  onPress={() =>
-                    setActiveTab(index)
-                  }
+                  onPress={() => setActiveTab(index)}
                   className="items-center justify-center rounded-full"
                   style={{
                     width: tabWidth,
                     minWidth: tabWidth,
                     paddingVertical: 8,
-                    marginRight:
-                      index !== tabs.length - 1
-                        ? gap
-                        : 0,
+                    marginRight: index !== tabs.length - 1 ? gap : 0,
                   }}
                 >
                   <Icon
                     size={20}
-                    color={
-                      isActive
-                        ? colors.primary
-                        : colors.dark
-                    }
+                    color={isActive ? colors.primary : colors.dark}
                   />
 
-                  <CsText
+                  <Text
                     numberOfLines={1}
                     ellipsizeMode="tail"
                     className="mt-1 text-center text-[10px]"
                     style={{
-                      color: isActive
-                        ? colors.primary
-                        : colors.dark,
-                      fontWeight: isActive
-                        ? "600"
-                        : "400",
+                      color: isActive ? colors.primary : colors.dark,
+                      fontWeight: isActive ? "600" : "400",
                     }}
                   >
                     {tab.label.split(" ")[0]}
-                  </CsText>
+                  </Text>
                 </Pressable>
               );
             })}

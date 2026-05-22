@@ -63,7 +63,10 @@ const UserAddressForm = () => {
     useExistingAddress(isEditMode ? userAddressId : undefined);
 
   const { data: countries } = useCountries();
+
   const { data: states } = useStates(selectedCountry);
+  console.log(states, "countries..");
+
   const { data: districts } = useDistricts(selectedState);
 
   const { mutate: handleCreateAddress, isPending: isCreating } =
@@ -230,6 +233,7 @@ const UserAddressForm = () => {
             label="Contact Name"
             required
             error={errors.contactName}
+            type="name"
           />
 
           <FormTextInput
@@ -270,11 +274,13 @@ const UserAddressForm = () => {
             label="Address Line 1"
             required
             error={errors.addressLine1}
+            type="address"
           />
 
           <FormTextAreaInput
             name="addressLine2"
             label="Address Line 2 (Optional)"
+            type="address"
           />
 
           <View style={{ flexDirection: "row", gap: 12 }}>

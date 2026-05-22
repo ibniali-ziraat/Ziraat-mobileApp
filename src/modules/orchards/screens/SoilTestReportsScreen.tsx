@@ -120,7 +120,7 @@ export default function SoilTestReportsScreen() {
           <FormActions
             cancelLabel="Cancel"
             onCancel={() => router.dismiss()}
-            submitLabel="Upload All"
+            submitLabel="Upload"
             onSubmit={handleSubmit(onSubmit)}
             disabled={isSaving}
             loading={isSaving}

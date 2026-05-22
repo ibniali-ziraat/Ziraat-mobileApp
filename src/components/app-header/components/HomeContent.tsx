@@ -3,33 +3,51 @@ import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
+import { useNotifications } from "@/src/modules/notifications/hooks/useNotifications";
 import { router } from "expo-router";
-import { BarChart2, Bell } from "lucide-react-native";
+import { Bell } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 
 const HomeContent = () => {
   const { userId } = useAuth();
   const { data } = useProfileQuery(userId);
+  const { count } = useNotifications();
+  // const count = 100;
 
   const title = data?.fullName ?? "Ziraat";
-  // const label = count > 99 ? "99+" : String(count);
 
   return (
     <View
       className="w-full flex-row items-center justify-between pt-4"
       style={{ borderBottomColor: colors.neutral }}
     >
-      <View>
-        <Text className="text-md" style={[typography.Poppins_m_semibold]}>
+      <View
+        style={{
+          flex: 1,
+          marginRight: 10,
+          paddingRight: 5,
+        }}
+      >
+        <Text className="text-md" style={typography.Poppins_m_semibold}>
           Welcome
         </Text>
-        <Text style={[{ color: colors.dark }, typography.Poppins_m_regular]}>
+
+        <Text
+          numberOfLines={2}
+          ellipsizeMode="tail"
+          style={[
+            {
+              color: colors.dark,
+              lineHeight: 20,
+            },
+            typography.Poppins_m_regular,
+          ]}
+        >
           {title.toUpperCase()}
         </Text>
       </View>
-
       <View className="flex-row items-center">
-        <Pressable
+        {/* <Pressable
           className="p-2 mr-3 rounded-full border"
           style={({ pressed }) => ({
             borderColor: colors.neutral,
@@ -38,7 +56,7 @@ const HomeContent = () => {
           onPress={() => router.push({ pathname: ROUTES.DASHBOARD.MAIN })}
         >
           <BarChart2 size={20} color={colors.secondary} />
-        </Pressable>
+        </Pressable> */}
 
         <Pressable
           className="p-2 mr-3 rounded-full border"
@@ -48,35 +66,20 @@ const HomeContent = () => {
           })}
           onPress={() => router.push(ROUTES.NOTIFICATIONS)}
         >
-          <Bell size={24} color={colors.secondary} />
+          <View>
+            <Bell size={24} color={colors.secondary} />
 
-          {/* {count > 0 && (
-            <View
-              style={{
-                position: "absolute",
-                top: -4,
-                right: -4,
-                backgroundColor: colors.error,
-                borderRadius: 999,
-                minWidth: 16,
-                height: 16,
-                paddingHorizontal: 4,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Text
-                style={{
-                  color: colors.light,
-                  fontSize: 9,
-                  fontWeight: "700",
-                  lineHeight: 12,
-                }}
+            {count > 0 && (
+              <View
+                className="absolute -top-3 -right-4 min-w-[18px] h-[18px] px-1 rounded-full items-center justify-center"
+                style={{ backgroundColor: colors.error }}
               >
-                {label}
-              </Text>
-            </View>
-          )} */}
+                <Text className="text-white text-[12px]">
+                  {count > 99 ? "99" : count}
+                </Text>
+              </View>
+            )}
+          </View>
         </Pressable>
 
         <Pressable

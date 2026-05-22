@@ -65,10 +65,7 @@ const OrderDetailsScreen = () => {
         }}
         ListHeaderComponent={() => (
           <View>
-
             <View style={[baseCard, shadows.profile_card]}>
-
-
               <View className="flex-row items-center mb-4">
                 <Package size={18} color={colors.primary} />
 
@@ -76,38 +73,30 @@ const OrderDetailsScreen = () => {
                   Order Information
                 </Text>
 
-
                 <View style={{ marginLeft: "auto" }}>
                   <View
                     style={{
                       flexDirection: "row",
                       justifyContent: "flex-end",
                       gap: 2,
-
                     }}
                   >
                     <Pressable
-                      onPress={() =>
-                        generateInvoicePDF(orderData, "download")
-                      }
+                      onPress={() => generateInvoicePDF(orderData, "download")}
                       style={{ padding: 8 }}
                     >
                       <Download size={18} color={colors.dark} />
                     </Pressable>
 
                     <Pressable
-                      onPress={() =>
-                        generateInvoicePDF(orderData, "view")
-                      }
+                      onPress={() => generateInvoicePDF(orderData, "view")}
                       style={{ padding: 8 }}
                     >
                       <Eye size={18} color={colors.dark} />
                     </Pressable>
 
                     <Pressable
-                      onPress={() =>
-                        generateInvoicePDF(orderData, "share")
-                      }
+                      onPress={() => generateInvoicePDF(orderData, "share")}
                       style={{ padding: 8 }}
                     >
                       <Share2 size={18} color={colors.dark} />
@@ -162,7 +151,6 @@ const OrderDetailsScreen = () => {
                   </Text>
                 </View>
               </View>
-
             </View>
 
             {/* SHIPPING */}
@@ -330,6 +318,7 @@ const OrderDetailsScreen = () => {
               },
               { label: "Tax", value: orderData?.taxAmount },
               { label: "Shipping", value: orderData?.shippingAmount },
+              { label: "Platform Fee", value: orderData?.paymentFeeAmount },
             ].map((row, i) => (
               <View
                 key={i}
@@ -346,9 +335,7 @@ const OrderDetailsScreen = () => {
                     fontWeight: "500",
                   }}
                 >
-                  {typeof row.value === "string"
-                    ? row.value
-                    : `₹${row.value}`}
+                  {typeof row.value === "string" ? row.value : `₹${row.value}`}
                 </Text>
               </View>
             ))}

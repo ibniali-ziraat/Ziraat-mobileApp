@@ -26,7 +26,7 @@ export default function ProductQuantitySelector({
   const isMax = max && quantity >= max;
 
   return (
-    <View className=" mx-4">
+    <View className="">
       <View className="flex-row items-center justify-between">
         {/* Label */}
         <CsText style={[typography.Poppins_m_semibold, { color: colors.dark }]}>

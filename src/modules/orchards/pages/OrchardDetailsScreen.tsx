@@ -193,7 +193,7 @@ export default function OrchardDetailsScreen() {
           heading="Soil & Water"
           subheading={
             !hasData(soilWaterData)
-              ? "Soil test reports can only be added after the Soil & Water section is filled."
+              ? "Soil reports can also be added after completing the Soil & Water Section"
               : undefined
           }
           items={
@@ -277,12 +277,12 @@ export default function OrchardDetailsScreen() {
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
-                    title: "Seasonal Labor",
+                    title: "Seasonal Labour",
                     value: infrastructureData?.seasonalLabor,
                     icon: <Users size={20} color={colors.primary} />,
                   },
                   {
-                    title: "Contract-based Labor",
+                    title: "Contract-based Labour",
                     value: infrastructureData?.contractBasedLabor,
                     icon: <Users size={20} color={colors.primary} />,
                   },

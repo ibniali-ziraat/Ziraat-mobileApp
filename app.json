@@ -59,10 +59,7 @@
       "expo-maps"
     ],
     "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "f2345265-6311-4807-8b17-31aa67b9f511"
-      }
+      "router": {}
     }
   }
 }

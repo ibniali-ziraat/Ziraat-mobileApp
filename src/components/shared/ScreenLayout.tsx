@@ -16,7 +16,7 @@ export default function ScreenLayout({
 }: ScreenLayoutProps) {
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1, backgroundColor: "#FFFFFF" }}
+      style={{ flex: 1, backgroundColor: colors.light }}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={keyboardOffset}
     >

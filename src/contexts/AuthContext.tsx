@@ -1,35 +1,40 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useProfileQuery } from "../hooks/userQueryHooks";
 import { clear, load, save } from "../utils/authStorage";
+
+export type UserProfile = {
+  id: number;
+  fullName: string;
+  email: string;
+  phone: string;
+  age?: string;
+  gender?: string;
+  profilePic?: string;
+  createdOn?: string;
+};
 
 interface AuthContextType {
   userToken: string | null;
   vendorToken: string | null;
   userTokenExp: string | null;
-
   orchardProfileId: number | null;
-
   userId: number | null;
   vendorId: number | null;
-
   userProfileId: number | null;
   vendorProfileId: number | null;
-
   roleMode: "farmer" | "supplier";
   initialized: boolean;
+  profileData: UserProfile | null; // 👈 added
 
   setUserToken: (v: string | null) => Promise<void>;
   setVendorToken: (v: string | null) => void;
   setUserTokenExp: (v: string | null) => Promise<void>;
-
   setUserId: (v: number | null) => Promise<void>;
   setVendorId: (v: number | null) => void;
   setOrchardProfileId: (v: number | null) => void;
-
   setUserProfileId: (v: number | null) => void;
   setVendorProfileId: (v: number | null) => void;
-
   setRoleMode: (mode: "farmer" | "supplier") => void;
-
   logoutUser: () => Promise<void>;
   logoutVendor: () => void;
   logoutAll: () => Promise<void>;
@@ -43,33 +48,37 @@ export const AuthProvider = ({ children }: any) => {
   const [orchardProfileId, setOrchardProfileIdState] = useState<number | null>(
     null,
   );
-
   const [userId, setUserIdState] = useState<number | null>(null);
   const [vendorId, setVendorIdState] = useState<number | null>(null);
   const [userTokenExp, setUserTokenExpState] = useState<string | null>(null);
-
   const [userProfileId, setUserProfileIdState] = useState<number | null>(null);
   const [vendorProfileId, setVendorProfileIdState] = useState<number | null>(
     null,
   );
-
   const [roleMode, setRoleModeState] = useState<"farmer" | "supplier">(
     "farmer",
   );
   const [initialized, setInitialized] = useState(false);
 
+  // 👇 Single profile fetch for the entire app
+  const { data: profileData = null } = useProfileQuery(userId);
+
+  // Sync userProfileId when profile loads
+  useEffect(() => {
+    if (profileData?.id) {
+      setUserProfileIdState(profileData.id);
+    }
+  }, [profileData]);
+
   // ---------------- AUTO LOGOUT ----------------
   useEffect(() => {
     if (!userTokenExp) return;
-
-    const expTime = new Date(userTokenExp).getTime(); // parse ISO string
+    const expTime = new Date(userTokenExp).getTime();
     const timeout = expTime - Date.now();
-
     if (timeout <= 0) {
       logoutUser();
       return;
     }
-
     const timer = setTimeout(() => logoutUser(), timeout);
     return () => clearTimeout(timer);
   }, [userTokenExp]);
@@ -81,7 +90,6 @@ export const AuthProvider = ({ children }: any) => {
       const storedUserId = await load("user_id");
       const storedExp = await load("user_token_exp");
 
-      // Clear if expired
       if (storedExp && new Date(storedExp).getTime() < Date.now()) {
         await clear("user_token");
         await clear("user_id");
@@ -91,59 +99,44 @@ export const AuthProvider = ({ children }: any) => {
         setUserIdState(storedUserId ? Number(storedUserId) : null);
         setUserTokenExpState(storedExp || null);
       }
-
       setInitialized(true);
     })();
   }, []);
 
-  // ---------------- SIMPLE SETTERS ----------------
+  // ---------------- SETTERS ----------------
   const setUserToken = async (token: string | null) => {
     if (token) await save("user_token", token);
     else await clear("user_token");
-
     setUserTokenState(token);
   };
 
   const setUserTokenExp = async (exp: string | null) => {
     if (exp) await save("user_token_exp", exp);
     else await clear("user_token_exp");
-
     setUserTokenExpState(exp);
   };
 
   const setUserId = async (v: number | null) => {
     if (v !== null) await save("user_id", String(v));
     else await clear("user_id");
-
     setUserIdState(v);
   };
 
-  const setVendorToken = (token: string | null) => {
-    setVendorTokenState(token);
-  };
-
-  const setVendorId = (v: number | null) => {
-    setVendorIdState(v);
-  };
-
+  const setVendorToken = (token: string | null) => setVendorTokenState(token);
+  const setVendorId = (v: number | null) => setVendorIdState(v);
   const setUserProfileId = (v: number | null) => setUserProfileIdState(v);
   const setVendorProfileId = (v: number | null) => setVendorProfileIdState(v);
-
   const setRoleMode = (mode: "farmer" | "supplier") => setRoleModeState(mode);
-  const setOrchardProfileId = (v: number | null) => {
-    setOrchardProfileIdState(v);
-  };
+  const setOrchardProfileId = (v: number | null) => setOrchardProfileIdState(v);
 
   // ---------------- LOGOUT ----------------
   const logoutUser = async () => {
     await clear("user_token");
     await clear("user_id");
     await clear("user_token_exp");
-
     setUserTokenState(null);
     setUserIdState(null);
     setUserTokenExpState(null);
-
     setUserProfileIdState(null);
     setOrchardProfileIdState(null);
   };
@@ -166,15 +159,16 @@ export const AuthProvider = ({ children }: any) => {
         vendorToken,
         userTokenExp,
         orchardProfileId,
-        setUserTokenExp,
         userId,
         vendorId,
         userProfileId,
         vendorProfileId,
         roleMode,
         initialized,
+        profileData, // 👈 exposed
         setUserToken,
         setVendorToken,
+        setUserTokenExp,
         setUserId,
         setVendorId,
         setUserProfileId,

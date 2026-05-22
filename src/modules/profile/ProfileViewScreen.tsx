@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 import { userDeleteConfig } from "../auth/config/userDeleteConfig";
 
 // Icons
+import Loader from "@/src/components/shared/Loader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { DUMMY_EMAIL } from "@/src/constants/constants";
@@ -114,14 +115,14 @@ export default function ProfileViewScreen() {
       setDeleting(false);
     }
   };
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <ScreenLayout>
       <BackHeader
         title="Profile"
-        onPress={() => router.push(ROUTES.TABS.HOME)}
+        onPress={() => router.replace(ROUTES.TABS.HOME)}
       />
       <ScreenContent>
         <ProfileTopHeader
@@ -147,36 +148,36 @@ export default function ProfileViewScreen() {
           items={
             profileData
               ? [
-                {
-                  title: "Email",
-                  value: profileData?.email.endsWith(DUMMY_EMAIL)
-                    ? "N/A"
-                    : profileData?.email,
-                  icon: <Mail size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Phone",
-                  value: profileData?.phone,
-                  icon: <Phone size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Age",
-                  value: profileData?.age,
-                  icon: <User size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Gender",
-                  value: profileData?.gender,
-                  icon: <VenetianMask size={22} color={colors.primary} />,
-                },
-                {
-                  title: "User Since",
-                  value: profileData?.createdOn
-                    ? new Date(profileData.createdOn).toLocaleDateString()
-                    : "N/A",
-                  icon: <Calendar size={22} color={colors.primary} />,
-                },
-              ]
+                  {
+                    title: "Email",
+                    value: profileData?.email.endsWith(DUMMY_EMAIL)
+                      ? "N/A"
+                      : profileData?.email,
+                    icon: <Mail size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Phone",
+                    value: profileData?.phone,
+                    icon: <Phone size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Age",
+                    value: profileData?.age,
+                    icon: <User size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Gender",
+                    value: profileData?.gender,
+                    icon: <VenetianMask size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "User Since",
+                    value: profileData?.createdOn
+                      ? new Date(profileData.createdOn).toLocaleDateString()
+                      : "N/A",
+                    icon: <Calendar size={22} color={colors.primary} />,
+                  },
+                ]
               : []
           }
           onEdit={() => router.push(ROUTES.USER.FORMS.PROFILE)}
@@ -186,33 +187,33 @@ export default function ProfileViewScreen() {
           items={
             addressData
               ? [
-                {
-                  title: "State",
-                  value: addressData.state,
-                  icon: <MapPin size={22} color={colors.primary} />,
-                },
-                {
-                  title: "District",
-                  value: addressData.district,
-                  icon: <Building size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Tehsil",
-                  value: addressData.tehsil,
-                  icon: <Navigation size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Locality",
-                  value: addressData.village,
-                  icon: <Home size={22} color={colors.primary} />,
-                },
+                  {
+                    title: "State",
+                    value: addressData.state,
+                    icon: <MapPin size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "District",
+                    value: addressData.district,
+                    icon: <Building size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Tehsil",
+                    value: addressData.tehsil,
+                    icon: <Navigation size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Locality",
+                    value: addressData.village,
+                    icon: <Home size={22} color={colors.primary} />,
+                  },
 
-                {
-                  title: "Pincode",
-                  value: addressData.pincode,
-                  icon: <MapPin size={22} color={colors.primary} />,
-                },
-              ]
+                  {
+                    title: "Pincode",
+                    value: addressData.pincode,
+                    icon: <MapPin size={22} color={colors.primary} />,
+                  },
+                ]
               : []
           }
           onEdit={
@@ -229,29 +230,29 @@ export default function ProfileViewScreen() {
           items={
             educationData
               ? [
-                {
-                  title: "Qualification",
-                  value: educationData.highestQualification,
-                  icon: <GraduationCap size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Institute",
-                  value: educationData.instituteName,
-                  icon: <School size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Passing Year",
-                  value: educationData.passingYear,
-                  icon: <Calendar size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Specialization",
-                  value: educationData.specialization || "N/A",
-                  icon: (
-                    <GraduationCapIcon size={22} color={colors.primary} />
-                  ),
-                },
-              ]
+                  {
+                    title: "Qualification",
+                    value: educationData.highestQualification,
+                    icon: <GraduationCap size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Institute",
+                    value: educationData.instituteName,
+                    icon: <School size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Passing Year",
+                    value: educationData.passingYear,
+                    icon: <Calendar size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Specialization",
+                    value: educationData.specialization || "N/A",
+                    icon: (
+                      <GraduationCapIcon size={22} color={colors.primary} />
+                    ),
+                  },
+                ]
               : []
           }
           onEdit={
@@ -273,34 +274,34 @@ export default function ProfileViewScreen() {
           items={
             professionData
               ? [
-                {
-                  title: "Organization",
-                  value: professionData.organizationName,
-                  icon: <Briefcase size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Designation",
-                  value: professionData.designation,
-                  icon: <UserCheck size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Profession Type",
-                  value: professionData.professionType,
-                  icon: <Building size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Experience",
-                  value: professionData.experienceYears
-                    ? `${professionData.experienceYears} yrs`
-                    : "N/A",
-                  icon: <Clock size={22} color={colors.primary} />,
-                },
-                {
-                  title: "Skills",
-                  value: professionData.skills || "N/A",
-                  icon: <UserCheck size={22} color={colors.primary} />,
-                },
-              ]
+                  {
+                    title: "Organization",
+                    value: professionData.organizationName,
+                    icon: <Briefcase size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Designation",
+                    value: professionData.designation,
+                    icon: <UserCheck size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Profession Type",
+                    value: professionData.professionType,
+                    icon: <Building size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Experience",
+                    value: professionData.experienceYears
+                      ? `${professionData.experienceYears} yrs`
+                      : "N/A",
+                    icon: <Clock size={22} color={colors.primary} />,
+                  },
+                  {
+                    title: "Skills",
+                    value: professionData.skills || "N/A",
+                    icon: <UserCheck size={22} color={colors.primary} />,
+                  },
+                ]
               : []
           }
           emptyActionLabel="Add Profession Details"

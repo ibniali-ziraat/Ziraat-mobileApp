@@ -1,40 +1,30 @@
 import { colors } from "@/src/constants/colors";
+import { typography } from "@/src/constants/fonts/typography";
 import { X } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import {
-    Modal,
-    Pressable,
-    Text,
-    View
-} from "react-native";
+import { Modal, Pressable, ScrollView, Text, View } from "react-native";
 
 type Props = {
   visible: boolean;
   onClose: () => void;
   selectedStatus: number | null;
   setSelectedStatus: (val: number | null) => void;
+  ORDER_STATUS: Record<
+    number,
+    {
+      label: string;
+      bg: string;
+      text: string;
+    }
+  >;
 };
-
-const STATUS_OPTIONS = [
-  { label: "All", value: null },
-  { label: "On the way", value: 50 },
-  { label: "Delivered", value: 70 },
-  { label: "Cancelled", value: 80 },
-  { label: "Returned", value: 90 },
-];
-
-const TIME_OPTIONS = [
-  { label: "Anytime", value: "all" },
-  { label: "Last 30 days", value: "30" },
-  { label: "Last 6 months", value: "180" },
-  { label: "Last year", value: "365" },
-];
 
 export default function OrderFilterModal({
   visible,
   onClose,
   selectedStatus,
   setSelectedStatus,
+  ORDER_STATUS,
 }: Props) {
   const [tempStatus, setTempStatus] = useState<number | null>(null);
   const [time, setTime] = useState("all");
@@ -42,6 +32,14 @@ export default function OrderFilterModal({
   useEffect(() => {
     setTempStatus(selectedStatus);
   }, [selectedStatus, visible]);
+
+  const STATUS_OPTIONS = [
+    { label: "All", value: null },
+    ...Object.entries(ORDER_STATUS).map(([key, value]) => ({
+      label: value.label,
+      value: Number(key),
+    })),
+  ];
 
   const Radio = ({ active }: { active: boolean }) => (
     <View
@@ -61,7 +59,7 @@ export default function OrderFilterModal({
             height: 10,
             width: 10,
             borderRadius: 5,
-            backgroundColor:colors.primary,
+            backgroundColor: colors.primary,
           }}
         />
       )}
@@ -99,26 +97,42 @@ export default function OrderFilterModal({
               borderColor: colors.cardBorder,
             }}
           >
-            <Text style={{ fontSize: 16, fontWeight: "700" }}>
+            <Text
+              style={[
+                typography.Poppins_s_semibold,
+                {
+                  fontSize: 16,
+                  color: colors.dark,
+                },
+              ]}
+            >
               Filter Orders
             </Text>
 
             <Pressable onPress={onClose}>
-              <X size={20}  />
+              <X size={20} color={colors.dark} />
             </Pressable>
           </View>
 
-          {/* CONTENT */}
-          <View style={{ paddingHorizontal: 16 }}>
-
+          {/* CONTENT (SCROLL ENABLED) */}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingHorizontal: 16,
+              paddingBottom: 20,
+            }}
+          >
             {/* STATUS */}
             <Text
-              style={{
-                marginTop: 16,
-                marginBottom: 10,
-                fontSize: 14,
-                fontWeight: "600",
-              }}
+              style={[
+                typography.Poppins_s_semibold,
+                {
+                  marginTop: 16,
+                  marginBottom: 10,
+                  fontSize: 14,
+                  color: colors.neutral,
+                },
+              ]}
             >
               Status
             </Text>
@@ -128,7 +142,7 @@ export default function OrderFilterModal({
 
               return (
                 <Pressable
-                  key={item.label}
+                  key={String(item.value ?? "all")}
                   onPress={() => setTempStatus(item.value)}
                   style={{
                     flexDirection: "row",
@@ -138,43 +152,13 @@ export default function OrderFilterModal({
                   }}
                 >
                   <Radio active={isSelected} />
-                  <Text style={{ fontSize: 14 }}>{item.label}</Text>
+                  <Text style={{ fontSize: 14, color: colors.dark }}>
+                    {item.label}
+                  </Text>
                 </Pressable>
               );
             })}
-
-            {/* TIME */}
-            <Text
-              style={{
-                marginTop: 20,
-                marginBottom: 10,
-                fontSize: 14,
-                fontWeight: "600",
-              }}
-            >
-              Time
-            </Text>
-
-            {TIME_OPTIONS.map((item) => {
-              const isSelected = time === item.value;
-
-              return (
-                <Pressable
-                  key={item.value}
-                  onPress={() => setTime(item.value)}
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 12,
-                    paddingVertical: 12,
-                  }}
-                >
-                  <Radio active={isSelected} />
-                  <Text style={{ fontSize: 14 }}>{item.label}</Text>
-                </Pressable>
-              );
-            })}
-          </View>
+          </ScrollView>
 
           {/* FOOTER */}
           <View
@@ -182,10 +166,11 @@ export default function OrderFilterModal({
               flexDirection: "row",
               padding: 16,
               borderTopWidth: 1,
-             borderColor: colors.cardBorder,
+              borderColor: colors.cardBorder,
               gap: 10,
             }}
           >
+            {/* CLEAR */}
             <Pressable
               onPress={() => {
                 setTempStatus(null);
@@ -202,11 +187,12 @@ export default function OrderFilterModal({
                 alignItems: "center",
               }}
             >
-              <Text style={{ fontWeight: "600", color: "#333" }}>
+              <Text style={{ fontWeight: "600", color: colors.dark }}>
                 CLEAR FILTERS
               </Text>
             </Pressable>
 
+            {/* APPLY */}
             <Pressable
               onPress={() => {
                 setSelectedStatus(tempStatus);

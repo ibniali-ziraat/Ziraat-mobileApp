@@ -7,10 +7,10 @@ export const applyCoupon = async (payload: { couponCode: string }) => {
 
 export const getCoupon = async (couponCode?: string) => {
   const { data } = await axiosInstance.get(
-    `/api/coupons/available${couponCode ? `?code=${couponCode}` : ""}`
+    `/api/coupons/available${couponCode ? `?code=${couponCode}` : ""}`,
   );
 
-  return data?.data || []; 
+  return data?.data || [];
 };
 
 export const checkout = async (payload: { couponCode: string }) => {
@@ -96,6 +96,8 @@ export const getPaymentProviders = async () => {
 
 //place order------
 export const codCheckoutService = async (checkoutId: string) => {
+  console.log(checkoutId, "checkoutid is...");
+
   const response = await axiosInstance.post(
     `/api/CoD/CoDCheckout?checkoutId=${checkoutId}`,
   );
