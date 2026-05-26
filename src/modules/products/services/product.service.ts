@@ -1,7 +1,7 @@
 import axiosInstance from "../../../api/client/axiosInstance";
 
 export const getProducts = async () => {
-  const { data } = await axiosInstance.get("/search");
+  const { data } = await axiosInstance.get("/vendor/search");
   return data;
 };
 

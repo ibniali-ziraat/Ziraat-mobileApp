@@ -14,11 +14,15 @@ interface ProductListHeaderProps {
   setFilterOpen: (val: boolean) => void;
   filters: ProductFilters;
   setFilters: (val: ProductFilters) => void;
-  filterOptions: any[];
+  filterOptions: {
+    brands: any[];
+    categories: any[];
+  };
+  categories: any[];
   isFiltering: boolean;
   activeCategory: string;
   setActiveCategory: (val: string) => void;
-  categories: any[];
+  filtersReady: boolean;
 }
 
 export default function ProductListHeader({
@@ -29,9 +33,11 @@ export default function ProductListHeader({
   filters,
   setFilters,
   filterOptions,
+  categories,
   isFiltering,
   activeCategory,
   setActiveCategory,
+  filtersReady,
 }: ProductListHeaderProps) {
   return (
     <>
@@ -48,11 +54,11 @@ export default function ProductListHeader({
         filterOptions={filterOptions}
       />
 
-      {!isFiltering && (
+      {!isFiltering && filtersReady && categories.length > 0 && (
         <CategoryTabs
           activeCategory={activeCategory}
           onSelect={setActiveCategory}
-          categories={filterOptions.categories}
+          categories={categories}
         />
       )}
 

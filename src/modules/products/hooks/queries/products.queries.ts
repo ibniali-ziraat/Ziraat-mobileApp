@@ -33,12 +33,17 @@ export const useProductSearch = (params: {
   maxPrice?: number;
   sort?: string;
   minRating?: number;
-}) =>
-  useQuery({
-    queryKey: ["product-search", JSON.stringify(params)], // ✅ FIXED
-    queryFn: () => getProductBySearch(params),
+  enabled?: boolean;
+}) => {
+  const { enabled = true, ...queryParams } = params;
+
+  return useQuery({
+    queryKey: ["product-search", JSON.stringify(queryParams)],
+    queryFn: () => getProductBySearch(queryParams),
     keepPreviousData: true,
+    enabled,
   });
+};
 
 export const useBuyProductMutation = () => {
   const queryClient = useQueryClient();
@@ -52,23 +57,20 @@ export const useBuyProductMutation = () => {
   });
 };
 
-// Trending Products (30 min cache)
 export const useTrendingProducts = () =>
   useQuery({
     queryKey: ["trending-products"],
     queryFn: getTrendingProducts,
-    staleTime: 1000 * 60 * 30, // 30 minutes
+    staleTime: 1000 * 60 * 30,
   });
 
-// Best Deals (5 min cache)
 export const useBestDeals = () =>
   useQuery({
     queryKey: ["best-deals"],
     queryFn: getBestDeals,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 
-// Search with Vendors
 export const useSearchWithVendors = (payload: {
   query?: string;
   brand?: string;
@@ -81,11 +83,65 @@ export const useSearchWithVendors = (payload: {
   useQuery({
     queryKey: ["search-with-vendors", payload],
     queryFn: () => searchWithVendors(payload),
-    enabled: !!payload, // always runs if payload exists
+    enabled: !!payload,
   });
 
-// Compare Products (Mutation)
 export const useCompareProducts = () =>
   useMutation({
     mutationFn: compareProducts,
   });
+
+export const useProductsWithFallback = (
+  params: {
+    query?: string;
+    brand?: string;
+    category?: string;
+    page?: number;
+    minPrice?: number;
+    maxPrice?: number;
+    sort?: string;
+    minRating?: number;
+  } = {},
+) => {
+  const vendorQuery = useProductsQuery();
+
+  const vendorHasProducts =
+    Array.isArray(vendorQuery.data?.products) &&
+    vendorQuery.data.products.length > 0;
+
+  const shouldFallback =
+    !vendorQuery.isLoading && !vendorQuery.isFetching && !vendorHasProducts;
+
+  const searchQuery = useProductSearch({
+    ...params,
+    enabled: shouldFallback,
+  });
+
+  if (vendorQuery.isLoading || vendorQuery.isFetching) {
+    return {
+      data: undefined,
+      isLoading: true,
+      isFetching: true,
+      refetch: vendorQuery.refetch,
+      isFallback: false,
+    };
+  }
+
+  if (!shouldFallback) {
+    return {
+      data: vendorQuery.data,
+      isLoading: false,
+      isFetching: false,
+      refetch: vendorQuery.refetch,
+      isFallback: false,
+    };
+  }
+
+  return {
+    data: searchQuery.data,
+    isLoading: searchQuery.isLoading,
+    isFetching: searchQuery.isFetching,
+    refetch: searchQuery.refetch,
+    isFallback: true,
+  };
+};

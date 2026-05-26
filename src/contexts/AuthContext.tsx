@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import axiosInstance from "../api/client/axiosInstance";
 import { useProfileQuery } from "../hooks/userQueryHooks";
-import { clear, load, save } from "../utils/authStorage";
+import { deleteItem, getItem, setItem } from "../utils/universalSecureToken";
 
 export type UserProfile = {
   id: number;
@@ -24,7 +25,7 @@ interface AuthContextType {
   vendorProfileId: number | null;
   roleMode: "farmer" | "supplier";
   initialized: boolean;
-  profileData: UserProfile | null; // 👈 added
+  profileData: UserProfile | null;
 
   setUserToken: (v: string | null) => Promise<void>;
   setVendorToken: (v: string | null) => void;
@@ -60,80 +61,13 @@ export const AuthProvider = ({ children }: any) => {
   );
   const [initialized, setInitialized] = useState(false);
 
-  // 👇 Single profile fetch for the entire app
   const { data: profileData = null } = useProfileQuery(userId);
-
-  // Sync userProfileId when profile loads
-  useEffect(() => {
-    if (profileData?.id) {
-      setUserProfileIdState(profileData.id);
-    }
-  }, [profileData]);
-
-  // ---------------- AUTO LOGOUT ----------------
-  useEffect(() => {
-    if (!userTokenExp) return;
-    const expTime = new Date(userTokenExp).getTime();
-    const timeout = expTime - Date.now();
-    if (timeout <= 0) {
-      logoutUser();
-      return;
-    }
-    const timer = setTimeout(() => logoutUser(), timeout);
-    return () => clearTimeout(timer);
-  }, [userTokenExp]);
-
-  // ---------------- LOAD STORED VALUES ----------------
-  useEffect(() => {
-    (async () => {
-      const storedToken = await load("user_token");
-      const storedUserId = await load("user_id");
-      const storedExp = await load("user_token_exp");
-
-      if (storedExp && new Date(storedExp).getTime() < Date.now()) {
-        await clear("user_token");
-        await clear("user_id");
-        await clear("user_token_exp");
-      } else {
-        setUserTokenState(storedToken);
-        setUserIdState(storedUserId ? Number(storedUserId) : null);
-        setUserTokenExpState(storedExp || null);
-      }
-      setInitialized(true);
-    })();
-  }, []);
-
-  // ---------------- SETTERS ----------------
-  const setUserToken = async (token: string | null) => {
-    if (token) await save("user_token", token);
-    else await clear("user_token");
-    setUserTokenState(token);
-  };
-
-  const setUserTokenExp = async (exp: string | null) => {
-    if (exp) await save("user_token_exp", exp);
-    else await clear("user_token_exp");
-    setUserTokenExpState(exp);
-  };
-
-  const setUserId = async (v: number | null) => {
-    if (v !== null) await save("user_id", String(v));
-    else await clear("user_id");
-    setUserIdState(v);
-  };
-
-  const setVendorToken = (token: string | null) => setVendorTokenState(token);
-  const setVendorId = (v: number | null) => setVendorIdState(v);
-  const setUserProfileId = (v: number | null) => setUserProfileIdState(v);
-  const setVendorProfileId = (v: number | null) => setVendorProfileIdState(v);
-  const setRoleMode = (mode: "farmer" | "supplier") => setRoleModeState(mode);
-  const setOrchardProfileId = (v: number | null) => setOrchardProfileIdState(v);
 
   // ---------------- LOGOUT ----------------
   const logoutUser = async () => {
-    await clear("user_token");
-    await clear("user_id");
-    await clear("user_token_exp");
+    await deleteItem("user_token");
+    await deleteItem("user_id");
+    await deleteItem("user_token_exp");
     setUserTokenState(null);
     setUserIdState(null);
     setUserTokenExpState(null);
@@ -152,6 +86,106 @@ export const AuthProvider = ({ children }: any) => {
     logoutVendor();
   };
 
+  useEffect(() => {
+    const reqInterceptor = axiosInstance.interceptors.request.use(
+      async (config) => {
+        const tokenExp = await getItem("user_token_exp");
+
+        if (tokenExp && new Date(tokenExp).getTime() < Date.now()) {
+          await logoutUser();
+          return Promise.reject(new Error("Token expired. User logged out."));
+        }
+
+        const token = await getItem("user_token");
+        if (token) {
+          config.headers = config.headers || {};
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+
+        return config;
+      },
+      (error) => Promise.reject(error),
+    );
+
+    const resInterceptor = axiosInstance.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        if (error.response?.status === 401) {
+          await logoutUser();
+        }
+        return Promise.reject(error);
+      },
+    );
+
+    return () => {
+      axiosInstance.interceptors.request.eject(reqInterceptor);
+      axiosInstance.interceptors.response.eject(resInterceptor);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (profileData?.id) {
+      setUserProfileIdState(profileData.id);
+    }
+  }, [profileData]);
+
+  useEffect(() => {
+    if (!userTokenExp) return;
+    const expTime = new Date(userTokenExp).getTime();
+    const timeout = expTime - Date.now();
+    if (timeout <= 0) {
+      logoutUser();
+      return;
+    }
+    const timer = setTimeout(() => logoutUser(), timeout);
+    return () => clearTimeout(timer);
+  }, [userTokenExp]);
+
+  useEffect(() => {
+    (async () => {
+      const storedToken = await getItem("user_token");
+      const storedUserId = await getItem("user_id");
+      const storedExp = await getItem("user_token_exp");
+
+      if (storedExp && new Date(storedExp).getTime() < Date.now()) {
+        await deleteItem("user_token");
+        await deleteItem("user_id");
+        await deleteItem("user_token_exp");
+      } else {
+        setUserTokenState(storedToken);
+        setUserIdState(storedUserId ? Number(storedUserId) : null);
+        setUserTokenExpState(storedExp || null);
+      }
+
+      setInitialized(true);
+    })();
+  }, []);
+
+  const setUserToken = async (token: string | null) => {
+    if (token) await setItem("user_token", token);
+    else await deleteItem("user_token");
+    setUserTokenState(token);
+  };
+
+  const setUserTokenExp = async (exp: string | null) => {
+    if (exp) await setItem("user_token_exp", exp);
+    else await deleteItem("user_token_exp");
+    setUserTokenExpState(exp);
+  };
+
+  const setUserId = async (v: number | null) => {
+    if (v !== null) await setItem("user_id", String(v));
+    else await deleteItem("user_id");
+    setUserIdState(v);
+  };
+
+  const setVendorToken = (token: string | null) => setVendorTokenState(token);
+  const setVendorId = (v: number | null) => setVendorIdState(v);
+  const setUserProfileId = (v: number | null) => setUserProfileIdState(v);
+  const setVendorProfileId = (v: number | null) => setVendorProfileIdState(v);
+  const setRoleMode = (mode: "farmer" | "supplier") => setRoleModeState(mode);
+  const setOrchardProfileId = (v: number | null) => setOrchardProfileIdState(v);
+
   return (
     <AuthContext.Provider
       value={{
@@ -165,7 +199,7 @@ export const AuthProvider = ({ children }: any) => {
         vendorProfileId,
         roleMode,
         initialized,
-        profileData, // 👈 exposed
+        profileData,
         setUserToken,
         setVendorToken,
         setUserTokenExp,

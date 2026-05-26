@@ -17,6 +17,7 @@ import {
 } from "./useCheckout";
 
 const UPI_OPTION = { label: "UPI", value: "UPI" };
+const BOC = { label: "Buy on Credit", value: "BOC" };
 
 export type UserPaymentDetails = {
   name: string;
@@ -63,6 +64,7 @@ export const useReviewOrder = () => {
           .map((p: any) => ({ label: p.name, value: p.id }))
       : []),
     UPI_OPTION,
+    BOC,
   ];
 
   const onSuccess = (response: any) => {
@@ -137,7 +139,6 @@ export const useReviewOrder = () => {
     }
   };
 
-  // --- COD ---
   const handleCodPayment = (
     checkoutId: string,
     shippingAddress: any,
@@ -170,16 +171,12 @@ export const useReviewOrder = () => {
     });
   };
 
-  // --- UPI ---
   const handleUpiPayment = async (
     checkoutId: string,
     amount: number,
     shippingAddress: any,
     vendorAccountId: string,
   ) => {
-    // Step 1: Create Razorpay order + save initial Payment record to MongoDB.
-    // Pass checkoutId and userId so backend can store vendorAccountId early —
-    // verify-payment will read it from DB instead of needing it re-sent.
     let razorpayOrderId: string;
     try {
       const orderRes = await createRazorpayOrder({
@@ -274,7 +271,10 @@ export const useReviewOrder = () => {
     );
   };
 
-  // --- Main handler ---
+  const handleCreditPayment = async () => {
+    console.log("handle credit payment...");
+  };
+
   const handlePlaceOrder = async (
     selectedPayment: string,
     amount: number,
@@ -294,6 +294,8 @@ export const useReviewOrder = () => {
         shippingAddress,
         (vendorAccountId = "acc_SiTe1aZkr6oiyU"),
       );
+    } else if (selectedPayment === "BOC") {
+      await handleCreditPayment();
     }
   };
 

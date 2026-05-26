@@ -26,8 +26,6 @@ export default function ProductScreen() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
 
-  // const isFiltering = Object.keys(filters).length > 0 || !!search;
-
   const isFiltering = Boolean(
     filters?.brand ||
     filters?.category ||
@@ -38,7 +36,12 @@ export default function ProductScreen() {
     search,
   );
 
-  const { filterOptions = [] } = useProductsData();
+  const {
+    filterOptions = { brands: [], categories: [] },
+    categories = [],
+    isReady: filtersReady,
+  } = useProductsData({ page: 1 }); // ← matches initial cache key
+
   const { wishlist, isBusy, handleToggleWishlist } = useWishlistToggle();
   const { showTopBtn, handleScroll } = useScrollToTop();
   const [refreshing, setRefreshing] = useState(false);
@@ -53,14 +56,13 @@ export default function ProductScreen() {
     refresh,
     productSearchRefetch,
   } = usePaginatedProducts({ search, filters, activeCategory });
+
   const handleRefresh = async () => {
     setRefreshing(true);
     await refresh();
     await productSearchRefetch();
     setRefreshing(false);
   };
-
-  // if (isLoading) return <Loader />;
 
   return (
     <ScreenLayout scrollable={false}>
@@ -83,9 +85,11 @@ export default function ProductScreen() {
               filters={filters}
               setFilters={setFilters}
               filterOptions={filterOptions}
+              categories={categories}
               isFiltering={isFiltering}
               activeCategory={activeCategory}
               setActiveCategory={setActiveCategory}
+              filtersReady={filtersReady}
             />
           }
           ListFooterComponent={
@@ -95,8 +99,6 @@ export default function ProductScreen() {
               productCount={displayedProducts.length}
             />
           }
-          // ListEmptyComponent={<Loader />}
-
           ListEmptyComponent={isLoading ? <Loader /> : null}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}

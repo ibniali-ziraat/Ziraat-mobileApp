@@ -5,13 +5,9 @@ import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useLocationWatcher } from "@/src/hooks/useLocationWatcher";
 import { router } from "expo-router";
-import { Flame, Tag } from "lucide-react-native";
 import { JSX, useState } from "react";
 import { Pressable, View } from "react-native";
 import { useRegisterToken } from "../notifications/hooks/useRegisterToken";
-import BestDealsList from "../products/components/BestDealsList";
-import ListHeader from "../products/components/ListHeader";
-import TrendingProductsList from "../products/components/TrendingProductsList";
 import {
   useBestDeals,
   useTrendingProducts,
@@ -54,7 +50,7 @@ export default function HomeScreen(): JSX.Element {
 
           <QuickActions />
 
-          <View style={{ marginTop: 18 }}>
+          {/* <View style={{ marginTop: 18 }}>
             <ListHeader
               title="Trending Products"
               icon={<Flame size={22} color={colors.secondary} />}
@@ -66,9 +62,9 @@ export default function HomeScreen(): JSX.Element {
               refreshing={refreshing}
               onRefresh={handleRefresh}
             />
-          </View>
+          </View> */}
 
-          <View style={{ marginTop: 52 }}>
+          {/* <View style={{ marginTop: 52 }}>
             <ListHeader
               title="Best Deals"
               icon={<Tag size={22} color={colors.secondary} />}
@@ -78,7 +74,7 @@ export default function HomeScreen(): JSX.Element {
               {...sharedWishlistProps}
               variant="carousel"
             />
-          </View>
+          </View> */}
 
           <SectionTitle title="Farm Overview" icon={null} />
           <FarmOverviewChart />

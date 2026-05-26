@@ -4,7 +4,6 @@ import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { shadows } from "@/src/constants/shadows";
 import { useLocalSearchParams } from "expo-router";
 import {
   CalendarDays,
@@ -19,11 +18,13 @@ import {
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { useOrderDetails } from "../../hooks/UseOders";
 
-const baseCard = {
+const card = {
   backgroundColor: colors.light,
-  borderRadius: 22,
+  borderRadius: 16,
   padding: 16,
-  marginBottom: 14,
+  marginBottom: 12,
+  borderWidth: 1,
+  borderColor: colors.cardBorder,
 };
 
 const OrderDetailsScreen = () => {
@@ -34,8 +35,7 @@ const OrderDetailsScreen = () => {
   const items = orderData?.orderItems || [];
 
   const formatDate = (date: string) => {
-    const d = new Date(date);
-    return d.toLocaleDateString("en-IN", {
+    return new Date(date).toLocaleDateString("en-IN", {
       day: "numeric",
       month: "short",
       year: "numeric",
@@ -59,49 +59,37 @@ const OrderDetailsScreen = () => {
         data={items}
         keyExtractor={(item) => String(item.id)}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          padding: 16,
-          paddingBottom: 40,
-        }}
+        contentContainerStyle={{ padding: 16, paddingBottom: 40 }}
         ListHeaderComponent={() => (
           <View>
-            <View style={[baseCard, shadows.profile_card]}>
+            {/* ORDER INFO */}
+            <View style={card}>
               <View className="flex-row items-center mb-4">
                 <Package size={18} color={colors.primary} />
-
                 <Text style={[typography.Poppins_s_bold, { marginLeft: 8 }]}>
                   Order Information
                 </Text>
-
-                <View style={{ marginLeft: "auto" }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "flex-end",
-                      gap: 2,
-                    }}
+                <View
+                  style={{ marginLeft: "auto", flexDirection: "row", gap: 2 }}
+                >
+                  <Pressable
+                    onPress={() => generateInvoicePDF(orderData, "download")}
+                    style={{ padding: 8 }}
                   >
-                    <Pressable
-                      onPress={() => generateInvoicePDF(orderData, "download")}
-                      style={{ padding: 8 }}
-                    >
-                      <Download size={18} color={colors.dark} />
-                    </Pressable>
-
-                    <Pressable
-                      onPress={() => generateInvoicePDF(orderData, "view")}
-                      style={{ padding: 8 }}
-                    >
-                      <Eye size={18} color={colors.dark} />
-                    </Pressable>
-
-                    <Pressable
-                      onPress={() => generateInvoicePDF(orderData, "share")}
-                      style={{ padding: 8 }}
-                    >
-                      <Share2 size={18} color={colors.dark} />
-                    </Pressable>
-                  </View>
+                    <Download size={18} color={colors.dark} />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => generateInvoicePDF(orderData, "view")}
+                    style={{ padding: 8 }}
+                  >
+                    <Eye size={18} color={colors.dark} />
+                  </Pressable>
+                  <Pressable
+                    onPress={() => generateInvoicePDF(orderData, "share")}
+                    style={{ padding: 8 }}
+                  >
+                    <Share2 size={18} color={colors.dark} />
+                  </Pressable>
                 </View>
               </View>
 
@@ -130,7 +118,6 @@ const OrderDetailsScreen = () => {
                 <Text style={{ marginLeft: 10, color: colors.neutral }}>
                   Status
                 </Text>
-
                 <View
                   style={{
                     marginLeft: "auto",
@@ -154,51 +141,44 @@ const OrderDetailsScreen = () => {
             </View>
 
             {/* SHIPPING */}
-            <View style={[baseCard, shadows.profile_card]}>
+            <View style={card}>
               <View className="flex-row items-center mb-4">
                 <MapPin size={18} color={colors.primary} />
                 <Text style={[typography.Poppins_s_bold, { marginLeft: 8 }]}>
                   Shipping Address
                 </Text>
               </View>
-
-              <Text style={[typography.Poppins_s_bold]}>
+              <Text style={typography.Poppins_s_bold}>
                 {orderData?.shippingAddress?.contactName}
               </Text>
-
               <Text style={{ color: colors.neutral, marginTop: 4 }}>
                 {orderData?.shippingAddress?.addressLine1}
               </Text>
-
               <Text style={{ color: colors.neutral }}>
                 {orderData?.shippingAddress?.cityName},{" "}
                 {orderData?.shippingAddress?.stateOrProvinceName}
               </Text>
-
               <Text style={{ color: colors.neutral }}>
                 {orderData?.shippingAddress?.zipCode}
               </Text>
-
               <Text style={{ color: colors.neutral, marginTop: 6 }}>
                 {orderData?.shippingAddress?.phone}
               </Text>
             </View>
 
             {/* PAYMENT */}
-            <View style={[baseCard, shadows.profile_card]}>
+            <View style={card}>
               <View className="flex-row items-center mb-3">
                 <CreditCard size={18} color={colors.primary} />
                 <Text style={[typography.Poppins_s_bold, { marginLeft: 8 }]}>
                   Payment Method
                 </Text>
               </View>
-
               <Text style={{ fontWeight: "500", color: colors.dark }}>
                 {orderData?.paymentMethod}
               </Text>
             </View>
 
-            {/* ITEMS TITLE */}
             <View
               style={{
                 paddingHorizontal: 6,
@@ -226,13 +206,8 @@ const OrderDetailsScreen = () => {
         renderItem={({ item }) => (
           <View
             style={[
-              baseCard,
-              shadows.profile_card,
-              {
-                flexDirection: "row",
-                padding: 12,
-                alignItems: "center",
-              },
+              card,
+              { flexDirection: "row", padding: 12, alignItems: "center" },
             ]}
           >
             <View
@@ -244,20 +219,14 @@ const OrderDetailsScreen = () => {
             >
               <Image
                 source={{ uri: item.productImage }}
-                style={{
-                  height: 68,
-                  width: 68,
-                  borderRadius: 10,
-                }}
+                style={{ height: 68, width: 68, borderRadius: 10 }}
                 resizeMode="cover"
               />
             </View>
-
             <View style={{ marginLeft: 12, flex: 1 }}>
-              <Text style={[typography.Poppins_s_bold]} numberOfLines={1}>
+              <Text style={typography.Poppins_s_bold} numberOfLines={1}>
                 {item.productName}
               </Text>
-
               <View
                 style={{
                   marginTop: 6,
@@ -279,7 +248,6 @@ const OrderDetailsScreen = () => {
                 </Text>
               </View>
             </View>
-
             <View style={{ alignItems: "flex-end" }}>
               <Text
                 style={{
@@ -290,13 +258,8 @@ const OrderDetailsScreen = () => {
               >
                 ₹{item.productPrice}
               </Text>
-
               <Text
-                style={{
-                  fontSize: 10,
-                  color: colors.darkHover,
-                  marginTop: 2,
-                }}
+                style={{ fontSize: 10, color: colors.darkHover, marginTop: 2 }}
               >
                 per item
               </Text>
@@ -304,7 +267,7 @@ const OrderDetailsScreen = () => {
           </View>
         )}
         ListFooterComponent={() => (
-          <View style={[baseCard, shadows.profile_card]}>
+          <View style={card}>
             <Text style={[typography.Poppins_s_bold, { marginBottom: 12 }]}>
               Order Summary
             </Text>
@@ -349,13 +312,9 @@ const OrderDetailsScreen = () => {
             />
 
             <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
-              <Text style={[typography.Poppins_s_bold]}>Total</Text>
-
+              <Text style={typography.Poppins_s_bold}>Total</Text>
               <Text
                 style={[
                   typography.Poppins_s_bold,
