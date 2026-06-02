@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   applyCoupon,
+  bocCheckoutService,
   checkout,
   codCheckoutService,
   createCheckoutShipping,
@@ -105,5 +106,11 @@ export const useUpiCheckout = () => {
       orderId: string;
       signature: string;
     }) => upiCheckoutService(payload),
+  });
+};
+export const useBocCheckout = () => {
+  return useMutation({
+    mutationFn: (payload: { checkoutId: string; userId: string | null }) =>
+      bocCheckoutService(payload),
   });
 };

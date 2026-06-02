@@ -77,7 +77,7 @@ export function useLocationWatcher(
 
   const stopWatcher = useCallback(() => {
     if (watchRef.current) {
-      watchRef.current.remove();
+      watchRef?.current?.remove();
       watchRef.current = null;
     }
   }, []);

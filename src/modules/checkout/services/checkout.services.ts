@@ -116,3 +116,13 @@ export const upiCheckoutService = async (payload: {
   );
   return data;
 };
+export const bocCheckoutService = async (payload: {
+  checkoutId: string;
+  userId: string | null;
+}) => {
+  const { data } = await axiosInstance.post(
+    `/api/credit/boc-checkout`,
+    payload,
+  );
+  return data;
+};

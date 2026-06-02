@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import {
+  useBocCheckout,
   useCodCheckout,
   usePaymentProviders,
   useUpiCheckout,
@@ -50,6 +51,7 @@ export const useReviewOrder = () => {
   const { data: paymentProviders } = usePaymentProviders();
   const { mutate: codCheckout, isPending: isCodPending } = useCodCheckout();
   const { mutate: upiCheckout, isPending: isUpiPending } = useUpiCheckout();
+  const { mutate: bocCheckout, isPending: isBocPending } = useBocCheckout();
   const { mutateAsync: createRazorpayOrder } = useCreateRazorpayOrder();
   const { mutateAsync: verifyPayment } = useVerifyRazorpayPayment();
   const { mutateAsync: saveOrder } = useSaveOrder();
@@ -271,8 +273,39 @@ export const useReviewOrder = () => {
     );
   };
 
-  const handleCreditPayment = async () => {
-    console.log("handle credit payment...");
+  const handleCreditPayment = async (
+    checkoutId: string,
+    amount: number,
+    shippingAddress: any,
+  ) => {
+    bocCheckout(
+      { checkoutId, userId: profileData?.id ?? null },
+      {
+        onSuccess: async (response) => {
+          await persistOrder(
+            checkoutId,
+            amount,
+            shippingAddress,
+            "BOC",
+            response,
+          );
+          onSuccess({
+            error: null,
+            success: true,
+            value: {
+              ...response,
+              billingAddress: buildAddressPayload(shippingAddress),
+              billingAddressId: shippingAddress.userAddressId,
+              orderTotal: amount,
+              paymentMethod: "BOC",
+              shippingAddress: buildAddressPayload(shippingAddress),
+              shippingAddressId: shippingAddress.userAddressId,
+            },
+          });
+        },
+        onError,
+      },
+    );
   };
 
   const handlePlaceOrder = async (
@@ -295,7 +328,7 @@ export const useReviewOrder = () => {
         (vendorAccountId = "acc_SiTe1aZkr6oiyU"),
       );
     } else if (selectedPayment === "BOC") {
-      await handleCreditPayment();
+      await handleCreditPayment(checkoutId, amount, shippingAddress);
     }
   };
 

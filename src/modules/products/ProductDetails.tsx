@@ -310,7 +310,7 @@ export default function ProductDetails() {
 
   return (
     <>
-      <ScreenLayout scrollable>
+      <ScreenLayout>
         <BackHeader title="Product Details" />
         <ScreenContent>
           <FlatList
