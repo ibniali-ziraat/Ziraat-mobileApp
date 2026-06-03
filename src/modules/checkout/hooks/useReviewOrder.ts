@@ -11,12 +11,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import {
+  useBocCheckout,
   useCodCheckout,
   usePaymentProviders,
   useUpiCheckout,
 } from "./useCheckout";
 
 const UPI_OPTION = { label: "UPI", value: "UPI" };
+const BOC = { label: "Buy on Credit", value: "BOC" };
 
 export type UserPaymentDetails = {
   name: string;
@@ -49,6 +51,7 @@ export const useReviewOrder = () => {
   const { data: paymentProviders } = usePaymentProviders();
   const { mutate: codCheckout, isPending: isCodPending } = useCodCheckout();
   const { mutate: upiCheckout, isPending: isUpiPending } = useUpiCheckout();
+  const { mutate: bocCheckout, isPending: isBocPending } = useBocCheckout();
   const { mutateAsync: createRazorpayOrder } = useCreateRazorpayOrder();
   const { mutateAsync: verifyPayment } = useVerifyRazorpayPayment();
   const { mutateAsync: saveOrder } = useSaveOrder();
@@ -63,6 +66,7 @@ export const useReviewOrder = () => {
           .map((p: any) => ({ label: p.name, value: p.id }))
       : []),
     UPI_OPTION,
+    BOC,
   ];
 
   const onSuccess = (response: any) => {
@@ -137,7 +141,6 @@ export const useReviewOrder = () => {
     }
   };
 
-  // --- COD ---
   const handleCodPayment = (
     checkoutId: string,
     shippingAddress: any,
@@ -170,16 +173,12 @@ export const useReviewOrder = () => {
     });
   };
 
-  // --- UPI ---
   const handleUpiPayment = async (
     checkoutId: string,
     amount: number,
     shippingAddress: any,
     vendorAccountId: string,
   ) => {
-    // Step 1: Create Razorpay order + save initial Payment record to MongoDB.
-    // Pass checkoutId and userId so backend can store vendorAccountId early —
-    // verify-payment will read it from DB instead of needing it re-sent.
     let razorpayOrderId: string;
     try {
       const orderRes = await createRazorpayOrder({
@@ -274,7 +273,41 @@ export const useReviewOrder = () => {
     );
   };
 
-  // --- Main handler ---
+  const handleCreditPayment = async (
+    checkoutId: string,
+    amount: number,
+    shippingAddress: any,
+  ) => {
+    bocCheckout(
+      { checkoutId, userId: profileData?.id ?? null },
+      {
+        onSuccess: async (response) => {
+          await persistOrder(
+            checkoutId,
+            amount,
+            shippingAddress,
+            "BOC",
+            response,
+          );
+          onSuccess({
+            error: null,
+            success: true,
+            value: {
+              ...response,
+              billingAddress: buildAddressPayload(shippingAddress),
+              billingAddressId: shippingAddress.userAddressId,
+              orderTotal: amount,
+              paymentMethod: "BOC",
+              shippingAddress: buildAddressPayload(shippingAddress),
+              shippingAddressId: shippingAddress.userAddressId,
+            },
+          });
+        },
+        onError,
+      },
+    );
+  };
+
   const handlePlaceOrder = async (
     selectedPayment: string,
     amount: number,
@@ -294,6 +327,8 @@ export const useReviewOrder = () => {
         shippingAddress,
         (vendorAccountId = "acc_SiTe1aZkr6oiyU"),
       );
+    } else if (selectedPayment === "BOC") {
+      await handleCreditPayment(checkoutId, amount, shippingAddress);
     }
   };
 

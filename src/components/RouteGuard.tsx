@@ -11,19 +11,42 @@ interface RouteGuardProps {
   children: ReactNode;
 }
 
+const navigateToLogin = () => {
+  try {
+    if (router.canDismiss()) {
+      router.dismissAll();
+    }
+    router.replace(ROUTES.AUTH.LOGIN);
+  } catch (error) {
+    router.replace(ROUTES.AUTH.LOGIN);
+  }
+};
+
 export default function RouteGuard({ children }: RouteGuardProps) {
   const { userToken, userTokenExp, initialized, logoutUser } = useAuth();
   const cancelRef = useRef<(() => void) | null>(null);
+  const isNavigating = useRef(false);
 
   useEffect(() => {
     if (!initialized) return;
 
     if (!userToken) {
+      if (isNavigating.current) return;
+      isNavigating.current = true;
+
       logoutUser();
-      router.replace(ROUTES.AUTH.LOGIN);
-      // router.replace("/");
-      return;
+
+      // Small delay to ensure navigator is mounted
+      const timeout = setTimeout(() => {
+        navigateToLogin();
+        isNavigating.current = false;
+      }, 50);
+
+      return () => clearTimeout(timeout);
     }
+
+    // Reset navigation flag when user is logged in
+    isNavigating.current = false;
 
     if (cancelRef.current) {
       cancelRef.current();
@@ -36,7 +59,9 @@ export default function RouteGuard({ children }: RouteGuardProps) {
         logoutUser();
       },
       () => {
-        router.replace(ROUTES.AUTH.LOGIN);
+        if (isNavigating.current) return;
+        isNavigating.current = true;
+        navigateToLogin();
       },
     );
 

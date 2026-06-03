@@ -3,20 +3,13 @@ import { typography } from "@/src/constants/fonts/typography";
 import { X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Modal, Pressable, ScrollView, Text, View } from "react-native";
+import { useOrderStatuses } from "../../hooks/orderStatusQueryHooks";
 
 type Props = {
   visible: boolean;
   onClose: () => void;
   selectedStatus: number | null;
   setSelectedStatus: (val: number | null) => void;
-  ORDER_STATUS: Record<
-    number,
-    {
-      label: string;
-      bg: string;
-      text: string;
-    }
-  >;
 };
 
 export default function OrderFilterModal({
@@ -24,10 +17,9 @@ export default function OrderFilterModal({
   onClose,
   selectedStatus,
   setSelectedStatus,
-  ORDER_STATUS,
 }: Props) {
   const [tempStatus, setTempStatus] = useState<number | null>(null);
-  const [time, setTime] = useState("all");
+  const { data: statuses = [] } = useOrderStatuses(); // ✅ from API
 
   useEffect(() => {
     setTempStatus(selectedStatus);
@@ -35,10 +27,7 @@ export default function OrderFilterModal({
 
   const STATUS_OPTIONS = [
     { label: "All", value: null },
-    ...Object.entries(ORDER_STATUS).map(([key, value]) => ({
-      label: value.label,
-      value: Number(key),
-    })),
+    ...statuses.map((s) => ({ label: s.name, value: s.id })),
   ];
 
   const Radio = ({ active }: { active: boolean }) => (
@@ -68,15 +57,10 @@ export default function OrderFilterModal({
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
-      {/* BACKDROP */}
       <Pressable
-        style={{
-          flex: 1,
-          backgroundColor: "rgba(0,0,0,0.4)",
-        }}
+        style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.4)" }}
         onPress={onClose}
       >
-        {/* SHEET */}
         <View
           style={{
             marginTop: "auto",
@@ -100,29 +84,21 @@ export default function OrderFilterModal({
             <Text
               style={[
                 typography.Poppins_s_semibold,
-                {
-                  fontSize: 16,
-                  color: colors.dark,
-                },
+                { fontSize: 16, color: colors.dark },
               ]}
             >
               Filter Orders
             </Text>
-
             <Pressable onPress={onClose}>
               <X size={20} color={colors.dark} />
             </Pressable>
           </View>
 
-          {/* CONTENT (SCROLL ENABLED) */}
+          {/* CONTENT */}
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingHorizontal: 16,
-              paddingBottom: 20,
-            }}
+            contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
           >
-            {/* STATUS */}
             <Text
               style={[
                 typography.Poppins_s_semibold,
@@ -139,7 +115,6 @@ export default function OrderFilterModal({
 
             {STATUS_OPTIONS.map((item) => {
               const isSelected = tempStatus === item.value;
-
               return (
                 <Pressable
                   key={String(item.value ?? "all")}
@@ -170,12 +145,10 @@ export default function OrderFilterModal({
               gap: 10,
             }}
           >
-            {/* CLEAR */}
             <Pressable
               onPress={() => {
                 setTempStatus(null);
                 setSelectedStatus(null);
-                setTime("all");
                 onClose();
               }}
               style={{
@@ -192,7 +165,6 @@ export default function OrderFilterModal({
               </Text>
             </Pressable>
 
-            {/* APPLY */}
             <Pressable
               onPress={() => {
                 setSelectedStatus(tempStatus);

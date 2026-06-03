@@ -386,9 +386,9 @@ export default function FilterBottomSheet({
               paddingBottom: 20,
             }}
           >
-            {!!filterOptions.brands.length && (
+            {!!filterOptions?.brands?.length && (
               <Section title="Brand">
-                {filterOptions.brands.map((item) => (
+                {filterOptions?.brands?.map((item) => (
                   <Item
                     key={item.slug}
                     label={item.name}
@@ -406,22 +406,23 @@ export default function FilterBottomSheet({
               </Section>
             )}
 
-            <Section title="Category">
-              {filterOptions.categories.map((item) => (
-                <RadioItem
-                  key={item.slug}
-                  label={item.name}
-                  count={item.count}
-                  selected={category === item.slug}
-                  onPress={() =>
-                    setCategory((prev) =>
-                      prev === item.slug ? null : item.slug
-                    )
-                  }
-                />
-              ))}
-            </Section>
-
+            {filterOptions?.categories.length > 0 && (
+              <Section title="Category">
+                {filterOptions?.categories?.map((item) => (
+                  <RadioItem
+                    key={item.slug}
+                    label={item.name}
+                    count={item.count}
+                    selected={category === item.slug}
+                    onPress={() =>
+                      setCategory((prev) =>
+                        prev === item.slug ? null : item.slug,
+                      )
+                    }
+                  />
+                ))}
+              </Section>
+            )}
             <Section title="Price Range">
               <View className="flex-row gap-2 mb-2.5">
                 <PricePill label={`₹${priceRange[0]}`} />

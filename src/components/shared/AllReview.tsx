@@ -74,7 +74,7 @@ export default function Review({
   const displayedReviews = showAll ? sortedReviews : sortedReviews.slice(0, 2);
 
   return (
-    <ScreenLayout>
+    <ScreenLayout scrollable={false}>
       <ScreenContent className="px-0">
         <View className="">
           {/* HEADER SECTION */}

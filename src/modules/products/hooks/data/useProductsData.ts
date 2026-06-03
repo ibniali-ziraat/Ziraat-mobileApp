@@ -1,33 +1,34 @@
-import { normalizeProduct } from "@/src/domain/product/product.normalizer";
-import { useProductsQuery } from "@/src/modules/products/hooks/queries/products.queries";
-import { useMemo } from "react";
+import { useProductsWithFallback } from "../queries/products.queries";
 
-export const useProductsData = () => {
-  const query = useProductsQuery();
+export const useProductsData = (
+  params: {
+    query?: string;
+    brand?: string;
+    category?: string;
+    page?: number;
+    minPrice?: number;
+    maxPrice?: number;
+    sort?: string;
+    minRating?: number;
+  } = {},
+) => {
+  const { data, isLoading, isFetching, isFallback } =
+    useProductsWithFallback(params);
 
-  const products = useMemo(() => {
-    if (!query.data?.products) return [];
-    return query.data.products.map(normalizeProduct);
-  }, [query.data?.products]);
-
-  const filterOptions = useMemo(() => {
-    return (
-      query.data?.filterOption ?? {
-        brands: [],
-        categories: [],
-        price: { minPrice: 0, maxPrice: 0 },
-      }
-    );
-  }, [query.data?.filterOption]);
+  const categories = data?.filterOption?.categories ?? [];
+  const brands = data?.filterOption?.brands ?? [];
+  const priceRange = data?.filterOption?.price ?? { minPrice: 0, maxPrice: 0 };
+  const sortOptions = data?.availableSortOptions ?? [];
 
   return {
-    products,
-    filterOptions,
-    total: query.data?.totalProduct ?? 0,
-    isLoading: query.isLoading,
-    isFetching: query.isFetching,
-    isError: query.isError,
-    error: query.error,
-    refetch: query.refetch,
+    filterOptions: { brands, categories },
+    categories,
+    brands,
+    priceRange,
+    sortOptions,
+    isLoading,
+    isFetching,
+    isFallback,
+    isReady: !isLoading && !isFetching,
   };
 };
