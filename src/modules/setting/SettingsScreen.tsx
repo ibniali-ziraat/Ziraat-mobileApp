@@ -1,6 +1,7 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
+import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
@@ -16,7 +17,7 @@ import {
   User,
 } from "lucide-react-native";
 import { useRef } from "react";
-import { Animated, Pressable, ScrollView, Text, View } from "react-native";
+import { Animated, Pressable, Text, View } from "react-native";
 
 /* ---------------- ROW ---------------- */
 
@@ -102,24 +103,19 @@ const SectionTitle = ({ title }) => (
 
 export default function SettingsScreen() {
   return (
-    <View
-      className="py-4"
-      style={{
-        backgroundColor: colors.light,
-      }}
-    >
-      <BackHeader
-        title="Settings"
-        desc="Manage your account preferences and privacy"
-      />
+    <ScreenLayout>
+      <ScreenContent>
+        <View
+          className="py-4"
+          style={{
+            backgroundColor: colors.light,
+          }}
+        >
+          <BackHeader
+            title="Settings"
+            desc="Manage your account preferences and privacy"
+          />
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: 30,
-        }}
-      >
-        <ScreenContent>
           <View>
             <SectionTitle title="Account" />
 
@@ -194,7 +190,10 @@ export default function SettingsScreen() {
               danger
               label="Delete Account"
               icon={<Trash2 size={22} color={colors.error} />}
-              onPress={() => router.push("/user/delete-account")}
+              onPress={() => {
+                console.log("Delete Account clicked");
+                router.push(ROUTES.ACCOUNT.DELETE_ACCOUNT);
+              }}
             />
 
             {/* FOOTER */}
@@ -219,8 +218,8 @@ export default function SettingsScreen() {
               </CsText>
             </View>
           </View>
-        </ScreenContent>
-      </ScrollView>
-    </View>
+        </View>
+      </ScreenContent>
+    </ScreenLayout>
   );
 }
