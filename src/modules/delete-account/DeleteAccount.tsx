@@ -1,62 +1,39 @@
-import { useRouter } from "expo-router";
-import { AlertTriangle, Check, Trash2 } from "lucide-react-native";
-import { useRef, useState } from "react";
-import {
-  Alert,
-  Animated,
-  Pressable,
-  View,
-} from "react-native";
-
 import BackHeader from "@/src/components/shared/BackHeader";
-import CsText from "@/src/components/shared/CsText";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/fonts/typography";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useDeleteAccount } from "@/src/hooks/useDeleteAccount";
-
-const STATIC_USER_ID = 1;
+import { useRouter } from "expo-router";
+import { AlertTriangle, Check, Trash2 } from "lucide-react-native";
+import { useState } from "react";
+import { Pressable, Text, View } from "react-native";
 
 export default function DeleteAccount() {
   const router = useRouter();
   const { mutate: deleteAccount, isPending } = useDeleteAccount();
+  const { userId, logoutUser } = useAuth();
+
   const [confirmed, setConfirmed] = useState(false);
 
-  const scale = useRef(new Animated.Value(1)).current;
-
   const handleDeleteAccount = () => {
-    Alert.alert(
-      "Delete Account",
-      "This action is permanent and cannot be undone.",
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: () =>
-            deleteAccount(STATIC_USER_ID, {
-              onSuccess: () => {
-                router.replace("/auth/login");
-              },
-            }),
-        },
-      ]
-    );
+    if (!userId) return;
+
+    deleteAccount(userId, {
+      onSuccess: () => {
+        logoutUser();
+        router.replace(ROUTES.AUTH.LOGIN);
+      },
+    });
   };
 
-  const handlePressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.96,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handlePressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1,
-      useNativeDriver: true,
-    }).start();
-  };
+  const deletionItems = [
+    "Your profile information will be permanently removed",
+    "Saved addresses and preferences will be deleted",
+    "Order history will no longer be accessible",
+    "This action cannot be reversed or recovered",
+  ];
 
   return (
     <ScreenLayout>
@@ -65,123 +42,115 @@ export default function DeleteAccount() {
         desc="Permanently remove your account"
       />
 
-      <View className="px-5 mt-8 flex-1">
-        {/* HERO DANGER ICON */}
-        <View className="items-center mb-10">
-          <View
-            className="p-6 rounded-full"
-            style={{
-              backgroundColor: "#FEE2E2",
-            }}
-          >
-            <Trash2 size={30} color={colors.error} />
-          </View>
-
-          <CsText
-            style={[
-              typography.Poppins_m_semibold,
-              { color: colors.error },
-            ]}
-            className="text-xl mt-4"
-          >
-            Permanent Deletion
-          </CsText>
-
-          <CsText
-            style={[typography.Poppins_s_regular]}
-            className="text-center mt-2 px-6"
-          >
-            Once deleted, your account and all associated data will be
-            permanently removed from our servers.
-          </CsText>
-        </View>
-
-        {/* WARNING CARD */}
-        <View
-          className="rounded-2xl p-5 mb-8"
-          style={{
-            backgroundColor: "#FFF1F2",
-            borderWidth: 1,
-            borderColor: "#FECACA",
-          }}
-        >
-          <View className="flex-row items-center mb-2">
-            <AlertTriangle size={18} color={colors.error} />
-            <CsText
-              style={[
-                typography.Poppins_m_semibold,
-                { color: colors.error },
-              ]}
-              className="ml-2"
+      <ScreenContent>
+        <View className="flex-1 pt-2">
+          {/* Hero Section */}
+          <View className="items-center mb-8">
+            <View
+              className="w-20 h-20 rounded-full items-center justify-center"
+              style={{
+                backgroundColor: `${colors.error}15`,
+              }}
             >
-              Warning
-            </CsText>
+              <Trash2 size={35} color={colors.error} />
+            </View>
+
+            <Text className="mt-5 text-xl font-semibold text-black">
+              Delete Account
+            </Text>
+
+            <Text className=" mt-2 text-center px-4 text-gray-500">
+              We're sorry to see you go. Deleting your account will permanently
+              remove your profile and all associated data from our platform.
+            </Text>
           </View>
-
-          <CsText
-            style={[
-              typography.Poppins_s_regular,
-              { color: colors.error },
-            ]}
-          >
-            This action cannot be undone. Please make sure you really want to
-            proceed before confirming.
-          </CsText>
-        </View>
-
-        {/* CONFIRM CHECK */}
-        <Pressable
-          onPress={() => setConfirmed(!confirmed)}
-          className="flex-row items-center mb-12"
-        >
           <View
-            className="w-6 h-6 rounded-md border mr-3 items-center justify-center"
+            className="rounded-2xl p-5 mb-5 bg-white border"
             style={{
-              borderColor: confirmed ? colors.error : "#9CA3AF",
-              backgroundColor: confirmed ? colors.error : "transparent",
+              borderColor: colors.cardBorder,
             }}
           >
-            {confirmed && <Check size={14} color="white" />}
+            <Text className="mb-4 text-base font-semibold text-black">
+              What happens when you delete?
+            </Text>
+
+            {deletionItems.map((item) => (
+              <View key={item} className="flex-row items-start mb-4">
+                <View className="mt-1">
+                  <Check size={20} color={colors.primary} />
+                </View>
+
+                <Text className="ml-3 flex-1 text-gray-600">{item}</Text>
+              </View>
+            ))}
           </View>
 
-          <CsText style={[typography.Poppins_s_regular]}>
-            I understand this action is irreversible
-          </CsText>
-        </Pressable>
+          <View
+            className="rounded-2xl p-5 mb-6 border"
+            style={{
+              backgroundColor: `${colors.warning}15`,
+              borderColor: colors.warning,
+            }}
+          >
+            <View className="flex-row items-center mb-2">
+              <AlertTriangle size={18} color={colors.warning} />
 
-        {/* DELETE BUTTON */}
-        <Animated.View
-          style={{
-            transform: [{ scale }],
-          }}
-        >
+              <Text className="ml-2 font-semibold text-black">Important</Text>
+            </View>
+
+            <Text className="text-gray-600">
+              Once your account is deleted, all information associated with it
+              will be permanently removed and cannot be restored.
+            </Text>
+          </View>
+
+          <Pressable
+            onPress={() => setConfirmed((prev) => !prev)}
+            className="rounded-2xl p-4 mb-4 flex-row items-center border"
+            style={{
+              borderColor: confirmed ? colors.secondary : colors.cardBorder,
+              // backgroundColor: confirmed ? colors.secondary : colors.light,
+            }}
+          >
+            <View
+              className="w-6 h-6 rounded-md items-center justify-center border"
+              style={{
+                backgroundColor: confirmed ? colors.secondary : "transparent",
+                borderColor: confirmed ? colors.secondary : colors.dark,
+              }}
+            >
+              {confirmed && <Check size={14} color={colors.light} />}
+            </View>
+
+            <Text className="ml-3 flex-1 text-gray-700">
+              I understand that deleting my account is permanent and cannot be
+              undone.
+            </Text>
+          </Pressable>
+
+          {/* Delete Button */}
           <Pressable
             disabled={!confirmed || isPending}
             onPress={handleDeleteAccount}
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
-            className="py-4 rounded-2xl items-center"
+            className="rounded-2xl py-4 items-center"
             style={{
-              backgroundColor: confirmed ? "#DC2626" : "#f44336",
+              backgroundColor: confirmed ? colors.error : "transparent",
+              borderWidth: 1,
+              borderColor: confirmed ? colors.error : colors.overlay,
               opacity: isPending ? 0.7 : 1,
-              shadowColor: "#DC2626",
-              shadowOpacity: 0.4,
-              shadowRadius: 12,
-              elevation: 6,
             }}
           >
-            <CsText
-              style={[
-                typography.Poppins_m_semibold,
-                { color: colors.light },
-              ]}
-              className="text-base"
-            >
-              {isPending ? "Deleting Account..." : "Delete My Account"}
-            </CsText>
+            <Text className="text-dark font-semibold">
+              {isPending ? "Deleting Account..." : "Delete Account"}
+            </Text>
           </Pressable>
-        </Animated.View>
-      </View>
+
+          {/* Bottom Note */}
+          <Text className="text-center mt-5 px-4 text-gray-500">
+            Need help instead? Contact support before deleting your account.
+          </Text>
+        </View>
+      </ScreenContent>
     </ScreenLayout>
   );
 }
