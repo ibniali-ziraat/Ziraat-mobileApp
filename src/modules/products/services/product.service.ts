@@ -5,11 +5,21 @@ export const getProducts = async () => {
   return data;
 };
 
-export const getProductById = async (id: string) => {
+// product.service.ts
+export const getProductById = async (
+  id: string,
+  vendorId?: string,
+  vendorProductId?: string,
+) => {
   const { data } = await axiosInstance.get(
     `/api/catalog/ProductsApi/detail/${id}`,
+    {
+      params: {
+        ...(vendorId && { vendorId }),
+        ...(vendorProductId && { vendorProductId }),
+      },
+    },
   );
-
   return data;
 };
 

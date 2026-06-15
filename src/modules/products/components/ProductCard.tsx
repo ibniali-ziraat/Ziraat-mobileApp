@@ -15,6 +15,7 @@ interface ProductCardProps {
   wishlistItems: WishlistItem[];
   isWishlistBusy?: boolean;
   onToggleWishlist?: (productId: string) => void;
+  vendors?: [];
 }
 //
 export default function ProductCard({
@@ -24,18 +25,29 @@ export default function ProductCard({
   wishlistItems,
   isWishlistBusy,
   onToggleWishlist,
+  vendors,
 }: ProductCardProps) {
   const isWishlisted = wishlistItems.some(
     (w) => String(w?.productId) === String(item.id),
   );
 
+  console.log(vendors, "vendors...");
+  console.log(item, "item...bb");
+
   const discount = calcDiscount(item.price, item.oldPrice);
+  console.log(item, "product detail item...");
 
   const goToProduct = () =>
     router.push({
       pathname: ROUTES.PRODUCTS.SINGLE_PRODUCT_DETAILS,
-      params: { productId: item.id },
+      params: {
+        productId: item.id,
+        vendorId: item.vendorId,
+        vendorProductId: item.vendorProductId,
+      },
     });
+
+  console.log(item, "prodcut item");
 
   return (
     <View
@@ -103,9 +115,33 @@ export default function ProductCard({
       </View>
 
       {/* Info */}
+      {/* <Pressable style={{ marginTop: 8 }} onPress={goToProduct}>
+        <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
+          {item.title}
+        </Text>
+
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <Text style={typography.Poppins_s_medium}>₹{item.price}</Text>
+          {item.oldPrice && (
+            <Text
+              style={{
+                textDecorationLine: "line-through",
+                color: colors.neutral,
+                fontSize: 12,
+              }}
+            >
+              ₹{item.oldPrice}
+            </Text>
+          )}
+        </View>
+      </Pressable> */}
+
       <Pressable style={{ marginTop: 8 }} onPress={goToProduct}>
         <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
           {item.title}
+        </Text>
+        <Text style={{ color: colors.neutral, fontSize: 12, marginTop: 2 }}>
+          Sold by: {item.vendorName}
         </Text>
 
         <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>

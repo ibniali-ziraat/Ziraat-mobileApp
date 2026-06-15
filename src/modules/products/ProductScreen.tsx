@@ -5,6 +5,7 @@ import { Dimensions, FlatList } from "react-native";
 import ProductCard from "./components/ProductCard";
 
 import Loader from "@/src/components/shared/Loader";
+import NoProductsFound from "./components/NoProductsFound";
 import ProductListHeader from "./components/ProductListHeader";
 import { ProductListFooter } from "./components/ProductListStates";
 import ScrollToTopButton from "./components/ScrollToTopButton";
@@ -59,10 +60,13 @@ export default function ProductScreen() {
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await refresh();
-    await productSearchRefetch();
-    setRefreshing(false);
+    try {
+      await refresh();
+    } finally {
+      setRefreshing(false);
+    }
   };
+  console.log(displayedProducts, "displayed products...");
 
   return (
     <ScreenLayout scrollable={false}>
@@ -99,7 +103,7 @@ export default function ProductScreen() {
               productCount={displayedProducts.length}
             />
           }
-          ListEmptyComponent={isLoading ? <Loader /> : null}
+          ListEmptyComponent={isLoading ? <Loader /> : <NoProductsFound />}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ paddingBottom: 30 }}
           columnWrapperStyle={{ justifyContent: "space-between" }}

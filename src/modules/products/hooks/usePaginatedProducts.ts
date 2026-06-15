@@ -1,3 +1,4 @@
+import { FEATURE_FLAGS } from "@/src/config/featureFlags";
 import { useDebounce } from "@/src/hooks/useDebounce";
 import { useEffect, useRef, useState } from "react";
 import { FlatList } from "react-native";
@@ -35,27 +36,37 @@ export function usePaginatedProducts({
     debouncedSearch,
   );
 
+  // When vendor-only flag is ON, don't pass params (API ignores them anyway)
+  const queryParams = FEATURE_FLAGS.SHOW_VENDOR_PRODUCTS_ONLY
+    ? {}
+    : {
+        query: debouncedSearch || undefined,
+        brand: filters?.brand,
+        category:
+          !isFiltering && activeCategory !== "All"
+            ? activeCategory
+            : filters?.category || undefined,
+        minPrice: filters?.minPrice,
+        maxPrice: filters?.maxPrice,
+        sort: filters?.sort,
+        minRating: filters?.minRating,
+        page,
+      };
+
   const {
     data,
     isFetching,
     isLoading,
     refetch: productSearchRefetch,
-  } = useProductsWithFallback({
-    query: debouncedSearch || undefined,
-    brand: filters?.brand,
-    category:
-      !isFiltering && activeCategory !== "All"
-        ? activeCategory
-        : filters?.category || undefined,
-    minPrice: filters?.minPrice,
-    maxPrice: filters?.maxPrice,
-    sort: filters?.sort,
-    minRating: filters?.minRating,
-    page,
-  });
+  } = useProductsWithFallback(queryParams);
+
+  console.log(data, "product data...");
 
   // RESET ON FILTER / SEARCH / CATEGORY CHANGE
+  // Skip reset side-effects when vendor-only mode is active
   useEffect(() => {
+    if (FEATURE_FLAGS.SHOW_VENDOR_PRODUCTS_ONLY) return;
+
     setPage(1);
     setAccumulatedProducts([]);
     setHasMore(true);
@@ -70,8 +81,10 @@ export function usePaginatedProducts({
       return;
     }
 
-    if (page === 1) {
+    if (FEATURE_FLAGS.SHOW_VENDOR_PRODUCTS_ONLY || page === 1) {
+      // Vendor-only: always replace, no pagination
       setAccumulatedProducts(data.products);
+      setHasMore(false); // no pagination in vendor-only mode
     } else {
       setAccumulatedProducts((prev) => {
         const existingIds = new Set(prev.map((item) => item.id));
@@ -80,19 +93,17 @@ export function usePaginatedProducts({
         );
         return [...prev, ...newProducts];
       });
+
+      const totalLoaded = accumulatedProducts.length + data.products.length;
+      setHasMore(totalLoaded < data.totalProduct);
     }
 
-    const totalLoaded =
-      page === 1
-        ? data.products.length
-        : accumulatedProducts.length + data.products.length;
-
-    setHasMore(totalLoaded < data.totalProduct);
     setIsFetchingMore(false);
   }, [data, page]);
 
-  // PAGINATION TRIGGER
+  // PAGINATION TRIGGER — disabled in vendor-only mode
   const handleEndReached = () => {
+    if (FEATURE_FLAGS.SHOW_VENDOR_PRODUCTS_ONLY) return;
     if (isLoading) return;
     if (isFetching) return;
     if (isFetchingMore) return;
@@ -122,6 +133,8 @@ export function usePaginatedProducts({
     await productSearchRefetch();
     scrollRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
+
+  console.log(displayedProducts, "displated pro...");
 
   return {
     scrollRef,

@@ -1,3 +1,4 @@
+import { FEATURE_FLAGS } from "@/src/config/featureFlags";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
@@ -17,10 +18,15 @@ export const useProductsQuery = () =>
     queryFn: getProducts,
   });
 
-export const useProductByIdQuery = (id: string) =>
+// products.queries.ts
+export const useProductByIdQuery = (
+  id: string,
+  vendorId?: string,
+  vendorProductId?: string,
+) =>
   useQuery({
-    queryKey: ["products", id],
-    queryFn: () => getProductById(id),
+    queryKey: ["products", id, vendorId, vendorProductId],
+    queryFn: () => getProductById(id, vendorId, vendorProductId),
     enabled: !!id,
   });
 
@@ -90,7 +96,6 @@ export const useCompareProducts = () =>
   useMutation({
     mutationFn: compareProducts,
   });
-
 export const useProductsWithFallback = (
   params: {
     query?: string;
@@ -110,13 +115,28 @@ export const useProductsWithFallback = (
     vendorQuery.data.products.length > 0;
 
   const shouldFallback =
-    !vendorQuery.isLoading && !vendorQuery.isFetching && !vendorHasProducts;
+    !FEATURE_FLAGS.SHOW_VENDOR_PRODUCTS_ONLY &&
+    !vendorQuery.isLoading &&
+    !vendorQuery.isFetching &&
+    !vendorHasProducts;
 
   const searchQuery = useProductSearch({
     ...params,
     enabled: shouldFallback,
   });
 
+  // ✅ Vendor-only mode
+  if (FEATURE_FLAGS.SHOW_VENDOR_PRODUCTS_ONLY) {
+    return {
+      data: vendorQuery.data,
+      isLoading: vendorQuery.isLoading,
+      isFetching: vendorQuery.isFetching,
+      refetch: vendorQuery.refetch,
+      isFallback: false,
+    };
+  }
+
+  // Original fallback logic
   if (vendorQuery.isLoading || vendorQuery.isFetching) {
     return {
       data: undefined,

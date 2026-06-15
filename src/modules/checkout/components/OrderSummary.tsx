@@ -58,6 +58,7 @@ export const OrderSummary = ({ summary, couponCode }: Props) => (
     </Text>
 
     <SummaryRow label="MRP" value={formatRs(summary.subTotalString)} />
+    <SummaryRow label="Sale Price" value={formatRs(summary.orderTotalString)} />
 
     {couponCode && (
       <View className="mb-2 flex-row justify-between items-center">

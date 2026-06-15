@@ -16,6 +16,7 @@ import { useReviewOrder } from "../hooks/useReviewOrder";
 
 const ReviewOrderScreen = () => {
   const { address, orderSummary } = useLocalSearchParams();
+  console.log(orderSummary, "order summarey");
 
   const selectedAddress = address ? JSON.parse(address as string) : null;
   const summary = orderSummary ? JSON.parse(orderSummary as string) : null;

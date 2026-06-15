@@ -13,4 +13,7 @@ export type NormalizedProduct = {
   dosage?: string | null;
   packaging?: any[] | null;
   tag?: string | null;
+  vendorId?: number | null;
+  vendorProductId?: number | null;
+  vendorName?: string;
 };
