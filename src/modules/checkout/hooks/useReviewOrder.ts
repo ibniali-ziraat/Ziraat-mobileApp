@@ -18,7 +18,7 @@ import {
 } from "./useCheckout";
 
 const UPI_OPTION = { label: "UPI", value: "UPI" };
-const BOC = { label: "Buy on Credit", value: "BOC" };
+// const BOC = { label: "Buy on Credit", value: "BOC" };
 
 export type UserPaymentDetails = {
   name: string;
@@ -66,7 +66,7 @@ export const useReviewOrder = () => {
           .map((p: any) => ({ label: p.name, value: p.id }))
       : []),
     UPI_OPTION,
-    BOC,
+    // BOC,
   ];
 
   const onSuccess = (response: any) => {
@@ -279,7 +279,7 @@ export const useReviewOrder = () => {
     shippingAddress: any,
   ) => {
     bocCheckout(
-      { checkoutId, userId: profileData?.id ?? null },
+      { checkoutId, userId: 10016 },
       {
         onSuccess: async (response) => {
           await persistOrder(
@@ -327,7 +327,7 @@ export const useReviewOrder = () => {
         shippingAddress,
         (vendorAccountId = "acc_SiTe1aZkr6oiyU"),
       );
-    } else if (selectedPayment === "BOC") {
+    } else if (selectedPayment === "BuyOnCredit") {
       await handleCreditPayment(checkoutId, amount, shippingAddress);
     }
   };

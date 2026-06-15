@@ -15,6 +15,9 @@ export const normalizeProduct = (p: any): NormalizedProduct => ({
   dosage: p.dosage ?? null,
   packaging: p.packaging ?? null,
   tag: p.tag ?? null,
+  vendorId: p.vendorId ?? p.vendor?.id ?? null,
+  vendorName: p.vendor?.name ?? p.vendorName ?? "Unknown Vendor",
+  vendorProductId: p.vendorProductId ?? null,
 });
 
 export const normalizeSingleProduct = (p: any) => ({
@@ -42,6 +45,7 @@ export const normalizeSingleProduct = (p: any) => ({
   attributes: p.attributes ?? [],
   categories: p.categories ?? [],
   brand: p.brand ?? null,
+  vendorName: p?.name ?? "Unknown Vendor",
 
   relatedProducts: p.relatedProducts ?? [],
   crossSellProducts: p.crossSellProducts ?? [],

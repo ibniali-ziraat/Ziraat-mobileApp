@@ -17,13 +17,18 @@ export const useProductsData = (
 
   const categories = data?.filterOption?.categories ?? [];
   const brands = data?.filterOption?.brands ?? [];
-  const priceRange = data?.filterOption?.price ?? { minPrice: 0, maxPrice: 0 };
+  const vendors = data?.vendors ?? [];
+  const priceRange = data?.filterOption?.price ?? {
+    minPrice: 0,
+    maxPrice: 0,
+  };
   const sortOptions = data?.availableSortOptions ?? [];
 
   return {
     filterOptions: { brands, categories },
     categories,
     brands,
+    vendors, // 👈 add this
     priceRange,
     sortOptions,
     isLoading,

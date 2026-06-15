@@ -34,17 +34,27 @@ import { useWishlist } from "../wishlist/hooks/useWishlist";
 import ProductsList from "./components/ProductList";
 
 export default function ProductDetails() {
-  const { productId } = useLocalSearchParams();
-
   // console.log(productId, "productid");
 
   const [quantity, setQuantity] = useState(1);
 
   const { userId } = useAuth();
 
-  const { data: product, isLoading, isError } = useProductByIdQuery(productId);
+  const { productId, vendorId, vendorProductId } = useLocalSearchParams<{
+    productId: string;
+    vendorId: string;
+    vendorProductId: string;
+  }>();
 
-  // console.log(product, "product");
+  console.log(productId, vendorId, vendorProductId, "params data of product");
+
+  const {
+    data: product,
+    isLoading,
+    isError,
+  } = useProductByIdQuery(productId, vendorId, vendorProductId);
+
+  console.log(product, "product details in productdetails screen");
 
   // const { mutate: submitReview, isPending } = useAddReview();
   const { mutateAsync: submitReview, isPending } = useAddReview();
@@ -282,11 +292,14 @@ export default function ProductDetails() {
 
   const handleAddToCart = async () => {
     if (!product?.id) return;
+    console.log(product, "product on cart is..");
 
     try {
       await addToCart({
         productId: Number(product.id),
         quantity: Number(quantity),
+        vendorId: Number(product.vendorId),
+        vendorProductId: Number(product.vendorProductId),
       });
     } catch {}
   };

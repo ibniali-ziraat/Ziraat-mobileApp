@@ -17,6 +17,9 @@ export function normalizeProducts(
       oldPrice: item.oldPrice ?? item.discountPrice,
       image: item.thumbnailUrl ?? item.photos?.[0],
       rating: item.ratingAverage ?? item.rating,
+      vendorId: item.vendorId ?? item.vendor?.id ?? null,
+      vendorName: item.vendor?.name ?? item.vendorName ?? "Unknown Vendor",
+      vendorProductId: item.vendorProductId ?? null,
     }))
     .filter((item) => !!item.id);
 }

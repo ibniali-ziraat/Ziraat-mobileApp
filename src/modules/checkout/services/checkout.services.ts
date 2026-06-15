@@ -121,7 +121,7 @@ export const bocCheckoutService = async (payload: {
   userId: string | null;
 }) => {
   const { data } = await axiosInstance.post(
-    `/api/credit/boc-checkout`,
+    `/api/BuyOnCredit/BuyOnCreditCheckout`,
     payload,
   );
   return data;
