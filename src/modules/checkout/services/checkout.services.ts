@@ -118,11 +118,19 @@ export const upiCheckoutService = async (payload: {
 };
 export const bocCheckoutService = async (payload: {
   checkoutId: string;
-  userId: string | null;
+  vendorId: number;
 }) => {
   const { data } = await axiosInstance.post(
-    `/api/BuyOnCredit/BuyOnCreditCheckout`,
-    payload,
+    `/api/BuyOnCredit/BuyOnCreditCheckout?checkoutId=${payload.checkoutId}&vendorId=${payload.vendorId}`,
   );
   return data;
+};
+export const validateBuyOnCredit = async (payload: {
+  checkoutId: string;
+  vendorId: number;
+}) => {
+  const { data } = await axiosInstance.post(
+    `/api/BuyOnCredit/validate?checkoutId=${payload.checkoutId}&vendorId=${payload.vendorId}`,
+  );
+  return data; // { isValid: boolean, message: string, paymentFee: number }
 };

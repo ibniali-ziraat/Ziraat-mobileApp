@@ -1,54 +1,3 @@
-// import { KeyboardAvoidingView, Platform, View } from "react-native";
-// import { ScrollView } from "react-native-gesture-handler";
-// import { SafeAreaView } from "react-native-safe-area-context";
-// import { colors } from "../../constants/colors";
-
-// interface ScreenLayoutProps {
-//   children: React.ReactNode;
-//   keyboardOffset?: number;
-//   scrollable?: boolean;
-// }
-
-// export default function ScreenLayout({
-//   children,
-//   keyboardOffset = 30,
-//   scrollable = true,
-// }: ScreenLayoutProps) {
-//   return (
-//     <KeyboardAvoidingView
-//       style={{ flex: 1, backgroundColor: colors.light }}
-//       behavior={Platform.OS === "ios" ? "padding" : "height"}
-//       keyboardVerticalOffset={keyboardOffset}
-//     >
-//       <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
-//         {scrollable ? (
-//           <ScrollView
-//             contentContainerStyle={{
-//               flexGrow: 1,
-//               paddingBottom: Platform.OS === "android" ? 20 : 60,
-//               backgroundColor: colors.light,
-//             }}
-//             keyboardShouldPersistTaps="handled"
-//             showsVerticalScrollIndicator={false}
-//           >
-//             <View style={{ flex: 1 }}>{children}</View>
-//           </ScrollView>
-//         ) : (
-//           <View
-//             style={{
-//               flex: 1,
-//               backgroundColor: colors.light,
-//               paddingBottom: Platform.OS === "android" ? 40 : 100,
-//             }}
-//           >
-//             {children}
-//           </View>
-//         )}
-//       </SafeAreaView>
-//     </KeyboardAvoidingView>
-//   );
-// }
-
 import React from "react";
 import { Platform, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -72,7 +21,7 @@ export default function ScreenLayout({
         flex: 1,
         backgroundColor: colors.light,
       }}
-      edges={["top","bottom"]}
+      edges={["top", "bottom"]}
     >
       {scrollable ? (
         <KeyboardAwareScrollView
@@ -88,9 +37,7 @@ export default function ScreenLayout({
             backgroundColor: colors.light,
           }}
         >
-          <View style={{ flex: 1 }}>
-            {children}
-          </View>
+          <View style={{ flex: 1 }}>{children}</View>
         </KeyboardAwareScrollView>
       ) : (
         <View

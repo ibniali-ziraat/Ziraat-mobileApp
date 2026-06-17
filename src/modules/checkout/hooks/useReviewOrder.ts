@@ -15,16 +15,22 @@ import {
   useCodCheckout,
   usePaymentProviders,
   useUpiCheckout,
+  useValidateBuyOnCredit,
 } from "./useCheckout";
 
 const UPI_OPTION = { label: "UPI", value: "UPI" };
-// const BOC = { label: "Buy on Credit", value: "BOC" };
 
 export type UserPaymentDetails = {
   name: string;
   email: string;
   phone: string;
 };
+
+export type BocValidationResult = {
+  isValid: boolean;
+  message: string;
+  paymentFee: number;
+} | null;
 
 export const useReviewOrder = () => {
   const [errorMsg, setErrorMsg] = useState("");
@@ -33,6 +39,8 @@ export const useReviewOrder = () => {
     email: "",
     phone: "",
   });
+  const [bocValidation, setBocValidation] = useState<BocValidationResult>(null);
+  const [isValidatingBoc, setIsValidatingBoc] = useState(false);
 
   const { profileData } = useAuth();
 
@@ -55,9 +63,10 @@ export const useReviewOrder = () => {
   const { mutateAsync: createRazorpayOrder } = useCreateRazorpayOrder();
   const { mutateAsync: verifyPayment } = useVerifyRazorpayPayment();
   const { mutateAsync: saveOrder } = useSaveOrder();
+  const { mutateAsync: validateBoc } = useValidateBuyOnCredit();
   const { pay } = usePayment();
 
-  const isPending = isCodPending || isUpiPending;
+  const isPending = isCodPending || isUpiPending || isBocPending;
 
   const paymentOptions = [
     ...(Array.isArray(paymentProviders)
@@ -66,7 +75,6 @@ export const useReviewOrder = () => {
           .map((p: any) => ({ label: p.name, value: p.id }))
       : []),
     UPI_OPTION,
-    // BOC,
   ];
 
   const onSuccess = (response: any) => {
@@ -109,7 +117,7 @@ export const useReviewOrder = () => {
     checkoutId: string,
     amount: number,
     shippingAddress: any,
-    paymentMethod: "UPI" | "CoD",
+    paymentMethod: "UPI" | "CoD" | "BOC",
     extraFields?: any,
   ) => {
     const addressPayload = buildAddressPayload(shippingAddress);
@@ -136,10 +144,45 @@ export const useReviewOrder = () => {
         orderNote: null,
       });
     } catch (err) {
-      // non-blocking — don't stop navigation if mongo save fails
       console.error("Something went wrong please try after sometime", err);
     }
   };
+
+  // ── Payment Method Change Handler ─────────────────────────────────────────
+
+  const handlePaymentMethodChange = async (
+    value: string,
+    vendorId?: number,
+  ) => {
+    setBocValidation(null);
+    setErrorMsg("");
+
+    if (value !== "BuyOnCredit") return;
+
+    const checkoutId = await AsyncStorage.getItem("checkoutId");
+    if (!checkoutId || !vendorId) return;
+
+    setIsValidatingBoc(true);
+    try {
+      const result = await validateBoc({ checkoutId, vendorId });
+      setBocValidation(result);
+      if (!result.isValid) {
+        setErrorMsg(result.message);
+      }
+    } catch {
+      const fallback = {
+        isValid: false,
+        message: "Credit validation failed. Please try again.",
+        paymentFee: 0,
+      };
+      setBocValidation(fallback);
+      setErrorMsg(fallback.message);
+    } finally {
+      setIsValidatingBoc(false);
+    }
+  };
+
+  // ── Individual Payment Handlers ───────────────────────────────────────────
 
   const handleCodPayment = (
     checkoutId: string,
@@ -195,7 +238,6 @@ export const useReviewOrder = () => {
       return;
     }
 
-    // Step 2: Open Razorpay payment sheet
     const result = await pay({
       amount,
       orderId: razorpayOrderId,
@@ -207,10 +249,7 @@ export const useReviewOrder = () => {
       },
     });
 
-    console.log("Razorpay result:", result);
-
     if (!result.success) {
-      // code 1 = user dismissed — silent, don't show error
       if (String(result.error?.code) !== "1") {
         setErrorMsg(
           result.error?.description ?? "Payment failed. Please try again.",
@@ -219,7 +258,6 @@ export const useReviewOrder = () => {
       return;
     }
 
-    // Step 3: Verify signature + fetch transferId + update Payment in MongoDB
     try {
       await verifyPayment({
         razorpay_order_id: result.data.razorpay_order_id,
@@ -234,7 +272,6 @@ export const useReviewOrder = () => {
       return;
     }
 
-    // Step 4: Notify main Azure backend about UPI checkout completion
     upiCheckout(
       {
         checkoutId,
@@ -244,7 +281,6 @@ export const useReviewOrder = () => {
       },
       {
         onSuccess: async (response) => {
-          // Step 5: Save full Order record to MongoDB (fire-and-forget)
           await persistOrder(
             checkoutId,
             amount,
@@ -252,7 +288,6 @@ export const useReviewOrder = () => {
             "UPI",
             response,
           );
-
           const addressPayload = buildAddressPayload(shippingAddress);
           onSuccess({
             error: null,
@@ -273,13 +308,18 @@ export const useReviewOrder = () => {
     );
   };
 
+  // ── BOC: needs checkoutId + vendorId ─────────────────────────────────────
+
   const handleCreditPayment = async (
     checkoutId: string,
     amount: number,
     shippingAddress: any,
+    vendorId: number,
   ) => {
+    console.log("BOC checkout →", { checkoutId, vendorId });
+
     bocCheckout(
-      { checkoutId, userId: 10016 },
+      { checkoutId, vendorId },
       {
         onSuccess: async (response) => {
           await persistOrder(
@@ -308,11 +348,13 @@ export const useReviewOrder = () => {
     );
   };
 
+  // ── Main Place Order Handler ──────────────────────────────────────────────
+
   const handlePlaceOrder = async (
     selectedPayment: string,
     amount: number,
     shippingAddress: any,
-    vendorAccountId: string = "",
+    vendorId?: number,
   ) => {
     const checkoutId = await AsyncStorage.getItem("checkoutId");
     if (!checkoutId) return;
@@ -325,10 +367,14 @@ export const useReviewOrder = () => {
         checkoutId,
         amount,
         shippingAddress,
-        (vendorAccountId = "acc_SiTe1aZkr6oiyU"),
+        "acc_SiTe1aZkr6oiyU",
       );
     } else if (selectedPayment === "BuyOnCredit") {
-      await handleCreditPayment(checkoutId, amount, shippingAddress);
+      if (!vendorId) {
+        setErrorMsg("Vendor information missing. Cannot place credit order.");
+        return;
+      }
+      await handleCreditPayment(checkoutId, amount, shippingAddress, vendorId);
     }
   };
 
@@ -337,8 +383,11 @@ export const useReviewOrder = () => {
     isPending,
     paymentOptions,
     handlePlaceOrder,
+    handlePaymentMethodChange,
     userDetails,
     setUserDetails,
     isProfileLoaded: !!profileData,
+    bocValidation,
+    isValidatingBoc,
   };
 };

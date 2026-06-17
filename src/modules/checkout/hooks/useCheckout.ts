@@ -11,6 +11,7 @@ import {
   getPaymentProviders,
   updateTaxAndShippingPrices,
   upiCheckoutService,
+  validateBuyOnCredit,
 } from "../services/checkout.services";
 
 export const useCouponCode = () => {
@@ -112,5 +113,11 @@ export const useBocCheckout = () => {
   return useMutation({
     mutationFn: (payload: { checkoutId: string; userId: string | null }) =>
       bocCheckoutService(payload),
+  });
+};
+export const useValidateBuyOnCredit = () => {
+  return useMutation({
+    mutationFn: (payload: { checkoutId: string; vendorId: number }) =>
+      validateBuyOnCredit(payload),
   });
 };
