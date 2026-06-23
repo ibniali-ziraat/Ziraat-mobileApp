@@ -31,7 +31,7 @@ export default function ProductDetailCarousel({
   const renderItem = ({ item }: { item: string }) => {
     // ✅ support both local mapped images and remote URLs
 
-    const source = { uri: item }
+    const source = { uri: item };
 
     return (
       <View style={{ width: ITEM_WIDTH }}>
@@ -73,8 +73,11 @@ export default function ProductDetailCarousel({
         {photos.map((_, i) => (
           <View
             key={i}
-            className={`w-2 h-2 rounded-full mx-1 ${currentIndex === i ? "bg-secondary" : "bg-light"
-              }`}
+            className={`w-2 h-2 rounded-full mx-1 ${
+              currentIndex === i
+                ? "bg-secondary"
+                : "bg-transparent border border-secondary"
+            }`}
           />
         ))}
       </View>

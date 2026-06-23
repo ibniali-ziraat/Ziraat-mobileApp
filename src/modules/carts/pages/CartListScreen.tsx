@@ -22,6 +22,8 @@ const CartListScreen = () => {
 
   const { cart, isCartBusy, updateCartItem, removeFromCart } = useCart();
 
+  console.log(cart, "cartin cartlistscren");
+
   const coupon = useCoupon();
 
   const { subtotal } = useCartTotals({
@@ -29,6 +31,7 @@ const CartListScreen = () => {
     couponData: coupon.couponData,
     selectedCoupon: coupon.selectedCoupon,
   });
+  console.log(subtotal, "subtotal in cartlistscreen");
 
   const { handlePlaceOrder, isPending } = useCartCheckout({
     selectedCoupon: coupon.selectedCoupon,

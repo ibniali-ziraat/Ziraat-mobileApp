@@ -8,11 +8,9 @@ type Props = {
   onCheckout: () => void;
 };
 
-const CartFooter = ({
-  subtotal,
-  isPending,
-  onCheckout,
-}: Props) => {
+const CartFooter = ({ subtotal, isPending, onCheckout }: Props) => {
+  console.log(subtotal, "subtotal in cartfooter");
+
   return (
     <>
       <View
@@ -22,9 +20,7 @@ const CartFooter = ({
           marginBottom: 12,
         }}
       >
-        <Text style={typography.Poppins_m_semibold}>
-          Subtotal
-        </Text>
+        <Text style={typography.Poppins_m_semibold}>Subtotal</Text>
         <Text style={typography.Poppins_m_semibold}>
           ₹{subtotal.toFixed(2)}
         </Text>

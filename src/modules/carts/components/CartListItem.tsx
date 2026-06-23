@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from "react";
 import { Image, Pressable, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -14,39 +12,39 @@ export default function CartListItem({
   onQtyChange,
   handleRemoveItem,
 }) {
+  const [quantity, setQuantity] = useState(apiQuantity || 1);
 
-const [quantity, setQuantity] = useState(apiQuantity || 1);
+  useEffect(() => {
+    setQuantity(apiQuantity || 1);
+  }, [apiQuantity]);
 
-useEffect(() => {
-  setQuantity(apiQuantity || 1);
-}, [apiQuantity]);
+  const decrease = () => {
+    if (quantity > 1) {
+      const newQty = quantity - 1;
+      setQuantity(newQty);
+      onQtyChange?.(newQty);
+    }
+  };
 
+  const increase = () => {
+    const newQty = quantity + 1;
+    console.log(newQty, "increase");
 
-const decrease = () => {
-  if (quantity > 1) {
-    const newQty = quantity - 1;
     setQuantity(newQty);
     onQtyChange?.(newQty);
-  }
-};
+  };
 
-const increase = () => {
-  const newQty = quantity + 1;
-  setQuantity(newQty);
-  onQtyChange?.(newQty);
-};
-  const price =
-    item?.calculatedProductPrice?.price ?? item?.productPrice ?? 0;
+  const price = item?.calculatedProductPrice?.price ?? item?.productPrice ?? 0;
+  console.log(price, "pric in cartlistitem ");
 
-  const oldPrice =
-    item?.calculatedProductPrice?.oldPrice ?? 0;
+  const oldPrice = item?.calculatedProductPrice?.oldPrice ?? 0;
 
   const discount =
-    oldPrice > price
-      ? Math.round(((oldPrice - price) / oldPrice) * 100)
-      : 0;
+    oldPrice > price ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
   const totalPrice = price * quantity;
+
+  console.log(totalPrice, "total in cartlistitem screen");
 
   return (
     <>
@@ -82,11 +80,7 @@ const increase = () => {
               className="p-1 rounded-full"
               style={{ backgroundColor: colors.lightHover }}
             >
-              <Ionicons
-                name="close"
-                size={16}
-                color={colors.darkHover}
-              />
+              <Ionicons name="close" size={16} color={colors.darkHover} />
             </Pressable>
           </View>
 
@@ -106,50 +100,50 @@ const increase = () => {
           )}
 
           {/* QTY CONTROL */}
-             <View
-               className="flex-row items-center"
-               style={{
-                 borderWidth: 1,
-                 borderColor: "#e5e5e5",
-                 alignSelf: "flex-start",
-                 marginTop:5,
-               }}
-             >
-               <Pressable
-                 onPress={decrease}
-                 style={{
-                   paddingHorizontal: 10,
-                   paddingVertical: 6,
-                   opacity: quantity === 1 ? 0.4 : 1,
-                 }}
-               >
-                 <Minus size={12} color={colors.dark} />
-               </Pressable>
-         
-               <View
-                 style={{
-                   borderLeftWidth: 1,
-                   borderRightWidth: 1,
-                   borderColor: "#e5e5e5",
-                   paddingHorizontal: 12,
-                   paddingVertical: 4,
-                 }}
-               >
-                 <CsText style={{ fontSize: 12, color: "#111" }}>
-                   Qty {quantity}
-                 </CsText>
-               </View>
-         
-               <Pressable
-                 onPress={increase}
-                 style={{
-                   paddingHorizontal: 10,
-                   paddingVertical: 6,
-                 }}
-               >
-                 <Plus size={12} color={colors.dark} />
-               </Pressable>
-             </View>
+          <View
+            className="flex-row items-center"
+            style={{
+              borderWidth: 1,
+              borderColor: "#e5e5e5",
+              alignSelf: "flex-start",
+              marginTop: 5,
+            }}
+          >
+            <Pressable
+              onPress={decrease}
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 6,
+                opacity: quantity === 1 ? 0.4 : 1,
+              }}
+            >
+              <Minus size={12} color={colors.dark} />
+            </Pressable>
+
+            <View
+              style={{
+                borderLeftWidth: 1,
+                borderRightWidth: 1,
+                borderColor: "#e5e5e5",
+                paddingHorizontal: 12,
+                paddingVertical: 4,
+              }}
+            >
+              <CsText style={{ fontSize: 12, color: "#111" }}>
+                Qty {quantity}
+              </CsText>
+            </View>
+
+            <Pressable
+              onPress={increase}
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 6,
+              }}
+            >
+              <Plus size={12} color={colors.dark} />
+            </Pressable>
+          </View>
 
           {/* PRICE */}
           <View className="flex-row items-center mt-3">

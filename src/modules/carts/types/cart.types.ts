@@ -2,6 +2,7 @@ export type CartItemType = {
   id: string;
   quantity: number;
   total: number;
+  productPrice: number;
 };
 
 export type CouponType = {

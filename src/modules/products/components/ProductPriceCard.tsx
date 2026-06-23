@@ -37,7 +37,7 @@ export default function ProductPriceCard({ product }: any) {
                 ]}
                 className="ml-1"
               >
-                {price.oldPriceString}
+                ₹{price.oldPrice}
               </CsText>
             </View>
           )}
@@ -50,7 +50,7 @@ export default function ProductPriceCard({ product }: any) {
               style={[typography.Poppins_l_semibold, { color: colors.dark }]}
               className="ml-1"
             >
-              {price?.priceString}
+              ₹{price?.price}
             </CsText>
 
             {/* DISCOUNT */}
