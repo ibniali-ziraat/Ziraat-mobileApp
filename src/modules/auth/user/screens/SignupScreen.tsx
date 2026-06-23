@@ -6,6 +6,7 @@ import {
   useSendOtpMutation,
 } from "../../../../hooks/userQueryHooks";
 
+
 import OTPSection from "@/src/modules/auth/user/sections/OTPSection";
 import ProfileSection from "@/src/modules/auth/user/sections/ProfileSection";
 
@@ -36,11 +37,19 @@ export default function SignupScreen() {
   const schemas = [profileSchema(false), otpSchema];
 
   const methods = useZodForm(schemas[step]);
+  // const {
+  //   control,
+  //   handleSubmit,
+  //   formState: { errors },
+  // } = methods;
+
+
   const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = methods;
+  control,
+  handleSubmit,
+  setValue,
+  formState: { errors },
+} = methods;
 
   const { mutateAsync: signupMutate, isPending: isSignupPending } =
     useProfileMutation();
