@@ -23,7 +23,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Ziraat/Info.plist; sourceTree = "<group>"; };
 		218958EABE740040C755329D /* Pods-Ziraat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ziraat.release.xcconfig"; path = "Target Support Files/Pods-Ziraat/Pods-Ziraat.release.xcconfig"; sourceTree = "<group>"; };
 		55F3443C8DB6CFF6554BB0DA /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-Ziraat/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
-		7B2939F08502ABA0ED82B7C4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = Ziraat/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		7B2939F08502ABA0ED82B7C4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = Ziraat/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = Ziraat/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		D396D1DE7F24CA82190087F0 /* Pods-Ziraat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ziraat.debug.xcconfig"; path = "Target Support Files/Pods-Ziraat/Pods-Ziraat.debug.xcconfig"; sourceTree = "<group>"; };
@@ -81,7 +81,6 @@
 				D396D1DE7F24CA82190087F0 /* Pods-Ziraat.debug.xcconfig */,
 				218958EABE740040C755329D /* Pods-Ziraat.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -432,7 +431,7 @@
 				CODE_SIGN_ENTITLEMENTS = Ziraat/Ziraat.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = WDR78QR7SF;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -453,7 +452,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alilals.ziraat;
-				PRODUCT_NAME = "Ziraat";
+				PRODUCT_NAME = Ziraat;
 				SWIFT_OBJC_BRIDGING_HEADER = "Ziraat/Ziraat-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -471,7 +470,7 @@
 				CODE_SIGN_ENTITLEMENTS = Ziraat/Ziraat.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 13;
 				DEVELOPMENT_TEAM = WDR78QR7SF;
 				INFOPLIST_FILE = Ziraat/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -487,7 +486,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alilals.ziraat;
-				PRODUCT_NAME = "Ziraat";
+				PRODUCT_NAME = Ziraat;
 				SWIFT_OBJC_BRIDGING_HEADER = "Ziraat/Ziraat-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
