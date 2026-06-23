@@ -28,6 +28,7 @@ export default function OrchardList({
         renderItem={({ item }) => <OrchardCard orchard={item} />}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
+         keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
           <View className="mb-6 mt-4 bg-light">
             <ScreenContent>

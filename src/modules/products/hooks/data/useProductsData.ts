@@ -1,4 +1,6 @@
-import { useProductsWithFallback } from "../queries/products.queries";
+// import { useProductsWithFallback } from "../queries/products.queries";
+
+import { useProductsQuery } from "../queries/products.queries";
 
 export const useProductsData = (
   params: {
@@ -13,7 +15,7 @@ export const useProductsData = (
   } = {},
 ) => {
   const { data, isLoading, isFetching, isFallback } =
-    useProductsWithFallback(params);
+    useProductsQuery(params);
 
   const categories = data?.filterOption?.categories ?? [];
   const brands = data?.filterOption?.brands ?? [];
