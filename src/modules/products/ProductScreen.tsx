@@ -23,7 +23,9 @@ const CARD_WIDTH = Dimensions.get("window").width * 0.42;
 
 export default function ProductScreen() {
   const [search, setSearch] = useState("");
+
   const [filters, setFilters] = useState<ProductFilters>({});
+  
   const [filterOpen, setFilterOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -62,8 +64,11 @@ export default function ProductScreen() {
     setRefreshing(true);
     try {
       await refresh();
+
+      
     } finally {
       setRefreshing(false);
+
     }
   };
   console.log(displayedProducts, "displayed products...");
@@ -76,6 +81,8 @@ export default function ProductScreen() {
           data={displayedProducts}
           refreshing={refreshing}
           onRefresh={handleRefresh}
+          keyboardShouldPersistTaps="handled"
+
           numColumns={2}
           keyExtractor={(item, index) =>
             item?.id ? String(item.id) : `fallback-${index}`

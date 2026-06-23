@@ -5,7 +5,7 @@ import { FlatList } from "react-native";
 
 import { NormalizedProduct, ProductFilters } from "../types/productlist.types";
 import { normalizeProducts } from "../utils/utils";
-import { useProductsWithFallback } from "./queries/products.queries";
+import { useProductsQuery } from "./queries/products.queries";
 
 interface UsePaginatedProductsParams {
   search: string;
@@ -37,9 +37,8 @@ export function usePaginatedProducts({
   );
 
   // When vendor-only flag is ON, don't pass params (API ignores them anyway)
-  const queryParams = FEATURE_FLAGS.SHOW_VENDOR_PRODUCTS_ONLY
-    ? {}
-    : {
+  const queryParams =
+     {
         query: debouncedSearch || undefined,
         brand: filters?.brand,
         category:
@@ -51,16 +50,18 @@ export function usePaginatedProducts({
         sort: filters?.sort,
         minRating: filters?.minRating,
         page,
-      };
+      }
+      
+    
 
-  const {
-    data,
-    isFetching,
-    isLoading,
-    refetch: productSearchRefetch,
-  } = useProductsWithFallback(queryParams);
+ const {
+  data,
+  isFetching,
+  isLoading,
+  refetch: productSearchRefetch,
+} = useProductsQuery(queryParams);
 
-  console.log(data, "product data...");
+  // console.log(data, "product data...");
 
   // RESET ON FILTER / SEARCH / CATEGORY CHANGE
   // Skip reset side-effects when vendor-only mode is active
@@ -134,7 +135,7 @@ export function usePaginatedProducts({
     scrollRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
-  console.log(displayedProducts, "displated pro...");
+  // console.log(displayedProducts, "displated pro...");
 
   return {
     scrollRef,

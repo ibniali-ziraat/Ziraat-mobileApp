@@ -5,6 +5,9 @@ import { LucideIcon, Search, X } from "lucide-react-native";
 import { Platform, Pressable, View } from "react-native";
 import { TextInput } from "react-native-paper";
 
+import { TouchableOpacity } from "react-native";
+
+
 type Props = {
   search: string;
   setSearch: (text: string) => void;
@@ -91,14 +94,22 @@ export default function SearchBar({
 
         {/* CLEAR X */}
         {!!search && (
-          <Pressable
-            onPress={() => setSearch("")}
-            style={{
-              marginRight: RightIcon ? 8 : 0,
-            }}
-          >
-            <X size={18} color={colors.neutral} />
-          </Pressable>
+          // <Pressable
+          //   onPress={() => setSearch("")}
+          //   style={{
+          //     marginRight: RightIcon ? 8 : 0,
+          //   }}
+          // >
+          //   <X size={18} color={colors.neutral} />
+          // </Pressable>
+
+
+          <TouchableOpacity
+  onPress={() => setSearch("")}
+  hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+>
+  <X size={18} color={colors.neutral} />
+</TouchableOpacity>
         )}
 
         {RightIcon && (

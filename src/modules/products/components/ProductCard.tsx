@@ -31,11 +31,11 @@ export default function ProductCard({
     (w) => String(w?.productId) === String(item.id),
   );
 
-  console.log(vendors, "vendors...");
-  console.log(item, "item...bb");
+  // console.log(vendors, "vendors...");
+  // console.log(item, "item...bb");
 
   const discount = calcDiscount(item.price, item.oldPrice);
-  console.log(item, "product detail item...");
+  // console.log(item, "product detail item...");
 
   const goToProduct = () =>
     router.push({
@@ -47,7 +47,7 @@ export default function ProductCard({
       },
     });
 
-  console.log(item, "prodcut item");
+  // console.log(item, "prodcut item");
 
   return (
     <View

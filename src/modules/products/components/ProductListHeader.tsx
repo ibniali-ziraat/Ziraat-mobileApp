@@ -39,6 +39,10 @@ export default function ProductListHeader({
   setActiveCategory,
   filtersReady,
 }: ProductListHeaderProps) {
+
+  
+  
+  
   return (
     <>
       <ProductSearchBar
