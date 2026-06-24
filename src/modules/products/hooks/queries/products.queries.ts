@@ -107,14 +107,12 @@
 //     minRating?: number;
 //   } = {
 
-    
 //   },
 // ) => {
 
 //     console.log("useProductsWithFallback params:", params);
 
 //   const vendorQuery = useProductsQuery();
-  
 
 //   const vendorHasProducts =
 //     Array.isArray(vendorQuery.data?.products) &&
@@ -131,7 +129,6 @@
 //   });
 
 //   // ✅ Vendor-only mode
-
 
 //   // Original fallback logic
 //   if (vendorQuery.isLoading || vendorQuery.isFetching) {
@@ -187,7 +184,7 @@ export const useProductsQuery = (params?: {
   useQuery({
     queryKey: ["products", params],
     queryFn: () => getProducts(params),
-    keepPreviousData: true,
+    // keepPreviousData: true,
   });
 
 export const useProductByIdQuery = (

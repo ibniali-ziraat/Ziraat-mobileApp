@@ -25,7 +25,7 @@ export default function ProductScreen() {
   const [search, setSearch] = useState("");
 
   const [filters, setFilters] = useState<ProductFilters>({});
-  
+
   const [filterOpen, setFilterOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("All");
 
@@ -39,11 +39,7 @@ export default function ProductScreen() {
     search,
   );
 
-  const {
-    filterOptions = { brands: [], categories: [] },
-    categories = [],
-    isReady: filtersReady,
-  } = useProductsData({ page: 1 }); // ← matches initial cache key
+  // ← matches initial cache key
 
   const { wishlist, isBusy, handleToggleWishlist } = useWishlistToggle();
   const { showTopBtn, handleScroll } = useScrollToTop();
@@ -60,18 +56,21 @@ export default function ProductScreen() {
     productSearchRefetch,
   } = usePaginatedProducts({ search, filters, activeCategory });
 
+  const {
+    filterOptions = { brands: [], categories: [] },
+    categories = [],
+    isReady: filtersReady,
+  } = useProductsData();
+
   const handleRefresh = async () => {
     setRefreshing(true);
     try {
       await refresh();
-
-      
     } finally {
       setRefreshing(false);
-
     }
   };
-  console.log(displayedProducts, "displayed products...");
+  console.log(displayedProducts.length, "displayed products...");
 
   return (
     <ScreenLayout scrollable={false}>
@@ -82,7 +81,6 @@ export default function ProductScreen() {
           refreshing={refreshing}
           onRefresh={handleRefresh}
           keyboardShouldPersistTaps="handled"
-
           numColumns={2}
           keyExtractor={(item, index) =>
             item?.id ? String(item.id) : `fallback-${index}`

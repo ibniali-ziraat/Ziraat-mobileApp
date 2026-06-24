@@ -83,28 +83,39 @@ export const OrderSummary = ({
   const items = summary.items ?? [];
 
   // Check if ALL items are available for credit buyers
-  const allCreditAvailable = items.every(
-    (item) => item.vendorAssignment?.isAvailableForCreditBuyers === true,
-  );
+  // const allCreditAvailable = items.every(
+  //   (item) => item.vendorAssignment?.isAvailableForCreditBuyers === true,
+  // );
 
-  const showCredit = isBuyOnCredit && allCreditAvailable;
+  const showCredit = isBuyOnCredit;
 
   // Aggregate credit values across ALL items (respecting quantity)
   const totalCreditSalePrice = items.reduce((sum, item) => {
     const qty = item.quantity ?? 1;
     const price = item.vendorAssignment?.creditSalePrice ?? 0;
+
     return sum + price * qty;
   }, 0);
 
+  // const totalCreditHikeAmount = items.reduce((sum, item) => {
+  //   const qty = item.quantity ?? 1;
+  //   const hike = item.vendorAssignment?.creditSaleHikeAmount ?? 0;
+  //   console.log(hike, "hike");
+
+  //   return sum + hike * qty;
+  // }, 0);
+
   const totalCreditHikeAmount = items.reduce((sum, item) => {
-    const qty = item.quantity ?? 1;
-    const hike = item.vendorAssignment?.creditSaleHikeAmount ?? 0;
+    const qty = Number(item.quantity ?? 1);
+
+    const hike = Number(item.vendorAssignment?.creditSaleHikeAmount ?? 0);
+
     return sum + hike * qty;
   }, 0);
 
   // Use a representative hike percentage (from first item, for display label)
   const creditHikePercentage =
-    items[0]?.vendorAssignment?.creditSaleHikePercentage;
+    items[0]?.vendorAssignment?.creditSaleHikePercentage ?? 0;
 
   return (
     <View className="mx-4 rounded-2xl bg-white p-4">
@@ -118,19 +129,24 @@ export const OrderSummary = ({
       {/* MRP — always shown */}
       <SummaryRow label="MRP" value={formatRs(summary.subTotalString)} />
 
+      <SummaryRow
+        label="Included Tax"
+        value={formatRs(summary.taxAmountString)}
+      />
+
+      {summary.discount > 0 && (
+        <SummaryRow
+          label="Discount"
+          value={`- ${formatRs(summary.discountString)}`}
+        />
+      )}
+
       {showCredit ? (
         <>
           <SummaryRow
             label="Sale Price"
             value={formatRs(summary.orderTotalString)}
           />
-
-          {summary.discount > 0 && (
-            <SummaryRow
-              label="Discount"
-              value={`- ${formatRs(summary.discountString)}`}
-            />
-          )}
 
           {couponCode && (
             <View className="mb-2 flex-row items-center justify-between">
@@ -146,11 +162,6 @@ export const OrderSummary = ({
             label={`Credit Fee (${creditHikePercentage}%)`}
             value={`+ ${formatRsNum(totalCreditHikeAmount)}`}
             highlight
-          />
-
-          <SummaryRow
-            label="Included Tax"
-            value={formatRs(summary.taxAmountString)}
           />
 
           <SummaryRow
@@ -172,7 +183,7 @@ export const OrderSummary = ({
           />
 
           <View className="mt-4 flex-row items-center justify-end">
-            <Sparkles size={16} color="#e97316" />
+            {/* <Sparkles size={16} color="#e97316" /> */}
             <Text className="ml-2 text-sm font-semibold text-orange-600">
               Credit fee of {formatRsNum(totalCreditHikeAmount)} applied
             </Text>
@@ -193,18 +204,6 @@ export const OrderSummary = ({
               </Text>
             </View>
           )}
-
-          {summary.discount > 0 && (
-            <SummaryRow
-              label="Discount"
-              value={`- ${formatRs(summary.discountString)}`}
-            />
-          )}
-
-          <SummaryRow
-            label="Included Tax"
-            value={formatRs(summary.taxAmountString)}
-          />
 
           <SummaryRow
             label="Shipping"
