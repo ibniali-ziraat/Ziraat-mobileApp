@@ -11,6 +11,7 @@ interface VendorAssignment {
 
 interface OrderItem {
   vendorAssignment?: VendorAssignment;
+  quantity?: number;
 }
 
 interface Summary {
@@ -79,14 +80,31 @@ export const OrderSummary = ({
   couponCode,
   isBuyOnCredit = false,
 }: Props) => {
-  // Pull credit info from first item's vendorAssignment
-  const va = summary.items?.[0]?.vendorAssignment;
-  const creditAvailable = va?.isAvailableForCreditBuyers === true;
-  const showCredit = isBuyOnCredit && creditAvailable;
+  const items = summary.items ?? [];
 
-  const creditSalePrice = va?.creditSalePrice;
-  const creditHikeAmount = va?.creditSaleHikeAmount;
-  const creditHikePercentage = va?.creditSaleHikePercentage;
+  // Check if ALL items are available for credit buyers
+  const allCreditAvailable = items.every(
+    (item) => item.vendorAssignment?.isAvailableForCreditBuyers === true,
+  );
+
+  const showCredit = isBuyOnCredit && allCreditAvailable;
+
+  // Aggregate credit values across ALL items (respecting quantity)
+  const totalCreditSalePrice = items.reduce((sum, item) => {
+    const qty = item.quantity ?? 1;
+    const price = item.vendorAssignment?.creditSalePrice ?? 0;
+    return sum + price * qty;
+  }, 0);
+
+  const totalCreditHikeAmount = items.reduce((sum, item) => {
+    const qty = item.quantity ?? 1;
+    const hike = item.vendorAssignment?.creditSaleHikeAmount ?? 0;
+    return sum + hike * qty;
+  }, 0);
+
+  // Use a representative hike percentage (from first item, for display label)
+  const creditHikePercentage =
+    items[0]?.vendorAssignment?.creditSaleHikePercentage;
 
   return (
     <View className="mx-4 rounded-2xl bg-white p-4">
@@ -102,10 +120,9 @@ export const OrderSummary = ({
 
       {showCredit ? (
         <>
-          {/* Replace Sale Price with Credit Sale Price */}
           <SummaryRow
-            label="Credit Sale Price"
-            value={formatRsNum(creditSalePrice!)}
+            label="Sale Price"
+            value={formatRs(summary.orderTotalString)}
           />
 
           {summary.discount > 0 && (
@@ -124,10 +141,10 @@ export const OrderSummary = ({
             </View>
           )}
 
-          {/* Credit hike fee */}
+          {/* Credit hike fee — summed across all items */}
           <SummaryRow
             label={`Credit Fee (${creditHikePercentage}%)`}
-            value={`+ ${formatRsNum(creditHikeAmount!)}`}
+            value={`+ ${formatRsNum(totalCreditHikeAmount)}`}
             highlight
           />
 
@@ -147,18 +164,17 @@ export const OrderSummary = ({
 
           <Divider />
 
-          {/* Order Total uses creditSalePrice as the final total */}
+          {/* ✅ Order Total = sum of all items' creditSalePrice */}
           <SummaryRow
             label="Order Total"
-            value={formatRsNum(creditSalePrice!)}
+            value={formatRsNum(totalCreditSalePrice)}
             bold
           />
 
-          {/* Savings replaced by credit notice */}
           <View className="mt-4 flex-row items-center justify-end">
             <Sparkles size={16} color="#e97316" />
             <Text className="ml-2 text-sm font-semibold text-orange-600">
-              Credit fee of {formatRsNum(creditHikeAmount!)} applied
+              Credit fee of {formatRsNum(totalCreditHikeAmount)} applied
             </Text>
           </View>
         </>

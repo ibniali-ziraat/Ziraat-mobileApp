@@ -35,6 +35,12 @@ const OrdersListScreen = () => {
   const [search, setSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null);
   const [filterVisible, setFilterVisible] = useState(false);
+  // Add this helper inside the component (or outside)
+  const getTotalQuantity = (orderItems: any[]) => {
+    return (
+      orderItems?.reduce((sum, item) => sum + (item.quantity ?? 1), 0) ?? 0
+    );
+  };
 
   const formatDate = (date: string) => {
     if (!date) return "N/A";
@@ -177,7 +183,7 @@ const OrdersListScreen = () => {
                 <Text
                   style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}
                 >
-                  {item.orderItems?.length} Items
+                  {getTotalQuantity(item.orderItems)} Items
                 </Text>
               </View>
             </View>
