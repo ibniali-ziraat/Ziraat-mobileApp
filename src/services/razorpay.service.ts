@@ -1,28 +1,57 @@
+import axiosInstance from "../api/client/axiosInstance copy";
 import razorpayInstance from "../api/client/razorPayInstance";
 
-// 1. Create Razorpay order + save initial Payment record to MongoDB
+// // 1. Create Razorpay order + save initial Payment record to MongoDB
+// export const createRazorpayOrderService = async (payload: {
+//   amount: number;
+//   vendorAccountId: string;
+//   checkoutId?: string; // passed so backend can save Payment record early
+//   userId?: number | null; // stored in Payment record
+// }) => {
+//   console.log(payload, "createRazorpayOrder payload");
+//   const { data } = await axiosInstance.post(
+//     "api/paymentRazor/create-order",
+//     payload,
+//   );
+//   return data; // { id, currency, amount }
+// };
+
+// // 2. Verify payment + fetch transferId + update Payment record in MongoDB
+// export const verifyRazorpayPaymentService = async (payload: {
+//   razorpay_order_id: string;
+//   razorpay_payment_id: string;
+//   razorpay_signature: string;
+//   amount: number;
+//   checkoutId: string;
+//   userId: number | null;
+//   // vendorAccountId NOT needed here — backend reads it from MongoDB
+// }) => {
+//   const { data } = await axiosInstance.post("/verify-payment", payload);
+//   return data; // { success, transferId }
+// };
+
 export const createRazorpayOrderService = async (payload: {
-  amount: number;
-  vendorAccountId: string;
-  checkoutId?: string; // passed so backend can save Payment record early
-  userId?: number | null; // stored in Payment record
+  checkoutId: string;
 }) => {
   console.log(payload, "createRazorpayOrder payload");
-  const { data } = await razorpayInstance.post("/create-order", payload);
+  const { data } = await axiosInstance.post(
+    "api/paymentRazor/create-order",
+    payload,
+  );
   return data; // { id, currency, amount }
 };
 
 // 2. Verify payment + fetch transferId + update Payment record in MongoDB
 export const verifyRazorpayPaymentService = async (payload: {
-  razorpay_order_id: string;
-  razorpay_payment_id: string;
-  razorpay_signature: string;
-  amount: number;
   checkoutId: string;
-  userId: number | null;
-  // vendorAccountId NOT needed here — backend reads it from MongoDB
+  razorpayOrderId: string;
+  razorpayPaymentId: string;
+  razorpaySignature: string;
 }) => {
-  const { data } = await razorpayInstance.post("/verify-payment", payload);
+  const { data } = await axiosInstance.post(
+    "/api/paymentRazor/verify-payment",
+    payload,
+  );
   return data; // { success, transferId }
 };
 

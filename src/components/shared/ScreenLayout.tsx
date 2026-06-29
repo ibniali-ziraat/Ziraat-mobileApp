@@ -20,8 +20,9 @@ export default function ScreenLayout({
       style={{
         flex: 1,
         backgroundColor: colors.light,
+        paddingTop: 18,
       }}
-      edges={["top", "bottom"]}
+      edges={["bottom"]}
     >
       {scrollable ? (
         <KeyboardAwareScrollView

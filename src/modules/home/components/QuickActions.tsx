@@ -25,7 +25,7 @@ export default function QuickActions() {
   ];
 
   return (
-    <View style={{ marginBottom: 32 }}>
+    <View style={{ marginBottom: 20, marginTop: 20 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         {actions.map((item, idx) => (
           <Pressable

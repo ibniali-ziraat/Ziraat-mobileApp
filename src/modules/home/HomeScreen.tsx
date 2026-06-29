@@ -41,9 +41,7 @@ export default function HomeScreen(): JSX.Element {
   return (
     <ScreenLayout>
       <ScreenContent>
-        <View
-          style={{ backgroundColor: colors.light, flex: 1, paddingTop: 16 }}
-        >
+        <View style={{ backgroundColor: colors.light, flex: 1 }}>
           <Pressable onPress={() => router.push(ROUTES.WEATHER.DETAILS)}>
             <WeatherCard current={currentWeather} coords={coords} />
           </Pressable>
