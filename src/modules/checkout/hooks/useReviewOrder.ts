@@ -18,7 +18,7 @@ import {
   useValidateBuyOnCredit,
 } from "./useCheckout";
 
-const UPI_OPTION = { label: "UPI", value: "UPI" };
+// const UPI_OPTION = { label: "UPI", value: "UPI" };
 
 export type UserPaymentDetails = {
   name: string;
@@ -74,7 +74,6 @@ export const useReviewOrder = () => {
           .filter((p: any) => p?.isEnabled)
           .map((p: any) => ({ label: p.name, value: p.id }))
       : []),
-    UPI_OPTION,
   ];
 
   const onSuccess = (response: any) => {
@@ -216,21 +215,71 @@ export const useReviewOrder = () => {
     });
   };
 
+  // const handleUpiPayment = async (
+  //   checkoutId: string,
+  //   amount: number,
+  //   shippingAddress: any,
+  //   vendorAccountId: string,
+  // ) => {
+  //   let razorpayOrderId: string;
+  //   try {
+  //     const orderRes = await createRazorpayOrder({
+  //       amount,
+  //       vendorAccountId,
+  //       checkoutId,
+  //       userId: profileData?.id ?? null,
+  //     });
+  //     razorpayOrderId = orderRes.id;
+  //     console.log("Razorpay order created:", razorpayOrderId);
+  //   } catch (err) {
+  //     console.log(err, "create order error");
+  //     setErrorMsg("Failed to initiate payment. Please try again.");
+  //     return;
+  //   }
+
+  //   const result = await pay({
+  //     amount,
+  //     orderId: razorpayOrderId,
+  //     description: "Order Payment",
+  //     user: {
+  //       name: shippingAddress.contactName,
+  //       email: userDetails.email || "test@example.com",
+  //       contact: shippingAddress.phone,
+  //     },
+  //   });
+
+  //   if (!result.success) {
+  //     if (String(result.error?.code) !== "1") {
+  //       setErrorMsg(
+  //         result.error?.description ?? "Payment failed. Please try again.",
+  //       );
+  //     }
+  //     return;
+  //   }
+
+  //   try {
+  //     await verifyPayment({
+  //       razorpay_order_id: result.data.razorpay_order_id,
+  //       razorpay_payment_id: result.data.razorpay_payment_id,
+  //       razorpay_signature: result.data.razorpay_signature,
+  //       amount,
+  //       checkoutId,
+  //       userId: profileData?.id ?? null,
+  //     });
+  //   } catch (err) {
+  //     setErrorMsg("Payment verification failed. Contact support.");
+  //     return;
+  //   }
+
   const handleUpiPayment = async (
     checkoutId: string,
     amount: number,
     shippingAddress: any,
-    vendorAccountId: string,
   ) => {
     let razorpayOrderId: string;
     try {
-      const orderRes = await createRazorpayOrder({
-        amount,
-        vendorAccountId,
-        checkoutId,
-        userId: profileData?.id ?? null,
-      });
-      razorpayOrderId = orderRes.id;
+      const orderRes = await createRazorpayOrder({ checkoutId });
+      razorpayOrderId = orderRes.razorpayOrderId; // ✅ fixed field name
       console.log("Razorpay order created:", razorpayOrderId);
     } catch (err) {
       console.log(err, "create order error");
@@ -239,7 +288,7 @@ export const useReviewOrder = () => {
     }
 
     const result = await pay({
-      amount,
+      amount, // ✅ use the rupee amount already passed in — no double conversion
       orderId: razorpayOrderId,
       description: "Order Payment",
       user: {
@@ -260,12 +309,10 @@ export const useReviewOrder = () => {
 
     try {
       await verifyPayment({
-        razorpay_order_id: result.data.razorpay_order_id,
-        razorpay_payment_id: result.data.razorpay_payment_id,
-        razorpay_signature: result.data.razorpay_signature,
-        amount,
         checkoutId,
-        userId: profileData?.id ?? null,
+        razorpayOrderId: result.data.razorpay_order_id,
+        razorpayPaymentId: result.data.razorpay_payment_id,
+        razorpaySignature: result.data.razorpay_signature,
       });
     } catch (err) {
       setErrorMsg("Payment verification failed. Contact support.");
@@ -362,7 +409,7 @@ export const useReviewOrder = () => {
 
     if (selectedPayment === "CoD") {
       handleCodPayment(checkoutId, shippingAddress, amount);
-    } else if (selectedPayment === "UPI") {
+    } else if (selectedPayment === "RazorPay") {
       await handleUpiPayment(
         checkoutId,
         amount,

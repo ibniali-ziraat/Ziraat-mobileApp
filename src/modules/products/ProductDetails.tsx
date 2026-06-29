@@ -284,10 +284,11 @@ export default function ProductDetails() {
 
   /* ---------------- CART ---------------- */
 
-  const cartItem = cart.find((i) => i.productId === product.id);
-
-  console.log(cartItem, "cartItem");
-
+  const cartItem = cart.find(
+    (i) =>
+      Number(i.productId) === Number(product.id) &&
+      Number(i.vendorId) === Number(product.vendorId),
+  );
   const isInCart = Boolean(cartItem);
 
   const handleAddToCart = async () => {

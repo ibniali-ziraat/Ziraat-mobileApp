@@ -15,7 +15,7 @@ export default function WeatherCard({ current, city }: WeatherCardProps) {
     typeof current?.humidity === "number";
 
   return (
-    <View className="my-6 rounded-3xl overflow-hidden shadow-lg">
+    <View className="rounded-3xl overflow-hidden shadow-lg ">
       <ImageBackground
         source={require("@/assets/images/weatherBg.png")}
         resizeMode="cover"
