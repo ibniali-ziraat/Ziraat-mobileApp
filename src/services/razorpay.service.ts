@@ -82,18 +82,18 @@ export const saveOrderService = async (payload: {
 };
 
 // 4. Release held transfer after delivery (manual, by transferId)
-export const releaseRazorpayPaymentService = async (payload: {
-  transferId: string;
-  checkoutId: string;
-}) => {
-  const { data } = await razorpayInstance.post("/release-payment", payload);
-  return data;
-};
+// export const releaseRazorpayPaymentService = async (payload: {
+//   transferId: string;
+//   checkoutId: string;
+// }) => {
+//   const { data } = await razorpayInstance.post("/release-payment", payload);
+//   return data;
+// };
 
 // 5. Mark order delivered + auto-release payment to vendor (preferred)
-export const orderDeliveredService = async (payload: {
-  checkoutId: string;
-}) => {
-  const { data } = await razorpayInstance.post("/order-delivered", payload);
-  return data;
-};
+// export const orderDeliveredService = async (payload: {
+//   checkoutId: string;
+// }) => {
+//   const { data } = await razorpayInstance.post("/order-delivered", payload);
+//   return data;
+// };

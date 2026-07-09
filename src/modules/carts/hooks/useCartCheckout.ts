@@ -16,9 +16,20 @@ export function useCartCheckout({
   const router = useRouter();
   const { mutateAsync: handleCheckout, isPending } = useCheckout();
 
-  const handlePlaceOrder = async () => {
+  // selectedCartItemIds: ids of the cart items the user checked for checkout.
+  // NOTE: confirm useCheckout's mutation fn / backend endpoint actually
+  // accepts a `cartItemIds` field — adjust the key name below to match.
+  const handlePlaceOrder = async (selectedCartItemIds: string[]) => {
+    if (!selectedCartItemIds?.length) {
+      toast.error("Select at least one item to checkout");
+      return;
+    }
+
     try {
-      const data = await handleCheckout({ couponCode: selectedCoupon || "" });
+      const data = await handleCheckout({
+        couponCode: selectedCoupon || "",
+        cartItemIds: selectedCartItemIds,
+      });
       const checkoutId = data?.checkoutId;
 
       if (checkoutId) {

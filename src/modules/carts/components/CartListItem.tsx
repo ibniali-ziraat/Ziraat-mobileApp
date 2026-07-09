@@ -11,6 +11,10 @@ export default function CartListItem({
   quantity: apiQuantity,
   onQtyChange,
   handleRemoveItem,
+  // --- select-wise checkout ---
+  selected = false,
+  onToggleSelect,
+  hasConflict = false,
 }) {
   const [quantity, setQuantity] = useState(apiQuantity || 1);
 
@@ -28,23 +32,17 @@ export default function CartListItem({
 
   const increase = () => {
     const newQty = quantity + 1;
-    console.log(newQty, "increase");
-
     setQuantity(newQty);
     onQtyChange?.(newQty);
   };
 
   const price = item?.calculatedProductPrice?.price ?? item?.productPrice ?? 0;
-  console.log(price, "pric in cartlistitem ");
-
   const oldPrice = item?.calculatedProductPrice?.oldPrice ?? 0;
 
   const discount =
     oldPrice > price ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
   const totalPrice = price * quantity;
-
-  console.log(totalPrice, "total in cartlistitem screen");
 
   return (
     <>
@@ -53,10 +51,30 @@ export default function CartListItem({
         className="mb-5 flex-row px-4 py-3 rounded-lg"
         style={{
           borderWidth: 1,
-          borderColor: colors.secondary + "40",
+          borderColor: hasConflict
+            ? (colors.error ?? "#dc2626")
+            : colors.secondary + "40",
           backgroundColor: colors.light,
         }}
       >
+        {/* SELECT CHECKBOX */}
+        <Pressable
+          onPress={() => onToggleSelect?.(item?.id)}
+          hitSlop={8}
+          className="mr-3 items-center justify-center"
+          style={{
+            width: 22,
+            height: 22,
+            borderRadius: 6,
+            borderWidth: 1.5,
+            borderColor: selected ? colors.primary : "#c9c9c9",
+            backgroundColor: selected ? colors.primary : "transparent",
+            alignSelf: "center",
+          }}
+        >
+          {selected && <Ionicons name="checkmark" size={14} color="#fff" />}
+        </Pressable>
+
         {/* IMAGE */}
         <Image
           source={{ uri: item?.productImage }}
@@ -83,6 +101,16 @@ export default function CartListItem({
               <Ionicons name="close" size={16} color={colors.darkHover} />
             </Pressable>
           </View>
+
+          {/* CONFLICT WARNING */}
+          {hasConflict && (
+            <CsText
+              className="text-xs mt-1"
+              style={{ color: colors.error ?? "#dc2626" }}
+            >
+              Same product from a different seller is also selected
+            </CsText>
+          )}
 
           {/* DISCOUNT */}
           {discount > 0 && (

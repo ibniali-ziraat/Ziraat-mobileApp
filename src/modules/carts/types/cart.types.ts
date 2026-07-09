@@ -3,6 +3,10 @@ export type CartItemType = {
   quantity: number;
   total: number;
   productPrice: number;
+  // Added for select-wise checkout / vendor-conflict detection
+  productId?: number;
+  vendorId?: number;
+  vendorProductId?: number; // same underlying product listed by different vendors shares this
 };
 
 export type CouponType = {
