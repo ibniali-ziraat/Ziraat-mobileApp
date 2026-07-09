@@ -1,8 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import {
   createRazorpayOrderService,
-  orderDeliveredService,
-  releaseRazorpayPaymentService,
   saveOrderService,
   verifyRazorpayPaymentService,
 } from "../services/razorpay.service";
@@ -37,17 +35,17 @@ export const useSaveOrder = () => {
   });
 };
 
-export const useReleaseRazorpayPayment = () => {
-  return useMutation({
-    mutationFn: (payload: { transferId: string; checkoutId: string }) =>
-      releaseRazorpayPaymentService(payload),
-  });
-};
+// export const useReleaseRazorpayPayment = () => {
+//   return useMutation({
+//     mutationFn: (payload: { transferId: string; checkoutId: string }) =>
+//       releaseRazorpayPaymentService(payload),
+//   });
+// };
 
 // Use this when order is delivered — auto-releases payment to vendor
-export const useOrderDelivered = () => {
-  return useMutation({
-    mutationFn: (payload: { checkoutId: string }) =>
-      orderDeliveredService(payload),
-  });
-};
+// export const useOrderDelivered = () => {
+//   return useMutation({
+//     mutationFn: (payload: { checkoutId: string }) =>
+//       orderDeliveredService(payload),
+//   });
+// };

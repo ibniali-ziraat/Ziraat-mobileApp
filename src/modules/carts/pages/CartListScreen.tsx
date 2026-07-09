@@ -13,6 +13,7 @@ import CouponSection from "../components/CouponSection";
 import EmptyCartView from "../components/EmptyCartView";
 import { useCart } from "../hooks/useCart";
 import { useCartCheckout } from "../hooks/useCartCheckout";
+import { useCartSelection } from "../hooks/useCartSelection";
 import { useCartTotals } from "../hooks/useCartTotals";
 import { useCoupon } from "../hooks/useCoupon";
 import { CartItemType } from "../types/cart.types";
@@ -22,16 +23,26 @@ const CartListScreen = () => {
 
   const { cart, isCartBusy, updateCartItem, removeFromCart } = useCart();
 
-  console.log(cart, "cartin cartlistscren");
-
   const coupon = useCoupon();
 
+  // --- select-wise checkout ---
+  const {
+    selectedIds,
+    selectedItems,
+    selectedCount,
+    toggleSelect,
+    selectAll,
+    clearSelection,
+    isSelected,
+    conflict,
+  } = useCartSelection(cart);
+
+  // Subtotal is computed from SELECTED items only, not the whole cart
   const { subtotal } = useCartTotals({
-    cart,
+    cart: selectedItems,
     couponData: coupon.couponData,
     selectedCoupon: coupon.selectedCoupon,
   });
-  console.log(subtotal, "subtotal in cartlistscreen");
 
   const { handlePlaceOrder, isPending } = useCartCheckout({
     selectedCoupon: coupon.selectedCoupon,
@@ -45,6 +56,18 @@ const CartListScreen = () => {
 
   const handleQtyChange = (cartItemId: string, quantity: number) =>
     updateCartItem({ cartItemId, quantity });
+
+  const handleCheckoutPress = () => {
+    if (conflict.hasConflict) {
+      toast.error(conflict.message ?? "Resolve item conflicts to continue");
+      return;
+    }
+    if (selectedCount === 0) {
+      toast.error("Select at least one item to checkout");
+      return;
+    }
+    handlePlaceOrder(Array.from(selectedIds));
+  };
 
   if (isCartBusy)
     return (
@@ -79,6 +102,9 @@ const CartListScreen = () => {
               quantity={item.quantity}
               onQtyChange={(qty: number) => handleQtyChange(item.id, qty)}
               handleRemoveItem={() => handleRemoveItem(item.id)}
+              selected={isSelected(item.id)}
+              onToggleSelect={toggleSelect}
+              hasConflict={conflict.conflictItemIds.has(item.id)}
             />
           </View>
         )}
@@ -112,7 +138,13 @@ const CartListScreen = () => {
         <CartFooter
           subtotal={subtotal}
           isPending={isPending}
-          onCheckout={handlePlaceOrder}
+          onCheckout={handleCheckoutPress}
+          selectedCount={selectedCount}
+          totalCount={cart.length}
+          hasConflict={conflict.hasConflict}
+          conflictMessage={conflict.message}
+          onSelectAll={selectAll}
+          onClearSelection={clearSelection}
         />
       </View>
     </ScreenLayout>
