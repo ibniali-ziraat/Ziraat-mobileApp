@@ -13,10 +13,12 @@ import CouponSection from "../components/CouponSection";
 import EmptyCartView from "../components/EmptyCartView";
 import { useCart } from "../hooks/useCart";
 import { useCartCheckout } from "../hooks/useCartCheckout";
-import { useCartSelection } from "../hooks/useCartSelection";
 import { useCartTotals } from "../hooks/useCartTotals";
 import { useCoupon } from "../hooks/useCoupon";
 import { CartItemType } from "../types/cart.types";
+
+const MULTI_VENDOR_MESSAGE =
+  "You can only order items from one vendor at a time. Please remove items from other vendors to continue.";
 
 const CartListScreen = () => {
   const router = useRouter();
@@ -25,21 +27,17 @@ const CartListScreen = () => {
 
   const coupon = useCoupon();
 
-  // --- select-wise checkout ---
-  const {
-    selectedIds,
-    selectedItems,
-    selectedCount,
-    toggleSelect,
-    selectAll,
-    clearSelection,
-    isSelected,
-    conflict,
-  } = useCartSelection(cart);
+  // --- multi-vendor guard: the whole cart must belong to a single vendor ---
+  const cartVendorIds = new Set(
+    (cart ?? [])
+      .map((item: any) => item.vendorId)
+      .filter((v: any) => v !== undefined && v !== null),
+  );
+  const hasVendorConflict = cartVendorIds.size > 1;
 
-  // Subtotal is computed from SELECTED items only, not the whole cart
+  // Subtotal is computed from the whole cart
   const { subtotal } = useCartTotals({
-    cart: selectedItems,
+    cart,
     couponData: coupon.couponData,
     selectedCoupon: coupon.selectedCoupon,
   });
@@ -58,15 +56,11 @@ const CartListScreen = () => {
     updateCartItem({ cartItemId, quantity });
 
   const handleCheckoutPress = () => {
-    if (conflict.hasConflict) {
-      toast.error(conflict.message ?? "Resolve item conflicts to continue");
+    if (hasVendorConflict) {
+      toast.error(MULTI_VENDOR_MESSAGE);
       return;
     }
-    if (selectedCount === 0) {
-      toast.error("Select at least one item to checkout");
-      return;
-    }
-    handlePlaceOrder(Array.from(selectedIds));
+    handlePlaceOrder(cart.map((item: CartItemType) => item.id));
   };
 
   if (isCartBusy)
@@ -95,6 +89,29 @@ const CartListScreen = () => {
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 260 }}
+        // ListHeaderComponent={
+        //   hasVendorConflict ? (
+        //     <View
+        //       style={{
+        //         backgroundColor: "#fdecea",
+        //         borderRadius: 12,
+        //         padding: 12,
+        //         marginBottom: 12,
+        //       }}
+        //     >
+        //       <Text
+        //         style={{
+        //           color: "#c62828",
+        //           fontSize: 13,
+        //           fontWeight: "600",
+        //           textAlign: "center",
+        //         }}
+        //       >
+        //         {MULTI_VENDOR_MESSAGE}
+        //       </Text>
+        //     </View>
+        //   ) : null
+        // }
         renderItem={({ item }) => (
           <View style={{ marginBottom: 8 }}>
             <CartListItem
@@ -102,9 +119,6 @@ const CartListScreen = () => {
               quantity={item.quantity}
               onQtyChange={(qty: number) => handleQtyChange(item.id, qty)}
               handleRemoveItem={() => handleRemoveItem(item.id)}
-              selected={isSelected(item.id)}
-              onToggleSelect={toggleSelect}
-              hasConflict={conflict.conflictItemIds.has(item.id)}
             />
           </View>
         )}
@@ -139,12 +153,7 @@ const CartListScreen = () => {
           subtotal={subtotal}
           isPending={isPending}
           onCheckout={handleCheckoutPress}
-          selectedCount={selectedCount}
-          totalCount={cart.length}
-          hasConflict={conflict.hasConflict}
-          conflictMessage={conflict.message}
-          onSelectAll={selectAll}
-          onClearSelection={clearSelection}
+          hasConflict={hasVendorConflict}
         />
       </View>
     </ScreenLayout>

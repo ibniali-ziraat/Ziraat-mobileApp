@@ -1,6 +1,6 @@
 import BuyNowButton from "@/src/components/shared/BuyNowButton";
 import { typography } from "@/src/constants/fonts/typography";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 type Props = {
   subtotal: number;
@@ -32,7 +32,7 @@ const CartFooter = ({
   return (
     <>
       {/* SELECT ALL / CLEAR */}
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -53,7 +53,7 @@ const CartFooter = ({
             {selectedCount === totalCount ? "Clear" : "Select all"}
           </Text>
         </Pressable>
-      </View>
+      </View> */}
 
       {/* CONFLICT WARNING */}
       {hasConflict && conflictMessage && (

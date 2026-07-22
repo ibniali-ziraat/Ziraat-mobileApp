@@ -1,20 +1,15 @@
 import { useEffect, useState } from "react";
 import { Image, Pressable, View } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { Minus, Plus } from "lucide-react-native";
+import { Minus, Plus, Store, Trash2 } from "lucide-react-native";
 
 export default function CartListItem({
   item,
   quantity: apiQuantity,
   onQtyChange,
   handleRemoveItem,
-  // --- select-wise checkout ---
-  selected = false,
-  onToggleSelect,
-  hasConflict = false,
 }) {
   const [quantity, setQuantity] = useState(apiQuantity || 1);
 
@@ -51,30 +46,10 @@ export default function CartListItem({
         className="mb-5 flex-row px-4 py-3 rounded-lg"
         style={{
           borderWidth: 1,
-          borderColor: hasConflict
-            ? (colors.error ?? "#dc2626")
-            : colors.secondary + "40",
+          borderColor: colors.secondary + "40",
           backgroundColor: colors.light,
         }}
       >
-        {/* SELECT CHECKBOX */}
-        <Pressable
-          onPress={() => onToggleSelect?.(item?.id)}
-          hitSlop={8}
-          className="mr-3 items-center justify-center"
-          style={{
-            width: 22,
-            height: 22,
-            borderRadius: 6,
-            borderWidth: 1.5,
-            borderColor: selected ? colors.primary : "#c9c9c9",
-            backgroundColor: selected ? colors.primary : "transparent",
-            alignSelf: "center",
-          }}
-        >
-          {selected && <Ionicons name="checkmark" size={14} color="#fff" />}
-        </Pressable>
-
         {/* IMAGE */}
         <Image
           source={{ uri: item?.productImage }}
@@ -95,22 +70,12 @@ export default function CartListItem({
 
             <Pressable
               onPress={handleRemoveItem}
-              className="p-1 rounded-full"
+              className="p-1.5 rounded-full"
               style={{ backgroundColor: colors.lightHover }}
             >
-              <Ionicons name="close" size={16} color={colors.darkHover} />
+              <Trash2 size={15} color={colors.error ?? "#dc2626"} />
             </Pressable>
           </View>
-
-          {/* CONFLICT WARNING */}
-          {hasConflict && (
-            <CsText
-              className="text-xs mt-1"
-              style={{ color: colors.error ?? "#dc2626" }}
-            >
-              Same product from a different seller is also selected
-            </CsText>
-          )}
 
           {/* DISCOUNT */}
           {discount > 0 && (
@@ -191,6 +156,26 @@ export default function CartListItem({
               ₹{price}
             </CsText>
           </View>
+
+          {/* SOLD BY VENDOR */}
+{!!item?.vendorName && (
+  <View className="flex-row items-center mt-4" style={{ gap: 4 }}>
+    <Store size={12} color={colors.primary} />
+    <CsText
+      className="text-xs font-semibold"
+      style={{ color: colors.primary }}
+    >
+      Sold by :
+    </CsText>
+    <CsText
+      className="text-xs font-semibold flex-shrink"
+      numberOfLines={1}
+      style={{ color: colors.secondary }}
+    >
+      {item.vendorName}
+    </CsText>
+  </View>
+)}
 
           {/* TOTAL */}
           {quantity > 1 && (
