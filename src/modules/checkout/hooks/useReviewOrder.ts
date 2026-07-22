@@ -275,20 +275,25 @@ export const useReviewOrder = () => {
     checkoutId: string,
     amount: number,
     shippingAddress: any,
+    vendorAccountId: string,
   ) => {
     let razorpayOrderId: string;
     try {
       const orderRes = await createRazorpayOrder({ checkoutId });
-      razorpayOrderId = orderRes.razorpayOrderId; // ✅ fixed field name
-      console.log("Razorpay order created:", razorpayOrderId);
+      console.log("RAW orderRes:", JSON.stringify(orderRes));
+      if (!orderRes?.id) {
+        throw new Error("Invalid order response from server");
+      }
+      razorpayOrderId = orderRes.id;
     } catch (err) {
       console.log(err, "create order error");
       setErrorMsg("Failed to initiate payment. Please try again.");
       return;
     }
 
+    // ← this was missing — actually opens Razorpay checkout
     const result = await pay({
-      amount, // ✅ use the rupee amount already passed in — no double conversion
+      amount,
       orderId: razorpayOrderId,
       description: "Order Payment",
       user: {

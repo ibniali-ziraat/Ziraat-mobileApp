@@ -49,7 +49,7 @@ export const verifyRazorpayPaymentService = async (payload: {
   razorpaySignature: string;
 }) => {
   const { data } = await axiosInstance.post(
-    "/api/paymentRazor/verify-payment",
+    "api/paymentRazor/verify-payment",
     payload,
   );
   return data; // { success, transferId }
