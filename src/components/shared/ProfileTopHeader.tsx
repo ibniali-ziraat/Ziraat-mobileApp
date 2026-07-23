@@ -89,35 +89,46 @@ export default function ProfileTopHeader({
     }
   };
 
-  const processPickedImage = async (asset: ImagePicker.ImagePickerAsset) => {
-    try {
-      if (!profileData?.id) return;
-      setUploading(true);
+ const processPickedImage = async (asset: ImagePicker.ImagePickerAsset) => {
+  try {
+    if (!profileData?.id) return;
+    setUploading(true);
 
-      const uploadRes = await uploadFileAsync({
-        file: {
-          uri: asset.uri,
-          name: asset.fileName || `profile_${Date.now()}.jpg`,
-          mimeType: asset.mimeType || "image/jpeg",
-        },
-        UserType: "supplier",
-        UserId: profileData.coreUserId.toString(),
-        FileCategory: "profile",
-      });
+    const uploadRes = await uploadFileAsync({
+      file: {
+        uri: asset.uri,
+        name: asset.fileName || `profile_${Date.now()}.jpg`,
+        mimeType: asset.mimeType || "image/jpeg",
+      },
+      UserType: "supplier",
+      UserId: profileData.coreUserId.toString(),
+      FileCategory: "profile",
+    });
 
-      const fileUrl = uploadRes?.data?.fileUrl;
-      if (!fileUrl) throw new Error("Upload failed");
+    console.log("upload response:", JSON.stringify(uploadRes?.data));
 
-      await updateProfile({ ...profileData, profilePic: fileUrl });
+    // API returns the URL as a plain string; fall back to common
+    // object shapes in case the backend response changes later.
+    const raw = uploadRes?.data;
+   const fileUrl =
+  typeof raw === "string"
+    ? raw.trim()
+    : (raw?.fileUrl ?? raw?.url ?? raw?.blobUrl ?? raw?.data);
 
-      setProfilePic(fileUrl);
-      showSuccessToast("Profile picture updated");
-    } catch (error) {
-      showErrorToast("Failed to upload image");
-    } finally {
-      setUploading(false);
+    if (!fileUrl || typeof fileUrl !== "string") {
+      throw new Error("Upload failed");
     }
-  };
+
+    await updateProfile({ ...profileData, profilePic: fileUrl });
+
+    setProfilePic(fileUrl);
+    showSuccessToast("Profile picture updated");
+  } catch (error) {
+    showErrorToast("Failed to upload image");
+  } finally {
+    setUploading(false);
+  }
+};
 
   const handleDeletePhoto = async () => {
     setIsMenuVisible(false);
