@@ -41,6 +41,7 @@ export const useReviewOrder = () => {
   });
   const [bocValidation, setBocValidation] = useState<BocValidationResult>(null);
   const [isValidatingBoc, setIsValidatingBoc] = useState(false);
+  const [isUpiProcessing, setIsUpiProcessing] = useState(false);
 
   const { profileData } = useAuth();
 
@@ -66,7 +67,8 @@ export const useReviewOrder = () => {
   const { mutateAsync: validateBoc } = useValidateBuyOnCredit();
   const { pay } = usePayment();
 
-  const isPending = isCodPending || isUpiPending || isBocPending;
+  const isPending =
+    isCodPending || isUpiPending || isBocPending || isUpiProcessing;
 
   const paymentOptions = [
     ...(Array.isArray(paymentProviders)
@@ -215,143 +217,92 @@ export const useReviewOrder = () => {
     });
   };
 
-  // const handleUpiPayment = async (
-  //   checkoutId: string,
-  //   amount: number,
-  //   shippingAddress: any,
-  //   vendorAccountId: string,
-  // ) => {
-  //   let razorpayOrderId: string;
-  //   try {
-  //     const orderRes = await createRazorpayOrder({
-  //       amount,
-  //       vendorAccountId,
-  //       checkoutId,
-  //       userId: profileData?.id ?? null,
-  //     });
-  //     razorpayOrderId = orderRes.id;
-  //     console.log("Razorpay order created:", razorpayOrderId);
-  //   } catch (err) {
-  //     console.log(err, "create order error");
-  //     setErrorMsg("Failed to initiate payment. Please try again.");
-  //     return;
-  //   }
+  const handleUpiPayment = async (
+    checkoutId: string,
+    amount: number,
+    shippingAddress: any,
+  ) => {
+    setIsUpiProcessing(true);
+    try {
+      let orderRes: any;
+      try {
+        orderRes = await createRazorpayOrder({ checkoutId });
+        console.log("UPI-1 order created:", orderRes.razorpayOrderId);
+      } catch (err) {
+        console.log("UPI-1 FAILED (create order):", err);
+        setErrorMsg("Failed to initiate payment. Please try again.");
+        return;
+      }
 
-  //   const result = await pay({
-  //     amount,
-  //     orderId: razorpayOrderId,
-  //     description: "Order Payment",
-  //     user: {
-  //       name: shippingAddress.contactName,
-  //       email: userDetails.email || "test@example.com",
-  //       contact: shippingAddress.phone,
-  //     },
-  //   });
+      const result = await pay({
+        amount: orderRes.amount,
+        orderId: orderRes.razorpayOrderId,
+        keyId: orderRes.keyId,
+        description: "Order Payment",
+        user: {
+          name: shippingAddress.contactName,
+          email: userDetails.email || "test@example.com",
+          contact: shippingAddress.phone,
+        },
+      });
 
-  //   if (!result.success) {
-  //     if (String(result.error?.code) !== "1") {
-  //       setErrorMsg(
-  //         result.error?.description ?? "Payment failed. Please try again.",
-  //       );
-  //     }
-  //     return;
-  //   }
+      if (!result.success) {
+        console.log("UPI-2 FAILED (pay):", JSON.stringify(result.error));
+        if (String(result.error?.code) !== "1") {
+          setErrorMsg(
+            result.error?.description ?? "Payment failed. Please try again.",
+          );
+        }
+        return;
+      }
 
-  //   try {
-  //     await verifyPayment({
-  //       razorpay_order_id: result.data.razorpay_order_id,
-  //       razorpay_payment_id: result.data.razorpay_payment_id,
-  //       razorpay_signature: result.data.razorpay_signature,
-  //       amount,
-  //       checkoutId,
-  //       userId: profileData?.id ?? null,
-  //     });
-  //   } catch (err) {
-  //     setErrorMsg("Payment verification failed. Contact support.");
-  //     return;
-  //   }
+      let verifyRes: any;
+      try {
+        verifyRes = await verifyPayment({
+          checkoutId,
+          razorpayOrderId: result.data.razorpay_order_id,
+          razorpayPaymentId: result.data.razorpay_payment_id,
+          razorpaySignature: result.data.razorpay_signature,
+        });
+        console.log("UPI-3 verify success:", JSON.stringify(verifyRes));
+      } catch (err: any) {
+        console.log(
+          "UPI-3 FAILED (verify):",
+          err?.response?.status,
+          JSON.stringify(err?.response?.data ?? err?.message),
+        );
+        setErrorMsg("Payment verification failed. Contact support.");
+        return;
+      }
 
-const handleUpiPayment = async (
-  checkoutId: string,
-  amount: number,
-  shippingAddress: any,
-) => {
-  let orderRes: any;
-  try {
-    orderRes = await createRazorpayOrder({ checkoutId });
-    console.log("UPI-1 order created:", orderRes.razorpayOrderId);
-  } catch (err) {
-    console.log("UPI-1 FAILED (create order):", err);
-    setErrorMsg("Failed to initiate payment. Please try again.");
-    return;
-  }
-
-  const result = await pay({
-    amount: orderRes.amount,
-    orderId: orderRes.razorpayOrderId,
-    keyId: orderRes.keyId,
-    description: "Order Payment",
-    user: {
-      name: shippingAddress.contactName,
-      email: userDetails.email || "test@example.com",
-      contact: shippingAddress.phone,
-    },
-  });
-
-  if (!result.success) {
-    console.log("UPI-2 FAILED (pay):", JSON.stringify(result.error));
-    if (String(result.error?.code) !== "1") {
-      setErrorMsg(
-        result.error?.description ?? "Payment failed. Please try again.",
+      // verify-payment already completed the checkout and returned the final
+      // order — no separate upiCheckout call needed (that endpoint is gone).
+      await persistOrder(
+        checkoutId,
+        amount,
+        shippingAddress,
+        "UPI",
+        verifyRes?.value,
       );
+
+      const addressPayload = buildAddressPayload(shippingAddress);
+      onSuccess({
+        error: null,
+        success: true,
+        value: {
+          ...verifyRes, // contains .value = the order → screen reads value.value
+          billingAddress: addressPayload,
+          billingAddressId: shippingAddress.userAddressId,
+          orderTotal: amount,
+          paymentMethod: "UPI",
+          shippingAddress: addressPayload,
+          shippingAddressId: shippingAddress.userAddressId,
+        },
+      });
+    } finally {
+      setIsUpiProcessing(false);
     }
-    return;
-  }
-
-  let verifyRes: any;
-  try {
-    verifyRes = await verifyPayment({
-      checkoutId,
-      razorpayOrderId: result.data.razorpay_order_id,
-      razorpayPaymentId: result.data.razorpay_payment_id,
-      razorpaySignature: result.data.razorpay_signature,
-    });
-    console.log("UPI-3 verify success:", JSON.stringify(verifyRes));
-  } catch (err: any) {
-    console.log(
-      "UPI-3 FAILED (verify):",
-      err?.response?.status,
-      JSON.stringify(err?.response?.data ?? err?.message),
-    );
-    setErrorMsg("Payment verification failed. Contact support.");
-    return;
-  }
-
-  // verify-payment already completed the checkout and returned the final
-  // order — no separate upiCheckout call needed (that endpoint is gone).
-  await persistOrder(
-    checkoutId,
-    amount,
-    shippingAddress,
-    "UPI",
-    verifyRes?.value,
-  );
-
-  const addressPayload = buildAddressPayload(shippingAddress);
-  onSuccess({
-    error: null,
-    success: true,
-    value: {
-      ...verifyRes, // contains .value = the order → screen reads value.value
-      billingAddress: addressPayload,
-      billingAddressId: shippingAddress.userAddressId,
-      orderTotal: amount,
-      paymentMethod: "UPI",
-      shippingAddress: addressPayload,
-      shippingAddressId: shippingAddress.userAddressId,
-    },
-  });
-};
+  };
 
   // ── BOC: needs checkoutId + vendorId ─────────────────────────────────────
 
@@ -408,12 +359,7 @@ const handleUpiPayment = async (
     if (selectedPayment === "CoD") {
       handleCodPayment(checkoutId, shippingAddress, amount);
     } else if (selectedPayment === "RazorPay") {
-      await handleUpiPayment(
-        checkoutId,
-        amount,
-        shippingAddress,
-        "acc_SiTe1aZkr6oiyU",
-      );
+      await handleUpiPayment(checkoutId, amount, shippingAddress);
     } else if (selectedPayment === "BuyOnCredit") {
       if (!vendorId) {
         setErrorMsg("Vendor information missing. Cannot place credit order.");

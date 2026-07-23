@@ -1,4 +1,4 @@
-import axiosInstance from "../api/client/axiosInstance copy";
+import axiosInstance from "@/src/api/client/axiosInstance";
 import razorpayInstance from "../api/client/razorPayInstance";
 
 // // 1. Create Razorpay order + save initial Payment record to MongoDB
