@@ -3,7 +3,7 @@ import axios from "axios";
 export const weatherInstance = axios.create({
   baseURL: "https://my.meteoblue.com/packages/",
   params: {
-    apikey: "SsHj8iQZmnWuNpPB",
+    apikey: "VDmrkMgCeSq937xu",
     format: "json",
   },
 });
@@ -11,7 +11,7 @@ export const weatherInstance = axios.create({
 export const weatherImageInstance = axios.create({
   baseURL: "https://my.meteoblue.com/images", // Root images path
   params: {
-    apikey: "SsHj8iQZmnWuNpPB",
+    apikey: "VDmrkMgCeSq937xu",
     format: "png",
     dpi: 72,
     temperature_units: "C",
