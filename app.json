@@ -13,6 +13,7 @@
     },
     "jsEngine": "hermes",
     "ios": {
+      "buildNumber": "20",
       "supportsTablet": true,
       "bundleIdentifier": "com.alilals.ziraat",
       "jsEngine": "hermes",
@@ -21,6 +22,7 @@
       }
     },
     "android": {
+      "versionCode": 20,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/adaptiveicon.png",
@@ -60,7 +62,6 @@
     ],
     "extra": {
       "router": {}
-
     }
   }
 }
