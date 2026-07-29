@@ -8,6 +8,9 @@ export interface WeatherState {
   isDaylight?: number;
   highTemp: number;
   lowTemp: number;
+  conditionSet: "daily" | "hourly";
+  iconUrl?: string;
+  locationName?: string;
 }
 
 interface WeatherCurrent {
@@ -16,6 +19,7 @@ interface WeatherCurrent {
   relativehumidity: number;
   windspeed: number;
   isdaylight: number;
+  condition_icon?: string;
 }
 
 interface WeatherHourly {
@@ -33,6 +37,7 @@ interface WeatherDaily {
 }
 
 export interface WeatherApiResponse {
+  location_name?: string;
   data_current?: WeatherCurrent;
   data_1h: WeatherHourly;
   data_day: WeatherDaily;
@@ -58,6 +63,9 @@ export function parseWeather(
       isDaylight: c.isdaylight,
       highTemp: high,
       lowTemp: low,
+      conditionSet: "daily",
+      iconUrl: c.condition_icon,
+      locationName: data.location_name,
     };
   }
 
@@ -72,5 +80,7 @@ export function parseWeather(
     windDir: h.winddirection[hour],
     highTemp: high,
     lowTemp: low,
+    conditionSet: "hourly",
+    locationName: data.location_name,
   };
 }

@@ -5,35 +5,47 @@ import { typography } from "@/src/constants/fonts/typography";
 import { useState } from "react";
 import { Dimensions, Pressable, View } from "react-native";
 import { BarChart } from "react-native-chart-kit";
+import type {
+  FarmActivityComparison,
+  FarmerDashboardFarmOverview,
+} from "../types/farmerDashboard";
 
 const screenWidth = Dimensions.get("window").width;
 const chartWidth = screenWidth - 60;
 
-export default function FarmOverviewChart() {
+type FarmOverviewChartProps = {
+  overview?: FarmerDashboardFarmOverview;
+};
+
+const weeklyFallback: FarmActivityComparison[] = [
+  { label: "Orchards", currentValue: 0, previousValue: 0, changePercent: 0 },
+  { label: "Harvest", currentValue: 0, previousValue: 0, changePercent: 0 },
+  { label: "Spray", currentValue: 0, previousValue: 0, changePercent: 0 },
+];
+
+// Temporary values until the monthly API response is available.
+const monthlyPlaceholder: FarmActivityComparison[] = [
+  { label: "Orchards", currentValue: 50, previousValue: 46, changePercent: 9 },
+  { label: "Harvest", currentValue: 42, previousValue: 40, changePercent: 5 },
+  { label: "Spray", currentValue: 36, previousValue: 30, changePercent: 20 },
+];
+
+export default function FarmOverviewChart({
+  overview,
+}: FarmOverviewChartProps) {
   const [mode, setMode] = useState<"WEEK" | "MONTH">("WEEK");
-
-  const dataSet = {
-    WEEK: {
-      current: [12, 10, 8],
-      previous: [10, 9, 7],
-    },
-    MONTH: {
-      current: [50, 42, 36],
-      previous: [46, 40, 30],
-    },
-  };
-
-  const currentValues = dataSet[mode].current;
-  const previousValues = dataSet[mode].previous;
-
-  const growthValues = currentValues.map((curr, i) => {
-    const prev = previousValues[i];
-    const growth = ((curr - prev) / prev) * 100;
-    return Math.round(growth);
-  });
+  const weeklyActivities = overview?.activityComparison ?? [];
+  const activities =
+    mode === "WEEK"
+      ? weeklyActivities.length > 0
+        ? weeklyActivities
+        : weeklyFallback
+      : monthlyPlaceholder;
+  const labels = activities.map((activity) => activity.label);
+  const currentValues = activities.map((activity) => activity.currentValue);
 
   const chartData = {
-    labels: ["Orchards", "Harvest", "Spray"],
+    labels,
     datasets: [
       {
         data: currentValues,
@@ -74,30 +86,27 @@ export default function FarmOverviewChart() {
         marginTop: 6,
       }}
     >
-      {/* ---------------------------------------------- */}
-      {/* TOGGLE BUTTONS */}
-      {/* ---------------------------------------------- */}
       <View className="flex-row justify-end mb-2">
         <View className="flex-row bg-primary/5 rounded-full p-1">
-          {["WEEK", "MONTH"].map((opt) => (
+          {(["WEEK", "MONTH"] as const).map((option) => (
             <Pressable
-              key={opt}
-              onPress={() => setMode(opt as any)}
+              key={option}
+              onPress={() => setMode(option)}
               style={{
                 paddingVertical: 6,
                 paddingHorizontal: 16,
-                backgroundColor: mode === opt ? colors.primary : "transparent",
+                backgroundColor:
+                  mode === option ? colors.primary : "transparent",
                 borderRadius: 20,
               }}
             >
               <CsText
                 style={[
                   typography.Poppins_s_medium,
-
-                  { color: mode === opt ? "#fff" : colors.primary },
+                  { color: mode === option ? colors.light : colors.primary },
                 ]}
               >
-                {opt === "WEEK" ? "Weekly" : "Monthly"}
+                {option === "WEEK" ? "Weekly" : "Monthly"}
               </CsText>
             </Pressable>
           ))}
@@ -127,16 +136,16 @@ export default function FarmOverviewChart() {
       />
 
       <View className="mt-4 flex-row justify-between px-1">
-        {["Orchards", "Harvest", "Spray"].map((label, i) => {
-          const g = growthValues[i];
+        {activities.map((activity) => {
+          const g = activity.changePercent;
           const positive = g >= 0;
           return (
-            <View key={i} className="items-center">
+            <View key={activity.label} className="items-center">
               <CsText
                 style={[typography.Poppins_s_medium]}
                 className="text-neutral-700"
               >
-                {label}
+                {activity.label}
               </CsText>
               <CsText
                 style={[

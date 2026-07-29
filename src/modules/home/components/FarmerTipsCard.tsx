@@ -1,4 +1,3 @@
-// components/home/FarmerTipsCard.tsx
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
@@ -8,51 +7,152 @@ import {
   Leaf,
   ShieldCheck,
   Sun,
+  type LucideIcon,
 } from "lucide-react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import type { FarmerDashboardTip } from "../types/farmerDashboard";
 
-// Weather-based warnings
-function getWeatherWarning(title: string) {
-  if (title.includes("Spray"))
+type TipPresentation = {
+  icon: LucideIcon;
+  description: string;
+};
+
+const tipPresentations: Record<string, TipPresentation> = {
+  "protective-gear": {
+    icon: ShieldCheck,
+    description: "Use gloves, masks, and eyewear while spraying pesticides.",
+  },
+  "early-irrigation": {
+    icon: Droplets,
+    description: "Reduces evaporation and ensures deeper soil penetration.",
+  },
+  "organic-fertilizers": {
+    icon: Leaf,
+    description: "Improves soil health naturally and enhances crop quality.",
+  },
+  "weather-before-spraying": {
+    icon: Sun,
+    description: "Avoid windy or rainy conditions to prevent chemical drift.",
+  },
+};
+
+const defaultPresentation: TipPresentation = {
+  icon: Leaf,
+  description: "",
+};
+
+function getWeatherWarning(title: string): string | null {
+  const normalizedTitle = title.toLowerCase();
+
+  if (normalizedTitle.includes("spray")) {
     return "Avoid spraying during rain or strong winds.";
-  if (title.includes("Irrigate"))
-    return " Best done early morning or late evening.";
+  }
+  if (normalizedTitle.includes("irrigate")) {
+    return "Best done early morning or late evening.";
+  }
   return null;
 }
 
-const tips = [
-  {
-    icon: ShieldCheck,
-    title: "Always Wear Protective Gear",
-    desc: "Use gloves, masks, and eyewear while spraying pesticides.",
-  },
-  {
-    icon: Droplets,
-    title: "Irrigate During Early Hours",
-    desc: "Reduces evaporation and ensures deeper soil penetration.",
-  },
-  {
-    icon: Leaf,
-    title: "Use Organic Fertilizers",
-    desc: "Improves soil health naturally and enhances crop quality.",
-  },
-  {
-    icon: Sun,
-    title: "Check Weather Before Spraying",
-    desc: "Avoid windy or rainy conditions to prevent chemical drift.",
-  },
-];
+type FarmerTipRowProps = {
+  tip: FarmerDashboardTip;
+  isOpen: boolean;
+  isLast: boolean;
+  onToggle: () => void;
+};
 
-export default function FarmerTipsCard() {
+function FarmerTipRow({
+  tip,
+  isOpen,
+  isLast,
+  onToggle,
+}: FarmerTipRowProps) {
+  const presentation = tipPresentations[tip.code] ?? defaultPresentation;
+  const IconComponent = presentation.icon;
+  const warning = getWeatherWarning(tip.title);
+  const rotate = useSharedValue(0);
+  const expand = useSharedValue(0);
+
+  useEffect(() => {
+    rotate.value = withTiming(isOpen ? 90 : 0, { duration: 200 });
+    expand.value = withTiming(isOpen ? 1 : 0, { duration: 220 });
+  }, [expand, isOpen, rotate]);
+
+  const arrowStyle = useAnimatedStyle(() => ({
+    transform: [{ rotateZ: `${rotate.value}deg` }],
+  }));
+
+  const contentStyle = useAnimatedStyle(() => ({
+    opacity: expand.value,
+    height: expand.value === 0 ? 0 : "auto",
+  }));
+
+  return (
+    <View>
+      <Pressable
+        onPress={onToggle}
+        className="flex-row items-center justify-between py-3"
+      >
+        <View className="flex-row items-center">
+          <View style={{ padding: 5, borderRadius: 10 }}>
+            <IconComponent size={22} color={colors.primary} />
+          </View>
+
+          <CsText style={[typography.Poppins_s_medium]} className="ml-3">
+            {tip.title}
+          </CsText>
+        </View>
+
+        <Animated.View style={arrowStyle}>
+          <ChevronRight size={22} color="#777" />
+        </Animated.View>
+      </Pressable>
+
+      <Animated.View style={[contentStyle, { overflow: "hidden" }]}>
+        <View className="ml-14 mb-4">
+          {presentation.description ? (
+            <CsText
+              style={[typography.Poppins_xs_regular]}
+              className="leading-5 text-neutral"
+            >
+              {presentation.description}
+            </CsText>
+          ) : null}
+
+          {warning ? (
+            <CsText style={{ color: colors.error }} className="text-xs mt-2">
+              {warning}
+            </CsText>
+          ) : null}
+        </View>
+      </Animated.View>
+
+      {!isLast ? (
+        <View
+          style={{
+            height: 1,
+            backgroundColor: "rgba(0,0,0,0.06)",
+            marginVertical: 10,
+          }}
+        />
+      ) : null}
+    </View>
+  );
+}
+
+type FarmerTipsCardProps = {
+  tips?: FarmerDashboardTip[];
+};
+
+export default function FarmerTipsCard({ tips = [] }: FarmerTipsCardProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const tipOfDayIndex = 0;
+  console.log("FarmerTipsCard tips:", tips); // Debugging line to check the value of tips
 
   return (
     <View
@@ -68,100 +168,17 @@ export default function FarmerTipsCard() {
       }}
     >
       <View className="px-4 pb-4">
-        {tips.map((tip, index) => {
-          const IconComponent = tip.icon;
-          const isOpen = openIndex === index;
-
-          const warning = getWeatherWarning(tip.title);
-
-          // Accordion animations
-          const rotate = useSharedValue(isOpen ? 90 : 0);
-          const expand = useSharedValue(isOpen ? 1 : 0);
-
-          const arrowStyle = useAnimatedStyle(() => ({
-            transform: [{ rotateZ: `${rotate.value}deg` }],
-          }));
-
-          const contentStyle = useAnimatedStyle(() => ({
-            opacity: expand.value,
-            height: expand.value === 0 ? 0 : "auto",
-          }));
-
-          const toggle = () => {
-            const open = !isOpen;
-            setOpenIndex(open ? index : null);
-
-            rotate.value = withTiming(open ? 90 : 0, { duration: 200 });
-            expand.value = withTiming(open ? 1 : 0, { duration: 220 });
-          };
-
-          return (
-            <View key={index}>
-              {/* Header Row */}
-              <Pressable
-                onPress={toggle}
-                activeOpacity={0.7}
-                className="flex-row items-center justify-between py-3"
-              >
-                <View className="flex-row items-center">
-                  {/* Icon bubble */}
-                  <View
-                    style={{
-                      padding: 5,
-                      borderRadius: 10,
-                    }}
-                  >
-                    <IconComponent size={22} color={colors.primary} />
-                  </View>
-
-                  <CsText
-                    style={[typography.Poppins_s_medium]}
-                    className="ml-3   "
-                  >
-                    {tip.title}
-                  </CsText>
-                </View>
-
-                <Animated.View style={arrowStyle}>
-                  <ChevronRight size={22} color="#777" />
-                </Animated.View>
-              </Pressable>
-
-              {/* Expanded Content */}
-              <Animated.View style={[contentStyle, { overflow: "hidden" }]}>
-                <View className="ml-14 mb-4">
-                  <CsText
-                    style={[typography.Poppins_xs_regular]}
-                    className="eading-5 text-neutral"
-                  >
-                    {tip.desc}
-                  </CsText>
-
-                  {/* Weather Warning */}
-                  {warning && (
-                    <CsText
-                      style={{ color: colors.error }}
-                      className="text-xs  mt-2"
-                    >
-                      {warning}
-                    </CsText>
-                  )}
-                </View>
-              </Animated.View>
-
-              {/* Divider */}
-              {index !== tips.length - 1 && (
-                <View
-                  style={{
-                    height: 1,
-                    backgroundColor: "rgba(0,0,0,0.06)",
-                    marginVertical: 10,
-                  }}
-                />
-              )}
-            </View>
-          );
-        })}
+        {tips.map((tip, index) => (
+          <FarmerTipRow
+            key={tip.code}
+            tip={tip}
+            isOpen={openIndex === index}
+            isLast={index === tips.length - 1}
+            onToggle={() =>
+              setOpenIndex((current) => (current === index ? null : index))
+            }
+          />
+        ))}
       </View>
     </View>
   );

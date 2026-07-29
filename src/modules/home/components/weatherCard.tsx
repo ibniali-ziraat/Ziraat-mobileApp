@@ -1,97 +1,128 @@
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { CloudLightning, Droplets, Sun, Wind } from "lucide-react-native";
-import { ImageBackground, Text, View } from "react-native";
+import { MapPin } from "lucide-react-native";
+import { Image, Text, View } from "react-native";
+import {
+  getWeatherPresentation,
+  type WeatherCodeSet,
+} from "../utils/weatherPictogram";
+import type { WeatherState } from "../utils/weatherUtils";
+import AnimatedWeatherBackground from "./AnimatedWeatherBackground";
 
 type WeatherCardProps = {
-  current: any;
+  current: WeatherState | null;
   city?: string | null;
 };
 
 export default function WeatherCard({ current, city }: WeatherCardProps) {
-  const hasData =
-    current &&
-    typeof current?.tempC === "number" &&
-    typeof current?.humidity === "number";
+  const conditionCode = current?.condition ?? 0;
+  const conditionSet: WeatherCodeSet = current?.conditionSet ?? "daily";
+  const isDaylight = current?.isDaylight !== 0;
+  const weather = getWeatherPresentation(
+    conditionCode,
+    conditionSet,
+    isDaylight,
+  );
+  const WeatherIcon = weather.icon;
 
   return (
-    <View className="rounded-3xl overflow-hidden shadow-lg ">
-      <ImageBackground
-        source={require("@/assets/images/weatherBg.png")}
-        resizeMode="cover"
-        className="w-full rounded-3xl overflow-hidden"
+    <View
+      style={{
+        borderRadius: 24,
+        overflow: "hidden",
+        shadowColor: "#17350A",
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.18,
+        shadowRadius: 12,
+        elevation: 5,
+      }}
+    >
+      <AnimatedWeatherBackground
+        effect={weather.effect}
+        isDaylight={isDaylight}
       >
-        <View className="p-6 bg-dark/10 backdrop-blur-3xl rounded-3xl">
-          <View className="flex-row items-end justify-between">
-            <Text style={typography.Poppins_m_regular} className="text-light">
-              {city || "Srinagar"}
-            </Text>
-          </View>
-
-          <View className="flex-row items-center justify-between">
-            <Text
-              style={typography.Poppins_xxl_semibold}
-              className="text-light"
-            >
-              {current?.tempC}
+        <View
+          style={{
+            minHeight: 180,
+            paddingHorizontal: 20,
+            paddingVertical: 20,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <View className="min-w-0 flex-1 pr-4">
+            <View className="flex-row items-center">
+              <MapPin size={14} color="rgba(255,255,255,0.78)" />
               <Text
-                style={typography.Poppins_l_regular}
-                className="text-light "
+                numberOfLines={1}
+                style={[
+                  typography.Poppins_s_medium,
+                  {
+                    color: "rgba(255,255,255,0.82)",
+                    marginLeft: 5,
+                  },
+                ]}
               >
-                °
+                {city || current?.locationName || "Srinagar"}
               </Text>
-            </Text>
+            </View>
 
-            <Sun size={70} color="yellow" />
+            <View className="mt-1 flex-row items-end">
+              <Text
+                style={[
+                  typography.Poppins_xxl_semibold,
+                  { color: colors.light, fontSize: 42, lineHeight: 52 },
+                ]}
+              >
+                {typeof current?.tempC === "number" ? current.tempC : "--"}°
+              </Text>
+            </View>
+
+            <Text
+              numberOfLines={1}
+              style={[
+                typography.Poppins_s_medium,
+                {
+                  color: "rgba(255,255,255,0.9)",
+                  marginTop: 1,
+                  textShadowColor: "rgba(0,0,0,0.28)",
+                  textShadowOffset: { width: 0, height: 1 },
+                  textShadowRadius: 3,
+                },
+              ]}
+            >
+              {weather.label}
+              {current
+                ? `  •  H ${current.highTemp}°  L ${current.lowTemp}°`
+                : ""}
+            </Text>
           </View>
 
-          <Text
-            className="mb-3 text-light tracking-wide"
-            style={typography.Poppins_m_regular}
+          <View
+            className="h-20 w-20 items-center justify-center rounded-full"
+            style={{
+              backgroundColor: "rgba(255,255,255,0.16)",
+              borderWidth: 1,
+              borderColor: "rgba(255,255,255,0.2)",
+            }}
           >
-            Feels like {current?.feelsLikeC}° — {current?.condition}
-          </Text>
-
-          <View className="flex-row justify-between">
-            <View className="items-center gap-1">
-              <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light">
-                <Droplets size={24} color={colors.light} />
-              </View>
-              <Text style={typography.Poppins_s_regular} className="text-light">
-                {current?.humidity}%
-              </Text>
-              <Text style={typography.Poppins_s_regular} className="text-light">
-                Humidity
-              </Text>
-            </View>
-
-            <View className="items-center gap-1">
-              <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light">
-                <Wind size={24} color={colors.light} />
-              </View>
-              <Text style={typography.Poppins_s_regular} className="text-light">
-                {current?.windKph} km/h
-              </Text>
-              <Text style={typography.Poppins_s_regular} className="text-light">
-                {current?.windDir ?? "--"}
-              </Text>
-            </View>
-
-            {/* STORM */}
-            <View className="w-24 items-center gap-1">
-              <View className="w-14 h-14 rounded-full bg-light/30 items-center justify-center border border-light">
-                <CloudLightning size={24} color={colors.light} />
-              </View>
-              <Text style={typography.Poppins_s_regular} className="text-light">
-                {current?.stormRisk ?? "---"}
-              </Text>
-              <Text style={typography.Poppins_s_regular} className="text-light">
-                Storm risk
-              </Text>
-            </View>
+            {current?.iconUrl ? (
+              <Image
+                source={{ uri: current.iconUrl }}
+                resizeMode="contain"
+                style={{ width: 62, height: 62 }}
+              />
+            ) : (
+              <WeatherIcon
+                size={48}
+                strokeWidth={1.65}
+                color={isDaylight ? "#FFE082" : "#E8F1FF"}
+              />
+            )}
           </View>
         </View>
-      </ImageBackground>
+      </AnimatedWeatherBackground>
     </View>
   );
 }

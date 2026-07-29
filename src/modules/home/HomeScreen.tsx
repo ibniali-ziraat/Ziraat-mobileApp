@@ -3,6 +3,7 @@ import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 import { useLocationWatcher } from "@/src/hooks/useLocationWatcher";
 import { router } from "expo-router";
 import { JSX, useState } from "react";
@@ -17,6 +18,7 @@ import FarmOverviewChart from "./components/FarmOverviewChart";
 import QuickActions from "./components/QuickActions";
 import SectionTitle from "./components/SectionTitle";
 import WeatherCard from "./components/weatherCard";
+import { useFarmerDashboard } from "./hooks/useFarmerDashboard";
 import { useHomeWeather } from "./hooks/useHomeWeather";
 import { useHomeWishlist } from "./hooks/useHomeWishlist";
 
@@ -38,12 +40,15 @@ export default function HomeScreen(): JSX.Element {
     setRefreshing(false);
   };
 
+  const { userId } = useAuth();
+  const { data: dashboardData } = useFarmerDashboard(userId ?? undefined);
+
   return (
     <ScreenLayout>
       <ScreenContent>
         <View style={{ backgroundColor: colors.light, flex: 1 }}>
           <Pressable onPress={() => router.push(ROUTES.WEATHER.DETAILS)}>
-            <WeatherCard current={currentWeather} coords={coords} />
+            <WeatherCard current={currentWeather} />
           </Pressable>
 
           <QuickActions />
@@ -75,13 +80,13 @@ export default function HomeScreen(): JSX.Element {
           </View> */}
 
           <SectionTitle title="Farm Overview" icon={null} />
-          <FarmOverviewChart />
+          <FarmOverviewChart overview={dashboardData?.home.farmOverview} />
 
           <SectionTitle title="Farmer Tips & Awareness" icon={null} />
-          <FarmerTipsCard />
+          <FarmerTipsCard tips={dashboardData?.home.tips} />
 
           <View style={{ marginBottom: 80 }}>
-            <LegalDisclaimer />
+            <LegalDisclaimer text={dashboardData?.home.legalDisclaimer} />
           </View>
         </View>
       </ScreenContent>

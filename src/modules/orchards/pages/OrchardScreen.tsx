@@ -21,17 +21,13 @@ export default function MyOrchardsScreen() {
 
   useEffect(() => {
     if (!orchardData?.length) setOrchardProfileId(null);
-  }, [orchardData]);
-
-  if (isPending) return <Loader />;
-  if (isError) return <Loader />;
-
-  const hasNoOrchards = !orchardData || orchardData.length === 0;
+  }, [orchardData, setOrchardProfileId]);
 
   const filteredOrchards = useMemo(() => {
-    if (!search) return orchardData;
+    const orchards = orchardData ?? [];
+    if (!search) return orchards;
     const text = search.toLowerCase();
-    return orchardData.filter(
+    return orchards.filter(
       (o: any) =>
         o?.orchardName?.toLowerCase().includes(text) ||
         o?.ownershipType?.toLowerCase().includes(text) ||
@@ -48,8 +44,13 @@ export default function MyOrchardsScreen() {
     setRefreshing(false);
   };
 
+  if (isPending) return <Loader />;
+  if (isError) return <Loader />;
+
+  const hasNoOrchards = !orchardData || orchardData.length === 0;
+
   return (
-    <View style={{ flex: 1 }} className="bg-light">
+    <View style={{ flex: 1, backgroundColor: "#F4F7F2" }}>
       {hasNoOrchards ? (
         <ScreenLayout>
           <NoOrchardsEmpty />
