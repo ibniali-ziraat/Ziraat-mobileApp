@@ -2,6 +2,7 @@ import {
   Bell,
   Bot,
   Info,
+  LayoutDashboard,
   LifeBuoy,
   MapPin,
   MessagesSquare,
@@ -34,11 +35,12 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
     {
       title: "Farm",
       routes: [
-        // {
-        //   label: "Dashboard",
-        //   screen: ROUTES.DASHBOARD.MAIN,
-        //   icon: LayoutDashboard,
-        // },
+        {
+          label: "Dashboard",
+          screen: ROUTES.DASHBOARD.MAIN,
+          icon: LayoutDashboard
+          ,
+        },
         { label: "Notifications", screen: "notifications", icon: Bell },
         {
           label: "Discussion",

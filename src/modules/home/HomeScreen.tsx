@@ -5,6 +5,7 @@ import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useHomeScrollY } from "@/src/contexts/HomeScrollContext";
 import { useLocationWatcher } from "@/src/hooks/useLocationWatcher";
+import { useOrchardCompleteness } from "@/src/modules/orchards/hooks/useOrchardCompleteness";
 import { router } from "expo-router";
 import { JSX, useState } from "react";
 import {
@@ -14,14 +15,12 @@ import {
   type NativeSyntheticEvent,
 } from "react-native";
 import { useRegisterToken } from "../notifications/hooks/useRegisterToken";
-import { useOrchardCompleteness } from "@/src/modules/orchards/hooks/useOrchardCompleteness";
-import OrchardCompletenessCard from "./components/dashboard/OrchardCompletenessCard";
 import DashboardSectionHeader from "./components/dashboard/DashboardSectionHeader";
 import DashboardSkeleton from "./components/dashboard/DashboardSkeleton";
 import DashboardStatsGrid from "./components/dashboard/DashboardStatsGrid";
 import FarmActivityChart from "./components/dashboard/FarmActivityChart";
 import MonthlyOrchardsChart from "./components/dashboard/MonthlyOrchardsChart";
-import OrchardHistoryCard from "./components/dashboard/OrchardHistoryCard";
+import OrchardCompletenessCard from "./components/dashboard/OrchardCompletenessCard";
 import OrchardOverviewCard from "./components/dashboard/OrchardOverviewCard";
 import ProductInsightsCard from "./components/dashboard/ProductInsightsCard";
 import FarmerTipsCarousel from "./components/FarmerTipsCarousel";
@@ -153,13 +152,7 @@ export default function HomeScreen(): JSX.Element {
                 </View>
               ) : null}
 
-              <View style={{ marginTop: 14 }}>
-                <OrchardHistoryCard
-                  history={history}
-                  areaTrend={areaTrend}
-                  totalArea={stats.totalArea}
-                />
-              </View>
+            
 
               <DashboardSectionHeader
                 title="Mostly used this season"
