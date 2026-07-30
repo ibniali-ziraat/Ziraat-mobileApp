@@ -1,4 +1,5 @@
-import { colors } from "@/src/constants/colors";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { typography } from "@/src/constants/fonts/typography";
 import { Pressable, Text } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
@@ -49,20 +50,21 @@ export default function CategoryTabs({
               alignItems: "center",
               paddingHorizontal: 16,
               paddingVertical: 10,
-              borderRadius: 24,
+              borderRadius: 999,
               marginRight: 10,
-              backgroundColor: isActive ? colors.primary : colors.light,
-              borderWidth: 1,
-              borderColor: isActive ? colors.primary : colors.secondary,
-              elevation: isActive ? 4 : 2,
+              backgroundColor: isActive
+                ? chartTokens.current
+                : cardTokens.mutedSurface,
             }}
           >
             <Text
-              style={{
-                fontWeight: "600",
-                fontSize: 13,
-                color: isActive ? colors.light : colors.secondary,
-              }}
+              style={[
+                typography.Poppins_xs_semibold,
+                {
+                  fontSize: 13,
+                  color: isActive ? "#FFFFFF" : cardTokens.inkSecondary,
+                },
+              ]}
             >
               {item.name}
             </Text>

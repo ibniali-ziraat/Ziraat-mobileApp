@@ -170,11 +170,12 @@ export default function OrchardDetailsScreen() {
   if (isPending) return <Loader />;
 
   const orchardArea =
-    orchard?.kanals > 0
-      ? `${orchard.kanals} kanals`
-      : orchard?.marlas > 0
-        ? `${orchard.marlas} marlas`
-        : "Area not added";
+    [
+      orchard?.kanals > 0 ? `${orchard.kanals} kanals` : null,
+      orchard?.marlas > 0 ? `${orchard.marlas} marlas` : null,
+    ]
+      .filter(Boolean)
+      .join(", ") || "Area not added";
   const orchardLocation =
     [orchard?.tehsil, orchard?.district].filter(Boolean).join(", ") ||
     "Location not added";

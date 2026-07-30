@@ -1,8 +1,8 @@
 import { Wind } from "lucide-react-native";
 import { Text, View } from "react-native";
 import { colors } from "../constants/colors";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 import WeatherCarousel, { SLIDE_WIDTH } from "./WeatherCarousel";
 
 const STORM_ALERTS = [
@@ -20,12 +20,13 @@ export default function StormCard() {
           width: "100%",
           marginVertical: 6,
           paddingVertical: 16,
-          backgroundColor: "#fff",
-          borderRadius: 16,
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
           borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.05)",
+          borderColor: cardTokens.border,
         },
-        shadows.profile_card, // 👈 shadow applied
+        cardShadow,
       ]}
     >
       <WeatherCarousel
@@ -45,7 +46,7 @@ export default function StormCard() {
               <Text
                 style={[
                   typography.Poppins_m_medium,
-                  { marginLeft: 8, color: "#000" },
+                  { marginLeft: 8, color: cardTokens.inkPrimary },
                 ]}
               >
                 Storms Coming
@@ -63,7 +64,7 @@ export default function StormCard() {
               <Text
                 style={[
                   typography.Poppins_m_regular,
-                  { flex: 1, color: "#000" },
+                  { flex: 1, color: cardTokens.inkSecondary },
                 ]}
               >
                 {item.title}
@@ -72,7 +73,7 @@ export default function StormCard() {
               <Text
                 style={[
                   typography.Poppins_l_semibold,
-                  { marginLeft: 10, color: "#000" },
+                  { marginLeft: 10, color: cardTokens.inkPrimary },
                 ]}
               >
                 {item.chance}

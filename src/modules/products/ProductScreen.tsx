@@ -1,8 +1,7 @@
-import DisclaimerNote from "@/src/components/shared/DisclaimerNote";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useState } from "react";
-import { Dimensions, FlatList, View } from "react-native";
+import { Dimensions, FlatList } from "react-native";
 import ProductCard from "./components/ProductCard";
 
 import Loader from "@/src/components/shared/Loader";
@@ -90,7 +89,13 @@ export default function ProductScreen() {
           keyboardShouldPersistTaps="handled"
           numColumns={2}
           keyExtractor={(item, index) =>
-            item?.id ? String(item.id) : `fallback-${index}`
+            // The same product `id` can be listed by several vendors — key by
+            // vendorProductId (unique per listing) so those rows don't collide.
+            item?.vendorProductId
+              ? String(item.vendorProductId)
+              : item?.id
+                ? String(item.id)
+                : `fallback-${index}`
           }
           ListHeaderComponent={
             <ProductListHeader
@@ -109,17 +114,11 @@ export default function ProductScreen() {
             />
           }
           ListFooterComponent={
-            <>
-              <ProductListFooter
-                isFetchingMore={isFetchingMore}
-                hasMore={hasMore}
-                productCount={displayedProducts.length}
-              />
-
-              <View style={{ marginTop: 24 }}>
-                <DisclaimerNote collapsible={false} />
-              </View>
-            </>
+            <ProductListFooter
+              isFetchingMore={isFetchingMore}
+              hasMore={hasMore}
+              productCount={displayedProducts.length}
+            />
           }
           ListEmptyComponent={isLoading ? <Loader /> : <NoProductsFound />}
           showsVerticalScrollIndicator={false}

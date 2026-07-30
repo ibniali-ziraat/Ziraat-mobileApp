@@ -49,7 +49,8 @@ export default function ProductStickyBar({
 
   const insets = useSafeAreaInsets();
 
-  // ✅ KEEP YOUR ORIGINAL STICKY LOGIC
+  // Devices with no home-indicator inset would otherwise sit flush against
+  // the screen edge (or an Android nav bar) — lift the bar clear of it.
   const bottomOffset = insets.bottom > 0 ? 0 : 28;
 
   // Loader Animation
@@ -235,7 +236,7 @@ export default function ProductStickyBar({
 
 const styles = StyleSheet.create({
   wrapper: {
-    position: "absolute", // ✅ sticky preserved
+    position: "absolute",
     left: 0,
     right: 0,
     padding: 16,

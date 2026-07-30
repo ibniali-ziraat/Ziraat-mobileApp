@@ -1,3 +1,4 @@
+import DashboardCard from "@/src/components/shared/DashboardCard";
 import DisclaimerNote from "@/src/components/shared/DisclaimerNote";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
@@ -15,6 +16,7 @@ import {
   type NativeSyntheticEvent,
 } from "react-native";
 import { useRegisterToken } from "../notifications/hooks/useRegisterToken";
+import BestDealsSection from "./components/dashboard/BestDealsSection";
 import DashboardSectionHeader from "./components/dashboard/DashboardSectionHeader";
 import DashboardSkeleton from "./components/dashboard/DashboardSkeleton";
 import DashboardStatsGrid from "./components/dashboard/DashboardStatsGrid";
@@ -22,7 +24,7 @@ import FarmActivityChart from "./components/dashboard/FarmActivityChart";
 import MonthlyOrchardsChart from "./components/dashboard/MonthlyOrchardsChart";
 import OrchardCompletenessCard from "./components/dashboard/OrchardCompletenessCard";
 import OrchardOverviewCard from "./components/dashboard/OrchardOverviewCard";
-import ProductInsightsCard from "./components/dashboard/ProductInsightsCard";
+import TrendingProductsSection from "./components/dashboard/TrendingProductsSection";
 import FarmerTipsCarousel from "./components/FarmerTipsCarousel";
 import QuickActions from "./components/QuickActions";
 import { useHomeDashboard } from "./hooks/useHomeDashboard";
@@ -50,7 +52,6 @@ export default function HomeScreen(): JSX.Element {
     monthlyRegistrations,
     completion,
     activity,
-    products,
     period,
     tips,
     legalDisclaimer,
@@ -96,30 +97,30 @@ export default function HomeScreen(): JSX.Element {
                 topSpacing={20}
               />
 
-              <DashboardStatsGrid
-                stats={stats}
-                activity={activity}
-                areaTrend={areaTrend}
-                orchardGrowth={orchardGrowth}
-                completionPercent={completion.percent}
-                datedPercent={stats.datedPercent}
-                period={period}
-              />
+              <DashboardCard>
+                <DashboardStatsGrid
+                  stats={stats}
+                  activity={activity}
+                  areaTrend={areaTrend}
+                  orchardGrowth={orchardGrowth}
+                  completionPercent={completion.percent}
+                  datedPercent={stats.datedPercent}
+                  period={period}
+                />
+
+                {stats.totalOrchards > 0 ? (
+                  <View style={{ marginTop: 22 }}>
+                    <OrchardOverviewCard
+                      bars={areaByOrchard.bars}
+                      unmeasured={areaByOrchard.unmeasured}
+                      ownership={ownershipMix}
+                      totalArea={stats.totalArea}
+                    />
+                  </View>
+                ) : null}
+              </DashboardCard>
 
               <QuickActions />
-
-              {stats.totalOrchards > 0 ? (
-                <View style={{ marginTop: 6 }}>
-                  <OrchardOverviewCard
-                    bars={areaByOrchard.bars}
-                    unmeasured={areaByOrchard.unmeasured}
-                    ownership={ownershipMix}
-                    totalOrchards={stats.totalOrchards}
-                    totalArea={stats.totalArea}
-                    districts={stats.districts}
-                  />
-                </View>
-              ) : null}
 
               {monthlyRegistrations.length > 0 ? (
                 <View style={{ marginTop: 14 }}>
@@ -152,23 +153,8 @@ export default function HomeScreen(): JSX.Element {
                 </View>
               ) : null}
 
-            
-
-              <DashboardSectionHeader
-                title="Mostly used this season"
-                subtitle="What farmers are buying right now"
-                actionLabel="Shop"
-                onAction={() => router.push(ROUTES.TABS.PRODUCTS)}
-              />
-
-              <ProductInsightsCard
-                metric={products.metric}
-                bars={products.bars}
-                priceBands={products.priceBands}
-                trendingCount={products.trendingCount}
-                dealsCount={products.dealsCount}
-                averagePrice={products.averagePrice}
-              />
+              <TrendingProductsSection />
+              <BestDealsSection />
             </>
           )}
 

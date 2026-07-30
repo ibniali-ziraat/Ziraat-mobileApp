@@ -1,4 +1,3 @@
-import DashboardCard from "@/src/components/shared/DashboardCard";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { fonts } from "@/src/constants/fonts/font";
 import { typography } from "@/src/constants/fonts/typography";
@@ -24,72 +23,24 @@ type OrchardOverviewCardProps = {
   bars: AreaBar[];
   unmeasured: number;
   ownership: OwnershipRow[];
-  totalOrchards: number;
   totalArea: number;
-  districts: number;
 };
 
-const METER_HEIGHT = 6;
 const CHART_HEIGHT = 186;
 const TOP_PADDING = 24;
 const LABEL_BAND = 30;
 const MAX_COLUMN_WIDTH = 30;
+const METER_HEIGHT = 6;
 
 /** X-axis room is tight with five bands, so names get clipped, not wrapped. */
 const shortLabel = (label: string): string =>
   label.length > 9 ? `${label.slice(0, 8)}…` : label;
 
-function SummaryStat({
-  label,
-  value,
-  unit,
-}: {
-  label: string;
-  value: string;
-  unit?: string;
-}) {
-  return (
-    <View style={{ flex: 1 }}>
-      <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-        <Text
-          style={[
-            typography.Poppins_m_semibold,
-            { color: cardTokens.inkPrimary, fontSize: 18 },
-          ]}
-        >
-          {value}
-        </Text>
-        {unit ? (
-          <Text
-            style={[
-              typography.Poppins_xs_regular,
-              { color: cardTokens.inkSecondary, fontSize: 10, marginLeft: 3 },
-            ]}
-          >
-            {unit}
-          </Text>
-        ) : null}
-      </View>
-      <Text
-        numberOfLines={1}
-        style={[
-          typography.Poppins_xs_regular,
-          { color: cardTokens.inkMuted, fontSize: 10, marginTop: 1 },
-        ]}
-      >
-        {label}
-      </Text>
-    </View>
-  );
-}
-
 export default function OrchardOverviewCard({
   bars,
   unmeasured,
   ownership,
-  totalOrchards,
   totalArea,
-  districts,
 }: OrchardOverviewCardProps) {
   const [width, setWidth] = useState(0);
 
@@ -103,50 +54,13 @@ export default function OrchardOverviewCard({
   const baseline = TOP_PADDING + plotHeight;
 
   return (
-    <DashboardCard>
-      <Text
-        style={[
-          typography.Poppins_s_semibold,
-          { color: cardTokens.inkPrimary, fontSize: 15 },
-        ]}
-      >
-        Orchard overview
-      </Text>
-      <Text
-        style={[
-          typography.Poppins_xs_regular,
-          { color: cardTokens.inkMuted, marginTop: 2, fontSize: 11 },
-        ]}
-      >
-        Across everything you have registered
-      </Text>
-
-      <View
-        style={{
-          flexDirection: "row",
-          marginTop: 14,
-          paddingVertical: 12,
-          paddingHorizontal: 14,
-          borderRadius: 16,
-          borderCurve: "continuous",
-          backgroundColor: cardTokens.mutedSurface,
-        }}
-      >
-        <SummaryStat label="Orchards" value={String(totalOrchards)} />
-        <SummaryStat
-          label="Total area"
-          value={formatArea(totalArea)}
-          unit={areaUnit(totalArea)}
-        />
-        <SummaryStat label="Districts" value={String(districts)} />
-      </View>
-
+    <View>
       {bars.length > 0 ? (
         <>
           <Text
             style={[
               typography.Poppins_xs_medium,
-              { color: cardTokens.inkSecondary, fontSize: 12, marginTop: 18 },
+              { color: cardTokens.inkSecondary, fontSize: 12 },
             ]}
           >
             Area by orchard
@@ -314,6 +228,6 @@ export default function OrchardOverviewCard({
           </View>
         </>
       ) : null}
-    </DashboardCard>
+    </View>
   );
 }

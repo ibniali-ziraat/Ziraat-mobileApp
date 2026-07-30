@@ -1,23 +1,8 @@
 import { Cloud } from "lucide-react-native";
 import { useEffect, useRef } from "react";
-import {
-  Animated,
-  ImageBackground,
-  type ImageSourcePropType,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Animated, ImageBackground, StyleSheet, View } from "react-native";
 import type { WeatherEffect } from "../utils/weatherPictogram";
-
-const backgrounds = {
-  clearDay: require("@/assets/images/weather-conditions/clear-day.jpg"),
-  clearNight: require("@/assets/images/weather-conditions/clear-night.jpg"),
-  cloudy: require("@/assets/images/weather-conditions/cloudy.jpg"),
-  fog: require("@/assets/images/weather-conditions/fog.jpg"),
-  rain: require("@/assets/images/weather-conditions/rain.jpg"),
-  storm: require("@/assets/images/weather-conditions/storm.jpg"),
-  snow: require("@/assets/images/weather-conditions/snow.jpg"),
-} satisfies Record<string, ImageSourcePropType>;
+import { getWeatherBackground } from "../utils/weatherBackgrounds";
 
 const PARTICLE_COUNT = 16;
 
@@ -98,12 +83,7 @@ export default function AnimatedWeatherBackground({
     return () => animations.forEach((animation) => animation.stop());
   }, [ambientProgress, effect, particleProgress]);
 
-  const source =
-    effect === "clear"
-      ? isDaylight
-        ? backgrounds.clearDay
-        : backgrounds.clearNight
-      : backgrounds[effect];
+  const source = getWeatherBackground(effect, isDaylight);
 
   return (
     <ImageBackground source={source} resizeMode="cover" style={styles.fill}>

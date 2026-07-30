@@ -25,6 +25,7 @@ import VisibilityCard from "@/src/components/VisibilityCard";
 import TenDayForecastCard from "@/src/components/WeeklyCard";
 import WindCard from "@/src/components/WindCard";
 import { ROUTES } from "@/src/constants/routes";
+import DashboardSectionHeader from "@/src/modules/home/components/dashboard/DashboardSectionHeader";
 import { router } from "expo-router";
 
 export default function WeatherScreen() {
@@ -124,16 +125,34 @@ export default function WeatherScreen() {
                     city={cityName || "Srinagar "}
                   />
 
+                  <DashboardSectionHeader
+                    title="Hourly forecast"
+                    topSpacing={22}
+                  />
                   {data && <HourlyCard data_1h={data.data_1h} />}
 
-                  <StormCard />
+                  <View style={{ marginTop: 12 }}>
+                    <StormCard />
+                  </View>
 
-                  {data?.data_day && <TenDayForecastCard data_day={data.data_day} />}
+                  {data?.data_day && (
+                    <>
+                      <DashboardSectionHeader
+                        title="10-day forecast"
+                        topSpacing={22}
+                      />
+                      <TenDayForecastCard data_day={data.data_day} />
+                    </>
+                  )}
 
+                  <DashboardSectionHeader
+                    title="Conditions"
+                    subtitle="Everything else worth knowing right now"
+                    topSpacing={22}
+                  />
 
-
-                  <View className="flex-row">
-                    <View className="flex-1 mr-1">
+                  <View style={{ flexDirection: "row", gap: 12 }}>
+                    <View style={{ flex: 1 }}>
                       {data?.data_1h?.felttemperature?.length > 0 && (
                         <FeelsLikeCard
                           temp={Math.round(data.data_1h.felttemperature[0])}
@@ -142,67 +161,67 @@ export default function WeatherScreen() {
                       )}
                     </View>
 
-                    <View className="flex-1 ml-1">
+                    <View style={{ flex: 1 }}>
                       {uvIndex !== undefined && (
                         <UVCard value={Math.round(uvIndex)} />
                       )}
                     </View>
-
                   </View>
 
                   {data?.data_1h?.windspeed && data?.data_1h?.winddirection && (
-                    <WindCard
-                      speed={Math.round(data.data_1h.windspeed[0] * 3.6)}
-                      gusts={Math.round(data.data_1h.windspeed[0] * 3.6 * 1.6)}
-                      degree={data.data_1h.winddirection[0]}
-                    />
+                    <View style={{ marginTop: 12 }}>
+                      <WindCard
+                        speed={Math.round(data.data_1h.windspeed[0] * 3.6)}
+                        gusts={Math.round(data.data_1h.windspeed[0] * 3.6 * 1.6)}
+                        degree={data.data_1h.winddirection[0]}
+                      />
+                    </View>
                   )}
 
-                  <View className="mt-4 flex-row justify-between">
-                    <View className="flex-1 mr-1">
+                  <View style={{ marginTop: 12, flexDirection: "row", gap: 12 }}>
+                    <View style={{ flex: 1 }}>
                       {data?.data_1h?.sealevelpressure && (
                         <PressureCard value={data.data_1h.sealevelpressure[0]} />
                       )}
                     </View>
 
-                    <View className="flex-1 ml-1">
+                    <View style={{ flex: 1 }}>
                       <HumidityCard value={todayHumidity} />
                     </View>
-
-
                   </View>
 
-                  <View className="mt-2 flex-row justify-between">
-                    <View className="flex-1 mr-1">
+                  <View style={{ marginTop: 12, flexDirection: "row", gap: 12 }}>
+                    <View style={{ flex: 1 }}>
                       <VisibilityCard distance={visibilityVal} />
                     </View>
 
-
-                    <View className="flex-1 ml-1">
+                    <View style={{ flex: 1 }}>
                       <SunsetCard sunrise={sunriseTime} sunset={sunsetTime} />
                     </View>
                   </View>
 
-                  <MoonCard
-                    phaseValue={data?.data_day?.moonphase?.[0]}
-                    illumination={data?.data_day?.moonillumination?.[0]}
-                    moonrise={data?.data_day?.moonrise?.[0]}
-                  />
+                  <View style={{ marginTop: 12 }}>
+                    <MoonCard
+                      phaseValue={data?.data_day?.moonphase?.[0]}
+                      illumination={data?.data_day?.moonillumination?.[0]}
+                      moonrise={data?.data_day?.moonrise?.[0]}
+                    />
+                  </View>
 
-                  <View className="flex-row justify-between">
-                    <View className="flex-1 mr-1">
+                  <View style={{ marginTop: 12, flexDirection: "row", gap: 12 }}>
+                    <View style={{ flex: 1 }}>
                       <AveragesCard
                         currentMax={Math.round(dayData?.temperature_max?.[0] ?? 0)}
                         averageMax={8}
                       />
                     </View>
 
-                    <View className="flex-1 ml-1"><Precipitation
-                      amount={dayData?.precipitation?.[0] ?? 0}
-                      probability={dayData?.precipitation_probability?.[0] ?? 0}
-                    /></View>
-
-
+                    <View style={{ flex: 1 }}>
+                      <Precipitation
+                        amount={dayData?.precipitation?.[0] ?? 0}
+                        probability={dayData?.precipitation_probability?.[0] ?? 0}
+                      />
+                    </View>
                   </View>
                 </>
               )}

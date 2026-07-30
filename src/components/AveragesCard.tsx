@@ -1,8 +1,8 @@
 import { GitGraph } from "lucide-react-native";
 import { Text, View } from "react-native";
 import { colors } from "../constants/colors";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 
 type Props = {
   currentMax?: number;
@@ -23,16 +23,19 @@ export default function AveragesCard({
     <View
       style={[
         {
-          width: "98%",
+          width: "100%",
           marginVertical: 8,
           paddingHorizontal: 14,
           paddingVertical: 14,
-          backgroundColor: "#fff",
-          borderRadius: 16,
-          height: 160, 
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          borderWidth: 1,
+          borderColor: cardTokens.border,
+          height: 160,
           justifyContent: "space-between",
         },
-        shadows.profile_card, // 👈 shadow applied
+        cardShadow,
       ]}
     >
       {/* Header */}
@@ -41,7 +44,7 @@ export default function AveragesCard({
         <Text
           style={[
             typography.Poppins_m_medium,
-            { marginLeft: 8, color: "#000", textTransform: "uppercase" },
+            { marginLeft: 8, color: cardTokens.inkPrimary, textTransform: "uppercase" },
           ]}
         >
           Averages
@@ -60,14 +63,14 @@ export default function AveragesCard({
 
       {/* Status */}
       <Text
-        style={[typography.Poppins_xs_regular, { color: "#000" }]}
+        style={[typography.Poppins_xs_regular, { color: cardTokens.inkMuted }]}
       >
         {status} average daily high.
       </Text>
 
       {/* Extra Info */}
       <Text
-        style={[typography.Poppins_xs_regular, { color: "#000" }]}
+        style={[typography.Poppins_xs_regular, { color: cardTokens.inkMuted }]}
       >
         Today: {currentMax ?? 0}° | Avg: {averageMax ?? 0}°
       </Text>

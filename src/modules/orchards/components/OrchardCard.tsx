@@ -12,9 +12,11 @@ interface OrchardCardProps {
 
 const THUMB = 78;
 function getOrchardSize(orchard: any): string | null {
-  if (orchard?.kanals > 0) return `${orchard.kanals} kanals`;
-  if (orchard?.marlas > 0) return `${orchard.marlas} marlas`;
-  return null;
+  const parts = [
+    orchard?.kanals > 0 ? `${orchard.kanals} kanals` : null,
+    orchard?.marlas > 0 ? `${orchard.marlas} marlas` : null,
+  ].filter(Boolean);
+  return parts.length ? parts.join(", ") : null;
 }
 
 function Chip({ label, accent = false }: { label: string; accent?: boolean }) {

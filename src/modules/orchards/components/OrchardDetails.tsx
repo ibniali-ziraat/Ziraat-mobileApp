@@ -61,11 +61,12 @@ export default function OrchardDetails({ orchard }: OrchardDetailsProps) {
           <DetailRow
             label="Size"
             value={
-              orchard?.kanals > 0
-                ? `${orchard.kanals} kanals`
-                : orchard?.marlas > 0
-                  ? `${orchard.marlas} marlas`
-                  : "-"
+              [
+                orchard?.kanals > 0 ? `${orchard.kanals} kanals` : null,
+                orchard?.marlas > 0 ? `${orchard.marlas} marlas` : null,
+              ]
+                .filter(Boolean)
+                .join(", ") || "-"
             }
           />
 

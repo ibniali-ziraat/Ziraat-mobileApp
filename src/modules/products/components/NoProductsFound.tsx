@@ -1,40 +1,53 @@
-// components/NoProductsFound.tsx
-import { colors } from "@/src/constants/colors";
-import { StyleSheet, Text, View } from "react-native";
+import { cardTokens } from "@/src/constants/dashboardTheme";
+import { typography } from "@/src/constants/fonts/typography";
+import { PackageSearch } from "lucide-react-native";
+import { View } from "react-native";
+import CsText from "@/src/components/shared/CsText";
 
 export default function NoProductsFound() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.icon}>🛒</Text>
-      <Text style={styles.title}>No Products Found</Text>
-      <Text style={styles.subtitle}>
+    <View
+      style={{
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: 80,
+        gap: 4,
+      }}
+    >
+      <View
+        style={{
+          width: 72,
+          height: 72,
+          borderRadius: 36,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: cardTokens.mutedSurface,
+          marginBottom: 6,
+        }}
+      >
+        <PackageSearch size={30} color={cardTokens.inkMuted} strokeWidth={1.6} />
+      </View>
+
+      <CsText
+        style={[typography.Poppins_s_semibold, { color: cardTokens.inkPrimary }]}
+      >
+        No products found
+      </CsText>
+
+      <CsText
+        style={[
+          typography.Poppins_xs_regular,
+          {
+            color: cardTokens.inkMuted,
+            textAlign: "center",
+            paddingHorizontal: 32,
+            marginTop: 2,
+          },
+        ]}
+      >
         Try adjusting your filters or search terms
-      </Text>
+      </CsText>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 80,
-    gap: 10,
-  },
-  icon: {
-    fontSize: 48,
-    marginBottom: 8,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: colors.neutral,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: colors.darkHover,
-    textAlign: "center",
-    paddingHorizontal: 32,
-  },
-});

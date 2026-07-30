@@ -1,8 +1,8 @@
 import { Eye } from "lucide-react-native";
 import { Text, View } from "react-native";
 import { colors } from "../constants/colors";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 
 type Props = {
   distance: number;
@@ -22,23 +22,26 @@ export default function VisibilityCard({ distance }: Props) {
     <View
       style={[
         {
-          width: "98%",
+          width: "100%",
           marginVertical: 8,
           paddingHorizontal: 14,
           paddingVertical: 14,
-          backgroundColor: "#fff",
-          borderRadius: 16,
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          borderWidth: 1,
+          borderColor: cardTokens.border,
           height: 160,
           justifyContent: "space-between",
         },
-        shadows.profile_card, // 👈 shadow applied
+        cardShadow,
       ]}
     >
       {/* Header */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Eye size={18} color={colors.secondary} />
         <Text
-          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: cardTokens.inkPrimary }]}
         >
           VISIBILITY
         </Text>
@@ -46,14 +49,14 @@ export default function VisibilityCard({ distance }: Props) {
 
       {/* Value */}
       <Text
-        style={[typography.Poppins_l_medium, { color: "#000" }]}
+        style={[typography.Poppins_l_medium, { color: cardTokens.inkPrimary }]}
       >
         {km} km
       </Text>
 
       {/* Note */}
       <Text
-        style={[typography.Poppins_xs_regular, { color: "#000", marginTop: 4 }]}
+        style={[typography.Poppins_xs_regular, { color: cardTokens.inkMuted, marginTop: 4 }]}
       >
         {getNote(distance)}
       </Text>

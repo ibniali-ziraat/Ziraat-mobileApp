@@ -1,9 +1,5 @@
 import { Pressable } from "@/src/components/shared/Pressable";
-import {
-  cardShadow,
-  cardTokens,
-  chartTokens,
-} from "@/src/constants/dashboardTheme";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import {
   ArrowDownRight,
@@ -63,23 +59,18 @@ export default function StatCard({
       disabled={!onPress}
       accessibilityRole={onPress ? "button" : undefined}
       accessibilityLabel={`${label}: ${value}${unit ? ` ${unit}` : ""}`}
-      style={({ pressed }) => [
-        {
-          flex: 1,
-          minHeight: 148,
-          backgroundColor: cardTokens.surface,
-          borderRadius: 22,
-          borderCurve: "continuous",
-          borderWidth: 1,
-          borderColor: cardTokens.hairline,
-          paddingHorizontal: 15,
-          paddingVertical: 14,
-          justifyContent: "space-between",
-          opacity: pressed ? 0.94 : 1,
-          transform: [{ scale: pressed ? 0.985 : 1 }],
-        },
-        cardShadow,
-      ]}
+      style={({ pressed }) => ({
+        flex: 1,
+        minHeight: 140,
+        backgroundColor: cardTokens.mutedSurface,
+        borderRadius: 16,
+        borderCurve: "continuous",
+        paddingHorizontal: 14,
+        paddingVertical: 13,
+        justifyContent: "space-between",
+        opacity: pressed ? 0.9 : 1,
+        transform: [{ scale: pressed ? 0.985 : 1 }],
+      })}
     >
       <View>
         <View
@@ -107,12 +98,12 @@ export default function StatCard({
 
           <View
             style={{
-              width: 30,
-              height: 30,
-              borderRadius: 15,
+              width: 28,
+              height: 28,
+              borderRadius: 14,
               alignItems: "center",
               justifyContent: "center",
-              backgroundColor: chartTokens.tint,
+              backgroundColor: cardTokens.surface,
             }}
           >
             <Icon size={15} color={chartTokens.current} strokeWidth={2} />

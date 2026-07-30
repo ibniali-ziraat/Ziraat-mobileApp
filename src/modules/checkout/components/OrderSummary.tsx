@@ -1,3 +1,4 @@
+import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { Sparkles } from "lucide-react-native";
 import { Text, View } from "react-native";
@@ -46,34 +47,42 @@ const SummaryRow = ({
   value: string;
   bold?: boolean;
   highlight?: boolean;
-}) => (
-  <View className="mb-2 flex-row justify-between">
-    <Text
-      className={`text-sm ${
-        bold
-          ? "font-bold text-neutral-900"
-          : highlight
-            ? "font-semibold text-orange-600"
-            : "text-neutral-700"
-      }`}
-    >
-      {label}
-    </Text>
-    <Text
-      className={`text-sm ${
-        bold
-          ? "font-bold text-neutral-900"
-          : highlight
-            ? "font-semibold text-orange-600"
-            : "text-neutral-700"
-      }`}
-    >
-      {value}
-    </Text>
-  </View>
-);
+}) => {
+  const textStyle = [
+    bold ? typography.Poppins_s_bold : typography.Poppins_s_regular,
+    {
+      fontSize: bold ? 15 : 13.5,
+      color: highlight
+        ? chartTokens.accent
+        : bold
+          ? cardTokens.inkPrimary
+          : cardTokens.inkSecondary,
+    },
+  ];
 
-const Divider = () => <View className="my-2 border-t border-neutral-100" />;
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        marginBottom: 8,
+      }}
+    >
+      <Text style={textStyle}>{label}</Text>
+      <Text style={textStyle}>{value}</Text>
+    </View>
+  );
+};
+
+const Divider = () => (
+  <View
+    style={{
+      height: 1,
+      backgroundColor: cardTokens.hairline,
+      marginVertical: 8,
+    }}
+  />
+);
 
 export const OrderSummary = ({
   summary,
@@ -81,11 +90,6 @@ export const OrderSummary = ({
   isBuyOnCredit = false,
 }: Props) => {
   const items = summary.items ?? [];
-
-  // Check if ALL items are available for credit buyers
-  // const allCreditAvailable = items.every(
-  //   (item) => item.vendorAssignment?.isAvailableForCreditBuyers === true,
-  // );
 
   const showCredit = isBuyOnCredit;
 
@@ -97,17 +101,8 @@ export const OrderSummary = ({
     return sum + price * qty;
   }, 0);
 
-  // const totalCreditHikeAmount = items.reduce((sum, item) => {
-  //   const qty = item.quantity ?? 1;
-  //   const hike = item.vendorAssignment?.creditSaleHikeAmount ?? 0;
-  //   console.log(hike, "hike");
-
-  //   return sum + hike * qty;
-  // }, 0);
-
   const totalCreditHikeAmount = items.reduce((sum, item) => {
     const qty = Number(item.quantity ?? 1);
-
     const hike = Number(item.vendorAssignment?.creditSaleHikeAmount ?? 0);
 
     return sum + hike * qty;
@@ -118,10 +113,26 @@ export const OrderSummary = ({
     items[0]?.vendorAssignment?.creditSaleHikePercentage ?? 0;
 
   return (
-    <View className="mx-4 rounded-2xl bg-white p-4">
+    <View
+      style={[
+        {
+          marginHorizontal: 16,
+          marginTop: 16,
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          borderWidth: 1,
+          borderColor: cardTokens.border,
+          padding: 16,
+        },
+        cardShadow,
+      ]}
+    >
       <Text
-        style={typography.Poppins_s_bold}
-        className="mb-3 text-lg text-neutral-900"
+        style={[
+          typography.Poppins_s_bold,
+          { color: cardTokens.inkPrimary, fontSize: 17, marginBottom: 12 },
+        ]}
       >
         Order Summary
       </Text>
@@ -149,12 +160,7 @@ export const OrderSummary = ({
           />
 
           {couponCode && (
-            <View className="mb-2 flex-row items-center justify-between">
-              <Text className="text-sm text-neutral-700">Coupon Applied</Text>
-              <Text className="ml-1 text-sm text-neutral-700">
-                {couponCode}
-              </Text>
-            </View>
+            <SummaryRow label="Coupon Applied" value={couponCode} />
           )}
 
           {/* Credit hike fee — summed across all items */}
@@ -175,16 +181,27 @@ export const OrderSummary = ({
 
           <Divider />
 
-          {/* ✅ Order Total = sum of all items' creditSalePrice */}
+          {/* Order Total = sum of all items' creditSalePrice */}
           <SummaryRow
             label="Order Total"
             value={formatRsNum(totalCreditSalePrice)}
             bold
           />
 
-          <View className="mt-4 flex-row items-center justify-end">
-            {/* <Sparkles size={16} color="#e97316" /> */}
-            <Text className="ml-2 text-sm font-semibold text-orange-600">
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              marginTop: 12,
+            }}
+          >
+            <Text
+              style={[
+                typography.Poppins_xs_semibold,
+                { color: chartTokens.accent, fontSize: 13 },
+              ]}
+            >
               Credit fee of {formatRsNum(totalCreditHikeAmount)} applied
             </Text>
           </View>
@@ -197,12 +214,7 @@ export const OrderSummary = ({
           />
 
           {couponCode && (
-            <View className="mb-2 flex-row items-center justify-between">
-              <Text className="text-sm text-neutral-700">Coupon Applied</Text>
-              <Text className="ml-1 text-sm text-neutral-700">
-                {couponCode}
-              </Text>
-            </View>
+            <SummaryRow label="Coupon Applied" value={couponCode} />
           )}
 
           <SummaryRow
@@ -223,9 +235,22 @@ export const OrderSummary = ({
           />
 
           {summary.discount > 0 && (
-            <View className="mt-4 flex-row items-center justify-end">
-              <Sparkles size={16} color="#2d6b06" />
-              <Text className="ml-2 text-sm font-semibold text-[#2d6b06]">
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                marginTop: 12,
+                gap: 6,
+              }}
+            >
+              <Sparkles size={15} color={chartTokens.current} />
+              <Text
+                style={[
+                  typography.Poppins_xs_semibold,
+                  { color: chartTokens.current, fontSize: 13 },
+                ]}
+              >
                 You saved {formatRs(summary.discountString)}
               </Text>
             </View>

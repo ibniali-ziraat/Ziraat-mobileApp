@@ -13,8 +13,6 @@ export const BasicInfoSchema = z
       })
       .optional(),
 
-    orchardUnit: z.enum(["marlas", "kanals"]).optional(),
-
     marlas: z.string().optional(),
     kanals: z.string().optional(),
 
@@ -50,33 +48,25 @@ export const BasicInfoSchema = z
         return;
       }
 
-      if (!data.orchardUnit) {
+      if (!data.kanals?.trim() && !data.marlas?.trim()) {
         ctx.addIssue({
-          path: ["orchardUnit"],
-          message: "Unit is required",
+          path: ["kanals"],
+          message: "Enter size in Kanals and/or Marlas",
           code: z.ZodIssueCode.custom,
         });
-        return;
+        ctx.addIssue({
+          path: ["marlas"],
+          message: "Enter size in Kanals and/or Marlas",
+          code: z.ZodIssueCode.custom,
+        });
       }
 
-      if (data.orchardUnit === "marlas") {
-        if (!data.marlas?.trim()) {
-          ctx.addIssue({
-            path: ["marlas"],
-            message: "Required Field",
-            code: z.ZodIssueCode.custom,
-          });
-        }
-      }
-
-      if (data.orchardUnit === "kanals") {
-        if (!data.kanals?.trim()) {
-          ctx.addIssue({
-            path: ["kanals"],
-            message: "Required Field",
-            code: z.ZodIssueCode.custom,
-          });
-        }
+      if (data.marlas?.trim() && Number(data.marlas) >= 20) {
+        ctx.addIssue({
+          path: ["marlas"],
+          message: "20 Marlas = 1 Kanal. Enter up to 19, or add to Kanals instead",
+          code: z.ZodIssueCode.custom,
+        });
       }
     }
   });

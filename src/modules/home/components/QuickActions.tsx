@@ -61,9 +61,11 @@ const getOrchardImage = (orchard: OrchardSummary): ImageSourcePropType => {
 };
 
 const getOrchardSize = (orchard: OrchardSummary): string => {
-  if (orchard.kanals) return `${orchard.kanals} kanals`;
-  if (orchard.marlas) return `${orchard.marlas} marlas`;
-  return "View details";
+  const parts = [
+    orchard.kanals ? `${orchard.kanals} kanals` : null,
+    orchard.marlas ? `${orchard.marlas} marlas` : null,
+  ].filter(Boolean);
+  return parts.length ? parts.join(", ") : "View details";
 };
 
 export default function QuickActions() {

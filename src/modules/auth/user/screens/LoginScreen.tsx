@@ -1,4 +1,3 @@
-import { Divider } from "@/src/components/shared/Divider";
 import FormActions from "@/src/components/shared/FormActions";
 import Heading from "@/src/components/shared/Heading";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
@@ -12,7 +11,6 @@ import { router } from "expo-router";
 import { FormProvider } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 import { useZodForm } from "../../../../hooks/useZodForm";
-import { GoogleAuthButton } from "../../components/GoogleAuthButton";
 import AuthWrapper from "../component/AuthWrapper";
 
 export default function LoginScreen() {
@@ -90,13 +88,13 @@ export default function LoginScreen() {
             />
           </View>
 
-          <Divider label="or sign in with google" />
+          {/* <Divider label="or sign in with google" />
 
           <GoogleAuthButton
             label="Sign in with Google"
             onPress={() => { }}
             disabled={isPending}
-          />
+          /> */}
         </View>
       </FormProvider>
     </AuthWrapper>

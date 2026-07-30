@@ -1,5 +1,6 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams } from "expo-router";
@@ -87,22 +88,58 @@ const ReviewOrderScreen = () => {
         />
 
         {isValidatingBoc && (
-          <View className="mt-3 flex-row items-center justify-center gap-2">
-            <ActivityIndicator size="small" color="#2d6b06" />
-            <Text className="text-sm text-neutral-500">
+          <View
+            style={{
+              marginTop: 14,
+              marginHorizontal: 16,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+            }}
+          >
+            <ActivityIndicator size="small" color={chartTokens.current} />
+            <Text
+              style={[
+                typography.Poppins_xs_regular,
+                { color: cardTokens.inkMuted, fontSize: 13 },
+              ]}
+            >
               Checking credit eligibility...
             </Text>
           </View>
         )}
 
         {isBuyOnCredit && bocValidation && !bocValidation.isValid && (
-          <Text className="mt-3 text-center text-sm font-semibold text-[#f44336]">
+          <Text
+            style={[
+              typography.Poppins_xs_semibold,
+              {
+                marginTop: 14,
+                marginHorizontal: 16,
+                textAlign: "center",
+                color: chartTokens.negative,
+                fontSize: 13,
+              },
+            ]}
+          >
             {bocValidation.message}
           </Text>
         )}
 
         {!!errorMsg && !isBuyOnCredit && (
-          <Text className="mt-3 text-center text-sm font-semibold text-[#f44336]">
+          <Text
+            style={[
+              typography.Poppins_xs_semibold,
+              {
+                marginTop: 14,
+                marginHorizontal: 16,
+                textAlign: "center",
+                color: chartTokens.negative,
+                fontSize: 13,
+              },
+            ]}
+          >
             {errorMsg}
           </Text>
         )}
@@ -118,11 +155,23 @@ const ReviewOrderScreen = () => {
               )
             }
             disabled={isPending}
-            className="mx-4 my-6 h-14 items-center justify-center rounded-xl bg-[#2d6b06]"
+            style={({ pressed }) => ({
+              marginHorizontal: 16,
+              marginTop: 24,
+              marginBottom: 24,
+              height: 56,
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 16,
+              backgroundColor: chartTokens.current,
+              opacity: pressed || isPending ? 0.85 : 1,
+            })}
           >
             <Text
-              style={typography.Poppins_s_bold}
-              className="text-base text-white"
+              style={[
+                typography.Poppins_s_bold,
+                { color: "#FFFFFF", fontSize: 16 },
+              ]}
             >
               {isPending ? "Placing Order..." : "Place Order"}
             </Text>

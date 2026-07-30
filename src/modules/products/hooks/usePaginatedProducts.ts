@@ -72,21 +72,35 @@ export function usePaginatedProducts({
       return;
     }
 
+    const hasTotal = typeof data.totalProduct === "number";
+
     if (page === 1) {
       setAccumulatedProducts(data.products);
+      // The API doesn't always send totalProduct — when it's missing we can't
+      // compare counts, so "more pages exist" falls back to "this page wasn't
+      // empty" and later pages stop things once a page brings nothing new.
       setHasMore(
-        data.products.length < (data.totalProduct ?? data.products.length),
+        hasTotal
+          ? data.products.length < (data.totalProduct as number)
+          : data.products.length > 0,
       );
     } else {
       setAccumulatedProducts((prev) => {
+        // A product can be listed by several vendors under the same product
+        // `id` — `vendorProductId` is what's actually unique per listing, so
+        // it has to come first or different vendors' listings collide here.
         const existingKeys = new Set(
-          prev.map((item) => item.id ?? item.vendorProductId),
+          prev.map((item) => item.vendorProductId ?? item.id),
         );
         const newProducts = data.products.filter(
-          (item: any) => !existingKeys.has(item.id ?? item.vendorProductId),
+          (item: any) => !existingKeys.has(item.vendorProductId ?? item.id),
         );
         const merged = [...prev, ...newProducts];
-        setHasMore(merged.length < (data.totalProduct ?? merged.length));
+        setHasMore(
+          hasTotal
+            ? merged.length < (data.totalProduct as number)
+            : newProducts.length > 0,
+        );
         return merged;
       });
     }
@@ -127,7 +141,9 @@ export function usePaginatedProducts({
       if (fresh?.products) {
         setAccumulatedProducts(fresh.products);
         setHasMore(
-          fresh.products.length < (fresh.totalProduct ?? fresh.products.length),
+          typeof fresh.totalProduct === "number"
+            ? fresh.products.length < fresh.totalProduct
+            : fresh.products.length > 0,
         );
       }
     } else {

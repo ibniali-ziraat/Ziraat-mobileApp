@@ -10,8 +10,8 @@ import { useEffect, useMemo, useRef } from "react";
 import { Dimensions, ScrollView, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
 import { colors } from "../constants/colors";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 import CsText from "./shared/CsText";
 
 const { width } = Dimensions.get("window");
@@ -144,12 +144,13 @@ export default function HourlyCard({ data_1h }) {
           marginVertical: 8,
           paddingHorizontal: 14,
           paddingVertical: 16,
-          backgroundColor: "#fff",
-          borderRadius: 16,
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
           borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.05)",
+          borderColor: cardTokens.border,
         },
-        shadows.profile_card,
+        cardShadow,
       ]}
     >
       <CsText style={typography.Poppins_m_medium}>

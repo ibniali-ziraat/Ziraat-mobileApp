@@ -1,10 +1,6 @@
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useMemo } from "react";
 import { useOrchardsByUserQuery } from "../../orchards/hooks/useOrchardsQuery";
-import {
-  useBestDeals,
-  useTrendingProducts,
-} from "../../products/hooks/queries/products.queries";
 import type { FarmActivityComparison } from "../types/farmerDashboard";
 import { toKanals, toNumber } from "../utils/dashboardFormat";
 import { useFarmerDashboard } from "./useFarmerDashboard";
@@ -30,18 +26,6 @@ export type OrchardHistoryEntry = {
 export type TrendPoint = {
   label: string;
   value: number;
-};
-
-export type ProductMetric = "rating" | "price";
-
-export type ProductBar = {
-  key: string;
-  productId: string;
-  vendorId?: string;
-  vendorProductId?: string;
-  label: string;
-  value: number;
-  vendor: string;
 };
 
 const readCreatedAt = (orchard: OrchardRecord): number | null => {
@@ -78,62 +62,7 @@ const asArray = (payload: unknown): OrchardRecord[] => {
   return [];
 };
 
-const readProductName = (product: OrchardRecord): string =>
-  product?.name ??
-  product?.productName ??
-  product?.title ??
-  product?.product?.name ??
-  "Product";
-
-const readProductPrice = (product: OrchardRecord): number =>
-  toNumber(
-    product?.price ??
-      product?.sellingPrice ??
-      product?.finalPrice ??
-      product?.mrp ??
-      product?.discountPrice,
-  );
-
-const readProductRating = (product: OrchardRecord): number =>
-  toNumber(product?.ratingAverage ?? product?.rating ?? product?.avgRating);
-
-const readVendor = (product: OrchardRecord): string =>
-  product?.vendor?.name ?? product?.vendorName ?? product?.brand ?? "Marketplace";
-
-export type PriceBand = {
-  label: string;
-  count: number;
-};
-
-const PRICE_BANDS = 5;
 const TOP_ORCHARD_BARS = 5;
-
-/** Spread of what things cost, split into equal bands between min and max. */
-const buildPriceBands = (prices: number[]): PriceBand[] => {
-  if (prices.length < PRICE_BANDS) return [];
-
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
-  if (max <= min) return [];
-
-  const step = (max - min) / PRICE_BANDS;
-
-  return Array.from({ length: PRICE_BANDS }, (_, index) => {
-    const from = min + step * index;
-    const isLast = index === PRICE_BANDS - 1;
-    const to = isLast ? max : from + step;
-
-    return {
-      label:
-        from >= 1000
-          ? `${Math.round(from / 100) / 10}k`
-          : `${Math.round(from)}`,
-      count: prices.filter((price) =>
-        isLast ? price >= from && price <= to : price >= from && price < to,
-      ).length,
-    };
-  });
-};
 
 /**
  * Orchards registered per month across a continuous trailing window. Empty
@@ -254,8 +183,6 @@ export function useHomeDashboard() {
 
   const orchardsQuery = useOrchardsByUserQuery();
   const dashboardQuery = useFarmerDashboard(userId ?? undefined);
-  const trendingQuery = useTrendingProducts();
-  const bestDealsQuery = useBestDeals();
 
   const orchards = useMemo(
     () => asArray(orchardsQuery.data),
@@ -436,68 +363,10 @@ export function useHomeDashboard() {
     [dashboardQuery.data],
   );
 
-  const products = useMemo(() => {
-    const trending = asArray(trendingQuery.data);
-    const deals = asArray(bestDealsQuery.data);
-    const pool = [...trending, ...deals];
-
-    const rated = pool.filter((product) => readProductRating(product) > 0);
-    const metric: ProductMetric = rated.length >= 3 ? "rating" : "price";
-
-    const source = metric === "rating" ? rated : pool;
-
-    const bars: ProductBar[] = source
-      .map((product, index) => {
-        const productId = String(
-          product?.productId ?? product?.id ?? product?._id ?? "",
-        );
-        const vendorId = product?.vendorId ?? product?.vendor?.id;
-
-        return {
-          key: productId || `${readProductName(product)}-${index}`,
-          productId,
-          vendorId: vendorId ? String(vendorId) : undefined,
-          vendorProductId: product?.vendorProductId
-            ? String(product.vendorProductId)
-            : undefined,
-          label: readProductName(product),
-          value:
-            metric === "rating"
-              ? readProductRating(product)
-              : readProductPrice(product),
-          vendor: readVendor(product),
-        };
-      })
-      .filter((bar) => bar.value > 0 && bar.productId !== "")
-      .sort((a, b) => b.value - a.value)
-      .slice(0, 5);
-
-    const prices = pool.map(readProductPrice).filter((price) => price > 0);
-
-    return {
-      metric,
-      bars,
-      priceBands: buildPriceBands(prices),
-      trendingCount: trending.length,
-      dealsCount: deals.length,
-      averagePrice: prices.length
-        ? prices.reduce((sum, price) => sum + price, 0) / prices.length
-        : 0,
-    };
-  }, [trendingQuery.data, bestDealsQuery.data]);
-
-  const isLoading =
-    orchardsQuery.isLoading ||
-    dashboardQuery.isLoading ||
-    trendingQuery.isLoading;
+  const isLoading = orchardsQuery.isLoading || dashboardQuery.isLoading;
 
   const refetchAll = async () => {
-    await Promise.all([
-      orchardsQuery.refetch(),
-      dashboardQuery.refetch(),
-      trendingQuery.refetch(),
-      bestDealsQuery.refetch(),
-    ]);
+    await Promise.all([orchardsQuery.refetch(), dashboardQuery.refetch()]);
   };
 
   return {
@@ -512,7 +381,6 @@ export function useHomeDashboard() {
     monthlyRegistrations,
     completion,
     activity,
-    products,
     period: dashboardQuery.data?.home?.farmOverview?.period ?? "",
     tips: dashboardQuery.data?.home?.tips,
     legalDisclaimer: dashboardQuery.data?.home?.legalDisclaimer,

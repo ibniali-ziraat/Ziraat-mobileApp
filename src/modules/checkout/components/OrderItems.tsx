@@ -1,3 +1,4 @@
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { Image, Text, View } from "react-native";
 
@@ -16,27 +17,77 @@ interface Props {
 const formatRs = (value: string) => value?.replace("$", "₹");
 
 export const OrderItems = ({ items }: Props) => (
-  <View className="mx-4 mt-4 rounded-2xl bg-white p-4">
+  <View
+    style={[
+      {
+        marginHorizontal: 16,
+        marginTop: 16,
+        backgroundColor: cardTokens.surface,
+        borderRadius: cardTokens.radius,
+        borderCurve: "continuous",
+        borderWidth: 1,
+        borderColor: cardTokens.border,
+        padding: 16,
+      },
+      cardShadow,
+    ]}
+  >
     <Text
-      style={typography.Poppins_s_bold}
-      className="mb-3 text-lg text-neutral-900"
+      style={[
+        typography.Poppins_s_bold,
+        { color: cardTokens.inkPrimary, fontSize: 17, marginBottom: 12 },
+      ]}
     >
       Items
     </Text>
 
-    {items.map((item) => (
-      <View key={item.id} className="mb-4 flex-row items-center">
+    {items.map((item, index) => (
+      <View
+        key={item.id}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: index === items.length - 1 ? 0 : 14,
+        }}
+      >
         <Image
           source={{ uri: item.productImage }}
-          className="mr-3 h-16 w-16 rounded-xl"
+          style={{
+            width: 60,
+            height: 60,
+            borderRadius: 14,
+            marginRight: 12,
+            backgroundColor: cardTokens.mutedSurface,
+          }}
         />
-        <View className="flex-1">
-          <Text className="text-base font-semibold text-neutral-900">
+
+        <View style={{ flex: 1 }}>
+          <Text
+            numberOfLines={1}
+            style={[
+              typography.Poppins_s_medium,
+              { color: cardTokens.inkPrimary, fontSize: 15 },
+            ]}
+          >
             {item.productName}
           </Text>
-          <Text className="text-sm text-neutral-500">Qty: {item.quantity}</Text>
+
+          <Text
+            style={[
+              typography.Poppins_xs_regular,
+              { color: cardTokens.inkMuted, fontSize: 13, marginTop: 2 },
+            ]}
+          >
+            Qty: {item.quantity}
+          </Text>
         </View>
-        <Text className="text-base font-semibold text-neutral-900">
+
+        <Text
+          style={[
+            typography.Poppins_s_semibold,
+            { color: cardTokens.inkPrimary, fontSize: 15 },
+          ]}
+        >
           {formatRs(item.totalString)}
         </Text>
       </View>

@@ -2,8 +2,8 @@ import { Sunset } from "lucide-react-native";
 import { Text, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
 import { colors } from "../constants/colors";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 
 type Props = {
   sunset: string;
@@ -67,25 +67,26 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
     <View
       style={[
         {
-          width: "98%",
+          width: "100%",
           marginVertical: 8,
           paddingHorizontal: 14,
           paddingVertical: 14,
-          backgroundColor: "#fff",
-          borderRadius: 16,
-          height: 160, 
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          height: 160,
           justifyContent: "space-between",
           borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.05)",
+          borderColor: cardTokens.border,
         },
-        shadows.profile_card,
+        cardShadow,
       ]}
     >
       {/* Header (Sunrise) */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Sunset size={18} color={colors.secondary} />
         <Text
-          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: cardTokens.inkPrimary }]}
         >
           SUNRISE: {formatTimeManual(sunrise)}
         </Text>
@@ -114,7 +115,7 @@ export default function SunsetCard({ sunset, sunrise }: Props) {
 
       {/* Sunset */}
       <Text
-        style={[typography.Poppins_s_medium, { color: "#000" }]}
+        style={[typography.Poppins_s_medium, { color: cardTokens.inkSecondary }]}
       >
         Sunset: {formatTimeManual(sunset)}
       </Text>

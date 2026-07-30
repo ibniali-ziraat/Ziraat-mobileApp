@@ -1,4 +1,6 @@
-import { colors } from "@/src/constants/colors";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { typography } from "@/src/constants/fonts/typography";
+import { CheckCircle2 } from "lucide-react-native";
 import { ActivityIndicator, Text, View } from "react-native";
 
 interface ProductListFooterProps {
@@ -15,40 +17,34 @@ export function ProductListFooter({
   if (isFetchingMore) {
     return (
       <View style={{ paddingVertical: 24, alignItems: "center" }}>
-        <ActivityIndicator size="large" color={colors.primary} />
+        <ActivityIndicator size="small" color={chartTokens.current} />
       </View>
     );
   }
 
   if (!hasMore && productCount > 0) {
     return (
-      <View style={{ paddingVertical: 24, alignItems: "center" }}>
-        <Text style={{ color: colors.neutral, fontSize: 13 }}>
-          No more products
+      <View
+        style={{
+          paddingVertical: 24,
+          alignItems: "center",
+          flexDirection: "row",
+          justifyContent: "center",
+          gap: 6,
+        }}
+      >
+        <CheckCircle2 size={14} color={cardTokens.inkMuted} />
+        <Text
+          style={[
+            typography.Poppins_xs_regular,
+            { color: cardTokens.inkMuted, fontSize: 12.5 },
+          ]}
+        >
+          You've reached the end
         </Text>
       </View>
     );
   }
 
   return null;
-}
-
-interface ProductListEmptyProps {
-  isLoading: boolean;
-}
-
-export function ProductListEmpty({ isLoading }: ProductListEmptyProps) {
-  if (isLoading) {
-    return (
-      <View style={{ paddingVertical: 60, alignItems: "center" }}>
-        <ActivityIndicator size="large" color={colors.primary} />
-      </View>
-    );
-  }
-
-  return (
-    <View style={{ paddingVertical: 60, alignItems: "center" }}>
-      <Text style={{ color: colors.neutral }}>No products found.</Text>
-    </View>
-  );
 }

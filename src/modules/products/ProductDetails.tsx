@@ -324,11 +324,12 @@ export default function ProductDetails() {
 
   return (
     <>
-      <ScreenLayout>
+      <ScreenLayout scrollable={false}>
         <BackHeader title="Product Details" />
-        <ScreenContent>
+        <ScreenContent className="flex-1">
           <FlatList
-            scrollEnabled={false}
+            style={{ flex: 1 }}
+            keyboardShouldPersistTaps="handled"
             data={[{ key: "content" }]}
             renderItem={() => null}
             ListHeaderComponent={
@@ -348,7 +349,7 @@ export default function ProductDetails() {
               </>
             }
             ListFooterComponent={
-              <View className="pb-32">
+              <View style={{ paddingBottom: 170 }}>
                 {reviewsLoading ? (
                   <Loader />
                 ) : reviewsError ? (
@@ -400,17 +401,15 @@ export default function ProductDetails() {
         </ScreenContent>
       </ScreenLayout>
 
-      <View className="mt-10">
-        <ProductStickyBar
-          product={product}
-          isInCart={isInCart}
-          onAddToCart={handleAddToCart}
-          onRemoveFromCart={handleRemoveFromCart}
-          isCartBusy={isCartBusy}
-          isWishlistBusy={isWishlistBusy}
-          onToggleWishlist={handleToggleWishlist}
-        />
-      </View>
+      <ProductStickyBar
+        product={product}
+        isInCart={isInCart}
+        onAddToCart={handleAddToCart}
+        onRemoveFromCart={handleRemoveFromCart}
+        isCartBusy={isCartBusy}
+        isWishlistBusy={isWishlistBusy}
+        onToggleWishlist={handleToggleWishlist}
+      />
     </>
   );
 }

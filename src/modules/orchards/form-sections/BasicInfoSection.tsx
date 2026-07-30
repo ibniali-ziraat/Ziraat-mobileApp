@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { View } from "react-native";
 
@@ -17,7 +17,6 @@ export default function BasicInfo({ errors, data }) {
   const { control, setValue } = useFormContext();
   if (!control) return null;
 
-  const unitHydrated = useRef(false);
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
 
@@ -27,28 +26,13 @@ export default function BasicInfo({ errors, data }) {
     }
   }, [data?.district]);
 
-  const orchardUnit = useWatch({
-    control,
-    name: "orchardUnit",
-  });
-
   const orchardMode = useWatch({
     control,
     name: "orchardSize.mode",
     defaultValue: "manual",
   });
 
-  useEffect(() => {
-    if (!orchardUnit) return;
-
-    if (!unitHydrated.current) {
-      unitHydrated.current = true;
-      return;
-    }
-
-    setValue("marlas", "");
-    setValue("kanals", "");
-  }, [orchardUnit]);
+  const [marlasCapWarning, setMarlasCapWarning] = useState(false);
 
   const toggleMode = () => {
     setValue(
@@ -62,7 +46,7 @@ export default function BasicInfo({ errors, data }) {
       <FormTextInput
         name="orchardName"
         label="Orchard Name"
-        type="name"
+        type="alphanumeric"
         placeholder="Enter your orchard name"
         required
         error={errors?.orchardName}
@@ -144,38 +128,30 @@ export default function BasicInfo({ errors, data }) {
 
       {orchardMode === "manual" && (
         <View>
-          <SingleSelectInput
-            name="orchardUnit"
-            label="Orchard Size Unit"
-            modalLabel="Select Unit"
-            options={[
-              { label: "Marlas", value: "marlas" },
-              { label: "Kanals", value: "kanals" },
-            ]}
-            error={errors?.orchardUnit}
+          <FormTextInput
+            name="kanals"
+            label="Size in Kanals"
+            type="pincode"
+            placeholder="Enter size in Kanals"
+            error={errors?.kanals}
           />
 
-          {orchardUnit === "marlas" && (
-            <FormTextInput
-              name="marlas"
-              label="Size in Marlas"
-              type="pincode"
-              required
-              placeholder="Enter size in Marlas"
-              error={errors?.marlas}
-            />
-          )}
-
-          {orchardUnit === "kanals" && (
-            <FormTextInput
-              name="kanals"
-              label="Size in Kanals"
-              type="pincode"
-              required
-              placeholder="Enter size in Kanals"
-              error={errors?.kanals}
-            />
-          )}
+          <FormTextInput
+            name="marlas"
+            label="Size in Marlas"
+            type="marlas"
+            placeholder="Enter size in Marlas (max 19)"
+            error={errors?.marlas}
+            warning={
+              marlasCapWarning
+                ? "20 Marlas = 1 Kanal. Add to Kanals instead."
+                : undefined
+            }
+            onChangeText={(rawText) => {
+              const digits = rawText.replace(/\D/g, "");
+              setMarlasCapWarning(Number(digits) > 19);
+            }}
+          />
         </View>
       )}
 

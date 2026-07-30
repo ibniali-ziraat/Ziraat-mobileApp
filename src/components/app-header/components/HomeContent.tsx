@@ -4,22 +4,15 @@ import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useHomeScrollY } from "@/src/contexts/HomeScrollContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
-import WeatherDetailSheet from "@/src/modules/home/components/weather/WeatherDetailSheet";
 import { useHomeWeather } from "@/src/modules/home/hooks/useHomeWeather";
 import { greetingForNow } from "@/src/modules/home/utils/dashboardFormat";
+import { getWeatherBackground } from "@/src/modules/home/utils/weatherBackgrounds";
 import { getWeatherPresentation } from "@/src/modules/home/utils/weatherPictogram";
 import { useNotifications } from "@/src/modules/notifications/hooks/useNotifications";
+import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import {
-  Bell,
-  ChevronRight,
-  Droplets,
-  MapPin,
-  Wind,
-  type LucideIcon,
-} from "lucide-react-native";
-import { useState } from "react";
-import { Text, View } from "react-native";
+import { Bell, ChevronRight, MapPin } from "lucide-react-native";
+import { ImageBackground, Text, View } from "react-native";
 import { Pressable } from "@/src/components/shared/Pressable";
 import Animated, {
   Extrapolation,
@@ -33,55 +26,13 @@ import Animated, {
 const COLLAPSE_DISTANCE = 72;
 
 const GREETING_HEIGHT = 16;
-const PILL_HEIGHT = 32;
-
-/**
- * One reading in the weather pill. Each carries its own icon, so the cells
- * separate themselves and the row needs no dividers between them.
- */
-const Reading = ({
-  icon: Icon,
-  value,
-  accent = false,
-  shrink = false,
-  iconColor = cardTokens.inkMuted,
-}: {
-  icon: LucideIcon;
-  value: string;
-  accent?: boolean;
-  shrink?: boolean;
-  iconColor?: string;
-}) => (
-  <View
-    style={{
-      flexDirection: "row",
-      alignItems: "center",
-      flexShrink: shrink ? 1 : 0,
-    }}
-  >
-    <Icon size={accent ? 15 : 13} color={iconColor} />
-    <Text
-      numberOfLines={1}
-      style={[
-        accent ? typography.Poppins_xs_semibold : typography.Poppins_xs_regular,
-        {
-          color: accent ? cardTokens.inkPrimary : cardTokens.inkSecondary,
-          fontSize: accent ? 12.5 : 11.5,
-          marginLeft: 4,
-        },
-      ]}
-    >
-      {value}
-    </Text>
-  </View>
-);
+const WEATHER_CARD_HEIGHT = 108;
 
 const HomeContent = () => {
   const { userId } = useAuth();
   const { data } = useProfileQuery(userId);
   const { count } = useNotifications();
-  const { currentWeather, hourly } = useHomeWeather();
-  const [weatherOpen, setWeatherOpen] = useState(false);
+  const { currentWeather } = useHomeWeather();
 
   const sharedScrollY = useHomeScrollY();
   const fallbackScrollY = useSharedValue(0);
@@ -115,20 +66,22 @@ const HomeContent = () => {
     return { width: size, height: size, borderRadius: size / 2 };
   });
 
-  const pillStyle = useAnimatedStyle(() => ({
-    height: interpolate(progress.value, [0, 1], [PILL_HEIGHT, 0]),
+  const weatherCardStyle = useAnimatedStyle(() => ({
+    height: interpolate(progress.value, [0, 1], [WEATHER_CARD_HEIGHT, 0]),
     marginTop: interpolate(progress.value, [0, 1], [12, 0]),
     opacity: interpolate(progress.value, [0, 0.6], [1, 0], Extrapolation.CLAMP),
   }));
 
   const name = data?.fullName ?? "Ziraat";
 
+  const isDaylight = currentWeather?.isDaylight !== 0;
   const weather = getWeatherPresentation(
     currentWeather?.condition ?? 0,
     currentWeather?.conditionSet ?? "daily",
-    currentWeather?.isDaylight !== 0,
+    isDaylight,
   );
   const WeatherIcon = weather.icon;
+  const weatherBackground = getWeatherBackground(weather.effect, isDaylight);
 
   const temp =
     typeof currentWeather?.tempC === "number"
@@ -141,8 +94,15 @@ const HomeContent = () => {
       : null;
   const wind =
     typeof currentWeather?.windKph === "number" && currentWeather.windKph > 0
-      ? `${Math.round(currentWeather.windKph)} km/h`
+      ? `${Math.round(currentWeather.windKph)} km/h wind`
       : null;
+  const highLow =
+    currentWeather?.highTemp != null && currentWeather?.lowTemp != null
+      ? `H ${currentWeather.highTemp}°  L ${currentWeather.lowTemp}°`
+      : null;
+  const subtitle = [highLow, humidity ? `${humidity} humidity` : null, wind]
+    .filter(Boolean)
+    .join("  •  ");
 
   return (
     <Animated.View
@@ -225,47 +185,123 @@ const HomeContent = () => {
         </Animated.View>
       </View>
 
-      <Animated.View style={[{ overflow: "hidden" }, pillStyle]}>
+      <Animated.View
+        style={[{ overflow: "hidden", borderRadius: 24 }, weatherCardStyle]}
+      >
         <Pressable
-          onPress={() => setWeatherOpen(true)}
+          onPress={() => router.push(ROUTES.WEATHER.DETAILS)}
           accessibilityRole="button"
-          accessibilityLabel="Weather details"
-          style={({ pressed }) => ({
-            alignSelf: "stretch",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-            height: PILL_HEIGHT,
-            paddingHorizontal: 12,
-            borderRadius: 999,
-            borderCurve: "continuous",
-            borderWidth: 1,
-            borderColor: cardTokens.hairline,
-            backgroundColor: cardTokens.mutedSurface,
-            opacity: pressed ? 0.7 : 1,
-          })}
+          accessibilityLabel="Open weather forecast"
+          style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1 })}
         >
-          <Reading
-            icon={WeatherIcon}
-            value={temp}
-            accent
-            iconColor={chartTokens.current}
-          />
-          {humidity ? <Reading icon={Droplets} value={humidity} /> : null}
-          {wind ? <Reading icon={Wind} value={wind} /> : null}
-          <Reading icon={MapPin} value={location} shrink />
+          <ImageBackground
+            source={weatherBackground}
+            resizeMode="cover"
+            style={{ height: WEATHER_CARD_HEIGHT, justifyContent: "center" }}
+          >
+            <LinearGradient
+              colors={["rgba(6,16,8,0.66)", "rgba(6,16,8,0.18)"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0.4 }}
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                paddingHorizontal: 16,
+              }}
+            >
+              <View style={{ flex: 1, marginRight: 10 }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <MapPin size={11} color="rgba(255,255,255,0.8)" />
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      typography.Poppins_xs_medium,
+                      {
+                        color: "rgba(255,255,255,0.85)",
+                        fontSize: 11,
+                        marginLeft: 4,
+                      },
+                    ]}
+                  >
+                    {location}
+                  </Text>
+                </View>
 
-          {/* The pill opens the weather sheet, so it has to read as a button. */}
-          <ChevronRight size={14} color={cardTokens.inkSecondary} />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "flex-end",
+                    marginTop: 4,
+                  }}
+                >
+                  <Text
+                    style={[
+                      typography.Poppins_l_semibold,
+                      { color: "#FFFFFF", fontSize: 34, lineHeight: 38 },
+                    ]}
+                  >
+                    {temp}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      typography.Poppins_xs_medium,
+                      {
+                        color: "rgba(255,255,255,0.88)",
+                        fontSize: 12.5,
+                        marginLeft: 8,
+                        marginBottom: 6,
+                      },
+                    ]}
+                  >
+                    {weather.label}
+                  </Text>
+                </View>
+
+                {subtitle ? (
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      typography.Poppins_xs_regular,
+                      {
+                        color: "rgba(255,255,255,0.78)",
+                        fontSize: 10.5,
+                        marginTop: 3,
+                      },
+                    ]}
+                  >
+                    {subtitle}
+                  </Text>
+                ) : null}
+              </View>
+
+              <View style={{ alignItems: "center" }}>
+                <View
+                  style={{
+                    width: 46,
+                    height: 46,
+                    borderRadius: 23,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "rgba(255,255,255,0.18)",
+                    borderWidth: 1,
+                    borderColor: "rgba(255,255,255,0.24)",
+                  }}
+                >
+                  <WeatherIcon size={24} strokeWidth={1.8} color="#FFFFFF" />
+                </View>
+                <ChevronRight
+                  size={14}
+                  color="rgba(255,255,255,0.75)"
+                  style={{ marginTop: 6 }}
+                />
+              </View>
+            </LinearGradient>
+          </ImageBackground>
         </Pressable>
       </Animated.View>
-
-      <WeatherDetailSheet
-        visible={weatherOpen}
-        onClose={() => setWeatherOpen(false)}
-        weather={currentWeather}
-        hourly={hourly}
-      />
     </Animated.View>
   );
 };
