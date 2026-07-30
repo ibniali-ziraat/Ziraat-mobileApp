@@ -162,3 +162,21 @@ export const VARIETIES_LIST = [
   "Ambri",
   "Other",
 ].map((v) => ({ label: v, value: v }));
+
+/**
+ * Every ownership type an orchard can be registered under. Used both by the
+ * registration form and by the orchard-list filter, so the filter can never
+ * drift out of sync with what the form can actually produce.
+ */
+export const OWNERSHIP_TYPES = [
+  "Self-Owned",
+  "Joint",
+  "Leased",
+  "Rented",
+  "Other",
+] as const;
+
+export const OWNERSHIP_TYPE_OPTIONS = OWNERSHIP_TYPES.map((x) => ({
+  label: x,
+  value: x,
+}));

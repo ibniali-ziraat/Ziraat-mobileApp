@@ -1,6 +1,6 @@
 import { colors } from "@/src/constants/colors";
 import React from "react";
-import { Pressable } from "react-native";
+import { Pressable } from "@/src/components/shared/Pressable";
 
 interface IconButtonProps {
   onPress: () => void;

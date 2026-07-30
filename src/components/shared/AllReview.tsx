@@ -5,7 +5,8 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ArrowRight, ThumbsUp } from "lucide-react-native";
 import { useMemo, useState } from "react";
-import { Platform, Pressable, Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
+import { Pressable } from "@/src/components/shared/Pressable";
 import { ScreenContent } from "./ScreenContent";
 import ScreenLayout from "./ScreenLayout";
 

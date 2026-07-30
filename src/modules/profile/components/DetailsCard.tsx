@@ -1,8 +1,12 @@
-import CsText from "@/src/components/shared/CsText";
-import { colors } from "@/src/constants/colors";
-import { shadows } from "@/src/constants/shadows";
+import {
+  cardShadow,
+  cardTokens,
+  chartTokens,
+} from "@/src/constants/dashboardTheme";
+import { typography } from "@/src/constants/fonts/typography";
 import { PencilLine, Plus, Trash2 } from "lucide-react-native";
-import { Pressable, View } from "react-native";
+import { Text, View } from "react-native";
+import { Pressable } from "@/src/components/shared/Pressable";
 
 interface DetailItem {
   title: string;
@@ -15,9 +19,34 @@ interface DetailsCardProps {
   items?: DetailItem[];
   onEdit?: () => void;
   onDelete?: () => void;
-
   onAdd?: () => void;
   emptyActionLabel?: string;
+}
+
+function IconAction({
+  onPress,
+  children,
+}: {
+  onPress: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <Pressable
+      onPress={onPress}
+      hitSlop={8}
+      style={({ pressed }) => ({
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: cardTokens.mutedSurface,
+        opacity: pressed ? 0.6 : 1,
+      })}
+    >
+      {children}
+    </Pressable>
+  );
 }
 
 export default function DetailsCard({
@@ -26,7 +55,7 @@ export default function DetailsCard({
   onEdit,
   onDelete,
   onAdd,
-  emptyActionLabel = "Add Details",
+  emptyActionLabel = "Add details",
 }: DetailsCardProps) {
   const isEmpty = items.length === 0;
 
@@ -34,160 +63,146 @@ export default function DetailsCard({
     <View
       style={[
         {
-          backgroundColor: colors.light,
-          borderRadius: 16,
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          borderWidth: 1,
+          borderColor: cardTokens.border,
           padding: 16,
-          marginVertical: 8,
-
-          // shadowColor: colors.dark,
-          // shadowOffset: { width: 0, height: 3 },
-          // shadowOpacity: 0.08,
-          // shadowRadius: 1,
-          // elevation: 3,
-          // borderWidth: 1,
-          // borderColor: colors.light,
+          marginBottom: 14,
         },
-        shadows.profile_card,
+        cardShadow,
       ]}
     >
-      {/* Header */}
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: 14,
+          marginBottom: isEmpty ? 14 : 6,
         }}
       >
-        <CsText
-          style={{
-            fontSize: 18,
-            fontWeight: "600",
-            color: colors.dark,
-          }}
+        <Text
+          style={[
+            typography.Poppins_s_semibold,
+            { color: cardTokens.inkPrimary, fontSize: 15 },
+          ]}
         >
           {heading}
-        </CsText>
+        </Text>
 
-        {!isEmpty && (
-          <View style={{ flexDirection: "row", gap: 12 }}>
-            {onEdit && (
-              <Pressable onPress={onEdit}>
-                <PencilLine size={18} color={colors.primary} />
-              </Pressable>
-            )}
+        {!isEmpty ? (
+          <View style={{ flexDirection: "row", gap: 8 }}>
+            {onEdit ? (
+              <IconAction onPress={onEdit}>
+                <PencilLine size={15} color={cardTokens.inkSecondary} />
+              </IconAction>
+            ) : null}
 
-            {onDelete && (
-              <Pressable onPress={onDelete}>
-                <Trash2 size={18} color={colors.secondary} />
-              </Pressable>
-            )}
+            {onDelete ? (
+              <IconAction onPress={onDelete}>
+                <Trash2 size={15} color={chartTokens.negative} />
+              </IconAction>
+            ) : null}
           </View>
-        )}
+        ) : null}
       </View>
 
       {isEmpty ? (
         <Pressable
           onPress={onAdd}
-          activeOpacity={0.85}
-          style={{
+          style={({ pressed }) => ({
             alignItems: "center",
             justifyContent: "center",
-            paddingVertical: 15,
-            borderRadius: 14,
-            borderWidth: 1.5,
+            paddingVertical: 20,
+            borderRadius: 16,
+            borderCurve: "continuous",
+            borderWidth: 1,
             borderStyle: "dashed",
-            borderColor: colors.primary + "55",
-            backgroundColor: colors.primary + "08",
-          }}
+            borderColor: cardTokens.border,
+            backgroundColor: cardTokens.mutedSurface,
+            opacity: pressed ? 0.75 : 1,
+          })}
         >
-          {/* Icon bubble */}
           <View
             style={{
-              width: 33,
-              height: 33,
-              borderRadius: 22,
-              backgroundColor: colors.primary + "20",
+              width: 34,
+              height: 34,
+              borderRadius: 17,
+              backgroundColor: cardTokens.surface,
               alignItems: "center",
               justifyContent: "center",
-              marginBottom: 10,
+              marginBottom: 9,
             }}
           >
-            <Plus size={20} color={colors.primary} />
+            <Plus size={18} color={chartTokens.current} />
           </View>
 
-          <CsText
-            style={{
-              fontSize: 15,
-              fontWeight: "700",
-              color: colors.primary,
-            }}
+          <Text
+            style={[
+              typography.Poppins_xs_semibold,
+              { color: chartTokens.current, fontSize: 13 },
+            ]}
           >
             {emptyActionLabel}
-          </CsText>
+          </Text>
 
-          <CsText
-            style={{
-              fontSize: 12,
-              color: colors.neutral,
-              marginTop: 4,
-              textAlign: "center",
-            }}
+          <Text
+            style={[
+              typography.Poppins_xs_regular,
+              { color: cardTokens.inkMuted, fontSize: 10.5, marginTop: 3 },
+            ]}
           >
-            Tap to add information
-          </CsText>
+            Tap to add this information
+          </Text>
         </Pressable>
       ) : (
-        <View style={{ gap: 20 }}>
+        <View>
           {items.map((item, index) => (
-            <View key={item.title}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View
-                  style={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 12,
-                    backgroundColor: colors.primary + "15",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginRight: 14,
-                  }}
-                >
-                  {item.icon}
-                </View>
-
-                <View style={{ flex: 1 }}>
-                  <CsText
-                    style={{
-                      fontSize: 13,
-                      fontWeight: "600",
-                      color: colors.dark,
-                    }}
-                  >
-                    {item.title}
-                  </CsText>
-
-                  <CsText
-                    style={{
-                      color: colors.neutral,
-                      fontSize: 14,
-                    }}
-                  >
-                    {item.value || "—"}
-                  </CsText>
-                </View>
+            <View
+              key={item.title}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                paddingVertical: 12,
+                borderBottomWidth: index < items.length - 1 ? 1 : 0,
+                borderBottomColor: cardTokens.border,
+              }}
+            >
+              <View
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 12,
+                  borderCurve: "continuous",
+                  backgroundColor: cardTokens.mutedSurface,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 12,
+                }}
+              >
+                {item.icon}
               </View>
 
-              {index < items.length - 1 && (
-                <View
-                  style={{
-                    marginLeft: 58,
-                    marginTop: 10,
-                    height: 1,
-                    backgroundColor: colors.light,
-                  }}
-                />
-              )}
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={[
+                    typography.Poppins_xs_regular,
+                    { color: cardTokens.inkMuted, fontSize: 11 },
+                  ]}
+                >
+                  {item.title}
+                </Text>
+
+                <Text
+                  style={[
+                    typography.Poppins_s_medium,
+                    { color: cardTokens.inkPrimary, fontSize: 14, marginTop: 1 },
+                  ]}
+                >
+                  {item.value || "—"}
+                </Text>
+              </View>
             </View>
           ))}
         </View>

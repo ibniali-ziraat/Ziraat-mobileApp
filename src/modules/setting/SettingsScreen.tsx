@@ -1,8 +1,13 @@
 import BackHeader from "@/src/components/shared/BackHeader";
-import CsText from "@/src/components/shared/CsText";
+import { Pressable } from "@/src/components/shared/Pressable";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { colors } from "@/src/constants/colors";
+import {
+  cardShadow,
+  cardTokens,
+  chartTokens,
+} from "@/src/constants/dashboardTheme";
+import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import {
@@ -10,213 +15,228 @@ import {
   FileText,
   HelpCircle,
   Lock,
-  MapPin,
   PhoneCall,
   Shield,
-  Trash2,
-  User,
+  type LucideIcon,
 } from "lucide-react-native";
-import { useRef } from "react";
-import { Animated, Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
-/* ---------------- ROW ---------------- */
-
-const Row = ({ icon, label, onPress, danger = false }) => {
-  const scale = useRef(new Animated.Value(1)).current;
-
-  return (
-    <Animated.View
-      style={{
-        transform: [{ scale }],
-      }}
-    >
-      <Pressable
-        onPress={onPress}
-        onPressIn={() =>
-          Animated.spring(scale, {
-            toValue: 0.985,
-            useNativeDriver: true,
-          }).start()
-        }
-        onPressOut={() =>
-          Animated.spring(scale, {
-            toValue: 1,
-            useNativeDriver: true,
-          }).start()
-        }
-        className="flex-row items-center justify-between py-4"
-      >
-        {/* LEFT */}
-        <View className="flex-row items-center flex-1">
-          <View className="mr-4">{icon}</View>
-
-          <CsText
-            style={{
-              fontSize: 15,
-              color: danger ? colors.error : colors.dark,
-              fontWeight: "500",
-            }}
-          >
-            {label}
-          </CsText>
-        </View>
-
-        {/* RIGHT */}
-        <ChevronRight
-          size={18}
-          color={colors.neutral}
-          style={{ opacity: 0.5 }}
-        />
-      </Pressable>
-    </Animated.View>
-  );
+type SettingsRow = {
+  label: string;
+  /** One line on what the row does — the screen carries few rows, so each
+   *  one says enough to be worth its space. */
+  description: string;
+  icon: LucideIcon;
+  onPress: () => void;
 };
 
-/* ---------------- DIVIDER ---------------- */
+type SettingsGroup = {
+  title: string;
+  rows: SettingsRow[];
+};
 
-const Divider = () => (
-  <View
-    className="ml-9 h-[1px]"
-    style={{
-      backgroundColor: colors.cardBorder,
-    }}
-  />
-);
+const groups: SettingsGroup[] = [
+  {
+    title: "Account",
+    rows: [
+      {
+        label: "Change Password",
+        description: "Update the password you sign in with",
+        icon: Lock,
+        onPress: () => router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD),
+      },
+    ],
+  },
+  {
+    title: "Support & FAQs",
+    rows: [
+      {
+        label: "Contact Support",
+        description: "Talk to the Ziraat team about an issue",
+        icon: PhoneCall,
+        onPress: () => router.push("/contact-Support"),
+      },
+      {
+        label: "FAQs",
+        description: "Answers to the questions farmers ask most",
+        icon: HelpCircle,
+        onPress: () => router.push("/faq"),
+      },
+    ],
+  },
+  {
+    title: "Privacy & Security",
+    rows: [
+      {
+        label: "Privacy Policy",
+        description: "What we collect and how it is handled",
+        icon: Shield,
+        onPress: () => router.push("/user/privacy"),
+      },
+      {
+        label: "Terms & Conditions",
+        description: "The terms you agreed to when you signed up",
+        icon: FileText,
+        onPress: () => router.push("/user/terms"),
+      },
+    ],
+  },
+];
 
-/* ---------------- SECTION TITLE ---------------- */
+function SettingsCard({ group }: { group: SettingsGroup }) {
+  return (
+    <View style={{ marginBottom: 22 }}>
+      <Text
+        style={[
+          typography.Poppins_xs_medium,
+          {
+            color: cardTokens.inkMuted,
+            fontSize: 11,
+            marginBottom: 8,
+            marginLeft: 4,
+          },
+        ]}
+      >
+        {group.title}
+      </Text>
 
-const SectionTitle = ({ title }) => (
-  <Text
-    style={{
-      fontSize: 16,
-      color: colors.neutral,
-      fontWeight: "600",
-      marginBottom: 12,
-      marginTop: 28,
-    }}
-  >
-    {title}
-  </Text>
-);
+      <View
+        style={[
+          {
+            borderRadius: cardTokens.radius,
+            borderCurve: "continuous",
+            borderWidth: 1,
+            borderColor: cardTokens.border,
+            backgroundColor: cardTokens.surface,
+            overflow: "hidden",
+          },
+          cardShadow,
+        ]}
+      >
+        {group.rows.map((row, index) => {
+          const Icon = row.icon;
+          const isLast = index === group.rows.length - 1;
 
-/* ---------------- SETTINGS SCREEN ---------------- */
+          return (
+            <Pressable
+              key={row.label}
+              onPress={row.onPress}
+              accessibilityRole="button"
+              accessibilityHint={row.description}
+              style={({ pressed }) => ({
+                flexDirection: "row",
+                alignItems: "center",
+                paddingHorizontal: 14,
+                paddingVertical: 15,
+                backgroundColor: pressed
+                  ? cardTokens.mutedSurface
+                  : cardTokens.surface,
+              })}
+            >
+              <View
+                style={{
+                  width: 38,
+                  height: 38,
+                  borderRadius: 13,
+                  borderCurve: "continuous",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: cardTokens.mutedSurface,
+                }}
+              >
+                <Icon size={18} color={chartTokens.current} strokeWidth={1.9} />
+              </View>
+
+              <View style={{ flex: 1, marginLeft: 12, marginRight: 8 }}>
+                <Text
+                  numberOfLines={1}
+                  style={[
+                    typography.Poppins_s_medium,
+                    { color: cardTokens.inkPrimary, fontSize: 14 },
+                  ]}
+                >
+                  {row.label}
+                </Text>
+                <Text
+                  numberOfLines={2}
+                  style={[
+                    typography.Poppins_xs_regular,
+                    {
+                      color: cardTokens.inkMuted,
+                      fontSize: 11,
+                      marginTop: 2,
+                    },
+                  ]}
+                >
+                  {row.description}
+                </Text>
+              </View>
+
+              <ChevronRight size={17} color={cardTokens.inkMuted} />
+
+              {/* Hairline divider inset past the icon */}
+              {!isLast ? (
+                <View
+                  style={{
+                    position: "absolute",
+                    left: 64,
+                    right: 0,
+                    bottom: 0,
+                    height: 1,
+                    backgroundColor: cardTokens.border,
+                  }}
+                />
+              ) : null}
+            </Pressable>
+          );
+        })}
+      </View>
+    </View>
+  );
+}
 
 export default function SettingsScreen() {
   return (
     <ScreenLayout>
-      <ScreenContent>
-        <View
-          className="py-4"
-          style={{
-            backgroundColor: colors.light,
-          }}
-        >
-          <BackHeader
-            title="Settings"
-            desc="Manage your account preferences and privacy"
-          />
+      <BackHeader
+        title="Settings"
+        desc="Manage your account preferences and privacy"
+      />
 
-          <View>
-            <SectionTitle title="Account" />
+      {/* flex:1 + marginTop:auto on the footer keeps the version note pinned to
+          the bottom, so a short list of rows still fills the screen. */}
+      <ScreenContent className="flex-1">
+        <View style={{ flex: 1, paddingTop: 8 }}>
+          {groups.map((group) => (
+            <SettingsCard key={group.title} group={group} />
+          ))}
 
-            <Row
-              label="Profile"
-              icon={<User size={22} color={colors.primary} />}
-              onPress={() => router.push("/profile-view")}
-            />
-
-            <Divider />
-
-            {/* <Row
-              label="Change Password"
-              icon={<Lock size={22} color={colors.dark} />}
-              onPress={() =>
-                router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD)
-              }
-            /> */}
-
-            {/* SUPPORT */}
-            <SectionTitle title="Support & FAQs" />
-
-            <Row
-              label="Contact Support"
-              icon={<PhoneCall size={22} color={colors.primary} />}
-              onPress={() => router.push("/contact-Support")}
-            />
-
-            <Divider />
-
-            <Row
-              label="Add Address"
-              icon={<MapPin size={22} color={colors.primary} />}
-              onPress={() =>
-                router.push(ROUTES.SHOPPING.CHECKOUT.CREATE_ADDRESS)
-              }
-            />
-
-            <Divider />
-
-            <Row
-              label="FAQs"
-              icon={<HelpCircle size={22} color={colors.primary} />}
-              onPress={() => router.push("/faq")}
-            />
-
-            {/* PRIVACY */}
-            <SectionTitle title="Privacy & Security" />
-
-            <Row
-              label="Privacy Policy"
-              icon={<Shield size={22} color={colors.primary} />}
-              onPress={() => router.push("/user/privacy")}
-            />
-            <Divider />
-
-            <Row
-              label="Terms & Conditions"
-              icon={<FileText size={22} color={colors.primary} />}
-              onPress={() => router.push("/user/terms")}
-            />
-
-            {/* ACCOUNT MANAGEMENT */}
-            <SectionTitle title="Account Management" />
-
-            <Row
-              label="Change Password"
-              icon={<Lock size={22} color={colors.primary} />}
-              onPress={() => router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD)}
-            />
-            <Row
-              danger
-              label="Delete Account"
-              icon={<Trash2 size={22} color={colors.error} />}
-              onPress={() => {
-                console.log("Delete Account clicked");
-                router.push(ROUTES.ACCOUNT.DELETE_ACCOUNT);
+          <View style={{ marginTop: "auto", alignItems: "center", paddingTop: 32 }}>
+            <View
+              style={{
+                width: 34,
+                height: 3,
+                borderRadius: 2,
+                backgroundColor: chartTokens.track,
+                marginBottom: 14,
               }}
             />
-
-            {/* FOOTER */}
-            <View className="items-center mt-14">
-              <CsText
-                style={{
-                  fontSize: 12,
-                  color: colors.neutral,
-                }}
-              >
-                Version 1.2.0.1
-              </CsText>
-
-              <CsText
-                style={{
-                  fontSize: 11,
-                  color: colors.neutral,
-                  marginTop: 4,
-                }}
-              >
-                © 2026 Ziraat Smart Farming
-              </CsText>
-            </View>
+            <Text
+              style={[
+                typography.Poppins_xs_medium,
+                { color: cardTokens.inkSecondary, fontSize: 12 },
+              ]}
+            >
+              Version 1.2.0.1
+            </Text>
+            <Text
+              style={[
+                typography.Poppins_xs_regular,
+                { color: cardTokens.inkMuted, fontSize: 11, marginTop: 3 },
+              ]}
+            >
+              © 2026 Ziraat Smart Farming
+            </Text>
           </View>
         </View>
       </ScreenContent>

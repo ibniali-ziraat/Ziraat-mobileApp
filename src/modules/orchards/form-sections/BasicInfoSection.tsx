@@ -7,6 +7,7 @@ import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
+import { OWNERSHIP_TYPE_OPTIONS } from "../constants/orchardOptions";
 
 export default function BasicInfo({ errors, data }) {
   console.log(data, "data...");
@@ -205,13 +206,7 @@ export default function BasicInfo({ errors, data }) {
         name="ownershipType"
         label="Ownership Type"
         modalLabel="Ownership Type"
-        options={[
-          { label: "Self-Owned", value: "Self-Owned" },
-          { label: "Joint", value: "Joint" },
-          { label: "Leased", value: "Leased" },
-          { label: "Rented", value: "Rented" },
-          { label: "Other", value: "Other" },
-        ]}
+        options={OWNERSHIP_TYPE_OPTIONS}
         error={errors?.ownershipType?.message}
       />
 

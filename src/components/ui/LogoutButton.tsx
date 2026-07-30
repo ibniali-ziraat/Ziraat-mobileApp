@@ -1,49 +1,58 @@
-import { colors } from "@/src/constants/colors";
+import {
+  cardShadow,
+  cardTokens,
+  chartTokens,
+} from "@/src/constants/dashboardTheme";
+import { typography } from "@/src/constants/fonts/typography";
 import { LogOut } from "lucide-react-native";
-import { Pressable, View } from "react-native";
-import CsText from "../shared/CsText";
+import { Text, View } from "react-native";
+import { Pressable } from "@/src/components/shared/Pressable";
 
 export default function LogoutButton({ onPress }) {
   return (
     <Pressable
       onPress={onPress}
-      activeOpacity={0.85}
-      style={{
-        marginTop: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 10,
-        borderRadius: 16,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        borderWidth: 1,
-        borderColor: colors.error,
-      }}
+      style={({ pressed }) => [
+        {
+          flexDirection: "row",
+          alignItems: "center",
+          marginTop: 6,
+          paddingHorizontal: 14,
+          paddingVertical: 13,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          borderWidth: 1,
+          borderColor: cardTokens.border,
+          backgroundColor: pressed
+            ? cardTokens.mutedSurface
+            : cardTokens.surface,
+        },
+        cardShadow,
+      ]}
     >
-      {/* ICON CONTAINER */}
       <View
         style={{
           width: 34,
           height: 34,
           borderRadius: 12,
+          borderCurve: "continuous",
           alignItems: "center",
           justifyContent: "center",
-          marginRight: 10,
+          backgroundColor: cardTokens.mutedSurface,
+          marginRight: 12,
         }}
       >
-        <LogOut size={18} color={colors.error} strokeWidth={2.5} />
+        <LogOut size={17} color={chartTokens.negative} strokeWidth={1.9} />
       </View>
 
-      <CsText
-        style={{
-          fontSize: 15,
-          fontWeight: "700",
-          color: colors.error,
-          letterSpacing: 0.3,
-        }}
+      <Text
+        style={[
+          typography.Poppins_s_medium,
+          { color: chartTokens.negative, fontSize: 14 },
+        ]}
       >
-        Logout
-      </CsText>
+        Log out
+      </Text>
     </Pressable>
   );
 }

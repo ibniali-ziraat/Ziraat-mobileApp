@@ -1,21 +1,26 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
+import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import { ArrowUpRight, CirclePlus } from "lucide-react-native";
+import { ArrowUpRight, ChevronRight, CirclePlus } from "lucide-react-native";
 import { useMemo } from "react";
-import {
-  ImageBackground,
-  type ImageSourcePropType,
-  Pressable,
-  ScrollView,
-  View,
-} from "react-native";
+import { Dimensions, ImageBackground, type ImageSourcePropType, ScrollView, View } from "react-native";
+import { Pressable } from "@/src/components/shared/Pressable";
 import { useOrchardsByUserQuery } from "../../orchards/hooks/useOrchardsQuery";
 
-const CARD_WIDTH = 156;
+const SCREEN_PADDING = 15;
+const CARD_GAP = 12;
+const VISIBLE_CARDS = 2.5;
+
+/** Sized so two and a half cards sit in view — the half is the "more" cue. */
+const CARD_WIDTH =
+  (Dimensions.get("window").width -
+    SCREEN_PADDING * 2 -
+    CARD_GAP * Math.floor(VISIBLE_CARDS)) /
+  VISIBLE_CARDS;
 const CARD_HEIGHT = 140;
 const fallbackImage = require("@/assets/images/orchard-card-bg.png");
 
@@ -64,12 +69,19 @@ const getOrchardSize = (orchard: OrchardSummary): string => {
 export default function QuickActions() {
   const { data: orchardData } = useOrchardsByUserQuery();
 
+  const allOrchards = useMemo(
+    () => [...(orchardData ?? [])] as OrchardSummary[],
+    [orchardData],
+  );
+
+  const totalOrchards = allOrchards.length;
+
   const recentOrchards = useMemo(
     () =>
-      ([...(orchardData ?? [])] as OrchardSummary[])
+      [...allOrchards]
         .sort((a, b) => getCreatedTime(b) - getCreatedTime(a))
         .slice(0, 3),
-    [orchardData],
+    [allOrchards],
   );
 
   const openOrchard = (id: string | number) => {
@@ -97,22 +109,40 @@ export default function QuickActions() {
   return (
     <View style={{ marginBottom: 20, marginTop: 20 }}>
       <View className="mb-3 flex-row items-center justify-between">
-        <CsText
-          style={[typography.Poppins_m_semibold, { color: colors.dark }]}
-        >
+        <CsText style={[typography.Poppins_m_semibold, { color: colors.dark }]}>
           Recent Orchards
         </CsText>
-        {/* <CsText
-          style={[typography.Poppins_xs_medium, { color: colors.darkHover }]}
+
+        {/* Shows how many of the total are on screen, so the cut-off is obvious */}
+        <Pressable
+          onPress={() => router.push(ROUTES.TABS.ORCHARDS)}
+          hitSlop={10}
+          style={({ pressed }) => ({
+            flexDirection: "row",
+            alignItems: "center",
+            paddingVertical: 4,
+            paddingHorizontal: 10,
+            borderRadius: 999,
+            backgroundColor: cardTokens.mutedSurface,
+            opacity: pressed ? 0.6 : 1,
+          })}
         >
-          Quick access
-        </CsText> */}
+          <CsText
+            style={[
+              typography.Poppins_xs_semibold,
+              { color: cardTokens.inkPrimary, fontSize: 11 },
+            ]}
+          >
+            {recentOrchards.length} of {totalOrchards}
+          </CsText>
+          <ChevronRight size={13} color={cardTokens.inkMuted} />
+        </Pressable>
       </View>
 
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 8, gap: 12 }}
+        contentContainerStyle={{ paddingBottom: 8, gap: CARD_GAP }}
       >
         {recentOrchards.map((orchard) => (
           <Pressable
@@ -286,9 +316,7 @@ function AddOrchardAction({
         >
           <CirclePlus size={25} color={colors.light} />
         </View>
-        <CsText
-          style={[typography.Poppins_s_semibold, { color: colors.dark }]}
-        >
+        <CsText style={[typography.Poppins_s_semibold, { color: colors.dark }]}>
           Add Orchard
         </CsText>
         <CsText

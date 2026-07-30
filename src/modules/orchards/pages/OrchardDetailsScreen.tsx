@@ -65,7 +65,6 @@ import { orchardRoutes } from "../routes/orchardRoutes";
 
 type SectionKey =
   | "overview"
-  | "location"
   | "varieties"
   | "soil"
   | "infrastructure"
@@ -73,7 +72,6 @@ type SectionKey =
 
 const sections: { key: SectionKey; label: string }[] = [
   { key: "overview", label: "Overview" },
-  { key: "location", label: "Location" },
   { key: "varieties", label: "Varieties" },
   { key: "soil", label: "Soil & Water" },
   { key: "infrastructure", label: "Infrastructure" },
@@ -87,8 +85,7 @@ const AnimatedImageBackground =
 export default function OrchardDetailsScreen() {
   const { setOrchardProfileId, orchardProfileId } = useAuth();
   const { id } = useLocalSearchParams<{ id: string }>();
-  const [activeSection, setActiveSection] =
-    useState<SectionKey>("overview");
+  const [activeSection, setActiveSection] = useState<SectionKey>("overview");
   const [sectionToDelete, setSectionToDelete] =
     useState<OrchardDeleteKey | null>(null);
   const [varietyToDelete, setVarietyToDelete] = useState<number | null>(null);
@@ -158,9 +155,7 @@ export default function OrchardDetailsScreen() {
     });
   };
 
-  const handlePageChange = (
-    event: NativeSyntheticEvent<NativeScrollEvent>,
-  ) => {
+  const handlePageChange = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / pageWidth);
     const section = sections[index];
     if (!section) return;
@@ -225,6 +220,33 @@ export default function OrchardDetailsScreen() {
             })
           }
         />
+
+        <OrchardDetailsCard
+          heading="Location Details"
+          items={
+            hasData(orchard?.district)
+              ? [
+                  {
+                    title: "District",
+                    value: orchard?.district,
+                    icon: <Building2 size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Tehsil",
+                    value: orchard?.tehsil,
+                    icon: <MapPin size={20} color={colors.primary} />,
+                  },
+                  {
+                    title: "Pin Code",
+                    value: orchard?.pinCode,
+                    icon: <Hash size={20} color={colors.primary} />,
+                  },
+                ]
+              : []
+          }
+          emptyActionLabel="Add Location"
+        />
+
         <ScreenContent>
           <Pressable
             onPress={() => setShowDeleteWhole(true)}
@@ -246,34 +268,6 @@ export default function OrchardDetailsScreen() {
           </Pressable>
         </ScreenContent>
       </>
-    ),
-    location: (
-      <OrchardDetailsCard
-        heading="Location Details"
-        items={
-          hasData(orchard?.district)
-            ? [
-                {
-                  title: "District",
-                  value: orchard?.district,
-                  icon: <Building2 size={20} color={colors.primary} />,
-                },
-                {
-                  title: "Tehsil",
-                  value: orchard?.tehsil,
-                  icon: <MapPin size={20} color={colors.primary} />,
-                },
-                {
-                  title: "Pin Code",
-                  value: orchard?.pinCode,
-                  icon: <Hash size={20} color={colors.primary} />,
-                },
-              ]
-            : []
-        }
-        onAdd={() => router.push(ROUTES.ORCHARDS.REGISTRATION.FARM_INFO)}
-        emptyActionLabel="Add Location"
-      />
     ),
     varieties: (
       <VarietiesCard
@@ -302,8 +296,7 @@ export default function OrchardDetailsScreen() {
                   },
                   {
                     title: "Soil Health Status",
-                    value:
-                      soilWaterData?.soilHealthStatus?.join(", ") || "N/A",
+                    value: soilWaterData?.soilHealthStatus?.join(", ") || "N/A",
                     icon: <Activity size={20} color={colors.primary} />,
                   },
                   {
@@ -446,9 +439,7 @@ export default function OrchardDetailsScreen() {
             : []
         }
         onEdit={
-          hasData(extraData)
-            ? () => goToSection("futureReadiness")
-            : undefined
+          hasData(extraData) ? () => goToSection("futureReadiness") : undefined
         }
         onDelete={
           hasData(extraData)

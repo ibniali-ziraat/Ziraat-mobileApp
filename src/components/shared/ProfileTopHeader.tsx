@@ -1,4 +1,9 @@
 import { colors } from "@/src/constants/colors";
+import {
+  cardShadow,
+  cardTokens,
+  chartTokens,
+} from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import {
   useFileDeleteMutation,
@@ -147,19 +152,42 @@ export default function ProfileTopHeader({
   };
 
   return (
-    <View className="w-full items-center py-5 bg-white rounded-[20px]">
+    <View
+      style={[
+        {
+          width: "100%",
+          alignItems: "center",
+          paddingVertical: 22,
+          paddingHorizontal: 16,
+          marginBottom: 14,
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          borderWidth: 1,
+          borderColor: cardTokens.border,
+        },
+        cardShadow,
+      ]}
+    >
       <View className="relative">
         <Pressable
           activeOpacity={0.9}
           onPress={() => profilePic && setIsPreviewVisible(true)}
-          className="w-[100px] h-[100px] rounded-full border-[3px] items-center justify-center overflow-hidden bg-slate-100"
-          style={{ borderColor: colors.primary }}
+          className="w-[92px] h-[92px] rounded-full items-center justify-center overflow-hidden"
+          style={{
+            backgroundColor: cardTokens.mutedSurface,
+            borderWidth: 1,
+            borderColor: cardTokens.border,
+          }}
         >
           {profilePic ? (
             <Image source={{ uri: profilePic }} className="w-full h-full" />
           ) : (
             <Text
-              style={[{ color: colors.dark }, typography.Poppins_m_regular]}
+              style={[
+                typography.Poppins_l_semibold,
+                { color: cardTokens.inkSecondary, fontSize: 26 },
+              ]}
             >
               {initials}
             </Text>
@@ -168,8 +196,12 @@ export default function ProfileTopHeader({
 
         <Pressable
           onPress={() => setIsMenuVisible(true)}
-          className="absolute bottom-0 right-0 w-[34px] h-[34px] rounded-full items-center justify-center border-2 border-white shadow-md"
-          style={{ backgroundColor: colors.primary }}
+          className="absolute bottom-0 right-0 w-[32px] h-[32px] rounded-full items-center justify-center"
+          style={{
+            backgroundColor: chartTokens.current,
+            borderWidth: 2,
+            borderColor: cardTokens.surface,
+          }}
         >
           {isLoading ? (
             <ActivityIndicator size="small" color="#fff" />
@@ -180,13 +212,26 @@ export default function ProfileTopHeader({
       </View>
 
       <Text
+        numberOfLines={1}
         style={[
-          { color: colors.primary, paddingTop: 14 },
-          typography.Poppins_m_bold,
+          typography.Poppins_l_semibold,
+          { color: cardTokens.inkPrimary, fontSize: 19, paddingTop: 14 },
         ]}
       >
-        {fullName?.toUpperCase() || "User Name"}
+        {fullName || "Your profile"}
       </Text>
+
+      {profileData?.phone ? (
+        <Text
+          numberOfLines={1}
+          style={[
+            typography.Poppins_xs_regular,
+            { color: cardTokens.inkMuted, fontSize: 11.5, marginTop: 3 },
+          ]}
+        >
+          {profileData.phone}
+        </Text>
+      ) : null}
 
       <Modal
         visible={isMenuVisible}

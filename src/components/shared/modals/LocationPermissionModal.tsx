@@ -27,18 +27,8 @@ import {
   Wifi,
 } from "lucide-react-native";
 import { useEffect, useRef } from "react";
-import {
-  Animated,
-  BackHandler,
-  Easing,
-  Linking,
-  Modal,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Animated, BackHandler, Easing, Linking, Modal, Platform, StyleSheet, Text, View } from "react-native";
+import { Pressable } from "@/src/components/shared/Pressable";
 
 interface LocationPermissionModalProps {
   status: LocationStatus;

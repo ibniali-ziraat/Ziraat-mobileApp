@@ -17,6 +17,9 @@ export interface FarmerDashboardFarmOverview {
 export interface FarmerDashboardTip {
   code: string;
   title: string;
+  description?: string;
+  detail?: string;
+  warning?: string;
 }
 
 export interface FarmerDashboardResponse {

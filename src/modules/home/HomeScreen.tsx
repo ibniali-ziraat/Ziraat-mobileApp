@@ -1,92 +1,192 @@
-import LegalDisclaimer from "@/src/components/shared/LegalDisclaimer";
+import DisclaimerNote from "@/src/components/shared/DisclaimerNote";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
-import { useAuth } from "@/src/contexts/AuthContext";
+import { useHomeScrollY } from "@/src/contexts/HomeScrollContext";
 import { useLocationWatcher } from "@/src/hooks/useLocationWatcher";
 import { router } from "expo-router";
 import { JSX, useState } from "react";
-import { Pressable, View } from "react-native";
-import { useRegisterToken } from "../notifications/hooks/useRegisterToken";
 import {
-  useBestDeals,
-  useTrendingProducts,
-} from "../products/hooks/queries/products.queries";
-import FarmerTipsCard from "./components/FarmerTipsCard";
-import FarmOverviewChart from "./components/FarmOverviewChart";
+  RefreshControl,
+  View,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from "react-native";
+import { useRegisterToken } from "../notifications/hooks/useRegisterToken";
+import { useOrchardCompleteness } from "@/src/modules/orchards/hooks/useOrchardCompleteness";
+import OrchardCompletenessCard from "./components/dashboard/OrchardCompletenessCard";
+import DashboardSectionHeader from "./components/dashboard/DashboardSectionHeader";
+import DashboardSkeleton from "./components/dashboard/DashboardSkeleton";
+import DashboardStatsGrid from "./components/dashboard/DashboardStatsGrid";
+import FarmActivityChart from "./components/dashboard/FarmActivityChart";
+import MonthlyOrchardsChart from "./components/dashboard/MonthlyOrchardsChart";
+import OrchardHistoryCard from "./components/dashboard/OrchardHistoryCard";
+import OrchardOverviewCard from "./components/dashboard/OrchardOverviewCard";
+import ProductInsightsCard from "./components/dashboard/ProductInsightsCard";
+import FarmerTipsCarousel from "./components/FarmerTipsCarousel";
 import QuickActions from "./components/QuickActions";
-import SectionTitle from "./components/SectionTitle";
-import WeatherCard from "./components/weatherCard";
-import { useFarmerDashboard } from "./hooks/useFarmerDashboard";
-import { useHomeWeather } from "./hooks/useHomeWeather";
-import { useHomeWishlist } from "./hooks/useHomeWishlist";
+import { useHomeDashboard } from "./hooks/useHomeDashboard";
 
 export default function HomeScreen(): JSX.Element {
-  const { currentWeather } = useHomeWeather();
-  const { sharedWishlistProps } = useHomeWishlist();
-  const { data: trendingData, refetch: refetchTrending } =
-    useTrendingProducts();
-  const { data: bestDealsData, refetch: refetchBestDeals } = useBestDeals();
   const [refreshing, setRefreshing] = useState(false);
 
-  const { coords, status } = useLocationWatcher({ updateInterval: 10_000 });
-
+  const { coords } = useLocationWatcher({ updateInterval: 10_000 });
   useRegisterToken(coords);
+
+  // Feeds the collapsing header, which lives outside this scroll view.
+  const scrollY = useHomeScrollY();
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    if (scrollY) scrollY.value = event.nativeEvent.contentOffset.y;
+  };
+
+  const {
+    orchards,
+    stats,
+    history,
+    areaTrend,
+    orchardGrowth,
+    areaByOrchard,
+    ownershipMix,
+    monthlyRegistrations,
+    completion,
+    activity,
+    products,
+    period,
+    tips,
+    legalDisclaimer,
+    isLoading,
+    refetchAll,
+  } = useHomeDashboard();
+
+  const sectionCompleteness = useOrchardCompleteness(orchards);
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await Promise.all([refetchTrending(), refetchBestDeals()]);
-    setRefreshing(false);
+    try {
+      await refetchAll();
+    } finally {
+      setRefreshing(false);
+    }
   };
 
-  const { userId } = useAuth();
-  const { data: dashboardData } = useFarmerDashboard(userId ?? undefined);
-
   return (
-    <ScreenLayout>
+    <ScreenLayout
+      topPadding={2}
+      onScroll={handleScroll}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+          tintColor={colors.primary}
+          colors={[colors.primary]}
+        />
+      }
+    >
       <ScreenContent>
         <View style={{ backgroundColor: colors.light, flex: 1 }}>
-          <Pressable onPress={() => router.push(ROUTES.WEATHER.DETAILS)}>
-            <WeatherCard current={currentWeather} />
-          </Pressable>
+          {isLoading ? (
+            <DashboardSkeleton />
+          ) : (
+            <>
+              <DashboardSectionHeader
+                title="Your farm at a glance"
+                subtitle="Built from your registered orchard records"
+                actionLabel="Orchards"
+                onAction={() => router.push(ROUTES.TABS.ORCHARDS)}
+                topSpacing={20}
+              />
 
-          <QuickActions />
+              <DashboardStatsGrid
+                stats={stats}
+                activity={activity}
+                areaTrend={areaTrend}
+                orchardGrowth={orchardGrowth}
+                completionPercent={completion.percent}
+                datedPercent={stats.datedPercent}
+                period={period}
+              />
 
-          {/* <View style={{ marginTop: 18 }}>
-            <ListHeader
-              title="Trending Products"
-              icon={<Flame size={22} color={colors.secondary} />}
-            />
-            <TrendingProductsList
-              items={trendingData}
-              {...sharedWishlistProps}
-              variant="carousel"
-              refreshing={refreshing}
-              onRefresh={handleRefresh}
-            />
-          </View> */}
+              <QuickActions />
 
-          {/* <View style={{ marginTop: 52 }}>
-            <ListHeader
-              title="Best Deals"
-              icon={<Tag size={22} color={colors.secondary} />}
-            />
-            <BestDealsList
-              data={bestDealsData}
-              {...sharedWishlistProps}
-              variant="carousel"
-            />
-          </View> */}
+              {stats.totalOrchards > 0 ? (
+                <View style={{ marginTop: 6 }}>
+                  <OrchardOverviewCard
+                    bars={areaByOrchard.bars}
+                    unmeasured={areaByOrchard.unmeasured}
+                    ownership={ownershipMix}
+                    totalOrchards={stats.totalOrchards}
+                    totalArea={stats.totalArea}
+                    districts={stats.districts}
+                  />
+                </View>
+              ) : null}
 
-          <SectionTitle title="Farm Overview" icon={null} />
-          <FarmOverviewChart overview={dashboardData?.home.farmOverview} />
+              {monthlyRegistrations.length > 0 ? (
+                <View style={{ marginTop: 14 }}>
+                  <MonthlyOrchardsChart points={monthlyRegistrations} />
+                </View>
+              ) : null}
 
-          <SectionTitle title="Farmer Tips & Awareness" icon={null} />
-          <FarmerTipsCard tips={dashboardData?.home.tips} />
+              {stats.totalOrchards > 0 ? (
+                <>
+                  <DashboardSectionHeader
+                    title="Finish your orchard records"
+                    subtitle="Sections still waiting on details"
+                    actionLabel="Orchards"
+                    onAction={() => router.push(ROUTES.TABS.ORCHARDS)}
+                  />
 
-          <View style={{ marginBottom: 80 }}>
-            <LegalDisclaimer text={dashboardData?.home.legalDisclaimer} />
+                  <OrchardCompletenessCard
+                    orchards={sectionCompleteness.orchards}
+                    done={sectionCompleteness.done}
+                    total={sectionCompleteness.total}
+                    percent={sectionCompleteness.percent}
+                    incomplete={sectionCompleteness.incomplete}
+                  />
+                </>
+              ) : null}
+
+              {activity.length > 0 ? (
+                <View style={{ marginTop: 14 }}>
+                  <FarmActivityChart activity={activity} period={period} />
+                </View>
+              ) : null}
+
+              <View style={{ marginTop: 14 }}>
+                <OrchardHistoryCard
+                  history={history}
+                  areaTrend={areaTrend}
+                  totalArea={stats.totalArea}
+                />
+              </View>
+
+              <DashboardSectionHeader
+                title="Mostly used this season"
+                subtitle="What farmers are buying right now"
+                actionLabel="Shop"
+                onAction={() => router.push(ROUTES.TABS.PRODUCTS)}
+              />
+
+              <ProductInsightsCard
+                metric={products.metric}
+                bars={products.bars}
+                priceBands={products.priceBands}
+                trendingCount={products.trendingCount}
+                dealsCount={products.dealsCount}
+                averagePrice={products.averagePrice}
+              />
+            </>
+          )}
+
+          <DashboardSectionHeader
+            title="Farmer tips & awareness"
+            subtitle="Guidance tailored to this season"
+          />
+          <FarmerTipsCarousel tips={tips} />
+
+          <View style={{ marginTop: 28, marginBottom: 80 }}>
+            <DisclaimerNote text={legalDisclaimer} />
           </View>
         </View>
       </ScreenContent>

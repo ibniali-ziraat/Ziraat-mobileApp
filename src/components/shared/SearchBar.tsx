@@ -2,6 +2,7 @@
 
 import { colors } from "@/src/constants/colors";
 import { LucideIcon, Search, X } from "lucide-react-native";
+import type { ReactNode } from "react";
 import { Platform, Pressable, View } from "react-native";
 import { TextInput } from "react-native-paper";
 
@@ -16,6 +17,12 @@ type Props = {
   onPress?: () => void;
   pressable?: boolean;
   placeholder?: string;
+  /**
+   * Custom control pinned to the right edge, inside the bar. Use this instead
+   * of RightIcon when the control needs its own state — a filter button that
+   * shows an active dot, for instance.
+   */
+  rightAccessory?: ReactNode;
 };
 
 export default function SearchBar({
@@ -26,6 +33,7 @@ export default function SearchBar({
   onPress,
   pressable = false,
   placeholder = "Search items...",
+  rightAccessory,
 }: Props) {
   const handleSearchChange = (text: string) => {
     // Allow only alphabets and spaces
@@ -117,6 +125,8 @@ export default function SearchBar({
             <RightIcon size={20} color={colors.secondary} />
           </Pressable>
         )}
+
+        {rightAccessory}
       </View>
     </Pressable>
   );

@@ -1,4 +1,9 @@
-import { colors } from "@/src/constants/colors";
+import {
+  cardShadow,
+  cardTokens,
+  chartTokens,
+} from "@/src/constants/dashboardTheme";
+import { typography } from "@/src/constants/fonts/typography";
 import { CheckCircle, XCircle } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { Animated, ScrollView, Text, View } from "react-native";
@@ -33,19 +38,18 @@ export default function ProfileProgressBar({
 
   return (
     <View
-      style={{
-        backgroundColor: colors.light,
-        borderRadius: 16,
-        padding: 16,
-        marginBottom: 16,
-        borderWidth: 1,
-        borderColor: colors.cardBorder,
-        elevation: 2,
-        shadowColor: colors.cardShadow,
-        shadowOpacity: 0.06,
-        shadowRadius: 6,
-        shadowOffset: { width: 0, height: 2 },
-      }}
+      style={[
+        {
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          padding: 16,
+          marginBottom: 14,
+          borderWidth: 1,
+          borderColor: cardTokens.border,
+        },
+        cardShadow,
+      ]}
     >
       {/* HEADER */}
       <View
@@ -57,21 +61,27 @@ export default function ProfileProgressBar({
         }}
       >
         <Text
-          style={{ fontSize: 14, fontWeight: "700", color: colors.neutral }}
+          style={[
+            typography.Poppins_s_semibold,
+            { fontSize: 15, color: cardTokens.inkPrimary },
+          ]}
         >
-          Profile Completion
+          Profile completion
         </Text>
 
         <Text
-          style={{
-            fontSize: 13,
-            fontWeight: "800",
-            color: colors.primary,
-            backgroundColor: colors.primary + "15",
-            paddingHorizontal: 10,
-            paddingVertical: 3,
-            borderRadius: 20,
-          }}
+          style={[
+            typography.Poppins_xs_semibold,
+            {
+              fontSize: 11,
+              color: chartTokens.current,
+              backgroundColor: cardTokens.mutedSurface,
+              paddingHorizontal: 10,
+              paddingVertical: 4,
+              borderRadius: 999,
+              overflow: "hidden",
+            },
+          ]}
         >
           {Math.round(progress)}%
         </Text>
@@ -82,7 +92,7 @@ export default function ProfileProgressBar({
         style={{
           height: 6,
           borderRadius: 30,
-          backgroundColor: "#F1F3F6",
+          backgroundColor: chartTokens.track,
           overflow: "hidden",
           marginBottom: 14,
         }}
@@ -91,7 +101,7 @@ export default function ProfileProgressBar({
           style={{
             height: "100%",
             width: animatedWidth,
-            backgroundColor: colors.primary,
+            backgroundColor: chartTokens.current,
             borderRadius: 30,
           }}
         />
@@ -114,27 +124,25 @@ export default function ProfileProgressBar({
                 paddingHorizontal: 12,
                 paddingVertical: 6,
                 borderRadius: 20,
-                backgroundColor: isCompleted
-                  ? colors.primary + "12"
-                  : colors.error + "10",
-                borderWidth: 1,
-                borderColor: isCompleted
-                  ? colors.primary + "30"
-                  : colors.error + "30",
+                backgroundColor: cardTokens.mutedSurface,
               }}
             >
               {isCompleted ? (
-                <CheckCircle size={13} color={colors.primary} />
+                <CheckCircle size={12} color={chartTokens.current} />
               ) : (
-                <XCircle size={13} color={colors.error} />
+                <XCircle size={12} color={cardTokens.inkMuted} />
               )}
               <Text
-                style={{
-                  marginLeft: 5,
-                  fontSize: 12,
-                  fontWeight: "600",
-                  color: isCompleted ? colors.primary : colors.error,
-                }}
+                style={[
+                  typography.Poppins_xs_medium,
+                  {
+                    marginLeft: 5,
+                    fontSize: 11,
+                    color: isCompleted
+                      ? cardTokens.inkPrimary
+                      : cardTokens.inkMuted,
+                  },
+                ]}
               >
                 {section.charAt(0).toUpperCase() + section.slice(1)}
               </Text>
@@ -154,14 +162,17 @@ export default function ProfileProgressBar({
             gap: 6,
             paddingVertical: 10,
             borderRadius: 12,
-            backgroundColor: colors.primary + "12",
+            backgroundColor: cardTokens.mutedSurface,
           }}
         >
-          <CheckCircle size={16} color={colors.primary} />
+          <CheckCircle size={15} color={chartTokens.current} />
           <Text
-            style={{ fontWeight: "700", fontSize: 13, color: colors.primary }}
+            style={[
+              typography.Poppins_xs_semibold,
+              { fontSize: 12, color: chartTokens.current },
+            ]}
           >
-            Profile Complete
+            Profile complete
           </Text>
         </View>
       )}

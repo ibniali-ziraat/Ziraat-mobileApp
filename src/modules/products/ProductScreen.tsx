@@ -1,7 +1,8 @@
+import DisclaimerNote from "@/src/components/shared/DisclaimerNote";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { useState } from "react";
-import { Dimensions, FlatList } from "react-native";
+import { Dimensions, FlatList, View } from "react-native";
 import ProductCard from "./components/ProductCard";
 
 import Loader from "@/src/components/shared/Loader";
@@ -73,10 +74,16 @@ export default function ProductScreen() {
   console.log(displayedProducts.length, "displayed products...");
 
   return (
+    // The FlatList does its own scrolling. Leaving ScreenLayout scrollable
+    // nests it inside a ScrollView — that is the "VirtualizedLists should never
+    // be nested" warning, and it also defeats virtualisation. Both this View
+    // and ScreenContent need flex:1 so the list gets a bounded height; without
+    // that it grows to fit every row and nothing scrolls at all.
     <ScreenLayout scrollable={false}>
-      <ScreenContent>
+      <ScreenContent className="flex-1">
         <FlatList<NormalizedProduct>
           ref={scrollRef}
+          style={{ flex: 1 }}
           data={displayedProducts}
           refreshing={refreshing}
           onRefresh={handleRefresh}
@@ -102,11 +109,17 @@ export default function ProductScreen() {
             />
           }
           ListFooterComponent={
-            <ProductListFooter
-              isFetchingMore={isFetchingMore}
-              hasMore={hasMore}
-              productCount={displayedProducts.length}
-            />
+            <>
+              <ProductListFooter
+                isFetchingMore={isFetchingMore}
+                hasMore={hasMore}
+                productCount={displayedProducts.length}
+              />
+
+              <View style={{ marginTop: 24 }}>
+                <DisclaimerNote collapsible={false} />
+              </View>
+            </>
           }
           ListEmptyComponent={isLoading ? <Loader /> : <NoProductsFound />}
           showsVerticalScrollIndicator={false}
