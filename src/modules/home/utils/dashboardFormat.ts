@@ -79,3 +79,10 @@ export const greetingForNow = (): string => {
   if (hour < 17) return "Good afternoon";
   return "Good evening";
 };
+
+export const todayLabel = (): string =>
+  new Date().toLocaleDateString("en-IN", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });

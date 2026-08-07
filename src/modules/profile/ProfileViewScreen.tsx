@@ -83,7 +83,7 @@ export default function ProfileViewScreen() {
     if (profileData?.id) {
       setUserProfileId(profileData?.id);
     }
-  }, [profileData]);
+  }, [profileData, setUserProfileId]);
 
   const deleteActions = {
     address: deleteAddressApi,
@@ -121,7 +121,7 @@ export default function ProfileViewScreen() {
   return (
     <ScreenLayout>
       <BackHeader
-        title="Profile"
+        title="Profile details"
         onPress={() => router.replace(ROUTES.TABS.HOME)}
       />
       <ScreenContent>

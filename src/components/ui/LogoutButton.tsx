@@ -1,8 +1,4 @@
-import {
-  cardShadow,
-  cardTokens,
-  chartTokens,
-} from "@/src/constants/dashboardTheme";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { LogOut } from "lucide-react-native";
 import { Text, View } from "react-native";
@@ -12,33 +8,26 @@ export default function LogoutButton({ onPress }) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [
-        {
-          flexDirection: "row",
-          alignItems: "center",
-          marginTop: 6,
-          paddingHorizontal: 14,
-          paddingVertical: 13,
-          borderRadius: cardTokens.radius,
-          borderCurve: "continuous",
-          borderWidth: 1,
-          borderColor: cardTokens.border,
-          backgroundColor: pressed
-            ? cardTokens.mutedSurface
-            : cardTokens.surface,
-        },
-        cardShadow,
-      ]}
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 2,
+        marginBottom: 24,
+        paddingVertical: 16,
+        borderTopWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: cardTokens.hairline,
+        backgroundColor: cardTokens.surface,
+      }}
     >
       <View
         style={{
           width: 34,
           height: 34,
-          borderRadius: 12,
-          borderCurve: "continuous",
+          borderRadius: 10,
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: cardTokens.mutedSurface,
+          backgroundColor: cardTokens.surface,
           marginRight: 12,
         }}
       >
@@ -51,7 +40,7 @@ export default function LogoutButton({ onPress }) {
           { color: chartTokens.negative, fontSize: 14 },
         ]}
       >
-        Log out
+        Log out of your account
       </Text>
     </Pressable>
   );

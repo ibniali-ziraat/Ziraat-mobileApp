@@ -1,9 +1,11 @@
 import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { colors } from "@/src/constants/colors";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams } from "expo-router";
+import { AlertCircle, LockKeyhole } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
@@ -90,19 +92,29 @@ const ReviewOrderScreen = () => {
         {isValidatingBoc && (
           <View
             style={{
-              marginTop: 14,
+              marginTop: 12,
               marginHorizontal: 16,
               flexDirection: "row",
               alignItems: "center",
-              justifyContent: "center",
-              gap: 8,
+              paddingHorizontal: 14,
+              paddingVertical: 12,
+              borderRadius: 14,
+              borderWidth: 1,
+              borderColor: cardTokens.hairline,
+              backgroundColor: cardTokens.surface,
             }}
           >
             <ActivityIndicator size="small" color={chartTokens.current} />
             <Text
               style={[
                 typography.Poppins_xs_regular,
-                { color: cardTokens.inkMuted, fontSize: 13 },
+                {
+                  flex: 1,
+                  marginLeft: 10,
+                  color: cardTokens.inkSecondary,
+                  fontSize: 12.5,
+                  lineHeight: 18,
+                },
               ]}
             >
               Checking credit eligibility...
@@ -111,40 +123,78 @@ const ReviewOrderScreen = () => {
         )}
 
         {isBuyOnCredit && bocValidation && !bocValidation.isValid && (
-          <Text
-            style={[
-              typography.Poppins_xs_semibold,
-              {
-                marginTop: 14,
-                marginHorizontal: 16,
-                textAlign: "center",
-                color: chartTokens.negative,
-                fontSize: 13,
-              },
-            ]}
+          <View
+            style={{
+              marginTop: 12,
+              marginHorizontal: 16,
+              flexDirection: "row",
+              alignItems: "flex-start",
+              paddingHorizontal: 14,
+              paddingVertical: 12,
+              borderRadius: 14,
+              borderWidth: 1,
+              borderColor: colors.error,
+              backgroundColor: cardTokens.surface,
+            }}
           >
-            {bocValidation.message}
-          </Text>
+            <AlertCircle size={18} color={colors.error} />
+            <Text
+              style={[
+                typography.Poppins_xs_medium,
+                {
+                  flex: 1,
+                  marginLeft: 10,
+                  color: colors.error,
+                  fontSize: 12.5,
+                  lineHeight: 18,
+                },
+              ]}
+            >
+              {bocValidation.message}
+            </Text>
+          </View>
         )}
 
         {!!errorMsg && !isBuyOnCredit && (
-          <Text
-            style={[
-              typography.Poppins_xs_semibold,
-              {
-                marginTop: 14,
-                marginHorizontal: 16,
-                textAlign: "center",
-                color: chartTokens.negative,
-                fontSize: 13,
-              },
-            ]}
+          <View
+            style={{
+              marginTop: 12,
+              marginHorizontal: 16,
+              flexDirection: "row",
+              alignItems: "flex-start",
+              paddingHorizontal: 14,
+              paddingVertical: 12,
+              borderRadius: 14,
+              borderWidth: 1,
+              borderColor: colors.error,
+              backgroundColor: cardTokens.surface,
+            }}
           >
-            {errorMsg}
-          </Text>
+            <AlertCircle size={18} color={colors.error} />
+            <Text
+              style={[
+                typography.Poppins_xs_medium,
+                {
+                  flex: 1,
+                  marginLeft: 10,
+                  color: colors.error,
+                  fontSize: 12.5,
+                  lineHeight: 18,
+                },
+              ]}
+            >
+              {errorMsg}
+            </Text>
+          </View>
         )}
 
-        {showPlaceOrderButton && (
+        <View
+          style={{
+            marginHorizontal: 16,
+            marginTop: 20,
+            marginBottom: 24,
+          }}
+        >
           <Pressable
             onPress={() =>
               handlePlaceOrder(
@@ -154,29 +204,60 @@ const ReviewOrderScreen = () => {
                 vendorId, // ← number, used by BOC only
               )
             }
-            disabled={isPending}
-            style={({ pressed }) => ({
-              marginHorizontal: 16,
-              marginTop: 24,
-              marginBottom: 24,
+            disabled={!showPlaceOrderButton || isPending}
+            accessibilityRole="button"
+            accessibilityState={{
+              disabled: !showPlaceOrderButton || isPending,
+            }}
+            style={{
+              width: "100%",
               height: 56,
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 16,
-              backgroundColor: chartTokens.current,
-              opacity: pressed || isPending ? 0.85 : 1,
-            })}
+              backgroundColor: colors.primary,
+              opacity: !showPlaceOrderButton || isPending ? 0.45 : 1,
+            }}
           >
             <Text
               style={[
                 typography.Poppins_s_bold,
-                { color: "#FFFFFF", fontSize: 16 },
+                { color: colors.light, fontSize: 15.5 },
               ]}
             >
-              {isPending ? "Placing Order..." : "Place Order"}
+              {isPending
+                ? "Placing order..."
+                : !selectedPayment
+                  ? "Select a payment method"
+                  : bocBlocked || bocNotYetValidated || isValidatingBoc
+                    ? "Payment method unavailable"
+                    : "Place order"}
             </Text>
           </Pressable>
-        )}
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+          >
+            <LockKeyhole size={12} color={cardTokens.inkMuted} />
+            <Text
+              style={[
+                typography.Poppins_xs_regular,
+                {
+                  marginLeft: 6,
+                  color: cardTokens.inkMuted,
+                  fontSize: 10.5,
+                },
+              ]}
+            >
+              Your order and payment details are protected
+            </Text>
+          </View>
+        </View>
       </ScreenLayout>
     </FormProvider>
   );

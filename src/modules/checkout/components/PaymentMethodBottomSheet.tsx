@@ -1,19 +1,50 @@
-import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { colors } from "@/src/constants/colors";
+import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { Banknote, Check, CreditCard, Smartphone, Wallet, X } from "lucide-react-native";
+import {
+  Banknote,
+  Check,
+  CreditCard,
+  LockKeyhole,
+  Smartphone,
+  Wallet,
+  X,
+} from "lucide-react-native";
+import { useEffect, useState } from "react";
 import {
   Dimensions,
   Modal,
   Platform,
   Pressable,
   ScrollView,
-  StyleSheet,
   Text,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { height } = Dimensions.get("window");
+
+export const PAYMENT_METHOD_DETAILS: Record<
+  string,
+  { description: string; accent: string }
+> = {
+  BuyOnCredit: {
+    description: "Use your approved business credit limit",
+    accent: colors.secondary,
+  },
+  CashOnDelivery: {
+    description: "Pay safely when your order arrives",
+    accent: colors.primary,
+  },
+  CoD: {
+    description: "Pay safely when your order arrives",
+    accent: colors.primary,
+  },
+  RazorPay: {
+    description: "UPI, cards, net banking and wallets",
+    accent: colors.primary,
+  },
+};
 
 interface Option {
   label: string;
@@ -28,9 +59,10 @@ type Props = {
   onSelect: (value: string) => void;
 };
 
-const ICONS: Record<string, typeof CreditCard> = {
+export const PAYMENT_METHOD_ICONS: Record<string, typeof CreditCard> = {
   BuyOnCredit: CreditCard,
   CashOnDelivery: Banknote,
+  CoD: Banknote,
   RazorPay: Smartphone,
 };
 
@@ -42,6 +74,17 @@ export default function PaymentMethodBottomSheet({
   onSelect,
 }: Props) {
   const insets = useSafeAreaInsets();
+  const [draftValue, setDraftValue] = useState(value ?? "");
+
+  useEffect(() => {
+    if (visible) setDraftValue(value ?? "");
+  }, [value, visible]);
+
+  const confirmSelection = () => {
+    if (!draftValue) return;
+    onSelect(draftValue);
+    onClose();
+  };
 
   return (
     <Modal
@@ -51,102 +94,311 @@ export default function PaymentMethodBottomSheet({
       onRequestClose={onClose}
       statusBarTranslucent
     >
-      <View className="flex-1 justify-end bg-black/40">
-        <Pressable onPress={onClose} className="flex-1" />
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "flex-end",
+          backgroundColor: colors.overlay,
+        }}
+      >
+        <Pressable
+          onPress={onClose}
+          style={{ flex: 1 }}
+          accessibilityRole="button"
+          accessibilityLabel="Close payment methods"
+        />
 
         <View
-          className="rounded-t-3xl p-4"
           style={{
+            maxHeight: height * 0.8,
+            overflow: "hidden",
             backgroundColor: cardTokens.surface,
-            maxHeight: height * 0.6,
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
             paddingBottom:
               Platform.OS === "ios"
-                ? insets.bottom
-                : insets.bottom > 0
-                  ? insets.bottom
-                  : 16,
+                ? Math.max(insets.bottom, 14)
+                : Math.max(insets.bottom, 18),
           }}
         >
           <View
-            className="w-10 h-1 rounded self-center mb-2.5"
-            style={{ backgroundColor: cardTokens.hairline }}
-          />
+            style={{
+              paddingHorizontal: 20,
+              paddingTop: 10,
+              paddingBottom: 18,
+              backgroundColor: cardTokens.surface,
+              borderBottomWidth: 1,
+              borderBottomColor: cardTokens.hairline,
+            }}
+          >
+            <View
+              style={{
+                width: 42,
+                height: 4,
+                borderRadius: 2,
+                alignSelf: "center",
+                marginBottom: 16,
+                backgroundColor: cardTokens.hairline,
+              }}
+            />
 
-          <View className="flex-row justify-between items-center mb-2">
-            <Text
-              style={[
-                typography.Poppins_m_semibold,
-                { color: cardTokens.inkPrimary, fontSize: 17 },
-              ]}
-            >
-              Select Payment Method
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 14,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: 14,
+                  backgroundColor: cardTokens.mutedSurface,
+                }}
+              >
+                <Wallet size={22} color={colors.primary} strokeWidth={2} />
+              </View>
 
-            <Pressable onPress={onClose} hitSlop={10}>
-              <X size={22} color={cardTokens.inkSecondary} />
-            </Pressable>
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={[
+                    typography.Poppins_l_semibold,
+                    {
+                      color: cardTokens.inkPrimary,
+                      fontSize: 20,
+                      lineHeight: 27,
+                    },
+                  ]}
+                >
+                  Payment method
+                </Text>
+                <Text
+                  style={[
+                    typography.Poppins_xs_regular,
+                    {
+                      color: cardTokens.inkMuted,
+                      fontSize: 12,
+                      lineHeight: 18,
+                      marginTop: 1,
+                    },
+                  ]}
+                >
+                  Choose the option that works best for you
+                </Text>
+              </View>
+
+              <Pressable
+                onPress={onClose}
+                hitSlop={8}
+                accessibilityRole="button"
+                accessibilityLabel="Close payment methods"
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderRadius: 20,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: cardTokens.mutedSurface,
+                }}
+              >
+                <X size={19} color={cardTokens.inkSecondary} />
+              </Pressable>
+            </View>
           </View>
 
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 8 }}
+            contentContainerStyle={{
+              paddingHorizontal: 20,
+              paddingTop: 20,
+              paddingBottom: 10,
+            }}
           >
+            <Text
+              style={[
+                typography.Poppins_s_semibold,
+                {
+                  color: cardTokens.inkSecondary,
+                  fontSize: 11,
+                  lineHeight: 16,
+                  letterSpacing: 0.7,
+                  marginBottom: 12,
+                },
+              ]}
+            >
+              AVAILABLE OPTIONS
+            </Text>
+
             {options.map((option, index) => {
-              const isSelected = option.value === value;
-              const Icon = ICONS[option.value] ?? Wallet;
-              const isLast = index === options.length - 1;
+              const isSelected = option.value === draftValue;
+              const Icon = PAYMENT_METHOD_ICONS[option.value] ?? Wallet;
+              const details = PAYMENT_METHOD_DETAILS[option.value] ?? {
+                description: "Continue with this payment option",
+                accent: colors.primary,
+              };
 
               return (
-                <Pressable
-                  key={option.value}
-                  onPress={() => {
-                    onSelect(option.value);
-                    onClose();
-                  }}
-                  style={({ pressed }) => ({
-                    flexDirection: "row",
-                    alignItems: "center",
-                    paddingVertical: 14,
-                    gap: 12,
-                    borderBottomWidth: isLast ? 0 : StyleSheet.hairlineWidth,
-                    borderBottomColor: cardTokens.hairline,
-                    backgroundColor: pressed ? cardTokens.mutedSurface : "transparent",
-                  })}
-                >
-                  <View
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 12,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: isSelected
-                        ? `${chartTokens.current}15`
-                        : cardTokens.mutedSurface,
-                    }}
-                  >
-                    <Icon
-                      size={19}
-                      color={isSelected ? chartTokens.current : cardTokens.inkSecondary}
-                    />
-                  </View>
-
-                  <Text
+                <View key={option.value}>
+                  <Pressable
+                    onPress={() => setDraftValue(option.value)}
+                    accessibilityRole="radio"
+                    accessibilityState={{ selected: isSelected }}
+                    accessibilityLabel={`${option.label}. ${details.description}`}
                     style={[
-                      typography.Poppins_s_medium,
-                      { flex: 1, color: cardTokens.inkPrimary, fontSize: 15 },
+                      {
+                        width: "100%",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        minHeight: 74,
+                        paddingHorizontal: 0,
+                        paddingVertical: 15,
+                        backgroundColor: colors.light,
+                      },
                     ]}
                   >
-                    {option.label}
-                  </Text>
+                    <View
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: 12,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        backgroundColor: cardTokens.mutedSurface,
+                      }}
+                    >
+                      <Icon
+                        size={21}
+                        color={details.accent}
+                        strokeWidth={2.1}
+                      />
+                    </View>
 
-                  {isSelected && (
-                    <Check size={20} color={chartTokens.current} strokeWidth={2.5} />
+                    <View style={{ flex: 1, marginLeft: 14 }}>
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
+                      >
+                        <Text
+                          numberOfLines={1}
+                          style={[
+                            typography.Poppins_s_semibold,
+                            {
+                              flex: 1,
+                              color: cardTokens.inkPrimary,
+                              fontSize: 14.5,
+                              lineHeight: 21,
+                              marginRight: 12,
+                            },
+                          ]}
+                        >
+                          {option.label}
+                        </Text>
+
+                        <View
+                          style={{
+                            width: 24,
+                            height: 24,
+                            borderRadius: 12,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderWidth: isSelected ? 0 : 1.5,
+                            borderColor: isSelected
+                              ? details.accent
+                              : cardTokens.hairline,
+                            backgroundColor: isSelected
+                              ? details.accent
+                              : colors.light,
+                          }}
+                        >
+                          {isSelected && (
+                            <Check
+                              size={14}
+                              color={colors.light}
+                              strokeWidth={3}
+                            />
+                          )}
+                        </View>
+                      </View>
+
+                      <Text
+                        numberOfLines={2}
+                        style={[
+                          typography.Poppins_xs_regular,
+                          {
+                            color: cardTokens.inkMuted,
+                            fontSize: 11.5,
+                            lineHeight: 16,
+                            marginTop: 3,
+                          },
+                        ]}
+                      >
+                        {details.description}
+                      </Text>
+                    </View>
+                  </Pressable>
+
+                  {index < options.length - 1 && (
+                    <View
+                      style={{
+                        height: 1,
+                        marginLeft: 54,
+                        backgroundColor: cardTokens.hairline,
+                      }}
+                    />
                   )}
-                </Pressable>
+                </View>
               );
             })}
           </ScrollView>
+
+          <View style={{ paddingHorizontal: 20, paddingTop: 10 }}>
+            <Pressable
+              onPress={confirmSelection}
+              disabled={!draftValue}
+              accessibilityRole="button"
+              accessibilityState={{ disabled: !draftValue }}
+              style={{
+                width: "100%",
+                height: 54,
+                borderRadius: 17,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: colors.primary,
+                opacity: !draftValue ? 0.45 : 1,
+                shadowColor: colors.primary,
+                shadowOffset: { width: 0, height: 6 },
+                shadowOpacity: draftValue ? 0.22 : 0,
+                shadowRadius: 12,
+                elevation: draftValue ? 4 : 0,
+              }}
+            >
+              <Text
+                style={[
+                  typography.Poppins_s_semibold,
+                  { color: colors.light, fontSize: 15 },
+                ]}
+              >
+                Use this payment method
+              </Text>
+            </Pressable>
+
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                paddingTop: 11,
+              }}
+            >
+              <LockKeyhole size={12} color={cardTokens.inkMuted} />
+              <Text
+                style={[
+                  typography.Poppins_xs_regular,
+                  { color: cardTokens.inkMuted, fontSize: 10.5 },
+                ]}
+              >
+                Protected and securely processed
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </Modal>

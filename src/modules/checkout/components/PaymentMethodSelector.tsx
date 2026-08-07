@@ -1,10 +1,14 @@
+import { colors } from "@/src/constants/colors";
 import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { ChevronDown } from "lucide-react-native";
+import { ChevronRight, Wallet } from "lucide-react-native";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
-import PaymentMethodBottomSheet from "./PaymentMethodBottomSheet";
+import PaymentMethodBottomSheet, {
+  PAYMENT_METHOD_ICONS,
+  PAYMENT_METHOD_DETAILS,
+} from "./PaymentMethodBottomSheet";
 
 interface Option {
   label: string;
@@ -26,58 +30,102 @@ export const PaymentMethodSelector = ({ options, onValueChange }: Props) => {
       name="paymentMethod"
       render={({ field: { value, onChange } }) => {
         const selectedOption = options.find((o) => o.value === value);
+        const DisplayIcon = selectedOption
+          ? (PAYMENT_METHOD_ICONS[selectedOption.value] ?? Wallet)
+          : Wallet;
+        const selectedDetails = selectedOption
+          ? PAYMENT_METHOD_DETAILS[selectedOption.value]
+          : undefined;
 
         return (
-          <View
-            style={{
-              marginHorizontal: 16,
-              marginTop: 16,
-              backgroundColor: cardTokens.surface,
-              borderRadius: cardTokens.radius,
-              borderCurve: "continuous",
-              borderWidth: 1,
-              borderColor: cardTokens.border,
-              padding: 16,
-            }}
-          >
-            <Text
-              style={[
-                typography.Poppins_s_bold,
-                { color: cardTokens.inkPrimary, fontSize: 17, marginBottom: 12 },
-              ]}
-            >
-              Payment Method
-            </Text>
-
-            <Pressable
-              onPress={() => setOpen(true)}
-              style={({ pressed }) => ({
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-                paddingVertical: 14,
-                paddingHorizontal: 16,
-                borderRadius: 14,
-                borderCurve: "continuous",
+          <View style={{ marginHorizontal: 16, marginTop: 16 }}>
+            <View
+              style={{
+                backgroundColor: cardTokens.surface,
+                borderRadius: cardTokens.radius,
                 borderWidth: 1,
                 borderColor: cardTokens.border,
-                backgroundColor: pressed ? cardTokens.mutedSurface : cardTokens.surface,
-              })}
+                padding: 16,
+              }}
             >
               <Text
                 style={[
-                  typography.Poppins_s_medium,
-                  {
-                    fontSize: 15,
-                    color: selectedOption ? cardTokens.inkPrimary : cardTokens.inkMuted,
-                  },
+                  typography.Poppins_s_bold,
+                  { color: cardTokens.inkPrimary, fontSize: 17 },
                 ]}
               >
-                {selectedOption ? selectedOption.label : "Choose an option"}
+                Payment Method
               </Text>
 
-              <ChevronDown size={19} color={cardTokens.inkSecondary} />
-            </Pressable>
+              <Pressable
+                onPress={() => setOpen(true)}
+                accessibilityRole="button"
+                accessibilityLabel="Choose payment method"
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  width: "100%",
+                  marginTop: 14,
+                  paddingTop: 14,
+                  borderTopWidth: 1,
+                  borderTopColor: cardTokens.hairline,
+                }}
+              >
+                <View
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: 12,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: cardTokens.mutedSurface,
+                  }}
+                >
+                  <DisplayIcon
+                    size={19}
+                    color={selectedDetails?.accent ?? colors.primary}
+                  />
+                </View>
+
+                <View style={{ flex: 1, marginLeft: 12, marginRight: 10 }}>
+                  <Text
+                    numberOfLines={1}
+                    style={[
+                      typography.Poppins_s_semibold,
+                      {
+                        color: selectedOption
+                          ? cardTokens.inkPrimary
+                          : cardTokens.inkSecondary,
+                        fontSize: 14.5,
+                        lineHeight: 21,
+                      },
+                    ]}
+                  >
+                    {selectedOption
+                      ? selectedOption.label
+                      : "Choose a payment option"}
+                  </Text>
+
+                  <Text
+                    numberOfLines={2}
+                    style={[
+                      typography.Poppins_xs_regular,
+                      {
+                        marginTop: 3,
+                        fontSize: 11.5,
+                        lineHeight: 17,
+                        color: cardTokens.inkMuted,
+                      },
+                    ]}
+                  >
+                    {selectedDetails?.description ??
+                      "Select how you would like to pay for this order"}
+                  </Text>
+                </View>
+
+                <ChevronRight size={19} color={cardTokens.inkSecondary} />
+              </Pressable>
+            </View>
 
             <PaymentMethodBottomSheet
               visible={open}

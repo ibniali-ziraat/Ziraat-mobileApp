@@ -1,12 +1,8 @@
-import {
-  cardShadow,
-  cardTokens,
-  chartTokens,
-} from "@/src/constants/dashboardTheme";
-import { typography } from "@/src/constants/fonts/typography";
-import { PencilLine, Plus, Trash2 } from "lucide-react-native";
-import { Text, View } from "react-native";
 import { Pressable } from "@/src/components/shared/Pressable";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { typography } from "@/src/constants/fonts/typography";
+import { Plus } from "lucide-react-native";
+import { Text, View } from "react-native";
 
 interface DetailItem {
   title: string;
@@ -23,28 +19,29 @@ interface DetailsCardProps {
   emptyActionLabel?: string;
 }
 
-function IconAction({
+function TextAction({
+  label,
   onPress,
-  children,
+  destructive = false,
 }: {
+  label: string;
   onPress: () => void;
-  children: React.ReactNode;
+  destructive?: boolean;
 }) {
   return (
-    <Pressable
-      onPress={onPress}
-      hitSlop={8}
-      style={({ pressed }) => ({
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: cardTokens.mutedSurface,
-        opacity: pressed ? 0.6 : 1,
-      })}
-    >
-      {children}
+    <Pressable onPress={onPress} hitSlop={8} style={{ paddingVertical: 4 }}>
+      <Text
+        style={[
+          typography.Poppins_xs_semibold,
+          {
+            color: destructive ? chartTokens.negative : cardTokens.inkPrimary,
+            fontSize: 12,
+            textDecorationLine: "underline",
+          },
+        ]}
+      >
+        {label}
+      </Text>
     </Pressable>
   );
 }
@@ -60,50 +57,30 @@ export default function DetailsCard({
   const isEmpty = items.length === 0;
 
   return (
-    <View
-      style={[
-        {
-          backgroundColor: cardTokens.surface,
-          borderRadius: cardTokens.radius,
-          borderCurve: "continuous",
-          borderWidth: 1,
-          borderColor: cardTokens.border,
-          padding: 16,
-          marginBottom: 14,
-        },
-        cardShadow,
-      ]}
-    >
+    <View style={{ marginBottom: 28 }}>
       <View
         style={{
+          minHeight: 36,
           flexDirection: "row",
-          justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: isEmpty ? 14 : 6,
+          marginBottom: 6,
         }}
       >
         <Text
           style={[
-            typography.Poppins_s_semibold,
-            { color: cardTokens.inkPrimary, fontSize: 15 },
+            typography.Poppins_l_semibold,
+            { flex: 1, color: cardTokens.inkPrimary, fontSize: 19 },
           ]}
         >
           {heading}
         </Text>
 
-        {!isEmpty ? (
-          <View style={{ flexDirection: "row", gap: 8 }}>
-            {onEdit ? (
-              <IconAction onPress={onEdit}>
-                <PencilLine size={15} color={cardTokens.inkSecondary} />
-              </IconAction>
-            ) : null}
-
-            {onDelete ? (
-              <IconAction onPress={onDelete}>
-                <Trash2 size={15} color={chartTokens.negative} />
-              </IconAction>
-            ) : null}
+        {!isEmpty && onEdit ? (
+          <TextAction label="Edit" onPress={onEdit} />
+        ) : null}
+        {!isEmpty && onDelete ? (
+          <View style={{ marginLeft: 18 }}>
+            <TextAction label="Delete" onPress={onDelete} destructive />
           </View>
         ) : null}
       </View>
@@ -111,50 +88,46 @@ export default function DetailsCard({
       {isEmpty ? (
         <Pressable
           onPress={onAdd}
-          style={({ pressed }) => ({
+          disabled={!onAdd}
+          style={{
+            minHeight: 58,
+            flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",
-            paddingVertical: 20,
-            borderRadius: 16,
-            borderCurve: "continuous",
-            borderWidth: 1,
-            borderStyle: "dashed",
-            borderColor: cardTokens.border,
-            backgroundColor: cardTokens.mutedSurface,
-            opacity: pressed ? 0.75 : 1,
-          })}
+            borderBottomWidth: 1,
+            borderBottomColor: cardTokens.hairline,
+          }}
         >
           <View
             style={{
-              width: 34,
-              height: 34,
-              borderRadius: 17,
-              backgroundColor: cardTokens.surface,
+              width: 32,
+              height: 32,
+              borderRadius: 16,
               alignItems: "center",
               justifyContent: "center",
-              marginBottom: 9,
+              marginRight: 12,
+              backgroundColor: cardTokens.mutedSurface,
             }}
           >
-            <Plus size={18} color={chartTokens.current} />
+            <Plus size={17} color={chartTokens.current} />
           </View>
-
-          <Text
-            style={[
-              typography.Poppins_xs_semibold,
-              { color: chartTokens.current, fontSize: 13 },
-            ]}
-          >
-            {emptyActionLabel}
-          </Text>
-
-          <Text
-            style={[
-              typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, fontSize: 10.5, marginTop: 3 },
-            ]}
-          >
-            Tap to add this information
-          </Text>
+          <View style={{ flex: 1 }}>
+            <Text
+              style={[
+                typography.Poppins_s_semibold,
+                { color: cardTokens.inkPrimary, fontSize: 13.5 },
+              ]}
+            >
+              {emptyActionLabel}
+            </Text>
+            <Text
+              style={[
+                typography.Poppins_xs_regular,
+                { color: cardTokens.inkMuted, fontSize: 10.5, marginTop: 1 },
+              ]}
+            >
+              Add information to complete your profile
+            </Text>
+          </View>
         </Pressable>
       ) : (
         <View>
@@ -162,47 +135,36 @@ export default function DetailsCard({
             <View
               key={item.title}
               style={{
-                flexDirection: "row",
-                alignItems: "center",
-                paddingVertical: 12,
-                borderBottomWidth: index < items.length - 1 ? 1 : 0,
-                borderBottomColor: cardTokens.border,
+                minHeight: 62,
+                justifyContent: "center",
+                paddingVertical: 10,
+                borderBottomWidth: 1,
+                borderBottomColor: cardTokens.hairline,
               }}
             >
-              <View
-                style={{
-                  width: 34,
-                  height: 34,
-                  borderRadius: 12,
-                  borderCurve: "continuous",
-                  backgroundColor: cardTokens.mutedSurface,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginRight: 12,
-                }}
+              <Text
+                style={[
+                  typography.Poppins_xs_medium,
+                  { color: cardTokens.inkPrimary, fontSize: 12 },
+                ]}
               >
-                {item.icon}
-              </View>
-
-              <View style={{ flex: 1 }}>
-                <Text
-                  style={[
-                    typography.Poppins_xs_regular,
-                    { color: cardTokens.inkMuted, fontSize: 11 },
-                  ]}
-                >
-                  {item.title}
-                </Text>
-
-                <Text
-                  style={[
-                    typography.Poppins_s_medium,
-                    { color: cardTokens.inkPrimary, fontSize: 14, marginTop: 1 },
-                  ]}
-                >
-                  {item.value || "—"}
-                </Text>
-              </View>
+                {item.title}
+              </Text>
+              <Text
+                numberOfLines={2}
+                style={[
+                  typography.Poppins_s_regular,
+                  {
+                    color: cardTokens.inkSecondary,
+                    fontSize: 13.5,
+                    lineHeight: 20,
+                    marginTop: 2,
+                    paddingBottom: index === items.length - 1 ? 0 : 1,
+                  },
+                ]}
+              >
+                {item.value || "Not provided"}
+              </Text>
             </View>
           ))}
         </View>

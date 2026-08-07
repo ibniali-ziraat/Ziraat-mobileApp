@@ -5,7 +5,10 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { useHomeScrollY } from "@/src/contexts/HomeScrollContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
 import { useHomeWeather } from "@/src/modules/home/hooks/useHomeWeather";
-import { greetingForNow } from "@/src/modules/home/utils/dashboardFormat";
+import {
+  greetingForNow,
+  todayLabel,
+} from "@/src/modules/home/utils/dashboardFormat";
 import { getWeatherBackground } from "@/src/modules/home/utils/weatherBackgrounds";
 import { getWeatherPresentation } from "@/src/modules/home/utils/weatherPictogram";
 import { useNotifications } from "@/src/modules/notifications/hooks/useNotifications";
@@ -55,6 +58,16 @@ const HomeContent = () => {
   const greetingStyle = useAnimatedStyle(() => ({
     height: interpolate(progress.value, [0, 1], [GREETING_HEIGHT, 0]),
     opacity: interpolate(progress.value, [0, 0.6], [1, 0], Extrapolation.CLAMP),
+  }));
+
+  const compactInfoStyle = useAnimatedStyle(() => ({
+    height: interpolate(
+      progress.value,
+      [0, 1],
+      [0, GREETING_HEIGHT],
+      Extrapolation.CLAMP,
+    ),
+    opacity: interpolate(progress.value, [0.5, 1], [0, 1], Extrapolation.CLAMP),
   }));
 
   const nameStyle = useAnimatedStyle(() => ({
@@ -118,7 +131,7 @@ const HomeContent = () => {
                 { color: cardTokens.inkMuted, fontSize: 11 },
               ]}
             >
-              {greetingForNow()}
+              {greetingForNow()} · {todayLabel()}
             </Text>
           </Animated.View>
 
@@ -133,6 +146,28 @@ const HomeContent = () => {
           >
             {name.toUpperCase()}
           </Animated.Text>
+
+          <Animated.View
+            style={[
+              {
+                overflow: "hidden",
+                flexDirection: "row",
+                alignItems: "center",
+              },
+              compactInfoStyle,
+            ]}
+          >
+            <MapPin size={10} color={cardTokens.inkMuted} />
+            <Text
+              numberOfLines={1}
+              style={[
+                typography.Poppins_xs_regular,
+                { color: cardTokens.inkMuted, fontSize: 11, marginLeft: 3 },
+              ]}
+            >
+              {location} • {temp} • {todayLabel()}
+            </Text>
+          </Animated.View>
         </View>
 
         <Animated.View

@@ -1,8 +1,4 @@
-import {
-  cardShadow,
-  cardTokens,
-  chartTokens,
-} from "@/src/constants/dashboardTheme";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { CheckCircle, XCircle } from "lucide-react-native";
 import { useEffect, useRef } from "react";
@@ -27,7 +23,7 @@ export default function ProfileProgressBar({
       duration: 800,
       useNativeDriver: false,
     }).start();
-  }, [progress]);
+  }, [barAnim, progress]);
 
   const animatedWidth = barAnim.interpolate({
     inputRange: [0, 100],
@@ -38,18 +34,13 @@ export default function ProfileProgressBar({
 
   return (
     <View
-      style={[
-        {
-          backgroundColor: cardTokens.surface,
-          borderRadius: cardTokens.radius,
-          borderCurve: "continuous",
-          padding: 16,
-          marginBottom: 14,
-          borderWidth: 1,
-          borderColor: cardTokens.border,
-        },
-        cardShadow,
-      ]}
+      style={{
+        paddingBottom: 22,
+        marginBottom: 26,
+        borderBottomWidth: 1,
+        borderBottomColor: cardTokens.hairline,
+        backgroundColor: cardTokens.surface,
+      }}
     >
       {/* HEADER */}
       <View
@@ -75,11 +66,7 @@ export default function ProfileProgressBar({
             {
               fontSize: 11,
               color: chartTokens.current,
-              backgroundColor: cardTokens.mutedSurface,
-              paddingHorizontal: 10,
-              paddingVertical: 4,
-              borderRadius: 999,
-              overflow: "hidden",
+              paddingLeft: 10,
             },
           ]}
         >
@@ -90,11 +77,11 @@ export default function ProfileProgressBar({
       {/* PROGRESS BAR */}
       <View
         style={{
-          height: 6,
+          height: 5,
           borderRadius: 30,
           backgroundColor: chartTokens.track,
           overflow: "hidden",
-          marginBottom: 14,
+          marginBottom: 12,
         }}
       >
         <Animated.View
@@ -121,10 +108,8 @@ export default function ProfileProgressBar({
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                paddingHorizontal: 12,
-                paddingVertical: 6,
-                borderRadius: 20,
-                backgroundColor: cardTokens.mutedSurface,
+                paddingRight: 14,
+                paddingVertical: 4,
               }}
             >
               {isCompleted ? (

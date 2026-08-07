@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 
+import { colors } from "@/src/constants/colors";
+import { fonts } from "@/src/constants/fonts/font";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
 import { OWNERSHIP_TYPE_OPTIONS } from "../constants/orchardOptions";
@@ -128,30 +130,60 @@ export default function BasicInfo({ errors, data }) {
 
       {orchardMode === "manual" && (
         <View>
-          <FormTextInput
-            name="kanals"
-            label="Size in Kanals"
-            type="pincode"
-            placeholder="Enter size in Kanals"
-            error={errors?.kanals}
-          />
+          <View
+            style={{ flexDirection: "row", alignItems: "center", marginBottom: 6 }}
+          >
+            <Text
+              style={{
+                fontSize: 14,
+                color: colors.dark,
+                fontFamily: fonts.poppins.medium,
+              }}
+            >
+              Orchard Size
+            </Text>
+            <Text style={{ color: colors.error, fontFamily: fonts.poppins.medium }}>
+              {" "}
+              *
+            </Text>
+          </View>
 
-          <FormTextInput
-            name="marlas"
-            label="Size in Marlas"
-            type="marlas"
-            placeholder="Enter size in Marlas (max 19)"
-            error={errors?.marlas}
-            warning={
-              marlasCapWarning
-                ? "20 Marlas = 1 Kanal. Add to Kanals instead."
-                : undefined
-            }
-            onChangeText={(rawText) => {
-              const digits = rawText.replace(/\D/g, "");
-              setMarlasCapWarning(Number(digits) > 19);
-            }}
-          />
+          <View style={{ flexDirection: "row", gap: 12, marginBottom: -12 }}>
+            <View style={{ flex: 1 }}>
+              <FormTextInput
+                name="kanals"
+                label="Kanals"
+                type="pincode"
+                placeholder="e.g. 4"
+              />
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <FormTextInput
+                name="marlas"
+                label="Marlas"
+                type="marlas"
+                placeholder="Max 19"
+                error={errors?.marlas}
+                warning={
+                  marlasCapWarning ? "20 Marlas = 1 Kanal" : undefined
+                }
+                onChangeText={(rawText) => {
+                  const digits = rawText.replace(/\D/g, "");
+                  setMarlasCapWarning(Number(digits) > 19);
+                }}
+              />
+            </View>
+          </View>
+
+          {errors?.kanals?.message && (
+            <Text
+              numberOfLines={1}
+              style={{ color: colors.error, marginBottom: 18 }}
+            >
+              {errors.kanals.message}
+            </Text>
+          )}
         </View>
       )}
 
