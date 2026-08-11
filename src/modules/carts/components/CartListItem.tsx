@@ -61,12 +61,20 @@ export default function CartListItem({
         <View className="ml-4 flex-1">
           {/* TITLE + DELETE */}
           <View className="flex-row justify-between items-start">
-            <CsText
-              className="text-sm font-medium flex-1 pr-2"
-              numberOfLines={2}
-            >
-              {item?.productName}
-            </CsText>
+            <View className="flex-1 pr-2">
+              <CsText className="text-sm font-medium" numberOfLines={2}>
+                {item?.productName}
+              </CsText>
+
+              {!!item?.variationName && (
+                <CsText
+                  className="text-xs mt-0.5"
+                  style={{ color: colors.darkHover }}
+                >
+                  {item.variationName}
+                </CsText>
+              )}
+            </View>
 
             <Pressable
               onPress={handleRemoveItem}

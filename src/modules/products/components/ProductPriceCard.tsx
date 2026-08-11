@@ -3,9 +3,26 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { View } from "react-native";
 
-export default function ProductPriceCard({ product }: any) {
-  const price = product.calculatedProductPrice;
-  const inStock = !product.stockTrackingIsEnabled || product.stockQuantity > 0;
+export default function ProductPriceCard({ product, selectedVariation }: any) {
+  const price = selectedVariation
+    ? {
+        price: selectedVariation.discountPrice ?? selectedVariation.assignedPrice,
+        oldPrice: selectedVariation.maximumRetailPrice,
+        percentOfSaving:
+          selectedVariation.maximumRetailPrice > selectedVariation.discountPrice
+            ? Math.round(
+                (1 -
+                  selectedVariation.discountPrice /
+                    selectedVariation.maximumRetailPrice) *
+                  100,
+              )
+            : 0,
+      }
+    : product.calculatedProductPrice;
+
+  const inStock = selectedVariation
+    ? selectedVariation.stockQuantity > 0
+    : !product.stockTrackingIsEnabled || product.stockQuantity > 0;
 
   const savings =
     price?.oldPrice && price?.price ? price.oldPrice - price.price : null;
