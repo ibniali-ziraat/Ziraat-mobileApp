@@ -5,9 +5,15 @@ export const applyCoupon = async (payload: { couponCode: string }) => {
   return data;
 };
 
-export const getCoupon = async (couponCode?: string) => {
+export const getCoupon = async (couponCode?: string, vendorId?: number) => {
+  const params = new URLSearchParams();
+  if (couponCode) params.append("code", couponCode);
+  if (vendorId !== undefined && vendorId !== null)
+    params.append("vendorId", String(vendorId));
+
+  const query = params.toString();
   const { data } = await axiosInstance.get(
-    `/api/coupons/available${couponCode ? `?code=${couponCode}` : ""}`,
+    `/api/coupons/available${query ? `?${query}` : ""}`,
   );
 
   return data?.data || [];

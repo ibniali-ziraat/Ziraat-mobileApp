@@ -1,32 +1,24 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { Minus, Plus, ShoppingBag, X } from "lucide-react-native";
-import { useState } from "react";
+import { ROUTES } from "@/src/constants/routes";
+import { router } from "expo-router";
+import { Eye, X } from "lucide-react-native";
 import { Image, Pressable, View } from "react-native";
-import { useWishlist } from "../hooks/useWishlist";
 
 const IMAGE_HEIGHT = 175;
 const CARD_HEIGHT = 320;
 
-const WishlistItem = ({ item, onRemove, onAddToCart }) => {
-  const [quantity, setQuantity] = useState(1);
-  const { removeFromWishlist } = useWishlist();
-
-  const decrease = () => {
-    if (quantity > 1) setQuantity((p) => p - 1);
-  };
-
-  const increase = () => {
-    setQuantity((p) => p + 1);
-  };
-
-  const handleAddToCart = async () => {
-    await onAddToCart({
-      productId: item.productId,
-      quantity,
+const WishlistItem = ({ item, onRemove }) => {
+  const handleViewDetails = () => {
+    router.push({
+      pathname: ROUTES.PRODUCTS.SINGLE_PRODUCT_DETAILS,
+      params: {
+        productId: item.productId,
+        vendorId: item.vendorId,
+        vendorProductId: item.vendorProductId,
+      },
     });
-    await removeFromWishlist({ id: item.id });
   };
   if (!item) {
     return null;
@@ -78,64 +70,16 @@ const WishlistItem = ({ item, onRemove, onAddToCart }) => {
                 {item.productName}
               </CsText>
             </View>
-
-            {/* SMALL GAP */}
-            <View style={{ height: 6 }} />
-
-            {/* QTY CONTROL */}
-            <View
-              className="flex-row items-center"
-              style={{
-                borderWidth: 1,
-                borderColor: "#e5e5e5",
-                alignSelf: "flex-start",
-              }}
-            >
-              <Pressable
-                onPress={decrease}
-                style={{
-                  paddingHorizontal: 10,
-                  paddingVertical: 6,
-                  opacity: quantity === 1 ? 0.4 : 1,
-                }}
-              >
-                <Minus size={12} color={colors.dark} />
-              </Pressable>
-
-              <View
-                style={{
-                  borderLeftWidth: 1,
-                  borderRightWidth: 1,
-                  borderColor: "#e5e5e5",
-                  paddingHorizontal: 12,
-                  paddingVertical: 4,
-                }}
-              >
-                <CsText style={{ fontSize: 12, color: "#111" }}>
-                  Qty {quantity}
-                </CsText>
-              </View>
-
-              <Pressable
-                onPress={increase}
-                style={{
-                  paddingHorizontal: 10,
-                  paddingVertical: 6,
-                }}
-              >
-                <Plus size={12} color={colors.dark} />
-              </Pressable>
-            </View>
           </View>
 
           {/* BUTTON (NO EXTRA MARGIN) */}
           <Pressable
-            onPress={handleAddToCart}
+            onPress={handleViewDetails}
             className="pt-6 pb-5 border-t items-center active:opacity-70"
             style={{ borderColor: "#e5e5e5", marginTop: 6 }}
           >
             <View className="flex-row items-center">
-              <ShoppingBag size={16} color={colors.secondary} />
+              <Eye size={16} color={colors.secondary} />
               <CsText
                 className="ml-2"
                 style={{
@@ -144,9 +88,7 @@ const WishlistItem = ({ item, onRemove, onAddToCart }) => {
                   fontFamily: typography.Poppins_m_semibold?.fontFamily,
                 }}
               >
-                {/* MOVE TO BAG
-                 */}
-                ADD TO CART
+                VIEW DETAILS
               </CsText>
             </View>
           </Pressable>

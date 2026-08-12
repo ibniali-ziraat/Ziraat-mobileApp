@@ -25,7 +25,11 @@ type Props = {
   isWishlistBusy: boolean;
   onAddToCart: () => Promise<void>;
   onRemoveFromCart?: () => Promise<void>;
-  onToggleWishlist?: (productId: number) => Promise<void>;
+  onToggleWishlist?: (
+    productId: number,
+    vendorId?: number,
+    vendorProductId?: number,
+  ) => Promise<void>;
 };
 
 export default function ProductStickyBar({
@@ -44,7 +48,7 @@ export default function ProductStickyBar({
   const { addToWishlist, removeFromWishlist, getWishlistItemId } =
     useWishlist();
 
-  const wishlistId = getWishlistItemId(product?.id);
+  const wishlistId = getWishlistItemId(product?.id, product?.vendorId);
   const isWishlisted = !!wishlistId;
 
   const insets = useSafeAreaInsets();
@@ -110,13 +114,22 @@ export default function ProductStickyBar({
 
     try {
       if (onToggleWishlist) {
-        await onToggleWishlist(product.id);
+        await onToggleWishlist(
+          product.id,
+          product.vendorId,
+          product.vendorProductId,
+        );
       } else {
         if (wishlistId) {
           await removeFromWishlist({ id: wishlistId });
           toast.success("Removed from wishlist");
         } else {
-          await addToWishlist({ productId: product.id, quantity: 1 });
+          await addToWishlist({
+            productId: product.id,
+            vendorId: product.vendorId,
+            vendorProductId: product.vendorProductId,
+            quantity: 1,
+          });
           toast.success("Added to wishlist");
         }
       }

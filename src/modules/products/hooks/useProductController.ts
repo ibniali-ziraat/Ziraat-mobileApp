@@ -62,11 +62,15 @@ export function useProductController() {
     setPage((p) => p + 1);
   };
 
-  const toggleWishlist = async (productId: string | number) => {
-    const id = getWishlistItemId(productId);
+  const toggleWishlist = async (
+    productId: string | number,
+    vendorId?: string | number,
+    vendorProductId?: string | number,
+  ) => {
+    const id = getWishlistItemId(productId, vendorId);
 
     if (id) await removeFromWishlist({ id });
-    else await addToWishlist({ productId, quantity: 1 });
+    else await addToWishlist({ productId, vendorId, vendorProductId, quantity: 1 });
   };
 
   const normalizedProducts = normalizeProducts(accumulatedProducts);

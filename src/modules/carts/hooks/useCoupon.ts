@@ -6,7 +6,7 @@ import {
 } from "../../checkout/hooks/useCheckout";
 import { CouponType } from "../types/cart.types";
 
-export function useCoupon() {
+export function useCoupon(vendorId?: number) {
   const [couponCode, setCouponCode] = useState<string>("");
   const [showCoupons, setShowCoupons] = useState<boolean>(false);
   const [selectedCoupon, setSelectedCoupon] = useState<string>("");
@@ -14,7 +14,7 @@ export function useCoupon() {
   const { mutateAsync: applyCoupon } = useCouponCode();
 
   const { data: couponData = [], isLoading: isCheckingCoupon } =
-    useGetCouponCode(couponCode) as {
+    useGetCouponCode(couponCode, vendorId) as {
       data: CouponType[];
       isLoading: boolean;
     };

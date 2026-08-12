@@ -15,7 +15,11 @@ interface ProductCardProps {
   isCarousel: boolean;
   wishlistItems: WishlistItem[];
   isWishlistBusy?: boolean;
-  onToggleWishlist?: (productId: string) => void;
+  onToggleWishlist?: (
+    productId: string,
+    vendorId?: string | number,
+    vendorProductId?: string | number,
+  ) => void;
   vendors?: [];
 }
 //
@@ -29,7 +33,9 @@ export default function ProductCard({
   vendors,
 }: ProductCardProps) {
   const isWishlisted = wishlistItems.some(
-    (w) => String(w?.productId) === String(item.id),
+    (w) =>
+      String(w?.productId) === String(item.id) &&
+      String(w?.vendorId) === String(item.vendorId),
   );
 
   // console.log(vendors, "vendors...");
@@ -88,7 +94,9 @@ export default function ProductCard({
           <Pressable
             hitSlop={10}
             disabled={isWishlistBusy}
-            onPress={() => onToggleWishlist?.(item.id)}
+            onPress={() =>
+              onToggleWishlist?.(item.id, item.vendorId, item.vendorProductId)
+            }
             style={[
               {
                 position: "absolute",

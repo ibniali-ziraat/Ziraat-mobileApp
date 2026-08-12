@@ -92,8 +92,12 @@ export default function ProductDetails() {
     getWishlistItemId,
   } = useWishlist();
 
-  const handleToggleWishlist = async (productId: string | number) => {
-    const id = getWishlistItemId(productId);
+  const handleToggleWishlist = async (
+    productId: string | number,
+    vendorId?: string | number,
+    vendorProductId?: string | number,
+  ) => {
+    const id = getWishlistItemId(productId, vendorId);
 
     try {
       if (id) {
@@ -102,6 +106,8 @@ export default function ProductDetails() {
       } else {
         await addToWishlist({
           productId,
+          vendorId,
+          vendorProductId,
           quantity: 1,
         });
         toast.success("Added to wishlist");
@@ -336,7 +342,10 @@ export default function ProductDetails() {
         quantity: Number(quantity),
         vendorId: Number(product.vendorId),
         vendorProductId: Number(product.vendorProductId),
-        ...(selectedVariation && { variationName: selectedVariation.name }),
+        ...(selectedVariation && {
+          vendorProductVariationId: Number(selectedVariation.id),
+          variationName: selectedVariation.name,
+        }),
       });
     } catch {}
   };

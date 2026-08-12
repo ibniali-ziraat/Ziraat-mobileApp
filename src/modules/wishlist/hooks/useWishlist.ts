@@ -23,11 +23,25 @@ export const useWishlist = () => {
     return deleteMutation.mutateAsync(id);
   };
 
-  const isInWishlist = (productId: string | number) =>
-    items.some((item) => String(item.productId) === String(productId));
+  const isInWishlist = (
+    productId: string | number,
+    vendorId?: string | number,
+  ) =>
+    items.some(
+      (item) =>
+        String(item.productId) === String(productId) &&
+        (vendorId === undefined || String(item.vendorId) === String(vendorId)),
+    );
 
-  const getWishlistItemId = (productId: string | number) =>
-    items.find((item) => String(item.productId) === String(productId))?.id;
+  const getWishlistItemId = (
+    productId: string | number,
+    vendorId?: string | number,
+  ) =>
+    items.find(
+      (item) =>
+        String(item.productId) === String(productId) &&
+        (vendorId === undefined || String(item.vendorId) === String(vendorId)),
+    )?.id;
 
   return {
     wishlist: items,

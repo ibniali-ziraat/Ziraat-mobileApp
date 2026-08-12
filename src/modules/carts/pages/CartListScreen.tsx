@@ -25,7 +25,7 @@ const CartListScreen = () => {
 
   const { cart, isCartBusy, updateCartItem, removeFromCart } = useCart();
 
-  const coupon = useCoupon();
+  const coupon = useCoupon(cart?.[0]?.vendorId);
 
   // --- multi-vendor guard: the whole cart must belong to a single vendor ---
   const cartVendorIds = new Set(
