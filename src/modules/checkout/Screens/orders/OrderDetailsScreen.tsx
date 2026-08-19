@@ -27,6 +27,22 @@ const card = {
   borderColor: colors.cardBorder,
 };
 
+// ✅ "ALANTO ® - 10KG" + productName "ALANTO ®"  ->  "10KG"
+const getVariationLabel = (item: any) => {
+  const variation = item?.variationName?.trim();
+  if (!variation) return null;
+
+  const product = item?.productName?.trim() ?? "";
+  if (product && variation.toLowerCase().startsWith(product.toLowerCase())) {
+    const rest = variation
+      .slice(product.length)
+      .replace(/^[\s\-–—:|/]+/, "")
+      .trim();
+    return rest || null;
+  }
+  return variation;
+};
+
 const OrderDetailsScreen = () => {
   const { orderId } = useLocalSearchParams();
   const numericOrderId = Number(orderId);
@@ -203,69 +219,107 @@ const OrderDetailsScreen = () => {
             </View>
           </View>
         )}
-        renderItem={({ item }) => (
-          <View
-            style={[
-              card,
-              { flexDirection: "row", padding: 12, alignItems: "center" },
-            ]}
-          >
+        renderItem={({ item }) => {
+          const variationLabel = getVariationLabel(item);
+
+          return (
             <View
-              style={{
-                backgroundColor: colors.bgColor,
-                padding: 4,
-                borderRadius: 14,
-              }}
+              style={[
+                card,
+                { flexDirection: "row", padding: 12, alignItems: "center" },
+              ]}
             >
-              <Image
-                source={{ uri: item.productImage }}
-                style={{ height: 68, width: 68, borderRadius: 10 }}
-                resizeMode="cover"
-              />
-            </View>
-            <View style={{ marginLeft: 12, flex: 1 }}>
-              <Text style={typography.Poppins_s_bold} numberOfLines={1}>
-                {item.productName}
-              </Text>
               <View
                 style={{
-                  marginTop: 6,
                   backgroundColor: colors.bgColor,
-                  alignSelf: "flex-start",
-                  paddingHorizontal: 8,
-                  paddingVertical: 3,
-                  borderRadius: 8,
+                  padding: 4,
+                  borderRadius: 14,
                 }}
               >
-                <Text
+                <Image
+                  source={{ uri: item.productImage }}
+                  style={{ height: 68, width: 68, borderRadius: 10 }}
+                  resizeMode="cover"
+                />
+              </View>
+              <View style={{ marginLeft: 12, flex: 1 }}>
+                <Text style={typography.Poppins_s_bold} numberOfLines={1}>
+                  {item.productName}
+                </Text>
+                <View
                   style={{
-                    fontSize: 11,
-                    color: colors.darkHover,
-                    fontWeight: "600",
+                    marginTop: 6,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                    gap: 6,
                   }}
                 >
-                  Qty {item.quantity}
+                  <View
+                    style={{
+                      backgroundColor: colors.bgColor,
+                      paddingHorizontal: 8,
+                      paddingVertical: 3,
+                      borderRadius: 8,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 11,
+                        color: colors.darkHover,
+                        fontWeight: "600",
+                      }}
+                    >
+                      Qty {item.quantity}
+                    </Text>
+                  </View>
+
+                  {variationLabel ? (
+                    <View
+                      style={{
+                        backgroundColor: colors.primary + "12",
+                        paddingHorizontal: 8,
+                        paddingVertical: 3,
+                        borderRadius: 8,
+                      }}
+                    >
+                      <Text
+                        numberOfLines={1}
+                        style={{
+                          fontSize: 11,
+                          color: colors.primary,
+                          fontWeight: "700",
+                        }}
+                      >
+                        {variationLabel}
+                      </Text>
+                    </View>
+                  ) : null}
+                </View>
+              </View>
+              <View style={{ alignItems: "flex-end" }}>
+                <Text
+                  style={{
+                    color: colors.primary,
+                    fontWeight: "700",
+                    fontSize: 15,
+                  }}
+                >
+                  ₹{item.productPrice}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 10,
+                    color: colors.darkHover,
+                    marginTop: 2,
+                  }}
+                >
+                  per item
                 </Text>
               </View>
             </View>
-            <View style={{ alignItems: "flex-end" }}>
-              <Text
-                style={{
-                  color: colors.primary,
-                  fontWeight: "700",
-                  fontSize: 15,
-                }}
-              >
-                ₹{item.productPrice}
-              </Text>
-              <Text
-                style={{ fontSize: 10, color: colors.darkHover, marginTop: 2 }}
-              >
-                per item
-              </Text>
-            </View>
-          </View>
-        )}
+          );
+        }}
         ListFooterComponent={() => (
           <View style={card}>
             <Text style={[typography.Poppins_s_bold, { marginBottom: 12 }]}>
