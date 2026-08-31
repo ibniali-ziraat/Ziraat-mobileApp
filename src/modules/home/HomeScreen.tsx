@@ -32,8 +32,8 @@ import { useHomeDashboard } from "./hooks/useHomeDashboard";
 export default function HomeScreen(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
 
-  const { coords } = useLocationWatcher({ updateInterval: 10_000 });
-  useRegisterToken(coords);
+  useLocationWatcher({ updateInterval: 10_000 });
+  useRegisterToken();
 
   // Feeds the collapsing header, which lives outside this scroll view.
   const scrollY = useHomeScrollY();

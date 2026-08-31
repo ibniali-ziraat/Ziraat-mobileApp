@@ -75,6 +75,9 @@ export default function FilterBottomSheet({
     setSort(null);
     setRating([]);
     setPriceRange([FIXED_MIN_PRICE, FIXED_MAX_PRICE]);
+
+    onApplyFilters({});
+    onClose();
   };
 
   const applyHandler = () => {

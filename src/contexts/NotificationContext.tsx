@@ -13,7 +13,7 @@ import {
 } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Platform } from "react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 
 import { StoredNotification } from "../modules/notifications/types/Notification.types";
 
@@ -110,6 +110,20 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
    */
   useEffect(() => {
     if (Platform.OS === "web") return;
+
+    if (Platform.OS === "android" && Platform.Version >= 33) {
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      ).catch((err) =>
+        console.warn("[NotificationProvider] permission request failed:", err),
+      );
+    } else if (Platform.OS === "ios") {
+      messaging()
+        .requestPermission()
+        .catch((err) =>
+          console.warn("[NotificationProvider] permission request failed:", err),
+        );
+    }
 
     const unsubForeground = messaging().onMessage(async (msg) => {
       setNotification(msg);
