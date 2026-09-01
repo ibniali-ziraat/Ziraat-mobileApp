@@ -1,4 +1,8 @@
-import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import {
+  cardShadow,
+  cardTokens,
+  chartTokens,
+} from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { Sparkles } from "lucide-react-native";
 import { Text, View } from "react-native";
@@ -13,6 +17,8 @@ interface VendorAssignment {
 interface OrderItem {
   vendorAssignment?: VendorAssignment;
   quantity?: number;
+  productName?: string;
+  variationName?: string | null;
 }
 
 interface Summary {
@@ -36,6 +42,25 @@ interface Props {
 const formatRs = (value: string) => value?.replace("$", "₹");
 const formatRsNum = (value: number) =>
   `₹${value.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+// ✅ "ALANTO ® - 1KG" -> "1KG"
+const getVariationLabel = (item: any) => {
+  const variation = item?.variationName?.trim();
+  if (!variation) return null;
+
+  const product = item?.productName?.trim() ?? "";
+  if (product && variation.toLowerCase().startsWith(product.toLowerCase())) {
+    const rest = variation
+      .slice(product.length)
+      .replace(/^[\s\-–—:|/]+/, "")
+      .trim();
+    return rest || null;
+  }
+
+  // payloads without productName -> take the part after the last separator
+  const parts = variation.split(/\s[-–—|/]\s/);
+  return parts.length > 1 ? parts[parts.length - 1].trim() : variation;
+};
 
 const SummaryRow = ({
   label,
@@ -136,6 +161,77 @@ export const OrderSummary = ({
       >
         Order Summary
       </Text>
+
+      {/* ITEMS — product name + variation chip */}
+      {items.length > 0 && (
+        <View>
+          {items.map((item, index) => {
+            const variationLabel = getVariationLabel(item);
+
+            return (
+              <View
+                key={index}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginBottom: 8,
+                  gap: 6,
+                }}
+              >
+                <Text
+                  numberOfLines={1}
+                  style={[
+                    typography.Poppins_s_regular,
+                    {
+                      flexShrink: 1,
+                      fontSize: 13.5,
+                      color: cardTokens.inkSecondary,
+                    },
+                  ]}
+                >
+                  {item.productName}
+                </Text>
+
+                {variationLabel ? (
+                  <View
+                    style={{
+                      backgroundColor: cardTokens.hairline,
+                      paddingHorizontal: 8,
+                      paddingVertical: 2,
+                      borderRadius: 8,
+                    }}
+                  >
+                    <Text
+                      numberOfLines={1}
+                      style={[
+                        typography.Poppins_xs_semibold,
+                        { fontSize: 11, color: cardTokens.inkPrimary },
+                      ]}
+                    >
+                      {variationLabel}
+                    </Text>
+                  </View>
+                ) : null}
+
+                <Text
+                  style={[
+                    typography.Poppins_s_regular,
+                    {
+                      marginLeft: "auto",
+                      fontSize: 13.5,
+                      color: cardTokens.inkSecondary,
+                    },
+                  ]}
+                >
+                  × {item.quantity ?? 1}
+                </Text>
+              </View>
+            );
+          })}
+
+          <Divider />
+        </View>
+      )}
 
       {/* MRP — always shown */}
       <SummaryRow label="MRP" value={formatRs(summary.subTotalString)} />

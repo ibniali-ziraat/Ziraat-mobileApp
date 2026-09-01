@@ -27,6 +27,22 @@ const baseCard = {
   marginBottom: 14,
 };
 
+// ✅ "ALANTO ® - 10KG" + productName "ALANTO ®"  ->  "10KG"
+const getVariationLabel = (item: any) => {
+  const variation = item?.variationName?.trim();
+  if (!variation) return null;
+
+  const product = item?.productName?.trim() ?? "";
+  if (product && variation.toLowerCase().startsWith(product.toLowerCase())) {
+    const rest = variation
+      .slice(product.length)
+      .replace(/^[\s\-–—:|/]+/, "")
+      .trim();
+    return rest || null;
+  }
+  return variation;
+};
+
 const OrdersListScreen = () => {
   const { data, isLoading } = useUserOrders();
   const { data: statuses = [] } = useOrderStatuses(); // ✅ for badge label lookup
@@ -130,6 +146,7 @@ const OrdersListScreen = () => {
   const renderOrder = ({ item }) => {
     const firstProduct = item.orderItems?.[0];
     const statusName = getStatusName(item.orderStatus);
+    const variationLabel = getVariationLabel(firstProduct);
 
     return (
       <Pressable
@@ -168,6 +185,30 @@ const OrdersListScreen = () => {
             >
               {firstProduct?.productName || "Multiple Items"}
             </Text>
+
+            {variationLabel ? (
+              <View
+                style={{
+                  alignSelf: "flex-start",
+                  marginTop: 5,
+                  backgroundColor: colors.bgColor,
+                  paddingHorizontal: 8,
+                  paddingVertical: 2,
+                  borderRadius: 8,
+                }}
+              >
+                <Text
+                  numberOfLines={1}
+                  style={{
+                    fontSize: 11,
+                    color: colors.darkHover,
+                    fontWeight: "600",
+                  }}
+                >
+                  {variationLabel}
+                </Text>
+              </View>
+            ) : null}
 
             <View className="flex-row items-center mt-3 gap-6">
               <View className="flex-row items-center mr-12">
