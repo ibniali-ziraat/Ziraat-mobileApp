@@ -108,7 +108,7 @@ export default function TenDayForecastCard({ data_day }) {
             { marginLeft: 8, color: cardTokens.inkPrimary },
           ]}
         >
-          7-DAY FORECAST
+          {forecast.length}-DAY FORECAST
         </Text>
       </View>
 

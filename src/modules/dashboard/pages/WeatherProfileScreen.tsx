@@ -179,11 +179,10 @@ export default function WeatherScreen() {
     setCityName(search.trim().length >= 3 ? searchedName : null);
   }, [search, searchedName]);
 
-  const finalCoords = searchedCoords ??
-    coords ?? { lat: 34.0837, lon: 74.7973 };
+  const finalCoords = searchedCoords ?? coords;
   const { data, isLoading, isFetching, isError, refetch } = useWeatherQuery({
-    lat: finalCoords.lat,
-    lon: finalCoords.lon,
+    lat: finalCoords?.lat,
+    lon: finalCoords?.lon,
   });
 
   const hourlyIndex = useMemo(

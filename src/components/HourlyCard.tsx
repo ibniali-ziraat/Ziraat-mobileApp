@@ -55,17 +55,25 @@ const renderIcon = (type: string) => {
   }
 };
 
+// WeatherAPI hands back "YYYY-MM-DD HH:mm" — Hermes (RN's JS engine) can't
+// parse that without a "T" separator and silently returns Invalid Date.
+const parseProviderTime = (value: string): Date =>
+  new Date(value.includes("T") ? value : value.replace(" ", "T"));
+
 export default function HourlyCard({ data_1h }) {
   const scrollRef = useRef<ScrollView>(null);
 
-  const nowIST = new Date().toLocaleString("en-IN", {
-    timeZone: "Asia/Kolkata",
-  });
-  const currentHour = new Date(nowIST).getHours();
+  const currentHour = Number(
+    new Date().toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour: "numeric",
+      hour12: false,
+    })
+  ) % 24;
 
   const HOURS = useMemo(() => {
     return data_1h.time.slice(0, 24).map((time, index) => {
-      const date = new Date(time);
+      const date = parseProviderTime(time);
 
       const hourIST = Number(
         date.toLocaleString("en-IN", {
@@ -73,7 +81,7 @@ export default function HourlyCard({ data_1h }) {
           hour: "numeric",
           hour12: false,
         })
-      );
+      ) % 24;
 
       const rain = data_1h.precipitation_probability[index] ?? 0;
       const isNight = data_1h.isdaylight?.[index] === 0;

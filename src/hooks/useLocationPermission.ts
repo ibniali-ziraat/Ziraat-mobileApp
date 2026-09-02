@@ -29,13 +29,28 @@ export function useLocation() {
           return;
         }
 
-        // 3. Get the Position
-        const loc = await Location.getCurrentPositionAsync({});
+        // 3. Get the Position (falls back to the last known fix if a fresh
+        // GPS lock takes too long, rather than hanging indefinitely)
+        const loc = await Promise.race([
+          Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Balanced,
+          }),
+          new Promise<null>((resolve) => setTimeout(() => resolve(null), 15000)),
+        ]).then((result) => result ?? Location.getLastKnownPositionAsync({}));
+
+        if (!loc) {
+          console.warn("[useLocation] no fix (timed out, no last-known either)");
+          setError("Unable to find location.");
+          setLoading(false);
+          return;
+        }
+
         setCoords({
           lat: loc.coords.latitude,
           lon: loc.coords.longitude,
         });
       } catch (err) {
+        console.warn("[useLocation] error:", err);
         setError("Unable to find location.");
       } finally {
         setLoading(false);

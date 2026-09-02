@@ -1,5 +1,4 @@
-import axios, { isAxiosError } from "axios";
-import { weatherInstance } from "../api/client/weatherInstance";
+import axiosInstance from "../api/client/axiosInstance";
 
 type WeatherRequest = {
   lat: number;
@@ -35,28 +34,54 @@ const toMeteoblueCode = (code: number): number => {
   return 4;
 };
 
-const fetchWeatherApiFallback = async ({ lat, lon }: WeatherRequest) => {
-  const apiKey = process.env.EXPO_PUBLIC_WEATHER_API_KEY;
-  const baseURL =
-    process.env.EXPO_PUBLIC_WEATHER_BASE_URL ??
-    "https://api.weatherapi.com/v1/forecast.json";
+// WeatherAPI's "Patchy X nearby" / "Patchy light X" codes describe rain
+// somewhere in the area, not necessarily at this exact point — they can
+// appear alongside willItRain === 0 and a low chance_of_rain. Showing a
+// solid rain icon for those overstates it, so fall back to a cloud
+// presentation when WeatherAPI's own forecast says it won't actually rain —
+// scaled to the actual cloud cover WeatherAPI reports, not a fixed guess.
+const PATCHY_NEARBY_CODES = [1063, 1072, 1150, 1180];
 
-  if (!apiKey) {
-    throw new Error("WeatherAPI fallback key is not configured.");
+const cloudToPictocode = (cloudPercent: number): number => {
+  if (cloudPercent < 20) return 1; // Clear sky
+  if (cloudPercent < 50) return 2; // Mostly clear
+  if (cloudPercent < 85) return 3; // Partly cloudy
+  return 4; // Overcast
+};
+
+const resolvePictocode = (
+  code: number,
+  willItRain: number,
+  cloudPercent: number,
+): number => {
+  if (PATCHY_NEARBY_CODES.includes(code) && willItRain === 0) {
+    return cloudToPictocode(cloudPercent);
   }
+  return toMeteoblueCode(code);
+};
 
-  const { data } = await axios.get(baseURL, {
-    params: {
-      key: apiKey,
-      q: `${lat},${lon}`,
-      days: 1,
-      aqi: "no",
-      alerts: "no",
-    },
-  });
+export const fetchWeather = async ({ lat, lon }: WeatherRequest) => {
+  const { data } = await axiosInstance
+    .get("/api/weather/weatherapi/forecast", {
+      params: {
+        Q: `${lat},${lon}`,
+        Days: 7,
+        Aqi: "no",
+        Alerts: "yes",
+      },
+    })
+    .catch((error) => {
+      console.error(
+        "[Weather] fetch failed:",
+        error?.response?.status,
+        error?.response?.data ?? error?.message,
+      );
+      throw error;
+    });
 
   const current = data.current;
-  const forecastDay = data.forecast.forecastday[0];
+  const allDays = data.forecast.forecastday;
+  const forecastDay = allDays[0];
   const hours = forecastDay.hour;
   const iconPath = current.condition?.icon;
 
@@ -65,7 +90,11 @@ const fetchWeatherApiFallback = async ({ lat, lon }: WeatherRequest) => {
     location_name: data.location?.name,
     data_current: {
       temperature: current.temp_c,
-      pictocode: toMeteoblueCode(current.condition.code),
+      pictocode: resolvePictocode(
+        current.condition.code,
+        current.will_it_rain,
+        current.cloud,
+      ),
       condition_icon: iconPath
         ? iconPath.startsWith("//")
           ? `https:${iconPath}`
@@ -80,7 +109,7 @@ const fetchWeatherApiFallback = async ({ lat, lon }: WeatherRequest) => {
       temperature: hours.map((hour: any) => hour.temp_c),
       felttemperature: hours.map((hour: any) => hour.feelslike_c),
       pictocode: hours.map((hour: any) =>
-        toMeteoblueCode(hour.condition.code),
+        resolvePictocode(hour.condition.code, hour.will_it_rain, hour.cloud),
       ),
       relativehumidity: hours.map((hour: any) => hour.humidity),
       windspeed: hours.map((hour: any) => hour.wind_kph / 3.6),
@@ -94,34 +123,26 @@ const fetchWeatherApiFallback = async ({ lat, lon }: WeatherRequest) => {
       visibility: hours.map((hour: any) => hour.vis_km * 1000),
     },
     data_day: {
-      time: [forecastDay.date],
-      temperature_max: [forecastDay.day.maxtemp_c],
-      temperature_min: [forecastDay.day.mintemp_c],
-      pictocode: [toMeteoblueCode(forecastDay.day.condition.code)],
-      relativehumidity_mean: [forecastDay.day.avghumidity],
-      sunrise: [forecastDay.astro.sunrise],
-      sunset: [forecastDay.astro.sunset],
-      moonrise: [forecastDay.astro.moonrise],
-      moonphase: [forecastDay.astro.moon_phase],
-      moonillumination: [Number(forecastDay.astro.moon_illumination)],
+      time: allDays.map((d: any) => d.date),
+      temperature_max: allDays.map((d: any) => d.day.maxtemp_c),
+      temperature_min: allDays.map((d: any) => d.day.mintemp_c),
+      // WeatherAPI's day object has no cloud %, so chance_of_rain is the
+      // closest available proxy for how unsettled the day looks.
+      pictocode: allDays.map((d: any) =>
+        resolvePictocode(
+          d.day.condition.code,
+          d.day.daily_will_it_rain,
+          d.day.daily_chance_of_rain,
+        ),
+      ),
+      relativehumidity_mean: allDays.map((d: any) => d.day.avghumidity),
+      sunrise: allDays.map((d: any) => d.astro.sunrise),
+      sunset: allDays.map((d: any) => d.astro.sunset),
+      moonrise: allDays.map((d: any) => d.astro.moonrise),
+      moonphase: allDays.map((d: any) => d.astro.moon_phase),
+      moonillumination: allDays.map((d: any) =>
+        Number(d.astro.moon_illumination),
+      ),
     },
   };
-};
-
-export const fetchWeather = async ({ lat, lon, asl }: WeatherRequest) => {
-  const packages = "basic-1h_basic-day_sunmoon_clouds-1h";
-
-  try {
-    const { data } = await weatherInstance.get(packages, {
-      params: { lat, lon, asl },
-    });
-    return data;
-  } catch (error) {
-    if (isAxiosError(error)) {
-      console.warn(
-        `[Weather] Meteoblue unavailable (${error.response?.status ?? "network"}); using WeatherAPI fallback.`,
-      );
-    }
-    return fetchWeatherApiFallback({ lat, lon, asl });
-  }
 };

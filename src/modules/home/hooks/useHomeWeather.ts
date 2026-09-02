@@ -21,8 +21,8 @@ export function useHomeWeather(): UseHomeWeatherReturn {
   const { coords, loading: locLoading } = useLocation();
 
   const { data, isLoading } = useWeatherQuery({
-    lat: coords?.lat ?? 34.0837,
-    lon: coords?.lon ?? 74.7973,
+    lat: coords?.lat,
+    lon: coords?.lon,
     asl: 1593,
   });
 

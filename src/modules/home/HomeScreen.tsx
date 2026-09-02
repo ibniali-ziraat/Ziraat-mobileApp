@@ -5,7 +5,6 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useHomeScrollY } from "@/src/contexts/HomeScrollContext";
-import { useLocationWatcher } from "@/src/hooks/useLocationWatcher";
 import { useOrchardCompleteness } from "@/src/modules/orchards/hooks/useOrchardCompleteness";
 import { router } from "expo-router";
 import { JSX, useState } from "react";
@@ -32,7 +31,6 @@ import { useHomeDashboard } from "./hooks/useHomeDashboard";
 export default function HomeScreen(): JSX.Element {
   const [refreshing, setRefreshing] = useState(false);
 
-  useLocationWatcher({ updateInterval: 10_000 });
   useRegisterToken();
 
   // Feeds the collapsing header, which lives outside this scroll view.
