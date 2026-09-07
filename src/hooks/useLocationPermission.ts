@@ -1,14 +1,16 @@
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 
-export function useLocation() {
+export function useLocation(enabled: boolean = true) {
   const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(
     null
   );
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(enabled);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!enabled) return;
+
     (async () => {
       try {
         setLoading(true);
@@ -56,7 +58,7 @@ export function useLocation() {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [enabled]);
 
   return { coords, loading, error };
 }

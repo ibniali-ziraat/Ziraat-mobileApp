@@ -26,3 +26,17 @@ export const searchLocation = async (query: string) => {
         lon: Number(item.lon),
     }));
 };
+
+export const reverseGeocode = async (
+    lat: number,
+    lon: number,
+): Promise<string | null> => {
+    try {
+        const { data } = await locationInstance.get("/reverse", {
+            params: { lat, lon, format: "json" },
+        });
+        return data?.display_name ?? null;
+    } catch {
+        return null;
+    }
+};

@@ -1,6 +1,7 @@
 import * as signalR from "@microsoft/signalr";
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useRef,
@@ -13,17 +14,30 @@ import { useAuth } from "./AuthContext";
 const API_BASE_URL = axiosInstance.defaults.baseURL?.replace(/\/+$/, "");
 const HUB_URL = `${API_BASE_URL}/signalr`;
  
+export type SignalRNotificationHandler = (payload: any) => void;
+
 type SignalRContextType = {
   isConnected: boolean;
+  onNotification: (cb: SignalRNotificationHandler) => () => void;
 };
- 
+
 const SignalRContext = createContext<SignalRContextType | null>(null);
- 
+
 export function SignalRProvider({ children }: { children: React.ReactNode }) {
   const { userToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
- 
+  const notificationListenersRef = useRef<Set<SignalRNotificationHandler>>(
+    new Set(),
+  );
+
+  const onNotification = useCallback((cb: SignalRNotificationHandler) => {
+    notificationListenersRef.current.add(cb);
+    return () => {
+      notificationListenersRef.current.delete(cb);
+    };
+  }, []);
+
   useEffect(() => {
     const getToken = async () => {
       const token = await getItem("user_token");
@@ -44,6 +58,7 @@ export function SignalRProvider({ children }: { children: React.ReactNode }) {
  
     connection.on("getNotification", (notification) => {
       console.log("[SignalR] message received:", JSON.stringify(notification));
+      notificationListenersRef.current.forEach((cb) => cb(notification));
     });
  
     connection.onreconnecting((err) => {
@@ -99,7 +114,7 @@ export function SignalRProvider({ children }: { children: React.ReactNode }) {
   }, [userToken]);
  
   return (
-<SignalRContext.Provider value={{ isConnected }}>
+<SignalRContext.Provider value={{ isConnected, onNotification }}>
       {children}
 </SignalRContext.Provider>
   );

@@ -8,6 +8,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useLocationSearch } from "@/src/hooks/useLocationSearch";
+import { useTehsilLocation } from "@/src/hooks/useTehsilLocation";
 import { useWeatherQuery } from "@/src/hooks/useWeatherQuery";
 import HourlyCard from "@/src/components/HourlyCard";
 import TenDayForecastCard from "@/src/components/WeeklyCard";
@@ -167,7 +168,13 @@ function MetricTile({ metric }: { metric: Metric }) {
 export default function WeatherScreen() {
   const [search, setSearch] = useState("");
   const [cityName, setCityName] = useState<string | null>(null);
-  const { coords, loading: locationLoading } = useLocation();
+  // Registered tehsil is the default location; tapping the locate icon
+  // switches to live GPS for this screen instead.
+  const [useGpsOverride, setUseGpsOverride] = useState(false);
+  const { coords: tehsilCoords, tehsilName, loading: tehsilLoading } =
+    useTehsilLocation();
+  const gpsEnabled = useGpsOverride || (!tehsilLoading && !tehsilCoords);
+  const { coords, loading: locationLoading } = useLocation(gpsEnabled);
   const {
     coords: searchedCoords,
     name: searchedName,
@@ -179,7 +186,9 @@ export default function WeatherScreen() {
     setCityName(search.trim().length >= 3 ? searchedName : null);
   }, [search, searchedName]);
 
-  const finalCoords = searchedCoords ?? coords;
+  const usingTehsil = !searchedCoords && !useGpsOverride && !!tehsilCoords;
+  const finalCoords =
+    searchedCoords ?? (useGpsOverride ? coords : (tehsilCoords ?? coords));
   const { data, isLoading, isFetching, isError, refetch } = useWeatherQuery({
     lat: finalCoords?.lat,
     lon: finalCoords?.lon,
@@ -336,7 +345,8 @@ export default function WeatherScreen() {
     return result;
   }, [data, hourlyIndex]);
 
-  const showInitialLoader = (isLoading || locationLoading) && !data;
+  const showInitialLoader =
+    (isLoading || tehsilLoading || locationLoading) && !data;
   const searching = search.trim().length >= 3 && searchLoading;
 
   return (
@@ -399,7 +409,17 @@ export default function WeatherScreen() {
                 <X size={18} color={cardTokens.inkSecondary} />
               </Pressable>
             ) : (
-              <LocateFixed size={18} color={cardTokens.inkMuted} />
+              <Pressable
+                onPress={() => setUseGpsOverride(true)}
+                hitSlop={10}
+                accessibilityRole="button"
+                accessibilityLabel="Use current location"
+              >
+                <LocateFixed
+                  size={18}
+                  color={useGpsOverride ? colors.primary : cardTokens.inkMuted}
+                />
+              </Pressable>
             )}
           </View>
 
@@ -455,7 +475,12 @@ export default function WeatherScreen() {
             <>
               <WeatherCard
                 current={currentWeather}
-                city={cityName || data.location_name || "Current location"}
+                city={
+                  cityName ||
+                  (usingTehsil ? tehsilName : null) ||
+                  data.location_name ||
+                  "Current location"
+                }
               />
 
               {data.data_1h?.time?.length &&
