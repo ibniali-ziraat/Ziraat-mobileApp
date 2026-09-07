@@ -4,12 +4,16 @@ import { safeGet } from "./helpers/safeGet";
 export interface CartItem {
   id: number;
   productId: number;
+  vendorId?: number;
+  vendorProductId?: number;
   variationName?: string;
   quantity: number;
 }
 
 export interface AddToCartPayload {
   productId: number;
+  vendorId?: number;
+  vendorProductId?: number;
   variationName?: string;
   quantity: number;
 }

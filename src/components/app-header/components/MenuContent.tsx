@@ -1,38 +1,35 @@
-import { colors } from "@/src/constants/colors";
+import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { ROUTES } from "@/src/constants/routes";
-import { router } from "expo-router";
-import { Cog, PhoneCall } from "lucide-react-native";
-import { Linking, Text, View } from "react-native";
-import IconButton from "./IconButton";
+import { Text, View } from "react-native";
 
+/**
+ * Title only. The call shortcut is gone and settings moved into the list, so
+ * the header no longer competes with the cards below it.
+ */
 const MenuContent = () => (
-  <View className="flex-row items-center justify-between py-4">
-    <View>
-      <Text style={[typography.Poppins_l_semibold, { color: colors.dark }]}>
-        Menu
-      </Text>
-      <Text style={[typography.Poppins_s_regular, { color: colors.neutral }]}>
-        Explore features and settings
-      </Text>
-    </View>
-
-
-    <View className="flex-row items-center gap-3">
-      <IconButton
-        onPress={() => Linking.openURL("tel:+919876543210")}
-      >
-        <PhoneCall size={20} color={colors.primary} />
-      </IconButton>
-
-      <IconButton
-        onPress={() =>
-          router.push({ pathname: ROUTES.SETTINGS })
-        }
-      >
-        <Cog size={20} color={colors.dark} />
-      </IconButton>
-    </View>
+  <View
+    style={{
+      paddingTop: 10,
+      paddingBottom: 12,
+      backgroundColor: cardTokens.surface,
+    }}
+  >
+    <Text
+      style={[
+        typography.Poppins_l_semibold,
+        { color: cardTokens.inkPrimary, fontSize: 20 },
+      ]}
+    >
+      Menu
+    </Text>
+    <Text
+      style={[
+        typography.Poppins_xs_regular,
+        { color: cardTokens.inkMuted, fontSize: 11, marginTop: 2 },
+      ]}
+    >
+      Manage your account, farm and preferences
+    </Text>
   </View>
 );
 

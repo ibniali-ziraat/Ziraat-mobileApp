@@ -1,8 +1,8 @@
 import { Sun } from "lucide-react-native";
 import { Text, View } from "react-native";
 import Svg, { Circle, Line } from "react-native-svg";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 
 type Props = {
   value: number;
@@ -33,19 +33,22 @@ export default function UVCard({ value }: Props) {
           marginVertical: 8,
           paddingHorizontal: 12,
           paddingVertical: 12,
-          backgroundColor: "#fff",
-          borderRadius: 16,
-          height: 160, 
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          borderWidth: 1,
+          borderColor: cardTokens.border,
+          height: 160,
           justifyContent: "space-between",
         },
-        shadows.profile_card, 
+        cardShadow,
       ]}
     >
       {/* Header */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Sun size={18} color="#c7611f" />
         <Text
-          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: cardTokens.inkPrimary }]}
         >
           UV INDEX
         </Text>
@@ -54,13 +57,13 @@ export default function UVCard({ value }: Props) {
       {/* Value + Level */}
       <View>
         <Text
-          style={[typography.Poppins_l_medium, { marginTop: 4, color: "#000" }]}
+          style={[typography.Poppins_l_medium, { marginTop: 4, color: cardTokens.inkPrimary }]}
         >
           {value}
         </Text>
 
         <Text
-          style={[typography.Poppins_m_regular, { color: "#000" }]}
+          style={[typography.Poppins_m_regular, { color: cardTokens.inkSecondary }]}
         >
           {level}
         </Text>
@@ -79,7 +82,7 @@ export default function UVCard({ value }: Props) {
 
       {/* Advice */}
       <Text
-        style={[typography.Poppins_xs_regular, { color: "#000", lineHeight: 18 }]}
+        style={[typography.Poppins_xs_regular, { color: cardTokens.inkMuted, lineHeight: 18 }]}
       >
         {advice}
       </Text>

@@ -1,9 +1,10 @@
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
+import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
-import { Heart } from "lucide-react-native";
+import { Heart, Store } from "lucide-react-native";
 import { Image, Pressable, Text, View } from "react-native";
 import { NormalizedProduct, WishlistItem } from "../types/productlist.types";
 import { calcDiscount } from "../utils/utils";
@@ -14,7 +15,11 @@ interface ProductCardProps {
   isCarousel: boolean;
   wishlistItems: WishlistItem[];
   isWishlistBusy?: boolean;
-  onToggleWishlist?: (productId: string) => void;
+  onToggleWishlist?: (
+    productId: string,
+    vendorId?: string | number,
+    vendorProductId?: string | number,
+  ) => void;
   vendors?: [];
 }
 //
@@ -28,7 +33,9 @@ export default function ProductCard({
   vendors,
 }: ProductCardProps) {
   const isWishlisted = wishlistItems.some(
-    (w) => String(w?.productId) === String(item.id),
+    (w) =>
+      String(w?.productId) === String(item.id) &&
+      String(w?.vendorId) === String(item.vendorId),
   );
 
   // console.log(vendors, "vendors...");
@@ -58,110 +65,159 @@ export default function ProductCard({
       }}
     >
       <View
-        style={{
-          backgroundColor: colors.light,
-          elevation: 2,
-          borderRadius: 16,
-          overflow: "hidden",
-        }}
+        style={[
+          {
+            backgroundColor: cardTokens.surface,
+            borderRadius: cardTokens.radius,
+            borderCurve: "continuous",
+            borderWidth: 1,
+            borderColor: cardTokens.border,
+            overflow: "hidden",
+          },
+          cardShadow,
+        ]}
       >
-        <Pressable onPress={goToProduct}>
-          <Image
-            source={{ uri: item.image }}
-            style={{ width: "100%", height: isCarousel ? cardWidth : 160 }}
-            resizeMode="cover"
-          />
-        </Pressable>
+        <View>
+          <Pressable onPress={goToProduct}>
+            <Image
+              source={{ uri: item.image }}
+              style={{
+                width: "100%",
+                height: isCarousel ? cardWidth : 150,
+                backgroundColor: cardTokens.mutedSurface,
+              }}
+              resizeMode="cover"
+            />
+          </Pressable>
 
-        {/* Wishlist Button */}
-        <Pressable
-          hitSlop={10}
-          disabled={isWishlistBusy}
-          onPress={() => onToggleWishlist?.(item.id)}
-          style={{
-            position: "absolute",
-            top: 8,
-            right: 8,
-            backgroundColor: "rgba(255, 255, 255, 0.9)",
-            padding: 8,
-            borderRadius: 24,
-          }}
-        >
-          <Heart
-            size={18}
-            color={isWishlisted ? colors.error : colors.neutral}
-            fill={isWishlisted ? colors.error : "none"}
-          />
-        </Pressable>
+          {/* Wishlist Button */}
+          <Pressable
+            hitSlop={10}
+            disabled={isWishlistBusy}
+            onPress={() =>
+              onToggleWishlist?.(item.id, item.vendorId, item.vendorProductId)
+            }
+            style={[
+              {
+                position: "absolute",
+                top: 8,
+                right: 8,
+                backgroundColor: "rgba(255, 255, 255, 0.92)",
+                padding: 8,
+                borderRadius: 24,
+              },
+              cardShadow,
+            ]}
+          >
+            <Heart
+              size={17}
+              color={isWishlisted ? colors.error : cardTokens.inkSecondary}
+              fill={isWishlisted ? colors.error : "none"}
+            />
+          </Pressable>
 
-        {/* Discount Badge */}
-        {discount && (
+          {/* Discount Badge */}
+          {discount && (
+            <View
+              style={{
+                position: "absolute",
+                bottom: 8,
+                left: 8,
+                paddingHorizontal: 8,
+                paddingVertical: 3,
+                borderRadius: 999,
+                backgroundColor: chartTokens.accent,
+              }}
+            >
+              <Text
+                style={[
+                  typography.Poppins_xs_semibold,
+                  { color: "#FFFFFF", fontSize: 10 },
+                ]}
+              >
+                {discount}% OFF
+              </Text>
+            </View>
+          )}
+        </View>
+
+        <Pressable style={{ padding: 10 }} onPress={goToProduct}>
+          <Text
+            style={[
+              typography.Poppins_s_semibold,
+              { color: cardTokens.inkPrimary },
+            ]}
+            numberOfLines={1}
+          >
+            {item.title}
+          </Text>
+
           <View
             style={{
-              position: "absolute",
-              bottom: 8,
-              left: 8,
-              paddingHorizontal: 8,
-              paddingVertical: 2,
-              borderRadius: 6,
-              backgroundColor: colors.secondary,
+              flexDirection: "row",
+              alignItems: "center",
+              alignSelf: "flex-start",
+              marginTop: 5,
+              paddingHorizontal: 7,
+              paddingVertical: 3,
+              borderRadius: 999,
+              backgroundColor: chartTokens.tint,
+              maxWidth: "100%",
             }}
           >
-            <Text style={{ color: colors.light, fontSize: 10 }}>
-              {discount}% OFF
+            <Store size={11} color={chartTokens.current} strokeWidth={2.2} />
+            <Text
+              numberOfLines={1}
+              style={[
+                typography.Poppins_xs_semibold,
+                {
+                  color: chartTokens.current,
+                  fontSize: 10.5,
+                  marginLeft: 4,
+                  flexShrink: 1,
+                },
+              ]}
+            >
+              {item.vendorName}
             </Text>
           </View>
-        )}
-      </View>
 
-      {/* Info */}
-      {/* <Pressable style={{ marginTop: 8 }} onPress={goToProduct}>
-        <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
-          {item.title}
-        </Text>
-
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <Text style={typography.Poppins_s_medium}>₹{item.price}</Text>
-          {item.oldPrice && (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 8,
+              marginTop: 7,
+            }}
+          >
             <Text
-              style={{
-                textDecorationLine: "line-through",
-                color: colors.neutral,
-                fontSize: 12,
-              }}
+              style={[
+                typography.Poppins_s_medium,
+                { color: cardTokens.inkPrimary },
+              ]}
             >
-              ₹{item.oldPrice}
+              ₹{item.price}
             </Text>
-          )}
-        </View>
-      </Pressable> */}
+            {item.oldPrice && (
+              <Text
+                style={[
+                  typography.Poppins_xs_regular,
+                  {
+                    textDecorationLine: "line-through",
+                    color: cardTokens.inkMuted,
+                    fontSize: 12,
+                  },
+                ]}
+              >
+                ₹{item.oldPrice}
+              </Text>
+            )}
+          </View>
 
-      <Pressable style={{ marginTop: 8 }} onPress={goToProduct}>
-        <Text style={typography.Poppins_m_semibold} numberOfLines={1}>
-          {item.title}
-        </Text>
-        <Text style={{ color: colors.neutral, fontSize: 12, marginTop: 2 }}>
-          Sold by: {item.vendorName}
-        </Text>
-
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <Text style={typography.Poppins_s_medium}>₹{item.price}</Text>
-          {item.oldPrice && (
-            <Text
-              style={{
-                textDecorationLine: "line-through",
-                color: colors.neutral,
-                fontSize: 12,
-              }}
-            >
-              ₹{item.oldPrice}
-            </Text>
-          )}
-        </View>
-      </Pressable>
-
-      <View style={{ marginTop: 4 }}>
-        <RatingStars rating={item.rating ?? 0} />
+          <View style={{ marginTop: 4 }}>
+            <RatingStars rating={item.rating ?? 0} />
+          </View>
+        </Pressable>
       </View>
     </View>
   );

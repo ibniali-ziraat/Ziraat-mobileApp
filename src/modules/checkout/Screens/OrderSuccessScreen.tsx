@@ -14,6 +14,25 @@ import { useCallback } from "react";
 
 import { CheckCircle, Download, Eye, Share2 } from "lucide-react-native";
 
+// ✅ "ALANTO ® - 1KG" -> "1KG"
+const getVariationLabel = (item: any) => {
+  const variation = item?.variationName?.trim();
+  if (!variation) return null;
+
+  const product = item?.productName?.trim() ?? "";
+  if (product && variation.toLowerCase().startsWith(product.toLowerCase())) {
+    const rest = variation
+      .slice(product.length)
+      .replace(/^[\s\-–—:|/]+/, "")
+      .trim();
+    return rest || null;
+  }
+
+  // payloads without productName -> take the part after the last separator
+  const parts = variation.split(/\s[-–—|/]\s/);
+  return parts.length > 1 ? parts[parts.length - 1].trim() : variation;
+};
+
 const OrderSuccessScreen = () => {
   const { order: orderParam } = useLocalSearchParams();
 
@@ -33,6 +52,8 @@ const OrderSuccessScreen = () => {
 
   const shippingAddress = order.shippingAddress;
   const billingAddress = order.billingAddress;
+
+  const orderItems = order.orderItems ?? [];
 
   /**
    * Total Quantity
@@ -150,6 +171,56 @@ const OrderSuccessScreen = () => {
             >
               Order Details
             </Text>
+
+            {/* ITEMS — product name + variation chip */}
+            {orderItems.length > 0 && (
+              <View className="mb-3">
+                {orderItems.map((item: any, index: number) => {
+                  const variationLabel = getVariationLabel(item);
+
+                  return (
+                    <View
+                      key={item?.id ?? index}
+                      className="mb-3 flex-row items-center"
+                      style={{ gap: 6 }}
+                    >
+                      <Text
+                        numberOfLines={1}
+                        className="shrink text-neutral-600"
+                      >
+                        {item?.productName || "Item"}
+                      </Text>
+
+                      {variationLabel ? (
+                        <View
+                          style={{
+                            backgroundColor: colors.primary + "12",
+                            paddingHorizontal: 8,
+                            paddingVertical: 2,
+                            borderRadius: 8,
+                          }}
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={{
+                              fontSize: 11,
+                              fontWeight: "700",
+                              color: colors.primary,
+                            }}
+                          >
+                            {variationLabel}
+                          </Text>
+                        </View>
+                      ) : null}
+
+                      <Text className="ml-auto font-semibold text-neutral-900">
+                        × {item?.quantity ?? 1}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
 
             <DetailRow label="Order ID" value={`#${order?.id ?? "-"}`} />
 

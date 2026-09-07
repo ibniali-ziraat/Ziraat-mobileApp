@@ -13,6 +13,8 @@ export type InputType =
   | "pan"
   | "ifsc"
   | "name"
+  | "alphanumeric"
+  | "marlas"
   | "address"
   | "year"
   | "username"
@@ -30,6 +32,8 @@ export interface FormInputProps {
   countryCode?: string;
   placeholder?: string;
   disabled?: boolean;
+  warning?: string;
+  onChangeText?: (rawText: string) => void;
 }
 
 export interface FormOtpInputProps {

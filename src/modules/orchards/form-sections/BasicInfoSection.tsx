@@ -1,12 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { View } from "react-native";
+import { Text, View } from "react-native";
 
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 
+import { colors } from "@/src/constants/colors";
+import { fonts } from "@/src/constants/fonts/font";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
+import { OWNERSHIP_TYPE_OPTIONS } from "../constants/orchardOptions";
 
 export default function BasicInfo({ errors, data }) {
   console.log(data, "data...");
@@ -16,7 +19,6 @@ export default function BasicInfo({ errors, data }) {
   const { control, setValue } = useFormContext();
   if (!control) return null;
 
-  const unitHydrated = useRef(false);
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
 
@@ -26,28 +28,13 @@ export default function BasicInfo({ errors, data }) {
     }
   }, [data?.district]);
 
-  const orchardUnit = useWatch({
-    control,
-    name: "orchardUnit",
-  });
-
   const orchardMode = useWatch({
     control,
     name: "orchardSize.mode",
     defaultValue: "manual",
   });
 
-  useEffect(() => {
-    if (!orchardUnit) return;
-
-    if (!unitHydrated.current) {
-      unitHydrated.current = true;
-      return;
-    }
-
-    setValue("marlas", "");
-    setValue("kanals", "");
-  }, [orchardUnit]);
+  const [marlasCapWarning, setMarlasCapWarning] = useState(false);
 
   const toggleMode = () => {
     setValue(
@@ -61,7 +48,7 @@ export default function BasicInfo({ errors, data }) {
       <FormTextInput
         name="orchardName"
         label="Orchard Name"
-        type="name"
+        type="alphanumeric"
         placeholder="Enter your orchard name"
         required
         error={errors?.orchardName}
@@ -143,37 +130,59 @@ export default function BasicInfo({ errors, data }) {
 
       {orchardMode === "manual" && (
         <View>
-          <SingleSelectInput
-            name="orchardUnit"
-            label="Orchard Size Unit"
-            modalLabel="Select Unit"
-            options={[
-              { label: "Marlas", value: "marlas" },
-              { label: "Kanals", value: "kanals" },
-            ]}
-            error={errors?.orchardUnit}
-          />
+          <View
+            style={{ flexDirection: "row", alignItems: "center", marginBottom: 6 }}
+          >
+            <Text
+              style={{
+                fontSize: 14,
+                color: colors.dark,
+                fontFamily: fonts.poppins.medium,
+              }}
+            >
+              Orchard Size
+            </Text>
+            <Text style={{ color: colors.error, fontFamily: fonts.poppins.medium }}>
+              {" "}
+              *
+            </Text>
+          </View>
 
-          {orchardUnit === "marlas" && (
-            <FormTextInput
-              name="marlas"
-              label="Size in Marlas"
-              type="pincode"
-              required
-              placeholder="Enter size in Marlas"
-              error={errors?.marlas}
-            />
-          )}
+          <View style={{ flexDirection: "row", gap: 12, marginBottom: -12 }}>
+            <View style={{ flex: 1 }}>
+              <FormTextInput
+                name="kanals"
+                label="Kanals"
+                type="pincode"
+                placeholder="e.g. 4"
+              />
+            </View>
 
-          {orchardUnit === "kanals" && (
-            <FormTextInput
-              name="kanals"
-              label="Size in Kanals"
-              type="pincode"
-              required
-              placeholder="Enter size in Kanals"
-              error={errors?.kanals}
-            />
+            <View style={{ flex: 1 }}>
+              <FormTextInput
+                name="marlas"
+                label="Marlas"
+                type="marlas"
+                placeholder="Max 19"
+                error={errors?.marlas}
+                warning={
+                  marlasCapWarning ? "20 Marlas = 1 Kanal" : undefined
+                }
+                onChangeText={(rawText) => {
+                  const digits = rawText.replace(/\D/g, "");
+                  setMarlasCapWarning(Number(digits) > 19);
+                }}
+              />
+            </View>
+          </View>
+
+          {errors?.kanals?.message && (
+            <Text
+              numberOfLines={1}
+              style={{ color: colors.error, marginBottom: 18 }}
+            >
+              {errors.kanals.message}
+            </Text>
           )}
         </View>
       )}
@@ -205,13 +214,7 @@ export default function BasicInfo({ errors, data }) {
         name="ownershipType"
         label="Ownership Type"
         modalLabel="Ownership Type"
-        options={[
-          { label: "Self-Owned", value: "Self-Owned" },
-          { label: "Joint", value: "Joint" },
-          { label: "Leased", value: "Leased" },
-          { label: "Rented", value: "Rented" },
-          { label: "Other", value: "Other" },
-        ]}
+        options={OWNERSHIP_TYPE_OPTIONS}
         error={errors?.ownershipType?.message}
       />
 

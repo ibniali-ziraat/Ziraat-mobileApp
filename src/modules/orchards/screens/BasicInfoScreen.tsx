@@ -69,7 +69,6 @@ export default function BasicInfoScreen() {
       tehsil: orchard.tehsil ?? "",
       zone: orchard.zone ?? "",
       pincode: orchard.pinCode ?? "",
-      orchardUnit: hasKanals ? "kanals" : hasMarlas ? "marlas" : undefined,
       kanals: hasKanals ? String(orchard.kanals) : "",
       marlas: hasMarlas ? String(orchard.marlas) : "",
       orchardSize: {
@@ -81,20 +80,8 @@ export default function BasicInfoScreen() {
   const onSubmit = async (values) => {
     console.log(values, "values...");
 
-    let marlasPayload = 0;
-    let kanalsPayload = 0;
-
-    if (values.orchardSize?.mode === "measure") {
-      marlasPayload = Number(values.marlas ?? 0);
-    } else {
-      if (values.orchardUnit === "kanals") {
-        kanalsPayload = Number(values.kanals ?? 0);
-      }
-
-      if (values.orchardUnit === "marlas") {
-        marlasPayload = Number(values.marlas ?? 0);
-      }
-    }
+    const kanalsPayload = Number(values.kanals || 0);
+    const marlasPayload = Number(values.marlas || 0);
 
     const payload = {
       orchardId: orchard?.id ?? generateId(),

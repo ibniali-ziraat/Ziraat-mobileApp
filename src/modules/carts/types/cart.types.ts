@@ -7,6 +7,7 @@ export type CartItemType = {
   productId?: number;
   vendorId?: number;
   vendorProductId?: number; // same underlying product listed by different vendors shares this
+  variationName?: string;
 };
 
 export type CouponType = {

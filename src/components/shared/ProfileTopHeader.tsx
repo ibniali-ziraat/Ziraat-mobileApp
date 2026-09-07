@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import {
   useFileDeleteMutation,
@@ -6,8 +7,8 @@ import {
   useUpdateProfile,
 } from "@/src/hooks/useFileUpload";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
-import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+import { Camera, ImageIcon, Pencil, Trash2, X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -89,46 +90,46 @@ export default function ProfileTopHeader({
     }
   };
 
- const processPickedImage = async (asset: ImagePicker.ImagePickerAsset) => {
-  try {
-    if (!profileData?.id) return;
-    setUploading(true);
+  const processPickedImage = async (asset: ImagePicker.ImagePickerAsset) => {
+    try {
+      if (!profileData?.id) return;
+      setUploading(true);
 
-    const uploadRes = await uploadFileAsync({
-      file: {
-        uri: asset.uri,
-        name: asset.fileName || `profile_${Date.now()}.jpg`,
-        mimeType: asset.mimeType || "image/jpeg",
-      },
-      UserType: "supplier",
-      UserId: profileData.coreUserId.toString(),
-      FileCategory: "profile",
-    });
+      const uploadRes = await uploadFileAsync({
+        file: {
+          uri: asset.uri,
+          name: asset.fileName || `profile_${Date.now()}.jpg`,
+          mimeType: asset.mimeType || "image/jpeg",
+        },
+        UserType: "supplier",
+        UserId: profileData.coreUserId.toString(),
+        FileCategory: "profile",
+      });
 
-    console.log("upload response:", JSON.stringify(uploadRes?.data));
+      console.log("upload response:", JSON.stringify(uploadRes?.data));
 
-    // API returns the URL as a plain string; fall back to common
-    // object shapes in case the backend response changes later.
-    const raw = uploadRes?.data;
-   const fileUrl =
-  typeof raw === "string"
-    ? raw.trim()
-    : (raw?.fileUrl ?? raw?.url ?? raw?.blobUrl ?? raw?.data);
+      // API returns the URL as a plain string; fall back to common
+      // object shapes in case the backend response changes later.
+      const raw = uploadRes?.data;
+      const fileUrl =
+        typeof raw === "string"
+          ? raw.trim()
+          : (raw?.fileUrl ?? raw?.url ?? raw?.blobUrl ?? raw?.data);
 
-    if (!fileUrl || typeof fileUrl !== "string") {
-      throw new Error("Upload failed");
+      if (!fileUrl || typeof fileUrl !== "string") {
+        throw new Error("Upload failed");
+      }
+
+      await updateProfile({ ...profileData, profilePic: fileUrl });
+
+      setProfilePic(fileUrl);
+      showSuccessToast("Profile picture updated");
+    } catch {
+      showErrorToast("Failed to upload image");
+    } finally {
+      setUploading(false);
     }
-
-    await updateProfile({ ...profileData, profilePic: fileUrl });
-
-    setProfilePic(fileUrl);
-    showSuccessToast("Profile picture updated");
-  } catch (error) {
-    showErrorToast("Failed to upload image");
-  } finally {
-    setUploading(false);
-  }
-};
+  };
 
   const handleDeletePhoto = async () => {
     setIsMenuVisible(false);
@@ -139,7 +140,7 @@ export default function ProfileTopHeader({
 
       setProfilePic("");
       showSuccessToast("Photo removed");
-    } catch (error) {
+    } catch {
       showErrorToast("Failed to delete image");
     } finally {
       setUploading(false);
@@ -147,46 +148,83 @@ export default function ProfileTopHeader({
   };
 
   return (
-    <View className="w-full items-center py-5 bg-white rounded-[20px]">
-      <View className="relative">
-        <Pressable
-          activeOpacity={0.9}
-          onPress={() => profilePic && setIsPreviewVisible(true)}
-          className="w-[100px] h-[100px] rounded-full border-[3px] items-center justify-center overflow-hidden bg-slate-100"
-          style={{ borderColor: colors.primary }}
-        >
-          {profilePic ? (
-            <Image source={{ uri: profilePic }} className="w-full h-full" />
-          ) : (
+    <View
+      style={{
+        width: "100%",
+        paddingVertical: 20,
+        marginBottom: 24,
+        borderBottomWidth: 1,
+        borderBottomColor: cardTokens.hairline,
+        backgroundColor: cardTokens.surface,
+      }}
+    >
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View className="relative">
+          <Pressable
+            activeOpacity={0.9}
+            onPress={() => profilePic && setIsPreviewVisible(true)}
+            className="w-[84px] h-[84px] rounded-full items-center justify-center overflow-hidden"
+            style={{
+              backgroundColor: cardTokens.mutedSurface,
+              borderWidth: 1,
+              borderColor: cardTokens.border,
+            }}
+          >
+            {profilePic ? (
+              <Image source={{ uri: profilePic }} className="w-full h-full" />
+            ) : (
+              <Text
+                style={[
+                  typography.Poppins_l_semibold,
+                  { color: cardTokens.inkSecondary, fontSize: 26 },
+                ]}
+              >
+                {initials}
+              </Text>
+            )}
+          </Pressable>
+
+          <Pressable
+            onPress={() => setIsMenuVisible(true)}
+            className="absolute bottom-0 right-0 w-[32px] h-[32px] rounded-full items-center justify-center"
+            style={{
+              backgroundColor: chartTokens.current,
+              borderWidth: 2,
+              borderColor: cardTokens.surface,
+            }}
+          >
+            {isLoading ? (
+              <ActivityIndicator size="small" color={colors.light} />
+            ) : (
+              <Pencil size={15} color={colors.light} />
+            )}
+          </Pressable>
+        </View>
+
+        <View style={{ flex: 1, marginLeft: 18 }}>
+          <Text
+            numberOfLines={1}
+            style={[
+              typography.Poppins_l_semibold,
+              { color: cardTokens.inkPrimary, fontSize: 21 },
+            ]}
+          >
+            {fullName || "Your profile"}
+          </Text>
+
+          {profileData?.phone ? (
             <Text
-              style={[{ color: colors.dark }, typography.Poppins_m_regular]}
+              numberOfLines={1}
+              style={[
+                typography.Poppins_xs_regular,
+                { color: cardTokens.inkMuted, fontSize: 11.5, marginTop: 3 },
+              ]}
             >
-              {initials}
+              {profileData.phone}
             </Text>
-          )}
-        </Pressable>
-
-        <Pressable
-          onPress={() => setIsMenuVisible(true)}
-          className="absolute bottom-0 right-0 w-[34px] h-[34px] rounded-full items-center justify-center border-2 border-white shadow-md"
-          style={{ backgroundColor: colors.primary }}
-        >
-          {isLoading ? (
-            <ActivityIndicator size="small" color="#fff" />
-          ) : (
-            <Feather name="edit-2" size={16} color="#fff" />
-          )}
-        </Pressable>
+          ) : null}
+        </View>
       </View>
-
-      <Text
-        style={[
-          { color: colors.primary, paddingTop: 14 },
-          typography.Poppins_m_bold,
-        ]}
-      >
-        {fullName?.toUpperCase() || "User Name"}
-      </Text>
 
       <Modal
         visible={isMenuVisible}
@@ -215,7 +253,7 @@ export default function ProfileTopHeader({
                 className="items-center"
               >
                 <View className="w-14 h-14 bg-blue-50 rounded-full items-center justify-center mb-2">
-                  <Feather name="camera" size={24} color={colors.secondary} />
+                  <Camera size={24} color={colors.secondary} />
                 </View>
                 <Text
                   style={[{ color: colors.dark }, typography.Poppins_s_regular]}
@@ -229,7 +267,7 @@ export default function ProfileTopHeader({
                 className="items-center"
               >
                 <View className="w-14 h-14 bg-green-50 rounded-full items-center justify-center mb-2">
-                  <Feather name="image" size={24} color="#10b981" />
+                  <ImageIcon size={24} color={colors.primary} />
                 </View>
                 <Text
                   style={[
@@ -244,7 +282,7 @@ export default function ProfileTopHeader({
               {profilePic && (
                 <Pressable onPress={handleDeletePhoto} className="items-center">
                   <View className="w-14 h-14 bg-red-50 rounded-full items-center justify-center mb-2">
-                    <Feather name="trash-2" size={24} color="#ef4444" />
+                    <Trash2 size={24} color={colors.error} />
                   </View>
                   <Text
                     style={[
@@ -284,7 +322,7 @@ export default function ProfileTopHeader({
             className="absolute top-12 right-5"
             onPress={() => setIsPreviewVisible(false)}
           >
-            <Feather name="x" size={30} color="#fff" />
+            <X size={30} color={colors.light} />
           </Pressable>
           <Image
             source={{ uri: profilePic }}

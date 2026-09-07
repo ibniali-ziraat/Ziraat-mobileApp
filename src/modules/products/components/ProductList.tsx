@@ -45,7 +45,11 @@ export default function ProductsList({
           !isCarousel ? { justifyContent: "space-between" } : undefined
         }
         keyExtractor={(item, index) =>
-          item?.id ? String(item.id) : `fallback-${index}`
+          item?.vendorProductId
+            ? String(item.vendorProductId)
+            : item?.id
+              ? String(item.id)
+              : `fallback-${index}`
         }
         renderItem={({ item }) => (
           <ProductCard

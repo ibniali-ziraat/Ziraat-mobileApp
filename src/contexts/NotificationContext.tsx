@@ -13,9 +13,10 @@ import {
 } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Platform } from "react-native";
+import { PermissionsAndroid, Platform } from "react-native";
 
 import { StoredNotification } from "../modules/notifications/types/Notification.types";
+import { useSignalR } from "./SignalRContext";
 
 type MessageHandler = (msg: FirebaseMessagingTypes.RemoteMessage) => void;
 
@@ -38,7 +39,46 @@ const NotificationContext = createContext<NotificationContextValue | null>(
 
 const STORAGE_KEY = "APP_NOTIFICATIONS";
 
+function formatBalanceAmount(balance: number): string {
+  return `₹${balance.toLocaleString("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  })}`;
+}
+
+function buildSignalRBody(properties: any): string | undefined {
+  const parts: string[] = [];
+
+  if (properties?.Message) parts.push(properties.Message);
+
+  if (typeof properties?.Balance === "number") {
+    parts.push(`Remaining balance: ${formatBalanceAmount(properties.Balance)}`);
+  }
+
+  return parts.length ? parts.join(" — ") : undefined;
+}
+
+function mapSignalRPayloadToStoredNotification(
+  payload: any,
+): StoredNotification | null {
+  const detail = payload?.detail;
+  const properties = detail?.data?.properties;
+
+  if (!payload?.id || !detail) return null;
+
+  const createdOn = detail.createdOn ? Date.parse(detail.createdOn) : NaN;
+
+  return {
+    id: String(payload.id),
+    title: properties?.Title ?? detail.notificationName ?? "Notification",
+    body: buildSignalRBody(properties),
+    receivedAt: Number.isNaN(createdOn) ? Date.now() : createdOn,
+  };
+}
+
 export function NotificationProvider({ children }: { children: ReactNode }) {
+  const { onNotification } = useSignalR();
+
   const [notification, setNotification] =
     useState<FirebaseMessagingTypes.RemoteMessage | null>(null);
 
@@ -66,24 +106,33 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   };
 
   /**
-   * Add notification (from Firebase or manual)
+   * Push a notification into the list + persist, deduping by id
    */
-  const addNotification = useCallback(
-    (msg: FirebaseMessagingTypes.RemoteMessage) => {
-      const newNotification: StoredNotification = {
-        id: `${Date.now()}-${Math.random()}`,
-        title: msg.notification?.title ?? "Notification",
-        body: msg.notification?.body,
-        receivedAt: Date.now(),
-      };
-
+  const pushStoredNotification = useCallback(
+    (newNotification: StoredNotification) => {
       setItems((prev) => {
+        if (prev.some((n) => n.id === newNotification.id)) return prev;
         const updated = [newNotification, ...prev];
         persist(updated);
         return updated;
       });
     },
     [],
+  );
+
+  /**
+   * Add notification (from Firebase or manual)
+   */
+  const addNotification = useCallback(
+    (msg: FirebaseMessagingTypes.RemoteMessage) => {
+      pushStoredNotification({
+        id: `${Date.now()}-${Math.random()}`,
+        title: msg.notification?.title ?? "Notification",
+        body: msg.notification?.body,
+        receivedAt: Date.now(),
+      });
+    },
+    [pushStoredNotification],
   );
 
   /**
@@ -111,6 +160,20 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (Platform.OS === "web") return;
 
+    if (Platform.OS === "android" && Platform.Version >= 33) {
+      PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+      ).catch((err) =>
+        console.warn("[NotificationProvider] permission request failed:", err),
+      );
+    } else if (Platform.OS === "ios") {
+      messaging()
+        .requestPermission()
+        .catch((err) =>
+          console.warn("[NotificationProvider] permission request failed:", err),
+        );
+    }
+
     const unsubForeground = messaging().onMessage(async (msg) => {
       setNotification(msg);
 
@@ -134,6 +197,18 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       unsubOpened();
     };
   }, [addNotification]);
+
+  /**
+   * SignalR socket notifications
+   */
+  useEffect(() => {
+    const unsubscribe = onNotification((payload) => {
+      const mapped = mapSignalRPayloadToStoredNotification(payload);
+      if (mapped) pushStoredNotification(mapped);
+    });
+
+    return unsubscribe;
+  }, [onNotification, pushStoredNotification]);
 
   /**
    * Foreground listeners (for banner UI etc.)

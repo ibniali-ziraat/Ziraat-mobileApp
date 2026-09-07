@@ -1,7 +1,4 @@
-import { colors } from "@/src/constants/colors";
-import { Package } from "lucide-react-native";
-import { View } from "react-native";
-import SectionTitle from "../../home/components/SectionTitle";
+import DashboardSectionHeader from "../../home/components/dashboard/DashboardSectionHeader";
 import { ProductFilters } from "../types/productlist.types";
 import CategoryTabs from "./CategoryTabs";
 import FilterBottomSheet from "./FilterBottomSheet";
@@ -66,12 +63,7 @@ export default function ProductListHeader({
         />
       )}
 
-      <View style={{ marginTop: 24, marginBottom: 12 }}>
-        <SectionTitle
-          title="All Products"
-          icon={<Package size={20} color={colors.secondary} />}
-        />
-      </View>
+      <DashboardSectionHeader title="All products" topSpacing={24} />
     </>
   );
 }

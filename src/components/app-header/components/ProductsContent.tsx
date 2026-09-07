@@ -5,7 +5,8 @@ import { useCart } from "@/src/modules/products/hooks/data/useCart";
 import { useWishlist } from "@/src/modules/wishlist/hooks/useWishlist";
 import { router } from "expo-router";
 import { Heart, ShoppingCart } from "lucide-react-native";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { Pressable } from "@/src/components/shared/Pressable";
 import Badge from "./Badge";
 
 const ProductsContent = () => {

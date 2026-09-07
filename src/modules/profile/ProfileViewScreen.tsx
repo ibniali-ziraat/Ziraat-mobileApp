@@ -83,7 +83,7 @@ export default function ProfileViewScreen() {
     if (profileData?.id) {
       setUserProfileId(profileData?.id);
     }
-  }, [profileData]);
+  }, [profileData, setUserProfileId]);
 
   const deleteActions = {
     address: deleteAddressApi,
@@ -121,7 +121,7 @@ export default function ProfileViewScreen() {
   return (
     <ScreenLayout>
       <BackHeader
-        title="Profile"
+        title="Profile details"
         onPress={() => router.replace(ROUTES.TABS.HOME)}
       />
       <ScreenContent>
@@ -153,29 +153,29 @@ export default function ProfileViewScreen() {
                     value: profileData?.email.endsWith(DUMMY_EMAIL)
                       ? "N/A"
                       : profileData?.email,
-                    icon: <Mail size={22} color={colors.primary} />,
+                    icon: <Mail size={17} color={colors.primary} />,
                   },
                   {
                     title: "Phone",
                     value: profileData?.phone,
-                    icon: <Phone size={22} color={colors.primary} />,
+                    icon: <Phone size={17} color={colors.primary} />,
                   },
                   {
                     title: "Age",
                     value: profileData?.age,
-                    icon: <User size={22} color={colors.primary} />,
+                    icon: <User size={17} color={colors.primary} />,
                   },
                   {
                     title: "Gender",
                     value: profileData?.gender,
-                    icon: <VenetianMask size={22} color={colors.primary} />,
+                    icon: <VenetianMask size={17} color={colors.primary} />,
                   },
                   {
                     title: "User Since",
                     value: profileData?.createdOn
                       ? new Date(profileData.createdOn).toLocaleDateString()
                       : "N/A",
-                    icon: <Calendar size={22} color={colors.primary} />,
+                    icon: <Calendar size={17} color={colors.primary} />,
                   },
                 ]
               : []
@@ -190,28 +190,28 @@ export default function ProfileViewScreen() {
                   {
                     title: "State",
                     value: addressData.state,
-                    icon: <MapPin size={22} color={colors.primary} />,
+                    icon: <MapPin size={17} color={colors.primary} />,
                   },
                   {
                     title: "District",
                     value: addressData.district,
-                    icon: <Building size={22} color={colors.primary} />,
+                    icon: <Building size={17} color={colors.primary} />,
                   },
                   {
                     title: "Tehsil",
                     value: addressData.tehsil,
-                    icon: <Navigation size={22} color={colors.primary} />,
+                    icon: <Navigation size={17} color={colors.primary} />,
                   },
                   {
                     title: "Locality",
                     value: addressData.village,
-                    icon: <Home size={22} color={colors.primary} />,
+                    icon: <Home size={17} color={colors.primary} />,
                   },
 
                   {
                     title: "Pincode",
                     value: addressData.pincode,
-                    icon: <MapPin size={22} color={colors.primary} />,
+                    icon: <MapPin size={17} color={colors.primary} />,
                   },
                 ]
               : []
@@ -233,23 +233,23 @@ export default function ProfileViewScreen() {
                   {
                     title: "Qualification",
                     value: educationData.highestQualification,
-                    icon: <GraduationCap size={22} color={colors.primary} />,
+                    icon: <GraduationCap size={17} color={colors.primary} />,
                   },
                   {
                     title: "Institute",
                     value: educationData.instituteName,
-                    icon: <School size={22} color={colors.primary} />,
+                    icon: <School size={17} color={colors.primary} />,
                   },
                   {
                     title: "Passing Year",
                     value: educationData.passingYear,
-                    icon: <Calendar size={22} color={colors.primary} />,
+                    icon: <Calendar size={17} color={colors.primary} />,
                   },
                   {
                     title: "Specialization",
                     value: educationData.specialization || "N/A",
                     icon: (
-                      <GraduationCapIcon size={22} color={colors.primary} />
+                      <GraduationCapIcon size={17} color={colors.primary} />
                     ),
                   },
                 ]
@@ -277,29 +277,29 @@ export default function ProfileViewScreen() {
                   {
                     title: "Organization",
                     value: professionData.organizationName,
-                    icon: <Briefcase size={22} color={colors.primary} />,
+                    icon: <Briefcase size={17} color={colors.primary} />,
                   },
                   {
                     title: "Designation",
                     value: professionData.designation,
-                    icon: <UserCheck size={22} color={colors.primary} />,
+                    icon: <UserCheck size={17} color={colors.primary} />,
                   },
                   {
                     title: "Profession Type",
                     value: professionData.professionType,
-                    icon: <Building size={22} color={colors.primary} />,
+                    icon: <Building size={17} color={colors.primary} />,
                   },
                   {
                     title: "Experience",
                     value: professionData.experienceYears
                       ? `${professionData.experienceYears} yrs`
                       : "N/A",
-                    icon: <Clock size={22} color={colors.primary} />,
+                    icon: <Clock size={17} color={colors.primary} />,
                   },
                   {
                     title: "Skills",
                     value: professionData.skills || "N/A",
-                    icon: <UserCheck size={22} color={colors.primary} />,
+                    icon: <UserCheck size={17} color={colors.primary} />,
                   },
                 ]
               : []

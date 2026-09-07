@@ -1,24 +1,65 @@
+import {
+  Bell,
+  Bot,
+  Info,
+  LayoutDashboard,
+  LifeBuoy,
+  MapPin,
+  MessagesSquare,
+  Settings,
+  ShoppingBag,
+  type LucideIcon,
+} from "lucide-react-native";
 import { ROUTES } from "../constants/routes";
 
-export const MenuLinks = {
+export type MenuRoute = {
+  label: string;
+  screen: string;
+  icon: LucideIcon;
+};
+
+export type MenuGroup = {
+  title: string;
+  routes: MenuRoute[];
+};
+
+export const MenuLinks: { farmer: MenuGroup[] } = {
   farmer: [
     {
-      title: "Farmer Settings",
+      title: "Account",
       routes: [
-        { label: "Dashboard", screen: ROUTES.DASHBOARD.MAIN },
-
-        { label: "Notifications", screen: "notifications" },
-        { label: "Support", screen: "settings/farmer/support" },
-        { label: "Payment Methods", screen: "settings/farmer/payments" },
-        { label: "Manage Addresses", screen: "/add-addresses" },
-        { label: "About Us", screen: "about-us" },
-        { label: "My Orders", screen: ROUTES.ORDERS.LIST },
-        { label: "Chat With Us", screen: ROUTES.CHAT_BOT },
-        { label: "Discussion", screen: ROUTES.Discussion.discussionForum },
-        // { label: "Wallet", screen: ROUTES.PAYMENTMETHOD.Wallet },
-        // { label: "Change Password", screen: "user/change-password" },
-        // { label: "Delete Account", screen: "user/delete-account" },
+        { label: "My Orders", screen: ROUTES.ORDERS.LIST, icon: ShoppingBag },
+        { label: "Manage Addresses", screen: "/add-addresses", icon: MapPin },
       ],
+    },
+    {
+      title: "Farm",
+      routes: [
+        {
+          label: "Dashboard",
+          screen: ROUTES.DASHBOARD.MAIN,
+          icon: LayoutDashboard
+          ,
+        },
+        { label: "Notifications", screen: "notifications", icon: Bell },
+        {
+          label: "Discussion",
+          screen: ROUTES.Discussion.discussionForum,
+          icon: MessagesSquare,
+        },
+      ],
+    },
+    {
+      title: "Help",
+      routes: [
+        { label: "Chat With Us", screen: ROUTES.CHAT_BOT, icon: Bot },
+        { label: "Support", screen: "settings/farmer/support", icon: LifeBuoy },
+        { label: "About Us", screen: "about-us", icon: Info },
+      ],
+    },
+    {
+      title: "Preferences",
+      routes: [{ label: "Settings", screen: ROUTES.SETTINGS, icon: Settings }],
     },
   ],
 };

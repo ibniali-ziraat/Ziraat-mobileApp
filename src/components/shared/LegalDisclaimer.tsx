@@ -63,7 +63,14 @@ if (Platform.OS === "android") {
   UIManager.setLayoutAnimationEnabledExperimental?.(true);
 }
 
-export default function LegalDisclaimer() {
+type LegalDisclaimerProps = {
+  text?: string;
+};
+
+const defaultDisclaimer =
+  "ZIRAAT is a technology platform. Sale and supply of fertilizers and pesticides is carried out by licensed vendors in compliance with the Insecticides Act, 1968 and Fertilizer Control Order, 1985. Use pesticides strictly as per label instructions and expert advice.";
+
+export default function LegalDisclaimer({ text }: LegalDisclaimerProps) {
   const [expanded, setExpanded] = useState(false);
 
   const toggle = () => {
@@ -160,10 +167,7 @@ export default function LegalDisclaimer() {
               color: colors.neutral,
             }}
           >
-            ZIRAAT is a technology platform. Sale and supply of fertilizers and
-            pesticides is carried out by licensed vendors in compliance with the
-            Insecticides Act, 1968 and Fertilizer Control Order, 1985. Use
-            pesticides strictly as per label instructions and expert advice.
+            {text || defaultDisclaimer}
           </Text>
         </View>
       )}

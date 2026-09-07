@@ -1,7 +1,7 @@
 import { Wind } from "lucide-react-native";
 import { Text, View } from "react-native";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 import WindCompass from "./WindCompass";
 
 type Props = {
@@ -20,23 +20,26 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
           marginVertical: 8,
           paddingHorizontal: 12,
           paddingVertical: 12,
-          backgroundColor: "#fff",
-          borderRadius: 16,
-          height: 160, // 👈 fixed height
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          borderWidth: 1,
+          borderColor: cardTokens.border,
+          height: 160,
           justifyContent: "space-between",
         },
-        shadows.profile_card, // 👈 shadow applied
+        cardShadow,
       ]}
     >
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-        
+
         {/* Left Section */}
         <View style={{ width: 140 }}>
           {/* Header */}
           <View style={{ flexDirection: "row", paddingBottom: 10 }}>
             <Wind size={18} color="#c7611f" />
             <Text
-              style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+              style={[typography.Poppins_m_medium, { marginLeft: 8, color: cardTokens.inkPrimary }]}
             >
               WIND
             </Text>
@@ -57,7 +60,7 @@ export default function WindCard({ speed, gusts, degree, direction }: Props) {
           </View>
 
           <Text
-            style={[typography.Poppins_m_regular, { color: "#000" }]}
+            style={[typography.Poppins_m_regular, { color: cardTokens.inkSecondary }]}
           >
             {direction}
           </Text>
@@ -76,10 +79,10 @@ function Row({ label, value }: { label: string; value: string }) {
         marginBottom: 6,
       }}
     >
-      <Text style={[typography.Poppins_s_regular, { color: "#000" }]}>
+      <Text style={[typography.Poppins_s_regular, { color: cardTokens.inkSecondary }]}>
         {label} -
       </Text>
-      <Text style={[typography.Poppins_xs_regular, { color: "#000" }]}>
+      <Text style={[typography.Poppins_xs_regular, { color: cardTokens.inkPrimary }]}>
         {value}
       </Text>
     </View>

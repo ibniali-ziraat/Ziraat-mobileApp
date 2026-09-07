@@ -2,14 +2,8 @@ import { colors } from "@/src/constants/colors";
 import { Check, ChevronDown } from "lucide-react-native";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import {
-  LayoutAnimation,
-  Platform,
-  Pressable,
-  Text,
-  UIManager,
-  View,
-} from "react-native";
+import { LayoutAnimation, Platform, Text, UIManager, View } from "react-native";
+import { Pressable } from "@/src/components/shared/Pressable";
 import { SingleSelectInputProps } from "../../shared/inputs/types";
 
 if (

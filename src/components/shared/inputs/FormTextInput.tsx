@@ -22,6 +22,8 @@ const FormTextInput = ({
   countryCode = "+91",
   placeholder,
   disabled = false,
+  warning,
+  onChangeText,
 }: FormInputProps) => {
   const { control } = useFormContext();
   if (!control) return null;
@@ -36,6 +38,7 @@ const FormTextInput = ({
       case "pincode":
       case "bankaccount":
       case "year":
+      case "marlas":
         return "numeric";
 
       case "email":
@@ -56,6 +59,12 @@ const FormTextInput = ({
 
       case "pincode":
         return text.replace(/\D/g, "").slice(0, 6);
+
+      case "marlas": {
+        const digits = text.replace(/\D/g, "").slice(0, 2);
+        return Number(digits) > 19 ? "19" : digits;
+      }
+
       case "year":
         return text.replace(/\D/g, "").slice(0, 4);
 
@@ -92,6 +101,9 @@ const FormTextInput = ({
 
       case "name":
         return text.replace(/[^a-zA-Z\s]/g, "").slice(0, 32);
+
+      case "alphanumeric":
+        return text.replace(/[^a-zA-Z0-9\s]/g, "").slice(0, 32);
 
       case "password":
         return text.slice(0, 24);
@@ -137,7 +149,10 @@ const FormTextInput = ({
                 placeholderTextColor={colors.neutral}
                 keyboardType={getKeyboardType()}
                 secureTextEntry={type === "password" && !showPassword}
-                onChangeText={(text) => onChange(sanitizeInput(text))}
+                onChangeText={(text) => {
+                  onChange(sanitizeInput(text));
+                  onChangeText?.(text);
+                }}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 underlineColorAndroid="transparent"
@@ -163,6 +178,12 @@ const FormTextInput = ({
             {hasError && (
               <Text style={{ color: colors.error, marginTop: 6 }}>
                 {error?.message}
+              </Text>
+            )}
+
+            {!hasError && warning && (
+              <Text style={{ color: colors.warning, marginTop: 6 }}>
+                {warning}
               </Text>
             )}
           </View>

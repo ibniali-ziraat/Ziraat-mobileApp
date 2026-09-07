@@ -10,8 +10,8 @@ import { useEffect, useMemo, useRef } from "react";
 import { Dimensions, ScrollView, View } from "react-native";
 import Svg, { Circle, Path } from "react-native-svg";
 import { colors } from "../constants/colors";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 import CsText from "./shared/CsText";
 
 const { width } = Dimensions.get("window");
@@ -55,17 +55,25 @@ const renderIcon = (type: string) => {
   }
 };
 
+// WeatherAPI hands back "YYYY-MM-DD HH:mm" — Hermes (RN's JS engine) can't
+// parse that without a "T" separator and silently returns Invalid Date.
+const parseProviderTime = (value: string): Date =>
+  new Date(value.includes("T") ? value : value.replace(" ", "T"));
+
 export default function HourlyCard({ data_1h }) {
   const scrollRef = useRef<ScrollView>(null);
 
-  const nowIST = new Date().toLocaleString("en-IN", {
-    timeZone: "Asia/Kolkata",
-  });
-  const currentHour = new Date(nowIST).getHours();
+  const currentHour = Number(
+    new Date().toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      hour: "numeric",
+      hour12: false,
+    })
+  ) % 24;
 
   const HOURS = useMemo(() => {
     return data_1h.time.slice(0, 24).map((time, index) => {
-      const date = new Date(time);
+      const date = parseProviderTime(time);
 
       const hourIST = Number(
         date.toLocaleString("en-IN", {
@@ -73,7 +81,7 @@ export default function HourlyCard({ data_1h }) {
           hour: "numeric",
           hour12: false,
         })
-      );
+      ) % 24;
 
       const rain = data_1h.precipitation_probability[index] ?? 0;
       const isNight = data_1h.isdaylight?.[index] === 0;
@@ -144,12 +152,13 @@ export default function HourlyCard({ data_1h }) {
           marginVertical: 8,
           paddingHorizontal: 14,
           paddingVertical: 16,
-          backgroundColor: "#fff",
-          borderRadius: 16,
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
           borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.05)",
+          borderColor: cardTokens.border,
         },
-        shadows.profile_card,
+        cardShadow,
       ]}
     >
       <CsText style={typography.Poppins_m_medium}>

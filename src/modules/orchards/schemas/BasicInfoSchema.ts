@@ -13,8 +13,6 @@ export const BasicInfoSchema = z
       })
       .optional(),
 
-    orchardUnit: z.enum(["marlas", "kanals"]).optional(),
-
     marlas: z.string().optional(),
     kanals: z.string().optional(),
 
@@ -37,46 +35,19 @@ export const BasicInfoSchema = z
     pincode: pincodeValidator,
   })
   .superRefine((data, ctx) => {
-    const mode = data.orchardSize?.mode ?? "measure";
+    if (!data.kanals?.trim() && !data.marlas?.trim()) {
+      ctx.addIssue({
+        path: ["kanals"],
+        message: "Enter orchard size in Kanals or Marlas",
+        code: z.ZodIssueCode.custom,
+      });
+    }
 
-    // If manual → orchardSize must exist
-    if (mode === "manual") {
-      if (!data.orchardSize?.mode) {
-        ctx.addIssue({
-          path: ["orchardSize", "mode"],
-          message: "Mode is required",
-          code: z.ZodIssueCode.custom,
-        });
-        return;
-      }
-
-      if (!data.orchardUnit) {
-        ctx.addIssue({
-          path: ["orchardUnit"],
-          message: "Unit is required",
-          code: z.ZodIssueCode.custom,
-        });
-        return;
-      }
-
-      if (data.orchardUnit === "marlas") {
-        if (!data.marlas?.trim()) {
-          ctx.addIssue({
-            path: ["marlas"],
-            message: "Required Field",
-            code: z.ZodIssueCode.custom,
-          });
-        }
-      }
-
-      if (data.orchardUnit === "kanals") {
-        if (!data.kanals?.trim()) {
-          ctx.addIssue({
-            path: ["kanals"],
-            message: "Required Field",
-            code: z.ZodIssueCode.custom,
-          });
-        }
-      }
+    if (data.marlas?.trim() && Number(data.marlas) >= 20) {
+      ctx.addIssue({
+        path: ["marlas"],
+        message: "20 Marlas = 1 Kanal. Enter up to 19, or add to Kanals instead",
+        code: z.ZodIssueCode.custom,
+      });
     }
   });

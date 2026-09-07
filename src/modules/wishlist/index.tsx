@@ -9,14 +9,12 @@ import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 
 import { ROUTES } from "@/src/constants/routes";
-import { useCart } from "../products/hooks/data/useCart";
 import WishlistItem from "./components/WishListItem";
 import WishlistEmpty from "./components/WishlistEmpty";
 import { useWishlist } from "./hooks/useWishlist";
 
 const Wishlist = () => {
   const router = useRouter();
-  const { addToCart } = useCart();
 
   const {
     wishlist,
@@ -32,24 +30,6 @@ const Wishlist = () => {
       toast.success("Removed from wishlist");
     } catch (error) {
       toast.error("Failed to remove item");
-    }
-  };
-
-  const handleAddToCart = async (product: any) => {
-    if (!product) return;
-
-    try {
-    await addToCart({
-  productId: product.productId,
-  variationName: "",
-  quantity: product.quantity,
-});
-
-      // await handleRemoveFromWishlist(product.id);
-
-      toast.success("Item moved to cart");
-    } catch (error) {
-      // console.error("Error in Move-to-Cart sequence:", error);
     }
   };
 
@@ -90,7 +70,6 @@ const Wishlist = () => {
           <WishlistItem
             item={item}
             onRemove={() => handleRemoveFromWishlist(item.id)}
-            onAddToCart={handleAddToCart}
           />
         )}
         ListFooterComponent={

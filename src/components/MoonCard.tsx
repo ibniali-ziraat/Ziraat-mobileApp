@@ -1,8 +1,8 @@
 import { Moon } from "lucide-react-native";
 import { Image, Text, View } from "react-native";
 import { colors } from "../constants/colors";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 
 const InfoRow = ({ label, value }: { label: string; value: string }) => (
   <View
@@ -12,10 +12,10 @@ const InfoRow = ({ label, value }: { label: string; value: string }) => (
       paddingVertical: 6,
     }}
   >
-    <Text style={[typography.Poppins_s_regular, { color: "#666" }]}>
+    <Text style={[typography.Poppins_s_regular, { color: cardTokens.inkSecondary }]}>
       {label}
     </Text>
-    <Text style={[typography.Poppins_s_regular, { color: "#000" }]}>
+    <Text style={[typography.Poppins_s_regular, { color: cardTokens.inkPrimary }]}>
       {value}
     </Text>
   </View>
@@ -82,21 +82,22 @@ export function MoonCard({ phaseValue, illumination, moonrise }: Props) {
           marginVertical: 8,
           paddingHorizontal: 14,
           paddingVertical: 14,
-          backgroundColor: "#fff",
-          borderRadius: 16,
-          height: 180, 
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          height: 180,
           justifyContent: "space-between",
           borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.05)",
+          borderColor: cardTokens.border,
         },
-        shadows.profile_card, 
+        cardShadow,
       ]}
     >
       {/* Header */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Moon size={18} color={colors.secondary} />
         <Text
-          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: cardTokens.inkPrimary }]}
         >
           {getPhaseName(phaseValue)}
         </Text>

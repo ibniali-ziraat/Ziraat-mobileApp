@@ -1,8 +1,8 @@
 import { Thermometer } from "lucide-react-native";
 import { Text, View } from "react-native";
 import { colors } from "../constants/colors";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 
 type Props = {
   temp: number;
@@ -22,23 +22,26 @@ export default function FeelsLikeCard({ temp, actualTemp }: Props) {
     <View
       style={[
         {
-          width: "95%",
+          width: "100%",
           marginVertical: 8,
           paddingHorizontal: 12,
           paddingVertical: 12,
-          backgroundColor: "#fff",
-          borderRadius: 16,
-          height: 160, 
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          borderWidth: 1,
+          borderColor: cardTokens.border,
+          height: 160,
           justifyContent: "space-between",
         },
-        shadows.profile_card, 
+        cardShadow,
       ]}
     >
       {/* Header */}
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Thermometer size={18} color={colors.secondary} />
         <Text
-          style={[typography.Poppins_m_medium, { marginLeft: 8, color: "#000" }]}
+          style={[typography.Poppins_m_medium, { marginLeft: 8, color: cardTokens.inkPrimary }]}
         >
           Feels Like
         </Text>
@@ -46,14 +49,14 @@ export default function FeelsLikeCard({ temp, actualTemp }: Props) {
 
       {/* Temperature */}
       <Text
-        style={[typography.Poppins_l_medium, { marginTop: 4, color: "#000" }]}
+        style={[typography.Poppins_l_medium, { marginTop: 4, color: cardTokens.inkPrimary }]}
       >
         {temp}°
       </Text>
 
       {/* Message */}
       <Text
-        style={[typography.Poppins_xs_regular, { marginTop: 4, color: "#000" }]}
+        style={[typography.Poppins_xs_regular, { marginTop: 4, color: cardTokens.inkMuted }]}
       >
         {getMessage()}
       </Text>

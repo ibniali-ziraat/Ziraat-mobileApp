@@ -10,8 +10,8 @@ import {
 } from "lucide-react-native";
 import { Dimensions, Text, View } from "react-native";
 import { colors } from "../constants/colors";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
-import { shadows } from "../constants/shadows";
 
 const { width } = Dimensions.get("window");
 const BAR_WIDTH = width * 0.35;
@@ -88,12 +88,13 @@ export default function TenDayForecastCard({ data_day }) {
           marginVertical: 8,
           paddingHorizontal: 16,
           paddingVertical: 16,
-          backgroundColor: "#fff",
-          borderRadius: 16,
+          backgroundColor: cardTokens.surface,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
           borderWidth: 1,
-          borderColor: "rgba(0,0,0,0.05)",
+          borderColor: cardTokens.border,
         },
-        shadows.profile_card,
+        cardShadow,
       ]}
     >
       {/* Header */}
@@ -104,10 +105,10 @@ export default function TenDayForecastCard({ data_day }) {
         <Text
           style={[
             typography.Poppins_m_medium,
-            { marginLeft: 8, color: "#000" },
+            { marginLeft: 8, color: cardTokens.inkPrimary },
           ]}
         >
-          7-DAY FORECAST
+          {forecast.length}-DAY FORECAST
         </Text>
       </View>
 

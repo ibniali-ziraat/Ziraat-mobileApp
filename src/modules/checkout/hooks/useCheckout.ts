@@ -20,10 +20,10 @@ export const useCouponCode = () => {
   });
 };
 
-export const useGetCouponCode = (couponCode?: string) => {
+export const useGetCouponCode = (couponCode?: string, vendorId?: number) => {
   return useQuery({
-    queryKey: ["coupon", couponCode],
-    queryFn: () => getCoupon(couponCode),
+    queryKey: ["coupon", couponCode, vendorId],
+    queryFn: () => getCoupon(couponCode, vendorId),
     enabled: true, // ✅ ALWAYS FETCH
   });
 };

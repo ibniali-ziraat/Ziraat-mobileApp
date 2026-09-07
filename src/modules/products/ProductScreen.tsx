@@ -73,17 +73,29 @@ export default function ProductScreen() {
   console.log(displayedProducts.length, "displayed products...");
 
   return (
+    // The FlatList does its own scrolling. Leaving ScreenLayout scrollable
+    // nests it inside a ScrollView — that is the "VirtualizedLists should never
+    // be nested" warning, and it also defeats virtualisation. Both this View
+    // and ScreenContent need flex:1 so the list gets a bounded height; without
+    // that it grows to fit every row and nothing scrolls at all.
     <ScreenLayout scrollable={false}>
-      <ScreenContent>
+      <ScreenContent className="flex-1">
         <FlatList<NormalizedProduct>
           ref={scrollRef}
+          style={{ flex: 1 }}
           data={displayedProducts}
           refreshing={refreshing}
           onRefresh={handleRefresh}
           keyboardShouldPersistTaps="handled"
           numColumns={2}
           keyExtractor={(item, index) =>
-            item?.id ? String(item.id) : `fallback-${index}`
+            // The same product `id` can be listed by several vendors — key by
+            // vendorProductId (unique per listing) so those rows don't collide.
+            item?.vendorProductId
+              ? String(item.vendorProductId)
+              : item?.id
+                ? String(item.id)
+                : `fallback-${index}`
           }
           ListHeaderComponent={
             <ProductListHeader

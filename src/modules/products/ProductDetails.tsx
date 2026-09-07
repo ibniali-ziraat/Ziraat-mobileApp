@@ -1,5 +1,5 @@
 import { router, useLocalSearchParams, useRouter } from "expo-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
@@ -12,6 +12,7 @@ import ProductPriceCard from "./components/ProductPriceCard";
 import ProductQuantitySelector from "./components/ProductQuantitySelector";
 import ProductSpecifications from "./components/ProductSpecifications";
 import ProductStickyBar from "./components/ProductStickyBar";
+import ProductVariationSelector from "./components/ProductVariationSelector";
 
 import Review from "@/src/components/shared/AllReview";
 
@@ -37,6 +38,7 @@ export default function ProductDetails() {
   // console.log(productId, "productid");
 
   const [quantity, setQuantity] = useState(1);
+  const [selectedVariation, setSelectedVariation] = useState<any>(null);
 
   const { userId } = useAuth();
 
@@ -56,6 +58,27 @@ export default function ProductDetails() {
 
   console.log(product, "product details in productdetails screen");
 
+  const variations = product?.vendorProduct?.variations ?? [];
+
+  useEffect(() => {
+    if (!variations.length) {
+      setSelectedVariation(null);
+      return;
+    }
+
+    const defaultVariation =
+      variations.find((v: any) => v.isActive && v.stockQuantity > 0) ??
+      variations[0];
+
+    setSelectedVariation(defaultVariation);
+  }, [product?.id]);
+
+  useEffect(() => {
+    if (selectedVariation?.stockQuantity) {
+      setQuantity((q) => Math.min(q, selectedVariation.stockQuantity));
+    }
+  }, [selectedVariation?.id]);
+
   // const { mutate: submitReview, isPending } = useAddReview();
   const { mutateAsync: submitReview, isPending } = useAddReview();
   const { cart, addToCart, removeFromCart, isCartBusy } = useCart();
@@ -69,8 +92,12 @@ export default function ProductDetails() {
     getWishlistItemId,
   } = useWishlist();
 
-  const handleToggleWishlist = async (productId: string | number) => {
-    const id = getWishlistItemId(productId);
+  const handleToggleWishlist = async (
+    productId: string | number,
+    vendorId?: string | number,
+    vendorProductId?: string | number,
+  ) => {
+    const id = getWishlistItemId(productId, vendorId);
 
     try {
       if (id) {
@@ -79,6 +106,8 @@ export default function ProductDetails() {
       } else {
         await addToWishlist({
           productId,
+          vendorId,
+          vendorProductId,
           quantity: 1,
         });
         toast.success("Added to wishlist");
@@ -287,12 +316,24 @@ export default function ProductDetails() {
   const cartItem = cart.find(
     (i) =>
       Number(i.productId) === Number(product.id) &&
-      Number(i.vendorId) === Number(product.vendorId),
+      Number(i.vendorId) === Number(product.vendorId) &&
+      (!selectedVariation || i.variationName === selectedVariation.name),
   );
   const isInCart = Boolean(cartItem);
 
   const handleAddToCart = async () => {
     if (!product?.id) return;
+
+    if (variations.length && !selectedVariation) {
+      toast.error("Please select a variation");
+      return;
+    }
+
+    if (selectedVariation && selectedVariation.stockQuantity <= 0) {
+      toast.error("Selected variation is out of stock");
+      return;
+    }
+
     console.log(product, "product on cart is..");
 
     try {
@@ -301,6 +342,10 @@ export default function ProductDetails() {
         quantity: Number(quantity),
         vendorId: Number(product.vendorId),
         vendorProductId: Number(product.vendorProductId),
+        ...(selectedVariation && {
+          vendorProductVariationId: Number(selectedVariation.id),
+          variationName: selectedVariation.name,
+        }),
       });
     } catch {}
   };
@@ -324,22 +369,37 @@ export default function ProductDetails() {
 
   return (
     <>
-      <ScreenLayout>
+      <ScreenLayout scrollable={false}>
         <BackHeader title="Product Details" />
-        <ScreenContent>
+        <ScreenContent className="flex-1">
           <FlatList
-            scrollEnabled={false}
+            style={{ flex: 1 }}
+            keyboardShouldPersistTaps="handled"
             data={[{ key: "content" }]}
             renderItem={() => null}
             ListHeaderComponent={
               <>
                 <ProductImages product={product} />
 
-                <ProductPriceCard product={product} />
+                <ProductPriceCard
+                  product={product}
+                  selectedVariation={selectedVariation}
+                />
+
+                <ProductVariationSelector
+                  product={product}
+                  selectedVariation={selectedVariation}
+                  onSelectVariation={setSelectedVariation}
+                />
 
                 <ProductQuantitySelector
                   quantity={quantity}
                   setQuantity={setQuantity}
+                  max={
+                    selectedVariation
+                      ? selectedVariation.stockQuantity
+                      : undefined
+                  }
                 />
 
                 <ProductDescription product={product} />
@@ -348,7 +408,7 @@ export default function ProductDetails() {
               </>
             }
             ListFooterComponent={
-              <View className="pb-32">
+              <View style={{ paddingBottom: 170 }}>
                 {reviewsLoading ? (
                   <Loader />
                 ) : reviewsError ? (
@@ -400,17 +460,15 @@ export default function ProductDetails() {
         </ScreenContent>
       </ScreenLayout>
 
-      <View className="mt-10">
-        <ProductStickyBar
-          product={product}
-          isInCart={isInCart}
-          onAddToCart={handleAddToCart}
-          onRemoveFromCart={handleRemoveFromCart}
-          isCartBusy={isCartBusy}
-          isWishlistBusy={isWishlistBusy}
-          onToggleWishlist={handleToggleWishlist}
-        />
-      </View>
+      <ProductStickyBar
+        product={product}
+        isInCart={isInCart}
+        onAddToCart={handleAddToCart}
+        onRemoveFromCart={handleRemoveFromCart}
+        isCartBusy={isCartBusy}
+        isWishlistBusy={isWishlistBusy}
+        onToggleWishlist={handleToggleWishlist}
+      />
     </>
   );
 }
