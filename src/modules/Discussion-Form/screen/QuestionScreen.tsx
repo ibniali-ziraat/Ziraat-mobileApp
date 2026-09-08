@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import {
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   Text,
   TextInput,
@@ -14,6 +16,7 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import {
+  useAcceptAnswer,
   useAnswers,
   useCreateAnswer,
   useQuestion,
@@ -22,6 +25,7 @@ import {
 import MessageItem from "../pages/MessageItem";
 
 import {
+  CheckCircle2,
   Clock,
   Heart,
   MessageCircle,
@@ -30,6 +34,7 @@ import {
 } from "lucide-react-native";
 
 import { colors } from "@/src/constants/colors";
+import { useAuth } from "@/src/contexts/AuthContext";
 import Avatar from "../pages/Avatar";
 import BottomAnswerInput from "../pages/BottomAnswerInput";
 
@@ -42,10 +47,12 @@ export default function QuestionScreen() {
   
   const { id } = useLocalSearchParams();
   const questionId = Number(id);
+  const { userId } = useAuth();
 
-  const { data } = useQuestion(questionId);
+  const { data } = useQuestion(questionId, userId ? Number(userId) : undefined);
   const { data: answersData } = useAnswers(questionId);
   const { mutate: createAnswerApi, isPending } = useCreateAnswer();
+  const { mutate: acceptAnswerApi, isPending: isAccepting } = useAcceptAnswer();
 
   const [input, setInput] = useState("");
 
@@ -54,9 +61,14 @@ export default function QuestionScreen() {
   const [replyMessage, setReplyMessage] = useState("");
 
   // ================= QUESTION =================
+  const questionAuthorId = data?.userId ?? data?.user?.id ?? null;
+  const isQuestionOwner =
+    !!userId && questionAuthorId != null && Number(questionAuthorId) === Number(userId);
+
   const question = data
     ? {
         id: data.id?.toString(),
+        authorId: questionAuthorId,
         author: data.user?.displayName || "Unknown",
         title: data.title,
         content: data.body,
@@ -74,11 +86,14 @@ export default function QuestionScreen() {
     if (!answersMap.has(a.id)) {
       answersMap.set(a.id, {
         id: a.id,
+        authorId: a.userId ?? a.user?.id,
         author: a.user?.displayName || "Unknown",
         content: a.body,
         votes: a.votes || 0,
         createdAt: a.createdAt,
         user: a.user,
+        isAccepted:
+          a.isAccepted ?? a.accepted ?? (data?.acceptedAnswerId === a.id),
         replies: [],
       });
     }
@@ -86,24 +101,30 @@ export default function QuestionScreen() {
 
   const answers = Array.from(answersMap.values());
 
+  // ================= ACCEPT ANSWER =================
+  const handleAcceptAnswer = (answerId: number) => {
+    if (isAccepting) return;
+    acceptAnswerApi({ questionId, answerId });
+  };
+
   // ================= CREATE ANSWER =================
   const handleAnswer = () => {
-    if (!input.trim() || isPending) return;
+    if (!input.trim() || isPending || !userId) return;
     createAnswerApi(
-      { questionId, payload: { body: input, userId: 2 } },
+      { questionId, payload: { body: input, userId: Number(userId) } },
       { onSuccess: () => setInput("") }
     );
   };
 
   // ================= SEND REPLY =================
   const handleReply = () => {
-    if (!replyMessage.trim() || !activeReplyId) return;
+    if (!replyMessage.trim() || !activeReplyId || !userId) return;
     createAnswerApi(
       {
         questionId,
         payload: {
           body: `@reply-${activeReplyId} ${replyMessage}`,
-          userId: 2,
+          userId: Number(userId),
         },
       },
       {
@@ -349,8 +370,19 @@ export default function QuestionScreen() {
   };
 
   return (
-    <ScreenLayout>
-      <View style={{ flex: 1, backgroundColor: colors.light }}>
+    // scrollable={false} — this screen has its own inner ScrollView plus a
+    // bottom-pinned answer composer; letting ScreenLayout ALSO wrap
+    // everything in its own KeyboardAwareScrollView created two nested
+    // scroll containers, which is why the keyboard couldn't correctly
+    // scroll the composer into view. KeyboardAvoidingView below shifts the
+    // whole screen (header + content + composer) up together instead,
+    // the standard pattern for a chat-style input pinned to the bottom.
+    <ScreenLayout scrollable={false}>
+      <KeyboardAvoidingView
+        style={{ flex: 1, backgroundColor: colors.light }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
+      >
         <BackHeader title="Discussion" />
 
         <ScrollView
@@ -438,10 +470,10 @@ export default function QuestionScreen() {
               style={{
                 marginBottom: 16,
                 marginHorizontal: 16,
-                backgroundColor: "#ffffff",
+                backgroundColor: answer.isAccepted ? "#f3fbf3" : "#ffffff",
                 borderRadius: 18,
                 borderWidth: 1,
-                borderColor: "#e8edf5",
+                borderColor: answer.isAccepted ? colors.primary + "50" : "#e8edf5",
                 shadowColor: "#000",
                 shadowOffset: { width: 0, height: 1 },
                 shadowOpacity: 0.04,
@@ -451,7 +483,13 @@ export default function QuestionScreen() {
               }}
             >
               {/* Top accent bar */}
-              <View style={{ height: 3, backgroundColor: colors.primary, opacity: 0.7 }} />
+              <View
+                style={{
+                  height: 3,
+                  backgroundColor: colors.primary,
+                  opacity: answer.isAccepted ? 1 : 0.7,
+                }}
+              />
 
               <View style={{ padding: 14 }}>
 
@@ -460,42 +498,92 @@ export default function QuestionScreen() {
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
-                    gap: 7,
+                    justifyContent: "space-between",
                     marginBottom: 10,
                   }}
                 >
                   <View
                     style={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: 999,
-                      backgroundColor: colors.primary,
+                      flexDirection: "row",
                       alignItems: "center",
-                      justifyContent: "center",
+                      gap: 7,
                     }}
                   >
+                    <View
+                      style={{
+                        width: 22,
+                        height: 22,
+                        borderRadius: 999,
+                        backgroundColor: colors.primary,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 11,
+                          fontWeight: "800",
+                          color: "#fff",
+                        }}
+                      >
+                        {index + 1}
+                      </Text>
+                    </View>
                     <Text
                       style={{
                         fontSize: 11,
-                        fontWeight: "800",
-                        color: "#fff",
+                        fontWeight: "700",
+                        color: colors.primary,
+                        letterSpacing: 0.6,
+                        textTransform: "uppercase",
+                        opacity: 0.7,
                       }}
                     >
-                      {index + 1}
+                      Answer {index + 1}
                     </Text>
                   </View>
-                  <Text
-                    style={{
-                      fontSize: 11,
-                      fontWeight: "700",
-                      color: colors.primary,
-                      letterSpacing: 0.6,
-                      textTransform: "uppercase",
-                      opacity: 0.7,
-                    }}
-                  >
-                    Answer {index + 1}
-                  </Text>
+
+                  {/* ACCEPT ANSWER — only the question's own author can accept */}
+                  {answer.isAccepted ? (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 4,
+                        paddingHorizontal: 10,
+                        paddingVertical: 4,
+                        borderRadius: 999,
+                        backgroundColor: colors.primary + "15",
+                      }}
+                    >
+                      <CheckCircle2 size={13} color={colors.primary} />
+                      <Text style={{ fontSize: 11, fontWeight: "700", color: colors.primary }}>
+                        Accepted
+                      </Text>
+                    </View>
+                  ) : (
+                    isQuestionOwner && (
+                      <TouchableOpacity
+                        disabled={isAccepting}
+                        onPress={() => handleAcceptAnswer(answer.id)}
+                        style={{
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 4,
+                          paddingHorizontal: 10,
+                          paddingVertical: 4,
+                          borderRadius: 999,
+                          borderWidth: 1,
+                          borderColor: colors.cardBorder,
+                        }}
+                      >
+                        <CheckCircle2 size={13} color={colors.overlay} />
+                        <Text style={{ fontSize: 11, fontWeight: "700", color: colors.neutral }}>
+                          Accept
+                        </Text>
+                      </TouchableOpacity>
+                    )
+                  )}
                 </View>
 
                 <MessageItem item={answer} depth={1} />
@@ -612,14 +700,17 @@ export default function QuestionScreen() {
           ))}
         </ScrollView>
 
-        {/* ANSWER INPUT */}
-        <BottomAnswerInput
-          input={input}
-          setInput={setInput}
-          handleAnswer={handleAnswer}
-          isPending={isPending}
-        />
-      </View>
+        {/* ANSWER INPUT — hidden while a reply input is open, so only one
+            composer is ever active at a time */}
+        {activeReplyId === null && (
+          <BottomAnswerInput
+            input={input}
+            setInput={setInput}
+            handleAnswer={handleAnswer}
+            isPending={isPending}
+          />
+        )}
+      </KeyboardAvoidingView>
     </ScreenLayout>
   );
 }

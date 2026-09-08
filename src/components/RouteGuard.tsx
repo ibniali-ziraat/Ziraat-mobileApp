@@ -1,10 +1,12 @@
 import { router } from "expo-router";
 import { ReactNode, useEffect, useRef } from "react";
 import { View } from "react-native";
+import LocationPermissionModal from "./shared/modals/LocationPermissionModal";
 import { colors } from "../constants/colors";
 import { ROUTES } from "../constants/routes";
 
 import { useAuth } from "../contexts/AuthContext";
+import { useLocationContext } from "../contexts/LocationContext";
 import { scheduleAutoLogout } from "../utils/tokenExpiryCheck";
 
 interface RouteGuardProps {
@@ -24,6 +26,12 @@ const navigateToLogin = () => {
 
 export default function RouteGuard({ children }: RouteGuardProps) {
   const { userToken, userTokenExp, initialized, logoutUser } = useAuth();
+  // Already-running watcher (mounted app-wide via LocationProvider): its
+  // AppState listener rechecks on every foreground resume, so gating on
+  // its live status here is enough to re-trigger the mandatory prompt on
+  // every subsequent app open, not just the first login.
+  const { status: locationStatus, recheck: recheckLocation } =
+    useLocationContext();
   const cancelRef = useRef<(() => void) | null>(null);
   const isNavigating = useRef(false);
 
@@ -76,6 +84,16 @@ export default function RouteGuard({ children }: RouteGuardProps) {
   if (!initialized) return null;
 
   return (
-    <View style={{ flex: 1, backgroundColor: colors.light }}>{children}</View>
+    <View style={{ flex: 1, backgroundColor: colors.light }}>
+      {children}
+      {/* Only gate once logged in — the login/signup screens themselves
+          shouldn't be blocked by this. */}
+      {!!userToken && (
+        <LocationPermissionModal
+          status={locationStatus}
+          recheck={recheckLocation}
+        />
+      )}
+    </View>
   );
 }

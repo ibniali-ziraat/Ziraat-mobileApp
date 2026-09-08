@@ -6,15 +6,28 @@ import {
   type NativeSyntheticEvent,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Animated, {
+  type AnimatedScrollViewProps,
+} from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../../constants/colors";
+
+// Reanimated-wrapped so a `useAnimatedScrollHandler` worklet passed as
+// `onScroll` runs on the UI thread (needed by screens driving a collapsing
+// header off scroll position) — plain JS `onScroll` callbacks used by every
+// other screen keep working exactly as before, this is purely additive.
+const AnimatedKeyboardAwareScrollView = Animated.createAnimatedComponent(
+  KeyboardAwareScrollView,
+);
 
 interface ScreenLayoutProps {
   children: React.ReactNode;
   keyboardOffset?: number;
   scrollable?: boolean;
   refreshControl?: React.ReactElement;
-  onScroll?: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+  onScroll?:
+    | ((event: NativeSyntheticEvent<NativeScrollEvent>) => void)
+    | AnimatedScrollViewProps["onScroll"];
   scrollEventThrottle?: number;
   topPadding?: number;
 }
@@ -38,7 +51,7 @@ export default function ScreenLayout({
       edges={["bottom"]}
     >
       {scrollable ? (
-        <KeyboardAwareScrollView
+        <AnimatedKeyboardAwareScrollView
           enableOnAndroid
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
@@ -55,7 +68,7 @@ export default function ScreenLayout({
           }}
         >
           <View style={{ flex: 1 }}>{children}</View>
-        </KeyboardAwareScrollView>
+        </AnimatedKeyboardAwareScrollView>
       ) : (
         <View
           style={{

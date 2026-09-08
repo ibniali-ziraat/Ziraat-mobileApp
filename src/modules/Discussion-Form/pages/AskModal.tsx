@@ -5,12 +5,14 @@ import {
   Dimensions,
   Modal,
   Pressable,
+  Switch,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 
-import { HelpCircle, X } from "lucide-react-native";
+import { Award, HelpCircle, X } from "lucide-react-native";
 
 import ChipInput from "@/src/components/form/inputs/ChipInput";
 
@@ -21,6 +23,7 @@ import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import { colors } from "@/src/constants/colors";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 import { useZodForm } from "@/src/hooks/useZodForm";
 
@@ -57,23 +60,31 @@ export default function AskModal({
 
   const body = watch("body");
 
+  const { userId } = useAuth();
+
   // STATES
   const [isBounty, setIsBounty] = useState(false);
+  const [bountyAmount, setBountyAmount] = useState("");
 
   // SUBMIT
   const handleQuestionSubmit = (data: any) => {
+    if (!userId) {
+      showErrorToast("You need to be logged in to ask a question");
+      return;
+    }
+
     const payload = {
       title: data.title,
 
       body: data.body,
 
-      userId: 1,
+      userId: Number(userId),
 
       tags: data.tagsInput || [],
 
       isBounty,
 
-      bountyAmount: isBounty ? Number(data.bountyAmount || 0) : 0,
+      bountyAmount: isBounty ? Number(bountyAmount || 0) : 0,
     };
 
     onSubmit(payload);
@@ -81,6 +92,7 @@ export default function AskModal({
     reset();
 
     setIsBounty(false);
+    setBountyAmount("");
   };
 
   return (
@@ -266,7 +278,7 @@ export default function AskModal({
                   <FormTextInput
                     name="title"
                     label="Title"
-                    placeholder="How to handle file uploads in FastAPI with S3?"
+                    placeholder="Enter The Title Of Your Question"
                     error={errors.title}
                     required
                   />
@@ -296,10 +308,80 @@ export default function AskModal({
                   <ChipInput
                     name="tagsInput"
                     label="Tags"
-                    placeholder="Add tag (react-native, api...)"
+                    placeholder="Add tag "
                     error={errors.tagsInput}
                     required
                   />
+                </View>
+
+                {/* BOUNTY */}
+                <View
+                  style={{
+                    marginBottom: 16,
+                    borderWidth: 1,
+                    borderColor: colors.secondary + "20",
+                    backgroundColor: colors.secondary + "08",
+                    borderRadius: 16,
+                    padding: 14,
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 8,
+                        flex: 1,
+                      }}
+                    >
+                      <Award size={18} color={colors.secondary} />
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "700",
+                          color: colors.dark,
+                        }}
+                      >
+                        Offer a bounty
+                      </Text>
+                    </View>
+                    <Switch
+                      value={isBounty}
+                      onValueChange={setIsBounty}
+                      trackColor={{ true: colors.secondary + "80" }}
+                      thumbColor={isBounty ? colors.secondary : undefined}
+                    />
+                  </View>
+
+                  {isBounty && (
+                    <View style={{ marginTop: 10 }}>
+                      <TextInput
+                        value={bountyAmount}
+                        onChangeText={(v) =>
+                          setBountyAmount(v.replace(/[^0-9]/g, ""))
+                        }
+                        keyboardType="number-pad"
+                        placeholder="Bounty amount"
+                        placeholderTextColor={colors.overlay}
+                        style={{
+                          borderWidth: 1,
+                          borderColor: colors.cardBorder,
+                          borderRadius: 12,
+                          paddingHorizontal: 12,
+                          paddingVertical: 10,
+                          fontSize: 14,
+                          color: colors.dark,
+                          backgroundColor: colors.light,
+                        }}
+                      />
+                    </View>
+                  )}
                 </View>
 
                 {/* INFO BOX */}

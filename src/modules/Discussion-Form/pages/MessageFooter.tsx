@@ -1,6 +1,6 @@
 import {
-  ChevronDown,
-  ChevronUp,
+  ArrowBigUp,
+  Bookmark,
   Eye,
   Heart,
   Laugh,
@@ -13,7 +13,14 @@ import { Share, Text, TouchableOpacity, View } from "react-native";
 
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { colors } from "@/src/constants/colors";
-import { useDeleteQuestion, useVote } from "../hooks/useQuestion";
+import { useAuth } from "@/src/contexts/AuthContext";
+import {
+  useAddBookmark,
+  useBookmarks,
+  useDeleteQuestion,
+  useRemoveBookmark,
+  useVote,
+} from "../hooks/useQuestion";
 
 /* ================= ICON PILL ================= */
 function IconPill({ children, onPress }: any) {
@@ -38,33 +45,28 @@ function IconPill({ children, onPress }: any) {
 }
 
 /* ================= VOTE ================= */
-function VoteColumn({ votes = 0, targetId, targetType }: any) {
+// Single tappable upvote pill — just the count, backed by the real
+// /api/forum/votes endpoint. No separate up/down arrow buttons.
+function VoteColumn({ votes = 0, targetId, targetType, userId }: any) {
   const [count, setCount] = useState(votes);
-  const [vote, setVote] = useState(0);
+  const [voted, setVoted] = useState(false);
 
   const { mutate: voteApi, isPending } = useVote();
 
-  const handleVote = (value: number) => {
-    if (isPending) return;
+  const handleVote = () => {
+    if (isPending || !userId) return;
 
-    let newVote = value;
-    let newCount = count;
+    const newVoted = !voted;
+    const newCount = count + (newVoted ? 1 : -1);
 
-    if (vote === value) {
-      newVote = 0;
-      newCount = count - value;
-    } else {
-      newCount = count + value - vote;
-    }
-
-    setVote(newVote);
+    setVoted(newVoted);
     setCount(newCount);
 
     voteApi(
-      { userId: 2, targetId, targetType, value: newVote },
+      { userId, targetId, targetType, value: newVoted ? 1 : 0 },
       {
         onError: () => {
-          setVote(vote);
+          setVoted(voted);
           setCount(count);
         },
       }
@@ -72,66 +74,45 @@ function VoteColumn({ votes = 0, targetId, targetType }: any) {
   };
 
   return (
-    <View
+    <TouchableOpacity
+      onPress={handleVote}
       style={{
         flexDirection: "row",
         alignItems: "center",
+        gap: 5,
         height: 36,
+        paddingHorizontal: 12,
         borderRadius: 20,
         borderWidth: 1,
-        borderColor: colors.cardBorder,
-        backgroundColor: colors.light,
-        overflow: "hidden",
+        borderColor: voted ? colors.primary + "40" : colors.cardBorder,
+        backgroundColor: voted ? colors.primary + "14" : colors.light,
       }}
     >
-      <TouchableOpacity
-        onPress={() => handleVote(1)}
-        style={{
-          paddingHorizontal: 10,
-          justifyContent: "center",
-          backgroundColor:
-            vote === 1 ? colors.primary + "14" : "transparent",
-        }}
-      >
-        <ChevronUp size={16} color={vote === 1 ? colors.primary : colors.overlay} />
-      </TouchableOpacity>
-
+      <ArrowBigUp
+        size={16}
+        color={voted ? colors.primary : colors.overlay}
+        fill={voted ? colors.primary : "transparent"}
+      />
       <Text
         style={{
           fontSize: 13,
           fontWeight: "700",
-          minWidth: 20,
-          textAlign: "center",
-          color:
-            vote === 1
-              ? colors.primary
-              : vote === -1
-              ? colors.error
-              : "#555",
+          color: voted ? colors.primary : "#555",
         }}
       >
         {count}
       </Text>
-
-      <TouchableOpacity
-        onPress={() => handleVote(-1)}
-        style={{
-          paddingHorizontal: 10,
-          justifyContent: "center",
-          backgroundColor:
-            vote === -1 ? colors.error + "14" : "transparent",
-        }}
-      >
-        <ChevronDown size={16} color={vote === -1 ? colors.error : colors.overlay} />
-      </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 /* ================= FOOTER ================= */
 export default function MessageFooter({ item, depth, views }: any) {
   const isQuestion = depth === 0;
-  const isOwner = true;
+  const { userId } = useAuth();
+
+  const authorId = item.userId ?? item.user?.id ?? null;
+  const isOwner = !!userId && authorId != null && Number(authorId) === Number(userId);
 
   const [showReactions, setShowReactions] = useState(false);
   const [selectedReaction, setSelectedReaction] =
@@ -140,6 +121,28 @@ export default function MessageFooter({ item, depth, views }: any) {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const { mutate: deleteQuestionApi, isPending } = useDeleteQuestion();
+
+  /* BOOKMARK — only meaningful for questions, per the bookmarks API */
+  const { data: bookmarksData } = useBookmarks(isQuestion ? Number(userId) : 0);
+  const bookmarks: any[] = Array.isArray(bookmarksData)
+    ? bookmarksData
+    : Array.isArray(bookmarksData?.bookmarks)
+      ? bookmarksData.bookmarks
+      : [];
+  const isBookmarked = bookmarks.some(
+    (b: any) => Number(b.questionId ?? b.question?.id ?? b.id) === Number(item.id),
+  );
+  const { mutate: addBookmarkApi, isPending: isBookmarking } = useAddBookmark();
+  const { mutate: removeBookmarkApi, isPending: isUnbookmarking } = useRemoveBookmark();
+
+  const handleBookmarkToggle = () => {
+    if (!userId || isBookmarking || isUnbookmarking) return;
+    if (isBookmarked) {
+      removeBookmarkApi({ userId: Number(userId), questionId: Number(item.id) });
+    } else {
+      addBookmarkApi({ userId: Number(userId), questionId: Number(item.id) });
+    }
+  };
 
   /* ✅ SHARE FUNCTION */
   const handleShare = async () => {
@@ -179,6 +182,7 @@ export default function MessageFooter({ item, depth, views }: any) {
           votes={item.votes}
           targetId={Number(item.id)}
           targetType={isQuestion ? "question" : "answer"}
+          userId={userId ? Number(userId) : null}
         />
 
         {/* REACTIONS */}
@@ -254,6 +258,17 @@ export default function MessageFooter({ item, depth, views }: any) {
         <IconPill onPress={handleShare}>
           <Share2 size={14} color={colors.secondary} />
         </IconPill>
+
+        {/* BOOKMARK — questions only, matches the bookmarks API's scope */}
+        {isQuestion && (
+          <IconPill onPress={handleBookmarkToggle}>
+            <Bookmark
+              size={14}
+              color={colors.secondary}
+              fill={isBookmarked ? colors.secondary : "transparent"}
+            />
+          </IconPill>
+        )}
 
         {/* DELETE */}
         {isOwner && isQuestion && (

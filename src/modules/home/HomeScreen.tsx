@@ -8,12 +8,8 @@ import { useHomeScrollY } from "@/src/contexts/HomeScrollContext";
 import { useOrchardCompleteness } from "@/src/modules/orchards/hooks/useOrchardCompleteness";
 import { router } from "expo-router";
 import { JSX, useState } from "react";
-import {
-  RefreshControl,
-  View,
-  type NativeScrollEvent,
-  type NativeSyntheticEvent,
-} from "react-native";
+import { RefreshControl, View } from "react-native";
+import { useAnimatedScrollHandler } from "react-native-reanimated";
 import { useRegisterToken } from "../notifications/hooks/useRegisterToken";
 import BestDealsSection from "./components/dashboard/BestDealsSection";
 import DashboardSectionHeader from "./components/dashboard/DashboardSectionHeader";
@@ -25,6 +21,7 @@ import OrchardCompletenessCard from "./components/dashboard/OrchardCompletenessC
 import OrchardOverviewCard from "./components/dashboard/OrchardOverviewCard";
 import TrendingProductsSection from "./components/dashboard/TrendingProductsSection";
 import FarmerTipsCarousel from "./components/FarmerTipsCarousel";
+import HomeWeatherCard from "./components/HomeWeatherCard";
 import QuickActions from "./components/QuickActions";
 import { useHomeDashboard } from "./hooks/useHomeDashboard";
 
@@ -34,10 +31,16 @@ export default function HomeScreen(): JSX.Element {
   useRegisterToken();
 
   // Feeds the collapsing header, which lives outside this scroll view.
+  // A worklet, not a plain JS callback — updates scrollY on the UI thread
+  // in sync with the actual scroll instead of crossing the JS bridge, which
+  // was causing the header (weather card included) to visibly snap/blink
+  // under JS-thread load instead of animating smoothly.
   const scrollY = useHomeScrollY();
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (scrollY) scrollY.value = event.nativeEvent.contentOffset.y;
-  };
+  const handleScroll = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      if (scrollY) scrollY.value = event.contentOffset.y;
+    },
+  });
 
   const {
     orchards,
@@ -83,6 +86,11 @@ export default function HomeScreen(): JSX.Element {
     >
       <ScreenContent>
         <View style={{ backgroundColor: colors.light, flex: 1 }}>
+          {/* Scrolls away with the rest of the page now — no longer part of
+              the sticky collapsing header, which made it feel pinned/static
+              instead of like a normal piece of the dashboard. */}
+          <HomeWeatherCard />
+
           {isLoading ? (
             <DashboardSkeleton />
           ) : (

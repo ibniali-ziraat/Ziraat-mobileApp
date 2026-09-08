@@ -22,7 +22,7 @@ export const ROUTES = {
     ORDERS: "/orders-list",
     PAYMENTS: "/more/payments",
     ABOUT_US: "/about-us",
-    DISCUSSION: "/mmore/discussion",
+    DISCUSSION: "/discussion",
     PROFILE: "/profile-view",
   },
 
@@ -105,8 +105,12 @@ export const ROUTES = {
   },
 
   Discussion: {
-    discussionForum: "/ddiscussion",
+    discussionForum: "/discussion",
     QuestionScreen: "/questionScreen",
+    Notifications: "/forum-notifications",
+    Tags: "/forum-tags",
+    UserProfile: "/forum-user",
+    Bookmarks: "/forum-bookmarks",
   },
   SHIPPING: {
     ADDRESS: "/shipping/address",

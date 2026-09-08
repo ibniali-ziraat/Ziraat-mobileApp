@@ -1,6 +1,7 @@
 
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 import { useRouter } from "expo-router";
 
@@ -117,6 +118,7 @@ export default function MessageItem({
   hideArrow = false,
 }: any) {
   const router = useRouter();
+  const { userId } = useAuth();
 
   const time = useTimeAgo(
     item.createdAt
@@ -159,7 +161,7 @@ export default function MessageItem({
     isQuestion
       ? Number(item.id)
       : 0,
-    2
+    userId ? Number(userId) : undefined
   );
 
   const views =
@@ -205,7 +207,10 @@ export default function MessageItem({
           padding: 16,
         }}
         onPress={() => {
-          if (isQuestion) {
+          // hideArrow means this card IS the detail screen's own pinned
+          // question header — navigating again here just re-pushed the
+          // same QuestionScreen onto the stack on every tap.
+          if (isQuestion && !hideArrow) {
             router.push({
               pathname:
                 ROUTES
@@ -232,7 +237,15 @@ export default function MessageItem({
           }}
         >
           {/* LEFT */}
-          <View
+          <TouchableOpacity
+            disabled={!item.authorId}
+            onPress={() =>
+              item.authorId &&
+              router.push({
+                pathname: ROUTES.Discussion.UserProfile,
+                params: { id: item.authorId },
+              })
+            }
             style={{
               flexDirection:
                 "row",
@@ -277,7 +290,7 @@ export default function MessageItem({
                 </Text>
               )}
             </View>
-          </View>
+          </TouchableOpacity>
 
           {/* RIGHT */}
           <View
@@ -422,8 +435,14 @@ export default function MessageItem({
                   tag: any,
                   index: number
                 ) => (
-                  <View
+                  <TouchableOpacity
                     key={index}
+                    onPress={() =>
+                      router.push({
+                        pathname: ROUTES.Discussion.discussionForum,
+                        params: { tag },
+                      })
+                    }
                     style={{
 
 
@@ -460,7 +479,7 @@ export default function MessageItem({
                         {tag}
                       </Text>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 )
               )}
             </View>

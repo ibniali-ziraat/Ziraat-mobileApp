@@ -3,6 +3,7 @@ import FormActions from "@/src/components/shared/FormActions";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
+import { useLocation } from "@/src/hooks/useLocationPermission";
 import { useZodForm } from "@/src/hooks/useZodForm";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect } from "react";
@@ -38,6 +39,10 @@ export default function BasicInfoScreen() {
 
   const { mutateAsync: updateOrchard, isPending: updating } =
     useUpdateOrchardMutation();
+
+  // Kicked off on mount so a fix is very likely ready by the time the user
+  // finishes filling the form — doesn't block submission if it isn't.
+  const { coords } = useLocation();
 
   const form = useZodForm(BasicInfoSchema);
 
@@ -83,11 +88,21 @@ export default function BasicInfoScreen() {
     const kanalsPayload = Number(values.kanals || 0);
     const marlasPayload = Number(values.marlas || 0);
 
+    // Editing an existing orchard shouldn't overwrite its real coordinates
+    // with wherever the device happens to be right now — only fall back to
+    // live GPS when there's no valid stored location yet (which also
+    // backfills any orchard that was created before this field existed).
+    const hasStoredCoords =
+      !!orchard?.latitude && !!orchard?.longitude &&
+      Number(orchard.latitude) !== 0 && Number(orchard.longitude) !== 0;
+
     const payload = {
       orchardId: orchard?.id ?? generateId(),
       ...values,
       kanals: kanalsPayload,
       marlas: marlasPayload,
+      latitude: hasStoredCoords ? Number(orchard.latitude) : (coords?.lat ?? 0),
+      longitude: hasStoredCoords ? Number(orchard.longitude) : (coords?.lon ?? 0),
     };
 
     if (orchard) {

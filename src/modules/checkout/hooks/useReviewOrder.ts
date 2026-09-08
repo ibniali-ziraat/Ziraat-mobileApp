@@ -248,7 +248,11 @@ export const useReviewOrder = () => {
 
       if (!result.success) {
         console.log("UPI-2 FAILED (pay):", JSON.stringify(result.error));
-        if (String(result.error?.code) !== "1") {
+        // Razorpay's SDK reports a user-cancelled/closed checkout as code 0
+        // (its PAYMENT_CANCELED constant, same on Android and iOS) — that's
+        // not a real failure, so it should just exit quietly instead of
+        // surfacing the SDK's raw error text.
+        if (String(result.error?.code) !== "0") {
           setErrorMsg(
             result.error?.description ?? "Payment failed. Please try again.",
           );

@@ -1,246 +1,132 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
+  ActivityIndicator,
+  RefreshControl,
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
-import { MessageCircleMore, Plus } from "lucide-react-native";
+import { ROUTES } from "@/src/constants/routes";
+import { useAuth } from "@/src/contexts/AuthContext";
+import {
+  Bell,
+  Bookmark,
+  Hash,
+  MessageCircleMore,
+  Plus,
+  X,
+} from "lucide-react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 import SearchBar from "@/src/components/shared/SearchBar";
-import { useCreateQuestion, useQuestions } from "../hooks/useQuestion";
-
+import {
+  useCreateQuestion,
+  useForumNotifications,
+  useForumStats,
+  useQuestions,
+} from "../hooks/useQuestion";
 
 import AskModal from "../pages/AskModal";
-import FilterModal from "../pages/FilterModal";
 import MessageItem from "../pages/MessageItem";
 
-type FilterType =
-  | "latest"
-  | "mostViewed"
-  | "mostVoted";
+type FilterType = "latest" | "mostViewed" | "mostVoted";
 
-const FILTERS: {
-  label: string;
-  value: FilterType;
-}[] = [
-  {
-    label: "Latest",
-    value: "latest",
-  },
-
-  {
-    label: "Most Viewed",
-    value: "mostViewed",
-  },
-
-  {
-    label: "Most Voted",
-    value: "mostVoted",
-  },
+const FILTERS: { label: string; value: FilterType; sort: string }[] = [
+  { label: "Latest", value: "latest", sort: "createdAt" },
+  { label: "Most Viewed", value: "mostViewed", sort: "views" },
+  { label: "Most Voted", value: "mostVoted", sort: "votes" },
 ];
-             
+
+const PAGE_SIZE = 20;
 
 export default function Discussionforum() {
-  const { data, isLoading } = useQuestions();
-  const { mutate: createQuestionApi, isPending } = useCreateQuestion();
+  const router = useRouter();
+  const { userId } = useAuth();
+  const params = useLocalSearchParams<{ tag?: string }>();
 
   const [askVisible, setAskVisible] = useState(false);
   const [filter, setFilter] = useState<FilterType>("latest");
   const [search, setSearch] = useState("");
-
-
-
-
-  const [filterModalVisible, setFilterModalVisible] = useState(false);
-  const [advancedFilter, setAdvancedFilter] = useState<any>({});
-
-
-
-
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [activeTag, setActiveTag] = useState<string | undefined>(params.tag);
+  const [page, setPage] = useState(1);
+  const [accumulated, setAccumulated] = useState<any[]>([]);
 
   const scrollRef = useRef<ScrollView>(null);
 
-  /* API QUESTIONS */
-  const apiQuestions =
-    data?.map((q: any) => ({
-      id: q.id?.toString(),
-      author: q.user?.displayName || "Unknown",
-      title: q.title,
-      content: q.body,
-      excerpt: q.body?.slice(0, 100),
-    tags:
-  q.tags ||
-  q.tagsInput ||
-  q.tagNames ||
-  q.questionTags ||
-  [],
-      createdAt: q.createdAt || new Date(),
-      votes: q.votes || 0,
-      views: q.views || 0,
-      likes: 0,
-      isLiked: false,
-      children: q.children || [],
-    })) || [];
+  // Debounce search → server-side `Q` param, matching the pattern already
+  // used elsewhere in the app (useLocationSearch) instead of filtering an
+  // already-fetched in-memory list.
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(search.trim()), 400);
+    return () => clearTimeout(t);
+  }, [search]);
 
-  /* FILTER LOGIC */
-  let discussionList = [...apiQuestions];
+  // Reset pagination whenever the query itself changes.
+  useEffect(() => {
+    setPage(1);
+    setAccumulated([]);
+  }, [debouncedSearch, filter, activeTag]);
 
-  /* ───────────────── GLOBAL SEARCH ───────────────── */
+  const activeFilter = FILTERS.find((f) => f.value === filter)!;
 
-if (search.trim()) {
-  const q = search
-    .toLowerCase()
-    .trim();
-
-  discussionList = discussionList.filter(
-    (item) => {
-      /* QUESTION TITLE */
-      const titleMatch =
-        item.title
-          ?.toLowerCase()
-          .includes(q);
-
-      /* QUESTION CONTENT */
-      const contentMatch =
-        item.content
-          ?.toLowerCase()
-          .includes(q);
-
-      /* EXCERPT */
-      const excerptMatch =
-        item.excerpt
-          ?.toLowerCase()
-          .includes(q);
-
-      /* AUTHOR */
-      const authorMatch =
-        item.author
-          ?.toLowerCase()
-          .includes(q);
-
-      /* TAGS */
-      const tagMatch =
-        item.tags?.some(
-          (tag: string) =>
-            tag
-              ?.toLowerCase()
-              .includes(q)
-        );
-
-      /* ANSWERS / REPLIES */
-      const replyMatch =
-        item.children?.some(
-          (reply: any) => {
-            const replyText =
-              reply?.content ||
-              reply?.body ||
-              reply?.message ||
-              "";
-
-            const replyAuthor =
-              reply?.author ||
-              reply?.user
-                ?.displayName ||
-              "";
-
-            return (
-              replyText
-                .toLowerCase()
-                .includes(q) ||
-              replyAuthor
-                .toLowerCase()
-                .includes(q)
-            );
-          }
-        );
-
-      return (
-        titleMatch ||
-        contentMatch ||
-        excerptMatch ||
-        authorMatch ||
-        tagMatch ||
-        replyMatch
-      );
-    }
-  );
-}
-/* ───────────────── MAIN FILTER TABS ───────────────── */
-
-if (filter === "latest") {
-  discussionList.sort((a, b) => {
-    return (
-      new Date(b.createdAt).getTime() -
-      new Date(a.createdAt).getTime()
-    );
+  const { data, isLoading, isFetching, refetch, isRefetching } = useQuestions({
+    q: debouncedSearch || undefined,
+    sort: activeFilter.sort,
+    order: "DESC",
+    tag: activeTag,
+    page,
+    limit: PAGE_SIZE,
   });
-}
 
-/* ───────────────── MAIN FILTER TABS ───────────────── */
+  const { mutate: createQuestionApi, isPending } = useCreateQuestion();
+  const { data: statsData } = useForumStats();
+  const { data: notifData } = useForumNotifications(Number(userId));
 
-/* LATEST */
+  const unreadCount = (
+    Array.isArray(notifData)
+      ? notifData
+      : Array.isArray(notifData?.notifications)
+        ? notifData.notifications
+        : []
+  ).filter((n: any) => !(n.isRead ?? n.read)).length;
 
-if (filter === "latest") {
-  discussionList.sort((a, b) => {
-    return (
-      new Date(b.createdAt).getTime() -
-      new Date(a.createdAt).getTime()
-    );
-  });
-}
+  // Merge newly-fetched pages onto what's already loaded.
+  useEffect(() => {
+    if (!data) return;
+    setAccumulated((prev) => (page === 1 ? data.questions : [...prev, ...data.questions]));
+  }, [data, page]);
 
-/* MOST VIEWED */
+  const apiQuestions = accumulated.map((q: any) => ({
+    id: q.id?.toString(),
+    authorId: q.userId ?? q.user?.id,
+    author: q.user?.displayName || "Unknown",
+    title: q.title,
+    content: q.body,
+    excerpt: q.body?.slice(0, 100),
+    tags: q.tags || q.tagsInput || q.tagNames || q.questionTags || [],
+    createdAt: q.createdAt || new Date(),
+    votes: q.votes || 0,
+    views: q.views || 0,
+    isBounty: q.isBounty,
+    bountyAmount: q.bountyAmount,
+  }));
 
-if (filter === "mostViewed") {
-  discussionList.sort((a, b) => {
-    const viewDiff =
-      (b.views || 0) -
-      (a.views || 0);
+  const total = data?.total ?? apiQuestions.length;
+  const hasMore = apiQuestions.length < total;
 
-    if (viewDiff !== 0) {
-      return viewDiff;
-    }
-
-    return (
-      new Date(b.createdAt).getTime() -
-      new Date(a.createdAt).getTime()
-    );
-  });
-}
-
-/* MOST VOTED */
-
-if (filter === "mostVoted") {
-  discussionList.sort((a, b) => {
-    const voteDiff =
-      (b.votes || 0) -
-      (a.votes || 0);
-
-    if (voteDiff !== 0) {
-      return voteDiff;
-    }
-
-    return (
-      new Date(b.createdAt).getTime() -
-      new Date(a.createdAt).getTime()
-    );
-  });
-}
-
-
-
-
-
-  /* CREATE QUESTION */
   const handleAskSubmit = (payload: any) => {
     if (isPending) return;
     createQuestionApi(payload, {
       onSuccess: () => {
         setAskVisible(false);
+        setPage(1);
+        setAccumulated([]);
+        refetch();
         scrollRef.current?.scrollTo({ y: 0, animated: true });
       },
     });
@@ -260,7 +146,7 @@ if (filter === "mostVoted") {
           paddingTop: 14,
         }}
       >
-        {/* Title + Ask button */}
+        {/* Title + quick actions */}
         <View
           style={{
             flexDirection: "row",
@@ -273,40 +159,126 @@ if (filter === "mostVoted") {
             Questions
           </Text>
 
-          <TouchableOpacity
-            onPress={() => setAskVisible(true)}
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 6,
-              backgroundColor: colors.primary,
-              paddingVertical: 8,
-              paddingHorizontal: 12,
-              borderRadius: 8,
-            }}
-          >
-            <Plus size={14} color={colors.light} strokeWidth={2.5} />
-            <Text style={{ color: colors.light, fontWeight: "600", fontSize: 13 }}>
-              Ask Question
-            </Text>
-          </TouchableOpacity>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <TouchableOpacity
+              onPress={() => router.push(ROUTES.Discussion.Tags)}
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 17,
+                alignItems: "center",
+                justifyContent: "center",
+                borderWidth: 1,
+                borderColor: colors.cardBorder,
+              }}
+            >
+              <Hash size={16} color={colors.secondary} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => router.push(ROUTES.Discussion.Bookmarks)}
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 17,
+                alignItems: "center",
+                justifyContent: "center",
+                borderWidth: 1,
+                borderColor: colors.cardBorder,
+              }}
+            >
+              <Bookmark size={16} color={colors.secondary} />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => router.push(ROUTES.Discussion.Notifications)}
+              style={{
+                width: 34,
+                height: 34,
+                borderRadius: 17,
+                alignItems: "center",
+                justifyContent: "center",
+                borderWidth: 1,
+                borderColor: colors.cardBorder,
+              }}
+            >
+              <Bell size={16} color={colors.secondary} />
+              {unreadCount > 0 && (
+                <View
+                  style={{
+                    position: "absolute",
+                    top: -2,
+                    right: -2,
+                    width: 9,
+                    height: 9,
+                    borderRadius: 5,
+                    backgroundColor: colors.error,
+                  }}
+                />
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => setAskVisible(true)}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 6,
+                backgroundColor: colors.primary,
+                paddingVertical: 8,
+                paddingHorizontal: 12,
+                borderRadius: 8,
+              }}
+            >
+              <Plus size={14} color={colors.light} strokeWidth={2.5} />
+              <Text style={{ color: colors.light, fontWeight: "600", fontSize: 13 }}>
+                Ask
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        {/* Count */}
+        {/* Count + stats */}
         <Text style={{ fontSize: 13, color: colors.primary, marginBottom: 12 }}>
-          {discussionList.length} question{discussionList.length !== 1 ? "s" : ""}
+          {total} question{total !== 1 ? "s" : ""}
+          {statsData?.totalAnswers != null ? ` · ${statsData.totalAnswers} answers` : ""}
+          {statsData?.totalUsers != null ? ` · ${statsData.totalUsers} members` : ""}
         </Text>
 
-     {/*  NEW SEARCH BAR */}
-  <View style={{ marginBottom: 12 }}>
+        {/* SEARCH BAR */}
+        <View style={{ marginBottom: 12 }}>
           <SearchBar
             search={search}
             setSearch={setSearch}
-        placeholder="Search questions, answers, tags..."
-            
+            placeholder="Search questions, answers, tags..."
           />
-          
         </View>
+
+        {/* Active tag chip */}
+        {activeTag && (
+          <TouchableOpacity
+            onPress={() => setActiveTag(undefined)}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              alignSelf: "flex-start",
+              gap: 6,
+              backgroundColor: colors.primary + "15",
+              borderWidth: 1,
+              borderColor: colors.primary + "30",
+              paddingHorizontal: 10,
+              paddingVertical: 6,
+              borderRadius: 999,
+              marginBottom: 10,
+            }}
+          >
+            <Hash size={12} color={colors.primary} />
+            <Text style={{ color: colors.primary, fontSize: 12, fontWeight: "700" }}>
+              {activeTag}
+            </Text>
+            <X size={12} color={colors.primary} />
+          </TouchableOpacity>
+        )}
 
         {/* Filter tabs */}
         <ScrollView
@@ -332,8 +304,7 @@ if (filter === "mostVoted") {
                 style={{
                   fontSize: 13,
                   fontWeight: filter === f.value ? "600" : "400",
-                  color:
-                    filter === f.value ? colors.primary : colors.dark,
+                  color: filter === f.value ? colors.primary : colors.dark,
                 }}
               >
                 {f.label}
@@ -343,29 +314,40 @@ if (filter === "mostVoted") {
         </ScrollView>
       </View>
 
-      {/* ── LIST (unchanged) ── */}
+      {/* ── LIST ── */}
       <ScrollView
         ref={scrollRef}
         style={{ flex: 1 }}
         contentContainerStyle={{ paddingBottom: 40, paddingTop: 6 }}
         showsVerticalScrollIndicator={false}
-      >
-        {isLoading ? (
-          <Text
-            style={{
-              textAlign: "center",
-              marginTop: 40,
-              color: colors.overlay,
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefetching && page === 1}
+            onRefresh={() => {
+              setPage(1);
+              setAccumulated([]);
+              refetch();
             }}
-          >
+          />
+        }
+        onScroll={({ nativeEvent }) => {
+          const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
+          const nearBottom =
+            layoutMeasurement.height + contentOffset.y >= contentSize.height - 200;
+          if (nearBottom && hasMore && !isFetching) {
+            setPage((p) => p + 1);
+          }
+        }}
+        scrollEventThrottle={200}
+      >
+        {isLoading && page === 1 ? (
+          <Text style={{ textAlign: "center", marginTop: 40, color: colors.overlay }}>
             Loading discussions...
           </Text>
-        ) : discussionList.length === 0 ? (
+        ) : apiQuestions.length === 0 ? (
           <View style={{ alignItems: "center", marginTop: 80 }}>
             <MessageCircleMore size={40} color={colors.secondary} />
-            <Text
-              style={{ marginTop: 10, fontWeight: "700", fontSize: 16 }}
-            >
+            <Text style={{ marginTop: 10, fontWeight: "700", fontSize: 16 }}>
               No questions yet
             </Text>
             <Text style={{ marginTop: 4 }}>
@@ -373,9 +355,17 @@ if (filter === "mostVoted") {
             </Text>
           </View>
         ) : (
-          discussionList.map((item) => (
-            <MessageItem key={item.id} item={item} depth={0} />
-          ))
+          <>
+            {apiQuestions.map((item) => (
+              <MessageItem key={item.id} item={item} depth={0} />
+            ))}
+            {isFetching && page > 1 && (
+              <ActivityIndicator
+                style={{ marginTop: 16 }}
+                color={colors.primary}
+              />
+            )}
+          </>
         )}
       </ScrollView>
 
@@ -384,13 +374,6 @@ if (filter === "mostVoted") {
         onClose={() => setAskVisible(false)}
         onSubmit={handleAskSubmit}
         loading={isPending}
-      />
-
-       {/*FILTER MODAL */}
-      <FilterModal
-        visible={filterModalVisible}
-        onClose={() => setFilterModalVisible(false)}
-        onApply={(filters: any) => setAdvancedFilter(filters)}
       />
     </View>
   );
