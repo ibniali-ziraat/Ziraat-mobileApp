@@ -52,7 +52,11 @@ export default function SoilAndWaterProfileScreen() {
 
   const onSubmit = async (values: any) => {
     try {
+      // Spread the existing record first so fields this form doesn't own
+      // (soilTestReportUrls, from the separate upload screen) survive the
+      // save/update instead of being dropped.
       const payload = {
+        ...soilWaterData,
         id: soilWaterData?.id,
         orchardProfileId,
         ...values,

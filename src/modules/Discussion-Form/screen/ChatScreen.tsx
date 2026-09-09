@@ -12,6 +12,7 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import {
   Bell,
   Bookmark,
@@ -20,7 +21,6 @@ import {
   Plus,
   X,
 } from "lucide-react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
 
 import SearchBar from "@/src/components/shared/SearchBar";
 import {
@@ -250,7 +250,7 @@ export default function Discussionforum() {
           <SearchBar
             search={search}
             setSearch={setSearch}
-            placeholder="Search questions, answers, tags..."
+            placeholder="Search..."
           />
         </View>
 

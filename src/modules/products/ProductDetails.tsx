@@ -73,10 +73,11 @@ export default function ProductDetails() {
     setSelectedVariation(defaultVariation);
   }, [product?.id]);
 
+  // Switching variations resets quantity back to 1, same as other
+  // e-commerce apps — a quantity picked for one variation shouldn't carry
+  // over to another.
   useEffect(() => {
-    if (selectedVariation?.stockQuantity) {
-      setQuantity((q) => Math.min(q, selectedVariation.stockQuantity));
-    }
+    setQuantity(1);
   }, [selectedVariation?.id]);
 
   // const { mutate: submitReview, isPending } = useAddReview();

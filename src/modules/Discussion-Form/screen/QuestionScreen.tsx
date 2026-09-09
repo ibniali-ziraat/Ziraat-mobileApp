@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
-  KeyboardAvoidingView,
+  Keyboard,
   Platform,
   ScrollView,
   Text,
@@ -11,9 +11,9 @@ import {
 } from "react-native";
 
 import { useLocalSearchParams } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import BackHeader from "@/src/components/shared/BackHeader";
-import ScreenLayout from "@/src/components/shared/ScreenLayout";
 
 import {
   useAcceptAnswer,
@@ -36,6 +36,7 @@ import {
 import { colors } from "@/src/constants/colors";
 import { useAuth } from "@/src/contexts/AuthContext";
 import Avatar from "../pages/Avatar";
+import AnswerPrompt from "../pages/AnswerPrompt";
 import BottomAnswerInput from "../pages/BottomAnswerInput";
 
 export default function QuestionScreen() {
@@ -55,6 +56,29 @@ export default function QuestionScreen() {
   const { mutate: acceptAnswerApi, isPending: isAccepting } = useAcceptAnswer();
 
   const [input, setInput] = useState("");
+  const [isAnswering, setIsAnswering] = useState(false);
+
+  // ================= KEYBOARD =================
+  // KeyboardAvoidingView + windowSoftInputMode="adjustResize" turned out
+  // unreliable on physical devices (composer still landed under the
+  // keyboard) — tracking the keyboard's actual height and pushing the
+  // composer up by that exact amount is the robust fallback.
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
+
+  useEffect(() => {
+    const showEvent = Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const hideEvent = Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    const showSub = Keyboard.addListener(showEvent, (e) =>
+      setKeyboardHeight(e.endCoordinates?.height ?? 0),
+    );
+    const hideSub = Keyboard.addListener(hideEvent, () => setKeyboardHeight(0));
+
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   // ================= REPLY =================
   const [activeReplyId, setActiveReplyId] = useState<number | null>(null);
@@ -112,7 +136,12 @@ export default function QuestionScreen() {
     if (!input.trim() || isPending || !userId) return;
     createAnswerApi(
       { questionId, payload: { body: input, userId: Number(userId) } },
-      { onSuccess: () => setInput("") }
+      {
+        onSuccess: () => {
+          setInput("");
+          setIsAnswering(false);
+        },
+      }
     );
   };
 
@@ -154,7 +183,11 @@ export default function QuestionScreen() {
         roots.push(map[item.id]);
       }
     });
-    return roots;
+    // Latest answer first — replies within a thread stay chronological
+    // (oldest first), only the top-level answers are newest-first.
+    return roots.sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    );
   };
 
   const answersTree = buildTree(answers);
@@ -370,19 +403,17 @@ export default function QuestionScreen() {
   };
 
   return (
-    // scrollable={false} — this screen has its own inner ScrollView plus a
-    // bottom-pinned answer composer; letting ScreenLayout ALSO wrap
-    // everything in its own KeyboardAwareScrollView created two nested
-    // scroll containers, which is why the keyboard couldn't correctly
-    // scroll the composer into view. KeyboardAvoidingView below shifts the
-    // whole screen (header + content + composer) up together instead,
-    // the standard pattern for a chat-style input pinned to the bottom.
-    <ScreenLayout scrollable={false}>
-      <KeyboardAvoidingView
-        style={{ flex: 1, backgroundColor: colors.light }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
-      >
+    // Neither ScreenLayout's SafeAreaView+fixed-padding nesting nor a plain
+    // KeyboardAvoidingView (with "height", or left unset to rely on
+    // windowSoftInputMode="adjustResize") reliably cleared the keyboard on
+    // physical devices. Tracking the keyboard height directly above and
+    // applying it as marginBottom on the composer sidesteps all of that —
+    // the composer is simply pushed up by exactly the keyboard's height.
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: colors.light, paddingTop: 18 }}
+      edges={["top", "bottom"]}
+    >
+      <View style={{ flex: 1, backgroundColor: colors.light }}>
         <BackHeader title="Discussion" />
 
         <ScrollView
@@ -700,17 +731,28 @@ export default function QuestionScreen() {
           ))}
         </ScrollView>
 
-        {/* ANSWER INPUT — hidden while a reply input is open, so only one
-            composer is ever active at a time */}
-        {activeReplyId === null && (
-          <BottomAnswerInput
-            input={input}
-            setInput={setInput}
-            handleAnswer={handleAnswer}
-            isPending={isPending}
-          />
-        )}
-      </KeyboardAvoidingView>
-    </ScreenLayout>
+        {/* ANSWER INPUT — collapsed behind a small prompt button by default
+            (a big always-open composer was bad UX), and hidden entirely
+            while a reply input is open so only one composer is active.
+            marginBottom pushes it up above the keyboard directly. */}
+        <View style={{ marginBottom: keyboardHeight }}>
+          {activeReplyId === null &&
+            (isAnswering ? (
+              <BottomAnswerInput
+                input={input}
+                setInput={setInput}
+                handleAnswer={handleAnswer}
+                isPending={isPending}
+                onCancel={() => {
+                  setIsAnswering(false);
+                  setInput("");
+                }}
+              />
+            ) : (
+              <AnswerPrompt onPress={() => setIsAnswering(true)} />
+            ))}
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }

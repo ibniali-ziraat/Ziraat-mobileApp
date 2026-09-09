@@ -7,6 +7,12 @@ import { HelperText } from "react-native-paper";
 import CsText from "../../shared/CsText";
 import { ChipInputProps } from "../../shared/inputs/types";
 
+// Matches AskQuestionSchema's per-tag max (20 chars) — capping the raw
+// TextInput here stops a large pasted block of text from ever landing in
+// state, which is what was freezing the UI (a giant chip wrapping across
+// the row on every keystroke).
+const TAG_MAX_LENGTH = 20;
+
 export default function ChipInput({
   name,
   label,
@@ -68,6 +74,7 @@ export default function ChipInput({
                 placeholderTextColor={colors.neutral}
                 value={input}
                 onChangeText={setInput}
+                maxLength={TAG_MAX_LENGTH}
               />
               <Pressable onPress={handleAdd} className="ml-2">
                 <Plus size={24} color={colors.primary} />

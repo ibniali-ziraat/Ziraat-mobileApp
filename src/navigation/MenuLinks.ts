@@ -1,6 +1,5 @@
 import {
   Bell,
-  Bot,
   Info,
   LayoutDashboard,
   LifeBuoy,
@@ -8,7 +7,7 @@ import {
   MessagesSquare,
   Settings,
   ShoppingBag,
-  type LucideIcon,
+  type LucideIcon
 } from "lucide-react-native";
 import { ROUTES } from "../constants/routes";
 
@@ -52,7 +51,7 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
     {
       title: "Help",
       routes: [
-        { label: "Chat With Us", screen: ROUTES.CHAT_BOT, icon: Bot },
+        // { label: "Chat With Us", screen: ROUTES.CHAT_BOT, icon: Bot },
         { label: "Support", screen: "settings/farmer/support", icon: LifeBuoy },
         { label: "About Us", screen: "about-us", icon: Info },
       ],

@@ -1,4 +1,7 @@
 const MARLAS_PER_KANAL = 20;
+// Indian standard land measurement: 1 acre = 8 kanals, 1 hectare ≈ 2.471 acres.
+const KANALS_PER_ACRE = 8;
+const KANALS_PER_HECTARE = KANALS_PER_ACRE * 2.471;
 
 export const toNumber = (value: unknown): number => {
   if (typeof value === "number") return Number.isFinite(value) ? value : 0;
@@ -16,11 +19,21 @@ export const toKanals = (kanals: unknown, marlas: unknown): number =>
 export const formatArea = (kanals: number): string => {
   if (kanals <= 0) return "0";
   if (kanals < 1) return `${Math.round(kanals * MARLAS_PER_KANAL)}`;
-  return kanals >= 100 ? `${Math.round(kanals)}` : kanals.toFixed(1);
+  if (kanals < KANALS_PER_ACRE) return kanals.toFixed(1);
+  if (kanals < KANALS_PER_HECTARE) {
+    const acres = kanals / KANALS_PER_ACRE;
+    return acres >= 100 ? `${Math.round(acres)}` : acres.toFixed(1);
+  }
+  const hectares = kanals / KANALS_PER_HECTARE;
+  return hectares >= 100 ? `${Math.round(hectares)}` : hectares.toFixed(1);
 };
 
-export const areaUnit = (kanals: number): string =>
-  kanals > 0 && kanals < 1 ? "marlas" : "kanals";
+export const areaUnit = (kanals: number): string => {
+  if (kanals <= 0) return "kanals";
+  if (kanals < 1) return "marlas";
+  if (kanals < KANALS_PER_ACRE) return "kanals";
+  return kanals < KANALS_PER_HECTARE ? "acres" : "hectares";
+};
 
 export const formatCompact = (value: number): string => {
   const abs = Math.abs(value);

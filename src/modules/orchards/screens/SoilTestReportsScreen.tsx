@@ -21,7 +21,7 @@ import { SoilTestReportSchema } from "../schemas/SoilTestReportSchema";
 const MAX_REPORTS = 3;
 
 export default function SoilTestReportsScreen() {
-  const { orchardProfileId } = useAuth();
+  const { orchardProfileId, profileData } = useAuth();
 
   const { mutateAsync: uploadFileAsync } = useFileUploadMutation();
 
@@ -43,6 +43,13 @@ export default function SoilTestReportsScreen() {
   } = form;
 
   const onSubmit = async (values: any) => {
+    const coreUserId = (profileData as any)?.coreUserId;
+
+    if (!coreUserId) {
+      showErrorToast("Your profile isn't loaded yet. Please try again.");
+      return;
+    }
+
     try {
       const newlyUploadedUrls: string[] = [];
 
@@ -68,14 +75,28 @@ export default function SoilTestReportsScreen() {
               name: file.name || `soil-report-${Date.now()}.pdf`,
               mimeType: file.mimeType || "application/pdf",
             },
-            UserType: "vendor",
-            UserId: orchardProfileId.toString(),
+            // UserType must be "supplier" (matches the file-upload
+            // endpoint's expected value, same as the working profile-pic
+            // upload) and UserId is the logged-in user's core user id —
+            // this was previously sending "vendor" and the orchard's id
+            // instead, which the backend rejects with 403.
+            UserType: "supplier",
+            UserId: coreUserId.toString(),
             FileCategory: "documents",
           });
 
-          const url = uploadRes?.data?.fileUrl;
+          // /api/FileUpload/upload returns the URL as a plain string in
+          // `data`, not `{ fileUrl }` — reading `.fileUrl` off a string is
+          // always undefined, which is why nothing was ever making it into
+          // soilTestReportUrls. Same extraction as the working profile-pic
+          // upload, with the object-shape fallbacks kept for safety.
+          const raw = uploadRes?.data;
+          const url =
+            typeof raw === "string"
+              ? raw.trim()
+              : (raw?.fileUrl ?? raw?.url ?? raw?.blobUrl ?? raw?.data);
 
-          if (url) {
+          if (url && typeof url === "string") {
             newlyUploadedUrls.push(url);
           }
         }
@@ -91,7 +112,13 @@ export default function SoilTestReportsScreen() {
         return;
       }
 
+      // Merge onto the existing soil-water record instead of sending just
+      // the URLs — the upload and the soil & water details share the same
+      // endpoint, so attaching the URLs to the full record here keeps
+      // whatever soil/water fields were already saved from that other
+      // screen intact.
       await save({
+        ...existingData,
         orchardProfileId,
         soilTestReportUrls: mergedUrls,
       });

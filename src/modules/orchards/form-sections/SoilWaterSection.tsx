@@ -33,7 +33,12 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
   }));
 
   return (
-    <View className="flex-1 w-full p-4">
+    // No flex-1 here — this sits inside ScreenLayout's scrollable content
+    // (already flexGrow:1 + its own flex:1 wrapper), so an extra flex:1 on
+    // this section collapsed it to zero height on first render, leaving
+    // FormActions rendered in its place until a re-layout (e.g. a
+    // validation error on Save) fixed the measurement.
+    <View className="w-full p-4">
       <View className="bg-white ">
         <SingleSelectInput
           control={control}
