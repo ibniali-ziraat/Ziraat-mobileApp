@@ -1,8 +1,0 @@
-[
-  { "id": 35, "title": "Cost of Cultivation", "value": "₹ 28,500", "subtitle": "Per Acre / Season", "icon": "Wallet" },
-  { "id": 36, "title": "Gross Revenue", "value": "₹ 52,000", "subtitle": "Per Acre", "icon": "DollarSign" },
-  { "id": 37, "title": "Net Profit", "value": "₹ 23,500", "subtitle": "Per Acre", "icon": "TrendingUp" },
-  { "id": 38, "title": "Return intrest", "value": "82%", "subtitle": "Return on Investment", "icon": "Percent" },
-  { "id": 39, "title": "Break-Even Yield", "value": "920 kg", "subtitle": "Per Acre", "icon": "Wheat" },
-   { "id": 40, "title": "Year on Year", "value": "60%", "subtitle": "Per Acre/Season", "icon":"TrendingUp" }
-]

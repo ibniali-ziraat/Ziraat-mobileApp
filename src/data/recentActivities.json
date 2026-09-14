@@ -1,6 +1,0 @@
-[
-  { "id": "P-101", "type": "Forum Question", "status": "Approved" },
-  { "id": "C-310", "type": "Complaint", "status": "Resolved" },
-  { "id": "A-110", "type": "Article Read", "status": "Completed" },
-  { "id": "S-220", "type": "Seasonal Advisory", "status": "Followed" }
-]
