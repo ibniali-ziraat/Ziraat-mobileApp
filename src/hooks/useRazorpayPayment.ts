@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import {
   createRazorpayOrderService,
-  saveOrderService,
   verifyRazorpayPaymentService,
 } from "../services/razorpay.service";
 
@@ -26,12 +25,6 @@ export const useVerifyRazorpayPayment = () => {
       checkoutId: string;
       userId: number | null;
     }) => verifyRazorpayPaymentService(payload),
-  });
-};
-
-export const useSaveOrder = () => {
-  return useMutation({
-    mutationFn: saveOrderService,
   });
 };
 

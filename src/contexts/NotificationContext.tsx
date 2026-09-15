@@ -29,6 +29,7 @@ interface NotificationContextValue {
   addNotification: (msg: FirebaseMessagingTypes.RemoteMessage) => void;
   removeNotification: (id: string) => void;
   clearNotifications: () => void;
+  markAllAsRead: () => void;
 
   onForegroundMessage: (cb: MessageHandler) => () => void;
 }
@@ -73,6 +74,7 @@ function mapSignalRPayloadToStoredNotification(
     title: properties?.Title ?? detail.notificationName ?? "Notification",
     body: buildSignalRBody(properties),
     receivedAt: Number.isNaN(createdOn) ? Date.now() : createdOn,
+    isRead: false,
   };
 }
 
@@ -130,6 +132,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
         title: msg.notification?.title ?? "Notification",
         body: msg.notification?.body,
         receivedAt: Date.now(),
+        isRead: false,
       });
     },
     [pushStoredNotification],
@@ -152,6 +155,19 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   const clearNotifications = useCallback(() => {
     setItems([]);
     AsyncStorage.removeItem(STORAGE_KEY);
+  }, []);
+
+  /**
+   * Mark every stored notification as read (called when the user views the
+   * notifications list) — the badge count only reflects unread items.
+   */
+  const markAllAsRead = useCallback(() => {
+    setItems((prev) => {
+      if (prev.every((n) => n.isRead)) return prev;
+      const updated = prev.map((n) => ({ ...n, isRead: true }));
+      persist(updated);
+      return updated;
+    });
   }, []);
 
   /**
@@ -226,10 +242,11 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       value={{
         notification,
         items,
-        count: items.length,
+        count: items.filter((n) => !n.isRead).length,
         addNotification,
         removeNotification,
         clearNotifications,
+        markAllAsRead,
         onForegroundMessage,
       }}
     >

@@ -1,5 +1,4 @@
 import axiosInstance from "@/src/api/client/axiosInstance";
-import razorpayInstance from "../api/client/razorPayInstance";
 
 // // 1. Create Razorpay order + save initial Payment record to MongoDB
 // export const createRazorpayOrderService = async (payload: {
@@ -53,32 +52,6 @@ export const verifyRazorpayPaymentService = async (payload: {
     payload,
   );
   return data; // { success, transferId }
-};
-
-// 3. Save full Order record to MongoDB after payment success
-export const saveOrderService = async (payload: {
-  checkoutId: string;
-  userId: number | null;
-  orderItems: any[];
-  shippingAddress: any;
-  billingAddress: any;
-  shippingAddressId: number;
-  billingAddressId: number;
-  orderTotal: number;
-  discountAmount?: number;
-  shippingFeeAmount?: number;
-  paymentFeeAmount?: number;
-  couponCode?: string | null;
-  couponRuleName?: string | null;
-  paymentMethod: "UPI" | "CoD";
-  orderStatus?: number;
-  shippingMethod?: string;
-  isMasterOrder?: boolean;
-  parentId?: string | null;
-  orderNote?: string | null;
-}) => {
-  const { data } = await razorpayInstance.post("/save-order", payload);
-  return data; // { success, order }
 };
 
 // 4. Release held transfer after delivery (manual, by transferId)

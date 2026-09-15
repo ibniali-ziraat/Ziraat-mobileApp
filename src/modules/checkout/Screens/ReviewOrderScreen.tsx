@@ -5,7 +5,7 @@ import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams } from "expo-router";
-import { AlertCircle, LockKeyhole } from "lucide-react-native";
+import { AlertCircle, Info, LockKeyhole } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
@@ -88,6 +88,40 @@ const ReviewOrderScreen = () => {
           options={paymentOptions}
           onValueChange={onPaymentMethodChange}
         />
+
+        {isBuyOnCredit && !!couponCode && (
+          <View
+            style={{
+              marginTop: 12,
+              marginHorizontal: 16,
+              flexDirection: "row",
+              alignItems: "flex-start",
+              paddingHorizontal: 14,
+              paddingVertical: 12,
+              borderRadius: 14,
+              borderWidth: 1,
+              borderColor: colors.warning,
+              backgroundColor: cardTokens.surface,
+            }}
+          >
+            <Info size={18} color={colors.warning} />
+            <Text
+              style={[
+                typography.Poppins_xs_medium,
+                {
+                  flex: 1,
+                  marginLeft: 10,
+                  color: colors.darkHover,
+                  fontSize: 12.5,
+                  lineHeight: 18,
+                },
+              ]}
+            >
+              Coupons aren't applicable on Buy on Credit orders — your applied
+              coupon won't be used for this purchase.
+            </Text>
+          </View>
+        )}
 
         {isValidatingBoc && (
           <View

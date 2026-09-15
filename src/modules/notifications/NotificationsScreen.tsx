@@ -2,8 +2,9 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
 import { useLocationContext } from "@/src/contexts/LocationContext";
+import { useFocusEffect } from "@react-navigation/native";
 import { EllipsisVertical } from "lucide-react-native";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import {
   Modal,
   Pressable,
@@ -23,10 +24,19 @@ import { useNotifications } from "./hooks/useNotifications";
 export default function NotificationsScreen() {
   const { status: locationStatus } = useLocationContext();
 
-  const { items, removeNotification, clearNotifications } = useNotifications();
+  const { items, removeNotification, clearNotifications, markAllAsRead } =
+    useNotifications();
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [confirmClearVisible, setConfirmClearVisible] = useState(false);
+
+  // Viewing the list is what clears the bell badge — matches standard app
+  // behavior instead of only clearing on delete.
+  useFocusEffect(
+    useCallback(() => {
+      markAllAsRead();
+    }, [markAllAsRead]),
+  );
 
   const locationOff =
     locationStatus === "denied" || locationStatus === "disabled";

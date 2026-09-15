@@ -255,9 +255,8 @@ export const OrderSummary = ({
             value={formatRs(summary.orderTotalString)}
           />
 
-          {couponCode && (
-            <SummaryRow label="Coupon Applied" value={couponCode} />
-          )}
+          {/* Coupons aren't applicable on Buy on Credit — no "Coupon
+              Applied" row here, see the notice on the review screen. */}
 
           {/* Credit hike fee — summed across all items */}
           <SummaryRow
