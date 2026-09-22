@@ -14,6 +14,7 @@ import {
   Package,
   Share2,
   ShoppingCart,
+  Store,
 } from "lucide-react-native";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { useOrderDetails } from "../../hooks/UseOders";
@@ -194,6 +195,26 @@ const OrderDetailsScreen = () => {
                 {orderData?.paymentMethod}
               </Text>
             </View>
+
+            {/* VENDOR */}
+            {orderData?.vendor && (
+              <View style={card}>
+                <View className="flex-row items-center mb-3">
+                  <Store size={18} color={colors.primary} />
+                  <Text style={[typography.Poppins_s_bold, { marginLeft: 8 }]}>
+                    Sold By
+                  </Text>
+                </View>
+                <Text style={typography.Poppins_s_bold}>
+                  {orderData.vendor.shopName || orderData.vendor.vendorName}
+                </Text>
+                {orderData.vendor.address?.formattedAddress ? (
+                  <Text style={{ color: colors.neutral, marginTop: 4 }}>
+                    {orderData.vendor.address.formattedAddress}
+                  </Text>
+                ) : null}
+              </View>
+            )}
 
             <View
               style={{

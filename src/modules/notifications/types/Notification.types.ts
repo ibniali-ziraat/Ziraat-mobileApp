@@ -4,4 +4,5 @@ export interface StoredNotification {
   body?: string;
   imageUrl?: string;
   receivedAt: number;
+  isRead?: boolean;
 }

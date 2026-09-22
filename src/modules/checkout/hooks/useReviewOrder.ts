@@ -4,7 +4,6 @@ import { useAuth } from "@/src/contexts/AuthContext";
 import { usePayment } from "@/src/hooks/usePayment";
 import {
   useCreateRazorpayOrder,
-  useSaveOrder,
   useVerifyRazorpayPayment,
 } from "@/src/hooks/useRazorpayPayment";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -63,7 +62,6 @@ export const useReviewOrder = () => {
   const { mutate: bocCheckout, isPending: isBocPending } = useBocCheckout();
   const { mutateAsync: createRazorpayOrder } = useCreateRazorpayOrder();
   const { mutateAsync: verifyPayment } = useVerifyRazorpayPayment();
-  const { mutateAsync: saveOrder } = useSaveOrder();
   const { mutateAsync: validateBoc } = useValidateBuyOnCredit();
   const { pay } = usePayment();
 
@@ -114,41 +112,6 @@ export const useReviewOrder = () => {
     zipCode: shippingAddress.zipCode,
   });
 
-  const persistOrder = async (
-    checkoutId: string,
-    amount: number,
-    shippingAddress: any,
-    paymentMethod: "UPI" | "CoD" | "BOC",
-    extraFields?: any,
-  ) => {
-    const addressPayload = buildAddressPayload(shippingAddress);
-    try {
-      await saveOrder({
-        checkoutId,
-        userId: profileData?.id ?? null,
-        orderItems: extraFields?.orderItems ?? [],
-        shippingAddress: addressPayload,
-        billingAddress: addressPayload,
-        shippingAddressId: shippingAddress.userAddressId,
-        billingAddressId: shippingAddress.userAddressId,
-        orderTotal: amount,
-        discountAmount: extraFields?.discountAmount ?? 0,
-        shippingFeeAmount: extraFields?.shippingFeeAmount ?? 0,
-        paymentFeeAmount: extraFields?.paymentFeeAmount ?? 0,
-        couponCode: extraFields?.couponCode ?? null,
-        couponRuleName: extraFields?.couponRuleName ?? null,
-        paymentMethod,
-        orderStatus: 1,
-        shippingMethod: "Free",
-        isMasterOrder: false,
-        parentId: null,
-        orderNote: null,
-      });
-    } catch (err) {
-      console.error("Something went wrong please try after sometime", err);
-    }
-  };
-
   // ── Payment Method Change Handler ─────────────────────────────────────────
 
   const handlePaymentMethodChange = async (
@@ -192,13 +155,6 @@ export const useReviewOrder = () => {
   ) => {
     codCheckout(checkoutId, {
       onSuccess: async (response) => {
-        await persistOrder(
-          checkoutId,
-          amount,
-          shippingAddress,
-          "CoD",
-          response,
-        );
         onSuccess({
           error: null,
           success: true,
@@ -281,14 +237,6 @@ export const useReviewOrder = () => {
 
       // verify-payment already completed the checkout and returned the final
       // order — no separate upiCheckout call needed (that endpoint is gone).
-      await persistOrder(
-        checkoutId,
-        amount,
-        shippingAddress,
-        "UPI",
-        verifyRes?.value,
-      );
-
       const addressPayload = buildAddressPayload(shippingAddress);
       onSuccess({
         error: null,
@@ -322,13 +270,6 @@ export const useReviewOrder = () => {
       { checkoutId, vendorId },
       {
         onSuccess: async (response) => {
-          await persistOrder(
-            checkoutId,
-            amount,
-            shippingAddress,
-            "BOC",
-            response,
-          );
           onSuccess({
             error: null,
             success: true,

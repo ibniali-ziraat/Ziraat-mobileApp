@@ -1,163 +1,91 @@
 import BackHeader from "@/src/components/shared/BackHeader";
+import CsText from "@/src/components/shared/CsText";
+import Loader from "@/src/components/shared/Loader";
+import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import { DashboardTabs } from "@/src/navigation/DashboardTabs";
-import { useEffect, useRef, useState } from "react";
-import { Dimensions, Pressable, ScrollView, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { typography } from "@/src/constants/fonts/typography";
+import { ROUTES } from "@/src/constants/routes";
+import { router } from "expo-router";
+import { Ruler, Sprout, Trees } from "lucide-react-native";
+import { View } from "react-native";
+import OrchardListCard from "./components/OrchardListCard";
+import StatChip from "./components/StatChip";
+import { useDashboardHome } from "./hooks/useDashboardHome";
+import type { DashboardOrchardSummary } from "./types/dashboardHome";
 
-const { width: screenWidth } = Dimensions.get("window");
+export default function DashboardScreen() {
+  const { data, isLoading } = useDashboardHome();
 
-export default function DashboardPage() {
-  const [activeTab, setActiveTab] = useState(0);
+  const summary = data?.summary;
+  const orchards = data?.orchards ?? [];
 
-  const scrollRef = useRef<ScrollView>(null);
-
-  const tabs = Object.values(DashboardTabs).filter((screen) => screen);
-
-  const ActiveComponent = tabs[activeTab]?.component ?? null;
-
-  // 4 tabs visible
-  const horizontalPadding = 12;
-  const gap = 8;
-
-  const tabWidth = (screenWidth - horizontalPadding * 2 - gap * 3 - 24) / 4;
-
-  useEffect(() => {
-    const scrollX =
-      activeTab * (tabWidth + gap) - screenWidth / 2 + tabWidth / 2;
-
-    scrollRef.current?.scrollTo({
-      x: Math.max(0, scrollX),
-      animated: true,
+  const openOrchard = (orchard: DashboardOrchardSummary) => {
+    router.push({
+      pathname: ROUTES.DASHBOARD.ORCHARD_DETAIL,
+      params: {
+        orchardProfileId: String(orchard.orchardProfileId),
+        orchardName: orchard.orchardName,
+        district: orchard.district ?? "",
+        tehsil: orchard.tehsil ?? "",
+        areaHa: String(orchard.areaHa),
+        totalTrees: String(orchard.totalTrees),
+        establishmentYear:
+          orchard.establishmentYear != null ? String(orchard.establishmentYear) : "",
+      },
     });
-  }, [activeTab]);
-
-  const insets = useSafeAreaInsets();
+  };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: colors.light,
-      }}
-    >
-      <BackHeader
-        title={tabs[activeTab]?.label}
-        desc={"Manage Your Orchards & Fields"}
-      />
+    <ScreenLayout>
+      <BackHeader title="Dashboard" desc="Your farm at a glance" />
 
-      {ActiveComponent ? (
-        <ScreenLayout>
-          <ActiveComponent />
-        </ScreenLayout>
-      ) : (
-        <Text className="p-4" style={{ color: colors.dark }}>
-          No Screen Found
-        </Text>
-      )}
+      <ScreenContent className="pb-10">
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <View className="flex-row flex-wrap justify-between mt-2">
+              <StatChip
+                Icon={Trees}
+                title="Orchards"
+                value={String(summary?.totalOrchards ?? 0)}
+              />
+              <StatChip
+                Icon={Ruler}
+                title="Total Area"
+                value={`${(summary?.totalAreaHa ?? 0).toFixed(2)} ha`}
+              />
+              <StatChip
+                Icon={Sprout}
+                title="Total Trees"
+                value={String(summary?.totalTrees ?? 0)}
+              />
+            </View>
 
-      <View
-        className="absolute left-0 right-0 bottom-5"
-        style={{
-          bottom: insets.bottom + 10,
-        }}
-      >
-        <View
-          className="mx-3 rounded-full border overflow-hidden"
-          style={{
-            borderColor: colors.neutral,
-            backgroundColor: colors.light,
-          }}
-        >
-          <View
-            style={{
-              position: "absolute",
-              left: 6,
-              top: 0,
-              bottom: 0,
-              justifyContent: "center",
-              zIndex: 10,
-            }}
-          >
-            {/* 
-            <ChevronLeft
-              size={18}
-              color={colors.dark}
-            /> 
-            */}
-          </View>
+            <CsText
+              style={[
+                typography.Poppins_m_semibold,
+                { fontSize: 18, color: colors.dark, marginTop: 20, marginBottom: 12 },
+              ]}
+            >
+              Your Orchards
+            </CsText>
 
-          {/* Tabs */}
-          <ScrollView
-            horizontal
-            ref={scrollRef}
-            showsHorizontalScrollIndicator={false}
-            bounces={false}
-            overScrollMode="never"
-            contentContainerStyle={{
-              alignItems: "center",
-              paddingHorizontal: horizontalPadding,
-            }}
-          >
-            {tabs.map((tab, index) => {
-              const Icon = tab.icon ?? (() => null);
-
-              const isActive = activeTab === index;
-
-              return (
-                <Pressable
-                  key={tab.name}
-                  onPress={() => setActiveTab(index)}
-                  className="items-center justify-center rounded-full"
-                  style={{
-                    width: tabWidth,
-                    minWidth: tabWidth,
-                    paddingVertical: 8,
-                    marginRight: index !== tabs.length - 1 ? gap : 0,
-                  }}
-                >
-                  <Icon
-                    size={20}
-                    color={isActive ? colors.primary : colors.dark}
-                  />
-
-                  <Text
-                    numberOfLines={1}
-                    ellipsizeMode="tail"
-                    className="mt-1 text-center text-[10px]"
-                    style={{
-                      color: isActive ? colors.primary : colors.dark,
-                      fontWeight: isActive ? "600" : "400",
-                    }}
-                  >
-                    {tab.label.split(" ")[0]}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
-
-          {/* Right Arrow */}
-          <View
-            style={{
-              position: "absolute",
-              right: 6,
-              top: 0,
-              bottom: 0,
-              justifyContent: "center",
-              zIndex: 10,
-            }}
-          >
-            {/* 
-            <ChevronRight
-              size={18}
-              color={colors.dark}
-            /> 
-            */}
-          </View>
-        </View>
-      </View>
-    </View>
+            {orchards.length === 0 ? (
+              <CsText style={{ color: colors.neutral }}>No orchards registered yet.</CsText>
+            ) : (
+              orchards.map((orchard) => (
+                <OrchardListCard
+                  key={orchard.orchardProfileId}
+                  orchard={orchard}
+                  onPress={() => openOrchard(orchard)}
+                />
+              ))
+            )}
+          </>
+        )}
+      </ScreenContent>
+    </ScreenLayout>
   );
 }

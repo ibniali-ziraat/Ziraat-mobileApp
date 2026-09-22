@@ -1,8 +1,7 @@
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 
-import { generateInvoicePDF } from "@/src/components/shared/InvoiceGenerator";
-import { BackHandler, Pressable, Text, View } from "react-native";
+import { BackHandler, Text, View } from "react-native";
 
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
@@ -12,7 +11,7 @@ import { ROUTES } from "@/src/constants/routes";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 
-import { CheckCircle, Download, Eye, Share2 } from "lucide-react-native";
+import { CheckCircle } from "lucide-react-native";
 
 // ✅ "ALANTO ® - 1KG" -> "1KG"
 const getVariationLabel = (item: any) => {
@@ -117,28 +116,28 @@ const OrderSuccessScreen = () => {
 
               <View className="flex-row gap-3">
                 {/* DOWNLOAD PDF */}
-                <Pressable
+                {/* <Pressable
                   onPress={() => generateInvoicePDF(order, "download")}
                   className="rounded-full bg-neutral-100 p-2"
                 >
                   <Download size={18} color={colors.primary} />
-                </Pressable>
+                </Pressable> */}
 
                 {/* VIEW PDF */}
-                <Pressable
+                {/* <Pressable
                   onPress={() => generateInvoicePDF(order, "view")}
                   className="rounded-full bg-neutral-100 p-2"
                 >
                   <Eye size={18} color={colors.primary} />
-                </Pressable>
+                </Pressable> */}
 
                 {/* SHARE PDF */}
-                <Pressable
+                {/* <Pressable
                   onPress={() => generateInvoicePDF(order, "share")}
                   className="rounded-full bg-neutral-100 p-2"
                 >
                   <Share2 size={18} color={colors.primary} />
-                </Pressable>
+                </Pressable> */}
               </View>
             </View>
 

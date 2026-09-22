@@ -7,14 +7,7 @@ export const ROUTES = {
   },
   DASHBOARD: {
     MAIN: "/dashboard",
-    PEST_DISEASE_PROFILE: "/pest-disease-profile",
-    ORCHARD_PROFILE: "/orchard-profile",
-    NUTRIENT_PROFILE: "/nutrient-profile",
-    RESOURCES_PROFILE: "/resources-profile",
-    FINANCIAL_PROFILE: "/financial-profile",
-    ADVISORY_PROFILE: "/advisory-profile",
-    ALERT_PROFILE: "/alert-profile",
-    WEATHER_PROFILE: "/weather-profile",
+    ORCHARD_DETAIL: "/dashboard-orchard-detail",
   },
   MORE: {
     SUPPORT: "/more/support",
