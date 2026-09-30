@@ -25,7 +25,6 @@
  *  itself automatically the moment the user flips the browser setting.
  */
 
-// import { Pressable } from "@/src/components/shared/Pressable";
 // import { colors } from "@/src/constants/colors";
 // import { LocationStatus } from "@/src/hooks/useLocationWatcher";
 // import * as Location from "expo-location";

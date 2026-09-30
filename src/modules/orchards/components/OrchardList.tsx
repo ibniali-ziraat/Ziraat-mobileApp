@@ -1,7 +1,9 @@
+import { Pressable } from "@/src/components/shared/Pressable";
 import SearchBar from "@/src/components/shared/SearchBar";
 import { colors } from "@/src/constants/colors";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { Link } from "expo-router";
 import {
   ChevronDown,
   ChevronUp,
@@ -11,7 +13,6 @@ import {
 } from "lucide-react-native";
 import { useMemo, useState } from "react";
 import { FlatList, Text, View } from "react-native";
-import { Pressable } from "@/src/components/shared/Pressable";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import OrchardCard from "./OrchardCard";
 
@@ -50,7 +51,8 @@ export default function OrchardList({
   // Searching or filtering is a request to see the matches, so a narrowed list
   // never gets folded behind "Show all".
   const isNarrowed = search.trim().length > 0 || !!activeFilterLabel;
-  const isCollapsed = !isNarrowed && !showAll && orchards.length > PREVIEW_COUNT;
+  const isCollapsed =
+    !isNarrowed && !showAll && orchards.length > PREVIEW_COUNT;
 
   const visible = useMemo(
     () => (isCollapsed ? orchards.slice(0, PREVIEW_COUNT) : orchards),
@@ -101,9 +103,7 @@ export default function OrchardList({
                   { color: chartTokens.current, fontSize: 12, marginRight: 4 },
                 ]}
               >
-                {showAll
-                  ? "Show less"
-                  : `Show all ${orchards.length} orchards`}
+                {showAll ? "Show less" : `Show all ${orchards.length} orchards`}
               </Text>
               {showAll ? (
                 <ChevronUp size={15} color={chartTokens.current} />
@@ -163,6 +163,7 @@ export default function OrchardList({
             style={{
               flexDirection: "row",
               alignItems: "center",
+              justifyContent: "space-between",
               marginTop: 14,
             }}
           >
@@ -198,17 +199,39 @@ export default function OrchardList({
                 <Text
                   style={[
                     typography.Poppins_xs_semibold,
-                    {
-                      color: chartTokens.current,
-                      fontSize: 11,
-                      marginLeft: 3,
-                    },
+                    { color: chartTokens.current, fontSize: 11, marginLeft: 3 },
                   ]}
                 >
                   Clear filters
                 </Text>
               </Pressable>
             ) : null}
+
+            {/* Right-end link */}
+            <Link href="/dashboard" asChild>
+              <Pressable
+                hitSlop={8}
+                accessibilityRole="link"
+                accessibilityLabel="View dashboard"
+                style={({ pressed }) => ({
+                  marginLeft: 12,
+                  opacity: pressed ? 0.6 : 1,
+                })}
+              >
+                <Text
+                  style={[
+                    typography.Poppins_xs_semibold,
+                    {
+                      color: chartTokens.current,
+                      fontSize: 11,
+                      textDecorationLine: "underline",
+                    },
+                  ]}
+                >
+                  View Orchard Dashboard
+                </Text>
+              </Pressable>
+            </Link>
           </View>
         </View>
       }

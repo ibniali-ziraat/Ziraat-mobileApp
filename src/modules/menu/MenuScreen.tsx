@@ -30,9 +30,6 @@
 //   );
 // }
 
-
-
-
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";

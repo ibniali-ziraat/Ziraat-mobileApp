@@ -1,9 +1,9 @@
 import { router } from "expo-router";
 import { ReactNode, useEffect, useRef } from "react";
 import { View } from "react-native";
-import LocationPermissionModal from "./shared/modals/LocationPermissionModal";
 import { colors } from "../constants/colors";
 import { ROUTES } from "../constants/routes";
+// import { LocationPermissionModal } from "./shared/modals/LocationPermissionModal";
 
 import { useAuth } from "../contexts/AuthContext";
 import { useLocationContext } from "../contexts/LocationContext";
@@ -88,12 +88,12 @@ export default function RouteGuard({ children }: RouteGuardProps) {
       {children}
       {/* Only gate once logged in — the login/signup screens themselves
           shouldn't be blocked by this. */}
-      {!!userToken && (
+      {/* {!!userToken && (
         <LocationPermissionModal
           status={locationStatus}
           recheck={recheckLocation}
-        />
-      )}
+        /> 
+      )} */}
     </View>
   );
 }

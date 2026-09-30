@@ -1,13 +1,12 @@
 import {
   Bell,
   Info,
-  LayoutDashboard,
   LifeBuoy,
   MapPin,
   MessagesSquare,
   Settings,
   ShoppingBag,
-  type LucideIcon
+  type LucideIcon,
 } from "lucide-react-native";
 import { ROUTES } from "../constants/routes";
 
@@ -34,12 +33,12 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
     {
       title: "Farm",
       routes: [
-        {
-          label: "Dashboard",
-          screen: ROUTES.DASHBOARD.MAIN,
-          icon: LayoutDashboard
-          ,
-        },
+        // {
+        //   label: "Dashboard",
+        //   screen: ROUTES.DASHBOARD.MAIN,
+        //   icon: LayoutDashboard
+        //   ,
+        // },
         { label: "Notifications", screen: "notifications", icon: Bell },
         {
           label: "Discussion",
