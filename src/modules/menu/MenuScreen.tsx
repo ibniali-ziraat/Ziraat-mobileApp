@@ -1,45 +1,34 @@
-// import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
-// import MenuItem from "@/src/components/shared/MenuItem";
-// import { ScreenContent } from "@/src/components/shared/ScreenContent";
-// import ScreenLayout from "@/src/components/shared/ScreenLayout";
-// import { MenuLinks } from "@/src/navigation/MenuLinks";
-// import { router } from "expo-router";
-// import { View } from "react-native";
-
-// export default function MenuScreen() {
-//   return (
-//     <ScreenLayout>
-//       <AnimatedTabContent>
-//         <View className="flex-1 bg-light">
-//           <ScreenContent>
-//             {MenuLinks.farmer.map((group) => (
-//               <View key={group.title} className="">
-//                 {group.routes.map((route) => (
-//                   <MenuItem
-//                     key={route.screen}
-//                     label={route.label}
-//                     onPress={() => router.push(`${route.screen}`)}
-//                   />
-//                 ))}
-//               </View>
-//             ))}
-//           </ScreenContent>
-//         </View>
-//       </AnimatedTabContent>
-//     </ScreenLayout>
-//   );
-// }
-
 import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import { MenuLinks } from "@/src/navigation/MenuLinks";
+import { useMenuList } from "@/src/navigation/hooks/usemenus";
+import { MenuLinks, type MenuGroup } from "@/src/navigation/MenuLinks";
+import { FileText } from "lucide-react-native";
+import { useMemo } from "react";
 import { View } from "react-native";
 import MenuProfileCard from "./components/MenuProfileCard";
 import MenuSection from "./components/MenuSection";
 
 export default function MenuScreen() {
+  // calls GET /api/pages when the menu opens
+  const { data: pages } = useMenuList();
+
+  // builds a "Pages" group from the api, in the same shape as the static groups,
+  // so MenuSection renders and navigates it like the others
+  const pagesGroup: MenuGroup | null = useMemo(() => {
+    if (!pages || pages.length === 0) return null;
+
+    return {
+      title: "Pages",
+      routes: pages.map((page) => ({
+        label: page.name,
+        screen: `/details/${page.id}`, // dynamic route: menupage/[id].tsx
+        icon: FileText,
+      })),
+    };
+  }, [pages]);
+
   return (
     <ScreenLayout>
       <AnimatedTabContent>
@@ -50,6 +39,8 @@ export default function MenuScreen() {
             {MenuLinks.farmer.map((group) => (
               <MenuSection key={group.title} group={group} />
             ))}
+
+            {pagesGroup && <MenuSection group={pagesGroup} />}
 
             <View style={{ height: 60 }} />
           </ScreenContent>

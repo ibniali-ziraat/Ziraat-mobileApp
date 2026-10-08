@@ -1,7 +1,5 @@
 import {
   Bell,
-  Info,
-  LifeBuoy,
   MapPin,
   MessagesSquare,
   Settings,
@@ -47,14 +45,14 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
         },
       ],
     },
-    {
-      title: "Help",
-      routes: [
-        // { label: "Chat With Us", screen: ROUTES.CHAT_BOT, icon: Bot },
-        { label: "Support", screen: "settings/farmer/support", icon: LifeBuoy },
-        { label: "About Us", screen: "about-us", icon: Info },
-      ],
-    },
+    // {
+    //   title: "Help",
+    //   routes: [
+    //     { label: "Chat With Us", screen: ROUTES.CHAT_BOT, icon: Bot },
+    //     { label: "Support", screen: "settings/farmer/support", icon: LifeBuoy },
+    //     { label: "About Us", screen: "about-us", icon: Info },
+    //   ],
+    // },
     {
       title: "Preferences",
       routes: [{ label: "Settings", screen: ROUTES.SETTINGS, icon: Settings }],
