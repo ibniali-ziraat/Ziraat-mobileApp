@@ -1,4 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import {
   acknowledgeAdvisory,
   addFertigation,
@@ -16,6 +21,8 @@ export const advisoryKeys = {
   all: ["advisories"] as const,
   list: (orchardProfileId: number, page: number, pageSize: number) =>
     ["advisories", "list", orchardProfileId, page, pageSize] as const,
+  infinite: (orchardProfileId: number, pageSize: number) =>
+    ["advisories", "list", orchardProfileId, "infinite", pageSize] as const,
   detail: (recipientId: string) =>
     ["advisories", "detail", recipientId] as const,
 };
@@ -36,6 +43,29 @@ export const useAdvisories = (
         pageSize,
       }),
     enabled: !!orchardProfileId, // don't fetch until an orchard is selected
+  });
+};
+
+// Loads the next page as the list scrolls; shares the "list" key prefix so the
+// mutations below refresh it too
+export const useInfiniteAdvisories = (
+  orchardProfileId?: number,
+  pageSize: number = 25,
+) => {
+  return useInfiniteQuery({
+    queryKey: advisoryKeys.infinite(orchardProfileId ?? 0, pageSize),
+    queryFn: ({ pageParam }) =>
+      getAllAdvisories({
+        orchardProfileId: orchardProfileId as number,
+        page: pageParam,
+        pageSize,
+      }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.page * lastPage.pageSize < lastPage.total
+        ? lastPage.page + 1
+        : undefined,
+    enabled: !!orchardProfileId,
   });
 };
 

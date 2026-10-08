@@ -1,4 +1,5 @@
 import messaging from "@react-native-firebase/messaging";
+import { saveRemoteMessageToStorage } from "./notificationStorage";
 
 /**
  * Registers Firebase's headless background message handler.
@@ -9,8 +10,12 @@ import messaging from "@react-native-firebase/messaging";
  */
 export function registerBackgroundHandler() {
   messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    console.log("🔔 Background message received:", remoteMessage);
-    // Safe to do lightweight work here (e.g. AsyncStorage writes, badge updates).
-    // Do NOT update React state — the component tree is not mounted.
+    // the OS shows the system notification itself; we only save it so it's in
+    // the in-app list and badge count when the app is opened
+    try {
+      await saveRemoteMessageToStorage(remoteMessage);
+    } catch (err) {
+      console.warn("[registerBackgroundHandler] could not save message:", err);
+    }
   });
 }

@@ -23,7 +23,7 @@ export default function MenuScreen() {
       title: "Pages",
       routes: pages.map((page) => ({
         label: page.name,
-        screen: `/details/${page.id}`, // dynamic route: menupage/[id].tsx
+        screen: `/menupagedetatils?id=${page.id}&title=${encodeURIComponent(page.name)}`, // (menu-pages)/menupagedetatils.tsx reads ?id= and ?title=
         icon: FileText,
       })),
     };

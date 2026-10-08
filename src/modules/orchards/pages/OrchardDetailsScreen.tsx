@@ -49,6 +49,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import ViewAdvisoriesButton from "@/src/modules/farmer-advisories/components/ViewAdvisoriesButton";
 import OrchardDetailsCard from "../components/OrchardDetailsCard";
 import SoilTestReportsCard from "../components/SoilTestReportsCard";
 import VarietiesCard from "../components/VarietyDetailsCard";
@@ -525,6 +526,11 @@ export default function OrchardDetailsScreen() {
           </LinearGradient>
         </AnimatedImageBackground>
       </Animated.View>
+
+      <ViewAdvisoriesButton
+        orchardProfileId={orchard?.id}
+        orchardName={orchard?.orchardName}
+      />
 
       <View
         style={{

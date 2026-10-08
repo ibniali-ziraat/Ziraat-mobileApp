@@ -44,6 +44,9 @@ const FormTextInput = ({
       case "email":
         return "email-address";
 
+      case "number":
+        return "decimal-pad";
+
       default:
         return "default";
     }
@@ -67,6 +70,13 @@ const FormTextInput = ({
 
       case "year":
         return text.replace(/\D/g, "").slice(0, 4);
+
+      // digits with one optional decimal point, e.g. "12.5"
+      case "number": {
+        const [whole, ...rest] = text.replace(/[^\d.]/g, "").split(".");
+        const decimal = rest.length ? `.${rest.join("")}` : "";
+        return `${whole}${decimal}`.slice(0, 12);
+      }
 
       case "bankaccount":
         return text.replace(/\D/g, "").slice(0, 18);

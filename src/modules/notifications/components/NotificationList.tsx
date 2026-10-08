@@ -1,4 +1,6 @@
 import { colors } from "@/src/constants/colors";
+import { advisoryRoutes } from "@/src/modules/farmer-advisories/routes/advisoryRoutes";
+import { router } from "expo-router";
 import { ArrowLeft } from "lucide-react-native";
 import { Text, View } from "react-native";
 import { useNotifications } from "../hooks/useNotifications";
@@ -31,6 +33,15 @@ export default function NotificationList({ items }: Props) {
             key={item.id}
             item={item}
             onDelete={removeNotification}
+            // only advisory notifications are clickable
+            onPress={
+              item.advisory
+                ? () =>
+                    router.push(
+                      advisoryRoutes.list(item.advisory!.orchardProfileId),
+                    )
+                : undefined
+            }
           />
         ))}
       </View>
