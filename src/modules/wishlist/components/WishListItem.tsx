@@ -2,6 +2,7 @@ import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
+import { formatPrice, getCreditPrice } from "@/src/utils/creditPrice";
 import { router } from "expo-router";
 import { Eye, X } from "lucide-react-native";
 import { Image, Pressable, View } from "react-native";
@@ -23,6 +24,9 @@ const WishlistItem = ({ item, onRemove }) => {
   if (!item) {
     return null;
   }
+
+  // Buy on Credit is the default payment method, so show its price
+  const price = getCreditPrice(item) ?? item.productPrice;
 
   return (
     <View className="w-1/2 px-1 mb-6">
@@ -70,6 +74,17 @@ const WishlistItem = ({ item, onRemove }) => {
                 {item.productName}
               </CsText>
             </View>
+
+            {!!price && (
+              <CsText
+                style={[
+                  typography.Poppins_s_semibold,
+                  { color: colors.dark, marginTop: 2 },
+                ]}
+              >
+                ₹{formatPrice(price)}
+              </CsText>
+            )}
           </View>
 
           {/* BUTTON (NO EXTRA MARGIN) */}

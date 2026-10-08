@@ -1,5 +1,10 @@
 import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import {
+  formatPrice,
+  getCreditPrice,
+  getNonCreditPrice,
+} from "@/src/utils/creditPrice";
 import { Image, Text, View } from "react-native";
 
 interface OrderItem {
@@ -8,15 +13,27 @@ interface OrderItem {
   productName: string;
   quantity: number;
   totalString: string;
+  vendorAssignment?: Record<string, any>;
 }
 
 interface Props {
   items: OrderItem[];
+  // the price depends on the payment method: Buy on Credit adds the credit fee
+  isBuyOnCredit?: boolean;
 }
 
 const formatRs = (value: string) => value?.replace("$", "₹");
 
-export const OrderItems = ({ items }: Props) => (
+const getLineTotal = (item: OrderItem, isBuyOnCredit: boolean) => {
+  const unitPrice = isBuyOnCredit
+    ? getCreditPrice(item)
+    : getNonCreditPrice(item);
+  return unitPrice
+    ? `₹${formatPrice(unitPrice * (item.quantity || 1))}`
+    : formatRs(item.totalString);
+};
+
+export const OrderItems = ({ items, isBuyOnCredit = false }: Props) => (
   <View
     style={[
       {
@@ -88,7 +105,7 @@ export const OrderItems = ({ items }: Props) => (
             { color: cardTokens.inkPrimary, fontSize: 15 },
           ]}
         >
-          {formatRs(item.totalString)}
+          {getLineTotal(item, isBuyOnCredit)}
         </Text>
       </View>
     ))}

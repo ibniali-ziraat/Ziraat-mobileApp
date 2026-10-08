@@ -1,31 +1,34 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { formatPrice, getCreditPrice, roundPrice } from "@/src/utils/creditPrice";
 import { View } from "react-native";
 
 export default function ProductPriceCard({ product, selectedVariation }: any) {
-  const price = selectedVariation
-    ? {
-        price: selectedVariation.discountPrice ?? selectedVariation.assignedPrice,
-        oldPrice: selectedVariation.maximumRetailPrice,
-        percentOfSaving:
-          selectedVariation.maximumRetailPrice > selectedVariation.discountPrice
-            ? Math.round(
-                (1 -
-                  selectedVariation.discountPrice /
-                    selectedVariation.maximumRetailPrice) *
-                  100,
-              )
-            : 0,
-      }
-    : product.calculatedProductPrice;
+  // Buy on Credit is the default payment method, so show its price
+  const source = selectedVariation ?? product.vendorProduct;
+  const basePrice = selectedVariation
+    ? (selectedVariation.discountPrice ?? selectedVariation.assignedPrice)
+    : product.calculatedProductPrice?.price;
+  const salePrice = roundPrice(getCreditPrice(source) ?? basePrice ?? 0);
+  const mrp = selectedVariation
+    ? selectedVariation.maximumRetailPrice
+    : (product.vendorProduct?.maximumRetailPrice ??
+      product.calculatedProductPrice?.oldPrice);
+  // only strike through an MRP that is actually higher than the price
+  const showMrp = !!mrp && mrp > salePrice;
+
+  const price = {
+    price: formatPrice(salePrice),
+    oldPrice: showMrp ? formatPrice(mrp) : null,
+    percentOfSaving: showMrp ? Math.round((1 - salePrice / mrp) * 100) : 0,
+  };
 
   const inStock = selectedVariation
     ? selectedVariation.stockQuantity > 0
     : !product.stockTrackingIsEnabled || product.stockQuantity > 0;
 
-  const savings =
-    price?.oldPrice && price?.price ? price.oldPrice - price.price : null;
+  const savings = showMrp ? formatPrice(mrp - salePrice) : null;
 
   return (
     <View

@@ -6,7 +6,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocalSearchParams } from "expo-router";
 import { AlertCircle, Info, LockKeyhole } from "lucide-react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { ActivityIndicator, Pressable, Text, View } from "react-native";
 
@@ -37,6 +37,25 @@ const ReviewOrderScreen = () => {
 
   const [couponCode, setCouponCode] = useState("");
 
+  // Buy on Credit is the default payment method whenever every item allows it;
+  // the farmer can still switch to CoD / RazorPay (and sees what they save)
+  const creditOffered =
+    paymentOptions.some((o) => o.value === "BuyOnCredit") &&
+    !!summary?.items?.length &&
+    summary.items.every(
+      (item: any) =>
+        item?.vendorAssignment?.isAvailableForCreditBuyers !== false,
+    );
+  const defaultApplied = useRef(false);
+  useEffect(() => {
+    if (defaultApplied.current || !creditOffered) return;
+    if (methods.getValues("paymentMethod")) return;
+    defaultApplied.current = true;
+    methods.setValue("paymentMethod", "BuyOnCredit");
+    // same eligibility check that runs when the farmer picks it by hand
+    handlePaymentMethodChange("BuyOnCredit", summary?.items?.[0]?.vendorId);
+  }, [creditOffered, methods, handlePaymentMethodChange, summary?.items]);
+
   useEffect(() => {
     const getCoupon = async () => {
       const stored = await AsyncStorage.getItem("appliedCoupon");
@@ -52,6 +71,9 @@ const ReviewOrderScreen = () => {
   const va = summary?.items?.[0]?.vendorAssignment;
 
   const isBuyOnCredit = selectedPayment === "BuyOnCredit";
+  const selectedPaymentLabel = paymentOptions.find(
+    (o) => o.value === selectedPayment,
+  )?.label;
 
   // Use creditSalePrice when BOC is selected and validated
   const orderAmount =
@@ -75,13 +97,19 @@ const ReviewOrderScreen = () => {
       <ScreenLayout scrollable>
         <BackHeader title="Review Order" desc="Confirm your order details" />
 
-        <OrderItems items={summary.items} />
+        <OrderItems
+          items={summary.items}
+          isBuyOnCredit={isBuyOnCredit && bocValidation?.isValid === true}
+        />
         <DeliveryAddress address={selectedAddress} />
 
         <OrderSummary
           summary={summary}
           couponCode={couponCode}
           isBuyOnCredit={isBuyOnCredit && bocValidation?.isValid === true}
+          savingsPaymentMethodLabel={
+            selectedPayment && !isBuyOnCredit ? selectedPaymentLabel : undefined
+          }
         />
 
         <PaymentMethodSelector
