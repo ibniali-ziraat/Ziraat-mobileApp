@@ -4,6 +4,7 @@ export interface BannerPayload {
   id: string;
   title: string;
   body?: string;
+  data?: Record<string, unknown>;
 }
 
 export function useInAppBanner() {

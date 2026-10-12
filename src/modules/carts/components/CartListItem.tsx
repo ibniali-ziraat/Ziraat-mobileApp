@@ -3,6 +3,7 @@ import { Image, Pressable, View } from "react-native";
 
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
+import { formatPrice, getCreditPrice, roundPrice } from "@/src/utils/creditPrice";
 import { Minus, Plus, Store, Trash2 } from "lucide-react-native";
 
 export default function CartListItem({
@@ -31,13 +32,19 @@ export default function CartListItem({
     onQtyChange?.(newQty);
   };
 
-  const price = item?.calculatedProductPrice?.price ?? item?.productPrice ?? 0;
+  // Buy on Credit is the default payment method, so show its price
+  const price = roundPrice(
+    getCreditPrice(item) ??
+      item?.calculatedProductPrice?.price ??
+      item?.productPrice ??
+      0,
+  );
   const oldPrice = item?.calculatedProductPrice?.oldPrice ?? 0;
 
   const discount =
     oldPrice > price ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
-  const totalPrice = price * quantity;
+  const totalPrice = roundPrice(price * quantity);
 
   return (
     <>
@@ -153,7 +160,7 @@ export default function CartListItem({
                 className="text-xs line-through mr-2"
                 style={{ color: colors.darkHover }}
               >
-                ₹{oldPrice}
+                ₹{formatPrice(oldPrice)}
               </CsText>
             )}
 
@@ -161,7 +168,7 @@ export default function CartListItem({
               className="text-base font-semibold"
               style={{ color: colors.primary }}
             >
-              ₹{price}
+              ₹{formatPrice(price)}
             </CsText>
           </View>
 
@@ -191,7 +198,7 @@ export default function CartListItem({
               className="text-xs mt-1"
               style={{ color: colors.darkHover }}
             >
-              Total ₹{totalPrice}
+              Total ₹{formatPrice(totalPrice)}
             </CsText>
           )}
         </View>

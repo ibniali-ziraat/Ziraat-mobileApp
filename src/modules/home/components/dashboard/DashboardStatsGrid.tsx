@@ -88,7 +88,11 @@ export default function DashboardStatsGrid({
         <StatCard
           label="Total farm area"
           value={formatArea(stats.totalArea)}
-          unit={areaUnit(stats.totalArea)}
+          unit={
+            areaUnit(stats.totalArea) === "hectares"
+              ? "Ha"
+              : areaUnit(stats.totalArea)
+          }
           caption={
             stats.averageArea > 0
               ? `Avg ${formatArea(stats.averageArea)} per orchard`

@@ -37,6 +37,9 @@ interface Props {
   summary: Summary;
   couponCode?: string;
   isBuyOnCredit?: boolean;
+  // name of the selected non-credit method (e.g. "Cash On Delivery"); when set,
+  // shows how much the farmer saves compared to Buy on Credit
+  savingsPaymentMethodLabel?: string;
 }
 
 const formatRs = (value: string) => value?.replace("$", "₹");
@@ -113,6 +116,7 @@ export const OrderSummary = ({
   summary,
   couponCode,
   isBuyOnCredit = false,
+  savingsPaymentMethodLabel,
 }: Props) => {
   const items = summary.items ?? [];
 
@@ -132,6 +136,12 @@ export const OrderSummary = ({
 
     return sum + hike * qty;
   }, 0);
+
+  // Buy on Credit total minus what this method charges
+  const creditSavings =
+    savingsPaymentMethodLabel && totalCreditSalePrice > summary.orderTotal
+      ? totalCreditSalePrice - summary.orderTotal
+      : 0;
 
   // Use a representative hike percentage (from first item, for display label)
   const creditHikePercentage =
@@ -347,6 +357,36 @@ export const OrderSummary = ({
                 ]}
               >
                 You saved {formatRs(summary.discountString)}
+              </Text>
+            </View>
+          )}
+
+          {creditSavings > 0 && (
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "flex-start",
+                marginTop: 12,
+                padding: 12,
+                gap: 8,
+                borderRadius: 12,
+                backgroundColor: chartTokens.tint,
+              }}
+            >
+              <Sparkles size={16} color={chartTokens.current} />
+              <Text
+                style={[
+                  typography.Poppins_xs_semibold,
+                  {
+                    flex: 1,
+                    color: chartTokens.current,
+                    fontSize: 13,
+                    lineHeight: 19,
+                  },
+                ]}
+              >
+                You saved {formatRsNum(creditSavings)} by paying with{" "}
+                {savingsPaymentMethodLabel} instead of Buy on Credit
               </Text>
             </View>
           )}

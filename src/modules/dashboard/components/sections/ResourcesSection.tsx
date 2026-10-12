@@ -5,6 +5,7 @@ import { typography } from "@/src/constants/fonts/typography";
 import { shadows } from "@/src/constants/shadows";
 import { View } from "react-native";
 import { useOrchardResources } from "../../hooks/useOrchardSections";
+import { stripCurrencySymbol } from "../../utils/metricFormat";
 import MetricGrid from "../MetricGrid";
 
 const ICON_MAP = {
@@ -58,10 +59,10 @@ export default function ResourcesSection({ orchardProfileId }: Props) {
 
       {sectionTitle("Resource Summary")}
       <View style={[{ backgroundColor: colors.light, borderRadius: 16, padding: 14 }, shadows.profile_card]}>
-        <Row label="Fertilizer Cost" value={summary?.fertilizerCostString ?? null} />
-        <Row label="Labor Cost" value={summary?.laborCostString ?? null} />
-        <Row label="Material Cost" value={summary?.materialCostString ?? null} />
-        <Row label="Overall Expenditure" value={summary?.overallExpenditureString ?? null} />
+        <Row label="Fertilizer Cost" value={stripCurrencySymbol(summary?.fertilizerCostString)} />
+        <Row label="Labor Cost" value={stripCurrencySymbol(summary?.laborCostString)} />
+        <Row label="Material Cost" value={stripCurrencySymbol(summary?.materialCostString)} />
+        <Row label="Overall Expenditure" value={stripCurrencySymbol(summary?.overallExpenditureString)} />
       </View>
 
       {sectionTitle("Input Efficiency")}

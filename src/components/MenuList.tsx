@@ -20,7 +20,7 @@ export default function MenuList() {
         <MenuItem label="Profile" onPress={() => router.push("/profile")} />
         <MenuItem
           label="Saved Addresses"
-          onPress={() => router.push("/addresses")}
+          onPress={() => router.push("/ad dresses")}
         />
 
         <MenuItem

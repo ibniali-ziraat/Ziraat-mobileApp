@@ -18,6 +18,7 @@ import "../../styles/global.css";
 import { colors } from "../constants/colors";
 import { paperTheme } from "../constants/theme";
 import GlobalBanner from "../modules/notifications/components/GlobalBanner";
+import NotificationTapHandler from "../modules/notifications/components/NotificationTapHandler";
 
 const credentials = Platform.select({
   ios: {
@@ -76,6 +77,7 @@ export default function RootLayout() {
               </PaperProvider>
             </SafeAreaView>
             {!isWeb && <GlobalBanner />}
+            {!isWeb && <NotificationTapHandler />}
           </RouteGuard>
         </DisableBackWrapper>
       </AppProvider>

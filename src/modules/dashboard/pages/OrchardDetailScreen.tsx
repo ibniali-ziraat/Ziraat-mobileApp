@@ -53,7 +53,7 @@ export default function OrchardDetailScreen() {
   const location = [params.tehsil, params.district].filter(Boolean).join(", ");
 
   return (
-    <ScreenLayout scrollable={false}>
+    <ScreenLayout scrollable={false} bottomPadding={0}>
       <BackHeader title={params.orchardName || "Orchard"} desc={location || "Orchard detail"} />
 
       <View style={{ flex: 1 }}>

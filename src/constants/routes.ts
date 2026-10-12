@@ -116,4 +116,5 @@ export const ROUTES = {
   },
   SETTINGS: "/settings",
   CHAT_BOT: "/cchat-bot",
+  Pages: "/details",
 } as const;

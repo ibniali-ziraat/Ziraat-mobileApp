@@ -58,7 +58,14 @@
         }
       ],
       "expo-secure-store",
-      "expo-maps"
+      "expo-maps",
+      [
+        "./plugins/withNotificationIcon",
+        {
+          "iconDir": "assets/images/notification-icon",
+          "color": "#2d6b06"
+        }
+      ]
     ],
     "extra": {
       "router": {}

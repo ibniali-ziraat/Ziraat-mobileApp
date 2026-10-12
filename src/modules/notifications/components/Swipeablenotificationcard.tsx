@@ -1,5 +1,5 @@
 import { colors } from "@/src/constants/colors";
-import { Bell, Trash2 } from "lucide-react-native";
+import { Bell, ChevronRight, Trash2 } from "lucide-react-native";
 import { useRef } from "react";
 import {
   Animated,
@@ -15,25 +15,37 @@ import { timeAgo } from "../utils/timeAge";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const DELETE_THRESHOLD = -40;
 const SWIPE_FULL = -SCREEN_WIDTH;
+// a touch that moves less than this counts as a tap, not a swipe/scroll
+const TAP_SLOP = 8;
 
 interface Props {
   item: StoredNotification;
   onDelete: (id: string) => void;
+  // only passed for notifications that lead somewhere (e.g. advisories)
+  onPress?: (item: StoredNotification) => void;
 }
 
-export default function SwipeableNotificationCard({ item, onDelete }: Props) {
+export default function SwipeableNotificationCard({
+  item,
+  onDelete,
+  onPress,
+}: Props) {
   const translateX = useRef(new Animated.Value(0)).current;
   const rowScale = useRef(new Animated.Value(1)).current;
   const deleteOpacity = useRef(new Animated.Value(0)).current;
 
-  let startX = 0;
+  // refs, not lets: a re-render between touch start and end would reset them
+  const startX = useRef(0);
+  const startY = useRef(0);
+  const isOpen = useRef(false);
 
   const onTouchStart = (e: any) => {
-    startX = e.nativeEvent.pageX;
+    startX.current = e.nativeEvent.pageX;
+    startY.current = e.nativeEvent.pageY;
   };
 
   const onTouchMove = (e: any) => {
-    const dx = e.nativeEvent.pageX - startX;
+    const dx = e.nativeEvent.pageX - startX.current;
 
     if (dx > 0) return;
 
@@ -42,14 +54,23 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
   };
 
   const onTouchEnd = (e: any) => {
-    const dx = e.nativeEvent.pageX - startX;
+    const dx = e.nativeEvent.pageX - startX.current;
+    const dy = e.nativeEvent.pageY - startY.current;
+    const isTap = Math.abs(dx) < TAP_SLOP && Math.abs(dy) < TAP_SLOP;
+
+    if (isTap && onPress && !isOpen.current) {
+      onPress(item);
+      return;
+    }
 
     if (dx < DELETE_THRESHOLD) {
+      isOpen.current = true;
       Animated.spring(translateX, {
         toValue: -72,
         useNativeDriver: false,
       }).start();
     } else {
+      isOpen.current = false;
       Animated.parallel([
         Animated.spring(translateX, {
           toValue: 0,
@@ -155,6 +176,18 @@ export default function SwipeableNotificationCard({ item, onDelete }: Props) {
               >
                 {item.body}
               </Text>
+            ) : null}
+
+            {onPress ? (
+              <View className="flex-row items-center mt-[6px]">
+                <Text
+                  className="text-[12px] font-semibold"
+                  style={{ color: colors.primary }}
+                >
+                  View advisories
+                </Text>
+                <ChevronRight size={14} color={colors.primary} />
+              </View>
             ) : null}
 
             {item.imageUrl ? (

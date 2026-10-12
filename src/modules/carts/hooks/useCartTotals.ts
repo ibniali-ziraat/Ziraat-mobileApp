@@ -1,3 +1,4 @@
+import { getCreditPrice } from "@/src/utils/creditPrice";
 import { CartItemType, CouponType } from "../types/cart.types";
 
 interface UseCartTotalsParams {
@@ -39,11 +40,10 @@ export function useCartTotals({
   selectedCoupon,
 }: UseCartTotalsParams) {
   const subtotalRaw =
-    cart?.reduce<number>((sum, { productPrice, quantity }) => {
-      console.log(productPrice, "productPrice");
-      console.log(quantity, "quantity");
-
-      return sum + (Number(productPrice) || 0) * (Number(quantity) || 0);
+    cart?.reduce<number>((sum, item) => {
+      // credit price, same as each cart row shows
+      const price = getCreditPrice(item) ?? Number(item.productPrice) ?? 0;
+      return sum + (price || 0) * (Number(item.quantity) || 0);
     }, 0) || 0;
 
   // console.log(subtotalRaw, "subtotalraw");

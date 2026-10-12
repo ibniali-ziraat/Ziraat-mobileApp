@@ -2,6 +2,8 @@ import { ROUTES } from "@/src/constants/routes";
 import { useNotification } from "@/src/contexts/NotificationContext";
 import * as Haptics from "expo-haptics";
 import { useRouter } from "expo-router";
+import { advisoryRoutes } from "@/src/modules/farmer-advisories/routes/advisoryRoutes";
+import { getAdvisoryRecipientId } from "@/src/modules/farmer-advisories/utils/advisoryNotification";
 import { useEffect } from "react";
 import { Platform } from "react-native";
 import { useInAppBanner } from "../hooks/useInAppBanner";
@@ -29,7 +31,7 @@ export default function GlobalBanner() {
 
       triggerSystemNotification();
 
-      push({ title, body });
+      push({ title, body, data: msg.data });
     });
 
     return unsub;
@@ -45,7 +47,13 @@ export default function GlobalBanner() {
       onDismiss={dismiss}
       onPress={() => {
         dismiss();
-        router.push(ROUTES.NOTIFICATIONS);
+        // advisory pushes open the advisory itself
+        const recipientId = getAdvisoryRecipientId(active.data);
+        router.push(
+          recipientId
+            ? advisoryRoutes.details(recipientId)
+            : ROUTES.NOTIFICATIONS,
+        );
       }}
       duration={1500}
     />

@@ -56,6 +56,8 @@ export interface SingleSelectInputProps {
   searchable?: boolean;
   showInputLabel?: boolean;
   placeholder?: string;
+  // renders label/box/spacing exactly like FormTextInput, for side-by-side rows
+  matchTextInput?: boolean;
 }
 
 export interface MultiSelectInputProps {

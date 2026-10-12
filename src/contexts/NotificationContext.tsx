@@ -13,15 +13,25 @@ import {
 } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { PermissionsAndroid, Platform } from "react-native";
+import { AppState, PermissionsAndroid, Platform } from "react-native";
 
+import { getAdvisoryLinkFromSignalR } from "../modules/farmer-advisories/utils/advisoryNotification";
 import { StoredNotification } from "../modules/notifications/types/Notification.types";
+import {
+  mapRemoteMessageToStoredNotification,
+  mergeNotifications,
+  NOTIFICATIONS_STORAGE_KEY,
+  readStoredNotifications,
+} from "../modules/notifications/utils/notificationStorage";
 import { useSignalR } from "./SignalRContext";
 
 type MessageHandler = (msg: FirebaseMessagingTypes.RemoteMessage) => void;
 
 interface NotificationContextValue {
   notification: FirebaseMessagingTypes.RemoteMessage | null;
+  // the push the user tapped to open the app (not foreground messages)
+  openedNotification: FirebaseMessagingTypes.RemoteMessage | null;
+  clearOpenedNotification: () => void;
 
   items: StoredNotification[];
   count: number;
@@ -38,7 +48,7 @@ const NotificationContext = createContext<NotificationContextValue | null>(
   null,
 );
 
-const STORAGE_KEY = "APP_NOTIFICATIONS";
+const STORAGE_KEY = NOTIFICATIONS_STORAGE_KEY;
 
 function formatBalanceAmount(balance: number): string {
   return `₹${balance.toLocaleString("en-IN", {
@@ -68,6 +78,10 @@ function mapSignalRPayloadToStoredNotification(
   if (!payload?.id || !detail) return null;
 
   const createdOn = detail.createdOn ? Date.parse(detail.createdOn) : NaN;
+  const advisory = getAdvisoryLinkFromSignalR(
+    detail.notificationName,
+    properties,
+  );
 
   return {
     id: String(payload.id),
@@ -75,6 +89,7 @@ function mapSignalRPayloadToStoredNotification(
     body: buildSignalRBody(properties),
     receivedAt: Number.isNaN(createdOn) ? Date.now() : createdOn,
     isRead: false,
+    ...(advisory ? { advisory } : {}),
   };
 }
 
@@ -84,21 +99,16 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   const [notification, setNotification] =
     useState<FirebaseMessagingTypes.RemoteMessage | null>(null);
 
+  const [openedNotification, setOpenedNotification] =
+    useState<FirebaseMessagingTypes.RemoteMessage | null>(null);
+  const clearOpenedNotification = useCallback(
+    () => setOpenedNotification(null),
+    [],
+  );
+
   const [items, setItems] = useState<StoredNotification[]>([]);
 
   const listenersRef = useRef<Set<MessageHandler>>(new Set());
-
-  /**
-   * Load from storage once (app start)
-   */
-  useEffect(() => {
-    (async () => {
-      const stored = await AsyncStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setItems(JSON.parse(stored));
-      }
-    })();
-  }, []);
 
   /**
    * Persist helper
@@ -106,6 +116,30 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   const persist = async (data: StoredNotification[]) => {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   };
+
+  /**
+   * Load from storage on app start and every time the app comes back to the
+   * foreground: the FCM background handler saves pushes there while the app is
+   * in the background or closed. Merged (not replaced) so nothing added in
+   * memory meanwhile is lost.
+   */
+  useEffect(() => {
+    const syncFromStorage = async () => {
+      const stored = await readStoredNotifications();
+      setItems((prev) => {
+        const merged = mergeNotifications(prev, stored);
+        if (merged.length !== prev.length) persist(merged);
+        return merged;
+      });
+    };
+
+    syncFromStorage();
+
+    const subscription = AppState.addEventListener("change", (state) => {
+      if (state === "active") syncFromStorage();
+    });
+    return () => subscription.remove();
+  }, []);
 
   /**
    * Push a notification into the list + persist, deduping by id
@@ -127,13 +161,10 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
    */
   const addNotification = useCallback(
     (msg: FirebaseMessagingTypes.RemoteMessage) => {
-      pushStoredNotification({
-        id: `${Date.now()}-${Math.random()}`,
-        title: msg.notification?.title ?? "Notification",
-        body: msg.notification?.body,
-        receivedAt: Date.now(),
-        isRead: false,
-      });
+      // keyed by the FCM messageId, so a push already saved by the background
+      // handler isn't added twice
+      const mapped = mapRemoteMessageToStoredNotification(msg);
+      if (mapped) pushStoredNotification(mapped);
     },
     [pushStoredNotification],
   );
@@ -198,14 +229,21 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       listenersRef.current.forEach((cb) => cb(msg));
     });
 
+    // tapped while the app was in the background
     const unsubOpened = messaging().onNotificationOpenedApp((msg) => {
       setNotification(msg);
+      addNotification(msg);
+      setOpenedNotification(msg);
     });
 
     messaging()
       .getInitialNotification()
       .then((msg) => {
-        if (msg) setNotification(msg);
+        // tapped while the app was closed
+        if (!msg) return;
+        setNotification(msg);
+        addNotification(msg);
+        setOpenedNotification(msg);
       });
 
     return () => {
@@ -241,6 +279,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     <NotificationContext.Provider
       value={{
         notification,
+        openedNotification,
+        clearOpenedNotification,
         items,
         count: items.filter((n) => !n.isRead).length,
         addNotification,

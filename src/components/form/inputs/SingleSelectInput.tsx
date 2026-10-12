@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { fonts } from "@/src/constants/fonts/font";
 import { ChevronDown, Search, XCircle } from "lucide-react-native";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -24,6 +25,7 @@ export default function SingleSelectInput({
   disabled = false,
   searchable = false,
   placeholder = label,
+  matchTextInput = false,
 }: SingleSelectInputProps) {
   const [visible, setVisible] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState("");
@@ -69,16 +71,25 @@ export default function SingleSelectInput({
         }, [value, options]);
 
         return (
-          <View style={{ marginBottom: 16 }}>
+          <View style={{ marginBottom: matchTextInput ? 18 : 16 }}>
             <Text
-              style={{
-                marginBottom: 6,
-                fontSize: 14,
-                fontWeight: "500",
-                color: colors.dark,
-              }}
+              style={
+                matchTextInput
+                  ? {
+                      marginBottom: 6,
+                      fontSize: 14,
+                      color: colors.dark,
+                      fontFamily: fonts.poppins.medium,
+                    }
+                  : {
+                      marginBottom: 6,
+                      fontSize: 14,
+                      fontWeight: "500",
+                      color: colors.dark,
+                    }
+              }
             >
-              Select {label}
+              {matchTextInput ? label : `Select ${label}`}
               {!optional && <Text style={{ color: colors.error }}> *</Text>}
             </Text>
             <Pressable
@@ -90,8 +101,9 @@ export default function SingleSelectInput({
                   : disabled
                     ? colors.darkHover
                     : colors.darkHover,
-                paddingHorizontal: 16,
-                paddingVertical: 14,
+                paddingHorizontal: matchTextInput ? 14 : 16,
+                paddingVertical: matchTextInput ? 0 : 14,
+                height: matchTextInput ? 54 : undefined,
                 backgroundColor: colors.light,
                 borderRadius: 10,
                 // Add these two lines for layout
@@ -108,9 +120,10 @@ export default function SingleSelectInput({
             >
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: matchTextInput ? 15 : 16,
                   color: disabled ? colors.neutral + "88" : colors.darkHover,
                   flex: 1, // Ensures text doesn't overlap the icon
+                  ...(matchTextInput && { fontFamily: fonts.poppins.regular }),
                 }}
               >
                 {selectedLabel || placeholder}

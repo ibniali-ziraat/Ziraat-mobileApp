@@ -30,6 +30,8 @@ interface ScreenLayoutProps {
     | AnimatedScrollViewProps["onScroll"];
   scrollEventThrottle?: number;
   topPadding?: number;
+  // non-scrollable only: overrides the default bottom gap reserved for the tab bar
+  bottomPadding?: number;
 }
 
 export default function ScreenLayout({
@@ -40,6 +42,7 @@ export default function ScreenLayout({
   onScroll,
   scrollEventThrottle = 16,
   topPadding = 18,
+  bottomPadding,
 }: ScreenLayoutProps) {
   return (
     <SafeAreaView
@@ -74,7 +77,7 @@ export default function ScreenLayout({
           style={{
             flex: 1,
             backgroundColor: colors.light,
-            paddingBottom: Platform.OS === "android" ? 40 : 100,
+            paddingBottom: bottomPadding ?? (Platform.OS === "android" ? 40 : 100),
           }}
         >
           {children}
