@@ -5,6 +5,8 @@ import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useDeleteAccount } from "@/src/hooks/useDeleteAccount";
+import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { AlertTriangle, Check, Trash2 } from "lucide-react-native";
 import { useState } from "react";
@@ -14,16 +16,29 @@ export default function DeleteAccount() {
   const router = useRouter();
   const { mutate: deleteAccount, isPending } = useDeleteAccount();
   const { userId, logoutUser } = useAuth();
+  const queryClient = useQueryClient();
 
   const [confirmed, setConfirmed] = useState(false);
 
   const handleDeleteAccount = () => {
-    if (!userId) return;
+    if (!userId) {
+      showErrorToast("Could not find your account. Please sign in again.");
+      return;
+    }
 
     deleteAccount(userId, {
-      onSuccess: () => {
-        logoutUser();
+      onSuccess: async () => {
+        await logoutUser();
+        queryClient.clear();
+        showSuccessToast("Your account has been deleted");
         router.replace(ROUTES.AUTH.LOGIN);
+      },
+      onError: (err: any) => {
+        showErrorToast(
+          err?.response?.data?.message ??
+            err?.response?.data?.title ??
+            "Could not delete your account. Please try again.",
+        );
       },
     });
   };

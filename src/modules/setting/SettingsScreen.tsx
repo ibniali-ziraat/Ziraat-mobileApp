@@ -7,6 +7,7 @@ import {
   cardTokens,
   chartTokens,
 } from "@/src/constants/dashboardTheme";
+import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
@@ -17,6 +18,7 @@ import {
   Lock,
   // PhoneCall,
   // Shield,
+  Trash2,
   type LucideIcon,
 } from "lucide-react-native";
 import { Text, View } from "react-native";
@@ -28,6 +30,8 @@ type SettingsRow = {
   description: string;
   icon: LucideIcon;
   onPress: () => void;
+  /** Destructive action — drawn in the error colour. */
+  danger?: boolean;
 };
 
 type SettingsGroup = {
@@ -44,6 +48,13 @@ const groups: SettingsGroup[] = [
         description: "Update the password you sign in with",
         icon: Lock,
         onPress: () => router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD),
+      },
+      {
+        label: "Delete Account",
+        description: "Permanently remove your account and its data",
+        icon: Trash2,
+        onPress: () => router.push(ROUTES.ACCOUNT.DELETE_ACCOUNT),
+        danger: true,
       },
     ],
   },
@@ -143,10 +154,16 @@ function SettingsCard({ group }: { group: SettingsGroup }) {
                   borderCurve: "continuous",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: cardTokens.mutedSurface,
+                  backgroundColor: row.danger
+                    ? `${colors.error}15`
+                    : cardTokens.mutedSurface,
                 }}
               >
-                <Icon size={18} color={chartTokens.current} strokeWidth={1.9} />
+                <Icon
+                  size={18}
+                  color={row.danger ? colors.error : chartTokens.current}
+                  strokeWidth={1.9}
+                />
               </View>
 
               <View style={{ flex: 1, marginLeft: 12, marginRight: 8 }}>
@@ -154,7 +171,10 @@ function SettingsCard({ group }: { group: SettingsGroup }) {
                   numberOfLines={1}
                   style={[
                     typography.Poppins_s_medium,
-                    { color: cardTokens.inkPrimary, fontSize: 14 },
+                    {
+                      color: row.danger ? colors.error : cardTokens.inkPrimary,
+                      fontSize: 14,
+                    },
                   ]}
                 >
                   {row.label}
