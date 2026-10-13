@@ -3,10 +3,11 @@ import SearchBar from "@/src/components/shared/SearchBar";
 import { colors } from "@/src/constants/colors";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { Link } from "expo-router";
+import { router } from "expo-router";
 import {
   ChevronDown,
   ChevronUp,
+  LayoutDashboard,
   SlidersHorizontal,
   Trees,
   X,
@@ -207,31 +208,34 @@ export default function OrchardList({
               </Pressable>
             ) : null}
 
-            {/* Right-end link */}
-            <Link href="/dashboard" asChild>
-              <Pressable
-                hitSlop={8}
-                accessibilityRole="link"
-                accessibilityLabel="View dashboard"
-                style={({ pressed }) => ({
-                  marginLeft: 12,
-                  opacity: pressed ? 0.6 : 1,
-                })}
+            {/* Right-end button */}
+            <Pressable
+              onPress={() => router.push("/dashboard")}
+              hitSlop={8}
+              accessibilityRole="button"
+              accessibilityLabel="View orchard dashboard"
+              style={({ pressed }) => ({
+                marginLeft: 12,
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 6,
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+                borderRadius: 999,
+                backgroundColor: colors.primary,
+                opacity: pressed ? 0.8 : 1,
+              })}
+            >
+              <LayoutDashboard size={13} color={colors.light} strokeWidth={2.2} />
+              <Text
+                style={[
+                  typography.Poppins_xs_semibold,
+                  { color: colors.light, fontSize: 11 },
+                ]}
               >
-                <Text
-                  style={[
-                    typography.Poppins_xs_semibold,
-                    {
-                      color: chartTokens.current,
-                      fontSize: 11,
-                      textDecorationLine: "underline",
-                    },
-                  ]}
-                >
-                  View Orchard Dashboard
-                </Text>
-              </Pressable>
-            </Link>
+                View Orchard Dashboard
+              </Text>
+            </Pressable>
           </View>
         </View>
       }

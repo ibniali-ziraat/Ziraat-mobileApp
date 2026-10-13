@@ -12,11 +12,11 @@ import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import {
   ChevronRight,
-  FileText,
-  HelpCircle,
+  // FileText,
+  // HelpCircle,
   Lock,
-  PhoneCall,
-  Shield,
+  // PhoneCall,
+  // Shield,
   type LucideIcon,
 } from "lucide-react-native";
 import { Text, View } from "react-native";
@@ -47,40 +47,42 @@ const groups: SettingsGroup[] = [
       },
     ],
   },
-  {
-    title: "Support & FAQs",
-    rows: [
-      {
-        label: "Contact Support",
-        description: "Talk to the Ziraat team about an issue",
-        icon: PhoneCall,
-        onPress: () => router.push("/contact-Support"),
-      },
-      {
-        label: "FAQs",
-        description: "Answers to the questions farmers ask most",
-        icon: HelpCircle,
-        onPress: () => router.push("/faq"),
-      },
-    ],
-  },
-  {
-    title: "Privacy & Security",
-    rows: [
-      {
-        label: "Privacy Policy",
-        description: "What we collect and how it is handled",
-        icon: Shield,
-        onPress: () => router.push("/user/privacy"),
-      },
-      {
-        label: "Terms & Conditions",
-        description: "The terms you agreed to when you signed up",
-        icon: FileText,
-        onPress: () => router.push("/user/terms"),
-      },
-    ],
-  },
+  // Support & FAQs and Privacy & Security now come from the backend — kept
+  // here, commented out, in case they are needed again.
+  // {
+  //   title: "Support & FAQs",
+  //   rows: [
+  //     {
+  //       label: "Contact Support",
+  //       description: "Talk to the Ziraat team about an issue",
+  //       icon: PhoneCall,
+  //       onPress: () => router.push("/contact-Support"),
+  //     },
+  //     {
+  //       label: "FAQs",
+  //       description: "Answers to the questions farmers ask most",
+  //       icon: HelpCircle,
+  //       onPress: () => router.push("/faq"),
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "Privacy & Security",
+  //   rows: [
+  //     {
+  //       label: "Privacy Policy",
+  //       description: "What we collect and how it is handled",
+  //       icon: Shield,
+  //       onPress: () => router.push("/user/privacy"),
+  //     },
+  //     {
+  //       label: "Terms & Conditions",
+  //       description: "The terms you agreed to when you signed up",
+  //       icon: FileText,
+  //       onPress: () => router.push("/user/terms"),
+  //     },
+  //   ],
+  // },
 ];
 
 function SettingsCard({ group }: { group: SettingsGroup }) {

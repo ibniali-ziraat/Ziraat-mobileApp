@@ -5,20 +5,24 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Platform, Text, View } from "react-native";
 import MeasureControls from "../components/MeasureControls";
+import MeasureLocationState from "../components/MeasureLocationState";
 import MeasureMap from "../components/MeasureMap";
 import { useAreaCalculation } from "../hooks/useAreaCalculation";
 import { useLocationPermission } from "../hooks/useLocationPermission";
+import { setMeasuredArea, toKanalsAndMarlas } from "../utils/measuredArea";
 import { useWalkMeasurement } from "../hooks/useWalkMeasurement";
 
 export default function MeasureByWalk() {
-  const location = useLocationPermission();
+  const { location, status } = useLocationPermission();
   const { path, start, stop, reset } = useWalkMeasurement();
 
   const [started, setStarted] = useState(false);
 
   const areaHectares = useAreaCalculation(path);
 
-  if (!location) return null;
+  if (!location) {
+    return <MeasureLocationState status={status} title="Back" />;
+  }
 
   const allUnits = {
     kanals: areaHectares * UNIT_CONVERSIONS.kanals,
@@ -35,13 +39,15 @@ export default function MeasureByWalk() {
 
     stop();
 
-    router.push({
-      pathname: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
-      params: {
-        kanals: allUnits.kanals.toFixed(2),
-        marlas: allUnits.marlas.toFixed(2),
-      },
-    });
+    // hand the result to the Basic Info form underneath and return to it —
+    // pushing the form again would open a second, empty copy
+    setMeasuredArea(toKanalsAndMarlas(allUnits.marlas));
+
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace(ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO);
+    }
   };
 
   if (Platform.OS === "web") {
@@ -53,16 +59,16 @@ export default function MeasureByWalk() {
   }
 
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: "#fff", paddingTop: 18 }}>
       <BackHeader title="Back" />
 
-      <MeasureMap location={location} points={path} />
+      <MeasureMap location={location} points={path} isWalking={started} />
 
       <MeasureControls
         onPrimary={started ? applyArea : handleStart}
         onReset={reset}
         primaryLabel={started ? "Apply Area" : "Start Walking"}
       />
-    </>
+    </View>
   );
 }

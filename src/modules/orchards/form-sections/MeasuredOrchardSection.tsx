@@ -1,31 +1,10 @@
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { Map } from "lucide-react-native";
-import { useEffect } from "react";
-import { useFormContext } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 
 export default function MeasuredOrchardSection() {
-  const params = useLocalSearchParams();
-  const { setValue } = useFormContext();
-
-  const measuredKanals = Number(params?.kanals ?? 0);
-  const measuredMarlas = Number(params?.marlas ?? 0);
-  const totalMarlas = measuredKanals * 20 + measuredMarlas;
-
-  useEffect(() => {
-    if (!params?.kanals && !params?.marlas) return;
-
-    setValue("marlas", String(measuredMarlas), {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-
-    setValue("kanals", "");
-    setValue("orchardSize.mode", "measure");
-  }, [params]);
-
   return (
     <View
       style={{
@@ -33,20 +12,8 @@ export default function MeasuredOrchardSection() {
         borderRadius: 14,
         paddingBottom: 16,
         gap: 12,
-        // paddingVertical: 18,
       }}
     >
-      {totalMarlas > 0 && (
-        <View style={{ alignItems: "center" }}>
-          <Text style={{ fontSize: 14, color: "#555" }}>
-            Measured Area:{" "}
-            <Text style={{ fontWeight: "700", color: colors.primary }}>
-              ≈ {measuredMarlas} Marlas
-            </Text>{" "}
-            <Text style={{ color: "#777" }}>(≈ {measuredKanals} Kanals)</Text>
-          </Text>
-        </View>
-      )}
       <View style={{ flexDirection: "row", gap: 10, paddingHorizontal: 20 }}>
         <Pressable
           onPress={() =>

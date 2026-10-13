@@ -107,12 +107,14 @@ export default function BasicInfoScreen() {
 
     if (orchard) {
       await updateOrchard(payload);
-    } else {
-      await createOrchard(payload);
+      router.dismiss();
+      return;
     }
 
-    // router.replace(ROUTES.TABS.ORCHARDS);
-    router.dismiss();
+    await createOrchard(payload);
+
+    // back to the list of orchards, whatever is stacked above it
+    router.dismissTo(ROUTES.TABS.ORCHARDS);
   };
 
   if (isPending) return null;

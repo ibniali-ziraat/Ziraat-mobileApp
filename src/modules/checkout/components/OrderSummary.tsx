@@ -143,6 +143,10 @@ export const OrderSummary = ({
       ? totalCreditSalePrice - summary.orderTotal
       : 0;
 
+  // One combined "you saved" figure: the regular discount plus what the
+  // farmer avoids by not paying the Buy on Credit fee
+  const totalSavings = Math.max(summary.discount ?? 0, 0) + creditSavings;
+
   // Use a representative hike percentage (from first item, for display label)
   const creditHikePercentage =
     items[0]?.vendorAssignment?.creditSaleHikePercentage ?? 0;
@@ -339,7 +343,7 @@ export const OrderSummary = ({
             bold
           />
 
-          {summary.discount > 0 && (
+          {summary.discount > 0 && creditSavings === 0 && (
             <View
               style={{
                 flexDirection: "row",
@@ -385,7 +389,7 @@ export const OrderSummary = ({
                   },
                 ]}
               >
-                You saved {formatRsNum(creditSavings)} by paying with{" "}
+                You saved {formatRsNum(totalSavings)} by paying with{" "}
                 {savingsPaymentMethodLabel} instead of Buy on Credit
               </Text>
             </View>

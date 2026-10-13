@@ -6,19 +6,23 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Platform, StyleSheet, Text, View } from "react-native";
 import MeasureControls from "../components/MeasureControls";
+import MeasureLocationState from "../components/MeasureLocationState";
 import MeasureMap from "../components/MeasureMap";
 import { useAreaCalculation } from "../hooks/useAreaCalculation";
 import { useLocationPermission } from "../hooks/useLocationPermission";
+import { setMeasuredArea, toKanalsAndMarlas } from "../utils/measuredArea";
 import { useTapMeasurement } from "../hooks/useTapMeasurement";
 
 export default function MeasureByTap() {
-  const location = useLocationPermission();
+  const { location, status } = useLocationPermission();
   const { points, addPoint, reset } = useTapMeasurement();
   const [unit, setUnit] = useState("hectares");
 
   const areaHectares = useAreaCalculation(points);
 
-  if (!location) return null;
+  if (!location) {
+    return <MeasureLocationState status={status} title="Measure Area" />;
+  }
 
   const allUnits = {
     kanals: areaHectares * UNIT_CONVERSIONS.kanals,
@@ -28,13 +32,15 @@ export default function MeasureByTap() {
   const applyArea = () => {
     if (!areaHectares) return;
 
-    router.push({
-      pathname: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
-      params: {
-        kanals: allUnits.kanals.toFixed(2),
-        marlas: allUnits.marlas.toFixed(2),
-      },
-    });
+    // hand the result to the Basic Info form underneath and return to it —
+    // pushing the form again would open a second, empty copy
+    setMeasuredArea(toKanalsAndMarlas(allUnits.marlas));
+
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace(ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO);
+    }
   };
 
   if (Platform.OS === "web") {
@@ -188,6 +194,7 @@ const styles = StyleSheet.create({
   },
 
   controlsContainer: {
+    height: 84,
     paddingHorizontal: 12,
     paddingTop: 8,
     paddingBottom: 12,

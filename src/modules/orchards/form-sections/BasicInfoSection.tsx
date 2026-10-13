@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
-import { Text, View } from "react-native";
+import { ToggleLeft, ToggleRight } from "lucide-react-native";
+import { Pressable, Text, View } from "react-native";
 
 import SingleSelectInput from "@/src/components/form/inputs/SingleSelectInput";
 import FormTextInput from "@/src/components/shared/inputs/FormTextInput";
 
 import { colors } from "@/src/constants/colors";
 import { fonts } from "@/src/constants/fonts/font";
+import { shadows } from "@/src/constants/shadows";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
 import { OWNERSHIP_TYPE_OPTIONS } from "../constants/orchardOptions";
+import { setMeasuredArea, useMeasuredArea } from "../utils/measuredArea";
+import MeasuredOrchardSection from "./MeasuredOrchardSection";
 
 export default function BasicInfo({ errors, data }) {
   console.log(data, "data...");
@@ -36,6 +40,24 @@ export default function BasicInfo({ errors, data }) {
 
   const [marlasCapWarning, setMarlasCapWarning] = useState(false);
 
+  // A tap/walk measurement fills the same Kanals / Marlas inputs as manual
+  // entry, then the form is saved the normal way.
+  const measured = useMeasuredArea();
+  useEffect(() => {
+    if (!measured) return;
+
+    setValue("kanals", measured.kanals > 0 ? String(measured.kanals) : "", {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("marlas", measured.marlas > 0 ? String(measured.marlas) : "", {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("orchardSize.mode", "manual");
+    setMeasuredArea(null);
+  }, [measured, setValue]);
+
   const toggleMode = () => {
     setValue(
       "orchardSize.mode",
@@ -53,7 +75,6 @@ export default function BasicInfo({ errors, data }) {
         required
         error={errors?.orchardName}
       />
-      {/* 
       <View
         style={[
           {
@@ -120,13 +141,13 @@ export default function BasicInfo({ errors, data }) {
             {orchardMode === "measure" ? "Measure" : "Manual"}
           </Text>
         </Pressable>
-      </View> */}
-      {/* 
+      </View>
+
       {orchardMode === "measure" && (
         <>
           <MeasuredOrchardSection />
         </>
-      )} */}
+      )}
 
       {orchardMode === "manual" && (
         <View>
