@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { Platform } from "react-native";
 import axiosInstance from "../api/client/axiosInstance";
 import { getItem } from "../utils/universalSecureToken";
 import { useAuth } from "./AuthContext";
@@ -44,8 +45,11 @@ export function SignalRProvider({ children }: { children: React.ReactNode }) {
       return token?.replace(/^Bearer\s+/i, "") ?? "";
     };
  
-    if (!userToken) return;
- 
+    // The backend sends each notification over both SignalR and FCM. Android
+    // already gets them from FCM, so the socket would add a second copy there.
+    // iOS keeps the socket until FCM is set up for it.
+    if (!userToken || Platform.OS === "android") return;
+
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(HUB_URL, {
         accessTokenFactory: getToken,
