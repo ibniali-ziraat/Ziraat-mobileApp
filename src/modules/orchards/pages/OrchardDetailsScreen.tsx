@@ -3,6 +3,7 @@ import Loader from "@/src/components/shared/Loader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
+import { getOrchardScene } from "@/src/constants/illustrations";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
@@ -33,15 +34,16 @@ import {
 } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import {
-  ImageBackground,
   type NativeScrollEvent,
   type NativeSyntheticEvent,
   Pressable,
   ScrollView,
+  StyleSheet,
   Text,
   useWindowDimensions,
   View,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 import Animated, {
   Easing,
   FadeInDown,
@@ -79,9 +81,6 @@ const sections: { key: SectionKey; label: string }[] = [
   { key: "future", label: "Future Readiness" },
 ];
 
-const orchardBackground = require("@/assets/images/orchard-card-bg.png");
-const AnimatedImageBackground =
-  Animated.createAnimatedComponent(ImageBackground);
 
 export default function OrchardDetailsScreen() {
   const { setOrchardProfileId, orchardProfileId } = useAuth();
@@ -465,11 +464,13 @@ export default function OrchardDetailsScreen() {
           backgroundColor: colors.primary,
         }}
       >
-        <AnimatedImageBackground
-          source={orchardBackground}
-          resizeMode="cover"
-          style={[{ minHeight: 215 }, heroImageStyle]}
-        >
+        <Animated.View style={[{ minHeight: 215 }, heroImageStyle]}>
+          <SvgXml
+            xml={getOrchardScene(orchard)}
+            width="100%"
+            height="100%"
+            style={StyleSheet.absoluteFill}
+          />
           <LinearGradient
             colors={["rgba(12,42,6,0.08)", "rgba(12,42,6,0.94)"]}
             style={{
@@ -524,7 +525,7 @@ export default function OrchardDetailsScreen() {
               </View>
             </View>
           </LinearGradient>
-        </AnimatedImageBackground>
+        </Animated.View>
       </Animated.View>
 
       <ViewAdvisoriesButton

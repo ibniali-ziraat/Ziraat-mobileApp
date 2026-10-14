@@ -1,8 +1,10 @@
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { CheckCircle, XCircle } from "lucide-react-native";
+import { profileArt } from "@/src/constants/iconArt";
+import { CheckCircle, PlusCircle } from "lucide-react-native";
 import { useEffect, useRef } from "react";
-import { Animated, ScrollView, Text, View } from "react-native";
+import { Animated, Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 
 interface ProgressBarProps {
   progress: number;
@@ -94,35 +96,61 @@ export default function ProfileProgressBar({
         />
       </View>
 
-      {/* SECTION PILLS */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ flexDirection: "row", gap: 8 }}
-      >
+      {/* SECTION TILES — a picture per section, faded until it's filled in */}
+      <View style={{ flexDirection: "row", gap: 8, marginTop: 4 }}>
         {allSections.map((section) => {
           const isCompleted = completedSections.includes(section);
+          const key = section.toLowerCase();
+          const art =
+            key === "profile"
+              ? profileArt.personal
+              : (profileArt[key as keyof typeof profileArt] ??
+                profileArt.personal);
+
           return (
             <View
               key={section}
               style={{
-                flexDirection: "row",
+                flex: 1,
                 alignItems: "center",
-                paddingRight: 14,
-                paddingVertical: 4,
+                paddingVertical: 10,
+                borderRadius: 14,
+                borderWidth: 1,
+                borderColor: isCompleted
+                  ? chartTokens.tint
+                  : cardTokens.hairline,
+                backgroundColor: isCompleted
+                  ? chartTokens.tint
+                  : cardTokens.surface,
               }}
             >
-              {isCompleted ? (
-                <CheckCircle size={12} color={chartTokens.current} />
-              ) : (
-                <XCircle size={12} color={cardTokens.inkMuted} />
-              )}
+              <View style={{ opacity: isCompleted ? 1 : 0.38 }}>
+                <SvgXml xml={art} width={30} height={30} />
+              </View>
+              <View
+                style={{
+                  position: "absolute",
+                  top: 5,
+                  right: 5,
+                }}
+              >
+                {isCompleted ? (
+                  <CheckCircle
+                    size={13}
+                    color={cardTokens.surface}
+                    fill={chartTokens.current}
+                  />
+                ) : (
+                  <PlusCircle size={13} color={cardTokens.inkMuted} />
+                )}
+              </View>
               <Text
+                numberOfLines={1}
                 style={[
                   typography.Poppins_xs_medium,
                   {
-                    marginLeft: 5,
-                    fontSize: 11,
+                    marginTop: 6,
+                    fontSize: 10.5,
                     color: isCompleted
                       ? cardTokens.inkPrimary
                       : cardTokens.inkMuted,
@@ -134,7 +162,7 @@ export default function ProfileProgressBar({
             </View>
           );
         })}
-      </ScrollView>
+      </View>
 
       {/* COMPLETE STATE */}
       {Math.round(progress) === 100 && (

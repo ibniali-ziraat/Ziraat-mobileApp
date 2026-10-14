@@ -30,6 +30,7 @@ import Loader from "@/src/components/shared/Loader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { DUMMY_EMAIL } from "@/src/constants/constants";
+import { profileArt } from "@/src/constants/iconArt";
 import { ROUTES } from "@/src/constants/routes";
 import {
   Briefcase,
@@ -145,6 +146,7 @@ export default function ProfileViewScreen() {
 
         <DetailsCard
           heading="Personal Details"
+          art={profileArt.personal}
           items={
             profileData
               ? [
@@ -184,6 +186,7 @@ export default function ProfileViewScreen() {
         />
         <DetailsCard
           heading="Address"
+          art={profileArt.address}
           items={
             addressData
               ? [
@@ -227,6 +230,7 @@ export default function ProfileViewScreen() {
         />
         <DetailsCard
           heading="Education"
+          art={profileArt.education}
           items={
             educationData
               ? [
@@ -268,6 +272,7 @@ export default function ProfileViewScreen() {
         />
         <DetailsCard
           heading="Profession"
+          art={profileArt.profession}
           onEdit={() => router.push(ROUTES.USER.FORMS.PROFESSION)}
           onDelete={() => setDeleteSection("profession")}
           onAdd={() => router.push(ROUTES.USER.FORMS.PROFESSION)}

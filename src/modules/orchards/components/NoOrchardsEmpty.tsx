@@ -1,16 +1,17 @@
+import { illustrations } from "@/src/constants/illustrations";
 import { colors } from "@/src/constants/colors";
 import { ROUTES } from "@/src/constants/routes";
 import { useRouter } from "expo-router";
-import { TreePalm } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 
 export default function NoOrchardsEmpty() {
   const router = useRouter();
 
   return (
     <View className="items-center flex-1 justify-center px-6">
-      <TreePalm style={{ color: colors.primary }} size={40} />
-      <Text className="text-[22px] font-bold mt-4">
+      <SvgXml xml={illustrations.sapling} width={200} height={200} />
+      <Text className="text-[22px] font-bold mt-6">
         Start Your First Orchard
       </Text>
       <Text

@@ -1,8 +1,6 @@
-import { colors } from "@/src/constants/colors";
-import { chartTokens } from "@/src/constants/dashboardTheme";
-import { Leaf } from "lucide-react-native";
+import { getAdvisoryKindArt } from "@/src/constants/iconArt";
 import { View } from "react-native";
-import { isSupportedKind, KIND_META } from "../constants/advisoryOptions";
+import { SvgXml } from "react-native-svg";
 
 type AdvisoryKindIconProps = {
   kind: string;
@@ -10,7 +8,7 @@ type AdvisoryKindIconProps = {
 };
 
 export default function AdvisoryKindIcon({ kind, size = 44 }: AdvisoryKindIconProps) {
-  const Icon = isSupportedKind(kind) ? KIND_META[kind].icon : Leaf;
+  const { art, tile } = getAdvisoryKindArt(kind);
 
   return (
     <View
@@ -21,10 +19,10 @@ export default function AdvisoryKindIcon({ kind, size = 44 }: AdvisoryKindIconPr
         borderCurve: "continuous",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: chartTokens.tint,
+        backgroundColor: tile,
       }}
     >
-      <Icon size={size * 0.48} color={colors.primary} strokeWidth={1.9} />
+      <SvgXml xml={art} width={size * 0.66} height={size * 0.66} />
     </View>
   );
 }

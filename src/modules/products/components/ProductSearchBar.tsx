@@ -1,7 +1,7 @@
+import { Pressable } from "@/src/components/shared/Pressable";
 import SearchBar from "@/src/components/shared/SearchBar";
-import { colors } from "@/src/constants/colors";
+import { cardTokens } from "@/src/constants/dashboardTheme";
 import { SlidersHorizontal } from "lucide-react-native";
-import { Pressable, View } from "react-native";
 
 type Props = {
   search: string;
@@ -9,41 +9,45 @@ type Props = {
   onFilterPress: () => void;
 };
 
+/**
+ * Filter lives inside the bar, as on the Orchards tab — one full-width
+ * control that lines up with the banner above, instead of a bar plus a
+ * separate tinted box beside it.
+ */
 export default function ProductSearchBar({
   search,
   setSearch,
   onFilterPress,
 }: Props) {
   return (
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-
-        borderRadius: 16,
-      }}
-    >
-      {/* SEARCH */}
-      <View style={{ flex: 1 }}>
-        <SearchBar search={search} setSearch={setSearch} />
-      </View>
-
-      {/* FILTER */}
-      <Pressable
-        onPress={onFilterPress}
-        activeOpacity={0.85}
-        style={{
-          width: 44,
-          height: 44,
-          borderRadius: 14,
-          backgroundColor: colors.secondary + "12",
-          alignItems: "center",
-          justifyContent: "center",
-          marginLeft: 10,
-        }}
-      >
-        <SlidersHorizontal size={21} color={colors.secondary} />
-      </Pressable>
-    </View>
+    <SearchBar
+      search={search}
+      setSearch={setSearch}
+      placeholder="Search products"
+      rightAccessory={
+        <Pressable
+          onPress={onFilterPress}
+          hitSlop={10}
+          accessibilityRole="button"
+          accessibilityLabel="Filters"
+          style={({ pressed }) => ({
+            width: 32,
+            height: 32,
+            borderRadius: 16,
+            marginLeft: 6,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: cardTokens.mutedSurface,
+            opacity: pressed ? 0.7 : 1,
+          })}
+        >
+          <SlidersHorizontal
+            size={17}
+            strokeWidth={2}
+            color={cardTokens.inkSecondary}
+          />
+        </Pressable>
+      }
+    />
   );
 }

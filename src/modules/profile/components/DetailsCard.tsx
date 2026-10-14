@@ -3,6 +3,7 @@ import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { Plus } from "lucide-react-native";
 import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 
 interface DetailItem {
   title: string;
@@ -17,6 +18,8 @@ interface DetailsCardProps {
   onDelete?: () => void;
   onAdd?: () => void;
   emptyActionLabel?: string;
+  /** Full-colour icon from `profileArt`, shown beside the heading. */
+  art?: string;
 }
 
 function TextAction({
@@ -53,6 +56,7 @@ export default function DetailsCard({
   onDelete,
   onAdd,
   emptyActionLabel = "Add details",
+  art,
 }: DetailsCardProps) {
   const isEmpty = items.length === 0;
 
@@ -66,6 +70,21 @@ export default function DetailsCard({
           marginBottom: 6,
         }}
       >
+        {art ? (
+          <View
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: 12,
+              marginRight: 10,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: cardTokens.mutedSurface,
+            }}
+          >
+            <SvgXml xml={art} width={26} height={26} />
+          </View>
+        ) : null}
         <Text
           style={[
             typography.Poppins_l_semibold,

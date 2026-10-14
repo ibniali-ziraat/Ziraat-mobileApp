@@ -1,3 +1,4 @@
+import { statIcons } from "@/src/constants/iconArt";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import { CalendarClock, MapPin, Ruler, Trees } from "lucide-react-native";
@@ -79,6 +80,7 @@ export default function DashboardStatsGrid({
                 : `${stats.totalOrchards - stats.measured} still need an area`
           }
           icon={Trees}
+          art={statIcons.orchard}
           delta={orchardDelta}
           deltaLabel={deltaLabel}
           bars={growthValues}
@@ -99,6 +101,7 @@ export default function DashboardStatsGrid({
               : "Area not recorded yet"
           }
           icon={Ruler}
+          art={statIcons.area}
           bars={areaValues}
           onPress={openOrchards}
         />
@@ -116,6 +119,7 @@ export default function DashboardStatsGrid({
                 : `${completionPercent}% of details filled`
           }
           icon={MapPin}
+          art={statIcons.district}
           ring={stats.totalOrchards ? meterFor(completionPercent) : null}
           onPress={openOrchards}
         />
@@ -132,6 +136,7 @@ export default function DashboardStatsGrid({
                 : `${datedPercent}% have a year recorded`
           }
           icon={CalendarClock}
+          art={statIcons.age}
           ring={stats.totalOrchards ? meterFor(datedPercent) : null}
           onPress={openOrchards}
         />

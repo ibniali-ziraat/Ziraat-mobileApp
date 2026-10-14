@@ -147,7 +147,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="products"
           options={{
-            title: "Products",
+            title: "Shop",
             header: () => <AppHeader variant="products" />,
             tabBarButton: ({ onPress, children }) => (
               <Pressable
@@ -178,7 +178,7 @@ export default function TabLayout() {
                     strokeWidth={1.9}
                   />
                 }
-                label="Products"
+                label="Shop"
               />
             ),
           }}

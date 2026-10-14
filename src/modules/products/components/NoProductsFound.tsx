@@ -1,6 +1,7 @@
 import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { PackageSearch } from "lucide-react-native";
+import { productArt } from "@/src/constants/iconArt";
+import { SvgXml } from "react-native-svg";
 import { View } from "react-native";
 import CsText from "@/src/components/shared/CsText";
 
@@ -15,19 +16,12 @@ export default function NoProductsFound() {
         gap: 4,
       }}
     >
-      <View
-        style={{
-          width: 72,
-          height: 72,
-          borderRadius: 36,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: cardTokens.mutedSurface,
-          marginBottom: 6,
-        }}
-      >
-        <PackageSearch size={30} color={cardTokens.inkMuted} strokeWidth={1.6} />
-      </View>
+      <SvgXml
+        xml={productArt.empty}
+        width={124}
+        height={124}
+        style={{ marginBottom: 8 }}
+      />
 
       <CsText
         style={[typography.Poppins_s_semibold, { color: cardTokens.inkPrimary }]}

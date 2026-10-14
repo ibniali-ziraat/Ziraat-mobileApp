@@ -8,6 +8,7 @@ import type { MenuGroup } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
 import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { Pressable } from "@/src/components/shared/Pressable";
 
 type MenuSectionProps = {
@@ -64,8 +65,8 @@ export default function MenuSection({ group }: MenuSectionProps) {
             >
               <View
                 style={{
-                  width: 34,
-                  height: 34,
+                  width: 38,
+                  height: 38,
                   borderRadius: 12,
                   borderCurve: "continuous",
                   alignItems: "center",
@@ -73,7 +74,11 @@ export default function MenuSection({ group }: MenuSectionProps) {
                   backgroundColor: cardTokens.mutedSurface,
                 }}
               >
-                <Icon size={17} color={chartTokens.current} strokeWidth={1.9} />
+                {route.art ? (
+                  <SvgXml xml={route.art} width={24} height={24} />
+                ) : (
+                  <Icon size={17} color={chartTokens.current} strokeWidth={1.9} />
+                )}
               </View>
 
               <Text
@@ -98,7 +103,7 @@ export default function MenuSection({ group }: MenuSectionProps) {
                 <View
                   style={{
                     position: "absolute",
-                    left: 60,
+                    left: 64,
                     right: 0,
                     bottom: 0,
                     height: 1,

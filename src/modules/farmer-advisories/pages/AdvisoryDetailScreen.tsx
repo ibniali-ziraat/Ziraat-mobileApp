@@ -4,12 +4,14 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { advisoryArt, getAdvisoryKindArt } from "@/src/constants/iconArt";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router, useLocalSearchParams } from "expo-router";
 import { Ban, CircleCheck, CloudOff } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 import { Button } from "react-native-paper";
+import AdvisoryBanner from "../components/AdvisoryBanner";
 import AdvisoryEmptyState from "../components/AdvisoryEmptyState";
 import AdvisoryKindIcon from "../components/AdvisoryKindIcon";
 import AdvisorySection from "../components/AdvisorySection";
@@ -89,6 +91,7 @@ export default function AdvisoryDetailScreen() {
         <BackHeader title="Advisory" />
         <AdvisoryEmptyState
           icon={CloudOff}
+          art={advisoryArt.offline}
           title="Couldn't load this advisory"
           message="Check your connection and try again."
           actionLabel="Try again"
@@ -128,6 +131,17 @@ export default function AdvisoryDetailScreen() {
       <BackHeader title={advisory.title} desc={advisory.orchardName?.trim()} />
 
       <ScreenContent>
+        <AdvisoryBanner
+          orchardProfileId={advisory.orchardProfileId}
+          title={`${kindLabel} advisory`}
+          subtitle={
+            [advisory.crop, advisory.variety].filter(Boolean).join(" • ") ||
+            advisory.orchardName?.trim()
+          }
+          badges={[getAdvisoryKindArt(advisory.kind).art]}
+          badgeSize={50}
+        />
+
         {/* Summary */}
         <AdvisorySection title={kindLabel}>
           <View style={{ flexDirection: "row", alignItems: "center", marginTop: -6, marginBottom: 8 }}>

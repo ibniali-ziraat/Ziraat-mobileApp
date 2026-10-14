@@ -1,6 +1,8 @@
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { Image, Pressable, Text, View } from "react-native";
+import { shoppingArt } from "@/src/constants/iconArt";
+import { Pressable, Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 
 type Props = {
   onStartShopping: () => void;
@@ -16,19 +18,16 @@ const EmptyCartView = ({ onStartShopping }: Props) => {
         paddingHorizontal: 24,
       }}
     >
-      <Image
-        source={require("@/assets/images/empty-wishlist.png")}
-        style={{ width: 90, height: 90 }}
-      />
+      <SvgXml xml={shoppingArt.emptyCart} width={150} height={150} />
 
-      <Text style={typography.Poppins_m_semibold}>
+      <Text style={[typography.Poppins_m_semibold, { marginTop: 18 }]}>
         Your cart is empty
       </Text>
 
       <Text
         style={[
           typography.Poppins_s_regular,
-          { opacity: 0.6 },
+          { opacity: 0.6, marginTop: 4 },
         ]}
       >
         Add items to continue shopping

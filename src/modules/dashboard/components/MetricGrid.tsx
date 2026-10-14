@@ -1,5 +1,4 @@
-import { colors } from "@/src/constants/colors";
-import * as Icons from "lucide-react-native";
+import { dashboardTints, getDashboardIcon } from "@/src/constants/iconArt";
 import { View } from "react-native";
 import type { DashboardMetric } from "../types/orchardSections";
 import { formatMetricValue } from "../utils/metricFormat";
@@ -7,7 +6,8 @@ import EnhancedCard from "./EnhancedCard";
 
 type Props = {
   metrics: DashboardMetric[];
-  iconMap?: Record<string, keyof typeof Icons>;
+  /** Metric code -> lucide icon name; drawn as the matching colour icon. */
+  iconMap?: Record<string, string>;
 };
 
 // Every per-orchard domain endpoint returns the same self-describing metric
@@ -17,21 +17,16 @@ export default function MetricGrid({ metrics, iconMap = {} }: Props) {
 
   return (
     <View className="flex-row flex-wrap justify-between">
-      {metrics.map((metric) => {
-        const IconComp = (iconMap[metric.code]
-          ? Icons[iconMap[metric.code]]
-          : Icons.Activity) as any;
-
-        return (
-          <View key={metric.code} className="w-[48%] mb-3">
-            <EnhancedCard
-              title={metric.label}
-              value={formatMetricValue(metric)}
-              icon={<IconComp size={26} color={colors.secondary} strokeWidth={1.4} />}
-            />
-          </View>
-        );
-      })}
+      {metrics.map((metric, index) => (
+        <View key={metric.code} className="w-[48%] mb-3">
+          <EnhancedCard
+            title={metric.label}
+            value={formatMetricValue(metric)}
+            art={getDashboardIcon(iconMap[metric.code])}
+            tint={dashboardTints[index % dashboardTints.length]}
+          />
+        </View>
+      ))}
     </View>
   );
 }

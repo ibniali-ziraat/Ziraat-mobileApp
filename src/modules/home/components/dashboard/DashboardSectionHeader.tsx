@@ -1,6 +1,7 @@
 import { typography } from "@/src/constants/fonts/typography";
 import { ChevronRight } from "lucide-react-native";
 import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { Pressable } from "@/src/components/shared/Pressable";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 
@@ -15,6 +16,8 @@ type DashboardSectionHeaderProps = {
    * should sit close under the app header instead.
    */
   topSpacing?: number;
+  /** Full-colour badge from `homeArt`, shown before the title. */
+  art?: string;
 };
 
 export default function DashboardSectionHeader({
@@ -23,17 +26,34 @@ export default function DashboardSectionHeader({
   actionLabel,
   onAction,
   topSpacing = 26,
+  art,
 }: DashboardSectionHeaderProps) {
   return (
     <View
       style={{
         flexDirection: "row",
-        alignItems: "flex-end",
+        alignItems: art ? "center" : "flex-end",
         justifyContent: "space-between",
         marginTop: topSpacing,
         marginBottom: 12,
       }}
     >
+      {art ? (
+        <View
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 13,
+            marginRight: 10,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: cardTokens.mutedSurface,
+          }}
+        >
+          <SvgXml xml={art} width={26} height={26} />
+        </View>
+      ) : null}
+
       <View style={{ flex: 1, paddingRight: 12 }}>
         <Text
           style={[
