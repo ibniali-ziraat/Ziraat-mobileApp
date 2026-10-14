@@ -69,7 +69,7 @@ export default function FormDateInput({
                     if (!v) return onChange("");
                     onChange(v);
                   }}
-                  style={styles.webInput}
+                  style={webInputStyle}
                 />
                 {showError && (
                   <span style={styles.webError}>
@@ -136,6 +136,18 @@ export default function FormDateInput({
 
 // ── Styles ───────────────────────────────────────────────────────────────────
 
+// Plain CSS for the raw HTML <input>. Kept out of StyleSheet.create: React
+// Native's style validation rejects CSS shorthands like `outline` and errors
+// on every web bundle.
+const webInputStyle: React.CSSProperties = {
+  padding: "16px",
+  borderRadius: "4px",
+  border: `1px solid ${colors.neutral}`,
+  fontSize: "16px",
+  outline: "none",
+  backgroundColor: colors.light,
+};
+
 const styles = StyleSheet.create({
   container: { marginBottom: 16 },
 
@@ -173,14 +185,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     color: colors.dark,
-  } as any,
-  webInput: {
-    padding: "16px",
-    borderRadius: "4px",
-    border: `1px solid ${colors.neutral}`,
-    fontSize: "16px",
-    outline: "none",
-    backgroundColor: colors.light,
   } as any,
   webError: { color: colors.error, fontSize: "12px", marginTop: 4 } as any,
 });
