@@ -5,11 +5,13 @@ import {
   chartTokens,
 } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { getOrchardTile } from "@/src/constants/illustrations";
 import { ROUTES } from "@/src/constants/routes";
 import type { OrchardCompleteness } from "@/src/modules/orchards/hooks/useOrchardCompleteness";
 import { router } from "expo-router";
 import { CheckCircle2, ChevronRight } from "lucide-react-native";
 import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import MiniMeter from "./MiniMeter";
 
 /** Longest list shown before the card folds the rest away. */
@@ -79,64 +81,82 @@ function OrchardRow({
         opacity: pressed ? 0.7 : 1,
       })}
     >
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Text
-          numberOfLines={1}
-          style={[
-            typography.Poppins_s_medium,
-            { flex: 1, color: cardTokens.inkPrimary, fontSize: 13.5 },
-          ]}
+      <View style={{ flexDirection: "row" }}>
+        <View
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: 12,
+            overflow: "hidden",
+            marginRight: 12,
+          }}
         >
-          {row.name}
-        </Text>
+          <SvgXml xml={getOrchardTile({ id: row.id })} width={44} height={44} />
+        </View>
 
-        <Text
-          style={[
-            typography.Poppins_xs_semibold,
-            {
-              color: complete ? chartTokens.current : cardTokens.inkSecondary,
-              fontSize: 11.5,
-              marginRight: 2,
-            },
-          ]}
-        >
-          {row.done} of {row.total}
-        </Text>
-        <ChevronRight size={15} color={cardTokens.inkMuted} />
-      </View>
+        <View style={{ flex: 1 }}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text
+              numberOfLines={1}
+              style={[
+                typography.Poppins_s_medium,
+                { flex: 1, color: cardTokens.inkPrimary, fontSize: 13.5 },
+              ]}
+            >
+              {row.name}
+            </Text>
 
-      <SectionSegments row={row} />
-
-      <View
-        style={{ flexDirection: "row", alignItems: "center", marginTop: 7 }}
-      >
-        {complete ? (
-          <>
-            <CheckCircle2 size={12} color={chartTokens.current} />
             <Text
               style={[
-                typography.Poppins_xs_regular,
+                typography.Poppins_xs_semibold,
                 {
-                  color: chartTokens.current,
-                  fontSize: 10.5,
-                  marginLeft: 4,
+                  color: complete
+                    ? chartTokens.current
+                    : cardTokens.inkSecondary,
+                  fontSize: 11.5,
+                  marginRight: 2,
                 },
               ]}
             >
-              All sections added
+              {row.done} of {row.total}
             </Text>
-          </>
-        ) : (
-          <Text
-            numberOfLines={2}
-            style={[
-              typography.Poppins_xs_regular,
-              { flex: 1, color: cardTokens.inkMuted, fontSize: 10.5 },
-            ]}
+            <ChevronRight size={15} color={cardTokens.inkMuted} />
+          </View>
+
+          <SectionSegments row={row} />
+
+          <View
+            style={{ flexDirection: "row", alignItems: "center", marginTop: 7 }}
           >
-            Still to add: {row.missing.join(" · ")}
-          </Text>
-        )}
+            {complete ? (
+              <>
+                <CheckCircle2 size={12} color={chartTokens.current} />
+                <Text
+                  style={[
+                    typography.Poppins_xs_regular,
+                    {
+                      color: chartTokens.current,
+                      fontSize: 10.5,
+                      marginLeft: 4,
+                    },
+                  ]}
+                >
+                  All sections added
+                </Text>
+              </>
+            ) : (
+              <Text
+                numberOfLines={2}
+                style={[
+                  typography.Poppins_xs_regular,
+                  { flex: 1, color: cardTokens.inkMuted, fontSize: 10.5 },
+                ]}
+              >
+                Still to add: {row.missing.join(" · ")}
+              </Text>
+            )}
+          </View>
+        </View>
       </View>
     </Pressable>
   );

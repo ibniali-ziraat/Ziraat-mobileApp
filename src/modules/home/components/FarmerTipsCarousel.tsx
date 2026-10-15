@@ -4,6 +4,7 @@ import {
   chartTokens,
 } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { getTipArt, homeArt, tipTint } from "@/src/constants/iconArt";
 import { AlertTriangle } from "lucide-react-native";
 import { useRef, useState } from "react";
 import {
@@ -14,6 +15,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 import type { FarmerDashboardTip } from "../types/farmerDashboard";
 import { getTipPresentation } from "../utils/tipPresentation";
 
@@ -54,17 +56,31 @@ export default function FarmerTipsCarousel({
             borderCurve: "continuous",
             borderWidth: 1,
             borderColor: cardTokens.border,
-            paddingVertical: 26,
+            paddingVertical: 22,
             paddingHorizontal: 18,
             alignItems: "center",
           },
           cardShadow,
         ]}
       >
+        <SvgXml xml={homeArt.tipsEmpty} width={112} height={112} />
+        <Text
+          style={[
+            typography.Poppins_s_semibold,
+            {
+              color: cardTokens.inkPrimary,
+              fontSize: 14.5,
+              marginTop: 10,
+              textAlign: "center",
+            },
+          ]}
+        >
+          Fresh tips are on the way
+        </Text>
         <Text
           style={[
             typography.Poppins_xs_regular,
-            { color: cardTokens.inkMuted, textAlign: "center" },
+            { color: cardTokens.inkMuted, textAlign: "center", marginTop: 4 },
           ]}
         >
           Seasonal tips will appear here once your advisory syncs.
@@ -102,7 +118,7 @@ export default function FarmerTipsCarousel({
           paddingRight: SCREEN_PADDING + PEEK,
         }}
         renderItem={({ item }) => {
-          const { icon: Icon, description, warning } = getTipPresentation(item);
+          const { description, warning } = getTipPresentation(item);
 
           return (
             <View
@@ -110,7 +126,7 @@ export default function FarmerTipsCarousel({
                 {
                   width: CARD_WIDTH,
                   minHeight: 172,
-                  backgroundColor: cardTokens.surface,
+                  backgroundColor: tipTint[item.code] ?? tipTint.default,
                   borderRadius: 22,
                   borderCurve: "continuous",
                   borderWidth: 1,
@@ -120,19 +136,7 @@ export default function FarmerTipsCarousel({
                 cardShadow,
               ]}
             >
-              <View
-                style={{
-                  width: 42,
-                  height: 42,
-                  borderRadius: 14,
-                  borderCurve: "continuous",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: cardTokens.mutedSurface,
-                }}
-              >
-                <Icon size={21} color={chartTokens.current} strokeWidth={2} />
-              </View>
+              <SvgXml xml={getTipArt(item.code)} width={66} height={66} />
 
               <Text
                 style={[

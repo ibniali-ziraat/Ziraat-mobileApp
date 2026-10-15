@@ -1,19 +1,24 @@
 import { Pressable } from "@/src/components/shared/Pressable";
+import SceneBanner from "@/src/components/shared/SceneBanner";
 import SearchBar from "@/src/components/shared/SearchBar";
 import { colors } from "@/src/constants/colors";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { illustrations } from "@/src/constants/illustrations";
+import { ROUTES } from "@/src/constants/routes";
+import { toKanals } from "@/src/modules/home/utils/dashboardFormat";
 import { router } from "expo-router";
 import {
   ChevronDown,
+  ChevronRight,
   ChevronUp,
   LayoutDashboard,
   SlidersHorizontal,
-  Trees,
   X,
 } from "lucide-react-native";
 import { useMemo, useState } from "react";
 import { FlatList, Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import OrchardCard from "./OrchardCard";
 
@@ -61,6 +66,25 @@ export default function OrchardList({
   );
 
   const canToggle = !isNarrowed && orchards.length > PREVIEW_COUNT;
+
+  const totalKanals = orchards.reduce(
+    (sum, orchard) => sum + toKanals(orchard?.kanals, orchard?.marlas),
+    0,
+  );
+  const bannerSubtitle = [
+    `${orchards.length} ${orchards.length === 1 ? "orchard" : "orchards"}`,
+    totalKanals > 0
+      ? `${Number(totalKanals.toFixed(1))} kanals in total`
+      : null,
+  ]
+    .filter(Boolean)
+    .join(" • ");
+
+  const addOrchard = () =>
+    router.push({
+      pathname: ROUTES.ORCHARDS.REGISTRATION.BASIC_INFO,
+      params: { mode: "create" },
+    });
 
   return (
     <FlatList
@@ -114,11 +138,95 @@ export default function OrchardList({
             </Pressable>
           ) : null}
 
+          <Pressable
+            onPress={addOrchard}
+            accessibilityRole="button"
+            accessibilityLabel="Register another orchard"
+            style={({ pressed }) => ({
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 16,
+              padding: 14,
+              borderRadius: cardTokens.radius,
+              borderCurve: "continuous",
+              borderWidth: 1.5,
+              borderStyle: "dashed",
+              borderColor: chartTokens.previous,
+              backgroundColor: chartTokens.tint,
+              opacity: pressed ? 0.8 : 1,
+            })}
+          >
+            <SvgXml xml={illustrations.sapling} width={64} height={64} />
+            <View style={{ flex: 1, marginLeft: 12 }}>
+              <Text
+                style={[
+                  typography.Poppins_s_semibold,
+                  { color: cardTokens.inkPrimary, fontSize: 14.5 },
+                ]}
+              >
+                Grow your farm
+              </Text>
+              <Text
+                style={[
+                  typography.Poppins_xs_regular,
+                  {
+                    color: cardTokens.inkSecondary,
+                    fontSize: 11.5,
+                    marginTop: 2,
+                  },
+                ]}
+              >
+                Register another orchard to track it here
+              </Text>
+            </View>
+            <ChevronRight size={18} color={chartTokens.current} />
+          </Pressable>
+
           <View style={{ height: footerHeight }} />
         </View>
       }
       ListHeaderComponent={
         <View className="pb-5 pt-6">
+          <View style={{ marginBottom: 16 }}>
+            <SceneBanner
+              xml={illustrations.profileCover}
+              title="My orchard valley"
+              subtitle={bannerSubtitle}
+              action={
+                <Pressable
+                  onPress={() => router.push("/dashboard")}
+                  hitSlop={8}
+                  accessibilityRole="button"
+                  accessibilityLabel="View orchard dashboard"
+                  style={({ pressed }) => ({
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 6,
+                    paddingHorizontal: 12,
+                    paddingVertical: 8,
+                    borderRadius: 999,
+                    backgroundColor: "#FFFFFF",
+                    opacity: pressed ? 0.8 : 1,
+                  })}
+                >
+                  <LayoutDashboard
+                    size={13}
+                    color={colors.primary}
+                    strokeWidth={2.2}
+                  />
+                  <Text
+                    style={[
+                      typography.Poppins_xs_semibold,
+                      { color: colors.primary, fontSize: 11 },
+                    ]}
+                  >
+                    Dashboard
+                  </Text>
+                </Pressable>
+              }
+            />
+          </View>
+
           <SearchBar
             search={search}
             setSearch={setSearch}
@@ -207,41 +315,12 @@ export default function OrchardList({
                 </Text>
               </Pressable>
             ) : null}
-
-            {/* Right-end button */}
-            <Pressable
-              onPress={() => router.push("/dashboard")}
-              hitSlop={8}
-              accessibilityRole="button"
-              accessibilityLabel="View orchard dashboard"
-              style={({ pressed }) => ({
-                marginLeft: 12,
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 6,
-                paddingHorizontal: 12,
-                paddingVertical: 8,
-                borderRadius: 999,
-                backgroundColor: colors.primary,
-                opacity: pressed ? 0.8 : 1,
-              })}
-            >
-              <LayoutDashboard size={13} color={colors.light} strokeWidth={2.2} />
-              <Text
-                style={[
-                  typography.Poppins_xs_semibold,
-                  { color: colors.light, fontSize: 11 },
-                ]}
-              >
-                View Orchard Dashboard
-              </Text>
-            </Pressable>
           </View>
         </View>
       }
       ListEmptyComponent={
         <View className="items-center rounded-3xl bg-white px-6 py-12">
-          <Trees size={34} color={colors.primary} />
+          <SvgXml xml={illustrations.sapling} width={110} height={110} />
           <Text
             style={[
               typography.Poppins_m_semibold,

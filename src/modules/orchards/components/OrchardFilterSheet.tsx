@@ -1,9 +1,11 @@
 import { Pressable } from "@/src/components/shared/Pressable";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { filterArt } from "@/src/constants/iconArt";
 import { RotateCcw } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Modal, ScrollView, Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 /** Sentinel for "this facet is not filtering anything". */
@@ -120,11 +122,14 @@ function Chip({
 
 function Facet({
   title,
+  art,
   options,
   value,
   onChange,
 }: {
   title: string;
+  /** Full-colour icon from `filterArt`, shown before the title. */
+  art: string;
   options: FacetOption[];
   value: string;
   onChange: (next: string) => void;
@@ -133,19 +138,36 @@ function Facet({
 
   return (
     <View style={{ marginBottom: 22 }}>
-      <Text
-        style={[
-          typography.Poppins_xs_medium,
-          {
-            color: cardTokens.inkMuted,
-            fontSize: 11,
-            marginBottom: 10,
-            marginLeft: 2,
-          },
-        ]}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: 10,
+          marginLeft: 2,
+        }}
       >
-        {title}
-      </Text>
+        <View
+          style={{
+            width: 28,
+            height: 28,
+            borderRadius: 9,
+            marginRight: 8,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: cardTokens.mutedSurface,
+          }}
+        >
+          <SvgXml xml={art} width={19} height={19} />
+        </View>
+        <Text
+          style={[
+            typography.Poppins_xs_semibold,
+            { color: cardTokens.inkSecondary, fontSize: 12 },
+          ]}
+        >
+          {title}
+        </Text>
+      </View>
 
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
         {options.map((option) => (
@@ -238,6 +260,19 @@ export default function OrchardFilterSheet({
             paddingBottom: 6,
           }}
         >
+          <View
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 14,
+              marginRight: 12,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#EEF4E9",
+            }}
+          >
+            <SvgXml xml={filterArt.funnel} width={28} height={28} />
+          </View>
           <View style={{ flex: 1 }}>
             <Text
               style={[
@@ -287,6 +322,7 @@ export default function OrchardFilterSheet({
         >
           <Facet
             title="Ownership type"
+            art={filterArt.ownership}
             options={facets.ownershipType}
             value={draft.ownershipType}
             onChange={(next) => set("ownershipType", next)}
@@ -294,6 +330,7 @@ export default function OrchardFilterSheet({
 
           <Facet
             title="Location"
+            art={filterArt.location}
             options={facets.district}
             value={draft.district}
             onChange={(next) => set("district", next)}
@@ -301,6 +338,7 @@ export default function OrchardFilterSheet({
 
           <Facet
             title="Plantation pattern"
+            art={filterArt.pattern}
             options={facets.plantationPattern}
             value={draft.plantationPattern}
             onChange={(next) => set("plantationPattern", next)}
@@ -308,6 +346,7 @@ export default function OrchardFilterSheet({
 
           <Facet
             title="Sort by"
+            art={filterArt.sort}
             options={SORT_OPTIONS}
             value={draft.sort}
             onChange={(next) => set("sort", next as OrchardSort)}

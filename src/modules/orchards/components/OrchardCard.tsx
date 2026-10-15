@@ -1,9 +1,15 @@
-import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { getOrchardTile } from "@/src/constants/illustrations";
+import {
+  cardShadow,
+  cardTokens,
+  chartTokens,
+} from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
-import { ChevronRight, MapPin, Trees } from "lucide-react-native";
+import { ChevronRight, MapPin } from "lucide-react-native";
 import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { Pressable } from "@/src/components/shared/Pressable";
 
 interface OrchardCardProps {
@@ -46,7 +52,7 @@ function Chip({ label, accent = false }: { label: string; accent?: boolean }) {
 }
 
 /**
- * Compact white tile: thumbnail, name, place and the two facts worth scanning.
+ * Compact white tile: tree illustration, name, place and the two facts worth scanning.
  * Everything else lives on the details screen — this list is for finding an
  * orchard, not for reading it.
  */
@@ -96,12 +102,11 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
           height: THUMB,
           borderRadius: 16,
           borderCurve: "continuous",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: cardTokens.mutedSurface,
+          overflow: "hidden",
+          backgroundColor: chartTokens.tint,
         }}
       >
-        <Trees size={30} color={chartTokens.current} strokeWidth={1.6} />
+        <SvgXml xml={getOrchardTile(orchard)} width={THUMB} height={THUMB} />
       </View>
 
       <View style={{ flex: 1, marginLeft: 14, marginRight: 6 }}>

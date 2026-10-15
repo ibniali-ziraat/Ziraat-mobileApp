@@ -1,14 +1,8 @@
-import {
-  CloudRain,
-  CloudSun,
-  Droplet,
-  Moon,
-  Sun,
-  Wind,
-} from "lucide-react-native";
+import { Droplet, Wind } from "lucide-react-native";
 import { useEffect, useMemo, useRef } from "react";
 import { Dimensions, ScrollView, View } from "react-native";
-import Svg, { Circle, Path } from "react-native-svg";
+import Svg, { Circle, Path, SvgXml } from "react-native-svg";
+import { weatherIcons } from "@/src/constants/iconArt";
 import { colors } from "../constants/colors";
 import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
@@ -43,16 +37,11 @@ const getWeatherTypeFromPictocode = (
 };
 
 const renderIcon = (type: string) => {
-  switch (type) {
-    case "rain":
-      return <CloudRain size={20} color={colors.secondary} />;
-    case "moon":
-      return <Moon size={20} color={colors.secondary} />;
-    case "cloudSun":
-      return <CloudSun size={20} color={colors.secondary} />;
-    default:
-      return <Sun size={20} color={colors.secondary} />;
-  }
+  const xml =
+    type === "rain" || type === "moon" || type === "cloudSun"
+      ? weatherIcons[type]
+      : weatherIcons.sun;
+  return <SvgXml xml={xml} width={28} height={28} />;
 };
 
 // WeatherAPI hands back "YYYY-MM-DD HH:mm" — Hermes (RN's JS engine) can't

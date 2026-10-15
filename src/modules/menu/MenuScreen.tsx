@@ -2,6 +2,7 @@ import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
+import { getPageArt } from "@/src/constants/iconArt";
 import { useMenuList } from "@/src/navigation/hooks/usemenus";
 import { MenuLinks, type MenuGroup } from "@/src/navigation/MenuLinks";
 import { FileText } from "lucide-react-native";
@@ -25,6 +26,7 @@ export default function MenuScreen() {
         label: page.name,
         screen: `/menupagedetatils?id=${page.id}&title=${encodeURIComponent(page.name)}`, // (menu-pages)/menupagedetatils.tsx reads ?id= and ?title=
         icon: FileText,
+        art: getPageArt(page.name),
       })),
     };
   }, [pages]);

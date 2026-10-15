@@ -7,6 +7,7 @@ import {
   type LucideIcon,
 } from "lucide-react-native";
 import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import MiniBars from "./MiniBars";
 import MiniMeter from "./MiniMeter";
 
@@ -16,6 +17,8 @@ export type StatCardProps = {
   unit?: string;
   caption?: string;
   icon: LucideIcon;
+  /** Full-colour icon from `statIcons`; drawn in place of `icon`. */
+  art?: string;
   delta?: number | null;
   deltaLabel?: string;
   /** Series of values -> mini column chart along the card's foot. */
@@ -36,6 +39,7 @@ export default function StatCard({
   unit,
   caption,
   icon: Icon,
+  art,
   delta,
   deltaLabel,
   bars,
@@ -98,15 +102,19 @@ export default function StatCard({
 
           <View
             style={{
-              width: 28,
-              height: 28,
-              borderRadius: 14,
+              width: art ? 34 : 28,
+              height: art ? 34 : 28,
+              borderRadius: art ? 17 : 14,
               alignItems: "center",
               justifyContent: "center",
               backgroundColor: cardTokens.surface,
             }}
           >
-            <Icon size={15} color={chartTokens.current} strokeWidth={2} />
+            {art ? (
+              <SvgXml xml={art} width={24} height={24} />
+            ) : (
+              <Icon size={15} color={chartTokens.current} strokeWidth={2} />
+            )}
           </View>
         </View>
 

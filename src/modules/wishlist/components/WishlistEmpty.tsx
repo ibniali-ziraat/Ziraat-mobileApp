@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
-import { Image, Pressable, Text, View } from "react-native";
+import { Heart } from "lucide-react-native";
+import { Pressable, Text, View } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
 import { colors } from "@/src/constants/colors";
@@ -18,11 +19,7 @@ const WishlistEmpty = ({ onStartShopping }: WishlistEmptyProps) => {
       <BackHeader title="My Wishlist" desc="Your saved items" />
 
       <View className="flex-1 justify-center items-center px-12">
-        <Image
-          source={require("@/assets/images/empty-wishlist.png")}
-          style={{ width: 110, height: 110 }}
-          resizeMode="contain"
-        />
+        <Heart size={64} color={colors.primary} strokeWidth={1.5} />
 
         {/* Header Text */}
         <Text style={[typography.Poppins_l_semibold, { marginTop: 20 }]}>

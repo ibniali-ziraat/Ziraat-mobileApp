@@ -1,7 +1,9 @@
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { Pressable, Text } from "react-native";
+import { getCategoryArt } from "@/src/constants/iconArt";
+import { Pressable, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { SvgXml } from "react-native-svg";
 
 interface CategoryItem {
   id: number;
@@ -48,8 +50,9 @@ export default function CategoryTabs({
             style={{
               flexDirection: "row",
               alignItems: "center",
-              paddingHorizontal: 16,
-              paddingVertical: 10,
+              paddingLeft: 8,
+              paddingRight: 16,
+              paddingVertical: 7,
               borderRadius: 999,
               marginRight: 10,
               backgroundColor: isActive
@@ -57,6 +60,19 @@ export default function CategoryTabs({
                 : cardTokens.mutedSurface,
             }}
           >
+            <View
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: 14,
+                marginRight: 8,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#FFFFFF",
+              }}
+            >
+              <SvgXml xml={getCategoryArt(item.name)} width={19} height={19} />
+            </View>
             <Text
               style={[
                 typography.Poppins_xs_semibold,

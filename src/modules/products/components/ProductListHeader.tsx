@@ -1,3 +1,7 @@
+import SceneBanner from "@/src/components/shared/SceneBanner";
+import { productArt } from "@/src/constants/iconArt";
+import { illustrations } from "@/src/constants/illustrations";
+import { View } from "react-native";
 import DashboardSectionHeader from "../../home/components/dashboard/DashboardSectionHeader";
 import { ProductFilters } from "../types/productlist.types";
 import CategoryTabs from "./CategoryTabs";
@@ -42,6 +46,21 @@ export default function ProductListHeader({
   
   return (
     <>
+      <View style={{ marginTop: 8, marginBottom: 14 }}>
+        <SceneBanner
+          xml={illustrations.farm}
+          title="Everything your orchard needs"
+          subtitle="Sprays, fertilizers, irrigation & tools"
+          badges={[
+            productArt.sprays,
+            productArt.fertilizers,
+            productArt.irrigation,
+            productArt.tools,
+            productArt.seeds,
+          ]}
+        />
+      </View>
+
       <ProductSearchBar
         search={search}
         setSearch={setSearch}

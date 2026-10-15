@@ -1,7 +1,9 @@
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { MapPin } from "lucide-react-native";
-import { Image, Text, View } from "react-native";
+import { weatherIconFor } from "@/src/constants/iconArt";
+import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import {
   getWeatherPresentation,
   type WeatherCodeSet,
@@ -23,7 +25,6 @@ export default function WeatherCard({ current, city }: WeatherCardProps) {
     conditionSet,
     isDaylight,
   );
-  const WeatherIcon = weather.icon;
 
   return (
     <View
@@ -107,19 +108,11 @@ export default function WeatherCard({ current, city }: WeatherCardProps) {
               borderColor: "rgba(255,255,255,0.2)",
             }}
           >
-            {current?.iconUrl ? (
-              <Image
-                source={{ uri: current.iconUrl }}
-                resizeMode="contain"
-                style={{ width: 62, height: 62 }}
-              />
-            ) : (
-              <WeatherIcon
-                size={48}
-                strokeWidth={1.65}
-                color={isDaylight ? "#FFE082" : "#E8F1FF"}
-              />
-            )}
+            <SvgXml
+              xml={weatherIconFor(weather.effect, isDaylight)}
+              width={58}
+              height={58}
+            />
           </View>
         </View>
       </AnimatedWeatherBackground>

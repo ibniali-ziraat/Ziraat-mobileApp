@@ -1,4 +1,5 @@
 import { ROUTES } from "@/src/constants/routes";
+import { homeArt } from "@/src/constants/iconArt";
 import { useBestDeals } from "@/src/modules/products/hooks/queries/products.queries";
 import { router } from "expo-router";
 import { ScrollView, View } from "react-native";
@@ -27,6 +28,7 @@ export default function BestDealsSection() {
     <View style={{ marginTop: 14 }}>
       <DashboardSectionHeader
         title="Best deals"
+        art={homeArt.deals}
         subtitle="Steep discounts across vendors"
         actionLabel="Shop"
         onAction={() => router.push(ROUTES.TABS.PRODUCTS)}

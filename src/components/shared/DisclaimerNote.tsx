@@ -1,6 +1,6 @@
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { Info } from "lucide-react-native";
+import { pageArt } from "@/src/constants/iconArt";
 import { useState } from "react";
 import {
   LayoutAnimation,
@@ -10,6 +10,7 @@ import {
   UIManager,
   View,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { Pressable } from "@/src/components/shared/Pressable";
 
 if (Platform.OS === "android") {
@@ -84,7 +85,7 @@ export default function DisclaimerNote({
       <View
         style={{ flexDirection: "row", alignItems: "center", marginBottom: 6 }}
       >
-        <Info size={13} color={cardTokens.inkMuted} />
+        <SvgXml xml={pageArt.privacy} width={16} height={16} />
         <Text
           style={[
             typography.Poppins_xs_medium,

@@ -1,58 +1,77 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
-import { shadows } from "@/src/constants/shadows";
 import { View } from "react-native";
+import { SvgXml } from "react-native-svg";
 
-export default function EnhancedCard({ title, value, accent, icon }) {
+type Props = {
+  title: string;
+  value?: string;
+  accent?: string;
+  /** Full-colour icon from `getDashboardIcon`. */
+  art: string;
+  /** Pastel wash behind the tile. */
+  tint: string;
+};
+
+/** One metric on a pastel tile, its icon in a white disc. */
+export default function EnhancedCard({
+  title,
+  value,
+  accent,
+  art,
+  tint,
+}: Props) {
   return (
     <View
-      style={[
-        {
-          width: "100%",
-          backgroundColor: colors.light,
-          borderRadius: 16,
-          borderColor: colors.neutral,
-          paddingVertical: 12,
-          paddingHorizontal: 10,
-          height: 130,
-          alignItems: "center",
-          justifyContent: "space-between",
-        },
-        shadows.profile_card,
-      ]}
+      style={{
+        width: "100%",
+        minHeight: 138,
+        borderRadius: 18,
+        padding: 12,
+        backgroundColor: tint,
+      }}
     >
-      {/* Icon */}
-      {icon && <View>{icon}</View>}
+      <View
+        style={{
+          width: 46,
+          height: 46,
+          borderRadius: 23,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#FFFFFF",
+        }}
+      >
+        <SvgXml xml={art} width={28} height={28} />
+      </View>
 
-      {/* Title */}
       <CsText
-        style={[typography.Poppins_s_medium, { fontSize: 14, textAlign: "center", color: colors.dark }]}
+        numberOfLines={2}
+        style={[
+          typography.Poppins_s_medium,
+          { fontSize: 12.5, lineHeight: 17, color: colors.dark, marginTop: 10 },
+        ]}
       >
         {title}
       </CsText>
 
-      {/* Value + Accent */}
-      <View className="items-center">
-        {value && (
-          <CsText
-            style={[
-              typography.Poppins_m_regular,
-              { fontSize: 18, color: colors.primary, textAlign: "center" },
-            ]}
-          >
-            {value}
-          </CsText>
-        )}
+      {value ? (
+        <CsText
+          numberOfLines={1}
+          style={[
+            typography.Poppins_m_semibold,
+            { fontSize: 17, color: colors.primary, marginTop: 4 },
+          ]}
+        >
+          {value}
+        </CsText>
+      ) : null}
 
-        {accent && (
-          <CsText
-            style={{ fontSize: 14, marginTop: 4, color: colors.dark, textAlign: "center" }}
-          >
-            {accent}
-          </CsText>
-        )}
-      </View>
+      {accent ? (
+        <CsText style={{ fontSize: 12, marginTop: 2, color: colors.dark }}>
+          {accent}
+        </CsText>
+      ) : null}
     </View>
   );
 }

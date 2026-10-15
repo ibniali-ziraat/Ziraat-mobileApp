@@ -1,11 +1,11 @@
-import { colors } from "@/src/constants/colors";
-import { Bell } from "lucide-react-native";
+import { notificationArt } from "@/src/constants/iconArt";
 import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 
 export default function EmptyState() {
   return (
     <View className="flex-1 items-center justify-center px-6">
-      <Bell size={70} color={colors.primary || "green"} strokeWidth={1.5} />
+      <SvgXml xml={notificationArt.empty} width={150} height={150} />
 
       <Text className="mt-4 text-xl font-semibold text-center">
         No notifications

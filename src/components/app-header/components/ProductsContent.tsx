@@ -22,13 +22,13 @@ const ProductsContent = () => {
           style={[typography.Poppins_m_semibold, { color: colors.dark }]}
           className="text-lg"
         >
-          Products
+          Shop
         </Text>
         <Text
           style={[typography.Poppins_xs_regular, { color: colors.dark }]}
           className="text-neutral"
         >
-          Shop fertilizers, Tools & Supplies
+          Fertilizers, sprays, tools & supplies
         </Text>
       </View>
 

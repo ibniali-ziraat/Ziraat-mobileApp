@@ -1,12 +1,15 @@
+import IllustrationBackground from "@/src/components/shared/IllustrationBackground";
 import { typography } from "@/src/constants/fonts/typography";
+import { weatherIconFor } from "@/src/constants/iconArt";
 import { ROUTES } from "@/src/constants/routes";
+import { getWeatherScene } from "@/src/constants/weatherScenes";
 import { useHomeWeather } from "@/src/modules/home/hooks/useHomeWeather";
-import { getWeatherBackground } from "@/src/modules/home/utils/weatherBackgrounds";
 import { getWeatherPresentation } from "@/src/modules/home/utils/weatherPictogram";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ChevronRight, MapPin } from "lucide-react-native";
-import { ImageBackground, Text, View } from "react-native";
+import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { Pressable } from "@/src/components/shared/Pressable";
 
 const WEATHER_CARD_HEIGHT = 108;
@@ -26,8 +29,6 @@ export default function HomeWeatherCard() {
     currentWeather?.conditionSet ?? "daily",
     isDaylight,
   );
-  const WeatherIcon = weather.icon;
-  const weatherBackground = getWeatherBackground(weather.effect, isDaylight);
 
   const temp =
     typeof currentWeather?.tempC === "number"
@@ -58,9 +59,8 @@ export default function HomeWeatherCard() {
         accessibilityLabel="Open weather forecast"
         style={({ pressed }) => ({ opacity: pressed ? 0.9 : 1 })}
       >
-        <ImageBackground
-          source={weatherBackground}
-          resizeMode="cover"
+        <IllustrationBackground
+          xml={getWeatherScene(weather.effect, isDaylight)}
           style={{ height: WEATHER_CARD_HEIGHT, justifyContent: "center" }}
         >
           <LinearGradient
@@ -154,7 +154,11 @@ export default function HomeWeatherCard() {
                   borderColor: "rgba(255,255,255,0.24)",
                 }}
               >
-                <WeatherIcon size={24} strokeWidth={1.8} color="#FFFFFF" />
+                <SvgXml
+                  xml={weatherIconFor(weather.effect, isDaylight)}
+                  width={32}
+                  height={32}
+                />
               </View>
               <ChevronRight
                 size={14}
@@ -163,7 +167,7 @@ export default function HomeWeatherCard() {
               />
             </View>
           </LinearGradient>
-        </ImageBackground>
+        </IllustrationBackground>
       </Pressable>
     </View>
   );

@@ -6,12 +6,15 @@ import {
   ShoppingBag,
   type LucideIcon,
 } from "lucide-react-native";
+import { menuArt } from "../constants/iconArt";
 import { ROUTES } from "../constants/routes";
 
 export type MenuRoute = {
   label: string;
   screen: string;
   icon: LucideIcon;
+  /** Full-colour icon from `menuArt`; drawn in place of `icon`. */
+  art?: string;
 };
 
 export type MenuGroup = {
@@ -24,8 +27,18 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
     {
       title: "Account",
       routes: [
-        { label: "My Orders", screen: ROUTES.ORDERS.LIST, icon: ShoppingBag },
-        { label: "Manage Addresses", screen: "/add-addresses", icon: MapPin },
+        {
+          label: "My Orders",
+          screen: ROUTES.ORDERS.LIST,
+          icon: ShoppingBag,
+          art: menuArt.orders,
+        },
+        {
+          label: "Manage Addresses",
+          screen: "/add-addresses",
+          icon: MapPin,
+          art: menuArt.addresses,
+        },
       ],
     },
     {
@@ -37,11 +50,17 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
         //   icon: LayoutDashboard
         //   ,
         // },
-        { label: "Notifications", screen: "notifications", icon: Bell },
+        {
+          label: "Notifications",
+          screen: "notifications",
+          icon: Bell,
+          art: menuArt.notifications,
+        },
         {
           label: "Discussion",
           screen: ROUTES.Discussion.discussionForum,
           icon: MessagesSquare,
+          art: menuArt.discussion,
         },
       ],
     },
@@ -55,7 +74,14 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
     // },
     {
       title: "Preferences",
-      routes: [{ label: "Settings", screen: ROUTES.SETTINGS, icon: Settings }],
+      routes: [
+        {
+          label: "Settings",
+          screen: ROUTES.SETTINGS,
+          icon: Settings,
+          art: menuArt.settings,
+        },
+      ],
     },
   ],
 };

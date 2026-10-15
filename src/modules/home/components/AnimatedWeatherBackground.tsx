@@ -1,8 +1,9 @@
 import { Cloud } from "lucide-react-native";
 import { useEffect, useRef } from "react";
-import { Animated, ImageBackground, StyleSheet, View } from "react-native";
+import IllustrationBackground from "@/src/components/shared/IllustrationBackground";
+import { getWeatherScene } from "@/src/constants/weatherScenes";
+import { Animated, StyleSheet, View } from "react-native";
 import type { WeatherEffect } from "../utils/weatherPictogram";
-import { getWeatherBackground } from "../utils/weatherBackgrounds";
 
 const PARTICLE_COUNT = 16;
 
@@ -83,10 +84,12 @@ export default function AnimatedWeatherBackground({
     return () => animations.forEach((animation) => animation.stop());
   }, [ambientProgress, effect, particleProgress]);
 
-  const source = getWeatherBackground(effect, isDaylight);
 
   return (
-    <ImageBackground source={source} resizeMode="cover" style={styles.fill}>
+    <IllustrationBackground
+      xml={getWeatherScene(effect, isDaylight)}
+      style={styles.fill}
+    >
       <View style={styles.scrim} />
       <View pointerEvents="none" style={StyleSheet.absoluteFill}>
         {(effect === "rain" || effect === "snow") &&
@@ -177,7 +180,7 @@ export default function AnimatedWeatherBackground({
         )}
       </View>
       {children}
-    </ImageBackground>
+    </IllustrationBackground>
   );
 }
 
@@ -188,7 +191,9 @@ const styles = StyleSheet.create({
   },
   scrim: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(4, 17, 27, 0.28)",
+    // Lighter than it was over photos: the illustration is flatter and
+    // brighter, and the white text only needs a light lift off it.
+    backgroundColor: "rgba(4, 17, 27, 0.2)",
   },
   rainDrop: {
     position: "absolute",
