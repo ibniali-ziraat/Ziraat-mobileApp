@@ -8,6 +8,7 @@ import CsText from "@/src/components/shared/CsText";
 import {
   irrigationOptions,
   soilTypeOptions,
+  todayISO,
   waterAvailabilityOptions,
   waterSourceOptions,
 } from "@/src/modules/orchards/schemas/SoilWaterProfileSchema";
@@ -56,8 +57,8 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
           placeholder="Select Soil Health"
           options={SOIL_HEALTH_OPTIONS}
           optional
-
-          // error={errors?.soilHealth?.message}
+          singleSelection
+          error={errors?.soilHealthStatus}
         />
 
         <FormDateInput
@@ -65,6 +66,7 @@ export default function SoilAndWaterProfile({ data, control, errors }) {
           name="lastSoilTestDate"
           label="Latest Soil Test Date (optional)"
           placeholder="Select Date"
+          maxDate={todayISO()}
           error={errors?.lastSoilTestDate?.message}
           optional
         />

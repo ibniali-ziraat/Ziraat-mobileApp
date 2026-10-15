@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Platform, Pressable, StyleSheet, View } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";
+import { dismissFocusedInput } from "../../../utils/dismissFocusedInput";
 import CsText from "../../shared/CsText";
 
 interface FormDateInputProps {
@@ -12,6 +13,8 @@ interface FormDateInputProps {
   optional?: boolean;
   error?: string;
   placeholder?: string;
+  // latest selectable date, as YYYY-MM-DD
+  maxDate?: string;
 }
 
 export default function FormDateInput({
@@ -20,6 +23,7 @@ export default function FormDateInput({
   optional = false,
   error,
   placeholder = "Select Date",
+  maxDate,
 }: FormDateInputProps) {
   const [show, setShow] = useState(false);
   const isWeb = Platform.OS === "web";
@@ -63,6 +67,7 @@ export default function FormDateInput({
                 </label>
                 <input
                   type="date"
+                  max={maxDate}
                   value={normalizedValue}
                   onChange={(e) => {
                     const v = e.target.value;
@@ -88,7 +93,10 @@ export default function FormDateInput({
                 </CsText>
 
                 <Pressable
-                  onPress={() => setShow(true)}
+                  onPress={() => {
+                    dismissFocusedInput();
+                    setShow(true);
+                  }}
                   style={[
                     styles.pressable,
                     showError && { borderColor: colors.error },
@@ -112,6 +120,11 @@ export default function FormDateInput({
                   visible={show}
                   onDismiss={() => setShow(false)}
                   date={selectedDate}
+                  validRange={
+                    maxDate
+                      ? { endDate: new Date(maxDate + "T00:00:00") }
+                      : undefined
+                  }
                   onConfirm={({ date }) => {
                     setShow(false);
                     if (!date) return;

@@ -12,6 +12,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { dismissFocusedInput } from "../../../utils/dismissFocusedInput";
 import { SingleSelectInputProps } from "../../shared/inputs/types";
 
 export default function SingleSelectInput({
@@ -113,6 +114,7 @@ export default function SingleSelectInput({
               }}
               onPress={() => {
                 if (!disabled) {
+                  dismissFocusedInput();
                   setVisible(true);
                   if (searchable) showSearchBar();
                 }

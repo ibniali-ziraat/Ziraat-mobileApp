@@ -82,6 +82,9 @@ export interface MultiSelectInputProps {
   showInputLabel?: boolean;
 
   modalLabel?: string;
+
+  // only one option can be picked at a time; the value stays an array
+  singleSelection?: boolean;
 }
 export interface ChipInputProps {
   required: any;

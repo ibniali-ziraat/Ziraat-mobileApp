@@ -94,7 +94,11 @@ function mapSignalRPayloadToStoredNotification(
 }
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
-  const { onNotification } = useSignalR();
+  const { onNotification, isConnected: socketConnected } = useSignalR();
+
+  // read inside the FCM listener without re-subscribing it on every change
+  const socketConnectedRef = useRef(socketConnected);
+  socketConnectedRef.current = socketConnected;
 
   const [notification, setNotification] =
     useState<FirebaseMessagingTypes.RemoteMessage | null>(null);
@@ -224,7 +228,9 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     const unsubForeground = messaging().onMessage(async (msg) => {
       setNotification(msg);
 
-      addNotification(msg);
+      // while the app is open the socket already delivers this notification;
+      // only store the FCM copy if the socket is down, so it shows once
+      if (!socketConnectedRef.current) addNotification(msg);
 
       listenersRef.current.forEach((cb) => cb(msg));
     });

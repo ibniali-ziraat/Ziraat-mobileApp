@@ -3,6 +3,7 @@ import { Asterisk, ChevronDown } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { Controller, useWatch } from "react-hook-form";
 import { FlatList, Modal, Pressable, Text, View } from "react-native";
+import { dismissFocusedInput } from "../../../utils/dismissFocusedInput";
 import { MultiSelectInputProps } from "../../shared/inputs/types";
 
 export default function MultiSelectInput({
@@ -13,6 +14,7 @@ export default function MultiSelectInput({
   error,
   optional = false,
   placeholder = label,
+  singleSelection = false,
 }: MultiSelectInputProps) {
   const [visible, setVisible] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<any[]>([]);
@@ -28,9 +30,10 @@ export default function MultiSelectInput({
   }, [value]);
 
   const toggleOption = (val: string | number) => {
-    setSelectedOptions((prev) =>
-      prev.includes(val) ? prev.filter((x) => x !== val) : [...prev, val],
-    );
+    setSelectedOptions((prev) => {
+      if (singleSelection) return prev.includes(val) ? [] : [val];
+      return prev.includes(val) ? prev.filter((x) => x !== val) : [...prev, val];
+    });
   };
 
   return (
@@ -55,7 +58,10 @@ export default function MultiSelectInput({
           </View>
 
           <Pressable
-            onPress={() => setVisible(true)}
+            onPress={() => {
+              dismissFocusedInput();
+              setVisible(true);
+            }}
             style={{
               borderWidth: 1,
               borderColor: colors.neutral,
