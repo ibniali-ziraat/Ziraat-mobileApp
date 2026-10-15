@@ -45,7 +45,7 @@ export default function AdvisorySection({ orchardProfileId }: Props) {
     <CsText
       style={[
         typography.Poppins_m_semibold,
-        { fontSize: 16, color: colors.dark, marginTop: 16, marginBottom: 8 },
+        { fontSize: 17, color: colors.dark, marginTop: 16, marginBottom: 8 },
       ]}
     >
       {label}
@@ -70,7 +70,7 @@ export default function AdvisorySection({ orchardProfileId }: Props) {
               }`
             : "—"}
         </CsText>
-        <CsText style={{ marginTop: 6, color: colors.neutral, fontSize: 12, textAlign: "center" }}>
+        <CsText style={{ marginTop: 6, color: colors.neutral, fontSize: 14, textAlign: "center" }}>
           {engagementScore?.label ?? "No engagement scoring model is configured."}
         </CsText>
       </View>
@@ -91,10 +91,10 @@ export default function AdvisorySection({ orchardProfileId }: Props) {
               }}
             >
               <View style={{ flex: 1, marginRight: 10 }}>
-                <CsText style={{ color: colors.dark, fontSize: 13 }} numberOfLines={1}>
+                <CsText style={{ color: colors.dark, fontSize: 15 }} numberOfLines={1}>
                   {item.title}
                 </CsText>
-                <CsText style={{ fontSize: 11, color: colors.neutral }}>
+                <CsText style={{ fontSize: 13.5, color: colors.neutral }}>
                   {new Date(item.occurredOn).toLocaleDateString()}
                 </CsText>
               </View>
@@ -106,7 +106,7 @@ export default function AdvisorySection({ orchardProfileId }: Props) {
                   borderRadius: 999,
                 }}
               >
-                <CsText style={{ color: colors.light, fontSize: 11 }}>{item.status}</CsText>
+                <CsText style={{ color: colors.light, fontSize: 13.5 }}>{item.status}</CsText>
               </View>
             </View>
           ))

@@ -79,7 +79,7 @@ export default function ProductPriceCard({ product, selectedVariation }: any) {
             <CsText
               style={[
                 typography.Poppins_xs_semibold,
-                { color: "#FFFFFF", fontSize: 11 },
+                { color: "#FFFFFF", fontSize: 13.5 },
               ]}
             >
               {price.percentOfSaving}% OFF
@@ -92,7 +92,7 @@ export default function ProductPriceCard({ product, selectedVariation }: any) {
         <CsText
           style={[
             typography.Poppins_xs_medium,
-            { color: chartTokens.current, fontSize: 12, marginTop: 4 },
+            { color: chartTokens.current, fontSize: 14, marginTop: 4 },
           ]}
         >
           You save ₹{savings}

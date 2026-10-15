@@ -36,7 +36,7 @@ export default function StatChip({
 
       {/* TITLE */}
       <CsText
-        className="text-[12px] text-center"
+        className="text-[14px] text-center"
         style={{ color: colors.dark }}
       >
         {title}

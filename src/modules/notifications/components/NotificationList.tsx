@@ -21,7 +21,7 @@ export default function NotificationList({ items }: Props) {
       {items.length > 0 && (
         <View className="flex-row items-center mb-3 gap-1">
           <ArrowLeft size={12} color={colors.dark} />
-          <Text className="text-[12px] text-dark">
+          <Text className="text-[14px] text-dark">
             Swipe left to delete notification
           </Text>
         </View>

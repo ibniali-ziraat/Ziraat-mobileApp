@@ -80,7 +80,7 @@ export default function ProductMiniCard({
             <Text
               style={[
                 typography.Poppins_xs_semibold,
-                { color: "#FFFFFF", fontSize: 9.5 },
+                { color: "#FFFFFF", fontSize: 10.5 },
               ]}
             >
               {badgeLabel}
@@ -96,8 +96,8 @@ export default function ProductMiniCard({
             typography.Poppins_xs_medium,
             {
               color: cardTokens.inkPrimary,
-              fontSize: 12,
-              lineHeight: 16,
+              fontSize: 14,
+              lineHeight: 20,
               minHeight: 32,
             },
           ]}
@@ -116,7 +116,7 @@ export default function ProductMiniCard({
           <Text
             style={[
               typography.Poppins_s_semibold,
-              { color: cardTokens.inkPrimary, fontSize: 14 },
+              { color: cardTokens.inkPrimary, fontSize: 16 },
             ]}
           >
             ₹{Math.round(price)}
@@ -127,7 +127,7 @@ export default function ProductMiniCard({
                 typography.Poppins_xs_regular,
                 {
                   color: cardTokens.inkMuted,
-                  fontSize: 10.5,
+                  fontSize: 13,
                   textDecorationLine: "line-through",
                 },
               ]}
@@ -142,7 +142,7 @@ export default function ProductMiniCard({
             numberOfLines={1}
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, fontSize: 10, marginTop: 4 },
+              { color: cardTokens.inkMuted, fontSize: 13, marginTop: 4 },
             ]}
           >
             {footNote}

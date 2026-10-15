@@ -32,7 +32,7 @@ export default function ProductQuantitySelector({
         <CsText
           style={[
             typography.Poppins_s_semibold,
-            { color: colors.dark, fontSize: 14 },
+            { color: colors.dark, fontSize: 16 },
           ]}
         >
           Quantity

@@ -62,7 +62,7 @@
 //             />
 
 //             <Text
-//               className="text-[15px] font-semibold"
+//               className="text-[16px] font-semibold"
 //               style={{ color: colors.dark }}
 //             >
 //               Soil Test Reports
@@ -144,7 +144,7 @@
 
 //                       <View>
 //                         <CsText
-//                           className="text-[11px] font-semibold"
+//                           className="text-[12.5px] font-semibold"
 //                           style={{ color: colors.neutral }}
 //                         >
 //                           Report {index + 1}
@@ -295,7 +295,7 @@ export default function SoilTestReportsCard({
               />
 
               <Text
-                className="text-[15px] font-semibold"
+                className="text-[16px] font-semibold"
                 style={{ color: colors.dark }}
               >
                 Soil Test Reports
@@ -379,7 +379,7 @@ export default function SoilTestReportsCard({
 
                         <View>
                           <CsText
-                            className="text-[11px] font-semibold"
+                            className="text-[12.5px] font-semibold"
                             style={{
                               color: colors.neutral,
                             }}

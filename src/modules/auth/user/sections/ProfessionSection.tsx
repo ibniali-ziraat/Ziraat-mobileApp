@@ -25,7 +25,7 @@ import { View } from "react-native";
 //       <View style={{ marginRight: 8 }}>{icon}</View>
 //       <Text
 //         style={{
-//           fontSize: 16,
+//           fontSize: 17,
 //           fontWeight: "700",
 //           color: colors.dark,
 //         }}
@@ -56,7 +56,7 @@ import { View } from "react-native";
 //       <View style={{ marginRight: 6 }}>{icon}</View>
 //       <Text
 //         style={{
-//           fontSize: 14,
+//           fontSize: 16,
 //           fontWeight: "600",
 //           color: colors.dark,
 //         }}

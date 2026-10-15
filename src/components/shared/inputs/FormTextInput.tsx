@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    fontSize: 14,
+    fontSize: 16,
     color: colors.dark,
     fontFamily: fonts.poppins.medium,
   },
@@ -239,8 +239,8 @@ const styles = StyleSheet.create({
 
   input: {
     flex: 1,
-    fontSize: 15,
-    lineHeight: 20,
+    fontSize: 16,
+    lineHeight: 22,
     paddingVertical: 0,
     color: colors.dark,
     fontFamily: fonts.poppins.regular,
@@ -251,13 +251,13 @@ const styles = StyleSheet.create({
     marginRight: 8,
     color: colors.darkHover,
     fontFamily: fonts.poppins.medium,
-    fontSize: 15,
+    fontSize: 16,
   },
 
   error: {
     color: colors.error,
     marginTop: 6,
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: fonts.poppins.regular,
   },
 });

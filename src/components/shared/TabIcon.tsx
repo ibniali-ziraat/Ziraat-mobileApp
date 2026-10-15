@@ -51,7 +51,7 @@ function TabIcon({ icon, label, focused, pressKey }: Props) {
         style={[
           focused ? typography.Poppins_xs_semibold : typography.Poppins_xs_regular,
           {
-            fontSize: 10.5,
+            fontSize: 13,
             marginTop: 4,
             textAlign: "center",
             color: focused ? colors.primary : "#8C8C8C",

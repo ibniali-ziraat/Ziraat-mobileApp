@@ -16,7 +16,7 @@ export default function NoOrchardsEmpty() {
       </Text>
       <Text
         style={{ color: colors.dark }}
-        className="text-[14px] leading-6 text-center mb-7 opacity-70"
+        className="text-[16px] leading-6 text-center mb-7 opacity-70"
       >
         Add your orchard to manage crops, monitor growth, and keep everything
         organized in one place.

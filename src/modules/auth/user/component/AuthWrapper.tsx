@@ -106,7 +106,7 @@ export default function AuthWrapper({ children, mode }: Props) {
                   typography.Poppins_xs_medium,
                   {
                     color: cardTokens.inkSecondary,
-                    fontSize: 10.5,
+                    fontSize: 13,
                     marginTop: 6,
                   },
                 ]}

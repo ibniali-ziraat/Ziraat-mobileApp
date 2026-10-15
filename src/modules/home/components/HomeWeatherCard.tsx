@@ -84,7 +84,7 @@ export default function HomeWeatherCard() {
                     typography.Poppins_xs_medium,
                     {
                       color: "rgba(255,255,255,0.85)",
-                      fontSize: 11,
+                      fontSize: 13.5,
                       marginLeft: 4,
                     },
                   ]}
@@ -114,7 +114,7 @@ export default function HomeWeatherCard() {
                     typography.Poppins_xs_medium,
                     {
                       color: "rgba(255,255,255,0.88)",
-                      fontSize: 12.5,
+                      fontSize: 14.5,
                       marginLeft: 8,
                       marginBottom: 6,
                     },
@@ -131,7 +131,7 @@ export default function HomeWeatherCard() {
                     typography.Poppins_xs_regular,
                     {
                       color: "rgba(255,255,255,0.78)",
-                      fontSize: 10.5,
+                      fontSize: 13,
                       marginTop: 3,
                     },
                   ]}

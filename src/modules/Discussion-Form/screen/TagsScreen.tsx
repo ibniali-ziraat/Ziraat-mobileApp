@@ -47,7 +47,7 @@ export default function TagsScreen() {
         ) : tags.length === 0 ? (
           <View style={{ alignItems: "center", marginTop: 80 }}>
             <TagIcon size={40} color={colors.secondary} />
-            <Text style={{ marginTop: 10, fontWeight: "700", fontSize: 16 }}>
+            <Text style={{ marginTop: 10, fontWeight: "700", fontSize: 17 }}>
               No tags found
             </Text>
           </View>
@@ -82,11 +82,11 @@ export default function TagsScreen() {
                   }}
                 >
                   <Hash size={12} color={colors.primary} strokeWidth={2.5} />
-                  <Text style={{ color: colors.primary, fontSize: 13, fontWeight: "700" }}>
+                  <Text style={{ color: colors.primary, fontSize: 15, fontWeight: "700" }}>
                     {name}
                   </Text>
                   {count != null && (
-                    <Text style={{ fontSize: 11, color: colors.overlay }}>
+                    <Text style={{ fontSize: 13.5, color: colors.overlay }}>
                       {count}
                     </Text>
                   )}

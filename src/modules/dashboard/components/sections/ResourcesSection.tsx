@@ -25,8 +25,8 @@ type Props = { orchardProfileId: number };
 
 const Row = ({ label, value }: { label: string; value: string | null }) => (
   <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 6 }}>
-    <CsText style={{ color: colors.neutral, fontSize: 13 }}>{label}</CsText>
-    <CsText style={{ color: colors.dark, fontWeight: "600", fontSize: 13 }}>
+    <CsText style={{ color: colors.neutral, fontSize: 15 }}>{label}</CsText>
+    <CsText style={{ color: colors.dark, fontWeight: "600", fontSize: 15 }}>
       {value || "No data yet"}
     </CsText>
   </View>
@@ -46,7 +46,7 @@ export default function ResourcesSection({ orchardProfileId }: Props) {
     <CsText
       style={[
         typography.Poppins_m_semibold,
-        { fontSize: 16, color: colors.dark, marginTop: 16, marginBottom: 8 },
+        { fontSize: 17, color: colors.dark, marginTop: 16, marginBottom: 8 },
       ]}
     >
       {label}

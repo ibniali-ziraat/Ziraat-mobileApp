@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { colors } from "../constants/colors";
 import { ROUTES } from "../constants/routes";
 // import { LocationPermissionModal } from "./shared/modals/LocationPermissionModal";
+import PermissionPrompt from "./shared/modals/PermissionPrompt";
 
 import { useAuth } from "../contexts/AuthContext";
 import { useLocationContext } from "../contexts/LocationContext";
@@ -86,6 +87,9 @@ export default function RouteGuard({ children }: RouteGuardProps) {
   return (
     <View style={{ flex: 1, backgroundColor: colors.light }}>
       {children}
+      {/* Asks for location + notifications after login; keyed so a new
+          login checks again. */}
+      {!!userToken && <PermissionPrompt key={userToken} />}
       {/* Only gate once logged in — the login/signup screens themselves
           shouldn't be blocked by this. */}
       {/* {!!userToken && (

@@ -155,7 +155,7 @@ export default function ProfileDetails({
                 <CsText
                   style={{
                     color: colors.dark,
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: "600",
                     marginBottom: 2,
                   }}
@@ -166,7 +166,7 @@ export default function ProfileDetails({
                 <CsText
                   style={{
                     color: colors.neutral,
-                    fontSize: 14,
+                    fontSize: 16,
                     paddingVertical: 2,
                   }}
                 >

@@ -38,7 +38,6 @@ function TextAction({
           typography.Poppins_xs_semibold,
           {
             color: destructive ? chartTokens.negative : cardTokens.inkPrimary,
-            fontSize: 12,
             textDecorationLine: "underline",
           },
         ]}
@@ -88,7 +87,7 @@ export default function DetailsCard({
         <Text
           style={[
             typography.Poppins_l_semibold,
-            { flex: 1, color: cardTokens.inkPrimary, fontSize: 19 },
+            { flex: 1, color: cardTokens.inkPrimary },
           ]}
         >
           {heading}
@@ -133,7 +132,7 @@ export default function DetailsCard({
             <Text
               style={[
                 typography.Poppins_s_semibold,
-                { color: cardTokens.inkPrimary, fontSize: 13.5 },
+                { color: cardTokens.inkPrimary },
               ]}
             >
               {emptyActionLabel}
@@ -141,7 +140,7 @@ export default function DetailsCard({
             <Text
               style={[
                 typography.Poppins_xs_regular,
-                { color: cardTokens.inkMuted, fontSize: 10.5, marginTop: 1 },
+                { color: cardTokens.inkMuted, marginTop: 1 },
               ]}
             >
               Add information to complete your profile
@@ -154,7 +153,7 @@ export default function DetailsCard({
             <View
               key={item.title}
               style={{
-                minHeight: 62,
+                minHeight: 68,
                 justifyContent: "center",
                 paddingVertical: 10,
                 borderBottomWidth: 1,
@@ -163,8 +162,8 @@ export default function DetailsCard({
             >
               <Text
                 style={[
-                  typography.Poppins_xs_medium,
-                  { color: cardTokens.inkPrimary, fontSize: 12 },
+                  typography.Poppins_xs_regular,
+                  { color: cardTokens.inkMuted },
                 ]}
               >
                 {item.title}
@@ -172,11 +171,10 @@ export default function DetailsCard({
               <Text
                 numberOfLines={2}
                 style={[
-                  typography.Poppins_s_regular,
+                  typography.Poppins_m_medium,
                   {
-                    color: cardTokens.inkSecondary,
-                    fontSize: 13.5,
-                    lineHeight: 20,
+                    color: cardTokens.inkPrimary,
+                    lineHeight: 25,
                     marginTop: 2,
                     paddingBottom: index === items.length - 1 ? 0 : 1,
                   },

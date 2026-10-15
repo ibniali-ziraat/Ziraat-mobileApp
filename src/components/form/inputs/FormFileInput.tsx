@@ -102,7 +102,7 @@ export default function FormFileInput({
                   numberOfLines={1}
                   style={{
                     color: hasFile ? "#1F2937" : "#9CA3AF",
-                    fontSize: 15,
+                    fontSize: 16,
                   }}
                 >
                   {hasFile ? fileName : label}
@@ -124,7 +124,7 @@ export default function FormFileInput({
               <Text
                 style={{
                   color: "#EF4444",
-                  fontSize: 12,
+                  fontSize: 14,
                   marginTop: 4,
                   marginLeft: 4,
                 }}

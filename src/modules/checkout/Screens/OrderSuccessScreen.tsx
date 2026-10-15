@@ -202,7 +202,7 @@ const OrderSuccessScreen = () => {
                           <Text
                             numberOfLines={1}
                             style={{
-                              fontSize: 11,
+                              fontSize: 13.5,
                               fontWeight: "700",
                               color: colors.primary,
                             }}

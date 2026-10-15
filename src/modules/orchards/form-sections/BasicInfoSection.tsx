@@ -93,7 +93,7 @@ export default function BasicInfo({ errors, data }) {
         <View>
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 17,
               fontWeight: "600",
               color: "#222",
               marginBottom: 2,
@@ -104,7 +104,7 @@ export default function BasicInfo({ errors, data }) {
 
           <Text
             style={{
-              fontSize: 12,
+              fontSize: 14,
               color: "#777",
             }}
           >
@@ -134,7 +134,7 @@ export default function BasicInfo({ errors, data }) {
           <Text
             style={{
               fontWeight: "600",
-              fontSize: 14,
+              fontSize: 16,
               color: orchardMode === "measure" ? colors.primary : "#666",
             }}
           >
@@ -156,7 +156,7 @@ export default function BasicInfo({ errors, data }) {
           >
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 color: colors.dark,
                 fontFamily: fonts.poppins.medium,
               }}

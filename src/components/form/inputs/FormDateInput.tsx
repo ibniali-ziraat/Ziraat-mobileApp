@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
 
   label: {
     marginBottom: 6,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "500",
     color: colors.dark,
   },
@@ -182,12 +182,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     borderRadius: 10,
   },
-  pressableText: { fontSize: 16, color: colors.dark },
+  pressableText: { fontSize: 17, color: colors.dark },
   placeholderText: { color: colors.neutral + "88" },
 
   errorText: {
     color: colors.error,
-    fontSize: 12,
+    fontSize: 14,
     marginTop: 4,
   },
 
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   webWrapper: { flexDirection: "column", width: "100%" },
   webLabel: {
     marginBottom: 8,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "500",
     color: colors.dark,
   } as any,

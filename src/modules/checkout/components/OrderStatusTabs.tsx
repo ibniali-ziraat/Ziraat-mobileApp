@@ -8,15 +8,21 @@ import { useOrderStatuses } from "../hooks/orderStatusQueryHooks";
 interface OrderStatusTabsProps {
   activeStatus: number | null;
   onSelect: (statusId: number | null) => void;
+  /** Used when the status API returns nothing (e.g. 403): built from orders. */
+  fallbackStatuses?: { id: number; name: string }[];
 }
 
 export default function OrderStatusTabs({
   activeStatus,
   onSelect,
+  fallbackStatuses = [],
 }: OrderStatusTabsProps) {
   const { data: statuses = [] } = useOrderStatuses();
 
-  const tabs = [{ id: null, name: "All" }, ...statuses];
+  const tabs = [
+    { id: null, name: "All" },
+    ...(statuses.length ? statuses : fallbackStatuses),
+  ];
 
   return (
     <ScrollView
@@ -66,7 +72,7 @@ export default function OrderStatusTabs({
             <Text
               style={{
                 fontWeight: "600",
-                fontSize: 13,
+                fontSize: 15,
                 color: isActive ? colors.light : colors.secondary,
               }}
             >

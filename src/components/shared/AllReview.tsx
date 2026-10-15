@@ -121,7 +121,7 @@ export default function Review({
                   </View>
 
                   <Text
-                    className="text-neutral-400 text-[10px] text-right"
+                    className="text-neutral-400 text-[13px] text-right"
                     numberOfLines={1}
                   >
                     {summary?.totalReviews || 0} reviews
@@ -206,7 +206,7 @@ export default function Review({
                         >
                           {r.user}
                         </Text>
-                        <Text className="text-neutral-400 text-[11px] mt-0.5">
+                        <Text className="text-neutral-400 text-[12.5px] mt-0.5">
                           {r.date}
                         </Text>
                       </View>

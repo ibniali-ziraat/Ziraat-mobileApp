@@ -114,7 +114,7 @@ export default function ContactUsScreen() {
               typography.Poppins_xs_regular,
 
               {
-                lineHeight: 20,
+                lineHeight: 24,
                 color: colors.darkHover,
                 maxWidth: "95%",
               },
@@ -199,7 +199,7 @@ export default function ContactUsScreen() {
                 marginTop: 6,
 
                 color: colors.error,
-                lineHeight: 18,
+                lineHeight: 22,
                 opacity: 0.9,
               },
             ]}

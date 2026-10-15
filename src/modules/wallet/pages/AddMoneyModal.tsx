@@ -62,7 +62,7 @@ const AddMoneyModal = ({ visible, onClose, onAdd }: Props) => {
               borderRadius: 12,
               padding: 12,
               marginTop: 12,
-              fontSize: 16,
+              fontSize: 17,
               color: colors.neutral,
             }}
           />
@@ -83,7 +83,7 @@ const AddMoneyModal = ({ visible, onClose, onAdd }: Props) => {
               style={{
                 color: colors.light,
                 fontWeight: "700",
-                fontSize: 15,
+                fontSize: 16,
               }}
             >
               Add ₹{amount || 0}

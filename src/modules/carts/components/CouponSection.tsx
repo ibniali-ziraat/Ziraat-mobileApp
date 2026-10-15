@@ -35,7 +35,7 @@ const CouponSection = ({
           marginBottom: 8,
         }}
       >
-        <Text style={[typography.Poppins_m_semibold, { fontSize: 16 }]}>
+        <Text style={[typography.Poppins_m_semibold, { fontSize: 17 }]}>
           Apply Coupon
         </Text>
 
@@ -85,7 +85,7 @@ const CouponSection = ({
                       style={[
                         typography.Poppins_m_semibold,
                         {
-                          fontSize: 15,
+                          fontSize: 16,
                           color: isSelected ? colors.primary : colors.dark,
                         },
                       ]}
@@ -97,7 +97,7 @@ const CouponSection = ({
                       style={{
                         color: colors.primary,
                         fontWeight: "600",
-                        fontSize: 13,
+                        fontSize: 15,
                       }}
                     >
                       ₹{coupon.discountAmount} OFF
@@ -119,7 +119,7 @@ const CouponSection = ({
                     {/* Expiry */}
                     <Text
                       style={{
-                        fontSize: 12,
+                        fontSize: 14,
                       }}
                     >
                       Expires{" "}
@@ -142,7 +142,7 @@ const CouponSection = ({
                         <Text
                           style={{
                             color: colors.primary,
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: "600",
                           }}
                         >
@@ -163,7 +163,7 @@ const CouponSection = ({
                         <Text
                           style={{
                             color: colors.primary,
-                            fontSize: 12,
+                            fontSize: 14,
                             fontWeight: "600",
                           }}
                         >

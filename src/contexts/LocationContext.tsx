@@ -22,6 +22,11 @@ export function LocationProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/** Watcher status, or null outside the provider. Never throws. */
+export function useLocationStatus(): LocationStatus | null {
+  return useContext(LocationContext)?.status ?? null;
+}
+
 export function useLocationContext(): LocationContextValue {
   const ctx = useContext(LocationContext);
   if (!ctx)

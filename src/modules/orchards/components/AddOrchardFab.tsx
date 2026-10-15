@@ -59,7 +59,7 @@ export default function AddOrchardFAB() {
         <Text
           style={[
             typography.Poppins_s_semibold,
-            { color: "#FFFFFF", fontSize: 14, marginLeft: 10 },
+            { color: "#FFFFFF", fontSize: 16, marginLeft: 10 },
           ]}
         >
           Add orchard

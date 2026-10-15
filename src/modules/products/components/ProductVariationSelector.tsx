@@ -46,7 +46,7 @@ export default function ProductVariationSelector({
           <CsText
             style={[
               typography.Poppins_s_semibold,
-              { color: cardTokens.inkPrimary, fontSize: 14, marginBottom: 10 },
+              { color: cardTokens.inkPrimary, fontSize: 16, marginBottom: 10 },
             ]}
           >
             {option.name}
@@ -93,7 +93,7 @@ export default function ProductVariationSelector({
                         color: isSelected
                           ? chartTokens.current
                           : cardTokens.inkPrimary,
-                        fontSize: 13,
+                        fontSize: 15,
                       },
                     ]}
                   >

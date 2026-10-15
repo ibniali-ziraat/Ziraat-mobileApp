@@ -25,7 +25,7 @@ const MenuContent = () => (
     <Text
       style={[
         typography.Poppins_xs_regular,
-        { color: cardTokens.inkMuted, fontSize: 11, marginTop: 2 },
+        { color: cardTokens.inkMuted, fontSize: 13.5, marginTop: 2 },
       ]}
     >
       Manage your account, farm and preferences

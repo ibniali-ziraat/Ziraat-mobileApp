@@ -95,7 +95,7 @@ function VoteColumn({ votes = 0, targetId, targetType, userId }: any) {
       />
       <Text
         style={{
-          fontSize: 13,
+          fontSize: 15,
           fontWeight: "700",
           color: voted ? colors.primary : "#555",
         }}
@@ -250,7 +250,7 @@ export default function MessageFooter({ item, depth, views }: any) {
         <IconPill>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
             <Eye size={14} color={colors.secondary} />
-            <Text style={{ fontSize: 12 }}>{views}</Text>
+            <Text style={{ fontSize: 14 }}>{views}</Text>
           </View>
         </IconPill>
 

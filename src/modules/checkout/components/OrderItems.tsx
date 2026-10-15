@@ -88,7 +88,7 @@ export const OrderItems = ({ items, isBuyOnCredit = false }: Props) => (
             numberOfLines={1}
             style={[
               typography.Poppins_s_medium,
-              { color: cardTokens.inkPrimary, fontSize: 15 },
+              { color: cardTokens.inkPrimary, fontSize: 16 },
             ]}
           >
             {item.productName}
@@ -97,7 +97,7 @@ export const OrderItems = ({ items, isBuyOnCredit = false }: Props) => (
           <Text
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, fontSize: 13, marginTop: 2 },
+              { color: cardTokens.inkMuted, fontSize: 15, marginTop: 2 },
             ]}
           >
             Qty: {item.quantity}
@@ -107,7 +107,7 @@ export const OrderItems = ({ items, isBuyOnCredit = false }: Props) => (
         <Text
           style={[
             typography.Poppins_s_semibold,
-            { color: cardTokens.inkPrimary, fontSize: 15 },
+            { color: cardTokens.inkPrimary, fontSize: 16 },
           ]}
         >
           {getLineTotal(item, isBuyOnCredit)}

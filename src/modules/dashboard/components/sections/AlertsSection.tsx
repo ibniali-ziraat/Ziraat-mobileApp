@@ -35,7 +35,7 @@ export default function AlertsSection({ orchardProfileId }: Props) {
     <CsText
       style={[
         typography.Poppins_m_semibold,
-        { fontSize: 16, color: colors.dark, marginTop: 16, marginBottom: 8 },
+        { fontSize: 17, color: colors.dark, marginTop: 16, marginBottom: 8 },
       ]}
     >
       {label}
@@ -60,7 +60,7 @@ export default function AlertsSection({ orchardProfileId }: Props) {
               borderColor: colors.cardBorder,
             }}
           >
-            <CsText style={{ fontSize: 12, color: colors.dark }}>{cat.label}</CsText>
+            <CsText style={{ fontSize: 14, color: colors.dark }}>{cat.label}</CsText>
           </View>
         ))}
       </View>

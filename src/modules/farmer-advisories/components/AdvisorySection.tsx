@@ -1,3 +1,4 @@
+import { colors } from "@/src/constants/colors";
 import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import type { ReactNode } from "react";
@@ -10,7 +11,11 @@ type AdvisorySectionProps = {
 };
 
 // titled white card used on the detail and form screens
-export default function AdvisorySection({ title, description, children }: AdvisorySectionProps) {
+export default function AdvisorySection({
+  title,
+  description,
+  children,
+}: AdvisorySectionProps) {
   return (
     <View
       style={{
@@ -19,11 +24,16 @@ export default function AdvisorySection({ title, description, children }: Adviso
         borderRadius: cardTokens.radius,
         borderCurve: "continuous",
         borderWidth: 1,
-        borderColor: cardTokens.hairline,
+        borderColor: colors.cardBorder,
         backgroundColor: cardTokens.surface,
       }}
     >
-      <Text style={[typography.Poppins_m_semibold, { color: cardTokens.inkPrimary }]}>
+      <Text
+        style={[
+          typography.Poppins_m_semibold,
+          { color: cardTokens.inkPrimary },
+        ]}
+      >
         {title}
       </Text>
       {!!description && (

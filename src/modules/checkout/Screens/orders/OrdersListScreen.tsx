@@ -49,7 +49,7 @@ const getVariationLabel = (item: any) => {
 const OrdersListScreen = () => {
   const { data, isLoading } = useUserOrders();
   const { data: statuses = [] } = useOrderStatuses(); // ✅ for badge label lookup
-  const orders = data || [];
+  const orders = useMemo(() => data || [], [data]);
 
   const [search, setSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null);
@@ -69,10 +69,23 @@ const OrdersListScreen = () => {
     });
   };
 
-  // ✅ Look up name from API data, no hardcoded map
-  const getStatusName = (statusId: number) => {
-    return statuses.find((s) => s.id === statusId)?.name ?? "Unknown";
-  };
+  // Name from the status API, else the order's own status text; null hides
+  // the pill rather than showing "Unknown".
+  const getStatusName = (order: any): string | null =>
+    statuses.find((s) => s.id === order?.orderStatus)?.name ??
+    order?.orderStatusString ??
+    null;
+
+  // Filter tabs from the statuses present in the orders, for when the
+  // status API returns nothing.
+  const statusesFromOrders = useMemo(() => {
+    const seen = new Map<number, string>();
+    for (const order of orders) {
+      if (order?.orderStatus != null && order?.orderStatusString)
+        seen.set(order.orderStatus, order.orderStatusString);
+    }
+    return [...seen].map(([id, name]) => ({ id, name }));
+  }, [orders]);
 
   const handleOrderPress = (order: any) => {
     router.push({
@@ -141,7 +154,7 @@ const OrdersListScreen = () => {
   }
   const renderOrder = ({ item }) => {
     const firstProduct = item.orderItems?.[0];
-    const statusName = getStatusName(item.orderStatus);
+    const statusName = getStatusName(item);
     const variationLabel = getVariationLabel(firstProduct);
 
     return (
@@ -177,7 +190,7 @@ const OrdersListScreen = () => {
 
             <Text
               numberOfLines={1}
-              style={{ color: colors.neutral, marginTop: 4, fontSize: 13 }}
+              style={{ color: colors.neutral, marginTop: 4, fontSize: 15 }}
             >
               {firstProduct?.productName || "Multiple Items"}
             </Text>
@@ -196,7 +209,7 @@ const OrdersListScreen = () => {
                 <Text
                   numberOfLines={1}
                   style={{
-                    fontSize: 11,
+                    fontSize: 13.5,
                     color: colors.darkHover,
                     fontWeight: "600",
                   }}
@@ -210,7 +223,7 @@ const OrdersListScreen = () => {
               <View className="flex-row items-center mr-12">
                 <SvgXml xml={statIcons.age} width={15} height={15} />
                 <Text
-                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}
+                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 14 }}
                 >
                   {formatDate(item.createdOn)}
                 </Text>
@@ -218,42 +231,44 @@ const OrdersListScreen = () => {
               <View className="flex-row items-center">
                 <SvgXml xml={menuArt.orders} width={15} height={15} />
                 <Text
-                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}
+                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 14 }}
                 >
                   {getTotalQuantity(item.orderItems)} Items
                 </Text>
               </View>
             </View>
 
-            <View className="flex-row justify-between items-center mt-4">
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: 5,
-                  backgroundColor: getOrderStatusArt(statusName).tint,
-                  paddingLeft: 5,
-                  paddingRight: 12,
-                  paddingVertical: 4,
-                  borderRadius: 20,
-                }}
-              >
-                <SvgXml
-                  xml={getOrderStatusArt(statusName).art}
-                  width={16}
-                  height={16}
-                />
-                <Text
+            {statusName ? (
+              <View className="flex-row justify-between items-center mt-4">
+                <View
                   style={{
-                    color: colors.primary,
-                    fontSize: 10,
-                    fontWeight: "700",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 5,
+                    backgroundColor: getOrderStatusArt(statusName).tint,
+                    paddingLeft: 5,
+                    paddingRight: 12,
+                    paddingVertical: 4,
+                    borderRadius: 20,
                   }}
                 >
-                  {statusName}
-                </Text>
+                  <SvgXml
+                    xml={getOrderStatusArt(statusName).art}
+                    width={16}
+                    height={16}
+                  />
+                  <Text
+                    style={{
+                      color: colors.primary,
+                      fontSize: 13,
+                      fontWeight: "700",
+                    }}
+                  >
+                    {statusName}
+                  </Text>
+                </View>
               </View>
-            </View>
+            ) : null}
           </View>
         </View>
       </Pressable>
@@ -283,6 +298,7 @@ const OrdersListScreen = () => {
         <OrderStatusTabs
           activeStatus={selectedStatus}
           onSelect={setSelectedStatus}
+          fallbackStatuses={statusesFromOrders}
         />
       </View>
 
@@ -305,7 +321,7 @@ const OrdersListScreen = () => {
           <Text
             style={[
               typography.Poppins_s_bold,
-              { fontSize: 17, marginBottom: 6 },
+              { fontSize: 18, marginBottom: 6 },
             ]}
           >
             No Orders Found
@@ -315,8 +331,8 @@ const OrdersListScreen = () => {
               color: colors.neutral,
               textAlign: "center",
               marginBottom: 18,
-              fontSize: 13,
-              lineHeight: 18,
+              fontSize: 15,
+              lineHeight: 22,
             }}
           >
             Try adjusting your filters or search to find what you're looking for
@@ -334,7 +350,7 @@ const OrdersListScreen = () => {
             }}
           >
             <Text
-              style={{ color: colors.light, fontWeight: "600", fontSize: 14 }}
+              style={{ color: colors.light, fontWeight: "600", fontSize: 16 }}
             >
               Reset Filters
             </Text>

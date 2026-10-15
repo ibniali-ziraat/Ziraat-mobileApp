@@ -57,7 +57,7 @@ export default function MeasuredOrchardSection() {
           </Text>
         </Pressable>
       </View>
-      <Text style={{ fontSize: 12, color: "#999", marginTop: 2 }}>
+      <Text style={{ fontSize: 14, color: "#999", marginTop: 2 }}>
         Approximate value. GPS measurements may have inaccuracy of ±3–5 meters.
       </Text>
     </View>

@@ -140,8 +140,8 @@ const ReviewOrderScreen = () => {
                   flex: 1,
                   marginLeft: 10,
                   color: colors.darkHover,
-                  fontSize: 12.5,
-                  lineHeight: 18,
+                  fontSize: 14.5,
+                  lineHeight: 22,
                 },
               ]}
             >
@@ -174,8 +174,8 @@ const ReviewOrderScreen = () => {
                   flex: 1,
                   marginLeft: 10,
                   color: cardTokens.inkSecondary,
-                  fontSize: 12.5,
-                  lineHeight: 18,
+                  fontSize: 14.5,
+                  lineHeight: 22,
                 },
               ]}
             >
@@ -207,8 +207,8 @@ const ReviewOrderScreen = () => {
                   flex: 1,
                   marginLeft: 10,
                   color: colors.error,
-                  fontSize: 12.5,
-                  lineHeight: 18,
+                  fontSize: 14.5,
+                  lineHeight: 22,
                 },
               ]}
             >
@@ -240,8 +240,8 @@ const ReviewOrderScreen = () => {
                   flex: 1,
                   marginLeft: 10,
                   color: colors.error,
-                  fontSize: 12.5,
-                  lineHeight: 18,
+                  fontSize: 14.5,
+                  lineHeight: 22,
                 },
               ]}
             >
@@ -284,7 +284,7 @@ const ReviewOrderScreen = () => {
             <Text
               style={[
                 typography.Poppins_s_bold,
-                { color: colors.light, fontSize: 15.5 },
+                { color: colors.light, fontSize: 16.5 },
               ]}
             >
               {isPending
@@ -312,7 +312,7 @@ const ReviewOrderScreen = () => {
                 {
                   marginLeft: 6,
                   color: cardTokens.inkMuted,
-                  fontSize: 10.5,
+                  fontSize: 13,
                 },
               ]}
             >

@@ -52,7 +52,7 @@ export default function FormHeader({
             typography.Poppins_xs_regular,
             {
               color: colors.neutral,
-              lineHeight: 18,
+              lineHeight: 22,
               maxWidth: "95%",
             }
           ]}

@@ -56,7 +56,7 @@ export default function ProfileProgressBar({
         <Text
           style={[
             typography.Poppins_s_semibold,
-            { fontSize: 15, color: cardTokens.inkPrimary },
+            { fontSize: 17, color: cardTokens.inkPrimary },
           ]}
         >
           Profile completion
@@ -66,7 +66,7 @@ export default function ProfileProgressBar({
           style={[
             typography.Poppins_xs_semibold,
             {
-              fontSize: 11,
+              fontSize: 13.5,
               color: chartTokens.current,
               paddingLeft: 10,
             },
@@ -150,7 +150,7 @@ export default function ProfileProgressBar({
                   typography.Poppins_xs_medium,
                   {
                     marginTop: 6,
-                    fontSize: 10.5,
+                    fontSize: 13,
                     color: isCompleted
                       ? cardTokens.inkPrimary
                       : cardTokens.inkMuted,
@@ -182,7 +182,7 @@ export default function ProfileProgressBar({
           <Text
             style={[
               typography.Poppins_xs_semibold,
-              { fontSize: 12, color: chartTokens.current },
+              { fontSize: 14, color: chartTokens.current },
             ]}
           >
             Profile complete

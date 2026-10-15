@@ -55,7 +55,7 @@ export default function OrchardListCard({ orchard, onPress }: Props) {
             <CsText
               style={[
                 typography.Poppins_m_semibold,
-                { fontSize: 16, color: colors.dark },
+                { fontSize: 17, color: colors.dark },
               ]}
               numberOfLines={1}
             >
@@ -73,7 +73,7 @@ export default function OrchardListCard({ orchard, onPress }: Props) {
               >
                 <MapPin size={12} color={colors.neutral} />
                 <CsText
-                  style={{ fontSize: 12, color: colors.neutral }}
+                  style={{ fontSize: 14, color: colors.neutral }}
                   numberOfLines={1}
                 >
                   {location}
@@ -128,12 +128,12 @@ export default function OrchardListCard({ orchard, onPress }: Props) {
                   numberOfLines={1}
                   style={[
                     typography.Poppins_s_semibold,
-                    { fontSize: 12.5, color: colors.dark },
+                    { fontSize: 14.5, color: colors.dark },
                   ]}
                 >
                   {stat.value}
                 </CsText>
-                <CsText style={{ fontSize: 10, color: colors.neutral }}>
+                <CsText style={{ fontSize: 13, color: colors.neutral }}>
                   {stat.label}
                 </CsText>
               </View>

@@ -40,7 +40,7 @@ export default function RadioGroup({
             {/* Label */}
             <CsText
               style={{
-                fontSize: 16,
+                fontSize: 17,
                 fontWeight: "bold",
                 marginBottom: 10,
               }}

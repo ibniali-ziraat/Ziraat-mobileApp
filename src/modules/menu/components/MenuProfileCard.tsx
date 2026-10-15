@@ -1,5 +1,4 @@
 import IllustrationBackground from "@/src/components/shared/IllustrationBackground";
-import { cardShadow } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { profileArt } from "@/src/constants/iconArt";
 import { illustrations } from "@/src/constants/illustrations";
@@ -32,7 +31,6 @@ export default function MenuProfileCard() {
           borderRadius: 20,
           opacity: pressed ? 0.92 : 1,
         },
-        cardShadow,
       ]}
     >
       <IllustrationBackground
@@ -80,7 +78,7 @@ export default function MenuProfileCard() {
               numberOfLines={1}
               style={[
                 typography.Poppins_s_semibold,
-                { color: "#FFFFFF", fontSize: 16 },
+                { color: "#FFFFFF", fontSize: 17 },
               ]}
             >
               {name}
@@ -89,7 +87,7 @@ export default function MenuProfileCard() {
               numberOfLines={1}
               style={[
                 typography.Poppins_xs_regular,
-                { color: "rgba(255,255,255,0.82)", fontSize: 11, marginTop: 1 },
+                { color: "rgba(255,255,255,0.82)", fontSize: 13.5, marginTop: 1 },
               ]}
             >
               {subtitle}

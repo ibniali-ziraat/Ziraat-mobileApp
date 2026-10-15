@@ -42,7 +42,7 @@ export function useRegisterToken() {
   // Live GPS at login time — deliberately not the registered tehsil, since
   // this is for location-based notification targeting (where the device
   // actually is right now), not the weather display.
-  const { coords, loading: locLoading } = useLocation();
+  const { coords, loading: locLoading } = useLocation(true, { prompt: false });
 
   useEffect(() => {
     if (!userId) {

@@ -49,7 +49,7 @@ export default function EnhancedCard({
         numberOfLines={2}
         style={[
           typography.Poppins_s_medium,
-          { fontSize: 12.5, lineHeight: 17, color: colors.dark, marginTop: 10 },
+          { fontSize: 14.5, lineHeight: 21, color: colors.dark, marginTop: 10 },
         ]}
       >
         {title}
@@ -60,7 +60,7 @@ export default function EnhancedCard({
           numberOfLines={1}
           style={[
             typography.Poppins_m_semibold,
-            { fontSize: 17, color: colors.primary, marginTop: 4 },
+            { fontSize: 18, color: colors.primary, marginTop: 4 },
           ]}
         >
           {value}
@@ -68,7 +68,7 @@ export default function EnhancedCard({
       ) : null}
 
       {accent ? (
-        <CsText style={{ fontSize: 12, marginTop: 2, color: colors.dark }}>
+        <CsText style={{ fontSize: 14, marginTop: 2, color: colors.dark }}>
           {accent}
         </CsText>
       ) : null}

@@ -83,7 +83,7 @@ export default function ExploreGrid() {
             numberOfLines={1}
             style={[
               typography.Poppins_xs_medium,
-              { color: cardTokens.inkPrimary, fontSize: 11, marginTop: 6 },
+              { color: cardTokens.inkPrimary, fontSize: 13.5, marginTop: 6 },
             ]}
           >
             {shortcut.label}

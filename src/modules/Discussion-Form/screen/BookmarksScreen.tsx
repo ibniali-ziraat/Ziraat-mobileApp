@@ -29,7 +29,7 @@ export default function BookmarksScreen() {
         ) : bookmarks.length === 0 ? (
           <View style={{ alignItems: "center", marginTop: 80 }}>
             <Bookmark size={40} color={colors.secondary} />
-            <Text style={{ marginTop: 10, fontWeight: "700", fontSize: 16 }}>
+            <Text style={{ marginTop: 10, fontWeight: "700", fontSize: 17 }}>
               No saved questions
             </Text>
             <Text style={{ marginTop: 4, color: colors.neutral }}>

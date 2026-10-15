@@ -37,7 +37,7 @@ export default function LogoutButton({ onPress }) {
       <Text
         style={[
           typography.Poppins_s_medium,
-          { color: chartTokens.negative, fontSize: 14 },
+          { color: chartTokens.negative, fontSize: 17 },
         ]}
       >
         Log out of your account
