@@ -51,7 +51,7 @@ function SectionTitle({ title }) {
     <CsText
       style={{
         color: colors.secondary,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: "700",
         marginBottom: 10,
         textTransform: "uppercase",
@@ -74,7 +74,7 @@ function MenuItem({ label, onPress }) {
         borderBottomWidth: 1,
       }}
     >
-      <CsText style={{ fontSize: 16, color: colors.dark }}>{label}</CsText>
+      <CsText style={{ fontSize: 17, color: colors.dark }}>{label}</CsText>
     </Pressable>
   );
 }

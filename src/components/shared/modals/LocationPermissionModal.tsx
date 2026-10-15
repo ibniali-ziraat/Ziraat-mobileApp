@@ -517,7 +517,7 @@
 //     borderWidth: 1,
 //   },
 //   badgeText: {
-//     fontSize: 11.5,
+//     fontSize: 14,
 //     fontWeight: "700",
 //     letterSpacing: 0.2,
 //   },
@@ -553,10 +553,10 @@
 //     letterSpacing: -0.5,
 //   },
 //   subtitle: {
-//     fontSize: 13.5,
+//     fontSize: 15.5,
 //     color: "#666",
 //     textAlign: "center",
-//     lineHeight: 22,
+//     lineHeight: 26,
 //     marginBottom: 22,
 //     paddingHorizontal: 4,
 //   },
@@ -583,7 +583,7 @@
 //     justifyContent: "center",
 //   },
 //   featureLabel: {
-//     fontSize: 13.5,
+//     fontSize: 15.5,
 //     color: "#333",
 //     fontWeight: "500",
 //     flex: 1,
@@ -597,7 +597,7 @@
 //     borderWidth: 1,
 //   },
 //   stepsHeading: {
-//     fontSize: 11,
+//     fontSize: 13.5,
 //     fontWeight: "800",
 //     color: "#AAAAAA",
 //     letterSpacing: 1.2,
@@ -616,16 +616,16 @@
 //     justifyContent: "center",
 //   },
 //   stepNum: {
-//     fontSize: 12,
+//     fontSize: 14,
 //     fontWeight: "800",
 //     color: "#fff",
 //   },
 //   stepLabel: {
-//     fontSize: 13.5,
+//     fontSize: 15.5,
 //     color: "#444",
 //     fontWeight: "500",
 //     flex: 1,
-//     lineHeight: 20,
+//     lineHeight: 24,
 //   },
 //   btn: {
 //     borderRadius: 16,
@@ -641,14 +641,14 @@
 //     elevation: 8,
 //   },
 //   btnText: {
-//     fontSize: 16,
+//     fontSize: 17,
 //     fontWeight: "700",
 //     color: "#fff",
 //     letterSpacing: 0.2,
 //   },
 //   lockNote: {
 //     marginTop: 14,
-//     fontSize: 12,
+//     fontSize: 14,
 //     color: "#C0C0C0",
 //     fontWeight: "500",
 //     textAlign: "center",

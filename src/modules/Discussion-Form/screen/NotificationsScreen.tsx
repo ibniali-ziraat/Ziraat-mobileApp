@@ -68,7 +68,7 @@ export default function NotificationsScreen() {
         ) : list.length === 0 ? (
           <View style={{ alignItems: "center", marginTop: 80 }}>
             <Bell size={40} color={colors.secondary} />
-            <Text style={{ marginTop: 10, fontWeight: "700", fontSize: 16 }}>
+            <Text style={{ marginTop: 10, fontWeight: "700", fontSize: 17 }}>
               No notifications yet
             </Text>
             <Text style={{ marginTop: 4, color: colors.neutral }}>
@@ -108,10 +108,10 @@ export default function NotificationsScreen() {
                 </View>
 
                 <View style={{ flex: 1 }}>
-                  <Text style={{ fontSize: 13, color: colors.dark, lineHeight: 19 }}>
+                  <Text style={{ fontSize: 15, color: colors.dark, lineHeight: 23 }}>
                     {notif.body || notif.message || notif.title || "New activity"}
                   </Text>
-                  <Text style={{ fontSize: 11, color: colors.overlay, marginTop: 4 }}>
+                  <Text style={{ fontSize: 13.5, color: colors.overlay, marginTop: 4 }}>
                     {timeAgo(notif.createdOn || notif.createdAt)}
                   </Text>
                 </View>
@@ -149,7 +149,7 @@ export default function NotificationsScreen() {
             }}
           >
             <CheckCheck size={14} color={colors.primary} />
-            <Text style={{ fontSize: 12, fontWeight: "600", color: colors.primary }}>
+            <Text style={{ fontSize: 14, fontWeight: "600", color: colors.primary }}>
               Mark all as read
             </Text>
           </TouchableOpacity>

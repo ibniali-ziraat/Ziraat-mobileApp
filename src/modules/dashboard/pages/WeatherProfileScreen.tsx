@@ -69,7 +69,7 @@ function SectionHeading({
       <Text
         style={[
           typography.Poppins_m_semibold,
-          { color: cardTokens.inkPrimary, fontSize: 17 },
+          { color: cardTokens.inkPrimary, fontSize: 18 },
         ]}
       >
         {title}
@@ -78,7 +78,7 @@ function SectionHeading({
         <Text
           style={[
             typography.Poppins_xs_regular,
-            { color: cardTokens.inkMuted, fontSize: 11.5, marginTop: 2 },
+            { color: cardTokens.inkMuted, fontSize: 14, marginTop: 2 },
           ]}
         >
           {subtitle}
@@ -130,7 +130,7 @@ function MetricTile({ metric }: { metric: Metric }) {
         numberOfLines={1}
         style={[
           typography.Poppins_xs_medium,
-          { color: cardTokens.inkSecondary, fontSize: 11.5, marginTop: 1 },
+          { color: cardTokens.inkSecondary, fontSize: 14, marginTop: 1 },
         ]}
       >
         {metric.label}
@@ -140,7 +140,7 @@ function MetricTile({ metric }: { metric: Metric }) {
           numberOfLines={1}
           style={[
             typography.Poppins_xs_regular,
-            { color: cardTokens.inkMuted, fontSize: 10, marginTop: 2 },
+            { color: cardTokens.inkMuted, fontSize: 13, marginTop: 2 },
           ]}
         >
           {metric.helper}
@@ -377,7 +377,7 @@ export default function WeatherScreen() {
                   height: 48,
                   paddingHorizontal: 11,
                   color: cardTokens.inkPrimary,
-                  fontSize: 14,
+                  fontSize: 16,
                 },
               ]}
             />
@@ -423,7 +423,7 @@ export default function WeatherScreen() {
                   typography.Poppins_xs_regular,
                   {
                     color: cardTokens.inkMuted,
-                    fontSize: 12,
+                    fontSize: 14,
                     marginTop: 4,
                   },
                 ]}

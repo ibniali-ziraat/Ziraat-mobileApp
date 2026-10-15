@@ -4,17 +4,23 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { advisoryArt, getAdvisoryKindArt } from "@/src/constants/iconArt";
+import {
+  advisoryArt,
+  getAdvisoryKindArt,
+  getDashboardIcon,
+  homeArt,
+  statIcons,
+} from "@/src/constants/iconArt";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import { router, useLocalSearchParams } from "expo-router";
-import { Ban, CircleCheck, CloudOff } from "lucide-react-native";
+import { ArrowRight, Ban, CircleCheck, CloudOff } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
 import { Button } from "react-native-paper";
+import { SvgXml } from "react-native-svg";
 import AdvisoryBanner from "../components/AdvisoryBanner";
 import AdvisoryEmptyState from "../components/AdvisoryEmptyState";
 import AdvisoryKindIcon from "../components/AdvisoryKindIcon";
-import AdvisorySection from "../components/AdvisorySection";
 import AdvisoryStatusBadge from "../components/AdvisoryStatusBadge";
 import AdvisoryTimeline from "../components/AdvisoryTimeline";
 import { isSupportedKind, KIND_META } from "../constants/advisoryOptions";
@@ -24,29 +30,60 @@ import {
   useReadAdvisory,
 } from "../hooks/usefarmadvisories";
 import { advisoryRoutes } from "../routes/advisoryRoutes";
-import {
-  formatDateTime,
-  getAdvisoryStatus,
-} from "../utils/advisoryStatus";
+import { formatDateTime, getAdvisoryStatus } from "../utils/advisoryStatus";
 import { getErrorMessage } from "../utils/getErrorMessage";
 
-const InfoRow = ({ label, value, valueColor }: { label: string; value?: string; valueColor?: string }) =>
+/** White panel with a faint outline, no shadow; matches Orders and Menu. */
+const panel = {
+  padding: cardTokens.padding,
+  marginBottom: 14,
+  borderRadius: cardTokens.radius,
+  borderCurve: "continuous" as const,
+  borderWidth: 1,
+  borderColor: colors.cardBorder,
+  backgroundColor: cardTokens.surface,
+};
+
+const InfoRow = ({
+  label,
+  value,
+  art,
+  tint,
+}: {
+  label: string;
+  value?: string;
+  art: string;
+  tint: string;
+}) =>
   value ? (
     <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingVertical: 7,
-      }}
+      style={{ flexDirection: "row", alignItems: "center", paddingVertical: 7 }}
     >
-      <Text style={[typography.Poppins_s_regular, { color: cardTokens.inkMuted }]}>
+      <View
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: 12,
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: tint,
+        }}
+      >
+        <SvgXml xml={art} width={22} height={22} />
+      </View>
+      <Text
+        style={[
+          typography.Poppins_s_regular,
+          { color: cardTokens.inkSecondary, marginLeft: 12, flex: 1 },
+        ]}
+      >
         {label}
       </Text>
       <Text
         style={[
-          typography.Poppins_s_medium,
+          typography.Poppins_s_semibold,
           {
-            color: valueColor ?? cardTokens.inkPrimary,
+            color: cardTokens.inkPrimary,
             flexShrink: 1,
             textAlign: "right",
             marginLeft: 12,
@@ -59,13 +96,32 @@ const InfoRow = ({ label, value, valueColor }: { label: string; value?: string; 
     </View>
   ) : null;
 
+const SectionTitle = ({ children }: { children: string }) => (
+  <Text
+    style={[
+      typography.Poppins_m_semibold,
+      { color: cardTokens.inkPrimary, marginBottom: 12 },
+    ]}
+  >
+    {children}
+  </Text>
+);
+
 // Reached from the advisory list and from a tapped push notification
 export default function AdvisoryDetailScreen() {
   const { recipientId } = useLocalSearchParams<{ recipientId: string }>();
-  const { data: advisory, isLoading, isError, refetch } = useAdvisoryById(recipientId);
+  const {
+    data: advisory,
+    isLoading,
+    isError,
+    refetch,
+  } = useAdvisoryById(recipientId);
   const { mutate: markRead } = useReadAdvisory();
-  const { mutate: acknowledge, isPending: isAcknowledging, variables: ackVars } =
-    useAcknowledgeAdvisory();
+  const {
+    mutate: acknowledge,
+    isPending: isAcknowledging,
+    variables: ackVars,
+  } = useAcknowledgeAdvisory();
 
   // opening the advisory counts as reading it, once
   const readRequested = useRef(false);
@@ -80,7 +136,11 @@ export default function AdvisoryDetailScreen() {
     return (
       <ScreenLayout>
         <BackHeader title="Advisory" />
-        <ActivityIndicator size="large" color={colors.primary} style={{ marginTop: 48 }} />
+        <ActivityIndicator
+          size="large"
+          color={colors.primary}
+          style={{ marginTop: 48 }}
+        />
       </ScreenLayout>
     );
   }
@@ -114,14 +174,20 @@ export default function AdvisoryDetailScreen() {
       { recipientId: advisory.recipientId, actionCompleted },
       {
         onSuccess: (response) => {
-          if (actionCompleted && kind && response?.openOperationForm !== false) {
+          if (
+            actionCompleted &&
+            kind &&
+            response?.openOperationForm !== false
+          ) {
             openForm();
           } else {
             showSuccessToast("Advisory acknowledged");
           }
         },
         onError: (error) =>
-          showErrorToast(getErrorMessage(error, "Couldn't acknowledge. Please try again.")),
+          showErrorToast(
+            getErrorMessage(error, "Couldn't acknowledge. Please try again."),
+          ),
       },
     );
   };
@@ -143,65 +209,148 @@ export default function AdvisoryDetailScreen() {
         />
 
         {/* Summary */}
-        <AdvisorySection title={kindLabel}>
-          <View style={{ flexDirection: "row", alignItems: "center", marginTop: -6, marginBottom: 8 }}>
-            <AdvisoryKindIcon kind={advisory.kind} size={40} />
+        <View style={panel}>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <AdvisoryKindIcon kind={advisory.kind} size={52} />
             <View style={{ flex: 1, marginLeft: 12 }}>
               <Text
-                style={[typography.Poppins_xs_regular, { color: cardTokens.inkMuted }]}
+                style={[
+                  typography.Poppins_l_semibold,
+                  { color: cardTokens.inkPrimary },
+                ]}
+                numberOfLines={1}
               >
-                Status
+                {kindLabel}
               </Text>
-              <View style={{ flexDirection: "row", marginTop: 2 }}>
-                <AdvisoryStatusBadge status={status} />
-              </View>
+              <Text
+                style={[
+                  typography.Poppins_xs_regular,
+                  { color: cardTokens.inkMuted },
+                ]}
+              >
+                Advisory for your orchard
+              </Text>
             </View>
+            <AdvisoryStatusBadge status={status} />
           </View>
 
-          <InfoRow label="Crop" value={advisory.crop} />
-          <InfoRow label="Variety" value={advisory.variety} />
-          <InfoRow label="Growth stage" value={advisory.growthStage} />
-          <InfoRow label="Starts" value={formatDateTime(advisory.windowStart)} />
-          <InfoRow
-            label="Ends"
-            value={formatDateTime(advisory.windowEnd)}
-            valueColor={status === "overdue" ? "#C0392B" : undefined}
+          <View
+            style={{
+              height: 1,
+              backgroundColor: colors.cardBorder,
+              marginVertical: 12,
+            }}
           />
-        </AdvisorySection>
+
+          <InfoRow
+            label="Crop"
+            value={advisory.crop}
+            art={statIcons.orchard}
+            tint="#EAF5E4"
+          />
+          <InfoRow
+            label="Variety"
+            value={advisory.variety}
+            art={getDashboardIcon("Leaf")}
+            tint="#FFF8E1"
+          />
+          <InfoRow
+            label="Growth stage"
+            value={advisory.growthStage}
+            art={getDashboardIcon("Wheat")}
+            tint="#FCE8F0"
+          />
+        </View>
+
+        {/* Window */}
+        {advisory.windowStart || advisory.windowEnd ? (
+          <View style={panel}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                marginBottom: 12,
+              }}
+            >
+              <SvgXml xml={statIcons.age} width={22} height={22} />
+              <Text
+                style={[
+                  typography.Poppins_m_semibold,
+                  { color: cardTokens.inkPrimary, marginLeft: 8 },
+                ]}
+              >
+                Time window
+              </Text>
+            </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <WindowDate
+                label="Starts"
+                value={formatDateTime(advisory.windowStart)}
+              />
+              <ArrowRight
+                size={18}
+                color={cardTokens.inkMuted}
+                style={{ marginHorizontal: 8 }}
+              />
+              <WindowDate
+                label="Ends"
+                value={formatDateTime(advisory.windowEnd)}
+                overdue={status === "overdue"}
+              />
+            </View>
+          </View>
+        ) : null}
 
         {/* Recommendation */}
         <View
           style={{
+            flexDirection: "row",
+            alignItems: "flex-start",
             padding: 16,
-            marginBottom: 16,
+            marginBottom: 14,
             borderRadius: cardTokens.radius,
             borderCurve: "continuous",
             backgroundColor: chartTokens.tint,
-            borderLeftWidth: 4,
-            borderLeftColor: colors.primary,
           }}
         >
-          <Text style={[typography.Poppins_xs_semibold, { color: colors.primary, marginBottom: 6 }]}>
-            RECOMMENDATION
-          </Text>
-          <Text
-            style={[
-              typography.Poppins_s_regular,
-              { color: cardTokens.inkPrimary, lineHeight: 22 },
-            ]}
+          <View
+            style={{
+              width: 44,
+              height: 44,
+              borderRadius: 22,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: cardTokens.surface,
+            }}
           >
-            {advisory.recommendation || "No recommendation text was added."}
-          </Text>
+            <SvgXml xml={homeArt.tips} width={28} height={28} />
+          </View>
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            <Text
+              style={[typography.Poppins_s_semibold, { color: colors.primary }]}
+            >
+              Expert recommendation
+            </Text>
+            <Text
+              style={[
+                typography.Poppins_s_regular,
+                { color: cardTokens.inkPrimary, marginTop: 4, lineHeight: 26 },
+              ]}
+            >
+              {advisory.recommendation || "No recommendation text was added."}
+            </Text>
+          </View>
         </View>
 
         {/* Progress */}
-        <AdvisorySection title="Progress">
+        <View style={panel}>
+          <SectionTitle>Progress</SectionTitle>
           <AdvisoryTimeline
             readOn={advisory.readOn}
             acknowledgedOn={advisory.acknowledgedOn}
             completedOn={advisory.completedOn}
           />
-        </AdvisorySection>
+        </View>
 
         {/* Actions */}
         {status === "cancelled" ? (
@@ -222,19 +371,24 @@ export default function AdvisoryDetailScreen() {
               mode="contained"
               buttonColor={colors.primary}
               textColor={colors.light}
-              style={{ borderRadius: 12 }}
-              contentStyle={{ paddingVertical: 4 }}
+              style={{ borderRadius: 14 }}
+              contentStyle={{ paddingVertical: 6 }}
+              labelStyle={typography.Poppins_s_semibold}
               loading={isAcknowledging && ackVars?.actionCompleted === true}
               disabled={isAcknowledging}
               onPress={() => handleAcknowledge(true)}
             >
-              {kind ? `Done – add ${kindLabel.toLowerCase()} details` : "Mark as done"}
+              {kind
+                ? `Done – add ${kindLabel.toLowerCase()} details`
+                : "Mark as done"}
             </Button>
             <Button
-              mode="outlined"
-              textColor={colors.dark}
-              style={{ borderRadius: 12, borderColor: colors.darkHover }}
-              contentStyle={{ paddingVertical: 4 }}
+              mode="contained"
+              buttonColor={chartTokens.tint}
+              textColor={colors.primary}
+              style={{ borderRadius: 14 }}
+              contentStyle={{ paddingVertical: 6 }}
+              labelStyle={typography.Poppins_s_semibold}
               loading={isAcknowledging && ackVars?.actionCompleted === false}
               disabled={isAcknowledging}
               onPress={() => handleAcknowledge(false)}
@@ -248,8 +402,9 @@ export default function AdvisoryDetailScreen() {
               mode="contained"
               buttonColor={colors.primary}
               textColor={colors.light}
-              style={{ borderRadius: 12 }}
-              contentStyle={{ paddingVertical: 4 }}
+              style={{ borderRadius: 14 }}
+              contentStyle={{ paddingVertical: 6 }}
+              labelStyle={typography.Poppins_s_semibold}
               onPress={openForm}
             >
               {`Add ${kindLabel.toLowerCase()} details`}
@@ -258,6 +413,41 @@ export default function AdvisoryDetailScreen() {
         ) : null}
       </ScreenContent>
     </ScreenLayout>
+  );
+}
+
+function WindowDate({
+  label,
+  value,
+  overdue,
+}: {
+  label: string;
+  value?: string;
+  overdue?: boolean;
+}) {
+  return (
+    <View
+      style={{
+        flex: 1,
+        padding: 12,
+        borderRadius: 14,
+        backgroundColor: overdue ? "#FDECEC" : cardTokens.mutedSurface,
+      }}
+    >
+      <Text
+        style={[typography.Poppins_xs_regular, { color: cardTokens.inkMuted }]}
+      >
+        {label}
+      </Text>
+      <Text
+        style={[
+          typography.Poppins_s_semibold,
+          { color: overdue ? "#C0392B" : cardTokens.inkPrimary, marginTop: 2 },
+        ]}
+      >
+        {value || "—"}
+      </Text>
+    </View>
   );
 }
 
@@ -283,7 +473,12 @@ function StatusNote({
     >
       {icon}
       <View style={{ flex: 1, marginLeft: 10 }}>
-        <Text style={[typography.Poppins_s_semibold, { color: cardTokens.inkPrimary }]}>
+        <Text
+          style={[
+            typography.Poppins_s_semibold,
+            { color: cardTokens.inkPrimary },
+          ]}
+        >
           {title}
         </Text>
         {!!message && (

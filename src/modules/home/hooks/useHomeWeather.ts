@@ -21,10 +21,15 @@ interface UseHomeWeatherReturn {
 export function useHomeWeather(): UseHomeWeatherReturn {
   // Registered tehsil is the default weather location — GPS is only used
   // (and only asks for permission) once we've confirmed no tehsil is on file.
-  const { coords: tehsilCoords, tehsilName, loading: tehsilLoading } =
-    useTehsilLocation();
+  const {
+    coords: tehsilCoords,
+    tehsilName,
+    loading: tehsilLoading,
+  } = useTehsilLocation();
   const gpsEnabled = !tehsilLoading && !tehsilCoords;
-  const { coords: gpsCoords, loading: gpsLoading } = useLocation(gpsEnabled);
+  const { coords: gpsCoords, loading: gpsLoading } = useLocation(gpsEnabled, {
+    prompt: false,
+  });
 
   const coords = tehsilCoords ?? (gpsEnabled ? gpsCoords : null);
   const locLoading = tehsilLoading || (gpsEnabled && gpsLoading);

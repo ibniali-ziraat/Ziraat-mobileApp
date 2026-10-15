@@ -576,7 +576,7 @@ export default function OrchardDetailsScreen() {
                     typography.Poppins_s_medium,
                     {
                       color: selected ? colors.light : colors.darkHover,
-                      fontSize: 13,
+                      fontSize: 15,
                     },
                   ]}
                 >

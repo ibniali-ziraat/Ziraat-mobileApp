@@ -30,7 +30,7 @@ export default function MeasureLocationState({
       >
         {failed ? (
           <>
-            <Text style={{ fontSize: 16, textAlign: "center", color: "#333" }}>
+            <Text style={{ fontSize: 17, textAlign: "center", color: "#333" }}>
               {status === "denied"
                 ? "Location permission is needed to measure your orchard."
                 : "Could not get your location. Check that GPS is turned on and try again."}

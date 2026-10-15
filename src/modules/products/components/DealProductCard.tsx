@@ -110,7 +110,7 @@ export default function DealProductCard({
             }}
           >
             <Text
-              style={{ color: colors.light, fontSize: 10, fontWeight: "bold" }}
+              style={{ color: colors.light, fontSize: 13, fontWeight: "bold" }}
             >
               {Math.round(item.savingsPercentage)}% OFF
             </Text>
@@ -133,7 +133,7 @@ export default function DealProductCard({
               style={{
                 textDecorationLine: "line-through",
                 color: colors.neutral,
-                fontSize: 12,
+                fontSize: 14,
               }}
             >
               ₹{String(Math.round(item.originalPrice))}

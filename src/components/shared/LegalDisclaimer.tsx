@@ -65,7 +65,7 @@ export default function LegalDisclaimer({ text }: LegalDisclaimerProps) {
 
           <Text
             style={{
-              fontSize: 13,
+              fontSize: 15,
               fontWeight: "600",
               color: cardTokens.inkSecondary,
             }}
@@ -102,8 +102,8 @@ export default function LegalDisclaimer({ text }: LegalDisclaimerProps) {
         >
           <Text
             style={{
-              fontSize: 12.5,
-              lineHeight: 20,
+              fontSize: 14.5,
+              lineHeight: 24,
               color: colors.neutral,
             }}
           >

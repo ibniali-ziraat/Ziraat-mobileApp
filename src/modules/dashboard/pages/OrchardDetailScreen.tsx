@@ -106,13 +106,13 @@ export default function OrchardDetailScreen() {
                 : []),
             ].map((stat) => (
               <View key={stat.label} style={{ flex: 1 }}>
-                <CsText style={{ fontSize: 11, color: colors.neutral }}>
+                <CsText style={{ fontSize: 13.5, color: colors.neutral }}>
                   {stat.label}
                 </CsText>
                 <CsText
                   style={[
                     typography.Poppins_s_semibold,
-                    { fontSize: 14, color: colors.dark },
+                    { fontSize: 16, color: colors.dark },
                   ]}
                 >
                   {stat.value}
@@ -166,7 +166,7 @@ export default function OrchardDetailScreen() {
                   </View>
                   <CsText
                     style={{
-                      fontSize: 13,
+                      fontSize: 15,
                       fontWeight: "600",
                       color: isActive ? colors.light : colors.dark,
                     }}

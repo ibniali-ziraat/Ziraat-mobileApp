@@ -46,7 +46,7 @@ export default function ArtStrip({
           numberOfLines={1}
           style={[
             typography.Poppins_s_semibold,
-            { color: cardTokens.inkPrimary, fontSize: 14.5 },
+            { color: cardTokens.inkPrimary, fontSize: 15.5 },
           ]}
         >
           {title}
@@ -56,7 +56,7 @@ export default function ArtStrip({
             numberOfLines={2}
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkSecondary, fontSize: 11.5, marginTop: 1 },
+              { color: cardTokens.inkSecondary, fontSize: 14, marginTop: 1 },
             ]}
           >
             {subtitle}

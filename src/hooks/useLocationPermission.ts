@@ -1,9 +1,18 @@
+import { useLocationStatus } from "@/src/contexts/LocationContext";
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 
-export function useLocation(enabled: boolean = true) {
+/**
+ * `prompt: false` never shows the OS dialog: it waits for PermissionPrompt
+ * (after login) and re-runs once the watcher reports "granted".
+ */
+export function useLocation(
+  enabled: boolean = true,
+  { prompt = true }: { prompt?: boolean } = {},
+) {
+  const watcherGranted = useLocationStatus() === "granted";
   const [coords, setCoords] = useState<{ lat: number; lon: number } | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(enabled);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +33,9 @@ export function useLocation(enabled: boolean = true) {
         }
 
         // 2. Check for App Permissions
-        const { status } = await Location.requestForegroundPermissionsAsync();
+        const { status } = prompt
+          ? await Location.requestForegroundPermissionsAsync()
+          : await Location.getForegroundPermissionsAsync();
         if (status !== "granted") {
           setError("Permission denied. We need location for local weather.");
           setLoading(false);
@@ -37,11 +48,15 @@ export function useLocation(enabled: boolean = true) {
           Location.getCurrentPositionAsync({
             accuracy: Location.Accuracy.Balanced,
           }),
-          new Promise<null>((resolve) => setTimeout(() => resolve(null), 15000)),
+          new Promise<null>((resolve) =>
+            setTimeout(() => resolve(null), 15000),
+          ),
         ]).then((result) => result ?? Location.getLastKnownPositionAsync({}));
 
         if (!loc) {
-          console.warn("[useLocation] no fix (timed out, no last-known either)");
+          console.warn(
+            "[useLocation] no fix (timed out, no last-known either)",
+          );
           setError("Unable to find location.");
           setLoading(false);
           return;
@@ -58,7 +73,8 @@ export function useLocation(enabled: boolean = true) {
         setLoading(false);
       }
     })();
-  }, [enabled]);
+    // watcherGranted: re-run when permission is granted from PermissionPrompt.
+  }, [enabled, prompt, watcherGranted]);
 
   return { coords, loading, error };
 }

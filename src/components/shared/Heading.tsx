@@ -14,7 +14,7 @@ export default function Heading({
   title,
   subtitle,
   titleSize = 26,
-  subtitleSize = 15,
+  subtitleSize = 16,
 }: HeadingProps) {
   return (
     <View style={{ marginBottom: 16 }}>

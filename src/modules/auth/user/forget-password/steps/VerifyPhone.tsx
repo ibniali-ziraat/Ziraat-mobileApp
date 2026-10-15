@@ -26,7 +26,7 @@ export default function VerifyPhone({ errors }: Props) {
         </Text>
         <Text
           style={{
-            fontSize: 13,
+            fontSize: 15,
             color: colors.neutral,
             marginTop: 6,
             textAlign: "center",

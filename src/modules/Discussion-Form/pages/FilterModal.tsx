@@ -81,7 +81,7 @@ const CheckboxRow = ({
       <View style={{ flex: 1 }}>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: "800",
             color: "#0f172a",
           }}
@@ -92,10 +92,10 @@ const CheckboxRow = ({
         {subtitle ? (
           <Text
             style={{
-              fontSize: 12,
+              fontSize: 14,
               color: "#94a3b8",
               marginTop: 2,
-              lineHeight: 17,
+              lineHeight: 21,
             }}
           >
             {subtitle}
@@ -175,7 +175,7 @@ const SortRow = ({
       <View style={{ flex: 1 }}>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: "800",
             color: "#0f172a",
           }}
@@ -185,10 +185,10 @@ const SortRow = ({
 
         <Text
           style={{
-            fontSize: 12,
+            fontSize: 14,
             color: "#94a3b8",
             marginTop: 2,
-            lineHeight: 17,
+            lineHeight: 21,
           }}
         >
           {subtitle}
@@ -243,7 +243,7 @@ const SectionHeader = ({
 
     <Text
       style={{
-        fontSize: 11,
+        fontSize: 13.5,
         fontWeight: "800",
         color: "#94a3b8",
         letterSpacing: 1,
@@ -302,7 +302,7 @@ const Stepper = ({
     >
       <Text
         style={{
-          fontSize: 14,
+          fontSize: 16,
           fontWeight: "800",
           color: "#0f172a",
         }}
@@ -441,7 +441,7 @@ export default function FilterModal({
 
               <Text
                 style={{
-                  fontSize: 13,
+                  fontSize: 15,
                   color: "#94a3b8",
                   marginTop: 2,
                 }}
@@ -558,7 +558,7 @@ export default function FilterModal({
                 <View>
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: "800",
                       color: "#0f172a",
                     }}
@@ -568,7 +568,7 @@ export default function FilterModal({
 
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: 14,
                       color: "#94a3b8",
                       marginTop: 2,
                     }}
@@ -610,7 +610,7 @@ export default function FilterModal({
 
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: "700",
                   color: "#64748b",
                 }}
@@ -637,7 +637,7 @@ export default function FilterModal({
 
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: "800",
                   color: "#fff",
                   letterSpacing: 0.2,

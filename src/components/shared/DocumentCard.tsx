@@ -102,7 +102,7 @@ function StatusBadge({ status }) {
     <View className="px-2 py-[3px] rounded-lg flex-row items-center">
       <Ionicons name={s.icon} size={13} color={s.color} />
       <CsText
-        className="ml-1 text-[10px] font-semibold"
+        className="ml-1 text-[13px] font-semibold"
         style={{ color: s.color }}
       >
         {s.text}
@@ -132,7 +132,7 @@ function FileTypeIcon({ type, color }) {
 // ======================= INFO ROW ==========================
 function InfoRow({ label, value }) {
   return (
-    <CsText className="text-[12px] mb-1" style={{ color: colors.dark }}>
+    <CsText className="text-[14px] mb-1" style={{ color: colors.dark }}>
       {label}: <CsText className="font-semibold">{value}</CsText>
     </CsText>
   );
@@ -159,7 +159,7 @@ export default function DocumentCard() {
             Documents & Verification
           </CsText>
           <CsText
-            className="text-[11px] mt-[2px]"
+            className="text-[12.5px] mt-[2px]"
             style={{ color: colors.dark }}
           >
             Legal, compliance and business verification
@@ -223,21 +223,21 @@ export default function DocumentCard() {
                       </CsText>
 
                       <CsText
-                        className="text-[10px] mt-[1px]"
+                        className="text-[13px] mt-[1px]"
                         style={{ color: colors.dark }}
                       >
                         Size: {doc.fileSize} • Type: {doc.type.toUpperCase()}
                       </CsText>
 
                       <CsText
-                        className="text-[10px] mt-[1px]"
+                        className="text-[13px] mt-[1px]"
                         style={{ color: colors.dark }}
                       >
                         Updated: {doc.updated}
                       </CsText>
 
                       <CsText
-                        className="text-[11px] mt-[1px]"
+                        className="text-[12.5px] mt-[1px]"
                         style={{ color: colors.dark }}
                       >
                         {doc.category}
@@ -274,7 +274,7 @@ export default function DocumentCard() {
                   </View>
 
                   <CsText
-                    className="text-[12px] mt-3"
+                    className="text-[14px] mt-3"
                     style={{ color: colors.dark }}
                   >
                     Notes: <CsText className="font-medium">{doc.notes}</CsText>
@@ -290,7 +290,7 @@ export default function DocumentCard() {
                       elevation: 2,
                     }}
                   >
-                    <CsText className="text-white text-[12px] font-semibold text-center">
+                    <CsText className="text-white text-[14px] font-semibold text-center">
                       View Document
                     </CsText>
                   </Pressable>

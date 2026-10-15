@@ -20,8 +20,8 @@ export const ProfileInfoRow = ({
         !isLast ? "border-b border-gray-200" : ""
       }`}
     >
-      <CsText className="text-[13px] text-gray-500 font-medium">{label}</CsText>
-      <CsText className="text-[14px] text-gray-900 font-semibold max-w-[55%] text-right">
+      <CsText className="text-[15px] text-gray-500 font-medium">{label}</CsText>
+      <CsText className="text-[16px] text-gray-900 font-semibold max-w-[55%] text-right">
         {value}
      </CsText>
     </View>

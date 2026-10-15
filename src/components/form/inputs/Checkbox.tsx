@@ -56,7 +56,7 @@ export default function Checkbox({ control: controlProp, name, label }) {
                   <Text
                     style={{
                       color: "#2d6b06",
-                      fontSize: 16,
+                      fontSize: 17,
                       fontWeight: "bold",
                     }}
                   >

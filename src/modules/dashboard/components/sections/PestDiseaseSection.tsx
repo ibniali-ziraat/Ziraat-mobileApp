@@ -51,7 +51,7 @@ export default function PestDiseaseSection({ orchardProfileId }: Props) {
     <CsText
       style={[
         typography.Poppins_m_semibold,
-        { fontSize: 16, color: colors.dark, marginTop: 16, marginBottom: 8 },
+        { fontSize: 17, color: colors.dark, marginTop: 16, marginBottom: 8 },
       ]}
     >
       {label}
@@ -89,12 +89,12 @@ export default function PestDiseaseSection({ orchardProfileId }: Props) {
         {spraySchedule.map((item, index) => (
           <View key={index} style={{ marginBottom: index < spraySchedule.length - 1 ? 12 : 0 }}>
             <CsText
-              style={{ fontWeight: "600", fontSize: 14, color: item.isError ? colors.error : colors.dark }}
+              style={{ fontWeight: "600", fontSize: 16, color: item.isError ? colors.error : colors.dark }}
             >
               {item.title}
             </CsText>
             <CsText
-              style={{ marginTop: 2, fontSize: 13, color: item.isError ? colors.error : colors.neutral }}
+              style={{ marginTop: 2, fontSize: 15, color: item.isError ? colors.error : colors.neutral }}
             >
               {item.description}
             </CsText>
@@ -106,7 +106,7 @@ export default function PestDiseaseSection({ orchardProfileId }: Props) {
       <View style={[{ backgroundColor: colors.light, borderRadius: 16, padding: 14 }, shadows.profile_card]}>
         <CustomBarChart labels={trend.map((t) => t.label)} values={trend.map((t) => t.value)} />
         {!!data?.trendNote && (
-          <CsText style={{ textAlign: "center", marginTop: 8, color: colors.neutral, fontSize: 12 }}>
+          <CsText style={{ textAlign: "center", marginTop: 8, color: colors.neutral, fontSize: 14 }}>
             {data.trendNote}
           </CsText>
         )}

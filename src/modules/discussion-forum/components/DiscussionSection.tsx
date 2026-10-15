@@ -54,10 +54,10 @@
 //               </View>
 
 //               <View style={{ marginLeft: 10 }}>
-//                 <Text style={{ fontWeight: "700", fontSize: 16 }}>
+//                 <Text style={{ fontWeight: "700", fontSize: 17 }}>
 //                   Discussion
 //                 </Text>
-//                 <Text style={{ fontSize: 12, color: colors.darkHover }}>
+//                 <Text style={{ fontSize: 14, color: colors.darkHover }}>
 //                   Chat with experts
 //                 </Text>
 //               </View>
@@ -227,7 +227,7 @@ export default function DiscussionSection() {
             <Text
               style={{
                 fontWeight: "600",
-                fontSize: 16,
+                fontSize: 17,
                 color: colors.dark,
               }}
             >
@@ -236,7 +236,7 @@ export default function DiscussionSection() {
 
             <Text
               style={{
-                fontSize: 12,
+                fontSize: 14,
                 color: colors.darkHover,
               }}
             >
@@ -267,7 +267,7 @@ export default function DiscussionSection() {
             <Text
               style={{
                 alignSelf: "center",
-                fontSize: 11,
+                fontSize: 13.5,
                 color: colors.darkHover,
                 backgroundColor: colors.bgColor,
                 paddingHorizontal: 10,

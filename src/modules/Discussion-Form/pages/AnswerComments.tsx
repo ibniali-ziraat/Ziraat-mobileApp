@@ -82,7 +82,7 @@ export default function AnswerComments({
             style={{
               color: "#0f172a",
               fontWeight: "700",
-              fontSize: 12,
+              fontSize: 14,
               letterSpacing: 0.3,
             }}
           >
@@ -240,7 +240,7 @@ export default function AnswerComments({
           {/* NAME */}
           <Text
             style={{
-              fontSize: 12.5,
+              fontSize: 14.5,
               fontWeight: "800",
               color: "#0f172a",
             }}
@@ -266,7 +266,7 @@ export default function AnswerComments({
 
             <Text
               style={{
-                fontSize: 10.5,
+                fontSize: 13,
                 color: colors.secondary,
                 fontWeight: "600",
               }}
@@ -278,8 +278,8 @@ export default function AnswerComments({
           {/* MESSAGE */}
           <Text
             style={{
-              fontSize: 13.5,
-              lineHeight: 22,
+              fontSize: 15.5,
+              lineHeight: 26,
               color: "#334155",
               marginTop: 10,
               fontWeight: "500",
@@ -324,7 +324,7 @@ export default function AnswerComments({
 
               <Text
                 style={{
-                  fontSize: 11,
+                  fontSize: 13.5,
                   color: "#64748b",
                   fontWeight: "700",
                 }}
@@ -414,7 +414,7 @@ export default function AnswerComments({
             {/* NAME */}
             <Text
               style={{
-                fontSize: 13.5,
+                fontSize: 15.5,
                 fontWeight: "800",
                 color: "#0f172a",
               }}
@@ -441,7 +441,7 @@ export default function AnswerComments({
 
               <Text
                 style={{
-                  fontSize: 11,
+                  fontSize: 13.5,
                   color: "#94a3b8",
                   fontWeight: "600",
                 }}
@@ -453,8 +453,8 @@ export default function AnswerComments({
             {/* MESSAGE */}
             <Text
               style={{
-                fontSize: 14.5,
-                lineHeight: 23,
+                fontSize: 15.5,
+                lineHeight: 25,
                 color: "#334155",
                 marginTop: 10,
                 fontWeight: "400",
@@ -493,7 +493,7 @@ export default function AnswerComments({
 
                 <Text
                   style={{
-                    fontSize: 11.5,
+                    fontSize: 14,
                     color: "#64748b",
                     fontWeight: "700",
                   }}
@@ -530,7 +530,7 @@ export default function AnswerComments({
 
                   <Text
                     style={{
-                      fontSize: 11,
+                      fontSize: 13.5,
                       color:
                         "#94a3b8",
                       fontWeight:
@@ -619,7 +619,7 @@ export default function AnswerComments({
 
           <Text
             style={{
-              fontSize: 10,
+              fontSize: 13,
               color: "#64748b",
               fontWeight: "800",
               letterSpacing: 1.2,

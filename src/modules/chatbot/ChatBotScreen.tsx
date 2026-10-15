@@ -75,7 +75,7 @@ export default function ChatbotScreen() {
           {isUser && <Text className="ml-2 text-lg">👤</Text>}
         </View>
 
-        <Text className="text-[10px] text-gray-400 mt-1">{item.time}</Text>
+        <Text className="text-[13px] text-gray-400 mt-1">{item.time}</Text>
 
         {!isUser && item.quickReplies?.length > 0 && (
           <View className="flex-row flex-wrap mt-2">
@@ -195,7 +195,7 @@ export default function ChatbotScreen() {
                   }`}
               >
                 <Text
-                  className={`text-[14px] ${isUser ? "text-white" : "text-gray-800"
+                  className={`text-[16px] ${isUser ? "text-white" : "text-gray-800"
                     }`}
                 >
                   {item.text}
@@ -203,14 +203,14 @@ export default function ChatbotScreen() {
               </View>
 
               {/* TIME */}
-              <Text className="text-[10px] text-gray-400 mt-1 px-1">
+              <Text className="text-[13px] text-gray-400 mt-1 px-1">
                 {item.time}
               </Text>
 
               {/* QUICK REPLIES */}
               {!isUser && item.quickReplies?.length > 0 && (
                 <View className="mt-2">
-                  <Text className="text-[10px] text-gray-400 mb-1">
+                  <Text className="text-[13px] text-gray-400 mb-1">
                     Suggestions
                   </Text>
 

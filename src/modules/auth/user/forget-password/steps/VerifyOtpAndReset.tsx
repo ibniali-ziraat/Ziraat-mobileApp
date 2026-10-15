@@ -28,7 +28,7 @@ export default function VerifyOtpAndReset({
         <Text style={{ fontSize: 20, fontWeight: "700", marginTop: 10 }}>
           Enter Verification Code
         </Text>
-        <Text style={{ fontSize: 13, color: colors.neutral, marginTop: 4 }}>
+        <Text style={{ fontSize: 15, color: colors.neutral, marginTop: 4 }}>
           Sent to +91 {phoneNumber}
         </Text>
       </View>
@@ -53,13 +53,13 @@ export default function VerifyOtpAndReset({
         />
         <View style={{ alignItems: "center", marginTop: 12 }}>
           {timer > 0 ? (
-            <Text style={{ color: colors.error, fontSize: 13 }}>
+            <Text style={{ color: colors.error, fontSize: 15 }}>
               Code expires in {timer}s
             </Text>
           ) : (
             <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
-                style={{ color: colors.neutral, fontSize: 13, marginRight: 4 }}
+                style={{ color: colors.neutral, fontSize: 15, marginRight: 4 }}
               >
                 Code expired.
               </Text>
@@ -67,7 +67,7 @@ export default function VerifyOtpAndReset({
                 <Text
                   style={{
                     color: colors.primary,
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: "600",
                     textDecorationLine: "underline",
                   }}

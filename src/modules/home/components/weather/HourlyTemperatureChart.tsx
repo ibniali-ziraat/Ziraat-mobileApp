@@ -125,7 +125,7 @@ export default function HourlyTemperatureChart({
                 style={[
                   typography.Poppins_xs_regular,
                   {
-                    fontSize: 9.5,
+                    fontSize: 10.5,
                     color:
                       index === selected
                         ? chartTokens.current
@@ -145,7 +145,7 @@ export default function HourlyTemperatureChart({
           typography.Poppins_xs_regular,
           {
             color: cardTokens.inkMuted,
-            fontSize: 9.5,
+            fontSize: 10.5,
             marginTop: 8,
             textAlign: "center",
           },

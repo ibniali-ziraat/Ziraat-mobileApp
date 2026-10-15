@@ -39,7 +39,7 @@ export default function FinancialSection({ orchardProfileId }: Props) {
     <CsText
       style={[
         typography.Poppins_m_semibold,
-        { fontSize: 16, color: colors.dark, marginTop: 16, marginBottom: 8 },
+        { fontSize: 17, color: colors.dark, marginTop: 16, marginBottom: 8 },
       ]}
     >
       {label}
@@ -82,7 +82,7 @@ export default function FinancialSection({ orchardProfileId }: Props) {
                 marginBottom: i < insights.length - 1 ? 10 : 0,
               }}
             >
-              <CsText style={{ color: colors.dark, fontSize: 13, flex: 1, marginRight: 10 }}>
+              <CsText style={{ color: colors.dark, fontSize: 15, flex: 1, marginRight: 10 }}>
                 {item.title}
               </CsText>
               {!!item.status && (
@@ -94,7 +94,7 @@ export default function FinancialSection({ orchardProfileId }: Props) {
                     borderRadius: 999,
                   }}
                 >
-                  <CsText style={{ color: colors.light, fontSize: 11 }}>{item.status}</CsText>
+                  <CsText style={{ color: colors.light, fontSize: 13.5 }}>{item.status}</CsText>
                 </View>
               )}
             </View>

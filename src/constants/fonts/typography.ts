@@ -1,10 +1,12 @@
 import { fonts } from "./font";
 import { scale } from "./scale";
+// Sized for farmers reading outdoors: captions ≥14, body 16 (the common
+// accessible default), titles 17, headings 21.
 const size = {
-  xs: scale(12),
-  s: scale(14),
-  m: scale(16),
-  l: scale(20),
+  xs: scale(14),
+  s: scale(16),
+  m: scale(17),
+  l: scale(21),
   xl: scale(28),
   xxl: scale(36),
 };

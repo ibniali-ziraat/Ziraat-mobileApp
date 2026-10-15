@@ -5,6 +5,7 @@ export const useOrderStatuses = () => {
   return useQuery({
     queryKey: ["order-statuses"],
     queryFn: fetchOrderStatuses,
-    staleTime: Infinity,
+    // Not Infinity: one failed or empty answer would stick until restart.
+    staleTime: 60 * 60 * 1000,
   });
 };

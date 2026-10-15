@@ -116,7 +116,7 @@ function ProductCard({ product }) {
       {/* PRODUCT NAME */}
       {!loading && (
         <CsText
-          className="text-[16px] font-semibold text-center"
+          className="text-[17px] font-semibold text-center"
           style={{ color: colors.dark }}
         >
           {product.name}
@@ -126,7 +126,7 @@ function ProductCard({ product }) {
       {/* DESCRIPTION */}
       {!loading && (
         <CsText
-          className="text-[12px] text-center mt-1"
+          className="text-[14px] text-center mt-1"
           style={{ color: colors.dark + "AA" }}
         >
           {product.desc}
@@ -144,7 +144,7 @@ function ProductCard({ product }) {
             shadowRadius: 6,
           }}
         >
-          <CsText className="text-white ml-2 text-[13px] font-medium">
+          <CsText className="text-white ml-2 text-[15px] font-medium">
             View
           </CsText>
         </Pressable>

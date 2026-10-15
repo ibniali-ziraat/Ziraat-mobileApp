@@ -15,6 +15,10 @@ export type MenuRoute = {
   icon: LucideIcon;
   /** Full-colour icon from `menuArt`; drawn in place of `icon`. */
   art?: string;
+  /** Pastel fill behind the icon. */
+  tint?: string;
+  /** One-line description under the label. */
+  hint?: string;
 };
 
 export type MenuGroup = {
@@ -32,12 +36,16 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
           screen: ROUTES.ORDERS.LIST,
           icon: ShoppingBag,
           art: menuArt.orders,
+          tint: "#FFF1EA",
+          hint: "Track and manage your purchases",
         },
         {
           label: "Manage Addresses",
           screen: "/add-addresses",
           icon: MapPin,
           art: menuArt.addresses,
+          tint: "#EAF5E4",
+          hint: "Delivery locations",
         },
       ],
     },
@@ -55,12 +63,16 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
           screen: "notifications",
           icon: Bell,
           art: menuArt.notifications,
+          tint: "#FFF8E1",
+          hint: "Alerts and updates",
         },
         {
           label: "Discussion",
           screen: ROUTES.Discussion.discussionForum,
           icon: MessagesSquare,
           art: menuArt.discussion,
+          tint: "#E6F3FC",
+          hint: "Ask and learn from farmers",
         },
       ],
     },
@@ -80,6 +92,8 @@ export const MenuLinks: { farmer: MenuGroup[] } = {
           screen: ROUTES.SETTINGS,
           icon: Settings,
           art: menuArt.settings,
+          tint: "#F1ECFA",
+          hint: "Language, account and app",
         },
       ],
     },

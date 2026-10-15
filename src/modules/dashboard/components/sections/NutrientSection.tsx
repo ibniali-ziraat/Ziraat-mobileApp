@@ -39,7 +39,7 @@ export default function NutrientSection({ orchardProfileId }: Props) {
       <CsText
         style={[
           typography.Poppins_m_semibold,
-          { fontSize: 16, color: colors.dark, marginTop: 16, marginBottom: 8 },
+          { fontSize: 17, color: colors.dark, marginTop: 16, marginBottom: 8 },
         ]}
       >
         Soil Health Trend
@@ -50,7 +50,7 @@ export default function NutrientSection({ orchardProfileId }: Props) {
           values={trend.map((t) => t.value)}
         />
         {!!data?.trendNote && (
-          <CsText style={{ textAlign: "center", marginTop: 8, color: colors.neutral, fontSize: 12 }}>
+          <CsText style={{ textAlign: "center", marginTop: 8, color: colors.neutral, fontSize: 14 }}>
             {data.trendNote}
           </CsText>
         )}

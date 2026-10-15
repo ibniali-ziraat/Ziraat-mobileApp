@@ -94,7 +94,7 @@ function Chip({
         style={[
           typography.Poppins_xs_medium,
           {
-            fontSize: 12,
+            fontSize: 14,
             color: selected ? cardTokens.surface : cardTokens.inkSecondary,
           },
         ]}
@@ -107,7 +107,7 @@ function Chip({
           style={[
             typography.Poppins_xs_semibold,
             {
-              fontSize: 10,
+              fontSize: 13,
               marginLeft: 6,
               color: selected ? "rgba(255,255,255,0.75)" : cardTokens.inkMuted,
             },
@@ -162,7 +162,7 @@ function Facet({
         <Text
           style={[
             typography.Poppins_xs_semibold,
-            { color: cardTokens.inkSecondary, fontSize: 12 },
+            { color: cardTokens.inkSecondary, fontSize: 14 },
           ]}
         >
           {title}
@@ -277,7 +277,7 @@ export default function OrchardFilterSheet({
             <Text
               style={[
                 typography.Poppins_m_semibold,
-                { color: cardTokens.inkPrimary, fontSize: 17 },
+                { color: cardTokens.inkPrimary, fontSize: 18 },
               ]}
             >
               Filter orchards
@@ -307,7 +307,7 @@ export default function OrchardFilterSheet({
             <Text
               style={[
                 typography.Poppins_xs_medium,
-                { color: cardTokens.inkMuted, fontSize: 11.5, marginLeft: 4 },
+                { color: cardTokens.inkMuted, fontSize: 14, marginLeft: 4 },
               ]}
             >
               Reset
@@ -373,7 +373,7 @@ export default function OrchardFilterSheet({
             <Text
               style={[
                 typography.Poppins_s_semibold,
-                { color: cardTokens.surface, fontSize: 14 },
+                { color: cardTokens.surface, fontSize: 16 },
               ]}
             >
               Show results

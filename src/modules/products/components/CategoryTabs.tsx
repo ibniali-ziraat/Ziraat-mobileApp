@@ -77,7 +77,7 @@ export default function CategoryTabs({
               style={[
                 typography.Poppins_xs_semibold,
                 {
-                  fontSize: 13,
+                  fontSize: 15,
                   color: isActive ? "#FFFFFF" : cardTokens.inkSecondary,
                 },
               ]}

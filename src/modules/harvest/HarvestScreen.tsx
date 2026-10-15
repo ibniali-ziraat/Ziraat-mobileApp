@@ -170,7 +170,7 @@ export default function HarvestScreen() {
                     </View>
 
                     <View className="ml-3">
-                      <Text className="text-[11px] text-dark">
+                      <Text className="text-[12.5px] text-dark">
                         Harvest Date
                       </Text>
 
@@ -186,7 +186,7 @@ export default function HarvestScreen() {
                     </View>
 
                     <View className="ml-3">
-                      <Text className="text-[11px] text-dark">
+                      <Text className="text-[12.5px] text-dark">
                         Crop Quality
                       </Text>
 
@@ -205,7 +205,7 @@ export default function HarvestScreen() {
                     </View>
 
                     <View className="ml-3 items-end">
-                      <Text className="text-[11px] text-dark">Location</Text>
+                      <Text className="text-[12.5px] text-dark">Location</Text>
 
                       <Text className="text-sm font-medium text-dark">
                         {item.location}
@@ -219,7 +219,7 @@ export default function HarvestScreen() {
                     </View>
 
                     <View className="ml-3 items-end">
-                      <Text className="text-[11px] text-dark">Record ID</Text>
+                      <Text className="text-[12.5px] text-dark">Record ID</Text>
 
                       <Text className="text-sm font-semibold text-dark">
                         #{item.id}

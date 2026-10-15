@@ -52,7 +52,7 @@ const FaqItem = ({ item }: any) => {
               flex: 1,
 
               color: colors.dark,
-              lineHeight: 21,
+              lineHeight: 25,
               paddingRight: 12,
             },
           ]}
@@ -76,7 +76,7 @@ const FaqItem = ({ item }: any) => {
             {
               marginTop: 10,
 
-              lineHeight: 20,
+              lineHeight: 24,
               color: colors.neutral,
               maxWidth: "95%",
             },
@@ -124,7 +124,7 @@ const FaqSettings = () => {
                   typography.Poppins_xs_regular,
 
                   {
-                    lineHeight: 20,
+                    lineHeight: 24,
                     color: colors.darkHover,
                     maxWidth: "95%",
                   },
@@ -188,7 +188,7 @@ const FaqSettings = () => {
                   {
                     color: colors.neutral,
                     marginTop: 6,
-                    lineHeight: 18,
+                    lineHeight: 22,
                   },
                 ]}
               >

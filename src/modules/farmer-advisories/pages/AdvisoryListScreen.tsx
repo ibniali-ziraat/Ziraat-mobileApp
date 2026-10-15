@@ -131,7 +131,7 @@ export default function AdvisoryListScreen() {
                   style={[
                     typography.Poppins_s_medium,
                     {
-                      fontSize: 13,
+                      fontSize: 15,
                       color: selected ? colors.light : cardTokens.inkSecondary,
                     },
                   ]}

@@ -37,7 +37,7 @@ export default function DetailSection({ title, art, children }: Props) {
         <Text
           style={[
             typography.Poppins_m_semibold,
-            { color: cardTokens.inkPrimary, fontSize: 16 },
+            { color: cardTokens.inkPrimary, fontSize: 17 },
           ]}
         >
           {title}

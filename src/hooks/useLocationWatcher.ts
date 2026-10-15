@@ -2,7 +2,8 @@
  * useLocationWatcher
  *
  * Behaviour:
- *  1. On mount, show the native OS location permission dialog once (if not yet decided)
+ *  1. Never shows the OS dialog itself — PermissionPrompt asks after login,
+ *     then calls recheck(). Until then status is "denied".
  *  2. If granted  → stream live coords
  *  3. If denied   → status = "denied", coords = null
  *  4. If device GPS off → status = "disabled", coords = null
@@ -17,11 +18,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AppState, AppStateStatus } from "react-native";
 
 export type LocationStatus =
-  | "checking"
-  | "granted"
-  | "denied"
-  | "disabled"
-  | "error";
+  "checking" | "granted" | "denied" | "disabled" | "error";
 
 export interface WatchedCoords {
   lat: number;
@@ -62,7 +59,6 @@ export function useLocationWatcher(
   const watchRef = useRef<Location.LocationSubscription | null>(null);
   const appStateRef = useRef<AppStateStatus>(AppState.currentState);
   const isStartingRef = useRef(false);
-  const hasPromptedRef = useRef(false);
 
   const updateStatus = useCallback(
     (next: LocationStatus) => {
@@ -95,16 +91,8 @@ export function useLocationWatcher(
         return;
       }
 
-      const { status: currentPerm } =
+      const { status: finalPerm } =
         await Location.getForegroundPermissionsAsync();
-      let finalPerm = currentPerm;
-
-      if (currentPerm === "undetermined" && !hasPromptedRef.current) {
-        hasPromptedRef.current = true;
-        const { status: requested } =
-          await Location.requestForegroundPermissionsAsync();
-        finalPerm = requested;
-      }
 
       if (finalPerm !== "granted") {
         stopWatcher();

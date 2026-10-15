@@ -7,7 +7,7 @@ import DetailSection from "./DetailSection";
 
 const body = [
   typography.Poppins_s_regular,
-  { color: cardTokens.inkSecondary, fontSize: 13.5, lineHeight: 22 },
+  { color: cardTokens.inkSecondary, fontSize: 15.5, lineHeight: 26 },
 ];
 
 export default function ProductDescription({ product }: any) {

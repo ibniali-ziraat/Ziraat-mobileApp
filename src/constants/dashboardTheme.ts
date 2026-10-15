@@ -46,11 +46,9 @@ export const cardTokens = {
   inkMuted: "#8C8C8C",
 } as const;
 
-/** Airbnb's card elevation: wide, soft, and neutral — never a colour-cast blob. */
-export const cardShadow = {
-  shadowColor: "#000000",
-  shadowOffset: { width: 0, height: 6 },
-  shadowOpacity: 0.12,
-  shadowRadius: 16,
-  elevation: 3,
-} as const;
+/**
+ * Cards are flat: no shadow, just the faint outline (`colors.cardBorder`).
+ * Kept as an empty style so existing `[style, cardShadow]` call sites still
+ * work; don't reintroduce elevation here.
+ */
+export const cardShadow = {} as const;

@@ -137,7 +137,7 @@ export default function CartListItem({
                 paddingVertical: 4,
               }}
             >
-              <CsText style={{ fontSize: 12, color: "#111" }}>
+              <CsText style={{ fontSize: 14, color: "#111" }}>
                 Qty {quantity}
               </CsText>
             </View>

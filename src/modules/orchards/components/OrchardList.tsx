@@ -125,7 +125,7 @@ export default function OrchardList({
               <Text
                 style={[
                   typography.Poppins_xs_semibold,
-                  { color: chartTokens.current, fontSize: 12, marginRight: 4 },
+                  { color: chartTokens.current, fontSize: 14, marginRight: 4 },
                 ]}
               >
                 {showAll ? "Show less" : `Show all ${orchards.length} orchards`}
@@ -161,7 +161,7 @@ export default function OrchardList({
               <Text
                 style={[
                   typography.Poppins_s_semibold,
-                  { color: cardTokens.inkPrimary, fontSize: 14.5 },
+                  { color: cardTokens.inkPrimary, fontSize: 15.5 },
                 ]}
               >
                 Grow your farm
@@ -171,7 +171,7 @@ export default function OrchardList({
                   typography.Poppins_xs_regular,
                   {
                     color: cardTokens.inkSecondary,
-                    fontSize: 11.5,
+                    fontSize: 14,
                     marginTop: 2,
                   },
                 ]}
@@ -217,7 +217,7 @@ export default function OrchardList({
                   <Text
                     style={[
                       typography.Poppins_xs_semibold,
-                      { color: colors.primary, fontSize: 11 },
+                      { color: colors.primary, fontSize: 13.5 },
                     ]}
                   >
                     Dashboard
@@ -281,7 +281,7 @@ export default function OrchardList({
                 numberOfLines={1}
                 style={[
                   typography.Poppins_xs_regular,
-                  { flex: 1, color: cardTokens.inkMuted, fontSize: 11 },
+                  { flex: 1, color: cardTokens.inkMuted, fontSize: 13.5 },
                 ]}
               >
                 Showing {visible.length} of {orchards.length}
@@ -308,7 +308,7 @@ export default function OrchardList({
                 <Text
                   style={[
                     typography.Poppins_xs_semibold,
-                    { color: chartTokens.current, fontSize: 11, marginLeft: 3 },
+                    { color: chartTokens.current, fontSize: 13.5, marginLeft: 3 },
                   ]}
                 >
                   Clear filters

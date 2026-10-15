@@ -86,11 +86,11 @@ const TermsScreen = () => {
 
 <Text
   style={{
-    fontSize: 15,
+    fontSize: 16,
     color: colors.darkHover,
     marginTop: 10,
     marginBottom: 36,
-    lineHeight: 22,
+    lineHeight: 24,
   }}
 >
   This document defines the legal conditions for using the Ziraat platform.
@@ -128,7 +128,7 @@ const TermsScreen = () => {
 
     <Text
       style={{
-        fontSize: 16,
+        fontSize: 17,
         fontWeight: "700",
         color: colors.secondary,
         letterSpacing: 0.3,
@@ -150,8 +150,8 @@ const TermsScreen = () => {
   {/* Content */}
   <Text
     style={{
-      fontSize: 15,
-      lineHeight: 24,
+      fontSize: 16,
+      lineHeight: 26,
       color: colors.neutral,
     }}
   >
@@ -176,9 +176,9 @@ const TermsScreen = () => {
 
   <Text
     style={{
-      fontSize: 14,
+      fontSize: 16,
       color: colors.darkHover,
-      lineHeight: 20,
+      lineHeight: 24,
     }}
   >
     The following terms define your responsibilities and safe usage
@@ -247,7 +247,7 @@ const TermsScreen = () => {
           >
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: "700",
                 color: colors.light,
               }}
@@ -261,7 +261,7 @@ const TermsScreen = () => {
         <View style={{ flex: 1 }}>
           <Text
             style={{
-              fontSize: 17,
+              fontSize: 18,
               fontWeight: "600",
               color: colors.primary,
               marginBottom: 8,
@@ -272,8 +272,8 @@ const TermsScreen = () => {
 
           <Text
             style={{
-              fontSize: 15,
-              lineHeight: 24,
+              fontSize: 16,
+              lineHeight: 26,
               color: colors.darkHover,
             }}
           >
@@ -298,7 +298,7 @@ const TermsScreen = () => {
 >
   <Text
     style={{
-      fontSize: 16,
+      fontSize: 17,
       fontWeight: "700",
       color: colors.primary,
       marginBottom: 10,
@@ -309,8 +309,8 @@ const TermsScreen = () => {
 
   <Text
     style={{
-      fontSize: 14,
-      lineHeight: 22,
+      fontSize: 16,
+      lineHeight: 26,
       color: colors.darkHover,
     }}
   >
@@ -339,7 +339,7 @@ const TermsScreen = () => {
   >
     <Text
       style={{
-        fontSize: 12,
+        fontSize: 14,
         fontWeight: "600",
         color: colors.primary,
         letterSpacing: 0.6,
@@ -351,10 +351,10 @@ const TermsScreen = () => {
 
   <Text
     style={{
-      fontSize: 12,
+      fontSize: 14,
       color: colors.darkHover,
       textAlign: "center",
-      lineHeight: 18,
+      lineHeight: 22,
     }}
   >
     Effective from February 2026.  
@@ -379,7 +379,7 @@ const TermsScreen = () => {
   />
   <Text
     style={{
-      fontSize: 12,
+      fontSize: 14,
       color: colors.darkHover,
       letterSpacing: 0.6,
     }}
@@ -391,7 +391,7 @@ const TermsScreen = () => {
         
           <Text
             style={{
-              fontSize: 12,
+              fontSize: 14,
               textAlign: "center",
               color: colors.darkHover,
             }}

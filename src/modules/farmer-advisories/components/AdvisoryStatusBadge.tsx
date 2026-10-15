@@ -19,7 +19,7 @@ export default function AdvisoryStatusBadge({ status }: AdvisoryStatusBadgeProps
       }}
     >
       <Text
-        style={[typography.Poppins_xs_semibold, { color: meta.color, fontSize: 11 }]}
+        style={[typography.Poppins_xs_semibold, { color: meta.color, fontSize: 13.5 }]}
       >
         {meta.label}
       </Text>

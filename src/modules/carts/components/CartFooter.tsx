@@ -60,7 +60,7 @@ const CartFooter = ({
         <Text
           style={[
             typography.Poppins_m_semibold,
-            { color: "#dc2626", marginBottom: 8, fontSize: 12 },
+            { color: "#dc2626", marginBottom: 8, fontSize: 14 },
           ]}
         >
           {conflictMessage}

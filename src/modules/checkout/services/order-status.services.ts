@@ -7,5 +7,9 @@ export interface OrderStatus {
 
 export const fetchOrderStatuses = async (): Promise<OrderStatus[]> => {
   const { data } = await axiosInstance.get("/api/orders/order-status");
-  return data;
+  // Accept a bare array or a { data | items | result } wrapper.
+  const list = Array.isArray(data)
+    ? data
+    : (data?.data ?? data?.items ?? data?.result ?? []);
+  return Array.isArray(list) ? list : [];
 };

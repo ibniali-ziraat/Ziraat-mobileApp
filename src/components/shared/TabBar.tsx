@@ -121,7 +121,7 @@ export default function TabBar({ tabs, activeTab, onChange }) {
               <Animated.Text
                 style={[
                   {
-                    fontSize: 13,
+                    fontSize: 15,
                     fontWeight: "600",
                     color: isActive ? colors.primary : colors.dark,
                   },

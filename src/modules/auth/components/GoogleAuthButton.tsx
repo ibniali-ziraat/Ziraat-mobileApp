@@ -37,7 +37,7 @@ export function GoogleAuthButton({
       />
 
       <View className="flex-1 items-center">
-        <Text className="text-[15px] font-medium text-neutral">{label}</Text>
+        <Text className="text-[16px] font-medium text-neutral">{label}</Text>
       </View>
     </Pressable>
   );

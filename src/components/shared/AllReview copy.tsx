@@ -92,7 +92,7 @@
 
 //             <RatingStars rating={Number(summary.averageRating)} size={12} />
 
-//             <Text className="text-neutral-400 text-[10px] mt-1">
+//             <Text className="text-neutral-400 text-[13px] mt-1">
 //               Based on {summary.totalReviews} reviews
 //             </Text>
 //           </View>
@@ -157,7 +157,7 @@
 //                     {r.user}
 //                   </Text>
 
-//                   <Text className="text-neutral-400 text-[11px]">{r.date}</Text>
+//                   <Text className="text-neutral-400 text-[12.5px]">{r.date}</Text>
 //                 </View>
 //               </View>
 
@@ -272,7 +272,7 @@ export default function Review({
               size={12}
             />
 
-            <Text className="text-neutral-400 text-[10px] mt-1">
+            <Text className="text-neutral-400 text-[13px] mt-1">
               Based on {summary.totalReviews} reviews
             </Text>
           </View>
@@ -338,7 +338,7 @@ export default function Review({
                     {r.user}
                   </Text>
 
-                  <Text className="text-neutral-400 text-[11px]">
+                  <Text className="text-neutral-400 text-[12.5px]">
                     {r.date}
                   </Text>
                 </View>

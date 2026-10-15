@@ -37,7 +37,7 @@ export function ProductListFooter({
         <Text
           style={[
             typography.Poppins_xs_regular,
-            { color: cardTokens.inkMuted, fontSize: 12.5 },
+            { color: cardTokens.inkMuted, fontSize: 14.5 },
           ]}
         >
           You've reached the end

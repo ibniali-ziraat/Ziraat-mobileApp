@@ -126,7 +126,7 @@ const AddressListScreen = () => {
               <Text
                 style={{
                   marginTop: 4,
-                  fontSize: 13,
+                  fontSize: 15,
                   color: colors.darkHover,
                 }}
               >
@@ -149,7 +149,7 @@ const AddressListScreen = () => {
               <Text
                 style={{
                   marginLeft: 6,
-                  fontSize: 13,
+                  fontSize: 15,
                   fontWeight: "700",
                   color: colors.light,
                 }}
@@ -187,7 +187,7 @@ const AddressListScreen = () => {
                 style={[
                   typography.Poppins_s_semibold,
                   {
-                    fontSize: 17,
+                    fontSize: 18,
                     color: colors.dark,
                   },
                 ]}
@@ -200,8 +200,8 @@ const AddressListScreen = () => {
                   marginTop: 6,
                   textAlign: "center",
                   color: colors.neutral,
-                  fontSize: 13,
-                  lineHeight: 22,
+                  fontSize: 15,
+                  lineHeight: 26,
                   paddingHorizontal: 30,
                 }}
               >
@@ -264,7 +264,7 @@ const AddressListScreen = () => {
                           style={[
                             typography.Poppins_s_semibold,
                             {
-                              fontSize: 16,
+                              fontSize: 17,
                               color: colors.dark,
                             },
                           ]}
@@ -276,7 +276,7 @@ const AddressListScreen = () => {
                           style={{
                             marginTop: 2,
                             color: colors.darkHover,
-                            fontSize: 13,
+                            fontSize: 15,
                           }}
                         >
                           {item.phone}
@@ -303,7 +303,7 @@ const AddressListScreen = () => {
                           style={{
                             marginLeft: 6,
                             color: colors.primary,
-                            fontSize: 11,
+                            fontSize: 13.5,
                             fontWeight: "700",
                             letterSpacing: 0.5,
                           }}
@@ -324,8 +324,8 @@ const AddressListScreen = () => {
                       <Text
                         style={{
                           color: colors.dark,
-                          fontSize: 14,
-                          lineHeight: 24,
+                          fontSize: 16,
+                          lineHeight: 28,
                         }}
                       >
                         {item.addressLine1}
@@ -334,8 +334,8 @@ const AddressListScreen = () => {
                       <Text
                         style={{
                           color: colors.neutral,
-                          fontSize: 13,
-                          lineHeight: 22,
+                          fontSize: 15,
+                          lineHeight: 26,
                           marginTop: 2,
                         }}
                       >
@@ -345,7 +345,7 @@ const AddressListScreen = () => {
                       <Text
                         style={{
                           color: colors.neutral,
-                          fontSize: 13,
+                          fontSize: 15,
                           marginTop: 2,
                         }}
                       >
@@ -385,7 +385,7 @@ const AddressListScreen = () => {
                           style={{
                             color: colors.primary,
                             fontWeight: "700",
-                            fontSize: 12,
+                            fontSize: 14,
                             letterSpacing: 0.4,
                           }}
                         >
@@ -406,7 +406,7 @@ const AddressListScreen = () => {
                         style={{
                           color: colors.primary,
                           fontWeight: "700",
-                          fontSize: 12,
+                          fontSize: 14,
                         }}
                       >
                         CURRENT DEFAULT

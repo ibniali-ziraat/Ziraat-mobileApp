@@ -63,7 +63,7 @@ export default function LocationBanner({ visible }: Props) {
         className="px-4 py-2 rounded-full ml-2"
         style={{ backgroundColor: colors.warning }}
       >
-        <Text className="text-white text-[11px] font-bold">Enable</Text>
+        <Text className="text-white text-[12.5px] font-bold">Enable</Text>
       </TouchableOpacity>
     </View>
   );

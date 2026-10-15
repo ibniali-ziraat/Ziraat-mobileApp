@@ -25,7 +25,7 @@ function StatPill({ icon, label, value }: any) {
       <Text style={{ fontSize: 18, fontWeight: "800", color: colors.dark, marginTop: 6 }}>
         {value ?? 0}
       </Text>
-      <Text style={{ fontSize: 11, color: colors.overlay, marginTop: 2 }}>{label}</Text>
+      <Text style={{ fontSize: 13.5, color: colors.overlay, marginTop: 2 }}>{label}</Text>
     </View>
   );
 }
@@ -56,7 +56,7 @@ export default function ForumUserProfileScreen() {
                 {name}
               </Text>
               {user?.email && (
-                <Text style={{ fontSize: 12, color: colors.overlay, marginTop: 2 }}>
+                <Text style={{ fontSize: 14, color: colors.overlay, marginTop: 2 }}>
                   {user.email}
                 </Text>
               )}
@@ -98,7 +98,7 @@ export default function ForumUserProfileScreen() {
                 fontWeight: "700",
               }}
             >
-              <Text style={{ fontSize: 15, fontWeight: "700", color: colors.dark }}>
+              <Text style={{ fontSize: 16, fontWeight: "700", color: colors.dark }}>
                 Questions asked
               </Text>
             </View>
