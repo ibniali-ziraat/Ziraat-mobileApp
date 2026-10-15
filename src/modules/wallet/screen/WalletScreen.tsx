@@ -138,14 +138,14 @@ export default function WalletComponent() {
               }}
             >
               <Plus size={13} color={colors.light} strokeWidth={2.5} />
-              <Text style={{ fontSize: 15, fontWeight: "600", color: colors.light }}>Add Money</Text>
+              <Text style={{ fontSize: 13, fontWeight: "600", color: colors.light }}>Add Money</Text>
             </Pressable>
           </View>
 
           {/* Label */}
           <Text
             style={{
-              fontSize: 13, fontWeight: "600", letterSpacing: 1.8,
+              fontSize: 10, fontWeight: "600", letterSpacing: 1.8,
               color: colors.light, textTransform: "uppercase", marginBottom: 4,
             }}
           >
@@ -167,14 +167,14 @@ export default function WalletComponent() {
           <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
               <TrendingUp size={13} color={colors.light} strokeWidth={2} />
-              <Text style={{ fontSize: 14, color: colors.light, fontWeight: "500" }}>
+              <Text style={{ fontSize: 12, color: colors.light, fontWeight: "500" }}>
                 Added {fmt(totalAdded)}
               </Text>
             </View>
             <View style={{ width: 3, height: 3, borderRadius: 2, backgroundColor: colors.light }} />
             <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
               <TrendingDown size={13} color={colors.light} strokeWidth={2} />
-              <Text style={{ fontSize: 14, color: colors.light, fontWeight: "500" }}>
+              <Text style={{ fontSize: 12, color: colors.light, fontWeight: "500" }}>
                 Spent {fmt(totalUsed)}
               </Text>
             </View>
@@ -211,7 +211,7 @@ export default function WalletComponent() {
             <View>
               <Text
                 style={{
-                  fontSize: 17,
+                  fontSize: 16,
                   fontWeight: "800",
                   color: colors.neutral,
                   marginTop: 6,
@@ -222,7 +222,7 @@ export default function WalletComponent() {
 
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: 12,
                   color: colors.neutral,
                   marginTop: 2,
                 }}
@@ -274,7 +274,7 @@ export default function WalletComponent() {
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 22 }}>
               <View>
                 <Text style={{ fontSize: 18, fontWeight: "700", color: colors.neutral }}>Add Money</Text>
-                <Text style={{ fontSize: 15, marginTop: 3 }}>Top up your wallet instantly</Text>
+                <Text style={{ fontSize: 13, marginTop: 3 }}>Top up your wallet instantly</Text>
               </View>
               <Pressable
                 onPress={() => setModalVisible(false)}
@@ -292,7 +292,7 @@ export default function WalletComponent() {
             </View>
 
             {/* Quick Select */}
-            <Text style={{ fontSize: 13, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase", marginBottom: 10 }}>
+            <Text style={{ fontSize: 10, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase", marginBottom: 10 }}>
               Quick Select
             </Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
@@ -309,17 +309,17 @@ export default function WalletComponent() {
                       borderWidth: 1, borderColor: active ? colors.primary : colors.cardBorder,
                     }}
                   >
-                    <Text style={{ fontSize: 16, fontWeight: "700", color: active ? colors.primary : colors.neutral }}>
+                    <Text style={{ fontSize: 14, fontWeight: "700", color: active ? colors.primary : colors.neutral }}>
                       {fmt(q.value)}
                     </Text>
-                    <Text style={{ fontSize: 13, color: colors.overlay, marginTop: 3 }}>{q.tag}</Text>
+                    <Text style={{ fontSize: 10, color: colors.overlay, marginTop: 3 }}>{q.tag}</Text>
                   </Pressable>
                 );
               })}
             </View>
 
             {/* Custom Amount */}
-            <Text style={{ fontSize: 13, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase", marginBottom: 10 }}>
+            <Text style={{ fontSize: 10, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase", marginBottom: 10 }}>
               Custom Amount
             </Text>
             <View
@@ -360,7 +360,7 @@ export default function WalletComponent() {
             </View>
 
             {/* Pay Via */}
-            <Text style={{ fontSize: 13, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase", marginBottom: 10 }}>
+            <Text style={{ fontSize: 10, fontWeight: "700", letterSpacing: 1.4, textTransform: "uppercase", marginBottom: 10 }}>
               Pay Via
             </Text>
             <View style={{ flexDirection: "row", gap: 8, marginBottom: 22 }}>
@@ -384,7 +384,7 @@ export default function WalletComponent() {
                     }}
                   >
                     <Icon size={18} color={active ? colors.primary : colors.overlay} strokeWidth={2} />
-                    <Text style={{ fontSize: 14, fontWeight: "600", color: active ? colors.primary : colors.overlay }}>
+                    <Text style={{ fontSize: 12, fontWeight: "600", color: active ? colors.primary : colors.overlay }}>
                       {label}
                     </Text>
                   </Pressable>
@@ -404,7 +404,7 @@ export default function WalletComponent() {
               }}
             >
               <Zap size={16} color={colors.light} strokeWidth={2.2} />
-              <Text style={{ fontSize: 17, fontWeight: "700", color: colors.light }}>
+              <Text style={{ fontSize: 16, fontWeight: "700", color: colors.light }}>
                 Add {customAmt ? fmt(parseInt(customAmt, 10) || 0) : "₹0"} to Wallet
               </Text>
             </Pressable>
@@ -430,8 +430,8 @@ export default function WalletComponent() {
         >
           <CircleCheck size={22} color={colors.primary} strokeWidth={2} />
           <View>
-            <Text style={{ fontSize: 16, fontWeight: "700", color: colors.primary }}>{toastMsg.title}</Text>
-            <Text style={{ fontSize: 14, marginTop: 2 }}>{toastMsg.sub}</Text>
+            <Text style={{ fontSize: 14, fontWeight: "700", color: colors.primary }}>{toastMsg.title}</Text>
+            <Text style={{ fontSize: 12, marginTop: 2 }}>{toastMsg.sub}</Text>
           </View>
         </Animated.View>
       )}
@@ -483,7 +483,7 @@ function TxRow({ tx, last }: { tx: Transaction; last: boolean }) {
         <Text
           numberOfLines={1}
           style={{
-            fontSize: 15.5,
+            fontSize: 14.5,
             fontWeight: "700",
             color: colors.neutral,
           }}
@@ -494,7 +494,7 @@ function TxRow({ tx, last }: { tx: Transaction; last: boolean }) {
         <Text
           numberOfLines={1}
           style={{
-            fontSize: 14.5,
+            fontSize: 12.5,
             color: colors.overlay,
             marginTop: 3,
           }}
@@ -507,7 +507,7 @@ function TxRow({ tx, last }: { tx: Transaction; last: boolean }) {
       <View style={{ alignItems: "flex-end" }}>
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 15,
             fontWeight: "800",
             color: isCredit ? colors.primary : colors.error,
           }}
@@ -517,7 +517,7 @@ function TxRow({ tx, last }: { tx: Transaction; last: boolean }) {
 
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 11.5,
             color: colors.overlay,
             marginTop: 4,
           }}

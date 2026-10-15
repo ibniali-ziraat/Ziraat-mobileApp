@@ -18,7 +18,7 @@ export default function OrchardModeToggle({ mode, onChange }) {
     >
       <Text
         style={{
-          fontSize: 17,
+          fontSize: 16,
           fontWeight: "600",
         }}
       >

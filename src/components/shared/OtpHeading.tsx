@@ -60,7 +60,7 @@ export default function OtpHeading({
         <CsText
           style={{
             marginTop: 6,
-            fontSize: 16,
+            fontSize: 14,
             color: colors.neutral,
           }}
         >
@@ -73,7 +73,7 @@ export default function OtpHeading({
         <CsText
           style={{
             marginTop: 12,
-            fontSize: 15,
+            fontSize: 13,
             color: colors.darkHover,
           }}
         >
@@ -84,13 +84,13 @@ export default function OtpHeading({
        </CsText>
       ) : (
         <View style={{ marginTop: 12, flexDirection: "row" }}>
-          <CsText style={{ fontSize: 15, color: colors.neutral }}>
+          <CsText style={{ fontSize: 13, color: colors.neutral }}>
             Didn’t receive the code?{" "}
          </CsText>
           <Pressable onPress={handleResend}>
             <CsText
               style={{
-                fontSize: 15,
+                fontSize: 13,
                 fontWeight: "600",
                 color: colors.primary,
               }}

@@ -38,7 +38,7 @@ export default function DropdownSelectInput({
         return (
           <View className="mb-4">
             {label && (
-              <Text className="mb-2 text-[16px] font-semibold text-neutral-500">
+              <Text className="mb-2 text-[14px] font-semibold text-neutral-500">
                 {label}
               </Text>
             )}
@@ -68,7 +68,7 @@ export default function DropdownSelectInput({
                 }`}
               >
                 <Text
-                  className={`text-[17px] ${!selectedOption ? "text-neutral-400" : "text-neutral-900 font-medium"}`}
+                  className={`text-[16px] ${!selectedOption ? "text-neutral-400" : "text-neutral-900 font-medium"}`}
                 >
                   {selectedOption ? selectedOption.label : placeholder}
                 </Text>

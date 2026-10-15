@@ -157,17 +157,17 @@ export default function ZiraatNotificationToast({
           {/* Title + time row */}
           <View className="flex-row items-center justify-between gap-2 mb-0.5">
             <Text
-              className="text-[15px] font-semibold text-gray-900 flex-1"
+              className="text-[13px] font-semibold text-gray-900 flex-1"
               numberOfLines={1}
             >
               {title}
             </Text>
-            <Text className="text-[12.5px] text-gray-400">{time}</Text>
+            <Text className="text-[11px] text-gray-400">{time}</Text>
           </View>
 
           {/* Message */}
           <Text
-            className="text-[14px] text-gray-500 leading-[17px]"
+            className="text-[12px] text-gray-500 leading-[17px]"
             numberOfLines={2}
           >
             {message}
@@ -176,7 +176,7 @@ export default function ZiraatNotificationToast({
           {/* Tag pill */}
           <View className="flex-row items-center gap-1.5 mt-1.5">
             <View className={`w-1.5 h-1.5 rounded-full ${cfg.tagDot}`} />
-            <Text className={`text-[13px] font-medium ${cfg.tagColor}`}>
+            <Text className={`text-[10px] font-medium ${cfg.tagColor}`}>
               {tag ?? cfg.tagLabel}
             </Text>
           </View>

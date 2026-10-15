@@ -60,7 +60,7 @@ export default function OrchardDetailsCard({
                 numberOfLines={1}
                 style={[
                   typography.Poppins_m_semibold,
-                  { color: colors.dark, fontSize: 17 },
+                  { color: colors.dark, fontSize: 16 },
                 ]}
               >
                 {heading}

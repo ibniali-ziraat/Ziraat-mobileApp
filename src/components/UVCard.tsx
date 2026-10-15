@@ -82,7 +82,7 @@ export default function UVCard({ value }: Props) {
 
       {/* Advice */}
       <Text
-        style={[typography.Poppins_xs_regular, { color: cardTokens.inkMuted, lineHeight: 22 }]}
+        style={[typography.Poppins_xs_regular, { color: cardTokens.inkMuted, lineHeight: 18 }]}
       >
         {advice}
       </Text>

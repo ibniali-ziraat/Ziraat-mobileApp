@@ -150,7 +150,7 @@ export default function OrchardHistoryCard({
           <Text
             style={[
               typography.Poppins_s_semibold,
-              { color: cardTokens.inkPrimary, fontSize: 16 },
+              { color: cardTokens.inkPrimary, fontSize: 15 },
             ]}
           >
             Orchard history
@@ -158,7 +158,7 @@ export default function OrchardHistoryCard({
           <Text
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, marginTop: 2, fontSize: 13.5 },
+              { color: cardTokens.inkMuted, marginTop: 2, fontSize: 11 },
             ]}
           >
             {hasTrend
@@ -253,7 +253,7 @@ export default function OrchardHistoryCard({
                       numberOfLines={1}
                       style={[
                         typography.Poppins_s_semibold,
-                        { color: cardTokens.inkPrimary, flex: 1, fontSize: 15 },
+                        { color: cardTokens.inkPrimary, flex: 1, fontSize: 13 },
                       ]}
                     >
                       {entry.name}
@@ -261,7 +261,7 @@ export default function OrchardHistoryCard({
                     <Text
                       style={[
                         typography.Poppins_xs_regular,
-                        { color: cardTokens.inkMuted, fontSize: 13, marginLeft: 8 },
+                        { color: cardTokens.inkMuted, fontSize: 10, marginLeft: 8 },
                       ]}
                     >
                       {when}
@@ -272,7 +272,7 @@ export default function OrchardHistoryCard({
                     numberOfLines={1}
                     style={[
                       typography.Poppins_xs_regular,
-                      { color: cardTokens.inkSecondary, fontSize: 13.5, marginTop: 2 },
+                      { color: cardTokens.inkSecondary, fontSize: 11, marginTop: 2 },
                     ]}
                   >
                     {entry.areaKanals > 0
@@ -295,7 +295,7 @@ export default function OrchardHistoryCard({
                     <Text
                       style={[
                         typography.Poppins_xs_medium,
-                        { color: cardTokens.inkSecondary, fontSize: 10.5 },
+                        { color: cardTokens.inkSecondary, fontSize: 9.5 },
                       ]}
                     >
                       {entry.ownership}
@@ -321,7 +321,7 @@ export default function OrchardHistoryCard({
               <Text
                 style={[
                   typography.Poppins_xs_semibold,
-                  { color: chartTokens.current, fontSize: 13.5 },
+                  { color: chartTokens.current, fontSize: 11 },
                 ]}
               >
                 {expanded

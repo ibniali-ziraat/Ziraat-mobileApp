@@ -78,13 +78,13 @@ export default function SingleSelectInput({
                 matchTextInput
                   ? {
                       marginBottom: 6,
-                      fontSize: 16,
+                      fontSize: 14,
                       color: colors.dark,
                       fontFamily: fonts.poppins.medium,
                     }
                   : {
                       marginBottom: 6,
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: "500",
                       color: colors.dark,
                     }
@@ -122,7 +122,7 @@ export default function SingleSelectInput({
             >
               <Text
                 style={{
-                  fontSize: matchTextInput ? 16 : 17,
+                  fontSize: matchTextInput ? 15 : 16,
                   color: disabled ? colors.neutral + "88" : colors.darkHover,
                   flex: 1, // Ensures text doesn't overlap the icon
                   ...(matchTextInput && { fontFamily: fonts.poppins.regular }),
@@ -160,7 +160,7 @@ export default function SingleSelectInput({
             >
               <CsText
                 style={{
-                  fontSize: 17,
+                  fontSize: 16,
                   color: disabled ? colors.neutral + "88" : colors.darkHover,
                 }}
               >
@@ -220,7 +220,7 @@ export default function SingleSelectInput({
                         alignItems: "center",
                       }}
                     >
-                      <Text style={{ fontSize: 17, fontWeight: "500" }}>
+                      <Text style={{ fontSize: 16, fontWeight: "500" }}>
                         {modalLabel}
                       </Text>
 
@@ -274,7 +274,7 @@ export default function SingleSelectInput({
                               flex: 1,
                               paddingVertical: 8,
                               paddingHorizontal: 8,
-                              fontSize: 17,
+                              fontSize: 16,
                               color: colors.dark,
                               backgroundColor: "transparent",
                               borderWidth: 0,
@@ -305,7 +305,7 @@ export default function SingleSelectInput({
                         >
                           <Text
                             style={{
-                              fontSize: 17,
+                              fontSize: 16,
                               color:
                                 item.value === value
                                   ? colors.primary

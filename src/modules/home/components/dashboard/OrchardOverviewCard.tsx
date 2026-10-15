@@ -60,7 +60,7 @@ export default function OrchardOverviewCard({
           <Text
             style={[
               typography.Poppins_xs_medium,
-              { color: cardTokens.inkSecondary, fontSize: 14 },
+              { color: cardTokens.inkSecondary, fontSize: 12 },
             ]}
           >
             Area by orchard
@@ -142,7 +142,7 @@ export default function OrchardOverviewCard({
           <Text
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, fontSize: 13, marginTop: 2 },
+              { color: cardTokens.inkMuted, fontSize: 10, marginTop: 2 },
             ]}
           >
             Measured in {areaUnit(totalArea)}
@@ -155,7 +155,7 @@ export default function OrchardOverviewCard({
         <Text
           style={[
             typography.Poppins_xs_regular,
-            { color: cardTokens.inkMuted, fontSize: 13.5, marginTop: 16 },
+            { color: cardTokens.inkMuted, fontSize: 11, marginTop: 16 },
           ]}
         >
           Record orchard sizes to see how your area is distributed.
@@ -167,7 +167,7 @@ export default function OrchardOverviewCard({
           <Text
             style={[
               typography.Poppins_xs_medium,
-              { color: cardTokens.inkSecondary, fontSize: 14, marginTop: 20 },
+              { color: cardTokens.inkSecondary, fontSize: 12, marginTop: 20 },
             ]}
           >
             Ownership mix
@@ -187,7 +187,7 @@ export default function OrchardOverviewCard({
                     numberOfLines={1}
                     style={[
                       typography.Poppins_xs_regular,
-                      { color: cardTokens.inkPrimary, flex: 1, fontSize: 14 },
+                      { color: cardTokens.inkPrimary, flex: 1, fontSize: 12 },
                     ]}
                   >
                     {row.label}
@@ -197,7 +197,7 @@ export default function OrchardOverviewCard({
                       typography.Poppins_xs_semibold,
                       {
                         color: cardTokens.inkSecondary,
-                        fontSize: 13.5,
+                        fontSize: 11,
                         marginLeft: 8,
                       },
                     ]}

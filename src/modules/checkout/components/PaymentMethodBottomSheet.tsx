@@ -180,8 +180,8 @@ export default function PaymentMethodBottomSheet({
                     typography.Poppins_xs_regular,
                     {
                       color: cardTokens.inkMuted,
-                      fontSize: 14,
-                      lineHeight: 22,
+                      fontSize: 12,
+                      lineHeight: 18,
                       marginTop: 1,
                     },
                   ]}
@@ -222,8 +222,8 @@ export default function PaymentMethodBottomSheet({
                 typography.Poppins_s_semibold,
                 {
                   color: cardTokens.inkSecondary,
-                  fontSize: 13.5,
-                  lineHeight: 20,
+                  fontSize: 11,
+                  lineHeight: 16,
                   letterSpacing: 0.7,
                   marginBottom: 12,
                 },
@@ -284,8 +284,8 @@ export default function PaymentMethodBottomSheet({
                             {
                               flex: 1,
                               color: cardTokens.inkPrimary,
-                              fontSize: 15.5,
-                              lineHeight: 23,
+                              fontSize: 14.5,
+                              lineHeight: 21,
                               marginRight: 12,
                             },
                           ]}
@@ -325,8 +325,8 @@ export default function PaymentMethodBottomSheet({
                           typography.Poppins_xs_regular,
                           {
                             color: cardTokens.inkMuted,
-                            fontSize: 14,
-                            lineHeight: 20,
+                            fontSize: 11.5,
+                            lineHeight: 16,
                             marginTop: 3,
                           },
                         ]}
@@ -369,7 +369,7 @@ export default function PaymentMethodBottomSheet({
               <Text
                 style={[
                   typography.Poppins_s_semibold,
-                  { color: colors.light, fontSize: 16 },
+                  { color: colors.light, fontSize: 15 },
                 ]}
               >
                 Use this payment method
@@ -389,7 +389,7 @@ export default function PaymentMethodBottomSheet({
               <Text
                 style={[
                   typography.Poppins_xs_regular,
-                  { color: cardTokens.inkMuted, fontSize: 13 },
+                  { color: cardTokens.inkMuted, fontSize: 10.5 },
                 ]}
               >
                 Protected and securely processed

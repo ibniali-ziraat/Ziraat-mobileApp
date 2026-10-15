@@ -199,7 +199,7 @@ export default function QuestionScreen() {
   const renderReplies = (replies: any[], level = 1) => {
     const isDeep = level > 1;
     const avatarSize = isDeep ? 26 : 28;
-    const textSize = isDeep ? 14 : 15;
+    const textSize = isDeep ? 12 : 13;
 
     return replies.map((reply: any) => (
       <View
@@ -257,7 +257,7 @@ export default function QuestionScreen() {
                     }}
                   >
                     <Clock size={9} color="#94a3b8" />
-                    <Text style={{ fontSize: 13, color: "#94a3b8" }}>now</Text>
+                    <Text style={{ fontSize: 10, color: "#94a3b8" }}>now</Text>
                   </View>
                 </View>
 
@@ -266,7 +266,7 @@ export default function QuestionScreen() {
                   style={{
                     marginTop: 5,
                     fontSize: textSize,
-                    lineHeight: 23,
+                    lineHeight: 19,
                     color: "#475569",
                   }}
                 >
@@ -296,7 +296,7 @@ export default function QuestionScreen() {
                     }}
                   >
                     <Heart size={10} color="#94a3b8" />
-                    <Text style={{ fontSize: 13, fontWeight: "600", color: "#94a3b8" }}>
+                    <Text style={{ fontSize: 10, fontWeight: "600", color: "#94a3b8" }}>
                       Like
                     </Text>
                   </TouchableOpacity>
@@ -322,7 +322,7 @@ export default function QuestionScreen() {
                     }}
                   >
                     <MessageCircle size={10} color={colors.primary} />
-                    <Text style={{ fontSize: 13, fontWeight: "600", color: colors.primary }}>
+                    <Text style={{ fontSize: 10, fontWeight: "600", color: colors.primary }}>
                       Reply
                     </Text>
                   </TouchableOpacity>
@@ -346,7 +346,7 @@ export default function QuestionScreen() {
                       placeholder="Write a reply..."
                       multiline
                       autoFocus
-                      style={{ minHeight: 36, fontSize: 15, color: "#1e293b" }}
+                      style={{ minHeight: 36, fontSize: 13, color: "#1e293b" }}
                       placeholderTextColor="#94a3b8"
                     />
                     <View
@@ -367,7 +367,7 @@ export default function QuestionScreen() {
                           borderColor: "#e2e8f0",
                         }}
                       >
-                        <Text style={{ fontSize: 14, color: "#64748b", fontWeight: "600" }}>
+                        <Text style={{ fontSize: 12, color: "#64748b", fontWeight: "600" }}>
                           Cancel
                         </Text>
                       </TouchableOpacity>
@@ -384,7 +384,7 @@ export default function QuestionScreen() {
                         }}
                       >
                         <Send size={12} color="#fff" />
-                        <Text style={{ fontSize: 14, color: "#fff", fontWeight: "600" }}>
+                        <Text style={{ fontSize: 12, color: "#fff", fontWeight: "600" }}>
                           Send
                         </Text>
                       </TouchableOpacity>
@@ -460,7 +460,7 @@ export default function QuestionScreen() {
               </View>
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: "700",
                   color: colors.secondary,
                   letterSpacing: 0.1,
@@ -485,7 +485,7 @@ export default function QuestionScreen() {
                 style={{
                   color: "#5a6a85",
                   fontWeight: "700",
-                  fontSize: 14,
+                  fontSize: 12,
                   letterSpacing: 0.2,
                 }}
               >
@@ -552,7 +552,7 @@ export default function QuestionScreen() {
                     >
                       <Text
                         style={{
-                          fontSize: 13.5,
+                          fontSize: 11,
                           fontWeight: "800",
                           color: "#fff",
                         }}
@@ -562,7 +562,7 @@ export default function QuestionScreen() {
                     </View>
                     <Text
                       style={{
-                        fontSize: 13.5,
+                        fontSize: 11,
                         fontWeight: "700",
                         color: colors.primary,
                         letterSpacing: 0.6,
@@ -588,7 +588,7 @@ export default function QuestionScreen() {
                       }}
                     >
                       <CheckCircle2 size={13} color={colors.primary} />
-                      <Text style={{ fontSize: 13.5, fontWeight: "700", color: colors.primary }}>
+                      <Text style={{ fontSize: 11, fontWeight: "700", color: colors.primary }}>
                         Accepted
                       </Text>
                     </View>
@@ -609,7 +609,7 @@ export default function QuestionScreen() {
                         }}
                       >
                         <CheckCircle2 size={13} color={colors.overlay} />
-                        <Text style={{ fontSize: 13.5, fontWeight: "700", color: colors.neutral }}>
+                        <Text style={{ fontSize: 11, fontWeight: "700", color: colors.neutral }}>
                           Accept
                         </Text>
                       </TouchableOpacity>
@@ -650,7 +650,7 @@ export default function QuestionScreen() {
                     }}
                   >
                     <MessageCircle size={12} color={colors.primary} />
-                    <Text style={{ fontSize: 14, fontWeight: "700", color: colors.primary }}>
+                    <Text style={{ fontSize: 12, fontWeight: "700", color: colors.primary }}>
                       Reply
                     </Text>
                   </TouchableOpacity>
@@ -674,7 +674,7 @@ export default function QuestionScreen() {
                       placeholder="Write a reply..."
                       multiline
                       autoFocus
-                      style={{ minHeight: 40, fontSize: 16, color: "#1e293b" }}
+                      style={{ minHeight: 40, fontSize: 14, color: "#1e293b" }}
                       placeholderTextColor="#94a3b8"
                     />
                     <View
@@ -695,7 +695,7 @@ export default function QuestionScreen() {
                           borderColor: "#e2e8f0",
                         }}
                       >
-                        <Text style={{ fontSize: 14, color: "#64748b", fontWeight: "600" }}>
+                        <Text style={{ fontSize: 12, color: "#64748b", fontWeight: "600" }}>
                           Cancel
                         </Text>
                       </TouchableOpacity>
@@ -712,7 +712,7 @@ export default function QuestionScreen() {
                         }}
                       >
                         <Send size={13} color="#fff" />
-                        <Text style={{ fontSize: 14, color: "#fff", fontWeight: "700" }}>
+                        <Text style={{ fontSize: 12, color: "#fff", fontWeight: "700" }}>
                           Send
                         </Text>
                       </TouchableOpacity>

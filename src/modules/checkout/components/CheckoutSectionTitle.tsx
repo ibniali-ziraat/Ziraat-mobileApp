@@ -32,7 +32,7 @@ export default function CheckoutSectionTitle({
       <Text
         style={[
           typography.Poppins_s_bold,
-          { color: cardTokens.inkPrimary, fontSize: 17 },
+          { color: cardTokens.inkPrimary, fontSize: 16 },
         ]}
       >
         {title}

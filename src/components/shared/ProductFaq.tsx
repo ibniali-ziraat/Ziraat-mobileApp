@@ -77,7 +77,7 @@ export default function ProductFaq({ data }) {
                         {
                           color: colors.dark,
                           opacity: 0.75,
-                          lineHeight: 25,
+                          lineHeight: 21,
                         },
                       ]}
                       className="mt-3 pl-1"

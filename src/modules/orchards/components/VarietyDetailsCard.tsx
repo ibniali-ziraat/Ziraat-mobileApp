@@ -57,11 +57,11 @@ export default function VarietiesCard({
 
           <View style={{ flex: 1 }}>
             <Text
-              style={{ fontSize: 18, fontWeight: "700", color: colors.dark }}
+              style={{ fontSize: 17, fontWeight: "700", color: colors.dark }}
             >
               Varieties & Planting
             </Text>
-            <Text style={{ fontSize: 14, color: colors.neutral }}>
+            <Text style={{ fontSize: 12, color: colors.neutral }}>
               Variety-wise plantation details
             </Text>
           </View>
@@ -82,7 +82,7 @@ export default function VarietiesCard({
               <Text
                 style={{
                   color: "#fff",
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: "600",
                   marginLeft: 6,
                 }}
@@ -132,7 +132,7 @@ export default function VarietiesCard({
               <Text
                 numberOfLines={1}
                 style={{
-                  fontSize: 16,
+                  fontSize: 15,
                   fontWeight: "700",
                   color: colors.dark,
                   flex: 1,
@@ -182,7 +182,7 @@ export default function VarietiesCard({
               }}
             >
               <Text
-                style={{ fontSize: 15, fontWeight: "700", marginBottom: 8 }}
+                style={{ fontSize: 13, fontWeight: "700", marginBottom: 8 }}
               >
                 Tree Age Groups
               </Text>
@@ -278,11 +278,11 @@ function AgeChip({ icon, label, subtitle, value, bg }: any) {
         {icon}
 
         <View style={{ marginLeft: 6 }}>
-          <Text style={{ fontSize: 14, fontWeight: "600", color: colors.dark }}>
+          <Text style={{ fontSize: 12, fontWeight: "600", color: colors.dark }}>
             {label}
           </Text>
 
-          <Text style={{ fontSize: 13, color: colors.neutral }}>
+          <Text style={{ fontSize: 10, color: colors.neutral }}>
             {subtitle}
           </Text>
         </View>
@@ -321,7 +321,7 @@ function StripItem({ label, value }: any) {
       <Text
         numberOfLines={1}
         style={{
-          fontSize: 13.5,
+          fontSize: 11,
           fontWeight: "500",
           color: colors.neutral,
           marginBottom: 6,
@@ -337,7 +337,7 @@ function StripItem({ label, value }: any) {
         numberOfLines={1}
         adjustsFontSizeToFit
         style={{
-          fontSize: 14,
+          fontSize: 12,
           fontWeight: "700",
           color: colors.primary,
         }}

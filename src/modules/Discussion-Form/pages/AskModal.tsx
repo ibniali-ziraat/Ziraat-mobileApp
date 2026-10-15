@@ -226,7 +226,7 @@ export default function AskModal({
 
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 12,
 
                     color: colors.overlay,
 
@@ -343,7 +343,7 @@ export default function AskModal({
                       <Award size={18} color={colors.secondary} />
                       <Text
                         style={{
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: "700",
                           color: colors.dark,
                         }}
@@ -375,7 +375,7 @@ export default function AskModal({
                           borderRadius: 12,
                           paddingHorizontal: 12,
                           paddingVertical: 10,
-                          fontSize: 16,
+                          fontSize: 14,
                           color: colors.dark,
                           backgroundColor: colors.light,
                         }}
@@ -406,9 +406,9 @@ export default function AskModal({
                 >
                   <Text
                     style={{
-                      fontSize: 14.5,
+                      fontSize: 12.5,
 
-                      lineHeight: 25,
+                      lineHeight: 21,
 
                       color: colors.neutral,
 
@@ -489,7 +489,7 @@ export default function AskModal({
 
                       fontWeight: "800",
 
-                      fontSize: 16,
+                      fontSize: 15,
 
                       letterSpacing: 0.3,
                     }}

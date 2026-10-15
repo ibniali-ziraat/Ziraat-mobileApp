@@ -38,6 +38,7 @@ function TextAction({
           typography.Poppins_xs_semibold,
           {
             color: destructive ? chartTokens.negative : cardTokens.inkPrimary,
+            fontSize: 12,
             textDecorationLine: "underline",
           },
         ]}
@@ -87,7 +88,7 @@ export default function DetailsCard({
         <Text
           style={[
             typography.Poppins_l_semibold,
-            { flex: 1, color: cardTokens.inkPrimary },
+            { flex: 1, color: cardTokens.inkPrimary, fontSize: 19 },
           ]}
         >
           {heading}
@@ -132,7 +133,7 @@ export default function DetailsCard({
             <Text
               style={[
                 typography.Poppins_s_semibold,
-                { color: cardTokens.inkPrimary },
+                { color: cardTokens.inkPrimary, fontSize: 13.5 },
               ]}
             >
               {emptyActionLabel}
@@ -140,7 +141,7 @@ export default function DetailsCard({
             <Text
               style={[
                 typography.Poppins_xs_regular,
-                { color: cardTokens.inkMuted, marginTop: 1 },
+                { color: cardTokens.inkMuted, fontSize: 10.5, marginTop: 1 },
               ]}
             >
               Add information to complete your profile
@@ -162,8 +163,8 @@ export default function DetailsCard({
             >
               <Text
                 style={[
-                  typography.Poppins_xs_regular,
-                  { color: cardTokens.inkMuted },
+                  typography.Poppins_xs_medium,
+                  { color: cardTokens.inkPrimary, fontSize: 14 },
                 ]}
               >
                 {item.title}
@@ -171,10 +172,11 @@ export default function DetailsCard({
               <Text
                 numberOfLines={2}
                 style={[
-                  typography.Poppins_m_medium,
+                  typography.Poppins_s_regular,
                   {
-                    color: cardTokens.inkPrimary,
-                    lineHeight: 25,
+                    color: cardTokens.inkSecondary,
+                    fontSize: 16,
+                    lineHeight: 24,
                     marginTop: 2,
                     paddingBottom: index === items.length - 1 ? 0 : 1,
                   },

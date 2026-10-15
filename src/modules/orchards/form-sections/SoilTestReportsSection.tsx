@@ -89,7 +89,7 @@ export default function SoilTestReportsSection({
           >
             <Text
               style={{
-                fontSize: 15,
+                fontSize: 13,
                 fontWeight: "700",
                 color: colors.darkHover,
               }}
@@ -102,7 +102,7 @@ export default function SoilTestReportsSection({
                 <Text
                   style={{
                     color: colors.error,
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: "600",
                   }}
                 >

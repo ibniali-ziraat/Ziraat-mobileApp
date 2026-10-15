@@ -69,7 +69,7 @@ function StatusBadge({ status }) {
       />
 
       <CsText
-        className="text-[12.5px] font-semibold"
+        className="text-[11px] font-semibold"
         style={{
           color: isActive ? colors.primary : colors.error,
         }}
@@ -119,7 +119,7 @@ export default function TeamCard() {
           <CsText className="text-lg font-extrabold" style={{ color: colors.dark }}>
             Delivery Team Overview
          </CsText>
-          <CsText className="text-[12.5px] mt-[2px]" style={{ color: colors.dark }}>
+          <CsText className="text-[11px] mt-[2px]" style={{ color: colors.dark }}>
             Team • Roles • Fleet Assignments
          </CsText>
         </View>
@@ -163,7 +163,7 @@ export default function TeamCard() {
                         size={16}
                         color={accent}
                       />
-                      <CsText className="ml-1 text-[12.5px]" style={{ color: colors.dark }}>
+                      <CsText className="ml-1 text-[11px]" style={{ color: colors.dark }}>
                         {member.role}
                      </CsText>
                     </View>
@@ -186,7 +186,7 @@ export default function TeamCard() {
                      </CsText>
                     </View>
 
-                    <CsText className="ml-8 text-[12.5px]" style={{ color: colors.dark }}>
+                    <CsText className="ml-8 text-[11px]" style={{ color: colors.dark }}>
                       Reg No: {member.vehicle.regNo}
                    </CsText>
                   </>

@@ -79,7 +79,7 @@ const SummaryRow = ({
   const textStyle = [
     bold ? typography.Poppins_s_bold : typography.Poppins_s_regular,
     {
-      fontSize: bold ? 17 : 15.5,
+      fontSize: bold ? 15 : 13.5,
       color: highlight
         ? chartTokens.accent
         : bold
@@ -190,7 +190,7 @@ export const OrderSummary = ({
                     typography.Poppins_s_regular,
                     {
                       flexShrink: 1,
-                      fontSize: 15.5,
+                      fontSize: 13.5,
                       color: cardTokens.inkSecondary,
                     },
                   ]}
@@ -211,7 +211,7 @@ export const OrderSummary = ({
                       numberOfLines={1}
                       style={[
                         typography.Poppins_xs_semibold,
-                        { fontSize: 13.5, color: cardTokens.inkPrimary },
+                        { fontSize: 11, color: cardTokens.inkPrimary },
                       ]}
                     >
                       {variationLabel}
@@ -224,7 +224,7 @@ export const OrderSummary = ({
                     typography.Poppins_s_regular,
                     {
                       marginLeft: "auto",
-                      fontSize: 15.5,
+                      fontSize: 13.5,
                       color: cardTokens.inkSecondary,
                     },
                   ]}
@@ -300,7 +300,7 @@ export const OrderSummary = ({
             <Text
               style={[
                 typography.Poppins_xs_semibold,
-                { color: chartTokens.accent, fontSize: 15 },
+                { color: chartTokens.accent, fontSize: 13 },
               ]}
             >
               Credit fee of {formatRsNum(totalCreditHikeAmount)} applied
@@ -349,7 +349,7 @@ export const OrderSummary = ({
               <Text
                 style={[
                   typography.Poppins_xs_semibold,
-                  { color: chartTokens.current, fontSize: 15 },
+                  { color: chartTokens.current, fontSize: 13 },
                 ]}
               >
                 You saved {formatRs(summary.discountString)}
@@ -376,8 +376,8 @@ export const OrderSummary = ({
                   {
                     flex: 1,
                     color: chartTokens.current,
-                    fontSize: 15,
-                    lineHeight: 23,
+                    fontSize: 13,
+                    lineHeight: 19,
                   },
                 ]}
               >

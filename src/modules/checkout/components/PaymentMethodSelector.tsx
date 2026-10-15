@@ -93,8 +93,8 @@ export const PaymentMethodSelector = ({ options, onValueChange }: Props) => {
                         color: selectedOption
                           ? cardTokens.inkPrimary
                           : cardTokens.inkSecondary,
-                        fontSize: 15.5,
-                        lineHeight: 23,
+                        fontSize: 14.5,
+                        lineHeight: 21,
                       },
                     ]}
                   >
@@ -109,8 +109,8 @@ export const PaymentMethodSelector = ({ options, onValueChange }: Props) => {
                       typography.Poppins_xs_regular,
                       {
                         marginTop: 3,
-                        fontSize: 14,
-                        lineHeight: 21,
+                        fontSize: 11.5,
+                        lineHeight: 17,
                         color: cardTokens.inkMuted,
                       },
                     ]}

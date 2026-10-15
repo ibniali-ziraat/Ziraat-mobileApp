@@ -76,7 +76,7 @@ export default function ProductSection({ control, errors }) {
         style={{
           fontWeight: "700",
           marginTop: 20,
-          fontSize: 17,
+          fontSize: 16,
           marginBottom: 10,
         }}
       >

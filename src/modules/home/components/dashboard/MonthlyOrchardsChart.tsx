@@ -47,7 +47,7 @@ export default function MonthlyOrchardsChart({
           <Text
             style={[
               typography.Poppins_s_semibold,
-              { color: cardTokens.inkPrimary, fontSize: 16 },
+              { color: cardTokens.inkPrimary, fontSize: 15 },
             ]}
           >
             Orchards registered
@@ -55,7 +55,7 @@ export default function MonthlyOrchardsChart({
           <Text
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, marginTop: 2, fontSize: 13.5 },
+              { color: cardTokens.inkMuted, marginTop: 2, fontSize: 11 },
             ]}
           >
             Last {points.length} months
@@ -73,7 +73,7 @@ export default function MonthlyOrchardsChart({
           <Text
             style={[
               typography.Poppins_xs_semibold,
-              { color: chartTokens.current, fontSize: 13 },
+              { color: chartTokens.current, fontSize: 10 },
             ]}
           >
             {total} TOTAL

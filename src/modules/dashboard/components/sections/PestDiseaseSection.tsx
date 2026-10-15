@@ -1,11 +1,8 @@
 import CustomBarChart from "@/src/components/charts/CustomBarChart";
-import CsText from "@/src/components/shared/CsText";
 import Loader from "@/src/components/shared/Loader";
-import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/fonts/typography";
-import { shadows } from "@/src/constants/shadows";
 import { View } from "react-native";
 import { useOrchardPestDisease } from "../../hooks/useOrchardSections";
+import { ChartBlock, NoteList, StatList } from "../DashboardBlocks";
 import MetricGrid from "../MetricGrid";
 
 const ICON_MAP = {
@@ -20,97 +17,54 @@ const ICON_MAP = {
 
 type Props = { orchardProfileId: number };
 
+const describe = (item: any): string =>
+  item?.title ?? item?.name ?? (typeof item === "string" ? item : "");
+
 export default function PestDiseaseSection({ orchardProfileId }: Props) {
   const { data, isLoading } = useOrchardPestDisease(orchardProfileId);
 
   if (isLoading) return <Loader />;
 
-  const metrics = data?.metrics ?? [];
   const spray = data?.spraySchedule;
   const trend = data?.pestDiseaseTrend ?? [];
-  const highRiskPests = data?.highRiskPests ?? [];
-  const diseaseObservations = data?.diseaseObservations ?? [];
-
-  const spraySchedule = [
-    {
-      title: "Last Applied Spray",
-      description: spray?.lastAppliedSpray || "No spray recorded yet",
-    },
-    {
-      title: "Next Scheduled Spray",
-      description: spray?.nextScheduledSpray || "Nothing scheduled",
-    },
-    {
-      title: "Missed Sprays This Month",
-      description: `${spray?.missedSpraysThisMonth ?? 0} missed`,
-      isError: (spray?.missedSpraysThisMonth ?? 0) > 0,
-    },
-  ];
-
-  const sectionTitle = (label: string) => (
-    <CsText
-      style={[
-        typography.Poppins_m_semibold,
-        { fontSize: 17, color: colors.dark, marginTop: 16, marginBottom: 8 },
-      ]}
-    >
-      {label}
-    </CsText>
-  );
+  const missed = spray?.missedSpraysThisMonth ?? 0;
 
   return (
     <View style={{ marginTop: 8 }}>
-      <MetricGrid metrics={metrics} iconMap={ICON_MAP} />
+      <MetricGrid metrics={data?.metrics ?? []} iconMap={ICON_MAP} />
 
-      {sectionTitle("High-Risk Pests")}
-      {highRiskPests.length === 0 ? (
-        <CsText style={{ color: colors.neutral }}>No high-risk pests currently identified.</CsText>
-      ) : (
-        highRiskPests.map((item: any, i: number) => (
-          <CsText key={i} style={{ color: colors.dark, marginBottom: 4 }}>
-            {item.title ?? item.name ?? JSON.stringify(item)}
-          </CsText>
-        ))
-      )}
+      <StatList
+        title="Sprays"
+        rows={[
+          { label: "Last applied", value: spray?.lastAppliedSpray },
+          { label: "Next scheduled", value: spray?.nextScheduledSpray },
+          {
+            label: "Missed this month",
+            value: missed > 0 ? missed : null,
+            alert: true,
+          },
+        ]}
+      />
 
-      {sectionTitle("Disease Observations")}
-      {diseaseObservations.length === 0 ? (
-        <CsText style={{ color: colors.neutral }}>No disease observations recorded.</CsText>
-      ) : (
-        diseaseObservations.map((item: any, i: number) => (
-          <CsText key={i} style={{ color: colors.dark, marginBottom: 4 }}>
-            {item.title ?? item.name ?? JSON.stringify(item)}
-          </CsText>
-        ))
-      )}
+      <NoteList
+        title="High-risk pests"
+        items={(data?.highRiskPests ?? []).map(describe)}
+      />
+      <NoteList
+        title="Disease observations"
+        items={(data?.diseaseObservations ?? []).map(describe)}
+      />
 
-      {sectionTitle("Spray Schedule")}
-      <View style={[{ backgroundColor: colors.light, borderRadius: 16, padding: 14 }, shadows.profile_card]}>
-        {spraySchedule.map((item, index) => (
-          <View key={index} style={{ marginBottom: index < spraySchedule.length - 1 ? 12 : 0 }}>
-            <CsText
-              style={{ fontWeight: "600", fontSize: 16, color: item.isError ? colors.error : colors.dark }}
-            >
-              {item.title}
-            </CsText>
-            <CsText
-              style={{ marginTop: 2, fontSize: 15, color: item.isError ? colors.error : colors.neutral }}
-            >
-              {item.description}
-            </CsText>
-          </View>
-        ))}
-      </View>
-
-      {sectionTitle("Pest & Disease Trend")}
-      <View style={[{ backgroundColor: colors.light, borderRadius: 16, padding: 14 }, shadows.profile_card]}>
-        <CustomBarChart labels={trend.map((t) => t.label)} values={trend.map((t) => t.value)} />
-        {!!data?.trendNote && (
-          <CsText style={{ textAlign: "center", marginTop: 8, color: colors.neutral, fontSize: 14 }}>
-            {data.trendNote}
-          </CsText>
-        )}
-      </View>
+      <ChartBlock
+        title="Pest & disease trend"
+        values={trend.map((t) => t.value)}
+        note={data?.trendNote}
+      >
+        <CustomBarChart
+          labels={trend.map((t) => t.label)}
+          values={trend.map((t) => t.value)}
+        />
+      </ChartBlock>
     </View>
   );
 }

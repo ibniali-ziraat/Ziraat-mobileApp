@@ -25,7 +25,7 @@ export default function CustomBarChart({
   if (!labels.length || !values.length || labels.length !== values.length) {
     return (
       <View style={{ paddingVertical: 12 }}>
-        <CsText style={{ fontSize: 14, color: "#6B7280", textAlign: "center" }}>
+        <CsText style={{ fontSize: 12, color: "#6B7280", textAlign: "center" }}>
           No chart data available.
        </CsText>
       </View>
@@ -44,7 +44,7 @@ export default function CustomBarChart({
     return (
       <View>
         {title ? (
-          <CsText style={{ fontSize: 15, color: "#374151", marginBottom: 8 }}>
+          <CsText style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>
             {title}
          </CsText>
         ) : null}
@@ -67,7 +67,7 @@ export default function CustomBarChart({
   return (
     <View>
       {title ? (
-        <CsText style={{ fontSize: 15, color: "#374151", marginBottom: 8 }}>
+        <CsText style={{ fontSize: 13, color: "#374151", marginBottom: 8 }}>
           {title}
        </CsText>
       ) : null}

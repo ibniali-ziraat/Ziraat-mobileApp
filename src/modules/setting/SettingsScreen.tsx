@@ -101,7 +101,7 @@ function SettingsCard({ group }: { group: SettingsGroup }) {
           typography.Poppins_xs_medium,
           {
             color: cardTokens.inkMuted,
-            fontSize: 13.5,
+            fontSize: 11,
             marginBottom: 8,
             marginLeft: 4,
           },
@@ -170,7 +170,7 @@ function SettingsCard({ group }: { group: SettingsGroup }) {
                     typography.Poppins_s_medium,
                     {
                       color: row.danger ? colors.error : cardTokens.inkPrimary,
-                      fontSize: 16,
+                      fontSize: 14,
                     },
                   ]}
                 >
@@ -182,7 +182,7 @@ function SettingsCard({ group }: { group: SettingsGroup }) {
                     typography.Poppins_xs_regular,
                     {
                       color: cardTokens.inkMuted,
-                      fontSize: 13.5,
+                      fontSize: 11,
                       marginTop: 2,
                     },
                   ]}
@@ -243,7 +243,7 @@ export default function SettingsScreen() {
             <Text
               style={[
                 typography.Poppins_xs_medium,
-                { color: cardTokens.inkSecondary, fontSize: 14 },
+                { color: cardTokens.inkSecondary, fontSize: 12 },
               ]}
             >
               Version 1.2.0.1
@@ -251,7 +251,7 @@ export default function SettingsScreen() {
             <Text
               style={[
                 typography.Poppins_xs_regular,
-                { color: cardTokens.inkMuted, fontSize: 13.5, marginTop: 3 },
+                { color: cardTokens.inkMuted, fontSize: 11, marginTop: 3 },
               ]}
             >
               © 2026 Ziraat Smart Farming

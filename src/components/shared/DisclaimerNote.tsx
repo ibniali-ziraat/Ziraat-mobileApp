@@ -23,8 +23,8 @@ const COLLAPSED_LINES = 2;
 const styles = StyleSheet.create({
   body: {
     color: cardTokens.inkMuted,
-    fontSize: 13,
-    lineHeight: 21,
+    fontSize: 10.5,
+    lineHeight: 17,
     textAlign: "center",
   },
 });
@@ -89,7 +89,7 @@ export default function DisclaimerNote({
         <Text
           style={[
             typography.Poppins_xs_medium,
-            { color: cardTokens.inkMuted, fontSize: 13.5, marginLeft: 5 },
+            { color: cardTokens.inkMuted, fontSize: 11, marginLeft: 5 },
           ]}
         >
           Legal disclaimer
@@ -129,7 +129,7 @@ export default function DisclaimerNote({
           <Text
             style={[
               typography.Poppins_xs_semibold,
-              { color: chartTokens.current, fontSize: 13.5 },
+              { color: chartTokens.current, fontSize: 11 },
             ]}
           >
             {expanded ? "Show less" : "Read more"}

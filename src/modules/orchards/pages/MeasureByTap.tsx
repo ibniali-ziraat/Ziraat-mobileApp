@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   },
 
   webText: {
-    fontSize: 17,
+    fontSize: 16,
     color: "#666",
   },
 
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
 
   areaUnit: {
-    fontSize: 15,
+    fontSize: 13,
     color: "#6b7280",
     marginTop: 2,
   },
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
 
   areaLabel: {
-    fontSize: 15,
+    fontSize: 13,
     color: "#6b7280",
     marginBottom: 4,
   },
@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
   },
 
   areaUnit: {
-    fontSize: 17,
+    fontSize: 16,
     color: "#6b7280",
     marginLeft: 6,
     marginBottom: 4,
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
 
   hint: {
     marginTop: 4,
-    fontSize: 14,
+    fontSize: 12,
     color: "#9ca3af",
   },
 

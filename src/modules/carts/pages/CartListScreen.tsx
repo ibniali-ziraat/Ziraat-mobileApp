@@ -114,7 +114,7 @@ const CartListScreen = () => {
         //       <Text
         //         style={{
         //           color: "#c62828",
-        //           fontSize: 15,
+        //           fontSize: 13,
         //           fontWeight: "600",
         //           textAlign: "center",
         //         }}

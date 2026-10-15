@@ -105,16 +105,16 @@ export default function AboutUs() {
                         strokeWidth={1.3}
                       />
                     )}
-                    <CsText className="ml-2 text-[18px] font-semibold text-dark">
+                    <CsText className="ml-2 text-[17px] font-semibold text-dark">
                       {section.title}
                     </CsText>
                   </View>
 
                   {section.content.map((item: string, idx: number) => (
                     <View key={idx} className="flex-row mb-1">
-                      <CsText className="mr-2 text-[15px] text-dark">•</CsText>
+                      <CsText className="mr-2 text-[13px] text-dark">•</CsText>
                       <CsText
-                        className="flex-1 text-[15px] text-normal leading-[18px]"
+                        className="flex-1 text-[13px] text-normal leading-[18px]"
                         numberOfLines={isExpanded ? undefined : 2}
                       >
                         {item}
@@ -127,7 +127,7 @@ export default function AboutUs() {
                 {hasLongContent && (
                   <View className="items-end mt-2">
                     <Pressable onPress={() => toggleExpand(index)}>
-                      <CsText className="text-[14px] text-secondary font-medium">
+                      <CsText className="text-[12px] text-secondary font-medium">
                         {isExpanded ? "Read Less ↑" : "Read More →"}
                       </CsText>
                     </Pressable>

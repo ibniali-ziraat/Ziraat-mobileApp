@@ -69,7 +69,7 @@ export default function FarmerTipsCarousel({
             typography.Poppins_s_semibold,
             {
               color: cardTokens.inkPrimary,
-              fontSize: 15.5,
+              fontSize: 14.5,
               marginTop: 10,
               textAlign: "center",
             },
@@ -143,9 +143,9 @@ export default function FarmerTipsCarousel({
                   typography.Poppins_s_semibold,
                   {
                     color: cardTokens.inkPrimary,
-                    fontSize: 16,
+                    fontSize: 15,
                     marginTop: 14,
-                    lineHeight: 23,
+                    lineHeight: 21,
                   },
                 ]}
               >
@@ -158,8 +158,8 @@ export default function FarmerTipsCarousel({
                     typography.Poppins_xs_regular,
                     {
                       color: cardTokens.inkSecondary,
-                      fontSize: 14,
-                      lineHeight: 23,
+                      fontSize: 12,
+                      lineHeight: 19,
                       marginTop: 6,
                     },
                   ]}
@@ -183,7 +183,7 @@ export default function FarmerTipsCarousel({
                       typography.Poppins_xs_medium,
                       {
                         color: chartTokens.accent,
-                        fontSize: 13,
+                        fontSize: 10.5,
                         marginLeft: 6,
                         flex: 1,
                       },

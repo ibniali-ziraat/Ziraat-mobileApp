@@ -65,7 +65,7 @@ export default function AdvisoryTimeline({
                   typography.Poppins_s_medium,
                   {
                     color: step.done ? cardTokens.inkPrimary : cardTokens.inkMuted,
-                    lineHeight: 26,
+                    lineHeight: 22,
                   },
                 ]}
               >
@@ -75,7 +75,7 @@ export default function AdvisoryTimeline({
                 <Text
                   style={[
                     typography.Poppins_xs_regular,
-                    { color: cardTokens.inkMuted, fontSize: 13.5 },
+                    { color: cardTokens.inkMuted, fontSize: 11 },
                   ]}
                 >
                   {formatDateTime(step.date)}

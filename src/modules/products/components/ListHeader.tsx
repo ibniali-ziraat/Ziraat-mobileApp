@@ -30,7 +30,7 @@ export default function ListHeader({
         {icon ? <View style={{ marginRight: 6 }}>{icon}</View> : null}
 
         {title ? (
-          <Text style={[typography.Poppins_m_semibold, { fontSize: 17 }]}>
+          <Text style={[typography.Poppins_m_semibold, { fontSize: 16 }]}>
             {title}
           </Text>
         ) : null}
@@ -48,7 +48,7 @@ export default function ListHeader({
         >
           <Text
             style={{
-              fontSize: 15,
+              fontSize: 13,
               color: colors.secondary,
               marginRight: 2,
             }}

@@ -100,7 +100,7 @@ function OrchardRow({
               numberOfLines={1}
               style={[
                 typography.Poppins_s_medium,
-                { flex: 1, color: cardTokens.inkPrimary, fontSize: 15.5 },
+                { flex: 1, color: cardTokens.inkPrimary, fontSize: 13.5 },
               ]}
             >
               {row.name}
@@ -113,7 +113,7 @@ function OrchardRow({
                   color: complete
                     ? chartTokens.current
                     : cardTokens.inkSecondary,
-                  fontSize: 14,
+                  fontSize: 11.5,
                   marginRight: 2,
                 },
               ]}
@@ -136,7 +136,7 @@ function OrchardRow({
                     typography.Poppins_xs_regular,
                     {
                       color: chartTokens.current,
-                      fontSize: 13,
+                      fontSize: 10.5,
                       marginLeft: 4,
                     },
                   ]}
@@ -149,7 +149,7 @@ function OrchardRow({
                 numberOfLines={2}
                 style={[
                   typography.Poppins_xs_regular,
-                  { flex: 1, color: cardTokens.inkMuted, fontSize: 13 },
+                  { flex: 1, color: cardTokens.inkMuted, fontSize: 10.5 },
                 ]}
               >
                 Still to add: {row.missing.join(" · ")}
@@ -208,7 +208,7 @@ export default function OrchardCompletenessCard({
           <Text
             style={[
               typography.Poppins_s_semibold,
-              { color: cardTokens.inkPrimary, fontSize: 15.5 },
+              { color: cardTokens.inkPrimary, fontSize: 14.5 },
             ]}
           >
             Orchard records
@@ -216,7 +216,7 @@ export default function OrchardCompletenessCard({
           <Text
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, fontSize: 13, marginTop: 2 },
+              { color: cardTokens.inkMuted, fontSize: 10.5, marginTop: 2 },
             ]}
           >
             {incomplete === 0
@@ -237,7 +237,7 @@ export default function OrchardCompletenessCard({
           <Text
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, fontSize: 13 },
+              { color: cardTokens.inkMuted, fontSize: 10 },
             ]}
           >
             {done} of {total} sections
@@ -272,7 +272,7 @@ export default function OrchardCompletenessCard({
           <Text
             style={[
               typography.Poppins_xs_semibold,
-              { color: chartTokens.current, fontSize: 14, marginRight: 2 },
+              { color: chartTokens.current, fontSize: 12, marginRight: 2 },
             ]}
           >
             {hidden} more {hidden === 1 ? "orchard" : "orchards"}

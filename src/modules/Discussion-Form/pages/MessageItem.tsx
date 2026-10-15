@@ -100,7 +100,7 @@ function AuthorAvatar({
           color:
             colors.light,
           fontWeight: "700",
-          fontSize: 15,
+          fontSize: 13,
           letterSpacing: 0.8,
         }}
       >
@@ -268,7 +268,7 @@ export default function MessageItem({
                   fontWeight:
                     "700",
 
-                  fontSize: 16,
+                  fontSize: 14,
 
                   color:
                     colors.primary,
@@ -280,7 +280,7 @@ export default function MessageItem({
               {!!time && (
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 12,
 
                     color:
                       colors.neutral,
@@ -326,7 +326,7 @@ export default function MessageItem({
               >
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 12,
 
                     color:
                       colors.primary,
@@ -356,13 +356,13 @@ export default function MessageItem({
         {isQuestion && (
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 15,
 
               fontWeight: "700",
 
               marginBottom: 7,
 
-              lineHeight: 27,
+              lineHeight: 23,
             }}
           >
             {item.title ||
@@ -373,9 +373,9 @@ export default function MessageItem({
         {/* CONTENT */}
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 12,
 
-            lineHeight: 26,
+            lineHeight: 22,
             fontWeight: "400",
             color:
               colors.neutral,
@@ -472,7 +472,7 @@ export default function MessageItem({
                       <Text
                         style={{
                           color: colors.primary,
-                          fontSize: 13,
+                          fontSize: 10,
                           fontWeight: "700",
                         }}
                       >

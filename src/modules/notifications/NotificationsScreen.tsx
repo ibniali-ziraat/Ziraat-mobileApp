@@ -19,6 +19,7 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import EmptyState from "./components/EmptyState";
 import LocationBanner from "./components/LocationBanner";
 import NotificationList from "./components/NotificationList";
+import NotificationPermissionBanner from "./components/NotificationPermissionBanner";
 import { useNotifications } from "./hooks/useNotifications";
 
 export default function NotificationsScreen() {
@@ -78,7 +79,7 @@ export default function NotificationsScreen() {
                 setConfirmClearVisible(true);
               }}
             >
-              <Text className="text-[16px] text-error font-medium">
+              <Text className="text-[14px] text-error font-medium">
                 Clear All Notifications
               </Text>
             </TouchableOpacity>
@@ -98,11 +99,11 @@ export default function NotificationsScreen() {
           onPress={() => setConfirmClearVisible(false)}
         >
           <View className="w-80 bg-white rounded-xl p-4">
-            <Text className="text-[17px] font-semibold text-dark mb-2">
+            <Text className="text-[16px] font-semibold text-dark mb-2">
               Clear all notifications?
             </Text>
 
-            <Text className="text-[15px] text-gray-500 mb-4">
+            <Text className="text-[13px] text-gray-500 mb-4">
               This action cannot be undone.
             </Text>
 
@@ -129,6 +130,7 @@ export default function NotificationsScreen() {
 
         <ScreenContent className="flex-1">
           <View className="flex-1 bg-light">
+            <NotificationPermissionBanner />
             <LocationBanner visible={locationOff} />
 
             {items.length > 0 ? (

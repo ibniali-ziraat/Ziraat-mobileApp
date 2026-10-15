@@ -58,7 +58,7 @@ export default function DashboardSectionHeader({
         <Text
           style={[
             typography.Poppins_m_semibold,
-            { color: cardTokens.inkPrimary, fontSize: 18 },
+            { color: cardTokens.inkPrimary, fontSize: 17 },
           ]}
         >
           {title}

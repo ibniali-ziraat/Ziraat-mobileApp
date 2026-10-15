@@ -14,7 +14,7 @@ export default function NotificationHeader({ count, onClearAll }: Props) {
         <Text className="text-[20px] font-bold text-black">Notifications</Text>
 
         <Text
-          className="text-[15px] mt-[2px]"
+          className="text-[13px] mt-[2px]"
           style={{ color: colors.darkHover }}
         >
           {count > 0
@@ -35,7 +35,7 @@ export default function NotificationHeader({ count, onClearAll }: Props) {
           <Trash2 size={14} color={colors.secondary} />
 
           <Text
-            className="text-[14px] font-medium ml-1"
+            className="text-[12px] font-medium ml-1"
             style={{ color: colors.secondary }}
           >
             Clear all

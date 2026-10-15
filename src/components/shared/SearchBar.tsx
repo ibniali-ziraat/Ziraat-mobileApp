@@ -93,7 +93,7 @@ export default function SearchBar({
           style={{
             backgroundColor: "transparent",
             flex: 1,
-            fontSize: 17,
+            fontSize: 16,
             height: 40,
             paddingVertical: 0,
             paddingTop: Platform.OS === "ios" ? 1 : 0,

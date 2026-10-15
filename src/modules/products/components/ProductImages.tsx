@@ -22,7 +22,7 @@ export default function ProductImages({ product }: any) {
               typography.Poppins_xs_semibold,
               {
                 color: chartTokens.current,
-                fontSize: 14,
+                fontSize: 11.5,
                 letterSpacing: 0.6,
                 textTransform: "uppercase",
               },
@@ -88,7 +88,7 @@ export default function ProductImages({ product }: any) {
                 <Text
                   style={[
                     typography.Poppins_xs_semibold,
-                    { color: chartTokens.current, fontSize: 14 },
+                    { color: chartTokens.current, fontSize: 11.5 },
                   ]}
                 >
                   {category.name}

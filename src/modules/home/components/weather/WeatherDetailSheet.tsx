@@ -55,7 +55,7 @@ function DetailTile({
           numberOfLines={1}
           style={[
             typography.Poppins_xs_regular,
-            { color: cardTokens.inkMuted, fontSize: 13, marginLeft: 5 },
+            { color: cardTokens.inkMuted, fontSize: 10.5, marginLeft: 5 },
           ]}
         >
           {label}
@@ -184,7 +184,7 @@ export default function WeatherDetailSheet({
                     typography.Poppins_xs_medium,
                     {
                       color: cardTokens.inkSecondary,
-                      fontSize: 14,
+                      fontSize: 12,
                       marginLeft: 10,
                     },
                   ]}
@@ -197,7 +197,7 @@ export default function WeatherDetailSheet({
                 numberOfLines={1}
                 style={[
                   typography.Poppins_s_medium,
-                  { color: cardTokens.inkSecondary, fontSize: 15 },
+                  { color: cardTokens.inkSecondary, fontSize: 13 },
                 ]}
               >
                 {presentation.label}
@@ -218,7 +218,7 @@ export default function WeatherDetailSheet({
                       typography.Poppins_xs_regular,
                       {
                         color: cardTokens.inkMuted,
-                        fontSize: 13.5,
+                        fontSize: 11,
                         marginLeft: 4,
                       },
                     ]}
@@ -299,7 +299,7 @@ export default function WeatherDetailSheet({
                   <Text
                     style={[
                       typography.Poppins_s_semibold,
-                      { color: cardTokens.inkPrimary, fontSize: 16 },
+                      { color: cardTokens.inkPrimary, fontSize: 14 },
                     ]}
                   >
                     Next 12 hours
@@ -309,7 +309,7 @@ export default function WeatherDetailSheet({
                       typography.Poppins_xs_regular,
                       {
                         color: cardTokens.inkMuted,
-                        fontSize: 13,
+                        fontSize: 10.5,
                         marginTop: 1,
                       },
                     ]}
@@ -330,7 +330,7 @@ export default function WeatherDetailSheet({
                   <Text
                     style={[
                       typography.Poppins_xs_regular,
-                      { color: cardTokens.inkMuted, fontSize: 13 },
+                      { color: cardTokens.inkMuted, fontSize: 10.5 },
                     ]}
                   >
                     {selected === 0 ? "Now" : point?.label}
@@ -368,7 +368,7 @@ export default function WeatherDetailSheet({
             <Text
               style={[
                 typography.Poppins_s_semibold,
-                { color: chartTokens.current, fontSize: 15.5 },
+                { color: chartTokens.current, fontSize: 13.5 },
               ]}
             >
               View full forecast

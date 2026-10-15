@@ -74,7 +74,7 @@ export default function SceneBanner({
                   typography.Poppins_xs_regular,
                   {
                     color: "rgba(255,255,255,0.85)",
-                    fontSize: 14,
+                    fontSize: 11.5,
                     marginTop: 1,
                   },
                 ]}

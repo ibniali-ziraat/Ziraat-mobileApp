@@ -41,7 +41,7 @@ function Chip({ label, accent = false }: { label: string; accent?: boolean }) {
           typography.Poppins_xs_medium,
           {
             color: accent ? chartTokens.current : cardTokens.inkSecondary,
-            fontSize: 13,
+            fontSize: 10.5,
           },
         ]}
       >
@@ -114,7 +114,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
           numberOfLines={1}
           style={[
             typography.Poppins_s_semibold,
-            { color: cardTokens.inkPrimary, fontSize: 16 },
+            { color: cardTokens.inkPrimary, fontSize: 15 },
           ]}
         >
           {orchard?.orchardName || "Unnamed Orchard"}
@@ -135,7 +135,7 @@ export default function OrchardCard({ orchard }: OrchardCardProps) {
                 typography.Poppins_xs_regular,
                 {
                   color: cardTokens.inkMuted,
-                  fontSize: 14,
+                  fontSize: 11.5,
                   marginLeft: 4,
                   flex: 1,
                 },

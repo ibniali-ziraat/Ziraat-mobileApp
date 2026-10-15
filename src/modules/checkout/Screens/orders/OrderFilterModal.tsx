@@ -84,7 +84,7 @@ export default function OrderFilterModal({
             <Text
               style={[
                 typography.Poppins_s_semibold,
-                { fontSize: 17, color: colors.dark },
+                { fontSize: 16, color: colors.dark },
               ]}
             >
               Filter Orders
@@ -105,7 +105,7 @@ export default function OrderFilterModal({
                 {
                   marginTop: 16,
                   marginBottom: 10,
-                  fontSize: 16,
+                  fontSize: 14,
                   color: colors.neutral,
                 },
               ]}
@@ -127,7 +127,7 @@ export default function OrderFilterModal({
                   }}
                 >
                   <Radio active={isSelected} />
-                  <Text style={{ fontSize: 16, color: colors.dark }}>
+                  <Text style={{ fontSize: 14, color: colors.dark }}>
                     {item.label}
                   </Text>
                 </Pressable>

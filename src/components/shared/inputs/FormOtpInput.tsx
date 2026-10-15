@@ -135,7 +135,7 @@
 
 //   error: {
 //     marginTop: 6,
-//     fontSize: 14,
+//     fontSize: 12,
 //     color: colors.error,
 //   },
 
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
 
   error: {
     marginTop: 6,
-    fontSize: 14,
+    fontSize: 12,
     color: colors.error,
   },
 });

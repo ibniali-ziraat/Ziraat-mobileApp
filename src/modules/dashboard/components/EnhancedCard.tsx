@@ -1,76 +1,74 @@
-import CsText from "@/src/components/shared/CsText";
+import IconBadge, { type BadgeTone } from "@/src/components/shared/IconBadge";
 import { colors } from "@/src/constants/colors";
+import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { View } from "react-native";
-import { SvgXml } from "react-native-svg";
+import type { LucideIcon } from "lucide-react-native";
+import { Text, View } from "react-native";
 
 type Props = {
   title: string;
   value?: string;
   accent?: string;
-  /** Full-colour icon from `getDashboardIcon`. */
-  art: string;
-  /** Pastel wash behind the tile. */
-  tint: string;
+  icon: LucideIcon;
+  tone: BadgeTone;
 };
 
-/** One metric on a pastel tile, its icon in a white disc. */
+/**
+ * One metric: the number leads, the label sits quietly under it — read the
+ * figure first, like an Airbnb listing stat.
+ */
 export default function EnhancedCard({
   title,
   value,
   accent,
-  art,
-  tint,
+  icon,
+  tone,
 }: Props) {
   return (
     <View
       style={{
         width: "100%",
-        minHeight: 138,
+        padding: 14,
         borderRadius: 18,
-        padding: 12,
-        backgroundColor: tint,
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+        backgroundColor: cardTokens.surface,
       }}
     >
-      <View
-        style={{
-          width: 46,
-          height: 46,
-          borderRadius: 23,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#FFFFFF",
-        }}
-      >
-        <SvgXml xml={art} width={28} height={28} />
-      </View>
-
-      <CsText
-        numberOfLines={2}
-        style={[
-          typography.Poppins_s_medium,
-          { fontSize: 14.5, lineHeight: 21, color: colors.dark, marginTop: 10 },
-        ]}
-      >
-        {title}
-      </CsText>
+      <IconBadge icon={icon} tone={tone} size={32} />
 
       {value ? (
-        <CsText
+        <Text
           numberOfLines={1}
+          adjustsFontSizeToFit
           style={[
-            typography.Poppins_m_semibold,
-            { fontSize: 18, color: colors.primary, marginTop: 4 },
+            typography.Poppins_l_semibold,
+            { color: cardTokens.inkPrimary, marginTop: 12 },
           ]}
         >
           {value}
-        </CsText>
+        </Text>
       ) : null}
 
+      <Text
+        numberOfLines={2}
+        style={[
+          typography.Poppins_xs_regular,
+          { color: cardTokens.inkMuted, marginTop: 2 },
+        ]}
+      >
+        {title}
+      </Text>
+
       {accent ? (
-        <CsText style={{ fontSize: 14, marginTop: 2, color: colors.dark }}>
+        <Text
+          style={[
+            typography.Poppins_xs_regular,
+            { color: cardTokens.inkSecondary, marginTop: 2 },
+          ]}
+        >
           {accent}
-        </CsText>
+        </Text>
       ) : null}
     </View>
   );

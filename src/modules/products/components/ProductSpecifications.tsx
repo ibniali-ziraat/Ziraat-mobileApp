@@ -19,8 +19,8 @@ export default function ProductSpecifications({ product }: any) {
             typography.Poppins_s_regular,
             {
               color: cardTokens.inkSecondary,
-              fontSize: 15.5,
-              lineHeight: 26,
+              fontSize: 13.5,
+              lineHeight: 22,
               marginBottom: attributes.length ? 10 : 0,
             },
           ]}
@@ -51,7 +51,7 @@ export default function ProductSpecifications({ product }: any) {
               <Text
                 style={[
                   typography.Poppins_xs_regular,
-                  { flex: 1, color: cardTokens.inkMuted, fontSize: 14.5 },
+                  { flex: 1, color: cardTokens.inkMuted, fontSize: 12.5 },
                 ]}
               >
                 {attr.name}
@@ -62,7 +62,7 @@ export default function ProductSpecifications({ product }: any) {
                   {
                     flex: 1.3,
                     color: cardTokens.inkPrimary,
-                    fontSize: 14.5,
+                    fontSize: 12.5,
                     textAlign: "right",
                   },
                 ]}

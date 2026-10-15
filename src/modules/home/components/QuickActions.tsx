@@ -142,7 +142,7 @@ export default function QuickActions() {
           <CsText
             style={[
               typography.Poppins_xs_semibold,
-              { color: cardTokens.inkPrimary, fontSize: 13.5 },
+              { color: cardTokens.inkPrimary, fontSize: 11 },
             ]}
           >
             {recentOrchards.length} of {totalOrchards}
@@ -223,7 +223,7 @@ export default function QuickActions() {
                         numberOfLines={1}
                         style={[
                           typography.Poppins_xs_semibold,
-                          { color: colors.primary, fontSize: 9 },
+                          { color: colors.primary, fontSize: 8 },
                         ]}
                       >
                         {orchard.ownershipType || "Registered"}
@@ -245,8 +245,8 @@ export default function QuickActions() {
                         typography.Poppins_s_semibold,
                         {
                           color: colors.light,
-                          fontSize: 16,
-                          lineHeight: 22,
+                          fontSize: 14,
+                          lineHeight: 18,
                         },
                       ]}
                     >
@@ -259,7 +259,7 @@ export default function QuickActions() {
                         {
                           color: "rgba(255,255,255,0.76)",
                           marginTop: 2,
-                          fontSize: 10,
+                          fontSize: 9,
                         },
                       ]}
                     >
@@ -339,7 +339,7 @@ function AddOrchardAction({
         <CsText
           style={[
             typography.Poppins_xs_regular,
-            { color: colors.darkHover, fontSize: 10, marginTop: 2 },
+            { color: colors.darkHover, fontSize: 9, marginTop: 2 },
           ]}
         >
           Create new orchard

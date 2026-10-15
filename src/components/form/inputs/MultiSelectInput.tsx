@@ -44,7 +44,7 @@ export default function MultiSelectInput({
         <View style={{ marginBottom: 16 }}>
           <View style={{ flexDirection: "row", marginBottom: 8 }}>
             <Text
-              style={{ fontSize: 16, fontWeight: "500", color: colors.dark }}
+              style={{ fontSize: 14, fontWeight: "500", color: colors.dark }}
             >
               {label}
             </Text>

@@ -161,7 +161,7 @@ export default function OverviewCard() {
           <CsText className="text-lg font-extrabold text-black">
             Onboarding Status
           </CsText>
-          <CsText className="text-[12.5px] text-gray-700 mt-[2px]">
+          <CsText className="text-[11px] text-gray-700 mt-[2px]">
             Vendor KYC + Document Verification
           </CsText>
         </View>
@@ -212,8 +212,8 @@ export default function OverviewCard() {
 
         {/* Status text row */}
         <View className="flex-row justify-between mt-2">
-          <CsText className="text-[13px] text-gray-600">Started</CsText>
-          <CsText className="text-[13px] text-gray-600">Almost Done</CsText>
+          <CsText className="text-[10px] text-gray-600">Started</CsText>
+          <CsText className="text-[10px] text-gray-600">Almost Done</CsText>
         </View>
       </Animated.View>
 
@@ -270,13 +270,13 @@ export default function OverviewCard() {
                   {step.label}
                 </CsText>
 
-                <CsText className="text-[12.5px] text-gray-700 mt-[3px]">
+                <CsText className="text-[11px] text-gray-700 mt-[3px]">
                   {step.details}
                 </CsText>
 
                 <View className="flex-row items-center mt-2">
                   <Ionicons name="calendar-outline" size={12} color="#777" />
-                  <CsText className="text-[13px] text-gray-600 ml-1">
+                  <CsText className="text-[10px] text-gray-600 ml-1">
                     {step.timestamp}
                   </CsText>
                 </View>
@@ -306,7 +306,7 @@ export default function OverviewCard() {
 
             <View className="h-[1px] bg-primary/20 mt-3 mb-2" />
 
-            <CsText className="text-[12.5px] text-gray-600 leading-4">
+            <CsText className="text-[11px] text-gray-600 leading-4">
               Used for ZIRAAT mapping and credit approvals.
             </CsText>
           </Animated.View>

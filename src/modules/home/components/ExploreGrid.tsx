@@ -36,10 +36,10 @@ const SHORTCUTS: Shortcut[] = [
     route: ROUTES.ORDERS.LIST,
   },
   {
-    label: "Wishlist",
-    art: shoppingArt.heart,
-    tint: "#FCE8F0",
-    route: ROUTES.SHOPPING.WISHLIST,
+    label: "Cart",
+    art: shoppingArt.cart,
+    tint: "#EAF5E4",
+    route: ROUTES.SHOPPING.CART,
   },
 ];
 
@@ -83,7 +83,7 @@ export default function ExploreGrid() {
             numberOfLines={1}
             style={[
               typography.Poppins_xs_medium,
-              { color: cardTokens.inkPrimary, fontSize: 13.5, marginTop: 6 },
+              { color: cardTokens.inkPrimary, fontSize: 11, marginTop: 6 },
             ]}
           >
             {shortcut.label}

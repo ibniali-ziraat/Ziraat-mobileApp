@@ -72,7 +72,7 @@ export default function AdvisoryCard({ advisory, onPress }: AdvisoryCardProps) {
           <Text
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, marginLeft: 5, fontSize: 13.5 },
+              { color: cardTokens.inkMuted, marginLeft: 5, fontSize: 11 },
             ]}
           >
             {formatWindow(advisory.windowStart, advisory.windowEnd)}

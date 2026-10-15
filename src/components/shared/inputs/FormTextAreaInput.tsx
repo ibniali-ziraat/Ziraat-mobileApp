@@ -109,7 +109,7 @@
 //   },
 
 //   label: {
-//     fontSize: 16,
+//     fontSize: 14,
 //     color: colors.dark,
 //     fontFamily: fonts.poppins.medium,
 //   },
@@ -120,7 +120,7 @@
 //   },
 
 //   counter: {
-//     fontSize: 14,
+//     fontSize: 12,
 //     color: colors.darkHover,
 //     fontFamily: fonts.poppins.regular,
 //   },
@@ -135,7 +135,7 @@
 //   },
 
 //   input: {
-//     fontSize: 16,
+//     fontSize: 15,
 //     color: colors.dark,
 //     fontFamily: fonts.poppins.regular,
 //     minHeight: 80,
@@ -144,7 +144,7 @@
 //   error: {
 //     color: colors.error,
 //     marginTop: 6,
-//     fontSize: 14,
+//     fontSize: 12,
 //     fontFamily: fonts.poppins.regular,
 //   },
 // });
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    fontSize: 16,
+    fontSize: 14,
     color: colors.dark,
     fontFamily: fonts.poppins.medium,
   },
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   },
 
   counter: {
-    fontSize: 14,
+    fontSize: 12,
     color: colors.darkHover,
     fontFamily: fonts.poppins.regular,
   },
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    fontSize: 16,
+    fontSize: 15,
     color: colors.dark,
     fontFamily: fonts.poppins.regular,
     minHeight: 80,
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
   error: {
     color: colors.error,
     marginTop: 6,
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: fonts.poppins.regular,
   },
 });

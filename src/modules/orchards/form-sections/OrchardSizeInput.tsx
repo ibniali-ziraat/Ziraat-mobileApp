@@ -41,7 +41,7 @@ export default function OrchardSizeInput({
         <Text
           style={{
             marginHorizontal: 8,
-            fontSize: 14,
+            fontSize: 12,
             color: colors.neutral,
             marginBottom: 30,
           }}

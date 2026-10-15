@@ -40,7 +40,7 @@ export default function WarehouseCard() {
           <CsText className="text-lg font-extrabold" style={{ color: colors.dark }}>
             Warehouses & Contacts
          </CsText>
-          <CsText className="text-[12.5px] mt-[3px]" style={{ color: colors.dark }}>
+          <CsText className="text-[11px] mt-[3px]" style={{ color: colors.dark }}>
             Total Facilities: {warehouses.length}
          </CsText>
         </View>

@@ -72,7 +72,7 @@ export default function OrderStatusTabs({
             <Text
               style={{
                 fontWeight: "600",
-                fontSize: 15,
+                fontSize: 13,
                 color: isActive ? colors.light : colors.secondary,
               }}
             >

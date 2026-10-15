@@ -1,6 +1,5 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
-import { shadows } from "@/src/constants/shadows";
 import { View } from "react-native";
 
 export default function StatChip({
@@ -16,13 +15,15 @@ export default function StatChip({
         backgroundColor: colors.light,
         borderRadius: 16,
        
-        borderColor: colors.neutral,
         alignItems: "center",
         justifyContent: "center",
         marginBottom: 10,
         paddingHorizontal: 8,
         paddingVertical: 8,
-      },shadows.profile_card]}
+        borderWidth: 1,
+        borderColor: colors.cardBorder,
+      },
+      ]}
     >
       {/* ICON */}
       {Icon && (
@@ -36,7 +37,7 @@ export default function StatChip({
 
       {/* TITLE */}
       <CsText
-        className="text-[14px] text-center"
+        className="text-[12px] text-center"
         style={{ color: colors.dark }}
       >
         {title}

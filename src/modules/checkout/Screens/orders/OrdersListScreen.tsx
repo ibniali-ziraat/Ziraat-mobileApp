@@ -190,7 +190,7 @@ const OrdersListScreen = () => {
 
             <Text
               numberOfLines={1}
-              style={{ color: colors.neutral, marginTop: 4, fontSize: 15 }}
+              style={{ color: colors.neutral, marginTop: 4, fontSize: 13 }}
             >
               {firstProduct?.productName || "Multiple Items"}
             </Text>
@@ -209,7 +209,7 @@ const OrdersListScreen = () => {
                 <Text
                   numberOfLines={1}
                   style={{
-                    fontSize: 13.5,
+                    fontSize: 11,
                     color: colors.darkHover,
                     fontWeight: "600",
                   }}
@@ -223,7 +223,7 @@ const OrdersListScreen = () => {
               <View className="flex-row items-center mr-12">
                 <SvgXml xml={statIcons.age} width={15} height={15} />
                 <Text
-                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 14 }}
+                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}
                 >
                   {formatDate(item.createdOn)}
                 </Text>
@@ -231,7 +231,7 @@ const OrdersListScreen = () => {
               <View className="flex-row items-center">
                 <SvgXml xml={menuArt.orders} width={15} height={15} />
                 <Text
-                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 14 }}
+                  style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}
                 >
                   {getTotalQuantity(item.orderItems)} Items
                 </Text>
@@ -260,7 +260,7 @@ const OrdersListScreen = () => {
                   <Text
                     style={{
                       color: colors.primary,
-                      fontSize: 13,
+                      fontSize: 10,
                       fontWeight: "700",
                     }}
                   >
@@ -321,7 +321,7 @@ const OrdersListScreen = () => {
           <Text
             style={[
               typography.Poppins_s_bold,
-              { fontSize: 18, marginBottom: 6 },
+              { fontSize: 17, marginBottom: 6 },
             ]}
           >
             No Orders Found
@@ -331,8 +331,8 @@ const OrdersListScreen = () => {
               color: colors.neutral,
               textAlign: "center",
               marginBottom: 18,
-              fontSize: 15,
-              lineHeight: 22,
+              fontSize: 13,
+              lineHeight: 18,
             }}
           >
             Try adjusting your filters or search to find what you're looking for
@@ -350,7 +350,7 @@ const OrdersListScreen = () => {
             }}
           >
             <Text
-              style={{ color: colors.light, fontWeight: "600", fontSize: 16 }}
+              style={{ color: colors.light, fontWeight: "600", fontSize: 14 }}
             >
               Reset Filters
             </Text>

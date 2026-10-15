@@ -214,7 +214,7 @@ export default function ProfileTopHeader({
               numberOfLines={1}
               style={[
                 typography.Poppins_l_semibold,
-                { color: "#FFFFFF", fontSize: 22 },
+                { color: "#FFFFFF", fontSize: 20 },
               ]}
             >
               {fullName || "Your profile"}
@@ -227,7 +227,7 @@ export default function ProfileTopHeader({
                   typography.Poppins_xs_regular,
                   {
                     color: "rgba(255,255,255,0.85)",
-                    fontSize: 14,
+                    fontSize: 12,
                     marginTop: 2,
                   },
                 ]}

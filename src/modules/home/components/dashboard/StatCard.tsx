@@ -92,8 +92,8 @@ export default function StatCard({
                 flex: 1,
                 marginRight: 8,
                 color: cardTokens.inkSecondary,
-                fontSize: 14,
-                lineHeight: 19,
+                fontSize: 11.5,
+                lineHeight: 15,
               },
             ]}
           >
@@ -136,7 +136,7 @@ export default function StatCard({
                 typography.Poppins_xs_medium,
                 {
                   color: cardTokens.inkSecondary,
-                  fontSize: 14,
+                  fontSize: 12,
                   marginLeft: 5,
                 },
               ]}
@@ -158,7 +158,7 @@ export default function StatCard({
             <Text
               style={[
                 typography.Poppins_xs_semibold,
-                { color: deltaColor, fontSize: 13, marginLeft: 1 },
+                { color: deltaColor, fontSize: 10.5, marginLeft: 1 },
               ]}
             >
               {positive ? "+" : ""}
@@ -172,7 +172,7 @@ export default function StatCard({
                   {
                     flex: 1,
                     color: cardTokens.inkMuted,
-                    fontSize: 13,
+                    fontSize: 10,
                     marginLeft: 4,
                   },
                 ]}
@@ -188,8 +188,8 @@ export default function StatCard({
               typography.Poppins_xs_regular,
               {
                 color: cardTokens.inkMuted,
-                fontSize: 13,
-                lineHeight: 18,
+                fontSize: 10.5,
+                lineHeight: 14,
                 marginTop: 5,
               },
             ]}

@@ -124,7 +124,7 @@ export default function ReplyInput({
           />
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 11.5,
               fontWeight: "700",
               color: colors.primary,
               letterSpacing: 0.2,
@@ -201,7 +201,7 @@ export default function ReplyInput({
               </View>
               <Text
                 style={{
-                  fontSize: 13.5,
+                  fontSize: 11,
                   fontWeight: "800",
                   color: colors.primary,
                   letterSpacing: 0.8,
@@ -248,8 +248,8 @@ export default function ReplyInput({
               paddingBottom: 12,
               minHeight: 78,
               maxHeight: 130,
-              fontSize: 16,
-              lineHeight: 27,
+              fontSize: 14,
+              lineHeight: 23,
               color: colors.dark,
               fontWeight: "500",
             }}
@@ -292,7 +292,7 @@ export default function ReplyInput({
               />
               <Text
                 style={{
-                  fontSize: 13.5,
+                  fontSize: 11,
                   fontWeight: "700",
                   color: canSend ? colors.primary : colors.overlay,
                   letterSpacing: 0.1,
@@ -309,7 +309,7 @@ export default function ReplyInput({
               {replyText.length > 0 && (
                 <Text
                   style={{
-                    fontSize: 13,
+                    fontSize: 10.5,
                     fontWeight: "700",
                     color: colors.overlay,
                   }}
@@ -346,7 +346,7 @@ export default function ReplyInput({
                 />
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: "800",
                     color: canSend ? colors.light : colors.overlay,
                     letterSpacing: 0.3,

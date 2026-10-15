@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
 
   label: {
     marginBottom: 6,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "500",
     color: colors.dark,
   },
@@ -232,12 +232,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     borderRadius: 10,
   },
-  pressableText: { fontSize: 17, color: colors.dark },
+  pressableText: { fontSize: 16, color: colors.dark },
   placeholderText: { color: colors.neutral + "88" },
 
   errorText: {
     color: colors.error,
-    fontSize: 14,
+    fontSize: 12,
     marginTop: 4,
     paddingHorizontal: 0,
   },
@@ -253,14 +253,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: colors.neutral,
   },
-  modalCancel: { fontSize: 17, color: colors.neutral },
-  modalDone: { fontSize: 17, color: colors.primary, fontWeight: "600" },
+  modalCancel: { fontSize: 16, color: colors.neutral },
+  modalDone: { fontSize: 16, color: colors.primary, fontWeight: "600" },
 
   // Web
   webWrapper: { flexDirection: "column", width: "100%" },
   webLabel: {
     marginBottom: 8,
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "500",
     color: colors.dark,
   } as any,

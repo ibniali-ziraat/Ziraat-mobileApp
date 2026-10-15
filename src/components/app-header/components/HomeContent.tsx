@@ -70,7 +70,7 @@ const HomeContent = () => {
   }));
 
   const nameStyle = useAnimatedStyle(() => ({
-    fontSize: interpolate(progress.value, [0, 1], [21, 17]),
+    fontSize: interpolate(progress.value, [0, 1], [20, 16]),
   }));
 
   const bellStyle = useAnimatedStyle(() => {
@@ -97,7 +97,7 @@ const HomeContent = () => {
               numberOfLines={1}
               style={[
                 typography.Poppins_xs_regular,
-                { color: cardTokens.inkMuted, fontSize: 13.5 },
+                { color: cardTokens.inkMuted, fontSize: 11 },
               ]}
             >
               {greetingForNow()} · {todayLabel()}
@@ -131,7 +131,7 @@ const HomeContent = () => {
               numberOfLines={1}
               style={[
                 typography.Poppins_xs_regular,
-                { color: cardTokens.inkMuted, fontSize: 13.5, marginLeft: 3 },
+                { color: cardTokens.inkMuted, fontSize: 11, marginLeft: 3 },
               ]}
             >
               {location} • {temp} • {todayLabel()}
@@ -179,7 +179,7 @@ const HomeContent = () => {
               <Text
                 style={[
                   typography.Poppins_xs_semibold,
-                  { color: cardTokens.surface, fontSize: 10 },
+                  { color: cardTokens.surface, fontSize: 9 },
                 ]}
               >
                 {count > 99 ? "99+" : count}

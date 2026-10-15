@@ -51,8 +51,8 @@ export default function BottomAnswerInput({
           borderRadius: 22,
           paddingHorizontal: 16,
           paddingVertical: 14,
-          fontSize: 16.5,
-          lineHeight: 23,
+          fontSize: 15.5,
+          lineHeight: 21,
           color: colors.dark,
           backgroundColor: colors.bgColor,
         }}

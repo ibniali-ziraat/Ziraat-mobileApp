@@ -115,7 +115,7 @@ export default function TrendingProductCard({
                 style={{
                   color: colors.light,
                   fontWeight: "bold",
-                  fontSize: 16,
+                  fontSize: 14,
                 }}
               >
                 Out of Stock
@@ -161,7 +161,7 @@ export default function TrendingProductCard({
             <Text
               style={{
                 color: colors.light,
-                fontSize: 13,
+                fontSize: 10,
                 fontWeight: "bold",
               }}
             >
@@ -186,7 +186,7 @@ export default function TrendingProductCard({
             marginTop: 4,
           }}
         >
-          <Text style={[typography.Poppins_s_medium, { fontSize: 16 }]}>
+          <Text style={[typography.Poppins_s_medium, { fontSize: 14 }]}>
             ₹{Math.round(item.lowestPrice || item.originalPrice || 0)}
           </Text>
 
@@ -195,7 +195,7 @@ export default function TrendingProductCard({
               style={{
                 textDecorationLine: "line-through",
                 color: colors.neutral,
-                fontSize: 14,
+                fontSize: 12,
               }}
             >
               ₹{Math.round(item.originalPrice)}
@@ -206,7 +206,7 @@ export default function TrendingProductCard({
         {/* Views */}
         <Text
           style={{
-            fontSize: 13.5,
+            fontSize: 11,
             color: colors.neutral,
             marginTop: 2,
           }}
@@ -218,7 +218,7 @@ export default function TrendingProductCard({
         {isInStock && (
           <Text
             style={{
-              fontSize: 13.5,
+              fontSize: 11,
               color: isLowStock ? colors.warning : colors.secondary,
               marginTop: 4,
               fontWeight: "500",

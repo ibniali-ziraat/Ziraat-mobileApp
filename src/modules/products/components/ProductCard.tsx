@@ -156,7 +156,7 @@ export default function ProductCard({
               <Text
                 style={[
                   typography.Poppins_xs_semibold,
-                  { color: "#FFFFFF", fontSize: 13 },
+                  { color: "#FFFFFF", fontSize: 10 },
                 ]}
               >
                 {discount}% OFF
@@ -196,7 +196,7 @@ export default function ProductCard({
                 typography.Poppins_xs_semibold,
                 {
                   color: chartTokens.current,
-                  fontSize: 13,
+                  fontSize: 10.5,
                   marginLeft: 4,
                   flexShrink: 1,
                 },
@@ -229,7 +229,7 @@ export default function ProductCard({
                   {
                     textDecorationLine: "line-through",
                     color: cardTokens.inkMuted,
-                    fontSize: 14,
+                    fontSize: 12,
                   },
                 ]}
               >

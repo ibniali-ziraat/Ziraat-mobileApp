@@ -129,7 +129,7 @@ export default function InAppNotificationBanner({
           <Text
             numberOfLines={2}
             style={{
-              fontSize: 17,
+              fontSize: 16,
               fontWeight: "600",
               color: "#000",
               marginBottom: body ? 2 : 0,

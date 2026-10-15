@@ -289,6 +289,6 @@ const styles = StyleSheet.create({
   cartText: {
     color: colors.light,
     fontWeight: "700",
-    fontSize: 16,
+    fontSize: 15,
   },
 });

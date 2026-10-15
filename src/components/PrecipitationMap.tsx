@@ -24,7 +24,7 @@ export default function PrecipitationMap() {
           borderColor: "#E5E7EB",
         }}
       >
-        <CsText style={{ fontSize: 14, color: "#6B7280" }}>
+        <CsText style={{ fontSize: 12, color: "#6B7280" }}>
           Map not supported on web
        </CsText>
       </View>

@@ -163,13 +163,13 @@ export default function SwipeableNotificationCard({
             <View className="flex-row items-start justify-between">
               <Text
                 numberOfLines={1}
-                className="flex-1 text-[16px] font-semibold pr-2"
+                className="flex-1 text-[14px] font-semibold pr-2"
                 style={{ color: colors.dark }}
               >
                 {item.title}
               </Text>
 
-              <Text className="text-[13px]" style={{ color: colors.darkHover }}>
+              <Text className="text-[10px]" style={{ color: colors.darkHover }}>
                 {timeAgo(item.receivedAt)}
               </Text>
             </View>
@@ -187,7 +187,7 @@ export default function SwipeableNotificationCard({
             {onPress ? (
               <View className="flex-row items-center mt-[6px]">
                 <Text
-                  className="text-[14px] font-semibold"
+                  className="text-[12px] font-semibold"
                   style={{ color: colors.primary }}
                 >
                   View advisories

@@ -71,7 +71,7 @@
 //                 style={{
 //                   fontWeight: "600",
 //                   color: colors.dark,
-//                   fontSize: 15,
+//                   fontSize: 13,
 //                 }}
 //               >
 //                 {item.name}
@@ -89,7 +89,7 @@
 //                 >
 //                   <Text
 //                     style={{
-//                       fontSize: 10,
+//                       fontSize: 9,
 //                       color: colors.light,
 //                       fontWeight: "600",
 //                     }}
@@ -105,8 +105,8 @@
 //               style={{
 //                 color: colors.neutral,
 //                 marginTop: 4,
-//                 lineHeight: 22,
-//                 fontSize: 15,
+//                 lineHeight: 18,
+//                 fontSize: 13,
 //               }}
 //             >
 //               {item.message}
@@ -123,7 +123,7 @@
 //           >
 //             <Text
 //               style={{
-//                 fontSize: 13.5,
+//                 fontSize: 11,
 //                 color: colors.darkHover,
 //               }}
 //             >
@@ -142,7 +142,7 @@
 //               <Text
 //                 style={{
 //                   marginLeft: 4,
-//                   fontSize: 13.5,
+//                   fontSize: 11,
 //                   color: colors.darkHover,
 //                 }}
 //               >
@@ -162,7 +162,7 @@
 //               <Text
 //                 style={{
 //                   marginLeft: 4,
-//                   fontSize: 13.5,
+//                   fontSize: 11,
 //                   color: colors.darkHover,
 //                 }}
 //               >
@@ -186,7 +186,7 @@
 //               <Text
 //                 style={{
 //                   fontWeight: "600",
-//                   fontSize: 14,
+//                   fontSize: 12,
 //                   color: colors.dark,
 //                 }}
 //               >
@@ -195,7 +195,7 @@
 
 //               <Text
 //                 style={{
-//                   fontSize: 14,
+//                   fontSize: 12,
 //                   color: colors.neutral,
 //                   marginTop: 2,
 //                 }}
@@ -205,7 +205,7 @@
 
 //               <Text
 //                 style={{
-//                   fontSize: 13,
+//                   fontSize: 10,
 //                   color: colors.darkHover,
 //                   marginTop: 2,
 //                 }}
@@ -259,7 +259,7 @@ export default function DiscussionItem({ item, isGrouped }) {
         {!isUser && !isGrouped && (
           <Text
             style={{
-              fontSize: 13.5,
+              fontSize: 11,
               color: colors.darkHover,
               marginBottom: 4,
               marginLeft: 4,
@@ -293,9 +293,9 @@ export default function DiscussionItem({ item, isGrouped }) {
           {/* Message */}
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 14,
               color: colors.dark,
-              lineHeight: 24,
+              lineHeight: 20,
             }}
           >
             {item.message}
@@ -312,7 +312,7 @@ export default function DiscussionItem({ item, isGrouped }) {
             >
               <Text
                 style={{
-                  fontSize: 13,
+                  fontSize: 10,
                   color: colors.darkHover,
                 }}
               >

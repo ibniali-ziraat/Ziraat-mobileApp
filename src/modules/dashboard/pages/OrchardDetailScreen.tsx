@@ -2,11 +2,7 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
-import { dashboardTabArt } from "@/src/constants/iconArt";
-import { getOrchardTile } from "@/src/constants/illustrations";
 import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/fonts/typography";
-import { shadows } from "@/src/constants/shadows";
 import { useLocalSearchParams } from "expo-router";
 import {
   Bell,
@@ -18,7 +14,7 @@ import {
 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
-import { SvgXml } from "react-native-svg";
+import { compactNumber, SummaryStrip } from "../components/DashboardBlocks";
 import AdvisorySection from "../components/sections/AdvisorySection";
 import AlertsSection from "../components/sections/AlertsSection";
 import FinancialSection from "../components/sections/FinancialSection";
@@ -65,61 +61,21 @@ export default function OrchardDetailScreen() {
       <View style={{ flex: 1 }}>
         <ScreenContent>
           {/* Basic info — already known from the orchards list, no extra call */}
-          <View
-            style={[
+          <SummaryStrip
+            stats={[
               {
-                flexDirection: "row",
-                alignItems: "center",
-                padding: 12,
-                borderRadius: 16,
-                backgroundColor: colors.light,
+                label: "Hectares",
+                value: compactNumber(Number(params.areaHa || 0)),
               },
-              shadows.profile_card,
-            ]}
-          >
-            <View
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 14,
-                overflow: "hidden",
-                marginRight: 14,
-              }}
-            >
-              <SvgXml
-                xml={getOrchardTile({
-                  orchardProfileId: params.orchardProfileId,
-                })}
-                width={48}
-                height={48}
-              />
-            </View>
-
-            {[
               {
-                label: "Area",
-                value: `${Number(params.areaHa || 0).toFixed(2)} ha`,
+                label: "Trees",
+                value: compactNumber(Number(params.totalTrees || 0)),
               },
-              { label: "Trees", value: params.totalTrees || "0" },
               ...(params.establishmentYear
-                ? [{ label: "Established", value: params.establishmentYear }]
+                ? [{ label: "Since", value: params.establishmentYear }]
                 : []),
-            ].map((stat) => (
-              <View key={stat.label} style={{ flex: 1 }}>
-                <CsText style={{ fontSize: 13.5, color: colors.neutral }}>
-                  {stat.label}
-                </CsText>
-                <CsText
-                  style={[
-                    typography.Poppins_s_semibold,
-                    { fontSize: 16, color: colors.dark },
-                  ]}
-                >
-                  {stat.value}
-                </CsText>
-              </View>
-            ))}
-          </View>
+            ]}
+          />
 
           {/* Tabs */}
           <ScrollView
@@ -130,6 +86,7 @@ export default function OrchardDetailScreen() {
           >
             {TABS.map((tab) => {
               const isActive = tab.key === activeTab;
+              const TabIcon = tab.icon;
 
               return (
                 <Pressable
@@ -139,34 +96,22 @@ export default function OrchardDetailScreen() {
                     flexDirection: "row",
                     alignItems: "center",
                     gap: 6,
-                    paddingLeft: 6,
-                    paddingRight: 14,
-                    paddingVertical: 6,
+                    paddingHorizontal: 14,
+                    paddingVertical: 8,
                     borderRadius: 999,
                     backgroundColor: isActive ? colors.primary : colors.light,
                     borderWidth: 1,
                     borderColor: isActive ? colors.primary : colors.cardBorder,
                   }}
                 >
-                  <View
-                    style={{
-                      width: 24,
-                      height: 24,
-                      borderRadius: 12,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: "#FFFFFF",
-                    }}
-                  >
-                    <SvgXml
-                      xml={dashboardTabArt[tab.key]}
-                      width={17}
-                      height={17}
-                    />
-                  </View>
+                  <TabIcon
+                    size={16}
+                    strokeWidth={2}
+                    color={isActive ? colors.light : colors.primary}
+                  />
                   <CsText
                     style={{
-                      fontSize: 15,
+                      fontSize: 13,
                       fontWeight: "600",
                       color: isActive ? colors.light : colors.dark,
                     }}

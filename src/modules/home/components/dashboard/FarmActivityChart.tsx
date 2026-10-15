@@ -36,7 +36,7 @@ function LegendKey({ color, label }: { color: string; label: string }) {
       <Text
         style={[
           typography.Poppins_xs_regular,
-          { color: cardTokens.inkSecondary, fontSize: 13.5 },
+          { color: cardTokens.inkSecondary, fontSize: 11 },
         ]}
       >
         {label}
@@ -62,7 +62,7 @@ function DeltaPill({ change }: { change: number }) {
           typography.Poppins_xs_semibold,
           {
             color: positive ? chartTokens.positive : chartTokens.negative,
-            fontSize: 13.5,
+            fontSize: 11,
           },
         ]}
       >
@@ -110,7 +110,7 @@ function ComparisonRows({
             <Text
               style={[
                 typography.Poppins_xs_regular,
-                { color: cardTokens.inkSecondary, flex: 1, fontSize: 14 },
+                { color: cardTokens.inkSecondary, flex: 1, fontSize: 12 },
               ]}
             >
               {row.label}
@@ -118,7 +118,7 @@ function ComparisonRows({
             <Text
               style={[
                 typography.Poppins_s_semibold,
-                { color: cardTokens.inkPrimary, fontSize: 16 },
+                { color: cardTokens.inkPrimary, fontSize: 14 },
               ]}
             >
               {row.value}
@@ -190,7 +190,7 @@ export default function FarmActivityChart({
           <Text
             style={[
               typography.Poppins_s_semibold,
-              { color: cardTokens.inkPrimary, fontSize: 16 },
+              { color: cardTokens.inkPrimary, fontSize: 15 },
             ]}
           >
             {isSingle ? activity[0].label : "Farm activity"}
@@ -198,7 +198,7 @@ export default function FarmActivityChart({
           <Text
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, marginTop: 2, fontSize: 13.5 },
+              { color: cardTokens.inkMuted, marginTop: 2, fontSize: 11 },
             ]}
           >
             This {periodLabel} compared with the last one
@@ -219,7 +219,7 @@ export default function FarmActivityChart({
             <Text
               style={[
                 typography.Poppins_xs_semibold,
-                { color: chartTokens.current, fontSize: 13 },
+                { color: chartTokens.current, fontSize: 10 },
               ]}
             >
               {periodLabel.toUpperCase()}
@@ -349,7 +349,7 @@ export default function FarmActivityChart({
                 <Text
                   style={[
                     typography.Poppins_xs_medium,
-                    { color: cardTokens.inkSecondary, fontSize: 13.5 },
+                    { color: cardTokens.inkSecondary, fontSize: 11 },
                   ]}
                 >
                   {item.label}
@@ -362,7 +362,7 @@ export default function FarmActivityChart({
                         (item.changePercent ?? 0) >= 0
                           ? chartTokens.positive
                           : chartTokens.negative,
-                      fontSize: 13.5,
+                      fontSize: 11,
                       marginLeft: 6,
                     },
                   ]}

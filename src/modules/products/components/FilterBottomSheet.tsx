@@ -117,7 +117,7 @@ export default function FilterBottomSheet({
             <Text
               style={[
                 typography.Poppins_m_semibold,
-                { color: cardTokens.inkPrimary, fontSize: 18 },
+                { color: cardTokens.inkPrimary, fontSize: 17 },
               ]}
             >
               Filters
@@ -287,7 +287,7 @@ const Section = ({ title, children }: any) => (
     <Text
       style={[
         typography.Poppins_xs_semibold,
-        { color: cardTokens.inkSecondary, fontSize: 14, marginBottom: 6 },
+        { color: cardTokens.inkSecondary, fontSize: 12, marginBottom: 6 },
       ]}
     >
       {title.toUpperCase()}
@@ -312,7 +312,7 @@ const Item = ({ label, count, selected, onPress }: any) => (
     <Text
       style={[
         typography.Poppins_xs_regular,
-        { flex: 1, color: cardTokens.inkPrimary, fontSize: 15.5 },
+        { flex: 1, color: cardTokens.inkPrimary, fontSize: 13.5 },
       ]}
     >
       {label}
@@ -322,7 +322,7 @@ const Item = ({ label, count, selected, onPress }: any) => (
       <Text
         style={[
           typography.Poppins_xs_regular,
-          { color: cardTokens.inkMuted, fontSize: 14 },
+          { color: cardTokens.inkMuted, fontSize: 12 },
         ]}
       >
         {count}
@@ -351,7 +351,7 @@ const RadioItem = ({ label, count, selected, onPress }: any) => (
     <Text
       style={[
         typography.Poppins_xs_regular,
-        { flex: 1, color: cardTokens.inkPrimary, fontSize: 15.5 },
+        { flex: 1, color: cardTokens.inkPrimary, fontSize: 13.5 },
       ]}
     >
       {label}
@@ -361,7 +361,7 @@ const RadioItem = ({ label, count, selected, onPress }: any) => (
       <Text
         style={[
           typography.Poppins_xs_regular,
-          { color: cardTokens.inkMuted, fontSize: 14 },
+          { color: cardTokens.inkMuted, fontSize: 12 },
         ]}
       >
         {count}
@@ -378,7 +378,7 @@ const PricePill = ({ label }: any) => (
     <Text
       style={[
         typography.Poppins_xs_semibold,
-        { color: chartTokens.current, fontSize: 14 },
+        { color: chartTokens.current, fontSize: 12 },
       ]}
     >
       {label}

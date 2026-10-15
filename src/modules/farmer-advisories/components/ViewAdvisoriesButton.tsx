@@ -65,7 +65,7 @@ export default function ViewAdvisoriesButton({
             numberOfLines={1}
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, fontSize: 13.5, marginTop: 1 },
+              { color: cardTokens.inkMuted, fontSize: 11, marginTop: 1 },
             ]}
           >
             Spray, fertigation, pruning & harvest advice

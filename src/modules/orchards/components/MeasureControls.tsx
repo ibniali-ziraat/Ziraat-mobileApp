@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 
   resetText: {
     color: colors.light,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "500",
   },
 
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 
   primaryText: {
     color: colors.light,
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "500",
   },
 });

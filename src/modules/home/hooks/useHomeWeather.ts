@@ -10,12 +10,19 @@ import {
   WeatherState,
 } from "../utils/weatherUtils";
 
+/** Used when there's neither a registered tehsil nor a GPS fix. */
+const DEFAULT_LOCATION = { lat: 34.0837, lon: 74.7973, name: "Srinagar" };
+
+export type WeatherSource = "tehsil" | "gps" | "default";
+
 interface UseHomeWeatherReturn {
   currentWeather: WeatherState | null;
   /** Next 12 hours, for the detail sheet's column chart. */
   hourly: WeatherHourPoint[];
   isLoading: boolean;
   locLoading: boolean;
+  /** Where the coordinates came from — "default" means the Srinagar fallback. */
+  source: WeatherSource | null;
 }
 
 export function useHomeWeather(): UseHomeWeatherReturn {
@@ -31,8 +38,24 @@ export function useHomeWeather(): UseHomeWeatherReturn {
     prompt: false,
   });
 
-  const coords = tehsilCoords ?? (gpsEnabled ? gpsCoords : null);
   const locLoading = tehsilLoading || (gpsEnabled && gpsLoading);
+  // Tehsil first, then GPS; once both have settled empty, fall back to
+  // Srinagar so the card always has weather to show.
+  const source: WeatherSource | null = tehsilCoords
+    ? "tehsil"
+    : gpsEnabled && gpsCoords
+      ? "gps"
+      : locLoading
+        ? null
+        : "default";
+  const coords =
+    source === "tehsil"
+      ? tehsilCoords
+      : source === "gps"
+        ? gpsCoords
+        : source === "default"
+          ? DEFAULT_LOCATION
+          : null;
 
   const { data, isLoading } = useWeatherQuery({
     lat: coords?.lat,
@@ -48,13 +71,16 @@ export function useHomeWeather(): UseHomeWeatherReturn {
     if (parsed && tehsilCoords && tehsilName) {
       return { ...parsed, locationName: tehsilName };
     }
+    if (parsed && source === "default") {
+      return { ...parsed, locationName: DEFAULT_LOCATION.name };
+    }
     return parsed;
-  }, [data, tehsilCoords, tehsilName]);
+  }, [data, tehsilCoords, tehsilName, source]);
 
   const hourly = useMemo(
     () => parseHourlyForecast(data as WeatherApiResponse | undefined),
     [data],
   );
 
-  return { currentWeather, hourly, isLoading, locLoading };
+  return { currentWeather, hourly, isLoading, locLoading, source };
 }

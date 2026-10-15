@@ -186,7 +186,7 @@ const SelectAddressScreen = () => {
                 </View>
 
                 <View style={{ flex: 1 }}>
-                  <Text style={[typography.Poppins_s_bold, { fontSize: 16 }]}>
+                  <Text style={[typography.Poppins_s_bold, { fontSize: 15 }]}>
                     {item.contactName}
                   </Text>
 

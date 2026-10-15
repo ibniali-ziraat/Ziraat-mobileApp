@@ -231,7 +231,7 @@ export default function Discussionforum() {
               }}
             >
               <Plus size={14} color={colors.light} strokeWidth={2.5} />
-              <Text style={{ color: colors.light, fontWeight: "600", fontSize: 15 }}>
+              <Text style={{ color: colors.light, fontWeight: "600", fontSize: 13 }}>
                 Ask
               </Text>
             </TouchableOpacity>
@@ -239,7 +239,7 @@ export default function Discussionforum() {
         </View>
 
         {/* Count + stats */}
-        <Text style={{ fontSize: 15, color: colors.primary, marginBottom: 12 }}>
+        <Text style={{ fontSize: 13, color: colors.primary, marginBottom: 12 }}>
           {total} question{total !== 1 ? "s" : ""}
           {statsData?.totalAnswers != null ? ` · ${statsData.totalAnswers} answers` : ""}
           {statsData?.totalUsers != null ? ` · ${statsData.totalUsers} members` : ""}
@@ -273,7 +273,7 @@ export default function Discussionforum() {
             }}
           >
             <Hash size={12} color={colors.primary} />
-            <Text style={{ color: colors.primary, fontSize: 14, fontWeight: "700" }}>
+            <Text style={{ color: colors.primary, fontSize: 12, fontWeight: "700" }}>
               {activeTag}
             </Text>
             <X size={12} color={colors.primary} />
@@ -302,7 +302,7 @@ export default function Discussionforum() {
             >
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 13,
                   fontWeight: filter === f.value ? "600" : "400",
                   color: filter === f.value ? colors.primary : colors.dark,
                 }}
@@ -347,7 +347,7 @@ export default function Discussionforum() {
         ) : apiQuestions.length === 0 ? (
           <View style={{ alignItems: "center", marginTop: 80 }}>
             <MessageCircleMore size={40} color={colors.secondary} />
-            <Text style={{ marginTop: 10, fontWeight: "700", fontSize: 17 }}>
+            <Text style={{ marginTop: 10, fontWeight: "700", fontSize: 16 }}>
               No questions yet
             </Text>
             <Text style={{ marginTop: 4 }}>

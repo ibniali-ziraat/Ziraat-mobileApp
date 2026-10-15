@@ -334,7 +334,7 @@ export default function AdvisoryDetailScreen() {
             <Text
               style={[
                 typography.Poppins_s_regular,
-                { color: cardTokens.inkPrimary, marginTop: 4, lineHeight: 26 },
+                { color: cardTokens.inkPrimary, marginTop: 4, lineHeight: 22 },
               ]}
             >
               {advisory.recommendation || "No recommendation text was added."}

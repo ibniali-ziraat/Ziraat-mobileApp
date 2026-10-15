@@ -30,7 +30,7 @@ export default function Button({
       <Text
         style={{
           color: colors.light,
-          fontSize: 17,
+          fontSize: 16,
           fontWeight: "600",
         }}
       >

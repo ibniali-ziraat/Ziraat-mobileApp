@@ -36,7 +36,7 @@ export const DeliveryAddress = ({ address }: Props) => (
     <Text
       style={[
         typography.Poppins_s_semibold,
-        { color: cardTokens.inkPrimary, fontSize: 16 },
+        { color: cardTokens.inkPrimary, fontSize: 15 },
       ]}
     >
       {address.contactName}
@@ -45,7 +45,7 @@ export const DeliveryAddress = ({ address }: Props) => (
     <Text
       style={[
         typography.Poppins_xs_regular,
-        { color: cardTokens.inkSecondary, fontSize: 15.5, marginTop: 4 },
+        { color: cardTokens.inkSecondary, fontSize: 13.5, marginTop: 4 },
       ]}
     >
       {address.addressLine1}
@@ -54,7 +54,7 @@ export const DeliveryAddress = ({ address }: Props) => (
     <Text
       style={[
         typography.Poppins_xs_regular,
-        { color: cardTokens.inkSecondary, fontSize: 15.5 },
+        { color: cardTokens.inkSecondary, fontSize: 13.5 },
       ]}
     >
       {address.cityName}, {address.stateOrProvinceName}
@@ -63,7 +63,7 @@ export const DeliveryAddress = ({ address }: Props) => (
     <Text
       style={[
         typography.Poppins_xs_regular,
-        { color: cardTokens.inkMuted, fontSize: 15.5 },
+        { color: cardTokens.inkMuted, fontSize: 13.5 },
       ]}
     >
       {address.zipCode}

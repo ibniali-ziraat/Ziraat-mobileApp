@@ -54,7 +54,7 @@ function ForecastCard({ item }) {
 
       {/* Day */}
       <CsText
-        className="text-center text-[16px] font-semibold"
+        className="text-center text-[15px] font-semibold"
         style={{ color: colors.dark }}
       >
         {item.day}
@@ -81,7 +81,7 @@ function ForecastCard({ item }) {
         >
           {item.temp}
        </CsText>
-        <CsText className="text-[14px]" style={{ color: colors.dark + "99" }}>
+        <CsText className="text-[12px]" style={{ color: colors.dark + "99" }}>
           {item.low}
        </CsText>
       </View>
@@ -110,7 +110,7 @@ function ForecastCard({ item }) {
           }}
         >
           <CsText
-            className="text-[12.5px] font-semibold"
+            className="text-[11px] font-semibold"
             style={{ color: colors.dark }}
           >
             {item.rain}
