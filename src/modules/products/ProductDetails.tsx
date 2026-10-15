@@ -409,7 +409,8 @@ export default function ProductDetails() {
               </>
             }
             ListFooterComponent={
-              <View style={{ paddingBottom: 170 }}>
+              // Clears the sticky bar (disclaimer + buttons + inset).
+              <View style={{ paddingBottom: 240 }}>
                 {reviewsLoading ? (
                   <Loader />
                 ) : reviewsError ? (

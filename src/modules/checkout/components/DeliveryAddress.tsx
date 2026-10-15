@@ -1,6 +1,7 @@
-import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { cardTokens } from "@/src/constants/dashboardTheme";
+import { profileArt } from "@/src/constants/iconArt";
+import CheckoutSectionTitle from "./CheckoutSectionTitle";
 import { typography } from "@/src/constants/fonts/typography";
-import { MapPin } from "lucide-react-native";
 import { Text, View } from "react-native";
 
 interface Address {
@@ -25,36 +26,12 @@ export const DeliveryAddress = ({ address }: Props) => (
         borderRadius: cardTokens.radius,
         borderCurve: "continuous",
         borderWidth: 1,
-        borderColor: cardTokens.border,
+        borderColor: cardTokens.hairline,
         padding: 16,
       },
-      cardShadow,
     ]}
   >
-    <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 12 }}>
-      <View
-        style={{
-          width: 32,
-          height: 32,
-          borderRadius: 10,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: chartTokens.tint,
-          marginRight: 8,
-        }}
-      >
-        <MapPin size={16} color={chartTokens.current} />
-      </View>
-
-      <Text
-        style={[
-          typography.Poppins_s_bold,
-          { color: cardTokens.inkPrimary, fontSize: 17 },
-        ]}
-      >
-        Deliver To
-      </Text>
-    </View>
+    <CheckoutSectionTitle title="Deliver To" art={profileArt.address} />
 
     <Text
       style={[

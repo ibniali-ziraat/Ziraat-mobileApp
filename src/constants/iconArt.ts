@@ -811,3 +811,24 @@ export const getNotificationArt = (title = "", body = "") => {
   const match = notificationMatchers.find(([re]) => re.test(text));
   return match ? match[1]() : { art: advisoryArt.bell, tint: "#FFF8E1" };
 };
+
+/** Payment methods, keyed by the API's method values. */
+export const paymentArt: Record<string, string> = {
+  BuyOnCredit: svg(
+    `<rect x="4" y="11" width="40" height="27" rx="5" fill="#5C6BC0"/><rect x="4" y="17" width="40" height="6" fill="#283593"/>` +
+      `<rect x="9" y="28" width="12" height="4" rx="2" fill="#C5CAE9"/><circle cx="33" cy="30.5" r="4" fill="#FFB300"/><circle cx="37.5" cy="30.5" r="4" fill="#FF7043" opacity=".85"/>`,
+  ),
+  CashOnDelivery: svg(
+    `<rect x="7" y="9" width="36" height="22" rx="4" fill="#81C784"/>` +
+      `<rect x="4" y="14" width="36" height="22" rx="4" fill="#43A047"/><circle cx="22" cy="25" r="5.4" fill="#A5D6A7"/>` +
+      `<text x="22" y="28.4" font-size="8" font-weight="700" text-anchor="middle" fill="#1B5E20">₹</text>` +
+      `<circle cx="36" cy="38" r="7" fill="#FFC107"/><circle cx="36" cy="38" r="4.6" fill="#FFD54F"/>`,
+  ),
+  RazorPay: svg(
+    `<rect x="13" y="4" width="22" height="40" rx="5" fill="#37474F"/><rect x="15.5" y="9" width="17" height="28" rx="2" fill="#E3F2FD"/>` +
+      `<circle cx="24" cy="40.5" r="1.6" fill="#90A4AE"/>` +
+      `<circle cx="24" cy="21" r="6" fill="#1E88E5"/><path d="M21.2 21 L23.2 23 L26.8 19" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>` +
+      `<rect x="18.5" y="30" width="11" height="2.4" rx="1.2" fill="#90CAF9"/>`,
+  ),
+};
+paymentArt.CoD = paymentArt.CashOnDelivery;

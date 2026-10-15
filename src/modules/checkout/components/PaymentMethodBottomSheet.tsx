@@ -1,13 +1,13 @@
 import { colors } from "@/src/constants/colors";
 import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { getDashboardIcon, paymentArt } from "@/src/constants/iconArt";
 import {
   Banknote,
   Check,
   CreditCard,
   LockKeyhole,
   Smartphone,
-  Wallet,
   X,
 } from "lucide-react-native";
 import { useEffect, useState } from "react";
@@ -20,6 +20,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const { height } = Dimensions.get("window");
@@ -154,7 +155,11 @@ export default function PaymentMethodBottomSheet({
                   backgroundColor: cardTokens.mutedSurface,
                 }}
               >
-                <Wallet size={22} color={colors.primary} strokeWidth={2} />
+                <SvgXml
+                  xml={getDashboardIcon("Wallet")}
+                  width={28}
+                  height={28}
+                />
               </View>
 
               <View style={{ flex: 1 }}>
@@ -229,7 +234,8 @@ export default function PaymentMethodBottomSheet({
 
             {options.map((option, index) => {
               const isSelected = option.value === draftValue;
-              const Icon = PAYMENT_METHOD_ICONS[option.value] ?? Wallet;
+              const art =
+                paymentArt[option.value] ?? getDashboardIcon("Wallet");
               const details = PAYMENT_METHOD_DETAILS[option.value] ?? {
                 description: "Continue with this payment option",
                 accent: colors.primary,
@@ -256,19 +262,15 @@ export default function PaymentMethodBottomSheet({
                   >
                     <View
                       style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 12,
+                        width: 44,
+                        height: 44,
+                        borderRadius: 14,
                         alignItems: "center",
                         justifyContent: "center",
                         backgroundColor: cardTokens.mutedSurface,
                       }}
                     >
-                      <Icon
-                        size={21}
-                        color={details.accent}
-                        strokeWidth={2.1}
-                      />
+                      <SvgXml xml={art} width={28} height={28} />
                     </View>
 
                     <View style={{ flex: 1, marginLeft: 14 }}>
@@ -299,11 +301,11 @@ export default function PaymentMethodBottomSheet({
                             alignItems: "center",
                             justifyContent: "center",
                             borderWidth: isSelected ? 0 : 1.5,
-                            borderColor: isSelected
-                              ? details.accent
-                              : cardTokens.hairline,
+                            borderColor: cardTokens.hairline,
+                            // One selection colour for every method: the
+                            // brand green, not each method's accent.
                             backgroundColor: isSelected
-                              ? details.accent
+                              ? colors.primary
                               : colors.light,
                           }}
                         >
@@ -338,7 +340,7 @@ export default function PaymentMethodBottomSheet({
                     <View
                       style={{
                         height: 1,
-                        marginLeft: 54,
+                        marginLeft: 58,
                         backgroundColor: cardTokens.hairline,
                       }}
                     />
@@ -362,11 +364,6 @@ export default function PaymentMethodBottomSheet({
                 justifyContent: "center",
                 backgroundColor: colors.primary,
                 opacity: !draftValue ? 0.45 : 1,
-                shadowColor: colors.primary,
-                shadowOffset: { width: 0, height: 6 },
-                shadowOpacity: draftValue ? 0.22 : 0,
-                shadowRadius: 12,
-                elevation: draftValue ? 4 : 0,
               }}
             >
               <Text

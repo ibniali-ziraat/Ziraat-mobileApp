@@ -181,7 +181,7 @@ export default function ProductStickyBar({
               {
                 backgroundColor: colors.light,
                 borderWidth: 1.5,
-                borderColor: colors.secondary,
+                borderColor: colors.primary,
               },
             ]}
           >
@@ -191,13 +191,13 @@ export default function ProductStickyBar({
                   style={[
                     styles.circle,
                     {
-                      borderColor: colors.secondary,
+                      borderColor: colors.primary,
                       borderTopColor: "transparent",
                       transform: [{ rotate }],
                     },
                   ]}
                 />
-                <Text style={[styles.cartText, { color: colors.secondary }]}>
+                <Text style={[styles.cartText, { color: colors.primary }]}>
                   {wishlistId ? "Removing..." : "Adding..."}
                 </Text>
               </View>
@@ -205,11 +205,11 @@ export default function ProductStickyBar({
               <>
                 <Heart
                   size={18}
-                  color={colors.secondary}
-                  fill={isWishlisted ? colors.secondary : "transparent"}
+                  color={colors.primary}
+                  fill={isWishlisted ? colors.primary : "transparent"}
                 />
-                <Text style={[styles.cartText, { color: colors.secondary }]}>
-                  {isWishlisted ? "WISHLISTED" : "WISHLIST"}
+                <Text style={[styles.cartText, { color: colors.primary }]}>
+                  {isWishlisted ? "Wishlisted" : "Wishlist"}
                 </Text>
               </>
             )}
@@ -225,7 +225,7 @@ export default function ProductStickyBar({
             onPressIn={() => animateCart(0.96)}
             onPressOut={() => animateCart(1)}
             disabled={isCartBusy}
-            style={[styles.cartBtn, { backgroundColor: colors.secondary }]}
+            style={[styles.cartBtn, { backgroundColor: colors.primary }]}
           >
             {isCartBusy ? (
               <View style={styles.loaderRow}>
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 6,
     paddingVertical: 14,
-    borderRadius: 12,
+    borderRadius: 14,
   },
   loaderRow: {
     flexDirection: "row",

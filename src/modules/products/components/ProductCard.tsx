@@ -1,11 +1,14 @@
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
-import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { getCategoryArt } from "@/src/constants/iconArt";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
 import { Heart, Store } from "lucide-react-native";
+import { useState } from "react";
 import { Image, Pressable, Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { NormalizedProduct, WishlistItem } from "../types/productlist.types";
 import { calcDiscount } from "../utils/utils";
 
@@ -41,6 +44,9 @@ export default function ProductCard({
   // console.log(vendors, "vendors...");
   // console.log(item, "item...bb");
 
+  // A broken image URL falls back to the illustration, not a blank panel.
+  const [imageFailed, setImageFailed] = useState(false);
+
   const discount = calcDiscount(item.price, item.oldPrice);
   // console.log(item, "product detail item...");
 
@@ -71,23 +77,42 @@ export default function ProductCard({
             borderRadius: cardTokens.radius,
             borderCurve: "continuous",
             borderWidth: 1,
-            borderColor: cardTokens.border,
+            borderColor: cardTokens.hairline,
             overflow: "hidden",
           },
-          cardShadow,
         ]}
       >
         <View>
-          <Pressable onPress={goToProduct}>
-            <Image
-              source={{ uri: item.image }}
-              style={{
-                width: "100%",
-                height: isCarousel ? cardWidth : 150,
-                backgroundColor: cardTokens.mutedSurface,
-              }}
-              resizeMode="cover"
-            />
+          {/* Packshots are tall bottles and bags on their own white
+              backgrounds: contain them on white so nothing is cropped and no
+              box shows, with an illustration when there's no photo. */}
+          <Pressable
+            onPress={goToProduct}
+            style={{
+              height: isCarousel ? cardWidth : 160,
+              margin: 6,
+              marginBottom: 0,
+              borderRadius: cardTokens.radius - 6,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: cardTokens.surface,
+              overflow: "hidden",
+            }}
+          >
+            {item.image && !imageFailed ? (
+              <Image
+                source={{ uri: item.image }}
+                onError={() => setImageFailed(true)}
+                style={{ width: "86%", height: "88%" }}
+                resizeMode="contain"
+              />
+            ) : (
+              <SvgXml
+                xml={getCategoryArt(item.categoryName ?? item.category ?? "")}
+                width={64}
+                height={64}
+              />
+            )}
           </Pressable>
 
           {/* Wishlist Button */}
@@ -100,13 +125,12 @@ export default function ProductCard({
             style={[
               {
                 position: "absolute",
-                top: 8,
-                right: 8,
-                backgroundColor: "rgba(255, 255, 255, 0.92)",
-                padding: 8,
+                top: 12,
+                right: 12,
+                backgroundColor: "#FFFFFF",
+                padding: 7,
                 borderRadius: 24,
               },
-              cardShadow,
             ]}
           >
             <Heart
@@ -122,7 +146,7 @@ export default function ProductCard({
               style={{
                 position: "absolute",
                 bottom: 8,
-                left: 8,
+                left: 14,
                 paddingHorizontal: 8,
                 paddingVertical: 3,
                 borderRadius: 999,
@@ -141,7 +165,7 @@ export default function ProductCard({
           )}
         </View>
 
-        <Pressable style={{ padding: 10 }} onPress={goToProduct}>
+        <Pressable style={{ padding: 12 }} onPress={goToProduct}>
           <Text
             style={[
               typography.Poppins_s_semibold,

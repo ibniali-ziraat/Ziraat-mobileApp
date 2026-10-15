@@ -1,12 +1,13 @@
-import { colors } from "@/src/constants/colors";
+import { getDashboardIcon, paymentArt } from "@/src/constants/iconArt";
+import { SvgXml } from "react-native-svg";
+import CheckoutSectionTitle from "./CheckoutSectionTitle";
 import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { ChevronRight, Wallet } from "lucide-react-native";
+import { ChevronRight } from "lucide-react-native";
 import { useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 import PaymentMethodBottomSheet, {
-  PAYMENT_METHOD_ICONS,
   PAYMENT_METHOD_DETAILS,
 } from "./PaymentMethodBottomSheet";
 
@@ -30,9 +31,6 @@ export const PaymentMethodSelector = ({ options, onValueChange }: Props) => {
       name="paymentMethod"
       render={({ field: { value, onChange } }) => {
         const selectedOption = options.find((o) => o.value === value);
-        const DisplayIcon = selectedOption
-          ? (PAYMENT_METHOD_ICONS[selectedOption.value] ?? Wallet)
-          : Wallet;
         const selectedDetails = selectedOption
           ? PAYMENT_METHOD_DETAILS[selectedOption.value]
           : undefined;
@@ -44,18 +42,14 @@ export const PaymentMethodSelector = ({ options, onValueChange }: Props) => {
                 backgroundColor: cardTokens.surface,
                 borderRadius: cardTokens.radius,
                 borderWidth: 1,
-                borderColor: cardTokens.border,
+                borderColor: cardTokens.hairline,
                 padding: 16,
               }}
             >
-              <Text
-                style={[
-                  typography.Poppins_s_bold,
-                  { color: cardTokens.inkPrimary, fontSize: 17 },
-                ]}
-              >
-                Payment Method
-              </Text>
+              <CheckoutSectionTitle
+                title="Payment Method"
+                art={getDashboardIcon("Wallet")}
+              />
 
               <Pressable
                 onPress={() => setOpen(true)}
@@ -65,7 +59,6 @@ export const PaymentMethodSelector = ({ options, onValueChange }: Props) => {
                   flexDirection: "row",
                   alignItems: "center",
                   width: "100%",
-                  marginTop: 14,
                   paddingTop: 14,
                   borderTopWidth: 1,
                   borderTopColor: cardTokens.hairline,
@@ -81,9 +74,13 @@ export const PaymentMethodSelector = ({ options, onValueChange }: Props) => {
                     backgroundColor: cardTokens.mutedSurface,
                   }}
                 >
-                  <DisplayIcon
-                    size={19}
-                    color={selectedDetails?.accent ?? colors.primary}
+                  <SvgXml
+                    xml={
+                      (selectedOption && paymentArt[selectedOption.value]) ??
+                      getDashboardIcon("Wallet")
+                    }
+                    width={26}
+                    height={26}
                   />
                 </View>
 

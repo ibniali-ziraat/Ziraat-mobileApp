@@ -1,19 +1,23 @@
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { productArt } from "@/src/constants/iconArt";
 import { useState } from "react";
 import {
-  Dimensions,
   FlatList,
   Image,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
+  type LayoutChangeEvent,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
   Text,
   View,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 
-const { width } = Dimensions.get("window");
-const ITEM_WIDTH = width * 1;
-const SIDE_SPACING = (width - ITEM_WIDTH) / 2;
-
+/**
+ * Product photos on a white panel. The width comes from layout, not the
+ * window, so the panel lines up with the page's padding on every screen; and
+ * images are contained, not cropped — packshots are tall bottles and bags.
+ */
 export default function ProductDetailCarousel({
   photos = [],
   label,
@@ -21,66 +25,98 @@ export default function ProductDetailCarousel({
   photos: string[];
   label?: string;
 }) {
+  const [width, setWidth] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const onLayout = (event: LayoutChangeEvent) =>
+    setWidth(event.nativeEvent.layout.width);
+
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const index = Math.round(event.nativeEvent.contentOffset.x / width);
-    setCurrentIndex(index);
+    if (!width) return;
+    setCurrentIndex(Math.round(event.nativeEvent.contentOffset.x / width));
   };
 
-  const renderItem = ({ item }: { item: string }) => {
-    // ✅ support both local mapped images and remote URLs
-
-    const source = { uri: item };
-
-    return (
-      <View style={{ width: ITEM_WIDTH }}>
-        <View className="w-[95%] aspect-[4/5] rounded-xl overflow-hidden relative">
-          <Image source={source} resizeMode="cover" className="w-full h-full" />
-
-          {label && (
-            <View className="absolute top-3 left-2 bg-primary px-2 py-1 rounded-full">
-              <Text
-                style={typography.Poppins_xs_regular}
-                className="text-light"
-              >
-                {label}
-              </Text>
-            </View>
-          )}
-        </View>
-      </View>
-    );
+  const panel = {
+    width,
+    aspectRatio: 1,
+    borderRadius: 24,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    // White, not grey: packshots carry their own white background.
+    backgroundColor: cardTokens.surface,
+    borderWidth: 1,
+    borderColor: cardTokens.hairline,
+    overflow: "hidden" as const,
   };
 
   return (
-    <View>
-      <FlatList
-        data={photos}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        snapToInterval={ITEM_WIDTH}
-        decelerationRate="fast"
-        contentContainerStyle={{ paddingHorizontal: SIDE_SPACING }}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        renderItem={renderItem}
-        keyExtractor={(_, index) => String(index)}
-      />
+    <View onLayout={onLayout}>
+      {width === 0 ? null : photos.length === 0 ? (
+        <View style={panel}>
+          <SvgXml xml={productArt.other} width={120} height={120} />
+        </View>
+      ) : (
+        <FlatList
+          data={photos}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          onScroll={handleScroll}
+          scrollEventThrottle={16}
+          keyExtractor={(_, index) => String(index)}
+          renderItem={({ item }) => (
+            <View style={panel}>
+              <Image
+                source={{ uri: item }}
+                resizeMode="contain"
+                style={{ width: "84%", height: "84%" }}
+              />
+            </View>
+          )}
+        />
+      )}
 
-      {/* DOT INDICATOR */}
-      <View className="absolute bottom-2 w-full flex-row justify-center">
-        {photos.map((_, i) => (
-          <View
-            key={i}
-            className={`w-2 h-2 rounded-full mx-1 ${
-              currentIndex === i
-                ? "bg-secondary"
-                : "bg-transparent border border-secondary"
-            }`}
-          />
-        ))}
-      </View>
+      {label ? (
+        <View
+          style={{
+            position: "absolute",
+            top: 14,
+            left: 14,
+            paddingHorizontal: 10,
+            paddingVertical: 4,
+            borderRadius: 999,
+            backgroundColor: chartTokens.current,
+          }}
+        >
+          <Text style={[typography.Poppins_xs_semibold, { color: "#FFFFFF" }]}>
+            {label}
+          </Text>
+        </View>
+      ) : null}
+
+      {photos.length > 1 ? (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: 6,
+            marginTop: 12,
+          }}
+        >
+          {photos.map((_, i) => (
+            <View
+              key={i}
+              style={{
+                width: currentIndex === i ? 18 : 6,
+                height: 6,
+                borderRadius: 3,
+                backgroundColor:
+                  currentIndex === i ? chartTokens.current : chartTokens.grid,
+              }}
+            />
+          ))}
+        </View>
+      ) : null}
     </View>
   );
 }

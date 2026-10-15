@@ -1,5 +1,6 @@
 import CsText from "@/src/components/shared/CsText";
 import { colors } from "@/src/constants/colors";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { Pressable, View } from "react-native";
 
@@ -39,12 +40,14 @@ export default function ProductVariationSelector({
   };
 
   return (
-    <View className="mt-4">
+    <View style={{ marginTop: 20 }}>
       {options.map((option: any) => (
         <View key={option.id} className="mb-3">
           <CsText
-            style={[typography.Poppins_m_semibold, { color: colors.dark }]}
-            className="mb-2"
+            style={[
+              typography.Poppins_s_semibold,
+              { color: cardTokens.inkPrimary, fontSize: 14, marginBottom: 10 },
+            ]}
           >
             {option.name}
           </CsText>
@@ -55,7 +58,8 @@ export default function ProductVariationSelector({
 
               const matchingVariation = variations.find((v: any) =>
                 v.optionCombinations?.some(
-                  (oc: any) => oc.optionId === option.id && oc.value === val.key,
+                  (oc: any) =>
+                    oc.optionId === option.id && oc.value === val.key,
                 ),
               );
               const isAvailable =
@@ -68,13 +72,16 @@ export default function ProductVariationSelector({
                   key={val.key}
                   onPress={() => handleSelect(option.id, val.key)}
                   disabled={!isAvailable}
-                  className="px-4 py-2 rounded-xl border"
                   style={{
+                    paddingHorizontal: 16,
+                    paddingVertical: 9,
+                    borderRadius: 14,
+                    borderWidth: 1.5,
                     borderColor: isSelected
-                      ? colors.secondary
-                      : colors.dark + "20",
+                      ? chartTokens.current
+                      : cardTokens.hairline,
                     backgroundColor: isSelected
-                      ? colors.secondary + "15"
+                      ? chartTokens.tint
                       : colors.light,
                     opacity: isAvailable ? 1 : 0.4,
                   }}
@@ -82,7 +89,12 @@ export default function ProductVariationSelector({
                   <CsText
                     style={[
                       typography.Poppins_s_semibold,
-                      { color: isSelected ? colors.secondary : colors.dark },
+                      {
+                        color: isSelected
+                          ? chartTokens.current
+                          : cardTokens.inkPrimary,
+                        fontSize: 13,
+                      },
                     ]}
                   >
                     {val.display}
