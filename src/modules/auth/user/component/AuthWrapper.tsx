@@ -122,9 +122,9 @@ export default function AuthWrapper({ children, mode }: Props) {
           style={[
             {
               marginHorizontal: 16,
-              marginBottom: 16,
-              paddingTop: 20,
-              paddingBottom: 6,
+              marginBottom: 0,
+              paddingTop: 0,
+              paddingBottom: 0,
               borderRadius: 24,
               backgroundColor: cardTokens.surface,
             },

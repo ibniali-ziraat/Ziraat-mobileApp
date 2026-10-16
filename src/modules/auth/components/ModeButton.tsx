@@ -12,19 +12,19 @@ export function ModeButton({ title, onPress }: ModeButtonProps) {
     >
       {isRegisterMode ? (
         <>
-          <CsText className="text-gray-500 text-[12px]">
+          <CsText className="text-gray-500 text-[16px]">
             Don’t have an account?{" "}
           </CsText>
-          <CsText className="text-primary font-bold text-[12px]">
+          <CsText className="text-primary font-bold text-[16px]">
             Register
           </CsText>
         </>
       ) : (
         <>
-          <CsText className="text-gray-500 text-sm">
+          <CsText className="text-gray-500 text-[16px]">
             Already have an account?{" "}
           </CsText>
-          <CsText className="text-primary font-bold text-sm">Login</CsText>
+          <CsText className="text-primary font-bold text-[16px]">Login</CsText>
         </>
       )}
     </Pressable>
