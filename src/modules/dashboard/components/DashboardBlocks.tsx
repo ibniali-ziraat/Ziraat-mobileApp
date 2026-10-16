@@ -182,22 +182,27 @@ export const compactNumber = (value: number, digits = 1) => {
   return value.toLocaleString("en-IN", { maximumFractionDigits: 2 });
 };
 
-/** One strip of headline figures: big number, quiet label, hairline gaps. */
+/**
+ * One strip of headline figures: big number, quiet label, hairline gaps.
+ * `hero` paints it in the brand green for the top of a screen.
+ */
 export function SummaryStrip({
   stats,
+  hero = false,
 }: {
   stats: { label: string; value: string }[];
+  hero?: boolean;
 }) {
   return (
     <View
       style={{
         flexDirection: "row",
         marginTop: 8,
-        paddingVertical: 18,
-        borderRadius: 18,
-        borderWidth: 1,
+        paddingVertical: hero ? 22 : 18,
+        borderRadius: hero ? 22 : 18,
+        borderWidth: hero ? 0 : 1,
         borderColor: colors.cardBorder,
-        backgroundColor: cardTokens.surface,
+        backgroundColor: hero ? colors.primary : cardTokens.surface,
       }}
     >
       {stats.map((stat, index) => (
@@ -206,8 +211,9 @@ export function SummaryStrip({
           style={{
             flex: 1,
             alignItems: "center",
+            paddingHorizontal: 6,
             borderLeftWidth: index === 0 ? 0 : 1,
-            borderLeftColor: colors.cardBorder,
+            borderLeftColor: hero ? "rgba(255,255,255,0.22)" : colors.cardBorder,
           }}
         >
           <Text
@@ -215,7 +221,7 @@ export function SummaryStrip({
             adjustsFontSizeToFit
             style={[
               typography.Poppins_l_semibold,
-              { color: cardTokens.inkPrimary },
+              { color: hero ? "#FFFFFF" : cardTokens.inkPrimary },
             ]}
           >
             {stat.value}
@@ -223,7 +229,10 @@ export function SummaryStrip({
           <Text
             style={[
               typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, marginTop: 2 },
+              {
+                color: hero ? "rgba(255,255,255,0.8)" : cardTokens.inkMuted,
+                marginTop: 2,
+              },
             ]}
           >
             {stat.label}

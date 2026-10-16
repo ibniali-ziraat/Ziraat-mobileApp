@@ -14,9 +14,6 @@ import DashboardSectionHeader from "./components/dashboard/DashboardSectionHeade
 import TrendingProductsSection from "./components/dashboard/TrendingProductsSection";
 import ExploreGrid from "./components/ExploreGrid";
 import FarmerTipsCarousel from "./components/FarmerTipsCarousel";
-import AdvisoryDigest, {
-  useAdvisoryFeed,
-} from "./components/insights/AdvisoryDigest";
 import FarmActivityList from "./components/insights/FarmActivityList";
 import SprayWindow from "./components/insights/SprayWindow";
 import LatestOrderCard from "./components/insights/LatestOrderCard";
@@ -47,11 +44,6 @@ export default function HomeScreen(): JSX.Element {
   const { tips, legalDisclaimer, activity, period, refetchAll } =
     useHomeDashboard();
   const queryClient = useQueryClient();
-  // Advisories replace the generic tips once the farmer receives any. Until
-  // the check finishes the slot stays empty, so the two never swap on screen.
-  const advisoryFeed = useAdvisoryFeed();
-  const showAdvisories = advisoryFeed.total > 0;
-  const showTips = !showAdvisories && advisoryFeed.ready;
 
   const handleRefresh = async () => {
     setRefreshing(true);
@@ -105,17 +97,12 @@ export default function HomeScreen(): JSX.Element {
           <TrendingProductsSection />
           <BestDealsSection />
 
-          {showAdvisories ? <AdvisoryDigest /> : null}
-          {showTips ? (
-            <>
-              <DashboardSectionHeader
-                title="Farmer tips & awareness"
-                art={homeArt.tips}
-                subtitle="Guidance tailored to this season"
-              />
-              <FarmerTipsCarousel tips={tips} />
-            </>
-          ) : null}
+          {/* <DashboardSectionHeader
+            title="Farmer tips & awareness"
+            art={homeArt.tips}
+            subtitle="Guidance tailored to this season"
+          />
+          <FarmerTipsCarousel tips={tips} /> */}
 
           <View style={{ marginTop: 28, marginBottom: 80 }}>
             <DisclaimerNote text={legalDisclaimer} />

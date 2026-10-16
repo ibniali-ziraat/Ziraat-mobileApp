@@ -2,7 +2,7 @@ import IconBadge from "@/src/components/shared/IconBadge";
 import { colors } from "@/src/constants/colors";
 import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { ChevronRight, Trees } from "lucide-react-native";
+import { ChevronRight, MapPin, Trees } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
 import type { DashboardOrchardSummary } from "../types/dashboardHome";
 
@@ -11,12 +11,11 @@ type Props = {
   onPress: () => void;
 };
 
-const formatTrees = (count: number) =>
-  `${count.toLocaleString("en-IN")} ${count === 1 ? "tree" : "trees"}`;
+const formatTrees = (count: number) => count.toLocaleString("en-IN");
 
 /**
- * One orchard as a single row: name, place, then one quiet line of facts —
- * the detail screen carries everything else.
+ * One orchard as a card: name and place on top, then a hairline and three
+ * labelled figures underneath — the detail screen carries everything else.
  */
 export default function OrchardListCard({ orchard, onPress }: Props) {
   const location = [orchard.tehsil, orchard.district]
@@ -24,16 +23,20 @@ export default function OrchardListCard({ orchard, onPress }: Props) {
     .join(", ");
 
   const facts = [
-    `${Number(orchard.areaHa ?? 0).toLocaleString("en-IN", {
-      maximumFractionDigits: 2,
-    })} ha`,
-    formatTrees(Number(orchard.totalTrees ?? 0)),
+    {
+      label: "Area",
+      value: `${Number(orchard.areaHa ?? 0).toLocaleString("en-IN", {
+        maximumFractionDigits: 2,
+      })} ha`,
+    },
+    {
+      label: "Trees",
+      value: formatTrees(Number(orchard.totalTrees ?? 0)),
+    },
     orchard.establishmentYear != null
-      ? `Since ${orchard.establishmentYear}`
+      ? { label: "Since", value: String(orchard.establishmentYear) }
       : null,
-  ]
-    .filter(Boolean)
-    .join("  ·  ");
+  ].filter(Boolean) as { label: string; value: string }[];
 
   return (
     <Pressable
@@ -41,51 +44,100 @@ export default function OrchardListCard({ orchard, onPress }: Props) {
       accessibilityRole="button"
       accessibilityLabel={`Open ${orchard.orchardName}`}
       style={({ pressed }) => ({
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 14,
-        marginBottom: 12,
-        borderRadius: 18,
+        marginBottom: 14,
+        borderRadius: 20,
         borderWidth: 1,
         borderColor: colors.cardBorder,
         backgroundColor: pressed ? cardTokens.mutedSurface : cardTokens.surface,
+        overflow: "hidden",
       })}
     >
-      <IconBadge icon={Trees} tone="green" size={46} />
+      <View
+        style={{ flexDirection: "row", alignItems: "center", padding: 16 }}
+      >
+        <IconBadge icon={Trees} tone="green" size={46} />
 
-      <View style={{ flex: 1, marginHorizontal: 12 }}>
-        <Text
-          numberOfLines={1}
-          style={[
-            typography.Poppins_m_semibold,
-            { color: cardTokens.inkPrimary },
-          ]}
-        >
-          {orchard.orchardName}
-        </Text>
-        {location ? (
+        <View style={{ flex: 1, marginHorizontal: 12 }}>
           <Text
             numberOfLines={1}
             style={[
-              typography.Poppins_xs_regular,
-              { color: cardTokens.inkMuted, marginTop: 1 },
+              typography.Poppins_m_semibold,
+              { color: cardTokens.inkPrimary },
             ]}
           >
-            {location}
+            {orchard.orchardName}
           </Text>
-        ) : null}
-        <Text
-          numberOfLines={1}
-          style={[
-            typography.Poppins_xs_medium,
-            { color: cardTokens.inkSecondary, marginTop: 6 },
-          ]}
+          {location ? (
+            <View
+              style={{ flexDirection: "row", alignItems: "center", marginTop: 2 }}
+            >
+              <MapPin size={12} color={cardTokens.inkMuted} />
+              <Text
+                numberOfLines={1}
+                style={[
+                  typography.Poppins_xs_regular,
+                  { color: cardTokens.inkMuted, marginLeft: 4, flexShrink: 1 },
+                ]}
+              >
+                {location}
+              </Text>
+            </View>
+          ) : null}
+        </View>
+
+        <View
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: cardTokens.mutedSurface,
+          }}
         >
-          {facts}
-        </Text>
+          <ChevronRight size={16} color={cardTokens.inkSecondary} />
+        </View>
       </View>
 
-      <ChevronRight size={18} color={cardTokens.inkMuted} />
+      <View
+        style={{
+          flexDirection: "row",
+          paddingVertical: 12,
+          borderTopWidth: 1,
+          borderTopColor: colors.cardBorder,
+          backgroundColor: cardTokens.mutedSurface,
+        }}
+      >
+        {facts.map((fact, index) => (
+          <View
+            key={fact.label}
+            style={{
+              flex: 1,
+              alignItems: "center",
+              borderLeftWidth: index === 0 ? 0 : 1,
+              borderLeftColor: colors.cardBorder,
+            }}
+          >
+            <Text
+              numberOfLines={1}
+              style={[
+                typography.Poppins_s_semibold,
+                { color: cardTokens.inkPrimary },
+              ]}
+            >
+              {fact.value}
+            </Text>
+            <Text
+              style={[
+                typography.Poppins_xs_regular,
+                { color: cardTokens.inkMuted },
+              ]}
+            >
+              {fact.label}
+            </Text>
+          </View>
+        ))}
+      </View>
     </Pressable>
   );
 }

@@ -46,6 +46,7 @@ export default function DashboardScreen() {
         ) : (
           <>
             <SummaryStrip
+              hero
               stats={[
                 {
                   label: summary?.totalOrchards === 1 ? "Orchard" : "Orchards",
@@ -62,7 +63,11 @@ export default function DashboardScreen() {
               ]}
             />
 
-            <DashboardSectionHeader title="Your orchards" topSpacing={28} />
+            <DashboardSectionHeader
+              title="Your orchards"
+              subtitle="Tap an orchard to see its full dashboard"
+              topSpacing={28}
+            />
 
             {orchards.length === 0 ? (
               <CsText style={{ color: colors.neutral }}>
