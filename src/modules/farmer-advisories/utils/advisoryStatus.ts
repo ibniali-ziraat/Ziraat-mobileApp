@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { isSupportedKind } from "../constants/advisoryOptions";
 import type { AdvisoryListItem } from "../services/farmeradvisories.service";
 
 export type AdvisoryStatusKey =
@@ -11,13 +12,19 @@ export type AdvisoryStatusKey =
 
 type StatusFields = Pick<
   AdvisoryListItem,
-  "status" | "readOn" | "acknowledgedOn" | "completedOn" | "isOverdue"
+  | "kind"
+  | "status"
+  | "readOn"
+  | "acknowledgedOn"
+  | "completedOn"
+  | "isOverdue"
 >;
 
 // the api only sends dates, so the badge is worked out from them
 export const getAdvisoryStatus = (advisory: StatusFields): AdvisoryStatusKey => {
   if (advisory.status === "cancelled") return "cancelled";
-  if (advisory.completedOn) return "completed";
+  if (isSupportedKind(advisory.kind) && advisory.completedOn)
+    return "completed";
   if (advisory.isOverdue) return "overdue";
   if (advisory.acknowledgedOn) return "acknowledged";
   if (advisory.readOn) return "seen";

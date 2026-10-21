@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { ToggleLeft, ToggleRight } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
@@ -11,17 +11,48 @@ import { fonts } from "@/src/constants/fonts/font";
 import { shadows } from "@/src/constants/shadows";
 import { useCascadingLocation } from "@/src/hooks/useCascadingLocation";
 import { generateEstablishmentYears } from "@/src/utils/generateYears";
+import { reverseGeocodeDetails } from "@/src/services/locationService";
+import locations from "@/src/data/locations.json";
 import { OWNERSHIP_TYPE_OPTIONS } from "../constants/orchardOptions";
+import OrchardLocationPicker from "../components/OrchardLocationPicker";
 import { setMeasuredArea, useMeasuredArea } from "../utils/measuredArea";
 import MeasuredOrchardSection from "./MeasuredOrchardSection";
 
-export default function BasicInfo({ errors, data }) {
+type BasicInfoProps = {
+  errors: any;
+  data: any;
+  locationLoading?: boolean;
+  locationError?: string | null;
+  onRetryLocation?: () => void;
+};
+
+const normalizeLocationName = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/\bdistrict\b/g, "")
+    .replace(/[^a-z0-9]/g, "");
+
+const findLocationMatch = (value: string | null, options: string[]) => {
+  if (!value) return null;
+  const normalized = normalizeLocationName(value);
+  return (
+    options.find((option) => normalizeLocationName(option) === normalized) ??
+    null
+  );
+};
+
+export default function BasicInfo({
+  errors,
+  data,
+  locationLoading,
+  locationError,
+  onRetryLocation,
+}: BasicInfoProps) {
   console.log(data, "data...");
 
   const ESTABLISHMENT_YEAR = generateEstablishmentYears(1950);
 
-  const { control, setValue } = useFormContext();
-  if (!control) return null;
+  const { control, setValue, getFieldState, getValues } = useFormContext();
 
   const { districts, tehsils, setSelectedDistrict } =
     useCascadingLocation("Jammu and Kashmir");
@@ -30,13 +61,106 @@ export default function BasicInfo({ errors, data }) {
     if (data?.district) {
       setSelectedDistrict(data.district);
     }
-  }, [data?.district]);
+  }, [data?.district, setSelectedDistrict]);
 
   const orchardMode = useWatch({
     control,
     name: "orchardSize.mode",
     defaultValue: "manual",
   });
+
+  const latitude = useWatch({ control, name: "latitude" });
+  const longitude = useWatch({ control, name: "longitude" });
+  const numericLatitude = Number(latitude);
+  const numericLongitude = Number(longitude);
+  const replaceAddressOnNextLookup = useRef(false);
+  const hasValidCoordinate =
+    Number.isFinite(numericLatitude) &&
+    Number.isFinite(numericLongitude) &&
+    numericLatitude >= -90 &&
+    numericLatitude <= 90 &&
+    numericLongitude >= -180 &&
+    numericLongitude <= 180 &&
+    latitude !== "" &&
+    longitude !== "";
+
+  useEffect(() => {
+    if (!hasValidCoordinate) return;
+    let cancelled = false;
+
+    const populateLocationFields = async () => {
+      const replaceExistingAddress = replaceAddressOnNextLookup.current;
+      replaceAddressOnNextLookup.current = false;
+      const details = await reverseGeocodeDetails(
+        numericLatitude,
+        numericLongitude,
+      );
+      if (!details || cancelled) return;
+
+      const matchedDistrict = findLocationMatch(details.district, districts);
+      if (
+        matchedDistrict &&
+        (replaceExistingAddress ||
+          (!getValues("district") && !getFieldState("district").isDirty))
+      ) {
+        setSelectedDistrict(matchedDistrict);
+        setValue("district", matchedDistrict, { shouldValidate: true });
+      }
+
+      const districtForTehsil = matchedDistrict || getValues("district");
+      const districtTehsils =
+        locations["Jammu and Kashmir"]?.[
+          districtForTehsil as keyof (typeof locations)["Jammu and Kashmir"]
+        ] ?? [];
+      const matchedTehsil = findLocationMatch(details.tehsil, districtTehsils);
+
+      if (
+        matchedTehsil &&
+        (replaceExistingAddress ||
+          (!getValues("tehsil") && !getFieldState("tehsil").isDirty))
+      ) {
+        setValue("tehsil", matchedTehsil, { shouldValidate: true });
+      }
+
+      if (
+        details.postcode &&
+        /^\d{6}$/.test(details.postcode) &&
+        (replaceExistingAddress ||
+          (!getValues("pincode") && !getFieldState("pincode").isDirty))
+      ) {
+        setValue("pincode", details.postcode, { shouldValidate: true });
+      }
+    };
+
+    populateLocationFields();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    districts,
+    getFieldState,
+    getValues,
+    hasValidCoordinate,
+    numericLatitude,
+    numericLongitude,
+    setSelectedDistrict,
+    setValue,
+  ]);
+
+  const selectCoordinate = (coordinate: {
+    latitude: number;
+    longitude: number;
+  }) => {
+    replaceAddressOnNextLookup.current = true;
+    setValue("latitude", coordinate.latitude.toFixed(6), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+    setValue("longitude", coordinate.longitude.toFixed(6), {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
+  };
 
   const [marlasCapWarning, setMarlasCapWarning] = useState(false);
 
@@ -238,6 +362,44 @@ export default function BasicInfo({ errors, data }) {
         options={OWNERSHIP_TYPE_OPTIONS}
         error={errors?.ownershipType?.message}
       />
+
+      <OrchardLocationPicker
+        coordinate={
+          hasValidCoordinate
+            ? {
+                latitude: numericLatitude,
+                longitude: numericLongitude,
+              }
+            : null
+        }
+        loading={locationLoading}
+        error={locationError}
+        onSelect={selectCoordinate}
+        onRetry={onRetryLocation}
+      />
+
+      <View style={{ flexDirection: "row", gap: 12 }}>
+        <View style={{ flex: 1 }}>
+          <FormTextInput
+            name="latitude"
+            label="Latitude"
+            type="number"
+            disabled
+            required
+            error={errors?.latitude}
+          />
+        </View>
+        <View style={{ flex: 1 }}>
+          <FormTextInput
+            name="longitude"
+            label="Longitude"
+            type="number"
+            disabled
+            required
+            error={errors?.longitude}
+          />
+        </View>
+      </View>
 
       {/* District */}
       <SingleSelectInput

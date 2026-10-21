@@ -349,6 +349,7 @@ export default function AdvisoryDetailScreen() {
             readOn={advisory.readOn}
             acknowledgedOn={advisory.acknowledgedOn}
             completedOn={advisory.completedOn}
+            showCompleted={!!kind}
           />
         </View>
 
@@ -359,7 +360,7 @@ export default function AdvisoryDetailScreen() {
             title="This advisory was cancelled"
             message={advisory.cancellationReason ?? undefined}
           />
-        ) : advisory.completedOn ? (
+        ) : kind && advisory.completedOn ? (
           <StatusNote
             icon={<CircleCheck size={20} color={colors.primary} />}
             title="Completed"
@@ -367,25 +368,25 @@ export default function AdvisoryDetailScreen() {
           />
         ) : !advisory.acknowledgedOn ? (
           <View style={{ gap: 10, marginBottom: 24 }}>
+            {kind ? (
+              <Button
+                mode="contained"
+                buttonColor={colors.primary}
+                textColor={colors.light}
+                style={{ borderRadius: 14 }}
+                contentStyle={{ paddingVertical: 6 }}
+                labelStyle={typography.Poppins_s_semibold}
+                loading={isAcknowledging && ackVars?.actionCompleted === true}
+                disabled={isAcknowledging}
+                onPress={() => handleAcknowledge(true)}
+              >
+                {`Done – add ${kindLabel.toLowerCase()} details`}
+              </Button>
+            ) : null}
             <Button
               mode="contained"
-              buttonColor={colors.primary}
-              textColor={colors.light}
-              style={{ borderRadius: 14 }}
-              contentStyle={{ paddingVertical: 6 }}
-              labelStyle={typography.Poppins_s_semibold}
-              loading={isAcknowledging && ackVars?.actionCompleted === true}
-              disabled={isAcknowledging}
-              onPress={() => handleAcknowledge(true)}
-            >
-              {kind
-                ? `Done – add ${kindLabel.toLowerCase()} details`
-                : "Mark as done"}
-            </Button>
-            <Button
-              mode="contained"
-              buttonColor={chartTokens.tint}
-              textColor={colors.primary}
+              buttonColor={kind ? chartTokens.tint : colors.primary}
+              textColor={kind ? colors.primary : colors.light}
               style={{ borderRadius: 14 }}
               contentStyle={{ paddingVertical: 6 }}
               labelStyle={typography.Poppins_s_semibold}
@@ -393,7 +394,7 @@ export default function AdvisoryDetailScreen() {
               disabled={isAcknowledging}
               onPress={() => handleAcknowledge(false)}
             >
-              {"Acknowledge – I'll do it later"}
+              {kind ? "Acknowledge – I'll do it later" : "Acknowledge"}
             </Button>
           </View>
         ) : kind ? (

@@ -1,6 +1,6 @@
 import { useLocationStatus } from "@/src/contexts/LocationContext";
 import * as Location from "expo-location";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * `prompt: false` never shows the OS dialog: it waits for PermissionPrompt
@@ -16,6 +16,7 @@ export function useLocation(
   );
   const [loading, setLoading] = useState(enabled);
   const [error, setError] = useState<string | null>(null);
+  const [requestVersion, setRequestVersion] = useState(0);
 
   useEffect(() => {
     if (!enabled) return;
@@ -23,6 +24,7 @@ export function useLocation(
     (async () => {
       try {
         setLoading(true);
+        setError(null);
 
         // 1. Check if the physical hardware/switch is ON
         const enabled = await Location.hasServicesEnabledAsync();
@@ -74,7 +76,9 @@ export function useLocation(
       }
     })();
     // watcherGranted: re-run when permission is granted from PermissionPrompt.
-  }, [enabled, prompt, watcherGranted]);
+  }, [enabled, prompt, requestVersion, watcherGranted]);
 
-  return { coords, loading, error };
+  const retry = useCallback(() => setRequestVersion((value) => value + 1), []);
+
+  return { coords, loading, error, retry };
 }
