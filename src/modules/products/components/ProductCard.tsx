@@ -1,6 +1,6 @@
 import RatingStars from "@/src/components/shared/RatingStars";
 import { colors } from "@/src/constants/colors";
-import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { getCategoryArt } from "@/src/constants/iconArt";
 import { ROUTES } from "@/src/constants/routes";
@@ -77,9 +77,10 @@ export default function ProductCard({
             borderRadius: cardTokens.radius,
             borderCurve: "continuous",
             borderWidth: 1,
-            borderColor: cardTokens.hairline,
+            borderColor: cardTokens.border,
             overflow: "hidden",
           },
+          cardShadow,
         ]}
       >
         <View>

@@ -38,7 +38,13 @@ export default function TrendingProductsSection() {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: 12, paddingBottom: 4 }}
+        style={{ marginHorizontal: -6 }}
+        contentContainerStyle={{
+          gap: 12,
+          paddingHorizontal: 6,
+          paddingTop: 4,
+          paddingBottom: 12,
+        }}
       >
         {products.map((product) => {
           const price = product.lowestPrice || product.originalPrice || 0;

@@ -2,7 +2,7 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import {
   advisoryArt,
@@ -33,15 +33,14 @@ import { advisoryRoutes } from "../routes/advisoryRoutes";
 import { formatDateTime, getAdvisoryStatus } from "../utils/advisoryStatus";
 import { getErrorMessage } from "../utils/getErrorMessage";
 
-/** White panel with a faint outline, no shadow; matches Orders and Menu. */
+/** White panel lifted with the shared card shadow; matches Menu. */
 const panel = {
   padding: cardTokens.padding,
   marginBottom: 14,
   borderRadius: cardTokens.radius,
   borderCurve: "continuous" as const,
-  borderWidth: 1,
-  borderColor: colors.cardBorder,
   backgroundColor: cardTokens.surface,
+  ...cardShadow,
 };
 
 const InfoRow = ({

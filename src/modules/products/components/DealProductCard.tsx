@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { cardShadow } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
@@ -60,12 +61,15 @@ export default function DealProductCard({
       }}
     >
       <View
-        style={{
-          backgroundColor: colors.light,
-          elevation: 2,
-          borderRadius: 16,
-          overflow: "hidden",
-        }}
+        style={[
+          {
+            backgroundColor: colors.light,
+            borderRadius: 16,
+            borderCurve: "continuous",
+            overflow: "hidden",
+          },
+          cardShadow,
+        ]}
       >
         <Pressable onPress={goToProduct}>
           <Image

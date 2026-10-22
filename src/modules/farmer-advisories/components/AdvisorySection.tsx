@@ -1,5 +1,4 @@
-import { colors } from "@/src/constants/colors";
-import { cardTokens } from "@/src/constants/dashboardTheme";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import type { ReactNode } from "react";
 import { Text, View } from "react-native";
@@ -18,15 +17,16 @@ export default function AdvisorySection({
 }: AdvisorySectionProps) {
   return (
     <View
-      style={{
-        padding: cardTokens.padding,
-        marginBottom: 16,
-        borderRadius: cardTokens.radius,
-        borderCurve: "continuous",
-        borderWidth: 1,
-        borderColor: colors.cardBorder,
-        backgroundColor: cardTokens.surface,
-      }}
+      style={[
+        {
+          padding: cardTokens.padding,
+          marginBottom: 16,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          backgroundColor: cardTokens.surface,
+        },
+        cardShadow,
+      ]}
     >
       <Text
         style={[

@@ -1,6 +1,6 @@
 import IconBadge from "@/src/components/shared/IconBadge";
 import { colors } from "@/src/constants/colors";
-import { cardTokens } from "@/src/constants/dashboardTheme";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { ChevronRight, MapPin, Trees } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
@@ -43,14 +43,18 @@ export default function OrchardListCard({ orchard, onPress }: Props) {
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={`Open ${orchard.orchardName}`}
-      style={({ pressed }) => ({
-        marginBottom: 14,
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: colors.cardBorder,
-        backgroundColor: pressed ? cardTokens.mutedSurface : cardTokens.surface,
-        overflow: "hidden",
-      })}
+      style={({ pressed }) => [
+        {
+          marginBottom: 14,
+          borderRadius: 20,
+          borderCurve: "continuous",
+          backgroundColor: pressed
+            ? cardTokens.mutedSurface
+            : cardTokens.surface,
+          overflow: "hidden",
+        },
+        cardShadow,
+      ]}
     >
       <View
         style={{ flexDirection: "row", alignItems: "center", padding: 16 }}

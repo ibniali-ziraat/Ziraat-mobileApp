@@ -1,6 +1,6 @@
 import { Pressable } from "@/src/components/shared/Pressable";
 import { colors } from "@/src/constants/colors";
-import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import type { MenuGroup } from "@/src/navigation/MenuLinks";
 import { router } from "expo-router";
@@ -23,7 +23,7 @@ const TINTS = [
 ];
 
 /**
- * Flat grouped list: a white panel with a faint outline (no shadow), pastel
+ * Grouped list: a white panel lifted with the shared card shadow, pastel
  * icon tiles and a light chevron chip.
  */
 export default function MenuSection({ group }: MenuSectionProps) {
@@ -45,14 +45,15 @@ export default function MenuSection({ group }: MenuSectionProps) {
       </Text>
 
       <View
-        style={{
-          borderRadius: cardTokens.radius,
-          borderCurve: "continuous",
-          backgroundColor: cardTokens.surface,
-          borderWidth: 1,
-          borderColor: colors.cardBorder,
-          overflow: "hidden",
-        }}
+        style={[
+          {
+            borderRadius: cardTokens.radius,
+            borderCurve: "continuous",
+            backgroundColor: cardTokens.surface,
+            overflow: "hidden",
+          },
+          cardShadow,
+        ]}
       >
         {group.routes.map((route, index) => {
           const Icon = route.icon;

@@ -101,7 +101,8 @@ export default function TrendingProductsList({
         decelerationRate={isCarousel ? "fast" : "normal"}
         contentContainerStyle={{
           paddingHorizontal: LAYOUT.PADDING,
-          paddingBottom: isCarousel ? 0 : 30,
+          paddingTop: isCarousel ? 4 : 0,
+          paddingBottom: isCarousel ? 12 : 30,
           gap: isCarousel ? LAYOUT.GAP : 0,
         }}
         columnWrapperStyle={

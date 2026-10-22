@@ -47,8 +47,12 @@ export const cardTokens = {
 } as const;
 
 /**
- * Cards are flat: no shadow, just the faint outline (`colors.cardBorder`).
- * Kept as an empty style so existing `[style, cardShadow]` call sites still
- * work; don't reintroduce elevation here.
+ * Soft, layered lift in the style of Airbnb's listing cards: a 1px ring to
+ * define the edge, a tight contact shadow and a wider, faint ambient one.
+ * `boxShadow` (New Architecture) renders the same on iOS and Android and is
+ * not clipped by the card's own `overflow: "hidden"`. Tune here, not per card.
  */
-export const cardShadow = {} as const;
+export const cardShadow = {
+  boxShadow:
+    "0px 0px 0px 1px rgba(0, 0, 0, 0.02), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.10)",
+} as const;

@@ -12,7 +12,10 @@ import {
   SOLD_OPTIONS,
   UNITS,
 } from "../../constants/advisoryOptions";
-import { emptySaleLot } from "../../schemas/operation.schemas";
+import {
+  emptySaleLot,
+  OPERATION_LIMITS,
+} from "../../schemas/operation.schemas";
 import type { AdvisoryKind } from "../../services/farmeradvisories.service";
 import AddRowButton from "./AddRowButton";
 import AdvisorySection from "../AdvisorySection";
@@ -32,15 +35,22 @@ function SprayFields() {
         name="productUsed"
         label="Product used"
         placeholder="e.g. Mancozeb 75 WP"
+        required
         error={getFieldError(errors, "productUsed")}
       />
       <FormTextInput
         name="targetPestDisease"
         label="Target pest / disease"
         placeholder="e.g. Apple scab"
+        required
         error={getFieldError(errors, "targetPestDisease")}
       />
-      <QuantityInput name="doseApplied" label="Dose applied" units={UNITS.dose} />
+      <QuantityInput
+        name="doseApplied"
+        label="Dose applied"
+        units={UNITS.dose}
+        required
+      />
       <QuantityInput
         name="totalMixtureVolume"
         label="Total mixture volume"
@@ -71,17 +81,20 @@ function FertigationFields() {
         name="fertilizerType"
         label="Fertilizer type"
         placeholder="e.g. NPK 19:19:19"
+        required
         error={getFieldError(errors, "fertilizerType")}
       />
       <QuantityInput
         name="quantityApplied"
         label="Quantity applied"
         units={UNITS.fertilizerQuantity}
+        required
       />
       <QuantityInput
         name="irrigationVolumeApplied"
         label="Irrigation volume"
         units={UNITS.volume}
+        required
       />
     </AdvisorySection>
   );
@@ -193,10 +206,12 @@ function HarvestFields() {
           </View>
         ))}
 
-        <AddRowButton
-          label="Add sale lot"
-          onPress={() => saleLots.append(emptySaleLot())}
-        />
+        {saleLots.fields.length < OPERATION_LIMITS.saleLots && (
+          <AddRowButton
+            label="Add sale lot"
+            onPress={() => saleLots.append(emptySaleLot())}
+          />
+        )}
       </AdvisorySection>
     </>
   );

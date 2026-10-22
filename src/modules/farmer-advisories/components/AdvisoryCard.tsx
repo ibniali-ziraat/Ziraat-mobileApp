@@ -1,6 +1,5 @@
 import { Pressable } from "@/src/components/shared/Pressable";
-import { colors } from "@/src/constants/colors";
-import { cardTokens } from "@/src/constants/dashboardTheme";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { CalendarClock, ChevronRight } from "lucide-react-native";
 import { Text, View } from "react-native";
@@ -26,17 +25,20 @@ export default function AdvisoryCard({ advisory, onPress }: AdvisoryCardProps) {
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => ({
-        flexDirection: "row",
-        alignItems: "center",
-        padding: cardTokens.padding,
-        marginBottom: 12,
-        borderRadius: cardTokens.radius,
-        borderCurve: "continuous",
-        borderWidth: 1,
-        borderColor: colors.cardBorder,
-        backgroundColor: pressed ? cardTokens.mutedSurface : cardTokens.surface,
-      })}
+      style={({ pressed }) => [
+        {
+          flexDirection: "row",
+          alignItems: "center",
+          padding: cardTokens.padding,
+          marginBottom: 12,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          backgroundColor: pressed
+            ? cardTokens.mutedSurface
+            : cardTokens.surface,
+        },
+        cardShadow,
+      ]}
     >
       <AdvisoryKindIcon kind={advisory.kind} />
 

@@ -37,7 +37,13 @@ export default function BestDealsSection() {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: 12, paddingBottom: 4 }}
+        style={{ marginHorizontal: -6 }}
+        contentContainerStyle={{
+          gap: 12,
+          paddingHorizontal: 6,
+          paddingTop: 4,
+          paddingBottom: 12,
+        }}
       >
         {deals.map((deal) => {
           const price = deal.discountedPrice || deal.originalPrice || 0;

@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import axiosInstance from "../api/client/axiosInstance";
 
 export const uploadFile = async ({
@@ -13,20 +14,30 @@ export const uploadFile = async ({
 }) => {
   const formData = new FormData();
 
-  formData.append("File", {
-    uri: file.uri,
-    name: file.name,
-    type: file.mimeType,
-  } as any);
+  if (Platform.OS === "web") {
+    // browsers need a real Blob; the { uri, name, type } object below is
+    // native-only and gets sent as the string "[object Object]" on web.
+    // Picker uris on web are blob:/data: urls, which fetch can read.
+    const blob = await (await fetch(file.uri)).blob();
+    formData.append("File", blob, file.name);
+  } else {
+    formData.append("File", {
+      uri: file.uri,
+      name: file.name,
+      type: file.mimeType,
+    } as any);
+  }
 
   formData.append("UserType", UserType);
   formData.append("FileCategory", FileCategory);
   formData.append("UserId", UserId.toString());
 
   return axiosInstance.post("/api/FileUpload/upload", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
+    // on web the browser must set the multipart boundary itself
+    headers:
+      Platform.OS === "web"
+        ? { "Content-Type": undefined }
+        : { "Content-Type": "multipart/form-data" },
   });
 };
 

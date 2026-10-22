@@ -1,5 +1,5 @@
 import { colors } from "@/src/constants/colors";
-import { cardTokens } from "@/src/constants/dashboardTheme";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import type { ReactNode } from "react";
 import { Text, View } from "react-native";
@@ -29,7 +29,7 @@ export function SectionTitle({ children }: { children: string }) {
   );
 }
 
-/** White panel with a faint outline — no shadow. */
+/** White panel lifted with the shared card shadow. */
 export function Panel({
   children,
   padded = true,
@@ -41,11 +41,10 @@ export function Panel({
     <View
       style={{
         borderRadius: 18,
-        borderWidth: 1,
-        borderColor: colors.cardBorder,
         backgroundColor: cardTokens.surface,
         padding: padded ? 16 : 0,
         overflow: "hidden",
+        ...cardShadow,
       }}
     >
       {children}
@@ -200,9 +199,8 @@ export function SummaryStrip({
         marginTop: 8,
         paddingVertical: hero ? 22 : 18,
         borderRadius: hero ? 22 : 18,
-        borderWidth: hero ? 0 : 1,
-        borderColor: colors.cardBorder,
         backgroundColor: hero ? colors.primary : cardTokens.surface,
+        ...cardShadow,
       }}
     >
       {stats.map((stat, index) => (
