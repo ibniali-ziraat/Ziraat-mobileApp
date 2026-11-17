@@ -16,6 +16,7 @@
       "buildNumber": "24",
       "supportsTablet": true,
       "bundleIdentifier": "com.alilals.ziraat",
+      "googleServicesFile": "./GoogleService-Info.plist",
       "jsEngine": "hermes",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
@@ -44,6 +45,8 @@
       "bundler": "metro"
     },
     "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics",
       "expo-router",
       [
         "expo-splash-screen",
