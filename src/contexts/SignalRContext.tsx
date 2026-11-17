@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { AppState } from "react-native";
 import axiosInstance from "../api/client/axiosInstance";
 import { getItem } from "../utils/universalSecureToken";
 import { useAuth } from "./AuthContext";
@@ -27,6 +28,9 @@ export function SignalRProvider({ children }: { children: React.ReactNode }) {
   const { userToken } = useAuth();
   const connectionRef = useRef<signalR.HubConnection | null>(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [isAppActive, setIsAppActive] = useState(
+    AppState.currentState === "active",
+  );
   const notificationListenersRef = useRef<Set<SignalRNotificationHandler>>(
     new Set(),
   );
@@ -38,14 +42,27 @@ export function SignalRProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  // The socket is only used while the app is in the foreground. In the
+  // background or when closed, FCM delivers the notification instead, so the
+  // same notification is never received on both channels.
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      setIsAppActive(state === "active");
+    });
+    return () => sub.remove();
+  }, []);
+
   useEffect(() => {
     const getToken = async () => {
       const token = await getItem("user_token");
       return token?.replace(/^Bearer\s+/i, "") ?? "";
     };
  
-    if (!userToken) return;
- 
+    if (!userToken || !isAppActive) {
+      setIsConnected(false);
+      return;
+    }
+
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(HUB_URL, {
         accessTokenFactory: getToken,
@@ -111,7 +128,7 @@ export function SignalRProvider({ children }: { children: React.ReactNode }) {
  
       connectionRef.current = null;
     };
-  }, [userToken]);
+  }, [userToken, isAppActive]);
  
   return (
 <SignalRContext.Provider value={{ isConnected, onNotification }}>

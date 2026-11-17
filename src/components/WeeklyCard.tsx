@@ -1,14 +1,7 @@
-import {
-  CalendarDays,
-  Cloud,
-  CloudFog,
-  CloudLightning,
-  CloudRain,
-  CloudSnow,
-  CloudSun,
-  Sun,
-} from "lucide-react-native";
+import { CalendarDays } from "lucide-react-native";
 import { Dimensions, Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
+import { weatherIcons } from "@/src/constants/iconArt";
 import { colors } from "../constants/colors";
 import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "../constants/fonts/typography";
@@ -32,26 +25,9 @@ type DayForecast = {
   icon: WeatherIcon;
 };
 
-const renderIcon = (type: WeatherIcon) => {
-  const props = { size: 18, color: colors.secondary };
-
-  switch (type) {
-    case "sun":
-      return <Sun {...props} />;
-    case "cloudSun":
-      return <CloudSun {...props} />;
-    case "rain":
-      return <CloudRain {...props} />;
-    case "snow":
-      return <CloudSnow {...props} />;
-    case "storm":
-      return <CloudLightning {...props} />;
-    case "fog":
-      return <CloudFog {...props} />;
-    default:
-      return <Cloud {...props} />;
-  }
-};
+const renderIcon = (type: WeatherIcon) => (
+  <SvgXml xml={weatherIcons[type] ?? weatherIcons.cloud} width={26} height={26} />
+);
 
 const mapPictocodeToIcon = (code: number): WeatherIcon => {
   if (code === 1) return "sun";

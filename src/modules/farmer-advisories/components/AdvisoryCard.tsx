@@ -19,6 +19,8 @@ export default function AdvisoryCard({ advisory, onPress }: AdvisoryCardProps) {
   const kindLabel = isSupportedKind(advisory.kind)
     ? KIND_META[advisory.kind].label
     : advisory.kind;
+  const title = advisory.title?.trim() || kindLabel;
+  const showKind = title.toLowerCase() !== kindLabel?.toLowerCase();
 
   return (
     <Pressable
@@ -31,9 +33,9 @@ export default function AdvisoryCard({ advisory, onPress }: AdvisoryCardProps) {
           marginBottom: 12,
           borderRadius: cardTokens.radius,
           borderCurve: "continuous",
-          borderWidth: 1,
-          borderColor: cardTokens.hairline,
-          backgroundColor: pressed ? cardTokens.mutedSurface : cardTokens.surface,
+          backgroundColor: pressed
+            ? cardTokens.mutedSurface
+            : cardTokens.surface,
         },
         cardShadow,
       ]}
@@ -49,21 +51,25 @@ export default function AdvisoryCard({ advisory, onPress }: AdvisoryCardProps) {
               { color: cardTokens.inkPrimary, flex: 1, marginRight: 8 },
             ]}
           >
-            {advisory.title}
+            {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
           <AdvisoryStatusBadge status={status} />
         </View>
 
-        <Text
-          style={[
-            typography.Poppins_xs_regular,
-            { color: cardTokens.inkSecondary, marginTop: 2 },
-          ]}
-        >
-          {kindLabel}
-        </Text>
+        {showKind ? (
+          <Text
+            style={[
+              typography.Poppins_xs_regular,
+              { color: cardTokens.inkSecondary, marginTop: 2 },
+            ]}
+          >
+            {kindLabel}
+          </Text>
+        ) : null}
 
-        <View style={{ flexDirection: "row", alignItems: "center", marginTop: 6 }}>
+        <View
+          style={{ flexDirection: "row", alignItems: "center", marginTop: 6 }}
+        >
           <CalendarClock size={13} color={cardTokens.inkMuted} />
           <Text
             style={[

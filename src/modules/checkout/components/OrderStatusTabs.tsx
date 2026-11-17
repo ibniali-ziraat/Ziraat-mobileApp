@@ -1,20 +1,28 @@
 import { colors } from "@/src/constants/colors";
-import { Pressable, Text } from "react-native";
+import { getOrderStatusArt } from "@/src/constants/iconArt";
+import { Pressable, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { SvgXml } from "react-native-svg";
 import { useOrderStatuses } from "../hooks/orderStatusQueryHooks";
 
 interface OrderStatusTabsProps {
   activeStatus: number | null;
   onSelect: (statusId: number | null) => void;
+  /** Used when the status API returns nothing (e.g. 403): built from orders. */
+  fallbackStatuses?: { id: number; name: string }[];
 }
 
 export default function OrderStatusTabs({
   activeStatus,
   onSelect,
+  fallbackStatuses = [],
 }: OrderStatusTabsProps) {
   const { data: statuses = [] } = useOrderStatuses();
 
-  const tabs = [{ id: null, name: "All" }, ...statuses];
+  const tabs = [
+    { id: null, name: "All" },
+    ...(statuses.length ? statuses : fallbackStatuses),
+  ];
 
   return (
     <ScrollView
@@ -31,8 +39,11 @@ export default function OrderStatusTabs({
             key={i}
             onPress={() => onSelect(item.id)}
             style={{
-              paddingHorizontal: 16,
-              paddingVertical: 10,
+              flexDirection: "row",
+              alignItems: "center",
+              paddingLeft: 6,
+              paddingRight: 16,
+              paddingVertical: 6,
               borderRadius: 24,
               marginRight: 10,
               backgroundColor: isActive ? colors.primary : colors.light,
@@ -41,6 +52,23 @@ export default function OrderStatusTabs({
               elevation: isActive ? 4 : 2,
             }}
           >
+            <View
+              style={{
+                width: 26,
+                height: 26,
+                borderRadius: 13,
+                marginRight: 7,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#FFFFFF",
+              }}
+            >
+              <SvgXml
+                xml={getOrderStatusArt(item.name).art}
+                width={18}
+                height={18}
+              />
+            </View>
             <Text
               style={{
                 fontWeight: "600",

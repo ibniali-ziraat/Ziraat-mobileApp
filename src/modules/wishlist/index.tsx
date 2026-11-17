@@ -3,10 +3,12 @@ import { useRouter } from "expo-router";
 import { FlatList, View } from "react-native";
 
 import BackHeader from "@/src/components/shared/BackHeader";
+import ArtStrip from "@/src/components/shared/ArtStrip";
 import CsText from "@/src/components/shared/CsText";
 import Loader from "@/src/components/shared/Loader";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import { shoppingArt } from "@/src/constants/iconArt";
 
 import { ROUTES } from "@/src/constants/routes";
 import WishlistItem from "./components/WishListItem";
@@ -66,6 +68,16 @@ const Wishlist = () => {
           paddingTop: 8,
           paddingBottom: 80,
         }}
+        ListHeaderComponent={
+          <View style={{ paddingHorizontal: 14, marginBottom: 12 }}>
+            <ArtStrip
+              art={shoppingArt.heart}
+              tint="#F7F7F7"
+              title={`${wishlist.length} ${wishlist.length === 1 ? "item" : "items"} saved`}
+              subtitle="Prices and stock can change — add them to your cart soon"
+            />
+          </View>
+        }
         renderItem={({ item }) => (
           <WishlistItem
             item={item}

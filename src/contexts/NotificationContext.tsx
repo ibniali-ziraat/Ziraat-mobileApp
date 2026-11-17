@@ -13,7 +13,7 @@ import {
 } from "react";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AppState, PermissionsAndroid, Platform } from "react-native";
+import { AppState, Platform } from "react-native";
 
 import { getAdvisoryLinkFromSignalR } from "../modules/farmer-advisories/utils/advisoryNotification";
 import { StoredNotification } from "../modules/notifications/types/Notification.types";
@@ -94,7 +94,11 @@ function mapSignalRPayloadToStoredNotification(
 }
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
-  const { onNotification } = useSignalR();
+  const { onNotification, isConnected: socketConnected } = useSignalR();
+
+  // read inside the FCM listener without re-subscribing it on every change
+  const socketConnectedRef = useRef(socketConnected);
+  socketConnectedRef.current = socketConnected;
 
   const [notification, setNotification] =
     useState<FirebaseMessagingTypes.RemoteMessage | null>(null);
@@ -207,24 +211,14 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (Platform.OS === "web") return;
 
-    if (Platform.OS === "android" && Platform.Version >= 33) {
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-      ).catch((err) =>
-        console.warn("[NotificationProvider] permission request failed:", err),
-      );
-    } else if (Platform.OS === "ios") {
-      messaging()
-        .requestPermission()
-        .catch((err) =>
-          console.warn("[NotificationProvider] permission request failed:", err),
-        );
-    }
+    // Permission is asked by PermissionPrompt after login, not on launch.
 
     const unsubForeground = messaging().onMessage(async (msg) => {
       setNotification(msg);
 
-      addNotification(msg);
+      // while the app is open the socket already delivers this notification;
+      // only store the FCM copy if the socket is down, so it shows once
+      if (!socketConnectedRef.current) addNotification(msg);
 
       listenersRef.current.forEach((cb) => cb(msg));
     });

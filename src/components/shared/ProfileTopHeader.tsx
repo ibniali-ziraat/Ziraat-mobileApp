@@ -1,6 +1,9 @@
 import { colors } from "@/src/constants/colors";
 import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import IllustrationBackground from "@/src/components/shared/IllustrationBackground";
 import { typography } from "@/src/constants/fonts/typography";
+import { profileArt } from "@/src/constants/iconArt";
+import { illustrations } from "@/src/constants/illustrations";
 import {
   useFileDeleteMutation,
   useFileUploadMutation,
@@ -8,6 +11,7 @@ import {
 } from "@/src/hooks/useFileUpload";
 import { showErrorToast, showSuccessToast } from "@/src/utils/toast";
 import * as ImagePicker from "expo-image-picker";
+import { LinearGradient } from "expo-linear-gradient";
 import { Camera, ImageIcon, Pencil, Trash2, X } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import {
@@ -19,6 +23,7 @@ import {
   Text,
   View,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 
 const { width } = Dimensions.get("window");
 
@@ -50,15 +55,6 @@ export default function ProfileTopHeader({
   }, [initialProfilePic]);
 
   const isLoading = uploading || isUpdating;
-
-  const initials = fullName
-    ? fullName
-        .split(" ")
-        .map((w) => w[0])
-        .join("")
-        .substring(0, 2)
-        .toUpperCase()
-    : "??";
 
   const openPicker = async (mode: "camera" | "library") => {
     setIsMenuVisible(false); // Close menu first
@@ -151,80 +147,97 @@ export default function ProfileTopHeader({
     <View
       style={{
         width: "100%",
-        paddingVertical: 20,
+        paddingBottom: 20,
         marginBottom: 24,
         borderBottomWidth: 1,
         borderBottomColor: cardTokens.hairline,
         backgroundColor: cardTokens.surface,
       }}
     >
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <View className="relative">
-          <Pressable
-            activeOpacity={0.9}
-            onPress={() => profilePic && setIsPreviewVisible(true)}
-            className="w-[84px] h-[84px] rounded-full items-center justify-center overflow-hidden"
-            style={{
-              backgroundColor: cardTokens.mutedSurface,
-              borderWidth: 1,
-              borderColor: cardTokens.border,
-            }}
-          >
-            {profilePic ? (
-              <Image source={{ uri: profilePic }} className="w-full h-full" />
-            ) : (
-              <Text
-                style={[
-                  typography.Poppins_l_semibold,
-                  { color: cardTokens.inkSecondary, fontSize: 26 },
-                ]}
-              >
-                {initials}
-              </Text>
-            )}
-          </Pressable>
+      {/* 2:1 matches the artwork, so the whole scene shows — sky included.
+          Name and avatar sit on a dark gradient so white text stays legible. */}
+      <IllustrationBackground
+        xml={illustrations.profileCover}
+        style={{ aspectRatio: 2, borderRadius: 20 }}
+      >
+        <LinearGradient
+          colors={[
+            "rgba(12,42,6,0)",
+            "rgba(12,42,6,0.35)",
+            "rgba(12,42,6,0.9)",
+          ]}
+          locations={[0, 0.45, 1]}
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            alignItems: "flex-end",
+            padding: 14,
+          }}
+        >
+          <View className="relative">
+            <Pressable
+              activeOpacity={0.9}
+              onPress={() => profilePic && setIsPreviewVisible(true)}
+              className="w-[84px] h-[84px] rounded-full items-center justify-center overflow-hidden"
+              style={{
+                backgroundColor: "#E8F5E9",
+                borderWidth: 3,
+                borderColor: "#FFFFFF",
+              }}
+            >
+              {profilePic ? (
+                <Image source={{ uri: profilePic }} className="w-full h-full" />
+              ) : (
+                <SvgXml xml={profileArt.avatar} width="100%" height="100%" />
+              )}
+            </Pressable>
 
-          <Pressable
-            onPress={() => setIsMenuVisible(true)}
-            className="absolute bottom-0 right-0 w-[32px] h-[32px] rounded-full items-center justify-center"
-            style={{
-              backgroundColor: chartTokens.current,
-              borderWidth: 2,
-              borderColor: cardTokens.surface,
-            }}
-          >
-            {isLoading ? (
-              <ActivityIndicator size="small" color={colors.light} />
-            ) : (
-              <Pencil size={15} color={colors.light} />
-            )}
-          </Pressable>
-        </View>
+            <Pressable
+              onPress={() => setIsMenuVisible(true)}
+              className="absolute bottom-0 right-0 w-[32px] h-[32px] rounded-full items-center justify-center"
+              style={{
+                backgroundColor: chartTokens.current,
+                borderWidth: 2,
+                borderColor: cardTokens.surface,
+              }}
+            >
+              {isLoading ? (
+                <ActivityIndicator size="small" color={colors.light} />
+              ) : (
+                <Pencil size={15} color={colors.light} />
+              )}
+            </Pressable>
+          </View>
 
-        <View style={{ flex: 1, marginLeft: 18 }}>
-          <Text
-            numberOfLines={1}
-            style={[
-              typography.Poppins_l_semibold,
-              { color: cardTokens.inkPrimary, fontSize: 21 },
-            ]}
-          >
-            {fullName || "Your profile"}
-          </Text>
-
-          {profileData?.phone ? (
+          <View style={{ flex: 1, marginLeft: 14, marginBottom: 8 }}>
             <Text
               numberOfLines={1}
               style={[
-                typography.Poppins_xs_regular,
-                { color: cardTokens.inkMuted, fontSize: 11.5, marginTop: 3 },
+                typography.Poppins_l_semibold,
+                { color: "#FFFFFF", fontSize: 20 },
               ]}
             >
-              {profileData.phone}
+              {fullName || "Your profile"}
             </Text>
-          ) : null}
-        </View>
-      </View>
+
+            {profileData?.phone ? (
+              <Text
+                numberOfLines={1}
+                style={[
+                  typography.Poppins_xs_regular,
+                  {
+                    color: "rgba(255,255,255,0.85)",
+                    fontSize: 12,
+                    marginTop: 2,
+                  },
+                ]}
+              >
+                {profileData.phone}
+              </Text>
+            ) : null}
+          </View>
+        </LinearGradient>
+      </IllustrationBackground>
 
       <Modal
         visible={isMenuVisible}

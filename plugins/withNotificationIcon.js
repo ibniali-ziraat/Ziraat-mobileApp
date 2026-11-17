@@ -45,9 +45,11 @@ const withIconColor = (config, { color }) =>
     return cfg;
   });
 
-// Firebase reads this when it draws a notification message itself (app in
-// background/closed). The colour meta-data comes from firebase.json, because
-// @react-native-firebase/messaging already declares it.
+// Firebase reads these when it draws a notification message itself (app in
+// background/closed). @react-native-firebase/messaging already declares the
+// colour meta-data in its own manifest, so ours replaces it. It can't be set via
+// firebase.json: the library module can't resolve the app's @color resource and
+// fails verifyReleaseResources.
 const withIconMetaData = (config) =>
   withAndroidManifest(config, (cfg) => {
     const app = AndroidConfig.Manifest.getMainApplicationOrThrow(cfg.modResults);
@@ -57,6 +59,19 @@ const withIconMetaData = (config) =>
       `@drawable/${ICON_NAME}`,
       "resource",
     );
+    AndroidConfig.Manifest.addMetaDataItemToMainApplication(
+      app,
+      "com.google.firebase.messaging.default_notification_color",
+      `@color/${COLOR_NAME}`,
+      "resource",
+    );
+    const colorItem = app["meta-data"].find(
+      (item) =>
+        item.$["android:name"] ===
+        "com.google.firebase.messaging.default_notification_color",
+    );
+    colorItem.$["tools:replace"] = "android:resource";
+    AndroidConfig.Manifest.ensureToolsAvailable(cfg.modResults);
     return cfg;
   });
 

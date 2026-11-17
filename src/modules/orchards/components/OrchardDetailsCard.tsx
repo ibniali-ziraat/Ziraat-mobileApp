@@ -1,6 +1,7 @@
 import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
+import { cardShadow } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { PencilLine, Plus, Trash2 } from "lucide-react-native";
 import { Pressable, Text, View } from "react-native";
@@ -35,16 +36,8 @@ export default function OrchardDetailsCard({
   return (
     <ScreenContent>
       <View
-        className="mb-5 overflow-hidden rounded-3xl border"
-        style={{
-          borderColor: colors.primary + "18",
-          backgroundColor: colors.light,
-          shadowColor: "#17350A",
-          shadowOffset: { width: 0, height: 5 },
-          shadowOpacity: 0.08,
-          shadowRadius: 12,
-          elevation: 3,
-        }}
+        className="mb-5 overflow-hidden rounded-3xl"
+        style={[{ backgroundColor: colors.light }, cardShadow]}
       >
         <View
           className="flex-row items-center justify-between px-4 py-4"

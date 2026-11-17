@@ -3,6 +3,21 @@ import { z } from "zod";
 
 const currentYear = new Date().getFullYear();
 
+const coordinateField = (label: string, min: number, max: number) =>
+  z.preprocess(
+    (value) =>
+      value === "" || value === null || value === undefined
+        ? undefined
+        : Number(value),
+    z
+      .number({
+        required_error: `${label} is required`,
+        invalid_type_error: `${label} must be a valid number`,
+      })
+      .min(min, `${label} must be between ${min} and ${max}`)
+      .max(max, `${label} must be between ${min} and ${max}`),
+  );
+
 export const BasicInfoSchema = z
   .object({
     orchardName: fullNameValidator,
@@ -33,6 +48,10 @@ export const BasicInfoSchema = z
     tehsil: z.string().min(1, "Tehsil is required"),
 
     pincode: pincodeValidator,
+
+    latitude: coordinateField("Latitude", -90, 90),
+
+    longitude: coordinateField("Longitude", -180, 180),
   })
   .superRefine((data, ctx) => {
     if (!data.kanals?.trim() && !data.marlas?.trim()) {

@@ -409,7 +409,8 @@ export default function ProductDetails() {
               </>
             }
             ListFooterComponent={
-              <View style={{ paddingBottom: 170 }}>
+              // Clears the sticky bar (disclaimer + buttons + inset).
+              <View style={{ paddingBottom: 240 }}>
                 {reviewsLoading ? (
                   <Loader />
                 ) : reviewsError ? (
@@ -417,6 +418,7 @@ export default function ProductDetails() {
                 ) : (
                   <>
                     <Review
+                      embedded
                       reviews={reviews}
                       summary={summary}
                       hasUserReviewed={hasUserReviewed}
@@ -432,6 +434,8 @@ export default function ProductDetails() {
                   </>
                 )}
 
+                {/* Recommended / Frequently Bought sections are hidden for now;
+                    the API still returns relatedProducts and crossSellProducts.
                 {relatedProducts.length > 0 && (
                   <ProductsList
                     title="Recommended Products"
@@ -455,6 +459,7 @@ export default function ProductDetails() {
                     />
                   </View>
                 )}
+                */}
               </View>
             }
           />

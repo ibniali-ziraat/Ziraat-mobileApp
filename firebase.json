@@ -1,7 +1,11 @@
 {
+<<<<<<< HEAD
   "react-native": {
     "messaging_android_notification_color": "@color/notification_icon_color",
     "crashlytics_auto_collection_enabled": true,
     "crashlytics_debug_enabled": false
   }
+=======
+  "react-native": {}
+>>>>>>> 3903ca0d3783a95209028bbf85b7186fa2d6388b
 }

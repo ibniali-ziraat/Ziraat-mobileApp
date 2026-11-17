@@ -1,20 +1,23 @@
+import ArtStrip from "@/src/components/shared/ArtStrip";
 import BackHeader from "@/src/components/shared/BackHeader";
 import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import SearchBar from "@/src/components/shared/SearchBar";
 import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
+import {
+  getOrderStatusArt,
+  menuArt,
+  orderArt,
+  productArt,
+  statIcons,
+} from "@/src/constants/iconArt";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
-import {
-  CalendarDays,
-  ChevronRight,
-  Package,
-  PackageSearch,
-  ShoppingBag,
-} from "lucide-react-native";
+import { ChevronRight } from "lucide-react-native";
 import { useMemo, useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import OrderStatusTabs from "../../components/OrderStatusTabs";
 import { useOrderStatuses } from "../../hooks/orderStatusQueryHooks";
 import { useUserOrders } from "../../hooks/UseOders";
@@ -46,7 +49,7 @@ const getVariationLabel = (item: any) => {
 const OrdersListScreen = () => {
   const { data, isLoading } = useUserOrders();
   const { data: statuses = [] } = useOrderStatuses(); // ✅ for badge label lookup
-  const orders = data || [];
+  const orders = useMemo(() => data || [], [data]);
 
   const [search, setSearch] = useState("");
   const [selectedStatus, setSelectedStatus] = useState<number | null>(null);
@@ -66,10 +69,23 @@ const OrdersListScreen = () => {
     });
   };
 
-  // ✅ Look up name from API data, no hardcoded map
-  const getStatusName = (statusId: number) => {
-    return statuses.find((s) => s.id === statusId)?.name ?? "Unknown";
-  };
+  // Name from the status API, else the order's own status text; null hides
+  // the pill rather than showing "Unknown".
+  const getStatusName = (order: any): string | null =>
+    statuses.find((s) => s.id === order?.orderStatus)?.name ??
+    order?.orderStatusString ??
+    null;
+
+  // Filter tabs from the statuses present in the orders, for when the
+  // status API returns nothing.
+  const statusesFromOrders = useMemo(() => {
+    const seen = new Map<number, string>();
+    for (const order of orders) {
+      if (order?.orderStatus != null && order?.orderStatusString)
+        seen.set(order.orderStatus, order.orderStatusString);
+    }
+    return [...seen].map(([id, name]) => ({ id, name }));
+  }, [orders]);
 
   const handleOrderPress = (order: any) => {
     router.push({
@@ -104,19 +120,12 @@ const OrdersListScreen = () => {
       <ScreenLayout>
         <BackHeader title="My Orders" desc="Track and manage your orders" />
         <View className="flex-1 items-center justify-center px-8">
-          <View
-            style={{
-              height: 90,
-              width: 90,
-              borderRadius: 45,
-              backgroundColor: colors.primary + "10",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: 16,
-            }}
-          >
-            <Package size={36} color={colors.primary} />
-          </View>
+          <SvgXml
+            xml={orderArt.empty}
+            width={150}
+            height={150}
+            style={{ marginBottom: 16 }}
+          />
           <Text style={[typography.Poppins_s_bold, { fontSize: 18 }]}>
             No Orders Yet
           </Text>
@@ -145,7 +154,7 @@ const OrdersListScreen = () => {
   }
   const renderOrder = ({ item }) => {
     const firstProduct = item.orderItems?.[0];
-    const statusName = getStatusName(item.orderStatus);
+    const statusName = getStatusName(item);
     const variationLabel = getVariationLabel(firstProduct);
 
     return (
@@ -212,7 +221,7 @@ const OrdersListScreen = () => {
 
             <View className="flex-row items-center mt-3 gap-6">
               <View className="flex-row items-center mr-12">
-                <CalendarDays size={13} color={colors.secondary} />
+                <SvgXml xml={statIcons.age} width={15} height={15} />
                 <Text
                   style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}
                 >
@@ -220,7 +229,7 @@ const OrdersListScreen = () => {
                 </Text>
               </View>
               <View className="flex-row items-center">
-                <ShoppingBag size={13} color={colors.secondary} />
+                <SvgXml xml={menuArt.orders} width={15} height={15} />
                 <Text
                   style={{ marginLeft: 4, color: colors.neutral, fontSize: 12 }}
                 >
@@ -229,26 +238,37 @@ const OrdersListScreen = () => {
               </View>
             </View>
 
-            <View className="flex-row justify-between items-center mt-4">
-              <View
-                style={{
-                  backgroundColor: colors.primary + "12",
-                  paddingHorizontal: 12,
-                  paddingVertical: 4,
-                  borderRadius: 20,
-                }}
-              >
-                <Text
+            {statusName ? (
+              <View className="flex-row justify-between items-center mt-4">
+                <View
                   style={{
-                    color: colors.primary,
-                    fontSize: 10,
-                    fontWeight: "700",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    gap: 5,
+                    backgroundColor: getOrderStatusArt(statusName).tint,
+                    paddingLeft: 5,
+                    paddingRight: 12,
+                    paddingVertical: 4,
+                    borderRadius: 20,
                   }}
                 >
-                  {statusName}
-                </Text>
+                  <SvgXml
+                    xml={getOrderStatusArt(statusName).art}
+                    width={16}
+                    height={16}
+                  />
+                  <Text
+                    style={{
+                      color: colors.primary,
+                      fontSize: 10,
+                      fontWeight: "700",
+                    }}
+                  >
+                    {statusName}
+                  </Text>
+                </View>
               </View>
-            </View>
+            ) : null}
           </View>
         </View>
       </Pressable>
@@ -260,6 +280,14 @@ const OrdersListScreen = () => {
       <BackHeader title="My Orders" desc="Track and manage your orders" />
 
       <View style={{ paddingHorizontal: 16, marginTop: 10 }}>
+        <View style={{ marginBottom: 14 }}>
+          <ArtStrip
+            art={orderArt.truck}
+            tint="#E6F3FC"
+            title={`${orders.length} ${orders.length === 1 ? "order" : "orders"}`}
+            subtitle="Tap an order to track it, step by step"
+          />
+        </View>
         <SearchBar
           search={search}
           setSearch={setSearch}
@@ -270,6 +298,7 @@ const OrdersListScreen = () => {
         <OrderStatusTabs
           activeStatus={selectedStatus}
           onSelect={setSelectedStatus}
+          fallbackStatuses={statusesFromOrders}
         />
       </View>
 
@@ -283,19 +312,12 @@ const OrdersListScreen = () => {
             marginTop: 60,
           }}
         >
-          <View
-            style={{
-              height: 90,
-              width: 90,
-              borderRadius: 45,
-              backgroundColor: colors.primary + "12",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: 16,
-            }}
-          >
-            <PackageSearch size={40} color={colors.primary} />
-          </View>
+          <SvgXml
+            xml={productArt.empty}
+            width={130}
+            height={130}
+            style={{ marginBottom: 16 }}
+          />
           <Text
             style={[
               typography.Poppins_s_bold,

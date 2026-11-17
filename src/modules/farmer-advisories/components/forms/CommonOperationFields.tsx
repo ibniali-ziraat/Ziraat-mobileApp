@@ -10,6 +10,7 @@ import { Trash2 } from "lucide-react-native";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Text, View } from "react-native";
 import { UNITS } from "../../constants/advisoryOptions";
+import { OPERATION_LIMITS } from "../../schemas/operation.schemas";
 import AddRowButton from "./AddRowButton";
 import AdvisorySection from "../AdvisorySection";
 import { getFieldError } from "./getFieldError";
@@ -65,6 +66,7 @@ export function LabourAndCostFields() {
         label="Equipment used"
         placeholder="e.g. Sprayer"
         required={false}
+        error={getFieldError(errors, "equipmentUsed")}
       />
 
       <Text
@@ -108,10 +110,12 @@ export function LabourAndCostFields() {
         </View>
       ))}
 
-      <AddRowButton
-        label="Add equipment hours"
-        onPress={() => equipmentHours.append({ equipment: "", hours: "" })}
-      />
+      {equipmentHours.fields.length < OPERATION_LIMITS.equipmentItems && (
+        <AddRowButton
+          label="Add equipment hours"
+          onPress={() => equipmentHours.append({ equipment: "", hours: "" })}
+        />
+      )}
 
       <View style={{ marginTop: 18 }}>
         <FormTextInput
@@ -125,7 +129,7 @@ export function LabourAndCostFields() {
           name="notes"
           label="Notes"
           placeholder="Anything else worth recording"
-          maxLength={500}
+          maxLength={OPERATION_LIMITS.notes}
           error={getFieldError(errors, "notes")}
         />
       </View>

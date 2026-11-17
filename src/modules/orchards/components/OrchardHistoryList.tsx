@@ -1,4 +1,5 @@
 import { colors } from "@/src/constants/colors";
+import { cardShadow } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { timeAgo } from "@/src/modules/notifications/utils/timeAge";
 import { Sprout, TreePalm } from "lucide-react-native";
@@ -110,9 +111,8 @@ export default function OrchardHistoryList({
             alignItems: "center",
             backgroundColor: colors.light,
             borderRadius: 18,
-            borderWidth: 1,
-            borderColor: "rgba(0,0,0,0.06)",
             padding: 14,
+            ...cardShadow,
           }}
         >
           <View

@@ -3,8 +3,6 @@ import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/fonts/typography";
-import { shadows } from "@/src/constants/shadows";
 import { useLocalSearchParams } from "expo-router";
 import {
   Bell,
@@ -16,6 +14,7 @@ import {
 } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, ScrollView, View } from "react-native";
+import { compactNumber, SummaryStrip } from "../components/DashboardBlocks";
 import AdvisorySection from "../components/sections/AdvisorySection";
 import AlertsSection from "../components/sections/AlertsSection";
 import FinancialSection from "../components/sections/FinancialSection";
@@ -54,48 +53,29 @@ export default function OrchardDetailScreen() {
 
   return (
     <ScreenLayout scrollable={false} bottomPadding={0}>
-      <BackHeader title={params.orchardName || "Orchard"} desc={location || "Orchard detail"} />
+      <BackHeader
+        title={params.orchardName || "Orchard"}
+        desc={location || "Orchard detail"}
+      />
 
       <View style={{ flex: 1 }}>
         <ScreenContent>
           {/* Basic info — already known from the orchards list, no extra call */}
-          <View
-            style={[
+          <SummaryStrip
+            stats={[
               {
-                backgroundColor: colors.light,
-                borderRadius: 16,
-                padding: 14,
-                flexDirection: "row",
-                justifyContent: "space-between",
+                label: "Hectares",
+                value: compactNumber(Number(params.areaHa || 0)),
               },
-              shadows.profile_card,
+              {
+                label: "Trees",
+                value: compactNumber(Number(params.totalTrees || 0)),
+              },
+              ...(params.establishmentYear
+                ? [{ label: "Since", value: params.establishmentYear }]
+                : []),
             ]}
-          >
-            <View>
-              <CsText style={{ fontSize: 11, color: colors.neutral }}>Area</CsText>
-              <CsText style={[typography.Poppins_s_semibold, { fontSize: 14, color: colors.dark }]}>
-                {Number(params.areaHa || 0).toFixed(2)} ha
-              </CsText>
-            </View>
-
-            <View>
-              <CsText style={{ fontSize: 11, color: colors.neutral }}>Trees</CsText>
-              <CsText style={[typography.Poppins_s_semibold, { fontSize: 14, color: colors.dark }]}>
-                {params.totalTrees || "0"}
-              </CsText>
-            </View>
-
-            {!!params.establishmentYear && (
-              <View>
-                <CsText style={{ fontSize: 11, color: colors.neutral }}>Established</CsText>
-                <CsText
-                  style={[typography.Poppins_s_semibold, { fontSize: 14, color: colors.dark }]}
-                >
-                  {params.establishmentYear}
-                </CsText>
-              </View>
-            )}
-          </View>
+          />
 
           {/* Tabs */}
           <ScrollView
@@ -106,7 +86,7 @@ export default function OrchardDetailScreen() {
           >
             {TABS.map((tab) => {
               const isActive = tab.key === activeTab;
-              const Icon = tab.icon;
+              const TabIcon = tab.icon;
 
               return (
                 <Pressable
@@ -117,14 +97,18 @@ export default function OrchardDetailScreen() {
                     alignItems: "center",
                     gap: 6,
                     paddingHorizontal: 14,
-                    paddingVertical: 9,
+                    paddingVertical: 8,
                     borderRadius: 999,
                     backgroundColor: isActive ? colors.primary : colors.light,
                     borderWidth: 1,
                     borderColor: isActive ? colors.primary : colors.cardBorder,
                   }}
                 >
-                  <Icon size={15} color={isActive ? colors.light : colors.neutral} />
+                  <TabIcon
+                    size={16}
+                    strokeWidth={2}
+                    color={isActive ? colors.light : colors.primary}
+                  />
                   <CsText
                     style={{
                       fontSize: 13,
@@ -141,25 +125,46 @@ export default function OrchardDetailScreen() {
         </ScreenContent>
 
         {/* Tab content — its own scroll area below the fixed header/tabs */}
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 40 }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ paddingBottom: 40 }}
+        >
           <ScreenContent>
             {activeTab === "resources" && (
-              <ResourcesSection orchardProfileId={orchardProfileId} key={`resources-${orchardProfileId}`} />
+              <ResourcesSection
+                orchardProfileId={orchardProfileId}
+                key={`resources-${orchardProfileId}`}
+              />
             )}
             {activeTab === "pestDisease" && (
-              <PestDiseaseSection orchardProfileId={orchardProfileId} key={`pestDisease-${orchardProfileId}`} />
+              <PestDiseaseSection
+                orchardProfileId={orchardProfileId}
+                key={`pestDisease-${orchardProfileId}`}
+              />
             )}
             {activeTab === "nutrients" && (
-              <NutrientSection orchardProfileId={orchardProfileId} key={`nutrients-${orchardProfileId}`} />
+              <NutrientSection
+                orchardProfileId={orchardProfileId}
+                key={`nutrients-${orchardProfileId}`}
+              />
             )}
             {activeTab === "financial" && (
-              <FinancialSection orchardProfileId={orchardProfileId} key={`financial-${orchardProfileId}`} />
+              <FinancialSection
+                orchardProfileId={orchardProfileId}
+                key={`financial-${orchardProfileId}`}
+              />
             )}
             {activeTab === "advisory" && (
-              <AdvisorySection orchardProfileId={orchardProfileId} key={`advisory-${orchardProfileId}`} />
+              <AdvisorySection
+                orchardProfileId={orchardProfileId}
+                key={`advisory-${orchardProfileId}`}
+              />
             )}
             {activeTab === "alerts" && (
-              <AlertsSection orchardProfileId={orchardProfileId} key={`alerts-${orchardProfileId}`} />
+              <AlertsSection
+                orchardProfileId={orchardProfileId}
+                key={`alerts-${orchardProfileId}`}
+              />
             )}
           </ScreenContent>
         </ScrollView>

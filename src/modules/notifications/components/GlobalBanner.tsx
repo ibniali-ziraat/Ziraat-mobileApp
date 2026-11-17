@@ -55,7 +55,7 @@ export default function GlobalBanner() {
             : ROUTES.NOTIFICATIONS,
         );
       }}
-      duration={1500}
+      duration={5000}
     />
   );
 }

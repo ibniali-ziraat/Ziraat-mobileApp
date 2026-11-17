@@ -2,12 +2,12 @@ import BackHeader from "@/src/components/shared/BackHeader";
 import { Pressable } from "@/src/components/shared/Pressable";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
+import { colors } from "@/src/constants/colors";
 import {
   cardShadow,
   cardTokens,
   chartTokens,
 } from "@/src/constants/dashboardTheme";
-import { colors } from "@/src/constants/colors";
 import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
@@ -16,10 +16,7 @@ import {
   // FileText,
   // HelpCircle,
   Lock,
-  // PhoneCall,
-  // Shield,
-  Trash2,
-  type LucideIcon,
+  type LucideIcon
 } from "lucide-react-native";
 import { Text, View } from "react-native";
 
@@ -49,13 +46,13 @@ const groups: SettingsGroup[] = [
         icon: Lock,
         onPress: () => router.push(ROUTES.ACCOUNT.CHANGE_PASSWORD),
       },
-      {
-        label: "Delete Account",
-        description: "Permanently remove your account and its data",
-        icon: Trash2,
-        onPress: () => router.push(ROUTES.ACCOUNT.DELETE_ACCOUNT),
-        danger: true,
-      },
+      // {
+      //   label: "Delete Account",
+      //   description: "Permanently remove your account and its data",
+      //   icon: Trash2,
+      //   onPress: () => router.push(ROUTES.ACCOUNT.DELETE_ACCOUNT),
+      //   danger: true,
+      // },
     ],
   },
   // Support & FAQs and Privacy & Security now come from the backend — kept

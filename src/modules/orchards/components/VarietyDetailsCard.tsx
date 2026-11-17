@@ -1,5 +1,6 @@
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import { colors } from "@/src/constants/colors";
+import { cardShadow } from "@/src/constants/dashboardTheme";
 import { router } from "expo-router";
 import {
   Edit,
@@ -120,9 +121,7 @@ export default function VarietiesCard({
               padding: 14,
               borderRadius: 16,
               backgroundColor: "#fff",
-              borderWidth: 1,
-              borderColor: "#eee",
-              elevation: 2,
+              ...cardShadow,
             }}
           >
             {/* TITLE + ACTIONS */}

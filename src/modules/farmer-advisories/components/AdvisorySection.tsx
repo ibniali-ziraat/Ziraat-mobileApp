@@ -1,4 +1,4 @@
-import { cardTokens } from "@/src/constants/dashboardTheme";
+import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import type { ReactNode } from "react";
 import { Text, View } from "react-native";
@@ -10,20 +10,30 @@ type AdvisorySectionProps = {
 };
 
 // titled white card used on the detail and form screens
-export default function AdvisorySection({ title, description, children }: AdvisorySectionProps) {
+export default function AdvisorySection({
+  title,
+  description,
+  children,
+}: AdvisorySectionProps) {
   return (
     <View
-      style={{
-        padding: cardTokens.padding,
-        marginBottom: 16,
-        borderRadius: cardTokens.radius,
-        borderCurve: "continuous",
-        borderWidth: 1,
-        borderColor: cardTokens.hairline,
-        backgroundColor: cardTokens.surface,
-      }}
+      style={[
+        {
+          padding: cardTokens.padding,
+          marginBottom: 16,
+          borderRadius: cardTokens.radius,
+          borderCurve: "continuous",
+          backgroundColor: cardTokens.surface,
+        },
+        cardShadow,
+      ]}
     >
-      <Text style={[typography.Poppins_m_semibold, { color: cardTokens.inkPrimary }]}>
+      <Text
+        style={[
+          typography.Poppins_m_semibold,
+          { color: cardTokens.inkPrimary },
+        ]}
+      >
         {title}
       </Text>
       {!!description && (

@@ -1,11 +1,12 @@
 import { Pressable } from "@/src/components/shared/Pressable";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
-import { colors } from "@/src/constants/colors";
 import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { router } from "expo-router";
-import { BellRing, ChevronRight } from "lucide-react-native";
+import { advisoryArt } from "@/src/constants/iconArt";
+import { ChevronRight } from "lucide-react-native";
 import { Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { advisoryRoutes } from "../routes/advisoryRoutes";
 
 type ViewAdvisoriesButtonProps = {
@@ -51,7 +52,7 @@ export default function ViewAdvisoriesButton({
             backgroundColor: chartTokens.tint,
           }}
         >
-          <BellRing size={20} color={colors.primary} strokeWidth={1.9} />
+          <SvgXml xml={advisoryArt.bell} width={28} height={28} />
         </View>
 
         <View style={{ flex: 1, marginLeft: 12 }}>

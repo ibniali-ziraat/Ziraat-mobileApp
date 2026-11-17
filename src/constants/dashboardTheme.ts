@@ -46,11 +46,13 @@ export const cardTokens = {
   inkMuted: "#8C8C8C",
 } as const;
 
-/** Airbnb's card elevation: wide, soft, and neutral — never a colour-cast blob. */
+/**
+ * Soft, layered lift in the style of Airbnb's listing cards: a 1px ring to
+ * define the edge, a tight contact shadow and a wider, faint ambient one.
+ * `boxShadow` (New Architecture) renders the same on iOS and Android and is
+ * not clipped by the card's own `overflow: "hidden"`. Tune here, not per card.
+ */
 export const cardShadow = {
-  shadowColor: "#000000",
-  shadowOffset: { width: 0, height: 6 },
-  shadowOpacity: 0.12,
-  shadowRadius: 16,
-  elevation: 3,
+  boxShadow:
+    "0px 0px 0px 1px rgba(0, 0, 0, 0.02), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.10)",
 } as const;

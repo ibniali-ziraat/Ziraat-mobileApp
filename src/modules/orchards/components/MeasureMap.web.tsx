@@ -3,12 +3,23 @@ import { Text, View } from "react-native";
 
 export default function MeasureMap(props: any) {
   const [LeafletMap, setLeafletMap] = useState<any>(null);
+  const [mapError, setMapError] = useState(false);
 
   useEffect(() => {
     // Runs ONLY in browser
     const loadMap = async () => {
+      // Expo's Metro web bundler cannot load package CSS through a dynamic
+      // import. Let the browser load Leaflet's stylesheet as a stylesheet.
+      if (!document.getElementById("leaflet-styles")) {
+        const stylesheet = document.createElement("link");
+        stylesheet.id = "leaflet-styles";
+        stylesheet.rel = "stylesheet";
+        stylesheet.href =
+          "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+        document.head.appendChild(stylesheet);
+      }
+
       const L = await import("leaflet");
-      await import("leaflet/dist/leaflet.css");
 
       const {
         MapContainer,
@@ -74,8 +85,19 @@ export default function MeasureMap(props: any) {
       setLeafletMap(() => MapComponent);
     };
 
-    loadMap();
+    loadMap().catch((error) => {
+      console.error("Failed to load orchard map", error);
+      setMapError(true);
+    });
   }, []);
+
+  if (mapError) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Could not load the map. Please refresh and try again.</Text>
+      </View>
+    );
+  }
 
   if (!LeafletMap) {
     return (

@@ -14,31 +14,18 @@ import HourlyCard from "@/src/components/HourlyCard";
 import TenDayForecastCard from "@/src/components/WeeklyCard";
 import WeatherCard from "@/src/modules/home/components/weatherCard";
 import { router } from "expo-router";
-import {
-  Cloud,
-  Droplets,
-  Eye,
-  Gauge,
-  LocateFixed,
-  Moon,
-  Search,
-  Sunrise,
-  Sunset,
-  Thermometer,
-  Umbrella,
-  Wind,
-  X,
-  type LucideIcon,
-} from "lucide-react-native";
+import { metricIcons } from "@/src/constants/iconArt";
+import { Cloud, LocateFixed, Search, X } from "lucide-react-native";
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, RefreshControl, Text, TextInput, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 
 type Metric = {
   label: string;
   value: string;
   helper?: string;
-  icon: LucideIcon;
-  accent?: string;
+  /** Full-colour icon from `metricIcons`. */
+  art: string;
 };
 
 const isNumber = (value: unknown): value is number =>
@@ -102,8 +89,6 @@ function SectionHeading({
 }
 
 function MetricTile({ metric }: { metric: Metric }) {
-  const Icon = metric.icon;
-  const accent = metric.accent ?? colors.primary;
 
   return (
     <View
@@ -122,15 +107,15 @@ function MetricTile({ metric }: { metric: Metric }) {
     >
       <View
         style={{
-          width: 34,
-          height: 34,
-          borderRadius: 11,
+          width: 40,
+          height: 40,
+          borderRadius: 13,
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: cardTokens.mutedSurface,
         }}
       >
-        <Icon size={17} color={accent} strokeWidth={2} />
+        <SvgXml xml={metric.art} width={26} height={26} />
       </View>
       <Text
         numberOfLines={1}
@@ -245,7 +230,7 @@ export default function WeatherScreen() {
       result.push({
         label: "Feels like",
         value: `${Math.round(feels)}°`,
-        icon: Thermometer,
+        art: metricIcons.thermometer,
       });
     }
     const humidity =
@@ -254,7 +239,7 @@ export default function WeatherScreen() {
       result.push({
         label: "Humidity",
         value: `${Math.round(humidity)}%`,
-        icon: Droplets,
+        art: metricIcons.humidity,
       });
     }
     const wind = data.data_current?.windspeed ?? at("windspeed");
@@ -266,7 +251,7 @@ export default function WeatherScreen() {
         helper: isNumber(direction)
           ? `${Math.round(direction)}° direction`
           : undefined,
-        icon: Wind,
+        art: metricIcons.wind,
       });
     }
     const rainChance = at("precipitation_probability");
@@ -278,8 +263,7 @@ export default function WeatherScreen() {
           ? `${Math.round(rainChance)}%`
           : `${rainAmount} mm`,
         helper: isNumber(rainAmount) ? `${rainAmount} mm expected` : undefined,
-        icon: Umbrella,
-        accent: colors.secondary,
+        art: metricIcons.umbrella,
       });
     }
     const uv = at("uvindex");
@@ -287,14 +271,14 @@ export default function WeatherScreen() {
       result.push({
         label: "UV index",
         value: `${Math.round(uv)}`,
-        icon: Sunrise,
+        art: metricIcons.uv,
       });
     const pressure = at("sealevelpressure");
     if (isNumber(pressure)) {
       result.push({
         label: "Pressure",
         value: `${Math.round(pressure)} hPa`,
-        icon: Gauge,
+        art: metricIcons.pressure,
       });
     }
     const visibility = at("visibility");
@@ -302,7 +286,7 @@ export default function WeatherScreen() {
       result.push({
         label: "Visibility",
         value: `${(visibility / 1000).toFixed(1)} km`,
-        icon: Eye,
+        art: metricIcons.visibility,
       });
     }
     const clouds = at("totalcloudcover") ?? at("cloudcover");
@@ -310,7 +294,7 @@ export default function WeatherScreen() {
       result.push({
         label: "Cloud cover",
         value: `${Math.round(clouds)}%`,
-        icon: Cloud,
+        art: metricIcons.cloud,
       });
     }
     const sunrise = formatTime(day.sunrise?.[0]);
@@ -318,27 +302,25 @@ export default function WeatherScreen() {
       result.push({
         label: "Sunrise",
         value: sunrise,
-        icon: Sunrise,
-        accent: colors.secondary,
+        art: metricIcons.sunrise,
       });
     const sunset = formatTime(day.sunset?.[0]);
     if (sunset)
       result.push({
         label: "Sunset",
         value: sunset,
-        icon: Sunset,
-        accent: colors.secondary,
+        art: metricIcons.sunset,
       });
     const moonrise = formatTime(day.moonrise?.[0]);
     if (moonrise)
-      result.push({ label: "Moonrise", value: moonrise, icon: Moon });
+      result.push({ label: "Moonrise", value: moonrise, art: metricIcons.moon });
     const illumination = day.moonillumination?.[0];
     if (isNumber(illumination)) {
       result.push({
         label: "Moon illumination",
         value: `${Math.round(illumination)}%`,
         helper: day.moonphase?.[0] ? String(day.moonphase[0]) : undefined,
-        icon: Moon,
+        art: metricIcons.moon,
       });
     }
 

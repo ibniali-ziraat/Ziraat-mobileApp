@@ -89,7 +89,8 @@ export default function BestDealsList({
         }}
         contentContainerStyle={{
           paddingHorizontal: LAYOUT.PADDING,
-          paddingBottom: isCarousel ? 0 : 30,
+          paddingTop: isCarousel ? 4 : 0,
+          paddingBottom: isCarousel ? 12 : 30,
         }}
         columnWrapperStyle={
           !isCarousel

@@ -10,6 +10,7 @@ type AdvisoryTimelineProps = {
   readOn: string | null;
   acknowledgedOn: string | null;
   completedOn: string | null;
+  showCompleted?: boolean;
 };
 
 // Received → Read → Acknowledged → Completed
@@ -18,12 +19,15 @@ export default function AdvisoryTimeline({
   readOn,
   acknowledgedOn,
   completedOn,
+  showCompleted = true,
 }: AdvisoryTimelineProps) {
   const steps = [
     { label: "Received", date: receivedOn ?? null, done: true },
     { label: "Read", date: readOn, done: !!readOn },
     { label: "Acknowledged", date: acknowledgedOn, done: !!acknowledgedOn },
-    { label: "Completed", date: completedOn, done: !!completedOn },
+    ...(showCompleted
+      ? [{ label: "Completed", date: completedOn, done: !!completedOn }]
+      : []),
   ];
 
   return (

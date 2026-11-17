@@ -23,7 +23,7 @@
       }
     },
     "android": {
-      "versionCode": 25,
+      "versionCode": 28,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/adaptiveicon.png",
@@ -56,7 +56,7 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
           "dark": {
-            "backgroundColor": "#000000"
+            "backgroundColor": "#ffffff"
           }
         }
       ],
@@ -68,7 +68,8 @@
           "iconDir": "assets/images/notification-icon",
           "color": "#2d6b06"
         }
-      ]
+      ],
+      "./plugins/withQuietLibraryWarnings"
     ],
     "extra": {
       "router": {}

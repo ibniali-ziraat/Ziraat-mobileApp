@@ -8,71 +8,110 @@ import type {
 
 /* ============================== FIELD RULES ============================== */
 
+/**
+ * Limits the api enforces on every operation request (from its Swagger
+ * schema: SprayOperationRequest, FertigationOperationRequest, ...). Keep these
+ * in step with the backend so the farmer sees the problem on the field instead
+ * of a failed save.
+ */
+export const OPERATION_LIMITS = {
+  quantity: { min: 0.0001, max: 999_999_999 }, // every { value, unit } field
+  labourHours: { min: 0, max: 1_000_000 },
+  labourers: { min: 1, max: 100_000 },
+  equipmentHours: { min: 0.0001, max: 100_000 },
+  money: { min: 0, max: 999_999_999_999 }, // cost, costOfHarvesting
+  text: 200, // product, pest/disease, fertilizer, buyer
+  equipmentName: 64,
+  notes: 2000,
+  equipmentItems: 50,
+  saleLots: 100,
+} as const;
+
 // inputs hold strings; they're turned into numbers in buildOperationPayload
 const NUMBER_PATTERN = /^\d+(\.\d+)?$/;
+const WHOLE_PATTERN = /^\d+$/;
 
-const optionalNumber = z
-  .string()
-  .optional()
-  .refine((v) => !v || NUMBER_PATTERN.test(v), "Enter a valid number");
+const formatLimit = (n: number) => n.toLocaleString("en-IN");
 
-const requiredNumber = z
-  .string({ required_error: "Required" })
-  .min(1, "Required")
-  .refine((v) => !v || NUMBER_PATTERN.test(v), "Enter a valid number");
+type NumberRule = {
+  label: string;
+  min: number;
+  max: number;
+  required?: boolean;
+  whole?: boolean;
+  prefix?: string; // "₹" for money
+};
 
-const optionalWholeNumber = z
-  .string()
-  .optional()
-  .refine((v) => !v || /^\d+$/.test(v), "Enter a whole number");
+// min 0.0001 is the api's way of saying "above zero"
+const minMessage = ({ label, min }: NumberRule, value: number) =>
+  min === 0.0001
+    ? value === 0
+      ? `${label} must be greater than 0`
+      : `${label} must be at least 0.0001`
+    : `${label} must be at least ${formatLimit(min)}`;
 
-const GREATER_THAN_ZERO = "Must be greater than 0";
+const checkNumber = (
+  rule: NumberRule,
+  v: string | undefined,
+  ctx: z.RefinementCtx,
+  path: (string | number)[] = [],
+) => {
+  const fail = (message: string) =>
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path, message });
 
-// amounts (quantities, hours) have to be above zero once something is typed
-const isPositive = (v?: string) => !v || Number(v) > 0;
+  if (!v) {
+    if (rule.required) fail("Required");
+    return;
+  }
+  if (rule.whole ? !WHOLE_PATTERN.test(v) : !NUMBER_PATTERN.test(v)) {
+    fail(rule.whole ? "Enter a whole number" : "Enter a valid number");
+    return;
+  }
 
-const quantity = z
-  .object({
-    value: optionalNumber,
-    unit: z.string().optional(),
-  })
-  .superRefine((q, ctx) => {
-    if (q.value && NUMBER_PATTERN.test(q.value) && !isPositive(q.value)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["value"],
-        message: GREATER_THAN_ZERO,
-      });
-    }
-    if (q.value && !q.unit) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["unit"],
-        message: "Select unit",
-      });
-    }
-  });
+  const value = Number(v);
+  if (value < rule.min) fail(minMessage(rule, value));
+  else if (value > rule.max)
+    fail(
+      `${rule.label} can't be more than ${rule.prefix ?? ""}${formatLimit(rule.max)}`,
+    );
+};
 
-const requiredQuantity = z
-  .object({
-    value: requiredNumber,
-    unit: z.string({ required_error: "Select unit" }).min(1, "Select unit"),
-  })
-  .superRefine((q, ctx) => {
-    if (NUMBER_PATTERN.test(q.value) && !isPositive(q.value)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["value"],
-        message: GREATER_THAN_ZERO,
-      });
-    }
-  });
+const numberField = (rule: NumberRule) =>
+  z
+    .string()
+    .optional()
+    .superRefine((v, ctx) => checkNumber(rule, v, ctx));
 
-const optionalText = z
-  .string()
-  .trim()
-  .max(100, "Must be 100 characters or less")
-  .optional();
+const moneyField = (label: string) =>
+  numberField({ label, ...OPERATION_LIMITS.money, prefix: "₹" });
+
+// { value, unit } pair; `required` means the api needs the whole object
+const quantity = (label: string, required = false) =>
+  z
+    .object({ value: z.string().optional(), unit: z.string().optional() })
+    .superRefine((q, ctx) => {
+      checkNumber(
+        { label, ...OPERATION_LIMITS.quantity, required },
+        q.value,
+        ctx,
+        ["value"],
+      );
+      if ((required || q.value) && !q.unit) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["unit"],
+          message: "Select unit",
+        });
+      }
+    });
+
+const textField = (label: string, max: number, required = false) => {
+  const base = z
+    .string()
+    .trim()
+    .max(max, `${label} can't be more than ${formatLimit(max)} characters`);
+  return required ? base.min(1, "Required") : base.optional();
+};
 
 const todayString = () => {
   const now = new Date();
@@ -88,36 +127,65 @@ const baseShape = {
     .string({ required_error: "Select the date" })
     .min(1, "Select the date")
     .refine((v) => !v || v <= todayString(), "Date can't be in the future"),
-  coverage: requiredQuantity,
-  labourHours: optionalNumber,
-  numberOfLabourers: optionalWholeNumber,
-  equipmentUsed: z.array(z.string()).optional(),
+  coverage: quantity("Area covered", true),
+  labourHours: numberField({
+    label: "Labour hours",
+    ...OPERATION_LIMITS.labourHours,
+  }),
+  numberOfLabourers: numberField({
+    label: "Labourers",
+    ...OPERATION_LIMITS.labourers,
+    whole: true,
+  }),
+  equipmentUsed: z
+    .array(z.string())
+    .max(
+      OPERATION_LIMITS.equipmentItems,
+      `You can add up to ${OPERATION_LIMITS.equipmentItems} equipment`,
+    )
+    .optional(),
   equipmentHours: z
     .array(
       z.object({
-        equipment: z.string().min(1, "Required"),
-        hours: requiredNumber.refine(isPositive, GREATER_THAN_ZERO),
+        equipment: textField(
+          "Equipment",
+          OPERATION_LIMITS.equipmentName,
+          true,
+        ),
+        hours: numberField({
+          label: "Hours",
+          ...OPERATION_LIMITS.equipmentHours,
+          required: true,
+        }),
       }),
     )
+    .max(
+      OPERATION_LIMITS.equipmentItems,
+      `You can add up to ${OPERATION_LIMITS.equipmentItems} equipment rows`,
+    )
     .optional(),
-  cost: optionalNumber,
-  notes: z.string().trim().max(500, "Must be 500 characters or less").optional(),
+  cost: moneyField("Total cost"),
+  notes: textField("Notes", OPERATION_LIMITS.notes),
 };
 
 export const operationSchemas = {
   spray: z.object({
     ...baseShape,
-    productUsed: optionalText,
-    targetPestDisease: optionalText,
-    doseApplied: quantity,
-    totalMixtureVolume: quantity,
-    actualProductQuantity: quantity,
+    productUsed: textField("Product used", OPERATION_LIMITS.text, true),
+    targetPestDisease: textField(
+      "Target pest / disease",
+      OPERATION_LIMITS.text,
+      true,
+    ),
+    doseApplied: quantity("Dose applied", true),
+    totalMixtureVolume: quantity("Total mixture volume"),
+    actualProductQuantity: quantity("Product quantity used"),
   }),
   fertigation: z.object({
     ...baseShape,
-    fertilizerType: optionalText,
-    quantityApplied: quantity,
-    irrigationVolumeApplied: quantity,
+    fertilizerType: textField("Fertilizer type", OPERATION_LIMITS.text, true),
+    quantityApplied: quantity("Quantity applied", true),
+    irrigationVolumeApplied: quantity("Irrigation volume", true),
   }),
   pruning: z.object({
     ...baseShape,
@@ -131,16 +199,16 @@ export const operationSchemas = {
   }),
   harvest: z.object({
     ...baseShape,
-    quantityHarvested: requiredQuantity,
-    costOfHarvesting: optionalNumber,
+    quantityHarvested: quantity("Quantity harvested", true),
+    costOfHarvesting: moneyField("Cost of harvesting"),
     saleLots: z
       .array(
         z
           .object({
-            quantity: requiredQuantity,
+            quantity: quantity("Quantity", true),
             isSold: z.string(),
-            priceReceivedPerUnit: quantity,
-            buyerOrMandi: optionalText,
+            priceReceivedPerUnit: quantity("Price per unit"),
+            buyerOrMandi: textField("Buyer / mandi", OPERATION_LIMITS.text),
           })
           .superRefine((lot, ctx) => {
             // a lot marked as sold needs the price it sold for
@@ -152,6 +220,10 @@ export const operationSchemas = {
               });
             }
           }),
+      )
+      .max(
+        OPERATION_LIMITS.saleLots,
+        `You can add up to ${OPERATION_LIMITS.saleLots} sale lots`,
       )
       .optional(),
   }),

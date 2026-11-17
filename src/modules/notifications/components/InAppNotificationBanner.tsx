@@ -86,7 +86,7 @@ export default function InAppNotificationBanner({
         position: "absolute",
         top: insets.top + 8,
         alignSelf: "center",
-        width: screenWidth * 0.5,
+        width: screenWidth - 32,
         zIndex: 9999,
         opacity,
         transform: [{ translateY }],
@@ -96,9 +96,9 @@ export default function InAppNotificationBanner({
         onPress={onPress}
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.95)",
-          borderRadius: 14,
-          paddingHorizontal: 10,
-          paddingVertical: 2,
+          borderRadius: 16,
+          paddingHorizontal: 16,
+          paddingVertical: 16,
           flexDirection: "row",
           alignItems: "center",
           shadowColor: "#000",
@@ -116,10 +116,10 @@ export default function InAppNotificationBanner({
           source={require("../../../../assets/images/Icon.png")}
           resizeMode="contain"
           style={{
-            width: 30,
-            height: 30,
-            marginRight: 10,
-            borderRadius: 6,
+            width: 40,
+            height: 40,
+            marginRight: 14,
+            borderRadius: 8,
           }}
         />
 
@@ -129,7 +129,7 @@ export default function InAppNotificationBanner({
           <Text
             numberOfLines={2}
             style={{
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: "600",
               color: "#000",
               marginBottom: body ? 2 : 0,

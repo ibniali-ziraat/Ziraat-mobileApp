@@ -4,13 +4,11 @@ import Loader from "@/src/components/shared/Loader";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
-import { typography } from "@/src/constants/fonts/typography";
 import { ROUTES } from "@/src/constants/routes";
 import { router } from "expo-router";
-import { Ruler, Sprout, Trees } from "lucide-react-native";
-import { View } from "react-native";
+import DashboardSectionHeader from "../home/components/dashboard/DashboardSectionHeader";
+import { compactNumber, SummaryStrip } from "./components/DashboardBlocks";
 import OrchardListCard from "./components/OrchardListCard";
-import StatChip from "./components/StatChip";
 import { useDashboardHome } from "./hooks/useDashboardHome";
 import type { DashboardOrchardSummary } from "./types/dashboardHome";
 
@@ -31,7 +29,9 @@ export default function DashboardScreen() {
         areaHa: String(orchard.areaHa),
         totalTrees: String(orchard.totalTrees),
         establishmentYear:
-          orchard.establishmentYear != null ? String(orchard.establishmentYear) : "",
+          orchard.establishmentYear != null
+            ? String(orchard.establishmentYear)
+            : "",
       },
     });
   };
@@ -45,35 +45,34 @@ export default function DashboardScreen() {
           <Loader />
         ) : (
           <>
-            <View className="flex-row flex-wrap justify-between mt-2">
-              <StatChip
-                Icon={Trees}
-                title="Orchards"
-                value={String(summary?.totalOrchards ?? 0)}
-              />
-              <StatChip
-                Icon={Ruler}
-                title="Total Area"
-                value={`${(summary?.totalAreaHa ?? 0).toFixed(2)} ha`}
-              />
-              <StatChip
-                Icon={Sprout}
-                title="Total Trees"
-                value={String(summary?.totalTrees ?? 0)}
-              />
-            </View>
-
-            <CsText
-              style={[
-                typography.Poppins_m_semibold,
-                { fontSize: 18, color: colors.dark, marginTop: 20, marginBottom: 12 },
+            <SummaryStrip
+              hero
+              stats={[
+                {
+                  label: summary?.totalOrchards === 1 ? "Orchard" : "Orchards",
+                  value: String(summary?.totalOrchards ?? 0),
+                },
+                {
+                  label: "Hectares",
+                  value: compactNumber(summary?.totalAreaHa ?? 0),
+                },
+                {
+                  label: "Trees",
+                  value: compactNumber(summary?.totalTrees ?? 0),
+                },
               ]}
-            >
-              Your Orchards
-            </CsText>
+            />
+
+            <DashboardSectionHeader
+              title="Your orchards"
+              subtitle="Tap an orchard to see its full dashboard"
+              topSpacing={28}
+            />
 
             {orchards.length === 0 ? (
-              <CsText style={{ color: colors.neutral }}>No orchards registered yet.</CsText>
+              <CsText style={{ color: colors.neutral }}>
+                No orchards registered yet.
+              </CsText>
             ) : (
               orchards.map((orchard) => (
                 <OrchardListCard

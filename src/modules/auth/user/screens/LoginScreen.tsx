@@ -71,7 +71,7 @@ export default function LoginScreen() {
           />
 
           <Pressable
-            className="items-end mt-2"
+            className="items-end -mt-2"
             onPress={() => router.push(ROUTES.ACCOUNT.FORGOT_PASSWORD)}
           >
             <Text className="text-primary" style={typography.Poppins_s_regular}>
@@ -79,7 +79,7 @@ export default function LoginScreen() {
             </Text>
           </Pressable>
 
-          <View className="mb-3 mt-4">
+          <View className="mb-2 mt-0">
             <FormActions
               submitLabel="Login"
               onSubmit={handleSubmit(onSubmit)}

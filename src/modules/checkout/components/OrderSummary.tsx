@@ -1,8 +1,6 @@
-import {
-  cardShadow,
-  cardTokens,
-  chartTokens,
-} from "@/src/constants/dashboardTheme";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import { pageArt } from "@/src/constants/iconArt";
+import CheckoutSectionTitle from "./CheckoutSectionTitle";
 import { typography } from "@/src/constants/fonts/typography";
 import { Sparkles } from "lucide-react-native";
 import { Text, View } from "react-native";
@@ -42,7 +40,9 @@ interface Props {
   savingsPaymentMethodLabel?: string;
 }
 
-const formatRs = (value: string) => value?.replace("$", "₹");
+// The API formats money with .NET's invariant culture, which prints the
+// generic currency sign "¤" (older payloads used "$"). Show rupees either way.
+const formatRs = (value: string) => value?.replace(/[$¤]/g, "₹");
 const formatRsNum = (value: number) =>
   `₹${value.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
@@ -161,20 +161,12 @@ export const OrderSummary = ({
           borderRadius: cardTokens.radius,
           borderCurve: "continuous",
           borderWidth: 1,
-          borderColor: cardTokens.border,
+          borderColor: cardTokens.hairline,
           padding: 16,
         },
-        cardShadow,
       ]}
     >
-      <Text
-        style={[
-          typography.Poppins_s_bold,
-          { color: cardTokens.inkPrimary, fontSize: 17, marginBottom: 12 },
-        ]}
-      >
-        Order Summary
-      </Text>
+      <CheckoutSectionTitle title="Order Summary" art={pageArt.conditions} />
 
       {/* ITEMS — product name + variation chip */}
       {items.length > 0 && (

@@ -38,7 +38,10 @@ import {
   type AdvisoryKind,
 } from "../services/farmeradvisories.service";
 import { formatWindow } from "../utils/advisoryStatus";
-import { getErrorMessage } from "../utils/getErrorMessage";
+import {
+  getErrorMessage,
+  getServerFieldErrors,
+} from "../utils/getErrorMessage";
 
 export default function AdvisoryOperationScreen() {
   const { recipientId, kind } = useLocalSearchParams<{
@@ -101,6 +104,10 @@ function OperationForm({ recipientId, kind }: { recipientId: string; kind: Advis
       showSuccessToast(`${KIND_META[kind].label} details saved`);
       router.back();
     } catch (error) {
+      // put any field-level rejections from the api back on their inputs
+      getServerFieldErrors(error).forEach(({ path, message }) =>
+        form.setError(path, { type: "server", message }),
+      );
       showErrorToast(getErrorMessage(error, "Couldn't save. Please try again."));
     }
   };

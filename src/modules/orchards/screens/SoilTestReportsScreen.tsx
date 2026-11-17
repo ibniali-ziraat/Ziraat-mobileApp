@@ -127,7 +127,14 @@ export default function SoilTestReportsScreen() {
 
       router.dismiss();
     } catch (error: any) {
-      console.warn("[SoilTestReport] upload error →", error);
+      // which call failed (file upload or soil-water PATCH) and what the server said
+      console.warn("[SoilTestReport] upload error →", {
+        url: error?.config?.url,
+        method: error?.config?.method,
+        status: error?.response?.status,
+        data: error?.response?.data,
+        message: error?.message,
+      });
 
       showErrorToast("Failed to upload reports");
     }

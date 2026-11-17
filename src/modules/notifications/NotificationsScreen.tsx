@@ -19,6 +19,7 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import EmptyState from "./components/EmptyState";
 import LocationBanner from "./components/LocationBanner";
 import NotificationList from "./components/NotificationList";
+import NotificationPermissionBanner from "./components/NotificationPermissionBanner";
 import { useNotifications } from "./hooks/useNotifications";
 
 export default function NotificationsScreen() {
@@ -129,6 +130,7 @@ export default function NotificationsScreen() {
 
         <ScreenContent className="flex-1">
           <View className="flex-1 bg-light">
+            <NotificationPermissionBanner />
             <LocationBanner visible={locationOff} />
 
             {items.length > 0 ? (

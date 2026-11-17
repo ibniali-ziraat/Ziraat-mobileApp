@@ -26,17 +26,22 @@ export default function ProductQuantitySelector({
   const isMax = max && quantity >= max;
 
   return (
-    <View className="">
+    <View style={{ marginTop: 20 }}>
       <View className="flex-row items-center justify-between">
         {/* Label */}
-        <CsText style={[typography.Poppins_m_semibold, { color: colors.dark }]}>
+        <CsText
+          style={[
+            typography.Poppins_s_semibold,
+            { color: colors.dark, fontSize: 14 },
+          ]}
+        >
           Quantity
         </CsText>
 
         {/* Controls */}
         <View
-          className="flex-row items-center border rounded-xl"
-          style={{ borderColor: colors.dark + "20" }}
+          className="flex-row items-center"
+          style={{ borderRadius: 14, backgroundColor: "#F7F7F7" }}
         >
           <Pressable
             onPress={decrement}

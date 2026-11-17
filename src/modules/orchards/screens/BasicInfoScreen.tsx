@@ -40,24 +40,30 @@ export default function BasicInfoScreen() {
   const { mutateAsync: updateOrchard, isPending: updating } =
     useUpdateOrchardMutation();
 
-  // Kicked off on mount so a fix is very likely ready by the time the user
-  // finishes filling the form — doesn't block submission if it isn't.
-  const { coords } = useLocation();
+  // Start resolving GPS on mount so the default orchard location is normally
+  // ready before the user finishes the rest of the form.
+  const {
+    coords,
+    loading: locationLoading,
+    error: locationError,
+    retry: retryLocation,
+  } = useLocation();
 
   const form = useZodForm(BasicInfoSchema);
 
   const {
     handleSubmit,
-    control,
     reset,
     formState: { errors },
+    getFieldState,
+    setValue,
   } = form;
 
   useEffect(() => {
     if (!isEditMode) {
       reset();
     }
-  }, [isEditMode]);
+  }, [isEditMode, reset]);
 
   useEffect(() => {
     if (!isEditMode || !orchard) return;
@@ -79,8 +85,25 @@ export default function BasicInfoScreen() {
       orchardSize: {
         mode: "manual",
       },
+      latitude: hasStoredCoords ? String(orchard.latitude) : "",
+      longitude: hasStoredCoords ? String(orchard.longitude) : "",
     });
-  }, [isEditMode, orchard]);
+  }, [isEditMode, orchard, reset]);
+
+  useEffect(() => {
+    if (!coords) return;
+
+    const hasStoredCoords =
+      !!orchard?.latitude &&
+      !!orchard?.longitude &&
+      Number(orchard.latitude) !== 0 &&
+      Number(orchard.longitude) !== 0;
+
+    if (hasStoredCoords || getFieldState("latitude").isDirty) return;
+
+    setValue("latitude", coords.lat.toFixed(6), { shouldValidate: true });
+    setValue("longitude", coords.lon.toFixed(6), { shouldValidate: true });
+  }, [coords, orchard, getFieldState, setValue]);
 
   const onSubmit = async (values) => {
     console.log(values, "values...");
@@ -88,21 +111,13 @@ export default function BasicInfoScreen() {
     const kanalsPayload = Number(values.kanals || 0);
     const marlasPayload = Number(values.marlas || 0);
 
-    // Editing an existing orchard shouldn't overwrite its real coordinates
-    // with wherever the device happens to be right now — only fall back to
-    // live GPS when there's no valid stored location yet (which also
-    // backfills any orchard that was created before this field existed).
-    const hasStoredCoords =
-      !!orchard?.latitude && !!orchard?.longitude &&
-      Number(orchard.latitude) !== 0 && Number(orchard.longitude) !== 0;
-
     const payload = {
       orchardId: orchard?.id ?? generateId(),
       ...values,
       kanals: kanalsPayload,
       marlas: marlasPayload,
-      latitude: hasStoredCoords ? Number(orchard.latitude) : (coords?.lat ?? 0),
-      longitude: hasStoredCoords ? Number(orchard.longitude) : (coords?.lon ?? 0),
+      latitude: Number(values.latitude),
+      longitude: Number(values.longitude),
     };
 
     if (orchard) {
@@ -128,7 +143,13 @@ export default function BasicInfoScreen() {
 
       <ScreenContent>
         <FormProvider {...form}>
-          <BasicInfo errors={errors} data={orchard} />
+          <BasicInfo
+            errors={errors}
+            data={orchard}
+            locationLoading={locationLoading}
+            locationError={locationError}
+            onRetryLocation={retryLocation}
+          />
 
           <FormActions
             cancelLabel="Cancel"

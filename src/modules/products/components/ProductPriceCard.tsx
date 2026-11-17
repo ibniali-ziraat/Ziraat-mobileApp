@@ -1,7 +1,11 @@
 import CsText from "@/src/components/shared/CsText";
-import { colors } from "@/src/constants/colors";
+import { cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { formatPrice, getCreditPrice, roundPrice } from "@/src/utils/creditPrice";
+import {
+  formatPrice,
+  getCreditPrice,
+  roundPrice,
+} from "@/src/utils/creditPrice";
 import { View } from "react-native";
 
 export default function ProductPriceCard({ product, selectedVariation }: any) {
@@ -32,99 +36,68 @@ export default function ProductPriceCard({ product, selectedVariation }: any) {
 
   return (
     <View
-      className="mt-3 rounded-2xl "
       style={{
-        backgroundColor: colors.light,
-        borderWidth: 1,
-        borderColor: colors.light,
+        marginTop: 16,
+        padding: 16,
+        borderRadius: 20,
+        backgroundColor: chartTokens.tint,
       }}
     >
-      {/* PRICE + STOCK ROW */}
-      <View className="flex-row justify-between items-start">
-        {/* LEFT */}
-        <View>
-          {/* OLD PRICE */}
-          {price?.oldPrice && (
-            <View className="flex-row items-center mb-1">
-              {/* <IndianRupee size={12} color={colors.darkHover} /> */}
-              <CsText
-                style={[
-                  typography.Poppins_s_regular,
-                  {
-                    textDecorationLine: "line-through",
-                    color: colors.darkHover,
-                  },
-                ]}
-                className="ml-1"
-              >
-                ₹{price.oldPrice}
-              </CsText>
-            </View>
-          )}
-
-          {/* MAIN PRICE */}
-          <View className="flex-row items-center">
-            {/* <IndianRupee size={20} color={colors.dark} /> */}
-
-            <CsText
-              style={[typography.Poppins_l_semibold, { color: colors.dark }]}
-              className="ml-1"
-            >
-              ₹{price?.price}
-            </CsText>
-
-            {/* DISCOUNT */}
-            {price?.oldPrice && (
-              <View
-                className="ml-3 px-2 py-0.5 rounded-full"
-                style={{ backgroundColor: colors.secondary + "20" }}
-              >
-                <CsText
-                  style={{ color: colors.secondary }}
-                  className="text-xs font-semibold"
-                >
-                  {price.percentOfSaving}% OFF
-                </CsText>
-              </View>
-            )}
-          </View>
-
-          {/* SAVINGS */}
-          {savings && (
-            <CsText style={{ color: colors.primary }} className="text-xs mt-1">
-              You save ₹{savings}
-            </CsText>
-          )}
-        </View>
-
-        {/* STOCK BADGE */}
-        {/* <View
-          className="px-3 py-1 rounded-full"
-          style={{
-            backgroundColor: inStock
-              ? colors.primary + "15"
-              : colors.lightHover,
-          }}
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
+        <CsText
+          style={[
+            typography.Poppins_l_semibold,
+            { color: cardTokens.inkPrimary, fontSize: 26, lineHeight: 32 },
+          ]}
         >
+          ₹{price.price}
+        </CsText>
+
+        {price.oldPrice ? (
           <CsText
-            style={{
-              color: inStock ? colors.primary : colors.darkHover,
-            }}
-            className="text-xs font-semibold"
+            style={[
+              typography.Poppins_s_regular,
+              {
+                color: cardTokens.inkMuted,
+                textDecorationLine: "line-through",
+              },
+            ]}
           >
-            {inStock ? "In Stock" : "Out of Stock"}
+            ₹{price.oldPrice}
           </CsText>
-        </View> */}
+        ) : null}
+
+        {price.oldPrice ? (
+          <View
+            style={{
+              paddingHorizontal: 9,
+              paddingVertical: 3,
+              borderRadius: 999,
+              backgroundColor: chartTokens.accent,
+            }}
+          >
+            <CsText
+              style={[
+                typography.Poppins_xs_semibold,
+                { color: "#FFFFFF", fontSize: 11 },
+              ]}
+            >
+              {price.percentOfSaving}% OFF
+            </CsText>
+          </View>
+        ) : null}
       </View>
 
-      {/* DIVIDER */}
-      <View
-        className="mt-3"
-        style={{
-          height: 1,
-          backgroundColor: colors.lightHover,
-        }}
-      />
+      {savings ? (
+        <CsText
+          style={[
+            typography.Poppins_xs_medium,
+            { color: chartTokens.current, fontSize: 12, marginTop: 4 },
+          ]}
+        >
+          You save ₹{savings}
+        </CsText>
+      ) : null}
     </View>
   );
 }

@@ -32,6 +32,9 @@ interface ReviewProps {
   onViewAllPress?: () => void;
   showAll?: boolean;
   hideHeader?: boolean;
+  // rendered inside another scrolling screen: skip the full-screen wrapper
+  // and its padding, which otherwise adds a large blank gap below the content
+  embedded?: boolean;
 }
 
 export default function Review({
@@ -43,6 +46,7 @@ export default function Review({
   onViewAllPress,
   showAll = false,
   hideHeader = false,
+  embedded = false,
 }: ReviewProps) {
   const [filter, setFilter] = useState(FILTERS.LATEST);
 
@@ -74,9 +78,13 @@ export default function Review({
 
   const displayedReviews = showAll ? sortedReviews : sortedReviews.slice(0, 2);
 
+  const Wrapper = embedded ? View : ScreenLayout;
+  const wrapperProps = embedded ? {} : { scrollable: false };
+  const Content = embedded ? View : ScreenContent;
+
   return (
-    <ScreenLayout scrollable={false}>
-      <ScreenContent className="px-0">
+    <Wrapper {...(wrapperProps as any)}>
+      <Content className="px-0">
         <View className="">
           {/* HEADER SECTION */}
           {!hideHeader && (
@@ -154,7 +162,7 @@ export default function Review({
           )}
 
           {/* REVIEWS LIST */}
-          <View className="flex-1">
+          <View className={embedded ? undefined : "flex-1"}>
             {(showAll ? displayedReviews : displayedReviews.slice(0, 5)).map(
               (r, index) => (
                 <View
@@ -249,7 +257,7 @@ export default function Review({
             )}
           </View>
         </View>
-      </ScreenContent>
-    </ScreenLayout>
+      </Content>
+    </Wrapper>
   );
 }

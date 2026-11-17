@@ -1,12 +1,18 @@
-import { cardShadow, cardTokens, chartTokens } from "@/src/constants/dashboardTheme";
+import IllustrationBackground from "@/src/components/shared/IllustrationBackground";
 import { typography } from "@/src/constants/fonts/typography";
+import { profileArt } from "@/src/constants/iconArt";
+import { illustrations } from "@/src/constants/illustrations";
 import { ROUTES } from "@/src/constants/routes";
 import { useAuth } from "@/src/contexts/AuthContext";
 import { useProfileQuery } from "@/src/hooks/userQueryHooks";
+import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
 import { Image, Text, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { Pressable } from "@/src/components/shared/Pressable";
+
+const AVATAR = 56;
 
 export default function MenuProfileCard() {
   const { userId } = useAuth();
@@ -21,70 +27,88 @@ export default function MenuProfileCard() {
       onPress={() => router.push(ROUTES.ACCOUNT.PROFILE)}
       style={({ pressed }) => [
         {
-          flexDirection: "row",
-          alignItems: "center",
-          padding: 14,
           marginBottom: 18,
           borderRadius: 20,
-          borderCurve: "continuous",
-          borderWidth: 1,
-          borderColor: cardTokens.border,
-          backgroundColor: cardTokens.surface,
           opacity: pressed ? 0.92 : 1,
         },
-        cardShadow,
       ]}
     >
-      {avatar ? (
-        <Image
-          source={{ uri: avatar }}
-          style={{ width: 48, height: 48, borderRadius: 24 }}
-          resizeMode="cover"
-        />
-      ) : (
-        <View
+      <IllustrationBackground
+        xml={illustrations.profileCover}
+        style={{ height: 128, borderRadius: 20 }}
+      >
+        <LinearGradient
+          colors={[
+            "rgba(12,42,6,0)",
+            "rgba(12,42,6,0.35)",
+            "rgba(12,42,6,0.88)",
+          ]}
+          locations={[0, 0.4, 1]}
           style={{
-            width: 48,
-            height: 48,
-            borderRadius: 24,
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: chartTokens.current,
+            flex: 1,
+            flexDirection: "row",
+            alignItems: "flex-end",
+            padding: 14,
           }}
         >
-          <Text
-            style={[
-              typography.Poppins_m_semibold,
-              { color: cardTokens.surface, fontSize: 19 },
-            ]}
+          <View
+            style={{
+              width: AVATAR,
+              height: AVATAR,
+              borderRadius: AVATAR / 2,
+              borderWidth: 3,
+              borderColor: "#FFFFFF",
+              overflow: "hidden",
+              backgroundColor: "#E8F5E9",
+            }}
           >
-            {name.charAt(0).toUpperCase()}
-          </Text>
-        </View>
-      )}
+            {avatar ? (
+              <Image
+                source={{ uri: avatar }}
+                style={{ width: "100%", height: "100%" }}
+                resizeMode="cover"
+              />
+            ) : (
+              <SvgXml xml={profileArt.avatar} width="100%" height="100%" />
+            )}
+          </View>
 
-      <View style={{ flex: 1, marginLeft: 14 }}>
-        <Text
-          numberOfLines={1}
-          style={[
-            typography.Poppins_s_semibold,
-            { color: cardTokens.inkPrimary, fontSize: 15 },
-          ]}
-        >
-          {name}
-        </Text>
-        <Text
-          numberOfLines={1}
-          style={[
-            typography.Poppins_xs_regular,
-            { color: cardTokens.inkMuted, fontSize: 11, marginTop: 2 },
-          ]}
-        >
-          {subtitle}
-        </Text>
-      </View>
+          <View style={{ flex: 1, marginLeft: 12, marginBottom: 4 }}>
+            <Text
+              numberOfLines={1}
+              style={[
+                typography.Poppins_s_semibold,
+                { color: "#FFFFFF", fontSize: 16 },
+              ]}
+            >
+              {name}
+            </Text>
+            <Text
+              numberOfLines={1}
+              style={[
+                typography.Poppins_xs_regular,
+                { color: "rgba(255,255,255,0.82)", fontSize: 11, marginTop: 1 },
+              ]}
+            >
+              {subtitle}
+            </Text>
+          </View>
 
-      <ChevronRight size={20} color={cardTokens.inkMuted} />
+          <View
+            style={{
+              width: 30,
+              height: 30,
+              borderRadius: 15,
+              marginBottom: 6,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgba(255,255,255,0.2)",
+            }}
+          >
+            <ChevronRight size={18} color="#FFFFFF" />
+          </View>
+        </LinearGradient>
+      </IllustrationBackground>
     </Pressable>
   );
 }

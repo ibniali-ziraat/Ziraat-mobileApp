@@ -1,7 +1,9 @@
+import ArtStrip from "@/src/components/shared/ArtStrip";
 import BackHeader from "@/src/components/shared/BackHeader";
 import Loader from "@/src/components/shared/Loader";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
+import { shoppingArt } from "@/src/constants/iconArt";
 import { ROUTES } from "@/src/constants/routes";
 import { toast } from "@backpackapp-io/react-native-toast";
 import { useRouter } from "expo-router";
@@ -89,6 +91,16 @@ const CartListScreen = () => {
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 260 }}
+        ListHeaderComponent={
+          <View style={{ marginBottom: 12 }}>
+            <ArtStrip
+              art={shoppingArt.cart}
+              tint="#EAF5E4"
+              title={`${cart.length} ${cart.length === 1 ? "item" : "items"} in your cart`}
+              subtitle="Orders ship from one vendor at a time"
+            />
+          </View>
+        }
         // ListHeaderComponent={
         //   hasVendorConflict ? (
         //     <View

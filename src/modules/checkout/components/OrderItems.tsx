@@ -1,4 +1,6 @@
-import { cardShadow, cardTokens } from "@/src/constants/dashboardTheme";
+import { cardTokens } from "@/src/constants/dashboardTheme";
+import { menuArt } from "@/src/constants/iconArt";
+import CheckoutSectionTitle from "./CheckoutSectionTitle";
 import { typography } from "@/src/constants/fonts/typography";
 import {
   formatPrice,
@@ -22,7 +24,9 @@ interface Props {
   isBuyOnCredit?: boolean;
 }
 
-const formatRs = (value: string) => value?.replace("$", "₹");
+// The API formats money with .NET's invariant culture, which prints the
+// generic currency sign "¤" (older payloads used "$"). Show rupees either way.
+const formatRs = (value: string) => value?.replace(/[$¤]/g, "₹");
 
 const getLineTotal = (item: OrderItem, isBuyOnCredit: boolean) => {
   const unitPrice = isBuyOnCredit
@@ -43,20 +47,12 @@ export const OrderItems = ({ items, isBuyOnCredit = false }: Props) => (
         borderRadius: cardTokens.radius,
         borderCurve: "continuous",
         borderWidth: 1,
-        borderColor: cardTokens.border,
+        borderColor: cardTokens.hairline,
         padding: 16,
       },
-      cardShadow,
     ]}
   >
-    <Text
-      style={[
-        typography.Poppins_s_bold,
-        { color: cardTokens.inkPrimary, fontSize: 17, marginBottom: 12 },
-      ]}
-    >
-      Items
-    </Text>
+    <CheckoutSectionTitle title="Items" art={menuArt.orders} />
 
     {items.map((item, index) => (
       <View
@@ -67,16 +63,25 @@ export const OrderItems = ({ items, isBuyOnCredit = false }: Props) => (
           marginBottom: index === items.length - 1 ? 0 : 14,
         }}
       >
-        <Image
-          source={{ uri: item.productImage }}
+        <View
           style={{
             width: 60,
             height: 60,
             borderRadius: 14,
             marginRight: 12,
-            backgroundColor: cardTokens.mutedSurface,
+            borderWidth: 1,
+            borderColor: cardTokens.hairline,
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: cardTokens.surface,
           }}
-        />
+        >
+          <Image
+            source={{ uri: item.productImage }}
+            resizeMode="contain"
+            style={{ width: 50, height: 50 }}
+          />
+        </View>
 
         <View style={{ flex: 1 }}>
           <Text

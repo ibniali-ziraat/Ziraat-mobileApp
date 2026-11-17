@@ -197,6 +197,7 @@ import CsText from "@/src/components/shared/CsText";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ConfirmDeleteModal from "@/src/components/ui/ConfirmDeleteModal";
 import { colors } from "@/src/constants/colors";
+import { cardShadow } from "@/src/constants/dashboardTheme";
 import { showErrorToast } from "@/src/utils/toast";
 import { FileText, Plus, Trash2 } from "lucide-react-native";
 import { useState } from "react";
@@ -278,11 +279,8 @@ export default function SoilTestReportsCard({
     <>
       <ScreenContent>
         <View
-          className="mb-5 rounded-2xl border"
-          style={{
-            borderColor: colors.cardBorder,
-            backgroundColor: colors.light,
-          }}
+          className="mb-5 rounded-2xl"
+          style={[{ backgroundColor: colors.light }, cardShadow]}
         >
           {/* Header */}
           <View className="flex-row items-center justify-between pt-4 px-4">

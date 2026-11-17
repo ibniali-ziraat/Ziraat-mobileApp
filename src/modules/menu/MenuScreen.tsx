@@ -2,6 +2,7 @@ import AnimatedTabContent from "@/src/components/shared/AnimatedTabContent";
 import { ScreenContent } from "@/src/components/shared/ScreenContent";
 import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
+import { getPageArt } from "@/src/constants/iconArt";
 import { useMenuList } from "@/src/navigation/hooks/usemenus";
 import { MenuLinks, type MenuGroup } from "@/src/navigation/MenuLinks";
 import { FileText } from "lucide-react-native";
@@ -9,6 +10,18 @@ import { useMemo } from "react";
 import { View } from "react-native";
 import MenuProfileCard from "./components/MenuProfileCard";
 import MenuSection from "./components/MenuSection";
+
+/** Short description for a server page, matched by its name. */
+const pageHints: [RegExp, string][] = [
+  [/faq|question/i, "Answers to common questions"],
+  [/privacy/i, "How we handle your data"],
+  [/contact|support/i, "Reach our team"],
+  [/help/i, "Guides and support"],
+  [/about/i, "Who we are"],
+  [/term|condition|policy|legal/i, "Rules for using Ziraat"],
+];
+const getPageHint = (name: string) =>
+  pageHints.find(([re]) => re.test(name))?.[1];
 
 export default function MenuScreen() {
   // calls GET /api/pages when the menu opens
@@ -25,6 +38,8 @@ export default function MenuScreen() {
         label: page.name,
         screen: `/menupagedetatils?id=${page.id}&title=${encodeURIComponent(page.name)}`, // (menu-pages)/menupagedetatils.tsx reads ?id= and ?title=
         icon: FileText,
+        art: getPageArt(page.name),
+        hint: getPageHint(page.name),
       })),
     };
   }, [pages]);

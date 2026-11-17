@@ -1,4 +1,7 @@
 import CsText from "@/src/components/shared/CsText";
+import IllustrationBackground from "@/src/components/shared/IllustrationBackground";
+import { statIcons } from "@/src/constants/iconArt";
+import { getOrchardScene } from "@/src/constants/illustrations";
 import { colors } from "@/src/constants/colors";
 import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
@@ -7,7 +10,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { ArrowUpRight, ChevronRight, CirclePlus } from "lucide-react-native";
 import { useMemo } from "react";
-import { Dimensions, ImageBackground, type ImageSourcePropType, ScrollView, View } from "react-native";
+import { Dimensions, ScrollView, View } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { Pressable } from "@/src/components/shared/Pressable";
 import { useOrchardsByUserQuery } from "../../orchards/hooks/useOrchardsQuery";
 
@@ -22,7 +26,6 @@ const CARD_WIDTH =
     CARD_GAP * Math.floor(VISIBLE_CARDS)) /
   VISIBLE_CARDS;
 const CARD_HEIGHT = 140;
-const fallbackImage = require("@/assets/images/orchard-card-bg.png");
 
 type OrchardSummary = {
   id: string | number;
@@ -48,16 +51,6 @@ const getCreatedTime = (orchard: OrchardSummary): number => {
 
   const numericId = Number(orchard.id);
   return Number.isFinite(numericId) ? numericId : 0;
-};
-
-const getOrchardImage = (orchard: OrchardSummary): ImageSourcePropType => {
-  const imageUrl =
-    orchard.imageUrl ??
-    orchard.orchardImageUrl ??
-    orchard.image ??
-    orchard.photoUrl;
-
-  return imageUrl ? { uri: imageUrl } : fallbackImage;
 };
 
 const getOrchardSize = (orchard: OrchardSummary): string => {
@@ -111,9 +104,26 @@ export default function QuickActions() {
   return (
     <View style={{ marginBottom: 20, marginTop: 20 }}>
       <View className="mb-3 flex-row items-center justify-between">
-        <CsText style={[typography.Poppins_m_semibold, { color: colors.dark }]}>
-          Recent Orchards
-        </CsText>
+        <View className="flex-row items-center">
+          <View
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 13,
+              marginRight: 10,
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: cardTokens.mutedSurface,
+            }}
+          >
+            <SvgXml xml={statIcons.orchard} width={26} height={26} />
+          </View>
+          <CsText
+            style={[typography.Poppins_m_semibold, { color: colors.dark }]}
+          >
+            Recent Orchards
+          </CsText>
+        </View>
 
         {/* Shows how many of the total are on screen, so the cut-off is obvious */}
         <Pressable
@@ -176,13 +186,18 @@ export default function QuickActions() {
                 borderColor: "rgba(255,255,255,0.35)",
               }}
             >
-              <ImageBackground
-                source={getOrchardImage(orchard)}
-                resizeMode="cover"
-                style={{ width: CARD_WIDTH, height: CARD_HEIGHT }}
-                imageStyle={{
+              <IllustrationBackground
+                xml={getOrchardScene(orchard)}
+                uri={
+                  orchard.imageUrl ??
+                  orchard.orchardImageUrl ??
+                  orchard.image ??
+                  orchard.photoUrl
+                }
+                style={{
+                  width: CARD_WIDTH,
+                  height: CARD_HEIGHT,
                   borderRadius: 21,
-                  borderCurve: "continuous",
                 }}
               >
                 <LinearGradient
@@ -252,7 +267,7 @@ export default function QuickActions() {
                     </CsText>
                   </View>
                 </LinearGradient>
-              </ImageBackground>
+              </IllustrationBackground>
             </View>
           </Pressable>
         ))}

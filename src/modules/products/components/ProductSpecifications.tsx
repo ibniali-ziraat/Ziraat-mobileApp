@@ -1,29 +1,78 @@
-import CsText from "@/src/components/shared/CsText";
-import { colors } from "@/src/constants/colors";
+import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
-import { Package } from "lucide-react-native";
-import { View } from "react-native";
+import { pageArt } from "@/src/constants/iconArt";
+import { Text, View } from "react-native";
 import { stripHtml } from "../utils/stripHtml";
+import DetailSection from "./DetailSection";
 
+/** Free-text spec first, then attributes as an aligned two-column table. */
 export default function ProductSpecifications({ product }: any) {
-  if (!product.specification && !product.attributes?.length) return null;
+  const attributes: { name: string; value: string }[] =
+    product.attributes ?? [];
+  if (!product.specification && !attributes.length) return null;
 
   return (
-    <View className=" mt-6">
-      <CsText style={typography.Poppins_m_semibold}>Specifications</CsText>
+    <DetailSection title="Specifications" art={pageArt.conditions}>
+      {product.specification ? (
+        <Text
+          style={[
+            typography.Poppins_s_regular,
+            {
+              color: cardTokens.inkSecondary,
+              fontSize: 13.5,
+              lineHeight: 22,
+              marginBottom: attributes.length ? 10 : 0,
+            },
+          ]}
+        >
+          {stripHtml(product.specification)}
+        </Text>
+      ) : null}
 
-      {product.specification && (
-        <CsText className="mt-2">{stripHtml(product.specification)}</CsText>
-      )}
-
-      {product.attributes?.map((attr: any, i: number) => (
-        <View key={i} className="flex-row items-center mt-2">
-          <Package size={16} color={colors.secondary} />
-          <CsText className="ml-2">
-            {attr.name}: {attr.value}
-          </CsText>
+      {attributes.length ? (
+        <View
+          style={{
+            borderRadius: 16,
+            overflow: "hidden",
+            backgroundColor: cardTokens.mutedSurface,
+          }}
+        >
+          {attributes.map((attr, i) => (
+            <View
+              key={`${attr.name}-${i}`}
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: 14,
+                paddingVertical: 11,
+                borderTopWidth: i === 0 ? 0 : 1,
+                borderTopColor: "#FFFFFF",
+              }}
+            >
+              <Text
+                style={[
+                  typography.Poppins_xs_regular,
+                  { flex: 1, color: cardTokens.inkMuted, fontSize: 12.5 },
+                ]}
+              >
+                {attr.name}
+              </Text>
+              <Text
+                style={[
+                  typography.Poppins_xs_semibold,
+                  {
+                    flex: 1.3,
+                    color: cardTokens.inkPrimary,
+                    fontSize: 12.5,
+                    textAlign: "right",
+                  },
+                ]}
+              >
+                {attr.value}
+              </Text>
+            </View>
+          ))}
         </View>
-      ))}
-    </View>
+      ) : null}
+    </DetailSection>
   );
 }

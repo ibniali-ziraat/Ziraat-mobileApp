@@ -1,5 +1,6 @@
 import { colors } from "@/src/constants/colors";
-import { Bell, ChevronRight, Trash2 } from "lucide-react-native";
+import { getNotificationArt } from "@/src/constants/iconArt";
+import { ChevronRight, Trash2 } from "lucide-react-native";
 import { useRef } from "react";
 import {
   Animated,
@@ -9,6 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SvgXml } from "react-native-svg";
 import { StoredNotification } from "../types/Notification.types";
 import { timeAgo } from "../utils/timeAge";
 
@@ -30,6 +32,7 @@ export default function SwipeableNotificationCard({
   onDelete,
   onPress,
 }: Props) {
+  const { art, tint } = getNotificationArt(item.title, item.body);
   const translateX = useRef(new Animated.Value(0)).current;
   const rowScale = useRef(new Animated.Value(1)).current;
   const deleteOpacity = useRef(new Animated.Value(0)).current;
@@ -147,8 +150,11 @@ export default function SwipeableNotificationCard({
         >
           {/* Left Icon */}
           <View className="mr-[12px]">
-            <View className="w-[42px] h-[42px] rounded-full items-center justify-center bg-red-100">
-              <Bell size={18} color={colors.secondary} />
+            <View
+              className="w-[44px] h-[44px] rounded-full items-center justify-center"
+              style={{ backgroundColor: tint }}
+            >
+              <SvgXml xml={art} width={26} height={26} />
             </View>
           </View>
 

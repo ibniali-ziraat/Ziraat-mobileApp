@@ -4,6 +4,7 @@ import ScreenLayout from "@/src/components/shared/ScreenLayout";
 import { colors } from "@/src/constants/colors";
 import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
+import { advisoryArt, advisoryKindArt } from "@/src/constants/iconArt";
 import { router, useLocalSearchParams } from "expo-router";
 import { CloudOff, Inbox } from "lucide-react-native";
 import { useMemo, useState } from "react";
@@ -15,6 +16,7 @@ import {
   Text,
   View,
 } from "react-native";
+import AdvisoryBanner from "../components/AdvisoryBanner";
 import AdvisoryCard from "../components/AdvisoryCard";
 import AdvisoryEmptyState from "../components/AdvisoryEmptyState";
 import { useInfiniteAdvisories } from "../hooks/usefarmadvisories";
@@ -81,6 +83,7 @@ export default function AdvisoryListScreen() {
       return (
         <AdvisoryEmptyState
           icon={CloudOff}
+          art={advisoryArt.offline}
           title="Couldn't load advisories"
           message="Check your connection and try again."
           actionLabel="Try again"
@@ -92,6 +95,7 @@ export default function AdvisoryListScreen() {
     return (
       <AdvisoryEmptyState
         icon={Inbox}
+        art={advisoryArt.empty}
         title="No advisories"
         message={EMPTY_MESSAGES[filter]}
       />
@@ -163,6 +167,16 @@ export default function AdvisoryListScreen() {
           if (hasNextPage && !isFetchingNextPage) fetchNextPage();
         }}
         onEndReachedThreshold={0.4}
+        ListHeaderComponent={
+          <AdvisoryBanner
+            orchardProfileId={Number.isNaN(parsedId) ? undefined : parsedId}
+            title="Expert advice for your orchard"
+            subtitle="Spray, fertigation, pruning & harvest"
+            badges={["spray", "fertigation", "pruning", "harvest"].map(
+              (kind) => advisoryKindArt[kind].art,
+            )}
+          />
+        }
         ListEmptyComponent={renderEmpty}
         ListFooterComponent={
           isFetchingNextPage ? (
