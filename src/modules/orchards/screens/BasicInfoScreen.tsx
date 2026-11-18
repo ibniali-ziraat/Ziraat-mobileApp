@@ -70,6 +70,11 @@ export default function BasicInfoScreen() {
 
     const hasKanals = Number(orchard.kanals) > 0;
     const hasMarlas = Number(orchard.marlas) > 0;
+    const hasStoredCoords =
+      !!orchard.latitude &&
+      !!orchard.longitude &&
+      Number(orchard.latitude) !== 0 &&
+      Number(orchard.longitude) !== 0;
 
     reset({
       orchardName: orchard.orchardName ?? "",
