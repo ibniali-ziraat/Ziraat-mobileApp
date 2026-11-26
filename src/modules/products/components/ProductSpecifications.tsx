@@ -1,8 +1,8 @@
+import HtmlContent from "@/src/components/shared/HtmlContent";
 import { cardTokens } from "@/src/constants/dashboardTheme";
 import { typography } from "@/src/constants/fonts/typography";
 import { pageArt } from "@/src/constants/iconArt";
 import { Text, View } from "react-native";
-import { stripHtml } from "../utils/stripHtml";
 import DetailSection from "./DetailSection";
 
 /** Free-text spec first, then attributes as an aligned two-column table. */
@@ -14,19 +14,9 @@ export default function ProductSpecifications({ product }: any) {
   return (
     <DetailSection title="Specifications" art={pageArt.conditions}>
       {product.specification ? (
-        <Text
-          style={[
-            typography.Poppins_s_regular,
-            {
-              color: cardTokens.inkSecondary,
-              fontSize: 13.5,
-              lineHeight: 22,
-              marginBottom: attributes.length ? 10 : 0,
-            },
-          ]}
-        >
-          {stripHtml(product.specification)}
-        </Text>
+        <View style={{ marginBottom: attributes.length ? 10 : 0 }}>
+          <HtmlContent html={product.specification} />
+        </View>
       ) : null}
 
       {attributes.length ? (
